@@ -24,4 +24,8 @@
 
 [R1 CI run 36356948118](https://github.com/tony132321/miniprogram/actions/runs/36356948118) 已证明此试验**无效**：同样的 `jit_page_->allocations_.erase(addr) == 1` 与 `ThreadIsolation::UnregisterWasmAllocation` 原生崩溃改在 `ai-provider-http.test.ts` 出现。该运行 534 项通过、1 个测试文件进程失败，约 633 秒，依赖审计被跳过。参数未能消除故障且明显增加 Linux 测试耗时，后续候选应撤回。前述本地通过只说明功能断言在那次 macOS 运行中通过。
 
+紧接的[带相同参数的 CI run 36357323180](https://github.com/tony132321/miniprogram/actions/runs/36357323180) 也在 `report-scope.test.ts` 子进程出现同一原生断言，534 项通过、1 个测试文件进程失败，约 611 秒。两次故障出现在不同测试文件，不能把它们归因于某条稳定失败的业务断言。
+
 第二种候选改用 Node 24 测试运行器的 `--test-isolation=none`，仍保留全部 `test/*.test.ts` 文件和串行执行，让测试不再为每个文件创建新的 Node/V8 子进程。先对触发过原生崩溃的 AI 草稿 HTTP 与个人导出文件联合运行 13/13，再在 macOS Node 24.19.0 完整运行 **537/537**，耗时约 194 秒；这些结果还不能证明 Linux CI 稳定。该模式允许测试文件共享一个进程，若后续出现跨文件状态串扰，应修复隔离而非隐藏失败。生产代码不依赖此测试运行器参数。
+
+[单进程候选 CI run 36357944846](https://github.com/tony132321/miniprogram/actions/runs/36357944846) 在 Linux Node 24.19.0 首次运行通过：类型检查成功、测试 **537/537**，测试耗时约 537 秒、依赖审计成功。与先前两次带 `--no-wasm-tier-up` 的失败相比，这是实际远端改进；但原生崩溃有间歇性，单次绿色结果不证明根治。后续对同一代码的独立 CI 仍需观察。
