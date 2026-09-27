@@ -26,7 +26,7 @@
   <view>我已核实当前场地与活动时间的可用及预约情况 <switch checked="{{venueConfirmed}}" bindchange="setVenueConfirmed" /></view>
   <view>开始日期 <picker mode="date" bindchange="setStartDate"><view>{{startDate || '选择日期'}}</view></picker></view>
   <view>开始时间 <picker mode="time" bindchange="setStartTime"><view>{{startTime}}</view></picker></view>
-  <view wx:if="{{templateDurationMinutes}}" class="muted">上场时长 {{templateDurationMinutes}} 分钟；选择新开始时间后预填结束时间，发布前请核对。</view>
+  <view wx:if="{{templateDurationMinutes}}" class="muted">活动时长建议 {{templateDurationMinutes}} 分钟；选择开始时间后预填结束时间，发布前请核对。</view>
   <view>结束日期 <picker mode="date" bindchange="setEndDate"><view>{{endDate || '选择日期'}}</view></picker></view>
   <view>结束时间 <picker mode="time" bindchange="setEndTime"><view>{{endTime}}</view></picker></view>
   <view>报名截止：默认开始前 30 分钟；成局确认截止：默认开始前 90 分钟。</view>
