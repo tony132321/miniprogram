@@ -18,7 +18,9 @@ Page({
     canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
     myRegistration: null, registrations: [], cohostGrants: [], cohostUserId: '', selectedCohostCapabilities: ['CHECKIN_MANAGE'], aliases: [],
     safetyStatus: 'UNKNOWN',
-    hostAlias: '', aliasInput: '', canSetAlias: false, shareMetrics: null, shareSourceToken: '', preparingShare: false,
+    hostAlias: '', aliasInput: '', canSetAlias: false, aliasNoticeVersion: '', aliasNoticeText: '',
+    aliasReconfirmationRequired: false, aliasLoadState: 'IDLE', aliasError: '',
+    shareMetrics: null, shareSourceToken: '', preparingShare: false,
     repeatCandidates: [], repeatCandidateNames: '暂无', attentionItems: [], factTodos: [], message: '',
     reservationToken: '', reservationTokens: [], checkInToken: '', displayedCheckInToken: '', checkInExpiresIn: 0,
     totalYuan: '', actualCount: '', completionHeld: null, completionAnomaly: '', completionVenueIssue: '', content: [], contentLoadState: 'IDLE', contentError: '',
@@ -42,6 +44,7 @@ Page({
         canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
         safetyStatus: 'UNKNOWN', myRegistration: null,
         registrations: [], cohostGrants: [], cohostUserId: '', selectedCohostCapabilities: ['CHECKIN_MANAGE'], aliases: [], hostAlias: '', aliasInput: '', canSetAlias: false,
+        aliasNoticeVersion: '', aliasNoticeText: '', aliasReconfirmationRequired: false, aliasLoadState: 'IDLE', aliasError: '',
         shareMetrics: null, shareSourceToken: '', preparingShare: false, repeatCandidates: [],
         repeatCandidateNames: '暂无', attentionItems: [], factTodos: [], content: [], contentLoadState: 'IDLE', contentError: '',
         expenses: [], expenseLoadState: 'IDLE', expenseError: '', outcome: null, outcomeLoadState: 'IDLE', outcomeError: '',
@@ -110,7 +113,17 @@ Page({
       const canUseCollaboration = isHost || cohostCapabilities.length > 0 || ['CONFIRMED', 'RECONFIRM_REQUIRED', 'WAITLISTED', 'OFFERED'].includes(myStatus);
       const canPostQuestion = canUseCollaboration && ['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(event.status);
       const canCheckIn = myStatus === 'CONFIRMED' && ['CONFIRMED', 'IN_PROGRESS'].includes(event.status);
-      const aliases = (await api.get(`/events/${encodeURIComponent(id)}/aliases`).catch(() => ({ items: [] }))).items;
+      let aliasResponse = { items: [], notice: null, reconfirmationRequired: false };
+      let aliasLoadState = 'READY'; let aliasError = '';
+      try {
+        aliasResponse = await api.get(`/events/${encodeURIComponent(id)}/aliases`);
+        if (!Array.isArray(aliasResponse.items) || !aliasResponse.notice?.version || !aliasResponse.notice?.text)
+          throw new Error('昵称授权信息无效，请重试');
+      } catch (error) {
+        aliasResponse = { items: [], notice: null, reconfirmationRequired: false };
+        aliasLoadState = 'ERROR'; aliasError = error.message || '昵称授权信息加载失败，请重试';
+      }
+      const aliases = aliasResponse.items;
       const hostAlias = aliases.find(item => item.isHost)?.displayName || '主办方未设置活动内昵称';
       const canSetAlias = isHost || ['CONFIRMED', 'RECONFIRM_REQUIRED', 'WAITLISTED', 'OFFERED'].includes(myRegistration?.status);
       const registrations = canApproveRegistration || canManageCheckins
@@ -198,7 +211,10 @@ Page({
       this.setData({ id, event, inviteSummary: null, loadState: 'READY', isHost, canJoin, canExpressInterest,
         canUseCollaboration, canPostQuestion, canCheckIn, canApproveRegistration, canManageCheckins, canManageAnnouncements,
         safetyStatus, myRegistration, registrations, cohostGrants, aliases, hostAlias,
-        aliasInput: aliases.find(item => item.isMine)?.displayName || '', canSetAlias, shareMetrics, shareSourceToken, repeatCandidates,
+        aliasInput: aliases.find(item => item.isMine)?.displayName || '', canSetAlias,
+        aliasNoticeVersion: aliasResponse.notice?.version || '', aliasNoticeText: aliasResponse.notice?.text || '',
+        aliasReconfirmationRequired: Boolean(aliasResponse.reconfirmationRequired), aliasLoadState, aliasError,
+        shareMetrics, shareSourceToken, repeatCandidates,
         repeatCandidateNames: repeatCandidates.join('、') || '暂无', attentionItems, factTodos, content, contentLoadState, contentError,
         expenses, expenseLoadState, expenseError,
         outcome, outcomeLoadState, outcomeError, checkIns, manualCheckIns, attendanceLoadState, attendanceError, reconfirmation,
@@ -212,6 +228,7 @@ Page({
         canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
         canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
         myRegistration: null, registrations: [], cohostGrants: [], aliases: [], hostAlias: '', canSetAlias: false,
+        aliasNoticeVersion: '', aliasNoticeText: '', aliasReconfirmationRequired: false, aliasLoadState: 'IDLE', aliasError: '',
         content: [], contentLoadState: 'IDLE', contentError: '', expenses: [], expenseLoadState: 'IDLE', expenseError: '',
         outcome: null, outcomeLoadState: 'IDLE', outcomeError: '', checkIns: [],
         manualCheckIns: [], attendanceLoadState: 'IDLE', attendanceError: '', reconfirmation: null,
@@ -422,9 +439,15 @@ Page({
   aliasInput(event) { this.setData({ aliasInput: event.detail.value }); },
   async saveAlias() {
     try {
-      await api.post(`/events/${encodeURIComponent(this.data.id)}/aliases`, { displayName: this.data.aliasInput, granted: true });
+      if (!this.data.aliasNoticeVersion) throw new Error('昵称展示说明暂不可用，请刷新后重试');
+      await api.post(`/events/${encodeURIComponent(this.data.id)}/aliases`, {
+        displayName: this.data.aliasInput, granted: true, noticeVersion: this.data.aliasNoticeVersion });
       await this.refresh(); this.setData({ message: '仅在本活动内展示的昵称已保存。' });
-    } catch (error) { this.setData({ message: error.message }); }
+    } catch (error) {
+      if (error.code === 'CONSENT_NOTICE_CHANGED') {
+        await this.refresh(); this.setData({ message: '昵称展示说明已更新，请阅读后重新确认。' });
+      } else this.setData({ message: error.message });
+    }
   },
   async revokeAlias() {
     try {

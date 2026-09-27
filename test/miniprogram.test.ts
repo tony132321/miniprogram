@@ -1631,6 +1631,40 @@ test('event page follows current cohost grant while preserving own participation
   assert.equal(page.data.canCheckIn, true);
 });
 
+test('event page carries the current nickname display notice into a grant and prompts legacy reconfirmation', async () => {
+  let page: Record<string, any> | undefined;
+  const posts: Array<{ path: string; body: Record<string, unknown> }> = [];
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: {
+        async get(route: string) {
+          if (route === '/events/e1') return { id: 'e1', hostId: 'host', status: 'RECRUITING', version: 2,
+            recruiting: true, payload: {} };
+          if (route === '/events/e1/aliases') return { items: [], reconfirmationRequired: true,
+            notice: { purpose: 'EVENT_MEMBER_DISPLAY', text: '仅在本活动内展示的昵称（可选）', version: 'current-notice' } };
+          return { items: [] };
+        },
+        async post(path: string, body: Record<string, unknown>) { posts.push({ path, body }); return {}; }
+      } };
+      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
+      if (path === '../../config.js') return { developmentUser: 'host' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: { getStorageSync() { return ''; } }, setTimeout, clearTimeout
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.data.id = 'e1';
+  assert.equal(await page.refresh(), true);
+  assert.equal(page.data.aliasReconfirmationRequired, true);
+  assert.equal(page.data.aliasNoticeText, '仅在本活动内展示的昵称（可选）');
+  page.data.aliasInput = '新昵称';
+  await page.saveAlias();
+  assert.equal(posts[0]?.path, '/events/e1/aliases');
+  assert.equal(posts[0]?.body.noticeVersion, 'current-notice');
+});
+
 test('a check-in token arriving after the event page hides is not displayed or refreshed', async () => {
   let page: Record<string, any> | undefined;
   let finishToken!: (value: unknown) => void;

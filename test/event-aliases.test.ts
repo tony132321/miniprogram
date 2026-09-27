@@ -4,7 +4,7 @@ import { createDatabase } from '../src/db.ts';
 import { createDraft } from '../src/events.ts';
 import { publishApprovedInvite } from './helpers.ts';
 import { register } from './helpers.ts';
-import { listEventAliases, setEventAlias } from '../src/event-aliases.ts';
+import { eventAliasNotice, listEventAliases, setEventAlias } from '../src/event-aliases.ts';
 
 const input = { title: '活动内昵称', type: 'badminton', startAt: '2027-01-02T12:00:00.000Z', endAt: '2027-01-02T14:00:00.000Z',
   timeZone: 'Asia/Shanghai', city: '深圳', venueName: '公共场馆', venueStatus: 'HOST_CONFIRMED', minParticipants: 4, maxParticipants: 6,
@@ -20,7 +20,7 @@ test('activity nickname is opt-in, visible only to members and revocable', async
     await register(db, 'p2', event.id, event.version, 'alias-p2');
     assert.deepEqual(await listEventAliases(db, 'p2', event.id), []);
     await assert.rejects(() => setEventAlias(db, 'p1', event.id, '小明', false, 'alias-no-consent'), { code: 'BAD_REQUEST' });
-    await setEventAlias(db, 'p1', event.id, '小明', true, 'alias-set');
+    await setEventAlias(db, 'p1', event.id, '小明', true, 'alias-set', eventAliasNotice(event.id).version);
     assert.equal((await listEventAliases(db, 'p2', event.id))[0]?.displayName, '小明');
     await assert.rejects(() => listEventAliases(db, 'outsider', event.id), { code: 'FORBIDDEN' });
     await setEventAlias(db, 'p1', event.id, null, false, 'alias-revoke');
@@ -37,7 +37,7 @@ test('disabled member nickname disappears from other members without deleting it
     await register(db, 'p2', event.id, event.version, 'disabled-alias-p2');
     await db.query(`INSERT INTO users(id,wechat_openid,status) VALUES
       ('p1','synthetic-alias-disabled','ACTIVE'),('p2','synthetic-alias-viewer','ACTIVE')`);
-    await setEventAlias(db, 'p1', event.id, '合成旧昵称', true, 'disabled-alias-set');
+    await setEventAlias(db, 'p1', event.id, '合成旧昵称', true, 'disabled-alias-set', eventAliasNotice(event.id).version);
     assert.equal((await listEventAliases(db, 'p2', event.id))[0]?.displayName, '合成旧昵称');
     await db.query("UPDATE users SET status='DISABLED' WHERE id='p1'");
     assert.deepEqual(await listEventAliases(db, 'p2', event.id), []);
@@ -58,13 +58,13 @@ test('pending deletion hides old nicknames and prevents granting a new visible a
     await register(db, 'p1', event.id, event.version, 'delete-alias-p1');
     await register(db, 'p2', event.id, event.version, 'delete-alias-p2');
     await db.query("INSERT INTO users(id,wechat_openid) VALUES('p1','delete-alias-openid')");
-    await setEventAlias(db, 'p1', event.id, '合成旧昵称', true, 'alias-before-delete');
+    await setEventAlias(db, 'p1', event.id, '合成旧昵称', true, 'alias-before-delete', eventAliasNotice(event.id).version);
     assert.equal((await listEventAliases(db, 'p2', event.id))[0]?.displayName, '合成旧昵称');
     await db.query("INSERT INTO privacy_requests(id,user_id,kind) VALUES('alias-delete-p1','p1','DELETE')");
     assert.deepEqual(await listEventAliases(db, 'p2', event.id), []);
-    await assert.rejects(() => setEventAlias(db, 'p1', event.id, '合成新昵称', true, 'alias-after-delete'),
+    await assert.rejects(() => setEventAlias(db, 'p1', event.id, '合成新昵称', true, 'alias-after-delete', eventAliasNotice(event.id).version),
       { code: 'DELETE_REQUEST_PENDING' });
-    await assert.rejects(() => setEventAlias(db, 'p1', event.id, '合成旧昵称', true, 'alias-before-delete'),
+    await assert.rejects(() => setEventAlias(db, 'p1', event.id, '合成旧昵称', true, 'alias-before-delete', eventAliasNotice(event.id).version),
       { code: 'DELETE_REQUEST_PENDING' });
     assert.equal((await setEventAlias(db, 'p1', event.id, null, false, 'alias-withdraw-after-delete')).granted, false);
   } finally { await db.close(); }

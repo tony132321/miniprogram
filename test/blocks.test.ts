@@ -7,7 +7,7 @@ import { changeEvent } from '../src/lifecycle.ts';
 import { publishApprovedInvite } from './helpers.ts';
 import { register } from './helpers.ts';
 import { setConsent } from '../src/notifications.ts';
-import { listEventAliases, setEventAlias } from '../src/event-aliases.ts';
+import { eventAliasNotice, listEventAliases, setEventAlias } from '../src/event-aliases.ts';
 import { listRepeatCandidates } from '../src/lifecycle.ts';
 import { blockEventMember, listMyBlocks, revokeBlock } from '../src/blocks.ts';
 import { exportPersonalData } from '../src/privacy.ts';
@@ -25,8 +25,8 @@ test('blocking an identified event member hides aliases both ways and excludes l
     const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'block-publish');
     await register(db, 'p1', event.id, event.version, 'block-p1');
     await register(db, 'p2', event.id, event.version, 'block-p2');
-    await setEventAlias(db, 'p1', event.id, '小明', true, 'block-alias-p1');
-    await setEventAlias(db, 'p2', event.id, '小红', true, 'block-alias-p2');
+    await setEventAlias(db, 'p1', event.id, '小明', true, 'block-alias-p1', eventAliasNotice(event.id).version);
+    await setEventAlias(db, 'p2', event.id, '小红', true, 'block-alias-p2', eventAliasNotice(event.id).version);
     await db.query("INSERT INTO users(id,wechat_openid) VALUES('p2','block-p2-openid')");
     const target = (await listEventAliases(db, 'p1', event.id)).find(item => item.displayName === '小红');
     assert.ok(target);
@@ -63,7 +63,7 @@ test('blocking routes keep another member from reading or revoking a block', asy
     const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'block-api-publish');
     await register(db, 'p1', event.id, event.version, 'block-api-p1');
     await register(db, 'p2', event.id, event.version, 'block-api-p2');
-    await setEventAlias(db, 'p2', event.id, '可屏蔽成员', true, 'block-api-alias');
+    await setEventAlias(db, 'p2', event.id, '可屏蔽成员', true, 'block-api-alias', eventAliasNotice(event.id).version);
     const memberId = (await listEventAliases(db, 'p1', event.id))[0]!.id;
     server.listen(0, '127.0.0.1'); await once(server, 'listening');
     const port = (server.address() as { port: number }).port;

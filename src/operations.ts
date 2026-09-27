@@ -3,6 +3,7 @@ import type { Database } from './db.ts';
 import { AppError } from './errors.ts';
 import { command } from './registrations.ts';
 import { consentNotice, type NotificationPurpose } from './notifications.ts';
+import { eventAliasNotice } from './event-aliases.ts';
 import { claimIdempotency } from './idempotency.ts';
 import { parseAnnouncementFaq } from './announcement-faq.ts';
 import type { ReportResponsePolicy } from './report-response-policy.ts';
@@ -462,7 +463,17 @@ export async function createPrivacyRequest(db: Database, actor: string, input: {
         VALUES($1,$2,$3,$4,$5,$6,false,'DELETE_REQUEST')`,
       [randomUUID(), actor, row.purpose, notice.scope, withdrawalVersion, withdrawalText]);
     }
-    const { rows: aliases } = await tx.query<{ event_id: string }>('DELETE FROM event_aliases WHERE user_id=$1 RETURNING event_id', [actor]);
+    const { rows: aliases } = await tx.query<{ event_id: string; notice_version: string | null }>(
+      'DELETE FROM event_aliases WHERE user_id=$1 RETURNING event_id,notice_version', [actor]);
+    for (const alias of aliases) {
+      const notice = eventAliasNotice(alias.event_id);
+      await tx.query(`INSERT INTO event_alias_consent_history
+        (id,event_id,user_id,purpose,scope,notice_version,notice_text,granted,source)
+        VALUES($1,$2,$3,$4,$5,$6,$7,false,'DELETE_REQUEST')`,
+      [randomUUID(), alias.event_id, actor, notice.purpose, notice.scope,
+        alias.notice_version ?? 'LEGACY_UNVERSIONED',
+        alias.notice_version === notice.version ? notice.text : '']);
+    }
     const { rows: protectedRows } = await tx.query<PrivacyRequestRow>(`UPDATE privacy_requests SET
       status=CASE WHEN status='OPEN' THEN 'PROTECTED_PENDING_POLICY' ELSE status END,
       protection_applied_at=COALESCE(protection_applied_at,clock_timestamp()),
@@ -575,6 +586,7 @@ export async function getPrivacyRequestImpact(db: Database, operator: string, re
        (SELECT count(*)::int FROM notification_consents WHERE user_id=$1) AS notification_consents,
        (SELECT count(*)::int FROM notification_consent_history WHERE user_id=$1) AS notification_consent_history,
        (SELECT count(*)::int FROM event_aliases WHERE user_id=$1) AS event_aliases,
+       (SELECT count(*)::int FROM event_alias_consent_history WHERE user_id=$1) AS event_alias_consent_history,
        (SELECT count(*)::int FROM share_intents WHERE sender_id=$1) AS share_intents,
        (SELECT count(*)::int FROM personal_export_tickets WHERE user_id=$1) AS personal_export_tickets,
        (SELECT count(*)::int FROM user_blocks WHERE blocker_id=$1) AS blocks_created,
@@ -620,7 +632,7 @@ export async function getPrivacyRequestImpact(db: Database, operator: string, re
       authoredContent: count.authored_content,
       reportedDisputes: count.reported_disputes, appeals: count.appeals, notifications: count.notifications,
       notificationConsents: count.notification_consents, notificationConsentHistory: count.notification_consent_history,
-      eventAliases: count.event_aliases,
+      eventAliases: count.event_aliases, eventAliasConsentHistory: count.event_alias_consent_history,
       shareIntents: count.share_intents, personalExportTickets: count.personal_export_tickets,
       blocksCreated: count.blocks_created, blocksReceived: count.blocks_received,
       hostedEventVersions: count.hosted_event_versions,

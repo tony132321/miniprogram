@@ -48,8 +48,11 @@
     <button wx:if="{{!item.isMine}}" data-member="{{item.id}}" bindtap="blockMember">屏蔽此成员</button>
   </view>
   <view wx:if="{{canSetAlias}}">
+    <view wx:if="{{aliasReconfirmationRequired}}">旧昵称尚未按当前展示说明确认，需重新输入并同意后才对成员可见。</view>
+    <view wx:if="{{aliasLoadState === 'ERROR'}}" class="error">{{aliasError}} <button bindtap="refresh">重新加载昵称授权</button></view>
+    <view wx:if="{{aliasNoticeVersion}}">{{aliasNoticeText}}</view>
     <input placeholder="仅在本活动内展示的昵称（可选）" value="{{aliasInput}}" bindinput="aliasInput" />
-    <button bindtap="saveAlias">同意展示并保存本活动昵称</button>
+    <button wx:if="{{aliasNoticeVersion}}" bindtap="saveAlias">同意展示并保存本活动昵称</button>
     <button bindtap="revokeAlias">撤回本活动昵称展示</button>
   </view>
   <view wx:if="{{reconfirmation}}" class="item">

@@ -241,7 +241,8 @@ test('operator privacy row can inspect redacted deletion impact counts without s
         counts: { profile: 1, sessions: 1, hostedEvents: 2, registrations: 3, authoredContent: 4,
           reportedDisputes: 1, hostedOutcomeReviews: 2, reportedOutcomeReviews: 1,
           appeals: 0, notifications: 2, notificationConsents: 1, notificationConsentHistory: 2,
-          eventAliases: 1, shareIntents: 2, personalExportTickets: 1, blocksCreated: 1, blocksReceived: 1,
+          eventAliases: 0, eventAliasConsentHistory: 2, shareIntents: 2, personalExportTickets: 1,
+          blocksCreated: 1, blocksReceived: 1,
           shareOpens: 3, unknownSourceInviteOpens: 1, checkIns: 2, outcomeFeedback: 1,
           cohostGrants: 1, privacyRequests: 1, idempotencyRecords: 4, aiActionProposals: 2 } }) };
     return { ok: true, status: 200, json: async () => ({ items: [] }) };
@@ -250,7 +251,7 @@ test('operator privacy row can inspect redacted deletion impact counts without s
   const row = ui.item('privacy').children[0] as { children: Array<{ onclick?: () => Promise<void>; textContent: string }> };
   await row.children[0]?.onclick?.();
   assert.match(row.children[1]!.textContent, /活动 2.*报名 3.*争议 1/);
-  assert.match(row.children[1]!.textContent, /通知授权 1.*活动昵称 1.*分享发起 2.*导出凭证 1.*屏蔽发起 1.*被屏蔽 1/);
+  assert.match(row.children[1]!.textContent, /通知授权 1.*活动昵称 0.*活动昵称授权历史 2.*分享发起 2.*导出凭证 1.*屏蔽发起 1.*被屏蔽 1/);
   assert.match(row.children[1]!.textContent, /授权变更 2/);
   assert.match(row.children[1]!.textContent, /主办活动复核 2.*本人举报裁决 1/);
   assert.match(row.children[1]!.textContent, /分享打开 3.*未知来源邀请打开 1.*签到 2.*结束反馈 1.*协办授权 1.*隐私请求 1.*幂等记录 4/);

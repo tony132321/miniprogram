@@ -32,6 +32,9 @@ test('DELETE intake atomically protects the person and gives an accurate owner r
       "SELECT purpose,granted FROM notification_consents WHERE user_id='p1' ORDER BY purpose")).rows,
     [{ purpose: 'EVENT_REMINDER', granted: false }, { purpose: 'SIMILAR_ACTIVITY_INVITES', granted: false }]);
     assert.deepEqual((await db.query("SELECT event_id FROM event_aliases WHERE user_id='p1'")).rows, []);
+    assert.deepEqual((await db.query<{ purpose: string; granted: boolean; source: string }>(
+      "SELECT purpose,granted,source FROM event_alias_consent_history WHERE user_id='p1'")).rows,
+    [{ purpose: 'EVENT_MEMBER_DISPLAY', granted: false, source: 'DELETE_REQUEST' }]);
     assert.deepEqual((await db.query<{ purpose: string; source: string }>(
       "SELECT purpose,source FROM notification_consent_history WHERE user_id='p1' AND granted=false ORDER BY purpose")).rows,
     [{ purpose: 'EVENT_REMINDER', source: 'DELETE_REQUEST' },
@@ -46,6 +49,7 @@ test('DELETE intake atomically protects the person and gives an accurate owner r
     const exportData = await exportPersonalData(db, 'p1');
     assert.ok(exportData.privacyRequests.some(item => item.id === receipt.id && item.protection_applied_at));
     assert.equal(exportData.notificationConsentHistory.filter(item => item.source === 'DELETE_REQUEST').length, 2);
+    assert.equal(exportData.eventAliasConsentHistory.filter(item => item.source === 'DELETE_REQUEST').length, 1);
     const repeated = await createPrivacyRequest(db, 'p1', { kind: 'DELETE' }, 'privacy-delete-2');
     assert.deepEqual(repeated, receipt, 'a new idempotency key reuses the active DELETE request');
     assert.deepEqual(await createPrivacyRequest(db, 'p1', { kind: 'DELETE' }, 'privacy-delete-1'), receipt,
@@ -54,6 +58,8 @@ test('DELETE intake atomically protects the person and gives an accurate owner r
       .rows[0]?.count, 1);
     assert.equal((await db.query("SELECT count(*)::int AS count FROM notification_consent_history WHERE user_id='p1' AND granted=false"))
       .rows[0]?.count, 2);
+    assert.equal((await db.query("SELECT count(*)::int AS count FROM event_alias_consent_history WHERE user_id='p1' AND granted=false"))
+      .rows[0]?.count, 1);
     const audit = await db.query<{ detail: { requestId: string; consentWithdrawals: number; aliasesRemoved: number } }>(
       "SELECT detail FROM audit WHERE actor_id='p1' AND action='PRIVACY_DELETE_PROTECTED'");
     assert.deepEqual(audit.rows, [{ detail: { requestId: receipt.id, consentWithdrawals: 2, aliasesRemoved: 1 } }]);

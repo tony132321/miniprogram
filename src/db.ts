@@ -62,7 +62,8 @@ const migrations = [
   { version: 46, path: fileURLToPath(new URL('./migrations/0046_report_response_tracking.sql', import.meta.url)) },
   { version: 47, path: fileURLToPath(new URL('./migrations/0047_privacy_delete_protection.sql', import.meta.url)) },
   { version: 48, path: fileURLToPath(new URL('./migrations/0048_invite_event_review.sql', import.meta.url)) },
-  { version: 49, path: fileURLToPath(new URL('./migrations/0049_notification_delivery_contract.sql', import.meta.url)) }
+  { version: 49, path: fileURLToPath(new URL('./migrations/0049_notification_delivery_contract.sql', import.meta.url)) },
+  { version: 50, path: fileURLToPath(new URL('./migrations/0050_event_alias_consent.sql', import.meta.url)) }
 ];
 export const LATEST_SCHEMA_VERSION = migrations[migrations.length - 1]!.version;
 type MigrationExecutor = Queryable & { exec(sql: string): Promise<unknown> };

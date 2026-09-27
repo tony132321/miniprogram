@@ -68,7 +68,9 @@ export async function exportPersonalData(db: Database, actor: string) {
     waitlistOfferHistory: await own(`SELECT h.offer_id,o.event_id,h.status,h.changed_at,h.legacy_snapshot
       FROM offer_status_history h JOIN offers o ON o.id=h.offer_id
       JOIN registrations r ON r.id=o.registration_id WHERE r.user_id=$1 ORDER BY h.changed_at,h.id`),
-    eventAliases: await own('SELECT event_id,display_name,consented_at FROM event_aliases WHERE user_id=$1 ORDER BY consented_at,event_id'),
+    eventAliases: await own('SELECT event_id,display_name,notice_version,consented_at FROM event_aliases WHERE user_id=$1 ORDER BY consented_at,event_id'),
+    eventAliasConsentHistory: await own(`SELECT event_id,purpose,scope,notice_version,notice_text,granted,source,changed_at
+      FROM event_alias_consent_history WHERE user_id=$1 ORDER BY changed_at,id`),
     blocks: await own('SELECT id,event_id,created_at,revoked_at FROM user_blocks WHERE blocker_id=$1 ORDER BY created_at,id'),
     receivedCohostGrants: await own(`SELECT id,event_id,capabilities,expires_at,revoked_at,created_at
       FROM cohost_grants WHERE user_id=$1 ORDER BY created_at,id`),

@@ -699,7 +699,9 @@ test('activity alias API requires member consent and hides unconsented identitie
     await f.request(`/events/${event.body.id}/registrations`, 'p1', 'POST', { expectedVersion: event.body.version, inviteToken: event.body.inviteToken, acceptedRules: true }, 'alias-p1');
     assert.equal((await f.request(`/events/${event.body.id}/aliases`, 'outsider')).status, 403);
     assert.deepEqual((await f.request(`/events/${event.body.id}/aliases`, 'host')).body.items, []);
-    const set = await f.request(`/events/${event.body.id}/aliases`, 'p1', 'POST', { displayName: '小明', granted: true }, 'alias-set');
+    const notice = (await f.request(`/events/${event.body.id}/aliases`, 'p1')).body.notice;
+    const set = await f.request(`/events/${event.body.id}/aliases`, 'p1', 'POST',
+      { displayName: '小明', granted: true, noticeVersion: notice.version }, 'alias-set');
     assert.equal(set.status, 200);
     const visible = (await f.request(`/events/${event.body.id}/aliases`, 'host')).body.items;
     assert.equal(visible.length, 1);

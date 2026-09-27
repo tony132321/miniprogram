@@ -9,7 +9,7 @@ import { getPublicGate, revokePublicCoverage, setPublicGate } from '../src/publi
 import { getEmergencyGate, setEmergencyGate } from '../src/emergency-gate.ts';
 import { runDueJobs } from '../src/jobs.ts';
 import { dispatchNotification, enqueueStartReminder, setConsent } from '../src/notifications.ts';
-import { listEventAliases, setEventAlias } from '../src/event-aliases.ts';
+import { eventAliasNotice, listEventAliases, setEventAlias } from '../src/event-aliases.ts';
 import { listNotificationFollowups, listNotificationFollowupHistory, recordNotificationFollowup } from '../src/notification-followups.ts';
 import { listFailedJobs, retryFailedJob } from '../src/job-recovery.ts';
 import { exportPersonalData } from '../src/privacy.ts';
@@ -63,7 +63,8 @@ try {
   const privacyEvent = await publishEvent(first, 'pg_privacy_member', privacyDraft.id, privacyDraft.version, 'pg-privacy-publish');
   await setConsent(first, 'pg_privacy_member', 'EVENT_REMINDER', true, 'pg-privacy-reminder-grant');
   await setConsent(first, 'pg_privacy_member', 'SIMILAR_ACTIVITY_INVITES', true, 'pg-privacy-repeat-grant');
-  await setEventAlias(first, 'pg_privacy_member', privacyEvent.id, '待撤销活动昵称', true, 'pg-privacy-alias');
+  await setEventAlias(first, 'pg_privacy_member', privacyEvent.id, '待撤销活动昵称', true, 'pg-privacy-alias',
+    eventAliasNotice(privacyEvent.id).version);
   assert.equal((await listEventAliases(second, 'pg_privacy_member', privacyEvent.id))[0]?.displayName, '待撤销活动昵称');
   await enqueueStartReminder(first, privacyEvent.id, 'pg_privacy_member', privacyEvent.version);
   const { rows: privacyNotices } = await first.query<{ id: string }>(
@@ -108,12 +109,14 @@ try {
     privacyReceipt);
   assert.equal((await second.query<{ n: number }>(`SELECT count(*)::int AS n FROM notification_consent_history
     WHERE user_id='pg_privacy_member' AND source='DELETE_REQUEST'`)).rows[0]?.n, 2);
+  assert.equal((await second.query<{ n: number }>(`SELECT count(*)::int AS n FROM event_alias_consent_history
+    WHERE user_id='pg_privacy_member' AND source='DELETE_REQUEST'`)).rows[0]?.n, 1);
   assert.equal((await second.query<{ n: number }>(`SELECT count(*)::int AS n FROM audit
     WHERE actor_id='pg_privacy_member' AND action='PRIVACY_DELETE_PROTECTED'`)).rows[0]?.n, 1);
   await assert.rejects(() => setConsent(first!, 'pg_privacy_member', 'EVENT_REMINDER', true,
     'pg-privacy-reminder-regrant'), { code: 'DELETE_REQUEST_PENDING' });
   await assert.rejects(() => setEventAlias(second!, 'pg_privacy_member', privacyEvent.id, '新昵称', true,
-    'pg-privacy-alias-regrant'), { code: 'DELETE_REQUEST_PENDING' });
+    'pg-privacy-alias-regrant', eventAliasNotice(privacyEvent.id).version), { code: 'DELETE_REQUEST_PENDING' });
   await second.query(`INSERT INTO notifications(id,event_id,user_id,kind,event_version)
     VALUES('pg-privacy-after-delete',$1,'pg_privacy_member','EVENT_CANCELLED',$2)`,
   [privacyEvent.id, privacyEvent.version]);

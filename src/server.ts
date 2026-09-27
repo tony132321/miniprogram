@@ -24,7 +24,7 @@ import { recordShareIntent, recordAttributedOpen, getShareMetrics } from './shar
 import { createPersonalExportTicket, downloadPersonalExport, exportPersonalData } from './privacy.ts';
 import { getPilotMetrics } from './metrics.ts';
 import { listSupportMinutes, recordSupportMinutes } from './support-minutes.ts';
-import { listEventAliases, setEventAlias } from './event-aliases.ts';
+import { eventAliasConsentStatus, listEventAliases, setEventAlias } from './event-aliases.ts';
 import { getActiveEventHold, listEventHolds, placeEventHold, releaseEventHold } from './safety.ts';
 import { consumeRateLimit, listRateLimitViolations } from './rate-limits.ts';
 import { getRegistrationAnomalyEvidence, listRegistrationAnomalies, reviewRegistrationAnomaly } from './registration-anomalies.ts';
@@ -585,7 +585,8 @@ export function createApp(db: Database, options: AppOptions) {
         }
         if (action === 'content' && method === 'GET') return send(res, 200, { items: await listContent(db, actor, id) });
         if (action === 'cohosts' && method === 'GET') return send(res, 200, { items: await listCohostGrants(db, actor, id) });
-        if (action === 'aliases' && method === 'GET') return send(res, 200, { items: await listEventAliases(db, actor, id) });
+        if (action === 'aliases' && method === 'GET') return send(res, 200, {
+          items: await listEventAliases(db, actor, id), ...(await eventAliasConsentStatus(db, actor, id)) });
         if (action === 'fact-todos' && method === 'GET') return send(res, 200, { items: await listFactTodos(db, actor, id) });
         if (action === 'expenses' && method === 'GET') return send(res, 200, { items: await listExpenses(db, actor, id) });
         if (action === 'manual-checkins' && method === 'GET') return send(res, 200, { items: await listManualCheckIns(db, actor, id) });
@@ -604,7 +605,8 @@ export function createApp(db: Database, options: AppOptions) {
               body.userId, body.capabilities, body.expiresAt, key));
           }
           if (action === 'content') return send(res, 201, await createContent(db, actor, id, body.kind, body.body, body.parentId ?? null, key));
-          if (action === 'aliases') return send(res, 200, await setEventAlias(db, actor, id, body.displayName, body.granted, key));
+          if (action === 'aliases') return send(res, 200, await setEventAlias(db, actor, id, body.displayName, body.granted, key,
+            body.noticeVersion));
           if (action === 'blocks') return send(res, 201, await blockEventMember(db, actor, id, body.memberId, key));
           if (action === 'facts:ask') return send(res, 200, await askCurrentFact(db, actor, id, body.question, key));
           const version = versionFrom(body.expectedVersion);

@@ -6,6 +6,7 @@ import { createApp } from '../src/server.ts';
 import { createDraft } from '../src/events.ts';
 import { setConsent } from '../src/notifications.ts';
 import { prepareAiAction } from '../src/ai-actions.ts';
+import { eventAliasNotice, setEventAlias } from '../src/event-aliases.ts';
 
 test('privacy impact inventory is operator-only, counted by purpose, and audited without raw content', async () => {
   const db = await createDatabase();
@@ -22,7 +23,7 @@ test('privacy impact inventory is operator-only, counted by purpose, and audited
     await db.query("INSERT INTO reports(id,reporter_id,event_id,kind,description) VALUES('report-1','p1',$1,'ATTENDANCE','private report')", [event.id]);
     await db.query("INSERT INTO outcome_reviews(id,event_id,report_id,decision,reason,reviewed_by) VALUES('review-1',$1,'report-1','HELD_CONFIRMED','private operator reason','ops')", [event.id]);
     await setConsent(db, 'p1', 'EVENT_REMINDER', true, 'impact-reminder-consent');
-    await db.query("INSERT INTO event_aliases(event_id,user_id,display_name) VALUES($1,'p1','private alias')", [event.id]);
+    await setEventAlias(db, 'p1', event.id, 'private alias', true, 'private-alias-grant', eventAliasNotice(event.id).version);
     await db.query("INSERT INTO share_intents(source_token,event_id,sender_id,invite_token_hash) VALUES('source-1',$1,'p1','private-hash')", [event.id]);
     await db.query("INSERT INTO personal_export_tickets(id,user_id,expires_at) VALUES('ticket-1','p1',now() + interval '1 hour')");
     await db.query("INSERT INTO user_blocks(id,blocker_id,blocked_id,event_id) VALUES('block-1','p1','p2',$1),('block-2','p2','p1',$1)", [event.id]);
@@ -59,6 +60,7 @@ test('privacy impact inventory is operator-only, counted by purpose, and audited
     assert.equal(body.counts.notificationConsents, 1);
     assert.equal(body.counts.notificationConsentHistory, 1);
     assert.equal(body.counts.eventAliases, 1);
+    assert.equal(body.counts.eventAliasConsentHistory, 1);
     assert.equal(body.counts.shareIntents, 1);
     assert.equal(body.counts.personalExportTickets, 1);
     assert.equal(body.counts.blocksCreated, 1);
@@ -69,7 +71,7 @@ test('privacy impact inventory is operator-only, counted by purpose, and audited
     assert.equal(body.counts.outcomeFeedback, 1);
     assert.equal(body.counts.cohostGrants, 1);
     assert.equal(body.counts.privacyRequests, 1);
-    assert.equal(body.counts.idempotencyRecords, 4);
+    assert.equal(body.counts.idempotencyRecords, 5);
     assert.equal(body.counts.aiDraftRequests, 1);
     assert.equal(body.counts.aiActionProposals, 1);
     assert.doesNotMatch(JSON.stringify(body), /private-openid|private question|private report|private alias|private-hash/);
