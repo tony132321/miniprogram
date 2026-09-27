@@ -310,6 +310,7 @@ test('profile shows honest external reminder states on initial and later notific
     { id: 'uncertain', external_status: 'UNKNOWN_REQUIRES_RECONCILIATION' },
     { id: 'stale', external_status: 'STALE_VERSION' },
     { id: 'pending', external_status: 'NOT_REQUESTED' },
+    { id: 'unconfigured', external_status: 'PURPOSE_NOT_CONFIGURED' },
     { id: 'unknown', external_status: 'UNRECOGNIZED_PROVIDER_STATE' }
   ];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
@@ -337,7 +338,7 @@ test('profile shows honest external reminder states on initial and later notific
   ]);
   await page.loadMoreNotifications();
   assert.deepEqual(Array.from(page.data.notifications.slice(4), (item: any) => item.externalStatusLabel), [
-    '旧版本提醒已取消', '外部提醒待处理', '外部提醒状态待核对'
+    '旧版本提醒已取消', '外部提醒待处理', '未开通外部提醒，请查看站内通知', '外部提醒状态待核对'
   ]);
   assert.match(readFileSync(new URL('../miniprogram/pages/me/me.wxml', import.meta.url), 'utf8'),
     /{{item\.externalStatusLabel}}/);
@@ -583,6 +584,46 @@ test('opening an account-wide notice does not navigate to a missing activity', a
   await page.openNotice({ currentTarget: { dataset: { id: 'public-pause', kind: 'PUBLIC_RECRUITMENT_CLOSED' } } });
   assert.deepEqual(navigations, []);
   assert.match(page.data.message, /通知已打开/);
+});
+
+test('failed detail navigation leaves a cancellation unread until the detail opens on retry', async () => {
+  let page: Record<string, any> | undefined;
+  let navigation: Record<string, any> | undefined;
+  const openedRoutes: string[] = [];
+  let status = 'QUEUED';
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: { post: async (route: string) => {
+        openedRoutes.push(route);
+        status = 'OPENED';
+        return { status };
+      } } };
+      if (path === '../../config.js') return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: { navigateTo(options: Record<string, any>) { navigation = options; } }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  const notice = { currentTarget: { dataset: { id: 'cancel-notice', event: 'cancelled/event', kind: 'EVENT_CANCELLED' } } };
+
+  const failedOpen = page.openNotice(notice);
+  assert.equal(status, 'QUEUED');
+  assert.deepEqual(openedRoutes, []);
+  assert.equal(navigation?.url, '/pages/event/event?id=cancelled%2Fevent');
+  navigation.fail({ errMsg: 'navigateTo:fail page stack overflow' });
+  await failedOpen;
+  assert.equal(status, 'QUEUED');
+  assert.deepEqual(openedRoutes, []);
+  assert.match(page.data.message, /page stack overflow/);
+
+  const successfulOpen = page.openNotice(notice);
+  assert.equal(status, 'QUEUED');
+  navigation.success({});
+  await successfulOpen;
+  assert.equal(status, 'OPENED');
+  assert.deepEqual(openedRoutes, ['/me/notifications/cancel-notice/open']);
 });
 
 test('activity list clears the previous identity and ignores a late old response', async () => {

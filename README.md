@@ -51,6 +51,8 @@ pnpm preflight:release
 
 独立 PostgreSQL 验证可运行 `IRL_PG_TEST_URL=postgresql://USER@127.0.0.1:PORT/irl_r1_test_NAME pnpm exec tsx scripts/verify-postgres.ts`。目标必须是本机、名称以 `irl_r1_test_` 开头且没有业务表；脚本会创建活动并发起 100 个真实数据库连接池上的抢位请求，不用于已有数据的数据库。第 39 版旧状态到第 42 版迁移另用全新空库运行 `scripts/verify-postgres-history-upgrade.ts`。本机迁移、并发及恢复证据见 `docs/evidence/postgres-latest42-2026-09-27.md`。
 
+第 48 版到第 49 版的通知契约升级，可先将**合成测试库**复制为另一个 `irl_r1_test_` 库，再对复制库设置 `IRL_PG_TEST_URL` 运行 `pnpm exec tsx scripts/verify-postgres-notification-upgrade.ts`。脚本只接受现有 schema 48 测试库，核对旧通知及状态不变、待发送记录的契约字段完成回填；不可对生产库运行。见[本机验证记录](docs/evidence/notification-delivery-contract-local-2026-09-28.md)。
+
 本机 HTTP 混合负载基线可对另一个全新空库运行 `IRL_PG_TEST_URL=postgresql://USER@127.0.0.1:PORT/irl_r1_test_NAME pnpm exec tsx scripts/benchmark-http.ts`。脚本以 20 RPS 持续 30 秒读取公开活动和本人活动、写入草稿，并报告错误数与 p50/p95/p99；仅用于本机验证，见 `docs/evidence/local-http-load-2026-09-25.md`。
 
 运营举报队列优先列出未结案安全类工单，再列其他未结案工单，支持每页 100 条继续加载；`SAFETY` 只是举报类别，不代表人工确认严重性或已提供响应时限。详见 [`docs/evidence/report-triage-2026-09-25.md`](docs/evidence/report-triage-2026-09-25.md)。

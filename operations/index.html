@@ -81,7 +81,7 @@
   </section>
   <section><h2>近期异常请求</h2><ul id="rateLimits"></ul></section>
   <section><h2>异常报名待复核</h2><p class="muted">同一用户在同一活动 24 小时内至少三次报名、两次退出。复核后只统计新行为；线索不自动限制用户。</p><ul id="registrationAnomalies"></ul><button id="moreRegistrationAnomalies" disabled>加载更多异常报名</button></section>
-  <section><h2>通知待跟进</h2><p class="muted">外部发送失败或结果不确定。人工跟进记录不代表用户已收到消息。</p><ul id="notificationFollowups"></ul><button id="moreNotificationFollowups" disabled>加载更多待跟进通知</button></section>
+  <section><h2>通知待跟进</h2><p class="muted">未配置用途、外部发送不可用、明确失败或结果不确定。人工跟进记录不代表用户已收到消息。</p><ul id="notificationFollowups"></ul><button id="moreNotificationFollowups" disabled>加载更多待跟进通知</button></section>
   <section><h2>最近已跟进</h2><p class="muted">展示最近 100 条处理说明，供有通知权限的运营人员复核；原外部发送状态保留。</p><ul id="notificationHistory"></ul></section>
   <section><h2>失败任务</h2><p class="muted">重新排队仅表示等待后台处理；外部通知状态不确定时须先人工核对。</p><ul id="failedJobs"></ul><button id="moreFailedJobs" disabled>加载更多失败任务</button></section>
   <section><h2>AI 草稿异常</h2><p class="muted">费用与请求状态须对照供应商账单核查；异常请求不会自动重试。此处不展示草稿原文。</p><ul id="aiDraftAlerts"></ul><button id="moreAiDraftAlerts" disabled>加载更多 AI 草稿异常</button></section>
@@ -522,7 +522,7 @@
     }
     function renderNotificationFollowups(items) {
       for (const item of items) {
-        const li = line($('notificationFollowups'), `${item.externalStatus} · ${item.kind} · 活动 ${item.eventId} · 用户 ${item.userId} · 创建 ${item.createdAt} · 已读 ${item.readAt || '否'}`);
+        const li = line($('notificationFollowups'), `${item.externalStatus} · 原因 ${item.failureCode || '未记录'} · ${item.kind} · 用途 ${item.externalPurpose || '无'} · 模板槽 ${item.templateSlot || '无'} · 活动 ${item.eventId} · 用户 ${item.userId} · 排程 ${item.scheduledAt || '未排程'} · 已读 ${item.readAt || '否'}`);
         const note = document.createElement('input'); note.placeholder = '人工跟进说明（5 至 500 字）'; li.appendChild(note);
         const button = document.createElement('button'); button.textContent = '记录人工跟进';
         button.onclick = async () => {
@@ -749,7 +749,7 @@
         for (const item of rateLimits) line($('rateLimits'), `${item.windowStart} · ${item.scope} · 请求 ${item.attempts} · 已拒绝 ${item.rejectedCount}`);
         renderRegistrationAnomalies(registrationAnomalies);
         renderNotificationFollowups(notificationFollowups);
-        for (const item of notificationHistory) line($('notificationHistory'), `${item.recordedAt} · ${item.recordedBy} · 活动 ${item.eventId} · 用户 ${item.userId} · ${item.kind} · 外部状态 ${item.externalStatus} · ${item.note}`);
+        for (const item of notificationHistory) line($('notificationHistory'), `${item.recordedAt} · ${item.recordedBy} · 活动 ${item.eventId} · 用户 ${item.userId} · ${item.kind} · 外部状态 ${item.externalStatus} · 原因 ${item.failureCode || '未记录'} · ${item.note}`);
         renderFailedJobs(failedJobs);
         for (const item of aiDraftAlerts) line($('aiDraftAlerts'), `${item.created_at} · 用户 ${item.actor_id} · 请求 ${item.request_key} · ${item.status} · 原因 ${item.fallback_reason || '待核查'} · 预算 ${item.budget_fen} 分 · 已知费用 ${item.known_cost_fen == null ? '未知' : item.known_cost_fen + ' 分'} · 费用状态 ${item.cost_status || '未知'}`);
         renderAppeals(appeals);

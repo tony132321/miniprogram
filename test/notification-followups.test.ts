@@ -14,7 +14,7 @@ const input = { title: '通知跟进测试', type: 'badminton', startAt: '2027-0
   registrationDeadline: '2027-01-02T11:30:00.000Z', confirmationDeadline: '2027-01-02T10:30:00.000Z', feeMode: 'FREE',
   feeCapFen: 0, cancellationRule: '开始前可退出', visibility: 'INVITE', approvalMode: 'AUTO', hostParticipates: true };
 
-test('operator follows up unavailable and uncertain external notifications without claiming delivery', async () => {
+test('operator follows up unconfigured and uncertain external notifications without claiming delivery', async () => {
   const db = await createDatabase();
   const app = createApp(db, { environment: 'test', devAuth: true, operationsUsers: ['ops'], checkInSecret: 'secret' });
   app.listen(0, '127.0.0.1'); await once(app, 'listening');
@@ -23,6 +23,9 @@ test('operator follows up unavailable and uncertain external notifications witho
   try {
     const draft = await createDraft(db, 'host', input, 'draft');
     const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'publish');
+    const { rows: reviewNotices } = await db.query<{ id: string }>(
+      "SELECT id FROM notifications WHERE event_id=$1 AND user_id='host' AND kind='EVENT_REVIEW_APPROVED'", [event.id]);
+    for (const notice of reviewNotices) await markNotificationOpened(db, 'host', notice.id, `read-review-${notice.id}`);
     await setConsent(db, 'p1', 'EVENT_REMINDER', true, 'consent1');
     await setConsent(db, 'p2', 'EVENT_REMINDER', true, 'consent2');
     await register(db, 'p1', event.id, event.version, 'join1');
@@ -38,7 +41,7 @@ test('operator follows up unavailable and uncertain external notifications witho
     assert.equal(response.status, 200);
     let items = (await response.json() as { items: Array<{ notificationId: string; externalStatus: string; detail?: unknown }> }).items;
     assert.deepEqual(new Set(items.map(item => item.notificationId)), new Set([p1, p2]));
-    assert.equal(items.find(item => item.notificationId === p1)?.externalStatus, 'UNAVAILABLE');
+    assert.equal(items.find(item => item.notificationId === p1)?.externalStatus, 'PURPOSE_NOT_CONFIGURED');
     assert.equal(items.find(item => item.notificationId === p2)?.externalStatus, 'UNKNOWN_REQUIRES_RECONCILIATION');
     assert.equal(items.every(item => item.detail === undefined), true);
     const invalid = await fetch(base + `/ops/notifications/${p2}/followup`, { method: 'POST', headers: {

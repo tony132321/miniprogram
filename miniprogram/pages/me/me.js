@@ -4,6 +4,7 @@ const externalStatusLabels = {
   NOT_REQUESTED: '外部提醒待处理',
   DISPATCHING: '外部提醒请求处理中',
   UNAVAILABLE: '外部提醒不可用，请查看站内通知',
+  PURPOSE_NOT_CONFIGURED: '未开通外部提醒，请查看站内通知',
   CONSENT_WITHDRAWN: '未开通外部提醒',
   CONSENT_RECONFIRM_REQUIRED: '外部提醒需重新授权',
   PROVIDER_ACCEPTED: '提供方已受理，未确认送达',
@@ -167,21 +168,29 @@ Page({
   },
   async openNotice(event) {
     const id = event.currentTarget.dataset.id; const eventId = event.currentTarget.dataset.event;
+    const kind = event.currentTarget.dataset.kind;
+    const detailOnProfile = ['REGISTRATION_REMOVED', 'REPORT_IN_REVIEW', 'REPORT_RESOLVED',
+      'APPEAL_IN_REVIEW', 'APPEAL_RESOLVED', 'CONTENT_REJECTED'].includes(kind);
     try {
+      if (eventId && !detailOnProfile) {
+        await new Promise((resolve, reject) => wx.navigateTo({
+          url: '/pages/event/event?id=' + encodeURIComponent(eventId), success: resolve, fail: reject
+        }));
+      }
       await api.post(`/me/notifications/${id}/open`, {});
-      if (event.currentTarget.dataset.kind === 'REGISTRATION_REMOVED') {
+      if (kind === 'REGISTRATION_REMOVED') {
         await this.refresh();
         return this.setData({ message: '请在下方“报名移除与申诉”查看原因。' });
       }
-      if (event.currentTarget.dataset.kind === 'REPORT_IN_REVIEW' || event.currentTarget.dataset.kind === 'REPORT_RESOLVED') {
+      if (kind === 'REPORT_IN_REVIEW' || kind === 'REPORT_RESOLVED') {
         await this.refresh();
         return this.setData({ message: '请在下方“举报与求助”查看处理进度与结论。' });
       }
-      if (event.currentTarget.dataset.kind === 'APPEAL_IN_REVIEW' || event.currentTarget.dataset.kind === 'APPEAL_RESOLVED') {
+      if (kind === 'APPEAL_IN_REVIEW' || kind === 'APPEAL_RESOLVED') {
         await this.refresh();
         return this.setData({ message: '请在下方“报名移除与申诉”查看复核进度与结论。' });
       }
-      if (event.currentTarget.dataset.kind === 'CONTENT_REJECTED') {
+      if (kind === 'CONTENT_REJECTED') {
         await this.refresh();
         return this.setData({ message: '请在下方“内容审核与复核”查看原因并申请复核。' });
       }
@@ -189,8 +198,7 @@ Page({
         await this.refresh();
         return this.setData({ message: '通知已打开。' });
       }
-      wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(eventId) });
-    } catch (error) { this.setData({ message: error.message }); }
+    } catch (error) { this.setData({ message: error.message || error.errMsg || '打开通知失败，请重试。' }); }
   },
   reportInput(event) { this.setData({ reportDescription: event.detail.value }); },
   appealInput(event) { this.setData({ appealDescription: event.detail.value }); },

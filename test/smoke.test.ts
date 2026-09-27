@@ -56,11 +56,11 @@ test('API workflow with four independent seats fills, promotes, checks in, compl
     const inbox = await api('/me/notifications', 'waiting');
     const offerNotice = inbox.body.items.find((item: any) => item.kind === 'WAITLIST_OFFER');
     assert.equal(offerNotice?.actionable, true);
-    assert.equal(offerNotice?.external_status, 'UNAVAILABLE');
+    assert.equal(offerNotice?.external_status, 'PURPOSE_NOT_CONFIGURED');
     const followups = await api('/ops/notifications/followups', 'ops');
     assert.equal(followups.status, 200);
     assert.equal(followups.body.items.some((item: any) => item.notificationId === offerNotice.id &&
-      item.externalStatus === 'UNAVAILABLE'), true);
+      item.externalStatus === 'PURPOSE_NOT_CONFIGURED' && item.failureCode === 'PURPOSE_NOT_CONFIGURED'), true);
     const offerId = offerNotice?.detail.offerId;
     assert.ok(offerId);
     const accepted = await api(`/offers/${offerId}/accept`, 'waiting', 'POST', { expectedVersion: e.body.version }, 'accept');

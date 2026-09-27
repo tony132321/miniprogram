@@ -82,7 +82,10 @@ export async function exportPersonalData(db: Database, actor: string) {
     aiActionProposals: await own(`SELECT id,event_id,kind,expected_version,payload,status,expires_at,
       approved_at,revoked_at,executed_at,receipt,created_at
       FROM ai_action_proposals WHERE actor_id=$1 ORDER BY created_at,id`),
-    notifications: await own('SELECT id,event_id,kind,event_version,status,read_at,external_status,detail,created_at FROM notifications WHERE user_id=$1 ORDER BY created_at,id'),
+    notifications: await own(`SELECT id,event_id,kind,event_version,status,read_at,external_status,
+      external_purpose,external_channel,template_slot,external_scheduled_at,external_dispatch_started_at,
+      provider_responded_at,external_failure_code,provider_ref,detail,created_at
+      FROM notifications WHERE user_id=$1 ORDER BY created_at,id`),
     checkIns: await own('SELECT id,event_id,user_id,evidence,checked_at,disputed FROM checkins WHERE user_id=$1 ORDER BY checked_at,id'),
     manualCheckIns: await own('SELECT id,event_id,user_id,status,(requested_by=$1) AS requested_by_me,requested_at,responded_at FROM manual_checkins WHERE user_id=$1 ORDER BY requested_at,id'),
     outcomeFeedback: await own('SELECT event_id,user_id,held,would_repeat,reason,created_at FROM outcome_feedback WHERE user_id=$1 ORDER BY created_at,event_id'),

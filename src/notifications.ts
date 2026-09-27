@@ -3,6 +3,7 @@ import type { Database, Queryable } from './db.ts';
 import { AppError } from './errors.ts';
 import { getEvent } from './events.ts';
 import { claimIdempotency } from './idempotency.ts';
+import { externalNoticeContract, type ExternalNoticeContract } from './notification-contract.ts';
 
 export type NotificationPurpose = 'EVENT_REMINDER' | 'SIMILAR_ACTIVITY_INVITES';
 
@@ -18,7 +19,7 @@ export function consentNotice(purpose: NotificationPurpose) {
   return { ...notice, version: createHash('sha256').update(`${purpose}\n${notice.scope}\n${notice.text}`).digest('hex') };
 }
 
-export interface ExternalNotification {
+export interface ExternalNotification extends ExternalNoticeContract {
   id: string;
   eventId: string;
   userId: string;
@@ -28,7 +29,10 @@ export interface ExternalNotification {
 }
 
 export interface NotificationAdapter {
-  send(notification: ExternalNotification): Promise<{ status: 'ACCEPTED'; providerRef: string }>;
+  send(notification: ExternalNotification): Promise<
+    { status: 'ACCEPTED'; providerRef: string } |
+    { status: 'REJECTED'; failureCode: string } |
+    { status: 'UNKNOWN'; failureCode: string }>;
 }
 
 export async function setConsent(db: Database, actor: string, purpose: NotificationPurpose, granted: boolean, key: string): Promise<{ purpose: NotificationPurpose; granted: boolean }> {
@@ -125,16 +129,21 @@ export async function getAttentionItems(db: Database, actor: string, eventId: st
 
 export async function enqueueNotification(tx: Queryable, eventId: string, userId: string, kind: string, eventVersion: number, detail: Record<string, unknown> = {}): Promise<string> {
   const id = randomUUID();
-  const { rows } = await tx.query<{ id: string }>('INSERT INTO notifications(id,event_id,user_id,kind,event_version,detail) VALUES($1,$2,$3,$4,$5,$6) ON CONFLICT DO NOTHING RETURNING id',
-    [id, eventId, userId, kind, eventVersion, JSON.stringify(detail)]);
+  const contract = externalNoticeContract(kind);
+  const { rows } = await tx.query<{ id: string }>(`INSERT INTO notifications(id,event_id,user_id,kind,event_version,detail,
+    external_purpose,external_channel,template_slot,external_scheduled_at)
+    VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,now()) ON CONFLICT DO NOTHING RETURNING id`,
+    [id, eventId, userId, kind, eventVersion, JSON.stringify(detail), contract.externalPurpose,
+      contract.externalChannel, contract.templateSlot]);
   if (!rows.length) {
     const { rows: existing } = await tx.query<{ id: string }>('SELECT id FROM notifications WHERE event_id=$1 AND user_id=$2 AND kind=$3 AND event_version=$4',
       [eventId, userId, kind, eventVersion]);
     if (!existing[0]) throw new AppError('NOTIFICATION_CONFLICT', '通知写入冲突', 500);
     return existing[0].id;
   }
-  await tx.query('INSERT INTO jobs(id,kind,event_id,due_at,payload) VALUES($1,$2,$3,now(),$4)',
-    [randomUUID(), 'SEND_EXTERNAL', eventId, JSON.stringify({ notificationId: id })]);
+  await tx.query(`INSERT INTO jobs(id,kind,event_id,due_at,payload)
+    SELECT $1,$2,$3,external_scheduled_at,$4 FROM notifications WHERE id=$5`,
+    [randomUUID(), 'SEND_EXTERNAL', eventId, JSON.stringify({ notificationId: id }), id]);
   return id;
 }
 
@@ -147,15 +156,25 @@ export async function enqueueInAppOutcomePrompt(tx: Queryable, eventId: string, 
 
 export async function enqueueStartReminder(tx: Queryable, eventId: string, userId: string, eventVersion: number): Promise<void> {
   const id = randomUUID();
-  const { rows } = await tx.query<{ id: string }>(`INSERT INTO notifications(id,event_id,user_id,kind,event_version)
-    SELECT $1,$2,$3,'EVENT_REMINDER',$4 FROM events
+  const contract = externalNoticeContract('EVENT_REMINDER');
+  const { rows } = await tx.query<{ id: string }>(`INSERT INTO notifications(id,event_id,user_id,kind,event_version,
+    external_purpose,external_channel,template_slot,external_scheduled_at)
+    SELECT $1,$2,$3,'EVENT_REMINDER',$4,$5,$6,$7,now() FROM events
     WHERE id=$2 AND clock_timestamp() < (payload->>'startAt')::timestamptz
-    ON CONFLICT DO NOTHING RETURNING id`, [id, eventId, userId, eventVersion]);
-  if (rows[0]) await tx.query('INSERT INTO jobs(id,kind,event_id,due_at,payload) VALUES($1,$2,$3,now(),$4)',
-    [randomUUID(), 'SEND_EXTERNAL', eventId, JSON.stringify({ notificationId: id })]);
+    ON CONFLICT DO NOTHING RETURNING id`, [id, eventId, userId, eventVersion, contract.externalPurpose,
+      contract.externalChannel, contract.templateSlot]);
+  if (rows[0]) await tx.query(`INSERT INTO jobs(id,kind,event_id,due_at,payload)
+    SELECT $1,$2,$3,external_scheduled_at,$4 FROM notifications WHERE id=$5`,
+    [randomUUID(), 'SEND_EXTERNAL', eventId, JSON.stringify({ notificationId: id }), id]);
 }
 
-type NotificationRow = { id: string; event_id: string; user_id: string; kind: string; event_version: number; detail: Record<string, unknown>; external_status: string };
+type NotificationRow = { id: string; event_id: string; user_id: string; kind: string; event_version: number;
+  detail: Record<string, unknown>; external_status: string; external_purpose: string | null;
+  external_channel: string; template_slot: string | null };
+
+function safeFailureCode(value: unknown, fallback: string): string {
+  return typeof value === 'string' && /^[A-Z][A-Z0-9_]{0,63}$/.test(value) ? value : fallback;
+}
 
 export async function dispatchNotification(db: Database, notificationId: string, adapter?: NotificationAdapter): Promise<void> {
   // Commit the in-flight marker before contacting the provider. If the process
@@ -165,11 +184,13 @@ export async function dispatchNotification(db: Database, notificationId: string,
     const item = rows[0];
     if (!item) throw new AppError('MALFORMED_JOB', '外部通知任务关联记录不存在');
     if (item.external_status === 'DISPATCHING') {
-      await tx.query("UPDATE notifications SET external_status='UNKNOWN_REQUIRES_RECONCILIATION' WHERE id=$1", [item.id]);
+      await tx.query(`UPDATE notifications SET external_status='UNKNOWN_REQUIRES_RECONCILIATION',
+        external_failure_code='INTERRUPTED_DISPATCH' WHERE id=$1`, [item.id]);
       return null;
     }
     if (item.external_status !== 'NOT_REQUESTED') return null;
-    await tx.query("UPDATE notifications SET external_status='DISPATCHING' WHERE id=$1", [item.id]);
+    await tx.query(`UPDATE notifications SET external_status='DISPATCHING',
+      external_dispatch_started_at=clock_timestamp() WHERE id=$1`, [item.id]);
     return item;
   });
   if (!claimed) return;
@@ -185,9 +206,13 @@ export async function dispatchNotification(db: Database, notificationId: string,
     const { rows: deletions } = await tx.query(`SELECT 1 FROM privacy_requests
       WHERE user_id=$1 AND kind='DELETE' AND status NOT IN ('FULFILLED','CANCELLED') LIMIT 1 FOR SHARE`, [claimed.user_id]);
     const { rows: registrations } = await tx.query<{ status: string }>('SELECT status FROM registrations WHERE event_id=$1 AND user_id=$2 FOR SHARE', [claimed.event_id, claimed.user_id]);
-    const { rows: consents } = await tx.query<{ granted: boolean; notice_version: string | null }>(
-      'SELECT granted,notice_version FROM notification_consents WHERE user_id=$1 AND purpose=$2 FOR SHARE',
-      [claimed.user_id, 'EVENT_REMINDER']);
+    const contract = externalNoticeContract(claimed.kind);
+    const purposeConfigured = claimed.kind === 'EVENT_REMINDER' && claimed.external_purpose === 'EVENT_REMINDER' &&
+      claimed.external_channel === contract.externalChannel && claimed.template_slot === contract.templateSlot;
+    const { rows: consents } = purposeConfigured
+      ? await tx.query<{ granted: boolean; notice_version: string | null }>(
+        'SELECT granted,notice_version FROM notification_consents WHERE user_id=$1 AND purpose=$2 FOR SHARE',
+        [claimed.user_id, 'EVENT_REMINDER']) : { rows: [] };
     const { rows: emergency } = claimed.kind === 'WAITLIST_OFFER'
       ? await tx.query<{ status: string }>('SELECT status FROM emergency_gate WHERE id=1 FOR SHARE') : { rows: [] };
     const { rows: holds } = claimed.kind === 'WAITLIST_OFFER'
@@ -213,21 +238,38 @@ export async function dispatchNotification(db: Database, notificationId: string,
         holds.length > 0 || (event?.visibility === 'PUBLIC' && publicGate[0]?.open !== true) || !offers[0]?.active));
     const outcome = users[0] && users[0].status !== 'ACTIVE' ? 'ACCOUNT_DISABLED' :
       deletions.length ? 'DELETE_REQUEST_PENDING' :
+      !event || event.version !== claimed.event_version ? 'STALE_VERSION' :
+      noLongerRelevant ? 'STALE_STATE' :
+      !purposeConfigured ? 'PURPOSE_NOT_CONFIGURED' :
       !consents[0]?.granted ? 'CONSENT_WITHDRAWN' :
       consents[0].notice_version !== consentNotice('EVENT_REMINDER').version ? 'CONSENT_RECONFIRM_REQUIRED' :
-      !event || event.version !== claimed.event_version ? 'STALE_VERSION' :
-      noLongerRelevant ? 'STALE_STATE' : !adapter ? 'UNAVAILABLE' : null;
+      !adapter ? 'UNAVAILABLE' : null;
     if (outcome) {
-      await tx.query('UPDATE notifications SET external_status=$2 WHERE id=$1', [notificationId, outcome]);
+      await tx.query('UPDATE notifications SET external_status=$2,external_failure_code=$3 WHERE id=$1',
+        [notificationId, outcome, outcome === 'UNAVAILABLE' ? 'NO_PROVIDER' : outcome]);
       return;
     }
     try {
       const result = await adapter!.send({ id: claimed.id, eventId: claimed.event_id, userId: claimed.user_id, kind: claimed.kind,
-        eventVersion: claimed.event_version, detail: claimed.detail });
-      if (result.status !== 'ACCEPTED' || !result.providerRef) throw new Error('provider did not accept');
-      await tx.query("UPDATE notifications SET external_status='PROVIDER_ACCEPTED',provider_ref=$2 WHERE id=$1", [notificationId, result.providerRef]);
+        eventVersion: claimed.event_version, detail: claimed.detail, ...contract });
+      if (result.status === 'ACCEPTED' && typeof result.providerRef === 'string' &&
+        result.providerRef.trim() && result.providerRef.length <= 200) {
+        await tx.query(`UPDATE notifications SET external_status='PROVIDER_ACCEPTED',provider_ref=$2,
+          provider_responded_at=clock_timestamp(),external_failure_code=NULL WHERE id=$1`,
+          [notificationId, result.providerRef]);
+      } else if (result.status === 'REJECTED') {
+        await tx.query(`UPDATE notifications SET external_status='PROVIDER_REJECTED',
+          provider_responded_at=clock_timestamp(),external_failure_code=$2 WHERE id=$1`,
+          [notificationId, safeFailureCode(result.failureCode, 'PROVIDER_REJECTION_UNSPECIFIED')]);
+      } else {
+        await tx.query(`UPDATE notifications SET external_status='UNKNOWN_REQUIRES_RECONCILIATION',
+          external_failure_code=$2 WHERE id=$1`,
+          [notificationId, result.status === 'UNKNOWN'
+            ? safeFailureCode(result.failureCode, 'PROVIDER_RESULT_UNKNOWN') : 'INVALID_PROVIDER_RESPONSE']);
+      }
     } catch {
-      await tx.query("UPDATE notifications SET external_status='UNKNOWN_REQUIRES_RECONCILIATION' WHERE id=$1", [notificationId]);
+      await tx.query(`UPDATE notifications SET external_status='UNKNOWN_REQUIRES_RECONCILIATION',
+        external_failure_code='PROVIDER_EXCEPTION' WHERE id=$1`, [notificationId]);
     }
   });
 }

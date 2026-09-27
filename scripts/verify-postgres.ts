@@ -8,7 +8,7 @@ import { acceptOffer, cancelRegistration, claimReservation, expireOffers, expire
 import { getPublicGate, revokePublicCoverage, setPublicGate } from '../src/public-gate.ts';
 import { getEmergencyGate, setEmergencyGate } from '../src/emergency-gate.ts';
 import { runDueJobs } from '../src/jobs.ts';
-import { dispatchNotification, setConsent } from '../src/notifications.ts';
+import { dispatchNotification, enqueueStartReminder, setConsent } from '../src/notifications.ts';
 import { listEventAliases, setEventAlias } from '../src/event-aliases.ts';
 import { listNotificationFollowups, listNotificationFollowupHistory, recordNotificationFollowup } from '../src/notification-followups.ts';
 import { listFailedJobs, retryFailedJob } from '../src/job-recovery.ts';
@@ -59,20 +59,23 @@ try {
   const draft = await createDraft(first, 'pg_host', input, 'postgres-draft');
   const event = await publishEvent(first, 'pg_host', draft.id, draft.version, 'postgres-publish');
   await first.query("INSERT INTO users(id,wechat_openid) VALUES('pg_privacy_member','pg-privacy-openid')");
-  const privacyEvent = await createDraft(first, 'pg_privacy_member', input, 'pg-privacy-event');
+  const privacyDraft = await createDraft(first, 'pg_privacy_member', input, 'pg-privacy-event');
+  const privacyEvent = await publishEvent(first, 'pg_privacy_member', privacyDraft.id, privacyDraft.version, 'pg-privacy-publish');
   await setConsent(first, 'pg_privacy_member', 'EVENT_REMINDER', true, 'pg-privacy-reminder-grant');
   await setConsent(first, 'pg_privacy_member', 'SIMILAR_ACTIVITY_INVITES', true, 'pg-privacy-repeat-grant');
   await setEventAlias(first, 'pg_privacy_member', privacyEvent.id, '待撤销活动昵称', true, 'pg-privacy-alias');
   assert.equal((await listEventAliases(second, 'pg_privacy_member', privacyEvent.id))[0]?.displayName, '待撤销活动昵称');
-  await first.query(`INSERT INTO notifications(id,event_id,user_id,kind,event_version)
-    VALUES('pg-privacy-before-delete',$1,'pg_privacy_member','EVENT_CANCELLED',$2)`,
-  [privacyEvent.id, privacyEvent.version]);
+  await enqueueStartReminder(first, privacyEvent.id, 'pg_privacy_member', privacyEvent.version);
+  const { rows: privacyNotices } = await first.query<{ id: string }>(
+    "SELECT id FROM notifications WHERE event_id=$1 AND user_id='pg_privacy_member' AND kind='EVENT_REMINDER'",
+    [privacyEvent.id]);
+  const privacyNoticeId = privacyNotices[0]!.id;
   let signalSend!: () => void;
   let releaseSend!: () => void;
   const sendEntered = new Promise<void>(resolve => { signalSend = resolve; });
   const sendRelease = new Promise<void>(resolve => { releaseSend = resolve; });
   let privacyProviderCalls = 0;
-  const sending = dispatchNotification(first, 'pg-privacy-before-delete', { send: async () => {
+  const sending = dispatchNotification(first, privacyNoticeId, { send: async () => {
     privacyProviderCalls++;
     signalSend();
     await sendRelease;
@@ -97,7 +100,7 @@ try {
   [{ purpose: 'EVENT_REMINDER', granted: false }, { purpose: 'SIMILAR_ACTIVITY_INVITES', granted: false }]);
   assert.deepEqual(await listEventAliases(first, 'pg_privacy_member', privacyEvent.id), []);
   assert.equal((await first.query<{ external_status: string }>(
-    "SELECT external_status FROM notifications WHERE id='pg-privacy-before-delete'")).rows[0]?.external_status,
+    'SELECT external_status FROM notifications WHERE id=$1', [privacyNoticeId])).rows[0]?.external_status,
   'PROVIDER_ACCEPTED');
   assert.deepEqual(await createPrivacyRequest(first, 'pg_privacy_member', { kind: 'DELETE' }, 'pg-privacy-delete-repeat'),
     privacyReceipt);
@@ -135,7 +138,7 @@ try {
   assert.equal((await exportPersonalData(first, 'pg_host')).hostedEventVersions.length, 1);
   await runDueJobs(second);
   const failedNotice = (await listNotificationFollowups(first)).items.find(item => item.userId === 'pg_p1');
-  assert.equal(failedNotice?.externalStatus, 'UNAVAILABLE');
+  assert.equal(failedNotice?.externalStatus, 'PURPOSE_NOT_CONFIGURED');
   await recordNotificationFollowup(second, 'operator:pg_reviewer', failedNotice!.notificationId,
     '本机双连接池人工跟进记录验证', 'postgres-followup');
   assert.equal((await listNotificationFollowups(first)).items.some(item => item.notificationId === failedNotice!.notificationId), false);
@@ -143,7 +146,7 @@ try {
   assert.equal(history[0]?.notificationId, failedNotice!.notificationId);
   assert.equal(history[0]?.note, '本机双连接池人工跟进记录验证');
   const { rows: unchangedNotice } = await first.query<{ external_status: string }>('SELECT external_status FROM notifications WHERE id=$1', [failedNotice!.notificationId]);
-  assert.equal(unchangedNotice[0]?.external_status, 'UNAVAILABLE');
+  assert.equal(unchangedNotice[0]?.external_status, 'PURPOSE_NOT_CONFIGURED');
   const contenders = await Promise.all(Array.from({ length: 100 }, (_, index) =>
     register(index % 2 === 0 ? first! : second!, `pg_r${index}`, event.id, event.version,
       `postgres-contender-${index}`, event.inviteToken!)));

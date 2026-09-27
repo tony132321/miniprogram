@@ -6,7 +6,7 @@ import { publishApprovedInvite } from './helpers.ts';
 import { register } from './helpers.ts';
 import { approveRegistration, cancelRegistration, declineOffer, removeRegistration } from '../src/registrations.ts';
 import { confirmEvent, completeEvent } from '../src/lifecycle.ts';
-import { setConsent, markNotificationOpened, listMemberNotifications, dispatchNotification } from '../src/notifications.ts';
+import { setConsent, markNotificationOpened, listMemberNotifications, dispatchNotification, enqueueStartReminder } from '../src/notifications.ts';
 import { placeEventHold, releaseEventHold } from '../src/safety.ts';
 import { reviewEvent } from '../src/event-review.ts';
 import { setPublicGate } from '../src/public-gate.ts';
@@ -84,11 +84,12 @@ test('withdrawing consent before dispatch prevents external message', async () =
     const e = await published(db);
     await setConsent(db, 'p1', 'EVENT_REMINDER', true, 'grant');
     await register(db, 'p1', e.id, e.version, 'register');
+    await enqueueStartReminder(db, e.id, 'p1', e.version);
     await setConsent(db, 'p1', 'EVENT_REMINDER', false, 'withdraw');
     let sends = 0;
     await runDueJobs(db, Date.now(), { send: async () => { sends++; return { status: 'ACCEPTED', providerRef: 'ref' }; } });
     assert.equal(sends, 0);
-    const { rows } = await db.query<{ external_status: string }>("SELECT external_status FROM notifications WHERE event_id=$1 AND user_id='p1' AND kind='REGISTRATION_STATUS'", [e.id]);
+    const { rows } = await db.query<{ external_status: string }>("SELECT external_status FROM notifications WHERE event_id=$1 AND user_id='p1' AND kind='EVENT_REMINDER'", [e.id]);
     assert.equal(rows[0]?.external_status, 'CONSENT_WITHDRAWN');
     const inApp = await listMemberNotifications(db, 'p1');
     assert.ok(inApp.items.some((item: any) => item.event_id === e.id && item.kind === 'REGISTRATION_STATUS'));
@@ -105,6 +106,7 @@ test('queued external notice skips a disabled account while keeping its in-app r
     await setConsent(db, 'p2', 'EVENT_REMINDER', true, 'disabled-consent-p2');
     await register(db, 'p1', event.id, event.version, 'disabled-register-p1');
     const p2 = await register(db, 'p2', event.id, event.version, 'disabled-register-p2');
+    for (const actor of ['p1', 'p2']) await enqueueStartReminder(db, event.id, actor, event.version);
     await db.query("UPDATE users SET status='DISABLED' WHERE id='p1'");
     const sentTo: string[] = [];
     await runDueJobs(db, Date.now(), { send: async item => {
@@ -113,7 +115,7 @@ test('queued external notice skips a disabled account while keeping its in-app r
     } });
     assert.deepEqual(sentTo, ['p2']);
     const { rows: notices } = await db.query<{ user_id: string; status: string; external_status: string }>(
-      "SELECT user_id,status,external_status FROM notifications WHERE event_id=$1 AND kind='REGISTRATION_STATUS' ORDER BY user_id",
+      "SELECT user_id,status,external_status FROM notifications WHERE event_id=$1 AND kind='EVENT_REMINDER' ORDER BY user_id",
       [event.id]);
     assert.deepEqual(notices, [
       { user_id: 'p1', status: 'IN_APP', external_status: 'ACCOUNT_DISABLED' },
@@ -137,6 +139,7 @@ test('an unresolved deletion request blocks queued external delivery and renewed
     await setConsent(db, 'p2', 'EVENT_REMINDER', true, 'before-delete-p2');
     await register(db, 'p1', event.id, event.version, 'delete-register-p1');
     await register(db, 'p2', event.id, event.version, 'delete-register-p2');
+    for (const actor of ['p1', 'p2']) await enqueueStartReminder(db, event.id, actor, event.version);
     await db.query("INSERT INTO privacy_requests(id,user_id,kind) VALUES('delete-p1','p1','DELETE')");
     await assert.rejects(() => setConsent(db, 'p1', 'EVENT_REMINDER', true, 'renew-after-delete'),
       { code: 'DELETE_REQUEST_PENDING' });
@@ -149,7 +152,7 @@ test('an unresolved deletion request blocks queued external delivery and renewed
     } });
     assert.deepEqual(sentTo, ['p2']);
     const { rows } = await db.query<{ user_id: string; external_status: string }>(
-      "SELECT user_id,external_status FROM notifications WHERE event_id=$1 AND kind='REGISTRATION_STATUS' ORDER BY user_id",
+      "SELECT user_id,external_status FROM notifications WHERE event_id=$1 AND kind='EVENT_REMINDER' ORDER BY user_id",
       [event.id]);
     assert.deepEqual(rows, [
       { user_id: 'p1', external_status: 'DELETE_REQUEST_PENDING' },
@@ -165,11 +168,12 @@ test('a legacy reminder grant without the current notice version cannot authoriz
     const event = await published(db);
     await db.query("INSERT INTO notification_consents(user_id,purpose,granted) VALUES('p1','EVENT_REMINDER',true)");
     await register(db, 'p1', event.id, event.version, 'legacy-consent-register');
+    await enqueueStartReminder(db, event.id, 'p1', event.version);
     let sends = 0;
     await runDueJobs(db, Date.now(), { send: async () => { sends++; return { status: 'ACCEPTED', providerRef: 'ref' }; } });
     assert.equal(sends, 0);
     const { rows } = await db.query<{ external_status: string }>(
-      "SELECT external_status FROM notifications WHERE event_id=$1 AND user_id='p1' AND kind='REGISTRATION_STATUS'", [event.id]);
+      "SELECT external_status FROM notifications WHERE event_id=$1 AND user_id='p1' AND kind='EVENT_REMINDER'", [event.id]);
     assert.equal(rows[0]?.external_status, 'CONSENT_RECONFIRM_REQUIRED');
     assert.ok((await listMemberNotifications(db, 'p1')).items.some(item => item.event_id === event.id));
   } finally { await db.close(); }
@@ -181,8 +185,9 @@ test('provider acceptance is recorded without claiming delivery', async () => {
     const e = await published(db);
     await setConsent(db, 'p1', 'EVENT_REMINDER', true, 'grant');
     await register(db, 'p1', e.id, e.version, 'register');
+    await enqueueStartReminder(db, e.id, 'p1', e.version);
     await runDueJobs(db, Date.now(), { send: async () => ({ status: 'ACCEPTED', providerRef: 'provider-1' }) });
-    const { rows } = await db.query<{ external_status: string }>("SELECT external_status FROM notifications WHERE event_id=$1 AND user_id='p1' AND kind='REGISTRATION_STATUS'", [e.id]);
+    const { rows } = await db.query<{ external_status: string }>("SELECT external_status FROM notifications WHERE event_id=$1 AND user_id='p1' AND kind='EVENT_REMINDER'", [e.id]);
     assert.equal(rows[0]?.external_status, 'PROVIDER_ACCEPTED');
   } finally { await db.close(); }
 });
@@ -280,19 +285,21 @@ test('opening an in-app notice is owner-only and does not imply provider deliver
   } finally { await db.close(); }
 });
 
-test('removal suppresses stale reminders but preserves the removal notice', async () => {
+test('removal suppresses an old reminder and keeps its own notice for manual follow-up', async () => {
   const db = await createDatabase();
   try {
     const e = await published(db);
     await setConsent(db, 'p1', 'EVENT_REMINDER', true, 'grant');
     const registration = await register(db, 'p1', e.id, e.version, 'join');
+    await enqueueStartReminder(db, e.id, 'p1', e.version);
     await removeRegistration(db, 'host', registration.id, e.version, '报名规则不符合本场要求', 'remove');
     const sent: string[] = [];
     await runDueJobs(db, Date.now(), { send: async item => { sent.push(item.kind); return { status: 'ACCEPTED', providerRef: 'ref' }; } });
-    assert.deepEqual(sent, ['REGISTRATION_REMOVED']);
+    assert.deepEqual(sent, []);
     const { rows } = await db.query<{ kind: string; external_status: string }>('SELECT kind,external_status FROM notifications WHERE event_id=$1 AND user_id=$2', [e.id, 'p1']);
     assert.equal(rows.find(row => row.kind === 'REGISTRATION_STATUS')?.external_status, 'STALE_STATE');
-    assert.equal(rows.find(row => row.kind === 'REGISTRATION_REMOVED')?.external_status, 'PROVIDER_ACCEPTED');
+    assert.equal(rows.find(row => row.kind === 'EVENT_REMINDER')?.external_status, 'STALE_STATE');
+    assert.equal(rows.find(row => row.kind === 'REGISTRATION_REMOVED')?.external_status, 'PURPOSE_NOT_CONFIGURED');
   } finally { await db.close(); }
 });
 
@@ -377,7 +384,7 @@ test('closing public recruitment suppresses a persisted queued offer for a publi
   } finally { await db.close(); }
 });
 
-test('public recruitment closure leaves private event offers eligible for external dispatch', async () => {
+test('public recruitment closure leaves private offers actionable even when their external purpose is unconfigured', async () => {
   const db = await createDatabase();
   try {
     await openSyntheticPublicCoverage(db);
@@ -388,14 +395,15 @@ test('public recruitment closure leaves private event offers eligible for extern
     await cancelRegistration(db, 'p1', first.id, event.version, 'private-gate-release');
     const notice = (await listMemberNotifications(db, 'w1')).items.find((item: any) => item.kind === 'WAITLIST_OFFER') as any;
     await setPublicGate(db, 'ops', 'CLOSED', '仅暂停公开活动招募流程', 'private-gate-close');
+    assert.equal((await listMemberNotifications(db, 'w1')).items.find((item: any) => item.id === notice.id)?.actionable, true);
     let sends = 0;
     await dispatchNotification(db, notice.id, { send: async () => {
       sends++;
       return { status: 'ACCEPTED', providerRef: 'private-offer' };
     } });
-    assert.equal(sends, 1);
+    assert.equal(sends, 0);
     const { rows } = await db.query<{ external_status: string }>('SELECT external_status FROM notifications WHERE id=$1', [notice.id]);
-    assert.equal(rows[0]?.external_status, 'PROVIDER_ACCEPTED');
+    assert.equal(rows[0]?.external_status, 'PURPOSE_NOT_CONFIGURED');
   } finally { await db.close(); }
 });
 
@@ -423,7 +431,7 @@ test('expired waitlist offer is not sent externally before the expiry job runs',
   } finally { await db.close(); }
 });
 
-test('provider failure leaves one offer and its original in-app deadline until expiry', async () => {
+test('unconfigured external offer delivery leaves one offer and its original in-app deadline until expiry', async () => {
   const db = await createDatabase();
   try {
     const e = await published(db);
@@ -436,9 +444,9 @@ test('provider failure leaves one offer and its original in-app deadline until e
     const notice = (await listMemberNotifications(db, 'w1')).items.find((item: any) => item.kind === 'WAITLIST_OFFER') as any;
     const offerId = notice.detail.offerId as string;
     const originalDeadline = notice.detail.expiresAt as string;
-    await dispatchNotification(db, notice.id, { send: async () => { throw new Error('provider timeout'); } });
+    await dispatchNotification(db, notice.id, { send: async () => { throw new Error('must not contact provider'); } });
     const afterFailure = (await listMemberNotifications(db, 'w1')).items.find((item: any) => item.id === notice.id) as any;
-    assert.equal(afterFailure.external_status, 'UNKNOWN_REQUIRES_RECONCILIATION');
+    assert.equal(afterFailure.external_status, 'PURPOSE_NOT_CONFIGURED');
     assert.equal(afterFailure.actionable, true);
     assert.equal(afterFailure.detail.expiresAt, originalDeadline);
     assert.equal((await db.query("SELECT id FROM offers WHERE event_id=$1 AND status='ACTIVE'", [e.id])).rows.length, 1);
