@@ -12,7 +12,7 @@ import { register, expressInterest, cancelRegistration, removeRegistration, rese
 import { previewEventChange, getPendingReconfirmation, changeEvent, reconfirm, confirmEvent, cancelEvent, createCheckInToken, checkIn, listCheckIns, requestManualCheckIn, respondManualCheckIn, listManualCheckIns, completeEvent, repeatEvent, listRepeatCandidates, recordExpense, listExpenses, markExpenseShare, recordOutcomeFeedback, getOutcomeEvidence } from './lifecycle.ts';
 import { localDraftSuggestion } from './ai.ts';
 import type { DraftProvider } from './ai-provider-boundary.ts';
-import { listAiDraftAlerts, runRecordedDraftProvider } from './ai-draft-requests.ts';
+import { listAiDraftAlerts, listAiEventCosts, runRecordedDraftProvider } from './ai-draft-requests.ts';
 import { approveAiAction, executeAiAction, prepareAiAction, revokeAiAction } from './ai-actions.ts';
 import { createReport, listReports, listReportTriage, listReportResponseAlerts, inspectReportForSafety, assignReport, classifyReportSeverity, listMyReports, changeReportStatus, createAppeal, listAppeals, listMyAppeals, changeAppealStatus, listMyRemovals, createPrivacyRequest, listPrivacyRequests, listPrivacyForOperations, getPrivacyRequestImpact } from './operations.ts';
 import type { ReportResponsePolicy } from './report-response-policy.ts';
@@ -255,9 +255,12 @@ export function createApp(db: Database, options: AppOptions) {
         const key = keyFrom(req);
         const body = await readJson(req);
         const text = String(body.text ?? '');
+        const eventId = body.eventId;
+        if (eventId !== undefined && (typeof eventId !== 'string' || !/^[0-9a-f-]{36}$/.test(eventId)))
+          throw new AppError('BAD_REQUEST', '活动草稿 ID 无效');
         const at = options.clock?.() ?? Date.now();
         const suggestion = options.aiDraftProvider
-          ? await runRecordedDraftProvider(db, actor, key, text, at, options.aiDraftProvider, options.aiDraftBudgetFen!)
+          ? await runRecordedDraftProvider(db, actor, key, text, at, options.aiDraftProvider, options.aiDraftBudgetFen!, eventId)
           : localDraftSuggestion(text, at);
         return send(res, 200, suggestion);
       }
@@ -454,6 +457,10 @@ export function createApp(db: Database, options: AppOptions) {
         const offsetText = requestUrl.searchParams.get('offset') ?? '0';
         if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', 'AI 草稿异常列表页码无效');
         return send(res, 200, await listAiDraftAlerts(db, Number(offsetText), requestUrl.searchParams.get('snapshot')));
+      }
+      if (path === '/ops/ai-event-costs' && method === 'GET') {
+        requireOperator(actor, 'JOBS');
+        return send(res, 200, await listAiEventCosts(db, requestUrl.searchParams.get('after')));
       }
       const failedJobRetry = path.match(/^\/ops\/jobs\/([^/]+)\/retry$/);
       if (failedJobRetry && method === 'POST') {

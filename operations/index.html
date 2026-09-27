@@ -85,6 +85,7 @@
   <section><h2>最近已跟进</h2><p class="muted">展示最近 100 条处理说明，供有通知权限的运营人员复核；原外部发送状态保留。</p><ul id="notificationHistory"></ul></section>
   <section><h2>失败任务</h2><p class="muted">重新排队仅表示等待后台处理；外部通知状态不确定时须先人工核对。</p><ul id="failedJobs"></ul><button id="moreFailedJobs" disabled>加载更多失败任务</button></section>
   <section><h2>AI 草稿异常</h2><p class="muted">费用与请求状态须对照供应商账单核查；异常请求不会自动重试。此处不展示草稿原文。</p><ul id="aiDraftAlerts"></ul><button id="moreAiDraftAlerts" disabled>加载更多 AI 草稿异常</button></section>
+  <section><h2>每场 AI 草稿成本</h2><p class="muted">已知费用与不确定占额分别列示；供应商账单未核对前，不作为最终结算。此处不展示草稿原文。</p><ul id="aiEventCosts"></ul><button id="moreAiEventCosts">加载活动成本</button></section>
   <section><h2>申诉</h2><ul id="appeals"></ul><button id="moreAppeals" disabled>加载更多申诉</button></section>
   <section><h2>个人信息请求</h2><ul id="privacy"></ul><button id="morePrivacy" disabled>加载更多请求</button></section>
   <section><h2>待审核活动内容</h2><ul id="content"></ul><button id="moreContent" disabled>加载更多待审内容</button></section>
@@ -263,6 +264,7 @@
     let failedJobSnapshot = null;
     let nextAiDraftAlertOffset = null;
     let aiDraftAlertSnapshot = null;
+    let aiEventCostCursor = null;
     function renderPrivacy(items) {
       for (const item of items) {
         const row = line($('privacy'), `${item.kind} · ${item.status} · ${item.id}`);
@@ -649,6 +651,10 @@
       nextAiDraftAlertOffset = null;
       aiDraftAlertSnapshot = null;
       $('moreAiDraftAlerts').disabled = true;
+      aiEventCostCursor = null;
+      $('moreAiEventCosts').disabled = false;
+      $('moreAiEventCosts').textContent = '加载活动成本';
+      $('aiEventCosts').replaceChildren();
       $('status').textContent = '读取中…';
       $('metrics').textContent = '读取中…';
       for (const id of ['reports', 'reportResponseAlerts', 'eventReviews', 'holds', 'rateLimits', 'registrationAnomalies', 'notificationFollowups', 'notificationHistory', 'failedJobs', 'aiDraftAlerts', 'supportMinutesHistory', 'appeals', 'privacy', 'content']) $(id).replaceChildren();
@@ -752,7 +758,7 @@
         renderNotificationFollowups(notificationFollowups);
         for (const item of notificationHistory) line($('notificationHistory'), `${item.recordedAt} · ${item.recordedBy} · 活动 ${item.eventId} · 用户 ${item.userId} · ${item.kind} · 外部状态 ${item.externalStatus} · 原因 ${item.failureCode || '未记录'} · ${item.note}`);
         renderFailedJobs(failedJobs);
-        for (const item of aiDraftAlerts) line($('aiDraftAlerts'), `${item.created_at} · 用户 ${item.actor_id} · 请求 ${item.request_key} · ${item.status} · 原因 ${item.fallback_reason || '待核查'} · 预算 ${item.budget_fen} 分 · 已知费用 ${item.known_cost_fen == null ? '未知' : item.known_cost_fen + ' 分'} · 费用状态 ${item.cost_status || '未知'}`);
+        for (const item of aiDraftAlerts) line($('aiDraftAlerts'), `${item.created_at} · 用户 ${item.actor_id} · 活动 ${item.event_id || '历史未关联'} · 请求 ${item.request_key} · ${item.status} · 原因 ${item.fallback_reason || '待核查'} · 预留 ${item.reserved_fen ?? item.budget_fen} 分 · 已知费用 ${item.known_cost_fen == null ? '未知' : item.known_cost_fen + ' 分'} · 费用状态 ${item.cost_status || '未知'}`);
         renderAppeals(appeals);
         renderPrivacy(privacy);
         for (const item of supportMinutesHistory)
@@ -1011,6 +1017,28 @@
         }
         nextAiDraftAlertOffset = offset;
         $('moreAiDraftAlerts').disabled = false;
+        $('status').textContent = error.message;
+      }
+    };
+    $('moreAiEventCosts').onclick = async () => {
+      const generation = requestGeneration;
+      const cursor = aiEventCostCursor;
+      $('moreAiEventCosts').disabled = true;
+      try {
+        const response = await fetch('/ops/ai-event-costs' + (cursor ? '?after=' + encodeURIComponent(cursor) : ''),
+          { headers: headers() });
+        const data = await response.json();
+        if (generation !== requestGeneration) return;
+        if (response.status === 403) { $('status').textContent = '无权限查看 AI 活动成本'; return; }
+        if (!response.ok) throw new Error(data.message || data.code || '读取 AI 活动成本失败');
+        for (const item of data.items) line($('aiEventCosts'), `活动 ${item.event_id} · 请求 ${item.request_count} 次 · 已知费用 ${item.known_cost_fen} 分 · 费用不确定占额 ${item.uncertain_reserved_fen} 分（${item.uncertain_count} 条待核查）`);
+        if (!data.items.length && !cursor) line($('aiEventCosts'), '暂无 AI 草稿费用记录');
+        aiEventCostCursor = data.nextCursor ?? null;
+        $('moreAiEventCosts').disabled = aiEventCostCursor === null;
+        $('moreAiEventCosts').textContent = aiEventCostCursor ? '加载更多活动成本' : '已显示全部活动成本';
+      } catch (error) {
+        if (generation !== requestGeneration) return;
+        $('moreAiEventCosts').disabled = false;
         $('status').textContent = error.message;
       }
     };

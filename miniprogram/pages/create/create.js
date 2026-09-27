@@ -229,7 +229,9 @@ Page({
       if (generation === this._suggestGeneration) this.setData({ suggestionSlow: true });
     }, 15_000);
     try {
-      const request = api.post('/events/drafts:suggest-local', { text }, undefined,
+      const targetEventId = this.data.draft?.id || this.data.editingEvent?.id;
+      const suggestionBody = { text, ...(targetEventId ? { eventId: targetEventId } : {}) };
+      const request = api.post('/events/drafts:suggest-local', suggestionBody, undefined,
         { timeoutMs: 30_000, keepKeyUntilAck: true });
       const timeout = new Promise((_, reject) => {
         this._suggestTimeoutTimer = setTimeout(() => reject(new Error('提取已超时，请继续手动填写；原输入和已填字段已保留。')), 30_000);
@@ -252,6 +254,7 @@ Page({
         return `${names[key] || key}：${value}（${sources[result.fieldSources[key]] || '待确认'}）`;
       });
       updates.suggestionUnknown = (result.unknown || []).join('、');
+      if (result.draft) updates.draft = result.draft;
       if (fields.title) updates['form.title'] = fields.title;
       if (fields.city) updates['form.city'] = fields.city;
       if (fields.venueName) updates['form.venueName'] = fields.venueName;
@@ -269,7 +272,7 @@ Page({
       if (fields.feeCapFen !== undefined) updates['form.feeCapYuan'] = String(fields.feeCapFen / 100);
       if (fields.feeMode) updates.feeMode = fields.feeMode;
       this.setData(updates);
-      api.acknowledgeMutation?.('POST', '/events/drafts:suggest-local', { text });
+      api.acknowledgeMutation?.('POST', '/events/drafts:suggest-local', suggestionBody);
     } catch (error) {
       if (generation === this._suggestGeneration)
         this.setData({ suggestionLoading: false, suggestionSlow: false, message: error.message });

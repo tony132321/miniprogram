@@ -694,13 +694,15 @@ test('creation page clears another identity’s draft and ignores its late edit 
 
 test('relative-date draft suggestion shows the full city-local date and weekday before saving', async () => {
   let page: Record<string, any> | undefined;
+  const requests: Array<Record<string, unknown>> = [];
   const suggestion = { fields: { city: '深圳', timeZone: 'Asia/Shanghai', startAt: '2026-09-26T12:00:00.000Z',
     endAt: '2026-09-26T14:00:00.000Z' },
     fieldSources: { city: 'USER_EXPLICIT', timeZone: 'TEMPLATE_DEFAULT', startAt: 'USER_EXPLICIT',
-      endAt: 'USER_EXPLICIT' }, unknown: [] };
+      endAt: 'USER_EXPLICIT' }, unknown: [], draft: { id: 'model-draft', version: 1 } };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async post() { return suggestion; } } };
+      if (path === '../../utils/api.js') return { api: { async post(_path: string, body: Record<string, unknown>) {
+        requests.push(body); return suggestion; } } };
       if (path === '../../config.js') return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -718,16 +720,22 @@ test('relative-date draft suggestion shows the full city-local date and weekday 
   assert.equal(page.data.startTime, '20:00');
   assert.equal(page.data.endDate, '2026-09-26');
   assert.equal(page.data.endTime, '22:00');
+  assert.equal(page.data.draft.id, 'model-draft');
+  await page.suggest();
+  assert.equal(requests[0]?.eventId, undefined);
+  assert.equal(requests[1]?.eventId, 'model-draft');
 });
 
 test('a generated draft is labeled as unverified and still asks the host to confirm fields', async () => {
   let page: Record<string, any> | undefined;
+  let requestBody: Record<string, unknown> | undefined;
   const suggestion = { aiStatus: 'GENERATED', aiContentLabel: 'AI_GENERATED_UNVERIFIED',
     fields: { title: '周末球局', venueName: '公共球馆' },
     fieldSources: { title: 'NEEDS_CONFIRMATION', venueName: 'NEEDS_CONFIRMATION' }, unknown: [] };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async post() { return suggestion; } } };
+      if (path === '../../utils/api.js') return { api: { async post(_path: string, body: Record<string, unknown>) {
+        requestBody = body; return suggestion; } } };
       if (path === '../../config.js') return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -736,7 +744,9 @@ test('a generated draft is labeled as unverified and still asks the host to conf
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.setData({ editingEvent: { id: 'published-event' } });
   await page.suggest();
+  assert.equal(requestBody?.eventId, 'published-event');
   assert.match(page.data.message, /AI.*未经核验.*逐项确认/);
   assert.ok(page.data.suggestionNotes.includes('场地：公共球馆（待确认）'));
   assert.equal(page.data['form.title'], '周末球局');

@@ -93,6 +93,28 @@ test('operator workbench lists AI draft alerts without rendering saved suggestio
     ['/ops/ai-draft-alerts?offset=0', `/ops/ai-draft-alerts?offset=1&snapshot=${'a'.repeat(32)}`]);
 });
 
+test('operator workbench separates known AI costs from uncertain event reservations', async () => {
+  const paths: string[] = [];
+  const ui = await workbench(async path => {
+    paths.push(path);
+    if (path === '/ops/ai-event-costs') return { ok: true, status: 200,
+      json: async () => ({ items: [{ event_id: 'event-a', request_count: 2, known_cost_fen: 6,
+        uncertain_reserved_fen: 10, uncertain_count: 1, prompt: 'private-draft-text' }], nextCursor: 'event-a' }) };
+    if (path === '/ops/ai-event-costs?after=event-a') return { ok: true, status: 200,
+      json: async () => ({ items: [{ event_id: 'event-b', request_count: 1, known_cost_fen: 2,
+        uncertain_reserved_fen: 0, uncertain_count: 0 }], nextCursor: null }) };
+    return { ok: true, status: 200, json: async () => ({ items: [] }) };
+  });
+  await ui.item('moreAiEventCosts').onclick?.();
+  assert.match((ui.item('aiEventCosts').children[0] as { textContent: string }).textContent,
+    /活动 event-a.*已知费用 6 分.*费用不确定占额 10 分/);
+  assert.doesNotMatch((ui.item('aiEventCosts').children[0] as { textContent: string }).textContent, /private-draft-text/);
+  await ui.item('moreAiEventCosts').onclick?.();
+  assert.equal(ui.item('aiEventCosts').children.length, 2);
+  assert.deepEqual(paths.filter(path => path.startsWith('/ops/ai-event-costs')),
+    ['/ops/ai-event-costs', '/ops/ai-event-costs?after=event-a']);
+});
+
 test('operator report closure sends the selected outcome verdict with the written finding', async () => {
   const writes: Array<{ path: string; body: Record<string, unknown> }> = [];
   const ui = await workbench(async (path, options) => {
