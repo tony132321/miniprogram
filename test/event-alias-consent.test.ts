@@ -69,6 +69,7 @@ test('nickname withdrawal hides it immediately without withdrawing an unrelated 
     const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'withdraw-alias-publish');
     await register(db, 'p1', event.id, event.version, 'withdraw-alias-p1');
     await register(db, 'p2', event.id, event.version, 'withdraw-alias-p2');
+    await db.query("INSERT INTO users(id,wechat_openid) VALUES('p1','alias-consent-p1')");
     await setConsent(db, 'p1', 'EVENT_REMINDER', true, 'separate-reminder-grant');
     const notice = (await request('p1', event.id)).body.notice;
     assert.ok(notice?.version);

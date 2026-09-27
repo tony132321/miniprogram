@@ -9,6 +9,7 @@ import { exportPersonalData } from '../src/privacy.ts';
 test('separate notification purposes keep immutable grant and withdrawal evidence with no duplicate replay', async () => {
   const db = await createDatabase();
   try {
+    await db.query("INSERT INTO users(id,wechat_openid) VALUES('member','consent-history-member')");
     await setConsent(db, 'member', 'EVENT_REMINDER', true, 'reminder-grant');
     await setConsent(db, 'member', 'EVENT_REMINDER', true, 'reminder-grant');
     await setConsent(db, 'member', 'SIMILAR_ACTIVITY_INVITES', true, 'similar-grant');
@@ -41,6 +42,7 @@ test('consent status exposes the same notice version that is recorded for the de
   app.listen(0, '127.0.0.1'); await once(app, 'listening');
   const base = `http://127.0.0.1:${(app.address() as { port: number }).port}`;
   try {
+    await db.query("INSERT INTO users(id,wechat_openid) VALUES('member','consent-notice-member')");
     const response = await fetch(base + '/me/consents', { headers: { 'X-Dev-User': 'member' } });
     const current = await response.json() as { eventReminderNotice?: { scope: string; text: string; version: string } };
     assert.equal(response.status, 200);
@@ -63,6 +65,7 @@ test('HTTP consent rejects missing or stale disclosure version without changing 
   const post = async (path: string, body: object, key: string) => fetch(base + path, { method: 'POST',
     headers: { 'X-Dev-User': 'member', 'Content-Type': 'application/json', 'Idempotency-Key': key }, body: JSON.stringify(body) });
   try {
+    await db.query("INSERT INTO users(id,wechat_openid) VALUES('member','consent-http-member')");
     const first = await get('/me/consents');
     assert.equal((await post('/me/consents', { eventReminder: true }, 'missing-version')).status, 409);
     assert.equal((await post('/me/consents', { eventReminder: true, noticeVersion: 'stale' }, 'stale-version')).status, 409);
@@ -82,6 +85,7 @@ test('legacy grant is shown as requiring reconfirmation until a current-version 
   const base = `http://127.0.0.1:${(app.address() as { port: number }).port}`;
   const get = async (path: string) => (await fetch(base + path, { headers: { 'X-Dev-User': 'member' } })).json() as Promise<Record<string, any>>;
   try {
+    await db.query("INSERT INTO users(id,wechat_openid) VALUES('member','consent-legacy-member')");
     await db.query("INSERT INTO notification_consents(user_id,purpose,granted) VALUES('member','EVENT_REMINDER',true),('member','SIMILAR_ACTIVITY_INVITES',true)");
     const reminder = await get('/me/consents');
     const similar = await get('/me/similar-invites');

@@ -41,7 +41,8 @@ export async function setConsent(db: Database, actor: string, purpose: Notificat
   return db.transaction(async tx => {
     if (granted) {
       const { rows: users } = await tx.query<{ status: string }>('SELECT status FROM users WHERE id=$1 FOR SHARE', [actor]);
-      if (users[0] && users[0].status !== 'ACTIVE') throw new AppError('ACCOUNT_DISABLED', '账号已停用', 403);
+      if (!users[0]) throw new AppError('ACCOUNT_NOT_FOUND', '账号不存在', 404);
+      if (users[0].status !== 'ACTIVE') throw new AppError('ACCOUNT_DISABLED', '账号已停用', 403);
       const { rows: deletions } = await tx.query('SELECT 1 FROM privacy_requests WHERE user_id=$1 AND kind=$2 AND status NOT IN ($3,$4) LIMIT 1 FOR SHARE',
         [actor, 'DELETE', 'FULFILLED', 'CANCELLED']);
       if (deletions.length) throw new AppError('DELETE_REQUEST_PENDING', '注销或删除申请处理中，暂不能重新开启授权', 409);

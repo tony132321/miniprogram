@@ -62,6 +62,7 @@ test('safety operator pauses all new activity and seats while reads, exits and r
     const offerNotice = (await listMemberNotifications(db, 'w1')).items.find((item: any) => item.kind === 'WAITLIST_OFFER') as any;
     assert.equal(offerNotice?.actionable, false);
     assert.equal(offerNotice?.declinable, true);
+    await db.query("INSERT INTO users(id,wechat_openid) VALUES('w1','emergency-w1')");
     await setConsent(db, 'w1', 'EVENT_REMINDER', true, 'emergency-reminder-consent');
     let externalSends = 0;
     await dispatchNotification(db, offerNotice.id, { async send() {

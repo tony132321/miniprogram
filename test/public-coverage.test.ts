@@ -247,6 +247,7 @@ test('an expired current shift makes a queued public offer nonactionable and sup
     await db.query(`INSERT INTO notifications(id,event_id,user_id,kind,event_version,detail)
       VALUES('synthetic-offer-notice',$1,'waiting','WAITLIST_OFFER',$2,'{"offerId":"synthetic-offer"}'::jsonb)`,
     [published.id, published.version]);
+    await db.query("INSERT INTO users(id,wechat_openid) VALUES('waiting','coverage-waiting')");
     await setConsent(db, 'waiting', 'EVENT_REMINDER', true, 'offer-expiry-consent');
     assert.equal((await listMemberNotifications(db, 'waiting')).items.find((item: any) => item.id === 'synthetic-offer-notice')?.actionable, true);
     await db.query(`UPDATE public_recruitment_coverage SET ends_at=clock_timestamp()-interval '30 minutes'

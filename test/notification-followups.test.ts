@@ -26,6 +26,7 @@ test('operator follows up unconfigured and uncertain external notifications with
     const { rows: reviewNotices } = await db.query<{ id: string }>(
       "SELECT id FROM notifications WHERE event_id=$1 AND user_id='host' AND kind='EVENT_REVIEW_APPROVED'", [event.id]);
     for (const notice of reviewNotices) await markNotificationOpened(db, 'host', notice.id, `read-review-${notice.id}`);
+    await db.query("INSERT INTO users(id,wechat_openid) VALUES('p1','followup-p1'),('p2','followup-p2')");
     await setConsent(db, 'p1', 'EVENT_REMINDER', true, 'consent1');
     await setConsent(db, 'p2', 'EVENT_REMINDER', true, 'consent2');
     await register(db, 'p1', event.id, event.version, 'join1');

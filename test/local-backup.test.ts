@@ -30,6 +30,7 @@ test('local backup restores event, registration, audit, and migration state', as
     const draft = await createDraft(db, 'host', input, 'backup-draft');
     const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'backup-publish');
     await register(db, 'p1', event.id, event.version, 'backup-join', event.inviteToken!);
+    await db.query("INSERT INTO users(id,wechat_openid) VALUES('p1','backup-p1')");
     await setConsent(db, 'p1', 'EVENT_REMINDER', true, 'backup-reminder-grant');
     await setConsent(db, 'p1', 'SIMILAR_ACTIVITY_INVITES', true, 'backup-similar-grant');
     await setConsent(db, 'p1', 'EVENT_REMINDER', false, 'backup-reminder-withdraw');

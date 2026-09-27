@@ -91,9 +91,9 @@ test('withdrawing consent before dispatch prevents external message', async () =
   const db = await createDatabase();
   try {
     const e = await published(db);
+    await syntheticUsers(db, ['p1']);
     await setConsent(db, 'p1', 'EVENT_REMINDER', true, 'grant');
     await register(db, 'p1', e.id, e.version, 'register');
-    await syntheticUsers(db, ['p1']);
     await markConfirmed(db, e.id);
     await enqueueStartReminder(db, e.id, 'p1', e.version);
     await setConsent(db, 'p1', 'EVENT_REMINDER', false, 'withdraw');
@@ -198,9 +198,9 @@ test('provider acceptance is recorded without claiming delivery', async () => {
   const db = await createDatabase();
   try {
     const e = await published(db);
+    await syntheticUsers(db, ['p1']);
     await setConsent(db, 'p1', 'EVENT_REMINDER', true, 'grant');
     await register(db, 'p1', e.id, e.version, 'register');
-    await syntheticUsers(db, ['p1']);
     await markConfirmed(db, e.id);
     await enqueueStartReminder(db, e.id, 'p1', e.version);
     await runDueJobs(db, Date.now(), { send: async () => ({ status: 'ACCEPTED', providerRef: 'provider-1' }) });
@@ -213,6 +213,7 @@ test('an interrupted dispatch is marked for reconciliation and never blindly res
   const db = await createDatabase();
   try {
     const e = await published(db);
+    await syntheticUsers(db, ['p1']);
     await setConsent(db, 'p1', 'EVENT_REMINDER', true, 'grant');
     await register(db, 'p1', e.id, e.version, 'register');
     await db.query("UPDATE notifications SET external_status='DISPATCHING' WHERE event_id=$1 AND user_id='p1' AND kind='REGISTRATION_STATUS'", [e.id]);
@@ -307,6 +308,7 @@ test('removal suppresses an old reminder and keeps its own notice for manual fol
   const db = await createDatabase();
   try {
     const e = await published(db);
+    await syntheticUsers(db, ['p1']);
     await setConsent(db, 'p1', 'EVENT_REMINDER', true, 'grant');
     const registration = await register(db, 'p1', e.id, e.version, 'join');
     await enqueueStartReminder(db, e.id, 'p1', e.version);
@@ -352,6 +354,7 @@ test('an event safety hold suppresses a queued external waitlist offer', async (
     const event = await published(db);
     const first = await register(db, 'p1', event.id, event.version, 'held-offer-p1');
     for (const actor of ['p2', 'p3', 'w1']) await register(db, actor, event.id, event.version, `held-offer-${actor}`);
+    await syntheticUsers(db, ['w1']);
     await setConsent(db, 'w1', 'EVENT_REMINDER', true, 'held-offer-consent');
     await cancelRegistration(db, 'p1', first.id, event.version, 'held-offer-release');
     const notice = (await listMemberNotifications(db, 'w1')).items.find((item: any) => item.kind === 'WAITLIST_OFFER') as any;
@@ -385,6 +388,7 @@ test('closing public recruitment suppresses a persisted queued offer for a publi
     const waiting = await register(db, 'w1', event.id, event.version, 'public-offer-w1');
     // A persisted waitlist row from an earlier import must still obey the current gate.
     await db.query("UPDATE registrations SET status='WAITLISTED' WHERE id=$1", [waiting.id]);
+    await syntheticUsers(db, ['w1']);
     await setConsent(db, 'w1', 'EVENT_REMINDER', true, 'public-offer-consent');
     await cancelRegistration(db, 'p1', first.id, event.version, 'public-offer-release');
     const notice = (await listMemberNotifications(db, 'w1')).items.find((item: any) => item.kind === 'WAITLIST_OFFER') as any;
@@ -409,6 +413,7 @@ test('public recruitment closure leaves private offers actionable even when thei
     const event = await published(db);
     const first = await register(db, 'p1', event.id, event.version, 'private-gate-p1');
     for (const actor of ['p2', 'p3', 'w1']) await register(db, actor, event.id, event.version, `private-gate-${actor}`);
+    await syntheticUsers(db, ['w1']);
     await setConsent(db, 'w1', 'EVENT_REMINDER', true, 'private-gate-consent');
     await cancelRegistration(db, 'p1', first.id, event.version, 'private-gate-release');
     const notice = (await listMemberNotifications(db, 'w1')).items.find((item: any) => item.kind === 'WAITLIST_OFFER') as any;
@@ -432,6 +437,7 @@ test('expired waitlist offer is not sent externally before the expiry job runs',
     const first = await register(db, 'p1', e.id, e.version, 'expiry-p1');
     await register(db, 'p2', e.id, e.version, 'expiry-p2');
     await register(db, 'p3', e.id, e.version, 'expiry-p3');
+    await syntheticUsers(db, ['w1']);
     await setConsent(db, 'w1', 'EVENT_REMINDER', true, 'expiry-consent');
     await register(db, 'w1', e.id, e.version, 'expiry-w1');
     await cancelRegistration(db, 'p1', first.id, e.version, 'expiry-release');
@@ -456,6 +462,7 @@ test('unconfigured external offer delivery leaves one offer and its original in-
     const first = await register(db, 'p1', e.id, e.version, 'failed-offer-p1');
     await register(db, 'p2', e.id, e.version, 'failed-offer-p2');
     await register(db, 'p3', e.id, e.version, 'failed-offer-p3');
+    await syntheticUsers(db, ['w1']);
     await setConsent(db, 'w1', 'EVENT_REMINDER', true, 'failed-offer-consent');
     await register(db, 'w1', e.id, e.version, 'failed-offer-w1');
     await cancelRegistration(db, 'p1', first.id, e.version, 'failed-offer-release');

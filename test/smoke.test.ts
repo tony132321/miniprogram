@@ -42,6 +42,7 @@ test('API workflow with four independent seats fills, promotes, checks in, compl
     assert.equal((await api(`/i/${e.body.inviteToken}?source=${sourceToken}`, 'p1')).status, 200);
     assert.deepEqual((await api(`/events/${e.body.id}/share-metrics`, 'host')).body,
       { shareIntents: 1, attributedOpens: 1, unknownSourceOpens: 1 });
+    await db.query("INSERT INTO users(id,wechat_openid) VALUES('waiting','smoke-waiting')");
     const consent = await api('/me/consents', 'waiting');
     assert.equal((await api('/me/consents', 'waiting', 'POST',
       { eventReminder: true, noticeVersion: consent.body.eventReminderNotice.version }, 'waiting-consent')).status, 200);

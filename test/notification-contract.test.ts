@@ -48,6 +48,7 @@ test('each queued kind stores its purpose, channel, template slot and schedule; 
       assert.equal(row?.template_slot, templateSlot);
       assert.equal(new Date(row!.external_scheduled_at).toISOString(), new Date(row!.job_due_at).toISOString());
     }
+    await db.query("INSERT INTO users(id,wechat_openid) VALUES('p1','contract-p1')");
     await setConsent(db, 'p1', 'EVENT_REMINDER', true, 'broad-reminder-grant');
     const cancellation = rows.find(row => row.kind === 'EVENT_CANCELLED')!;
     let sends = 0;

@@ -476,6 +476,7 @@ test('one idempotency key rejects a different request body but replays the same 
 test('one idempotency key cannot silently change notification consent', async () => {
   const f = await fixture();
   try {
+    await f.db.query("INSERT INTO users(id,wechat_openid) VALUES('member','api-consent-member')");
     const notice = (await f.request('/me/consents', 'member')).body.eventReminderNotice.version;
     const first = await f.request('/me/consents', 'member', 'POST', { eventReminder: true, noticeVersion: notice }, 'consent-fingerprint');
     assert.equal(first.status, 200);
