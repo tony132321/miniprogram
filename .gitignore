@@ -1,0 +1,7 @@
+node_modules/
+.data/
+.env
+.superpowers/
+*.log
+.DS_Store
+project.private.config.json
