@@ -40,7 +40,10 @@ export async function exportPersonalData(db: Database, actor: string) {
     return {
     exportedAt: new Date().toISOString(),
     account: (await own('SELECT id,wechat_openid,status,created_at FROM users WHERE id=$1'))[0] ?? null,
-    hostedEvents: await own('SELECT id,status,version,payload,created_at,updated_at FROM events WHERE host_id=$1 ORDER BY created_at,id'),
+    hostedEvents: await own(`SELECT e.id,e.status,e.version,e.payload,e.created_at,e.updated_at,
+      EXISTS (SELECT 1 FROM ai_draft_requests a WHERE a.event_id=e.id AND a.status='COMPLETED'
+        AND a.result->>'aiStatus'='GENERATED') AS ai_suggestion_generated
+      FROM events e WHERE e.host_id=$1 ORDER BY e.created_at,e.id`),
     hostedEventVersions: await own(`SELECT v.event_id,v.version,v.payload,v.created_at FROM event_versions v
       JOIN events e ON e.id=v.event_id WHERE e.host_id=$1 ORDER BY v.event_id,v.version`),
     hostedEventStatusHistory: await own(`SELECT h.event_id,h.status,h.changed_at,h.legacy_snapshot

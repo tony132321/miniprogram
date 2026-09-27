@@ -33,6 +33,24 @@ test('the injected draft provider uses the authenticated HTTP path and keeps ven
     assert.equal(body.fields.venueStatus, undefined);
     assert.equal(body.fieldSources.venueName, 'NEEDS_CONFIRMATION');
     assert.equal(body.aiContentLabel, 'AI_GENERATED_UNVERIFIED');
+    const eventResponse = await fetch(`http://127.0.0.1:${port}/events/${body.draft.id}`,
+      { headers: { 'X-Dev-User': 'host' } });
+    assert.equal(eventResponse.status, 200);
+    assert.equal((await eventResponse.json()).aiSuggestionGenerated, true);
+    const manualDraft = await createDraft(db, 'host', {}, 'manual-label-control');
+    const manualResponse = await fetch(`http://127.0.0.1:${port}/events/${manualDraft.id}`,
+      { headers: { 'X-Dev-User': 'host' } });
+    assert.equal((await manualResponse.json()).aiSuggestionGenerated, false);
+    const ownExport = await exportPersonalData(db, 'host');
+    assert.equal(ownExport.hostedEvents.find((event: any) => event.id === body.draft.id)?.ai_suggestion_generated, true);
+    assert.equal(ownExport.hostedEvents.find((event: any) => event.id === manualDraft.id)?.ai_suggestion_generated, false);
+    await db.query(`UPDATE events SET status='RECRUITING',review_status='APPROVED',
+      invite_token='ai-label-invite',invite_expires_at=clock_timestamp()+interval '1 hour',
+      payload=$2::jsonb WHERE id=$1`, [body.draft.id,
+      JSON.stringify({ title: '周末球局', visibility: 'INVITE' })]);
+    const invite = await fetch(`http://127.0.0.1:${port}/i/ai-label-invite`);
+    assert.equal(invite.status, 200);
+    assert.equal((await invite.json()).aiSuggestionGenerated, true);
   } finally {
     await new Promise<void>(resolve => server.close(() => resolve()));
     await db.close();

@@ -516,7 +516,7 @@ Page({
       !this.data.event.recruiting || this.data.event.riskPaused)
       return { title: '活动详情', path: '/pages/index/index' };
     const source = this.data.shareSourceToken ? '&source=' + this.data.shareSourceToken : '';
-    return { title: this.data.event.payload.title,
+    return { title: (this.data.event.aiSuggestionGenerated ? '【曾生成 AI 建议】' : '') + this.data.event.payload.title,
       path: '/pages/event/event?token=' + encodeURIComponent(this.data.event.inviteToken) + source };
   }
 });

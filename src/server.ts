@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 import { isIP } from 'node:net';
 import type { Database } from './db.ts';
 import { AppError } from './errors.ts';
-import { createDraft, getEvent, publishEvent, rotateInvite, updateDraft } from './events.ts';
+import { createDraft, getEvent, hasGeneratedAiSuggestion, publishEvent, rotateInvite, updateDraft } from './events.ts';
 import { confirmPublicCoverage, createPublicCoverage, getPublicGate, publicRecruitmentOpen,
   revokePublicCoverage, setPublicGate } from './public-gate.ts';
 import { getEmergencyGate, setEmergencyGate } from './emergency-gate.ts';
@@ -221,6 +221,7 @@ export function createApp(db: Database, options: AppOptions) {
           cancellationRule: row.payload.cancellationRule, approvalMode: row.payload.approvalMode,
           skillLevel: row.payload.skillLevel };
         return send(res, 200, { id: row.id, status: row.status, version: row.version, recruiting: row.recruiting,
+          aiSuggestionGenerated: await hasGeneratedAiSuggestion(db, row.id),
           reviewStatus: row.review_status, riskPaused: Boolean(await getActiveEventHold(db, row.id)), payload,
           title: row.payload.title,
           startAt: row.payload.startAt, endAt: row.payload.endAt, city: row.payload.city, venueName: row.payload.venueName,

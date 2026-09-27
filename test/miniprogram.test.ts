@@ -1628,6 +1628,9 @@ test('share card only uses a source after its intent has been committed', async 
   finishIntent?.({});
   await pending;
   assert.match(page.onShareAppMessage().path, /source=/);
+  assert.equal(page.onShareAppMessage().title, '羽毛球');
+  page.setData({ event: { ...page.data.event, aiSuggestionGenerated: true } });
+  assert.equal(page.onShareAppMessage().title, '【曾生成 AI 建议】羽毛球');
   assert.equal(requests.length, 1);
   page.setData({ event: { ...page.data.event, riskPaused: true } });
   assert.equal(page.onShareAppMessage().path, '/pages/index/index');

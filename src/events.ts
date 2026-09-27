@@ -18,6 +18,7 @@ export interface EventInput {
 export interface EventRecord {
   id: string; hostId: string; status: string; version: number; payload: EventInput;
   recruiting: boolean; inviteToken?: string; updatedAt: string; reviewStatus: string; reviewReason?: string;
+  aiSuggestionGenerated?: boolean;
   /** Present when an existing member sees a prior reviewed version; null means its text is unavailable. */
   visibleContentVersion?: number | null;
   cohostCapabilities?: CohostCapability[];
@@ -32,6 +33,14 @@ function rowToEvent(row: EventRow): EventRecord {
     payload: row.payload, recruiting: row.recruiting, reviewStatus: row.review_status,
     ...(row.review_reason ? { reviewReason: row.review_reason } : {}), updatedAt: new Date(row.updated_at).toISOString(),
     ...(row.invite_token ? { inviteToken: row.invite_token } : {}) };
+}
+
+export async function hasGeneratedAiSuggestion(db: Queryable, eventId: string): Promise<boolean> {
+  const { rows } = await db.query<{ generated: boolean }>(`SELECT EXISTS (
+    SELECT 1 FROM ai_draft_requests WHERE event_id=$1 AND status='COMPLETED'
+      AND result->>'aiStatus'='GENERATED'
+  ) AS generated`, [eventId]);
+  return rows[0]?.generated ?? false;
 }
 
 function parseExplicitDateTime(value: unknown): number {
@@ -180,6 +189,7 @@ export async function getEvent(db: Queryable, actorId: string, id: string): Prom
   if (row.host_id !== actorId) delete result.inviteToken;
   if (row.host_id !== actorId) delete result.reviewReason;
   if (cohostCapabilities.length) result.cohostCapabilities = cohostCapabilities;
+  result.aiSuggestionGenerated = await hasGeneratedAiSuggestion(db, id);
   return result;
 }
 
