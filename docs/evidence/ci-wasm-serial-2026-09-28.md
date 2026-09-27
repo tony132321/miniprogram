@@ -13,3 +13,9 @@
 在本地 Node 24.19.0、pnpm 11.19.0 下，原 4 文件并发完整测试为 515/515 通过、96.40 秒；执行新脚本对应命令 `pnpm exec tsx --test --test-concurrency=1 test/*.test.ts` 为 515/515 通过、232.51 秒；`pnpm typecheck` 与 `git diff --check` 通过。串行耗时约为原来的 2.4 倍，仍低于 CI 的 15 分钟任务上限。上述是 macOS 本地结果；此变更进入 PR 后还需观察 Linux GitHub CI。
 
 这是一项降低已知并发触发条件的缓解，不能宣称修复 Node / V8 的原生缺陷。若后续串行 CI 仍出现同类崩溃，应保留原生日志并重新定位；不应把原生崩溃当成应用断言或靠盲目重跑掩盖。
+
+## 后续观察
+
+[R1 CI run 36356118282](https://github.com/tony132321/miniprogram/actions/runs/36356118282) 在串行 536 项测试运行中，已通过前一项个人导出断言，随后 `privacy-export.test.ts` 子进程发生 Node 24.19.0 原生 `jit_page_->allocations_.erase(addr) == 1` 断言，堆栈进入 `ThreadIsolation::UnregisterWasmAllocation`。该文件没有报告 JavaScript 断言失败；最终记录 535 通过、1 个测试文件进程失败。说明串行文件执行并未消除此类运行时故障。已对**同一提交**发起一次失败任务重跑，需读取其终态；不能以先前通过的功能提交 CI 替代该次结果。
+
+下一候选将测试命令改为 `node --no-wasm-tier-up --import tsx --test --test-concurrency=1 test/*.test.ts`。该 V8 参数由测试运行器传给文件子进程，已用独立临时测试读取 `process.execArgv` 核对。Node 上游问题报告记录 Node 25 在此参数下的受控对照，但也说明 Node 27 仍曾复现，故这里只把它作为试验性缓解。macOS Node 24.19.0 本地 `pnpm test` **537/537** 通过，耗时约 218 秒；`pnpm typecheck` 与 `git diff --check` 通过。必须看新候选的 Linux CI 结果，单次通过亦不能证明原生问题已根治。
