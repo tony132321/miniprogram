@@ -1,25 +1,34 @@
 import { createHash } from 'node:crypto';
 import type { Database } from './db.ts';
 import { AppError } from './errors.ts';
+import { localDraftSuggestion } from './ai.ts';
 import { runDraftProvider, type DraftProvider } from './ai-provider-boundary.ts';
 
 export async function runRecordedDraftProvider(db: Database, actor: string, key: string, text: string,
   at: number, provider: DraftProvider, budgetFen: number) {
   const requestHash = createHash('sha256').update(text).digest('hex');
-  const { rows: started } = await db.query<{ request_key: string }>(`INSERT INTO ai_draft_requests
-    (actor_id,request_key,request_hash,status,budget_fen)
-    VALUES($1,$2,$3,'STARTED',$4) ON CONFLICT DO NOTHING RETURNING request_key`,
-  [actor, key, requestHash, budgetFen]);
-  if (!started.length) {
-    const { rows } = await db.query<{ request_hash: string; status: string; result: unknown }>(
-      'SELECT request_hash,status,result FROM ai_draft_requests WHERE actor_id=$1 AND request_key=$2', [actor, key]);
-    const prior = rows[0];
+  type PriorRequest = { request_hash: string; status: string; result: unknown };
+  const priorResult = (prior: PriorRequest | undefined) => {
     if (!prior) throw new AppError('AI_REQUEST_UNCERTAIN', '草稿建议请求状态待核查，请勿重复提交', 409);
     if (prior.request_hash !== requestHash)
       throw new AppError('IDEMPOTENCY_MISMATCH', '此幂等键已用于不同草稿内容，请使用新键', 409);
     if (prior.status === 'COMPLETED') return prior.result;
     throw new AppError('AI_REQUEST_UNCERTAIN', '草稿建议仍在处理或状态待核查，请勿重复提交', 409);
-  }
+  };
+  const readPrior = async () => {
+    const { rows } = await db.query<PriorRequest>(
+      'SELECT request_hash,status,result FROM ai_draft_requests WHERE actor_id=$1 AND request_key=$2', [actor, key]);
+    return rows[0];
+  };
+  const existing = await readPrior();
+  if (existing) return priorResult(existing);
+  // Reject malformed input before reserving a key for an external call that never happened.
+  localDraftSuggestion(text, at);
+  const { rows: started } = await db.query<{ request_key: string }>(`INSERT INTO ai_draft_requests
+    (actor_id,request_key,request_hash,status,budget_fen)
+    VALUES($1,$2,$3,'STARTED',$4) ON CONFLICT DO NOTHING RETURNING request_key`,
+  [actor, key, requestHash, budgetFen]);
+  if (!started.length) return priorResult(await readPrior());
   let suggestion: Awaited<ReturnType<typeof runDraftProvider>>;
   try { suggestion = await runDraftProvider(text, at, provider, budgetFen); }
   catch (error) {

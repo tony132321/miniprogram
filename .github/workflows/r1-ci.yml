@@ -16,10 +16,12 @@ jobs:
       - uses: pnpm/setup@v3
         with:
           version: 11.19.0
-          runtime: node@22
+          runtime: node@24.19.0
           require-lockfile: true
           cache: true
       - name: Typecheck
         run: pnpm typecheck
       - name: Test
         run: pnpm test
+      - name: Dependency audit
+        run: pnpm audit --audit-level high

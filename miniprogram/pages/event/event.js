@@ -32,10 +32,11 @@ Page({
     await this.refresh();
   },
   async onShow() {
+    this.checkInPageHidden = false;
     const actor = currentIdentity();
     if (this.data.currentUser && this.data.currentUser !== actor) {
       this.refreshId = (this.refreshId || 0) + 1;
-      clearTimeout(this.checkInRefreshTimer);
+      this.clearCheckInToken();
       this.setData({ token: '', source: '', event: null, inviteSummary: null, loadState: 'IDLE', isHost: false,
         canJoin: false, canExpressInterest: false, canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
         canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
@@ -56,13 +57,23 @@ Page({
     await this.refresh();
   },
   onHide() {
+    this.checkInPageHidden = true;
+    this.clearCheckInToken();
+  },
+  onUnload() {
+    this.checkInPageHidden = true;
+    this.clearCheckInToken();
+  },
+  clearCheckInToken() {
+    this.checkInRequestId = (this.checkInRequestId || 0) + 1;
     clearTimeout(this.checkInRefreshTimer);
+    this.checkInRefreshTimer = null;
     if (this.data.displayedCheckInToken) this.setData({ displayedCheckInToken: '', checkInExpiresIn: 0 });
   },
-  onUnload() { clearTimeout(this.checkInRefreshTimer); },
   async refresh() {
     const refreshId = (this.refreshId || 0) + 1;
     this.refreshId = refreshId;
+    this.clearCheckInToken();
     const actor = currentIdentity();
     this.setData({ loadState: 'LOADING' });
     let summary = null;
@@ -297,16 +308,37 @@ Page({
   reservationInput(event) { this.setData({ reservationToken: event.detail.value.trim() }); },
   claim() { this.action(`/reservations/${encodeURIComponent(this.data.reservationToken)}/claim`, {}, '已认领预留名额'); },
   async showCheckInToken() {
+    if (this.checkInPageHidden || !this.data.event || (!this.data.isHost && !this.data.canManageCheckins) ||
+      !['CONFIRMED', 'IN_PROGRESS'].includes(this.data.event.status)) return;
+    const requestId = this.checkInRequestId = (this.checkInRequestId || 0) + 1;
+    const eventId = this.data.id;
+    const eventVersion = this.data.event.version;
+    const actor = currentIdentity();
+    const stillCurrent = () => requestId === this.checkInRequestId && !this.checkInPageHidden &&
+      actor === currentIdentity() && this.data.id === eventId && this.data.event?.version === eventVersion &&
+      (this.data.isHost || this.data.canManageCheckins);
     clearTimeout(this.checkInRefreshTimer);
+    if (this.data.displayedCheckInToken) this.setData({ displayedCheckInToken: '', checkInExpiresIn: 0 });
     try {
-      const result = await api.post(`/events/${this.data.id}/checkin-token`, { expectedVersion: this.data.event.version });
-      this.setData({ displayedCheckInToken: result.token, checkInExpiresIn: result.expiresInSeconds,
+      const requestedAt = Date.now();
+      const result = await api.post(`/events/${eventId}/checkin-token`, { expectedVersion: eventVersion });
+      if (!stillCurrent()) return;
+      // The server's remaining lifetime was measured before the response crossed the network.
+      const remainingMs = result.expiresInSeconds * 1000 - Math.max(0, Date.now() - requestedAt) - 1000;
+      if (!Number.isFinite(remainingMs) || remainingMs <= 0) {
+        this.setData({ displayedCheckInToken: '', checkInExpiresIn: 0, message: '签到码已过期，正在更新。' });
+        this.checkInRefreshTimer = setTimeout(() => { if (stillCurrent()) this.showCheckInToken(); }, 1000);
+        return;
+      }
+      this.setData({ displayedCheckInToken: result.token, checkInExpiresIn: Math.ceil(remainingMs / 1000),
         message: '现场二维码将在过期时自动更新。' }, () => {
-        drawCheckInQr(result.token, wx.createCanvasContext('checkinQr', this));
+        if (stillCurrent()) drawCheckInQr(result.token, wx.createCanvasContext('checkinQr', this));
       });
-      this.checkInRefreshTimer = setTimeout(() => this.showCheckInToken(), result.expiresInSeconds * 1000);
+      this.checkInRefreshTimer = setTimeout(() => {
+        if (stillCurrent()) this.showCheckInToken();
+      }, remainingMs);
     } catch (error) {
-      this.setData({ displayedCheckInToken: '', message: error.message || '签到码获取失败' });
+      if (stillCurrent()) this.setData({ displayedCheckInToken: '', message: error.message || '签到码获取失败' });
     }
   },
   checkInInput(event) { this.setData({ checkInToken: event.detail.value.trim() }); },

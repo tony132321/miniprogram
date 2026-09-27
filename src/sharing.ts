@@ -13,7 +13,7 @@ export async function recordShareIntent(db: Database, actor: string, eventId: st
     if (typeof sourceToken !== 'string' || !/^[a-f0-9]{32}$/.test(sourceToken)) throw new AppError('BAD_REQUEST', '分享来源标识无效');
     const event = await lockEvent(tx, eventId, expectedVersion);
     if (event.host_id !== actor) throw new AppError('FORBIDDEN', '只有主办方可发起此活动分享', 403);
-    await assertPublicRecruitmentOpen(tx, event.payload.visibility);
+    await assertPublicRecruitmentOpen(tx, event.payload.visibility, event.payload);
     if (!event.recruiting || !event.invite_token) throw new AppError('INVALID_STATE', '当前邀请已停止');
     const { rows: existing } = await tx.query('SELECT 1 FROM share_intents WHERE source_token=$1', [sourceToken]);
     if (existing.length) throw new AppError('SOURCE_REUSED', '分享来源标识已使用');

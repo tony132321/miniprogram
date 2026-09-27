@@ -10,6 +10,7 @@ import { placeEventHold, releaseEventHold } from '../src/safety.ts';
 import { reviewEvent } from '../src/event-review.ts';
 import { setPublicGate } from '../src/public-gate.ts';
 import { runDueJobs } from '../src/jobs.ts';
+import { openSyntheticPublicCoverage } from './helpers/public-coverage.ts';
 
 const input = { title: '通知测试', type: 'badminton', startAt: '2027-01-02T12:00:00.000Z', endAt: '2027-01-02T14:00:00.000Z',
   timeZone: 'Asia/Shanghai', city: '深圳', venueName: '公共场馆', venueStatus: 'HOST_CONFIRMED', minParticipants: 4, maxParticipants: 4,
@@ -281,6 +282,7 @@ test('an event safety hold suppresses a queued external waitlist offer', async (
 test('closing public recruitment suppresses a persisted queued offer for a public event', async () => {
   const db = await createDatabase();
   try {
+    await openSyntheticPublicCoverage(db, [input]);
     const draft = await createDraft(db, 'host', { ...input, visibility: 'PUBLIC', approvalMode: 'MANUAL' }, 'public-offer-draft');
     const event = await publishEvent(db, 'host', draft.id, draft.version, 'public-offer-publish');
     await reviewEvent(db, 'ops', event.id, event.version, 'APPROVED', '已核对公开活动资料', 'public-offer-review');
@@ -313,6 +315,7 @@ test('closing public recruitment suppresses a persisted queued offer for a publi
 test('public recruitment closure leaves private event offers eligible for external dispatch', async () => {
   const db = await createDatabase();
   try {
+    await openSyntheticPublicCoverage(db);
     const event = await published(db);
     const first = await register(db, 'p1', event.id, event.version, 'private-gate-p1');
     for (const actor of ['p2', 'p3', 'w1']) await register(db, actor, event.id, event.version, `private-gate-${actor}`);

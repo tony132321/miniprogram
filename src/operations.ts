@@ -15,31 +15,98 @@ export async function createReport(db: Database, actor: string, input: { eventId
   });
 }
 
-export async function listReports(db: Database, offset = 0, snapshot?: string | null) {
+export async function listReports(db: Database, actor: string, offset = 0, snapshot?: string | null) {
   if (!Number.isSafeInteger(offset) || offset < 0 || offset > 2_147_483_647)
     throw new AppError('BAD_REQUEST', '举报列表页码无效');
   if (offset > 0 && (!snapshot || !/^[a-f0-9]{32}$/.test(snapshot)))
     throw new AppError('BAD_REQUEST', '继续读取举报需要有效快照');
   return db.transaction(async tx => {
     await tx.query('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY');
+    const assignedOnly = actor.startsWith('operator:');
+    const assignmentFilter = assignedOnly
+      ? ' WHERE EXISTS (SELECT 1 FROM report_assignments ra WHERE ra.report_id=reports.id AND ra.assignee_id=$1)'
+      : '';
     const { rows: totals } = await tx.query<{ total: number; snapshot: string }>(`SELECT count(*)::int AS total,
       md5(COALESCE(string_agg(jsonb_build_array(id,kind,status,created_at,
         kind='ATTENDANCE' AND EXISTS (SELECT 1 FROM outcomes o WHERE o.event_id=reports.event_id AND o.disputed))::text,
-        ',' ORDER BY id),'')) AS snapshot FROM reports`);
+        ',' ORDER BY id),'')) AS snapshot FROM reports${assignmentFilter}`, assignedOnly ? [actor] : []);
     const currentSnapshot = totals[0]!.snapshot;
     if (offset > 0 && snapshot !== currentSnapshot)
       throw new AppError('QUEUE_CHANGED', '举报列表已变化，请从第一页刷新', 409);
     const { rows } = await tx.query<{ id: string; kind: string; description: string; status: string; event_id: string | null;
       outcome_review_required: boolean }>(`SELECT id,kind,description,status,event_id,
       (kind='ATTENDANCE' AND EXISTS (SELECT 1 FROM outcomes o WHERE o.event_id=reports.event_id AND o.disputed))
-        AS outcome_review_required FROM reports ORDER BY
+        AS outcome_review_required FROM reports${assignmentFilter} ORDER BY
       CASE WHEN status='RESOLVED' THEN 2 WHEN kind='SAFETY' THEN 0 ELSE 1 END,
       CASE WHEN status='RESOLVED' THEN created_at END DESC,
       CASE WHEN status<>'RESOLVED' THEN created_at END ASC,id ASC
-      LIMIT 100 OFFSET $1`, [offset]);
+      LIMIT 100 OFFSET $${assignedOnly ? 2 : 1}`, assignedOnly ? [actor, offset] : [offset]);
     const total = totals[0]?.total ?? 0;
     return { items: rows, total, nextOffset: offset + rows.length < total ? offset + rows.length : null,
       snapshot: currentSnapshot };
+  });
+}
+
+export async function listReportTriage(db: Database, activeReportAssignees: string[], offset = 0, snapshot?: string | null) {
+  if (!Number.isSafeInteger(offset) || offset < 0 || offset > 2_147_483_647)
+    throw new AppError('BAD_REQUEST', '待分配举报页码无效');
+  if (offset > 0 && (!snapshot || !/^[a-f0-9]{32}$/.test(snapshot)))
+    throw new AppError('BAD_REQUEST', '继续读取待分配举报需要有效快照');
+  return db.transaction(async tx => {
+    await tx.query('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY');
+    const unassigned = 'NOT EXISTS (SELECT 1 FROM report_assignments a WHERE a.report_id=r.id AND a.assignee_id=ANY($1::text[]))';
+    const { rows: totals } = await tx.query<{ total: number; snapshot: string }>(`SELECT count(*)::int AS total,
+      md5(COALESCE(string_agg(jsonb_build_array(r.id,r.kind,r.status,r.created_at)::text,',' ORDER BY r.id),'')) AS snapshot
+      FROM reports r WHERE ${unassigned}`, [activeReportAssignees]);
+    const currentSnapshot = totals[0]!.snapshot;
+    if (offset > 0 && snapshot !== currentSnapshot)
+      throw new AppError('QUEUE_CHANGED', '待分配举报列表已变化，请从第一页刷新', 409);
+    const { rows } = await tx.query<{ id: string; kind: string; status: string; created_at: Date }>(
+      `SELECT r.id,r.kind,r.status,r.created_at FROM reports r WHERE ${unassigned}
+       ORDER BY CASE WHEN r.kind='SAFETY' THEN 0 ELSE 1 END,r.created_at,r.id LIMIT 100 OFFSET $2`,
+      [activeReportAssignees, offset]);
+    const total = totals[0]!.total;
+    return { items: rows, total, nextOffset: offset + rows.length < total ? offset + rows.length : null,
+      snapshot: currentSnapshot };
+  });
+}
+
+function reportReason(reason: unknown): string {
+  if (typeof reason !== 'string' || reason.trim().length < 10 || reason.length > 500)
+    throw new AppError('BAD_REQUEST', '逐单核查或分配原因需为 10 至 500 字');
+  return reason.trim();
+}
+
+export async function inspectReportForSafety(db: Database, actor: string, reportId: string, reason: unknown) {
+  const safeReason = reportReason(reason);
+  return db.transaction(async tx => {
+    const { rows } = await tx.query<{ id: string; kind: string; description: string; status: string;
+      event_id: string | null; created_at: Date }>(
+      'SELECT id,kind,description,status,event_id,created_at FROM reports WHERE id=$1 FOR SHARE', [reportId]);
+    if (!rows[0]) throw new AppError('NOT_FOUND', '工单不存在', 404);
+    await tx.query('INSERT INTO audit(id,actor_id,event_id,action,detail) VALUES($1,$2,$3,$4,$5)',
+      [randomUUID(), actor, rows[0].event_id, 'REPORT_SAFETY_INSPECT', JSON.stringify({ reportId, reason: safeReason })]);
+    return rows[0];
+  });
+}
+
+export async function assignReport(db: Database, actor: string, reportId: string, assignee: string,
+  reason: unknown, key: string) {
+  const safeReason = reportReason(reason);
+  if (!assignee.startsWith('operator:') || assignee === actor)
+    throw new AppError('BAD_REQUEST', '工单须分配给另一名具名举报处理人员');
+  return command(db, actor, `report-assignment:${reportId}`, key, async tx => {
+    const { rows: reports } = await tx.query<{ id: string; event_id: string | null }>(
+      'SELECT id,event_id FROM reports WHERE id=$1 FOR UPDATE', [reportId]);
+    if (!reports[0]) throw new AppError('NOT_FOUND', '工单不存在', 404);
+    const { rows } = await tx.query<{ report_id: string; assignee_id: string; assigned_by: string; assigned_at: Date }>(
+      `INSERT INTO report_assignments(report_id,assignee_id,assigned_by,assignment_reason)
+       VALUES($1,$2,$3,$4) ON CONFLICT (report_id) DO UPDATE SET assignee_id=EXCLUDED.assignee_id,
+       assigned_by=EXCLUDED.assigned_by,assignment_reason=EXCLUDED.assignment_reason,assigned_at=clock_timestamp()
+       RETURNING report_id,assignee_id,assigned_by,assigned_at`, [reportId, assignee, actor, safeReason]);
+    await tx.query('INSERT INTO audit(id,actor_id,event_id,action,detail) VALUES($1,$2,$3,$4,$5)',
+      [randomUUID(), actor, reports[0].event_id, 'REPORT_ASSIGNED', JSON.stringify({ reportId, assignee, reason: safeReason })]);
+    return rows[0]!;
   });
 }
 
@@ -57,6 +124,11 @@ export async function changeReportStatus(db: Database, actor: string, reportId: 
     const { rows: current } = await tx.query<{ id: string; reporter_id: string; event_id: string | null;
       kind: string; status: string }>('SELECT id,reporter_id,event_id,kind,status FROM reports WHERE id=$1 FOR UPDATE', [reportId]);
     if (!current[0]) throw new AppError('NOT_FOUND', '工单不存在', 404);
+    if (actor.startsWith('operator:')) {
+      const { rows: assignment } = await tx.query<{ assignee_id: string }>(
+        'SELECT assignee_id FROM report_assignments WHERE report_id=$1', [reportId]);
+      if (assignment[0]?.assignee_id !== actor) throw new AppError('FORBIDDEN', '工单未分配给当前处理人', 403);
+    }
     if (current[0].status === 'RESOLVED' || current[0].status === status)
       throw new AppError('INVALID_STATE', '工单状态不可重复或回退', 409);
     const { rows: outcomes } = current[0].kind === 'ATTENDANCE' && current[0].event_id
@@ -291,6 +363,10 @@ export async function getPrivacyRequestImpact(db: Database, operator: string, re
        (SELECT count(*)::int FROM event_status_history h JOIN events e ON e.id=h.event_id
          WHERE e.host_id=$1) AS hosted_event_status_history,
        (SELECT count(*)::int FROM outcomes o JOIN events e ON e.id=o.event_id WHERE e.host_id=$1) AS hosted_outcomes,
+       (SELECT count(*)::int FROM outcome_reviews o JOIN events e ON e.id=o.event_id
+         WHERE e.host_id=$1) AS hosted_outcome_reviews,
+       (SELECT count(*)::int FROM outcome_reviews o JOIN reports r ON r.id=o.report_id
+         WHERE r.reporter_id=$1) AS reported_outcome_reviews,
        (SELECT count(*)::int FROM venue_evidence v JOIN events e ON e.id=v.event_id WHERE e.host_id=$1) AS hosted_venue_evidence,
        (SELECT count(*)::int FROM expense_ledgers WHERE created_by=$1) AS created_expense_ledgers,
        (SELECT count(*)::int FROM share_opens WHERE user_id=$1) AS share_opens,
@@ -328,6 +404,7 @@ export async function getPrivacyRequestImpact(db: Database, operator: string, re
       blocksCreated: count.blocks_created, blocksReceived: count.blocks_received,
       hostedEventVersions: count.hosted_event_versions,
       hostedEventStatusHistory: count.hosted_event_status_history, hostedOutcomes: count.hosted_outcomes,
+      hostedOutcomeReviews: count.hosted_outcome_reviews, reportedOutcomeReviews: count.reported_outcome_reviews,
       hostedVenueEvidence: count.hosted_venue_evidence, createdExpenseLedgers: count.created_expense_ledgers,
       shareOpens: count.share_opens, unknownSourceInviteOpens: count.unknown_source_invite_opens,
       claimedReservations: count.claimed_reservations, waitlistOffers: count.waitlist_offers,

@@ -5,6 +5,7 @@ import { createDraft, publishEvent } from '../src/events.ts';
 import { changeEvent } from '../src/lifecycle.ts';
 import { register } from './helpers.ts';
 import { askCurrentFact, createContent, listContent, listFactTodos, moderateContent } from '../src/collaboration.ts';
+import { openSyntheticPublicCoverage } from './helpers/public-coverage.ts';
 
 const input = { title: '问答测试', type: 'badminton', startAt: '2027-01-02T12:00:00.000Z', endAt: '2027-01-02T14:00:00.000Z',
   timeZone: 'Asia/Shanghai', city: '深圳', venueName: '公共场馆', venueStatus: 'HOST_CONFIRMED', minParticipants: 4, maxParticipants: 4,
@@ -29,6 +30,7 @@ test('activity questions and host answers require review before members can read
     assert.equal((await listContent(db, 'p2', event.id)).length, 2);
     await assert.rejects(() => listContent(db, 'outsider', event.id), /无权/);
     await assert.rejects(() => createContent(db, 'p2', event.id, 'ANNOUNCEMENT', '伪造公告', null, 'fake'), /主办方/);
+    await openSyntheticPublicCoverage(db, [input]);
     const publicDraft = await createDraft(db, 'host', { ...input, visibility: 'PUBLIC', approvalMode: 'MANUAL' }, 'public-draft');
     const publicEvent = await publishEvent(db, 'host', publicDraft.id, publicDraft.version, 'public-publish');
     await assert.rejects(() => createContent(db, 'visitor', publicEvent.id, 'QUESTION', '路过提问', null, 'not-member'), { code: 'FORBIDDEN' });

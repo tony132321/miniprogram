@@ -11,6 +11,7 @@ import { createApp } from '../src/server.ts';
 import { reviewEvent } from '../src/event-review.ts';
 import { setEmergencyGate } from '../src/emergency-gate.ts';
 import { setPublicGate } from '../src/public-gate.ts';
+import { openSyntheticPublicCoverage } from './helpers/public-coverage.ts';
 
 const input = {
   title: '安全流程测试', type: 'badminton', startAt: '2027-01-02T12:00:00.000Z',
@@ -206,6 +207,7 @@ test('releasing a hold while the global safety gate is closed does not announce 
 test('releasing a public activity hold while public recruitment is closed does not announce recruiting resumed', async () => {
   const db = await createDatabase();
   try {
+    await openSyntheticPublicCoverage(db, [input]);
     const draft = await createDraft(db, 'host', { ...input, visibility: 'PUBLIC', approvalMode: 'MANUAL' }, 'public-gate-hold-draft');
     const event = await publishEvent(db, 'host', draft.id, draft.version, 'public-gate-hold-publish');
     await reviewEvent(db, 'ops', event.id, event.version, 'APPROVED', '审核通过公开活动', 'public-gate-review');
@@ -220,6 +222,7 @@ test('releasing a public activity hold while public recruitment is closed does n
 
 test('safety hold API is operator-only and event viewers see no investigation reason', async () => {
   const db = await createDatabase();
+  await openSyntheticPublicCoverage(db, [input]);
   const server = createApp(db, { environment: 'development', devAuth: true, operationsUsers: ['ops'], checkInSecret: 'secret' });
   server.listen(0, '127.0.0.1');
   await once(server, 'listening');

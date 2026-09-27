@@ -26,6 +26,28 @@ test('provider suggestions keep explicit facts and leave venue and participation
   assert.ok(result.unknown.includes('公共场馆及预约依据'));
 });
 
+test('provider calls omit a phone number supplied in the host draft text', async () => {
+  const sent: string[] = [];
+  const provider: DraftProvider = {
+    estimateUpperBoundFen: text => { sent.push(text); return 10; },
+    generate: async text => { sent.push(text); return { costFen: 7, fields: { title: '周末羽毛球' } }; }
+  };
+  const result = await runDraftProvider('周六在深圳打羽毛球，联系 13800138000', at, provider, 20);
+  assert.equal(result.aiStatus, 'GENERATED');
+  assert.deepEqual(sent, ['周六在深圳打羽毛球，联系 [手机号]', '周六在深圳打羽毛球，联系 [手机号]']);
+});
+
+test('provider calls omit phones written with country-code parentheses or dots', async () => {
+  const sent: string[] = [];
+  const provider: DraftProvider = {
+    estimateUpperBoundFen: text => { sent.push(text); return 1; },
+    generate: async text => { sent.push(text); return { costFen: 1, fields: { title: '周末羽毛球' } }; }
+  };
+  const result = await runDraftProvider('报名找 +86 (138) 0013 8000 或 138.0013.8000', at, provider, 2);
+  assert.equal(result.aiStatus, 'GENERATED');
+  assert.deepEqual(sent, ['报名找 [手机号] 或 [手机号]', '报名找 [手机号] 或 [手机号]']);
+});
+
 test('one correction retry respects remaining upper-bound budget', async () => {
   let calls = 0;
   const provider: DraftProvider = {

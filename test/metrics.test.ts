@@ -9,6 +9,7 @@ import { reviewEvent } from '../src/event-review.ts';
 import { changeEvent, repeatEvent } from '../src/lifecycle.ts';
 import { createApp } from '../src/server.ts';
 import { getPilotMetrics } from '../src/metrics.ts';
+import { openSyntheticPublicCoverage } from './helpers/public-coverage.ts';
 
 const valid = (startAt: string) => {
   const start = Date.parse(startAt);
@@ -243,6 +244,7 @@ test('host reuse counts only mature non-test first-publish cohorts and does not 
 test('public review submission is not publication for the 28-day host cohort or repeat', async () => {
   const db = await createDatabase();
   try {
+    await openSyntheticPublicCoverage(db, [valid('2027-03-10T12:00:00.000Z'), valid('2027-03-13T12:00:00.000Z')]);
     const publicDraft = await createDraft(db, 'pending-host',
       { ...valid('2027-03-10T12:00:00.000Z'), visibility: 'PUBLIC', approvalMode: 'MANUAL' }, 'pending-public-draft', false);
     const pending = await publishEvent(db, 'pending-host', publicDraft.id, publicDraft.version, 'pending-public-submit');
@@ -278,6 +280,7 @@ test('public review submission is not publication for the 28-day host cohort or 
 test('WQCA uses the minimum in the first approved public version', async () => {
   const db = await createDatabase();
   try {
+    await openSyntheticPublicCoverage(db, [valid('2027-03-10T12:00:00.000Z')]);
     const draft = await createDraft(db, 'approved-public-host',
       { ...valid('2027-03-10T12:00:00.000Z'), visibility: 'PUBLIC', approvalMode: 'MANUAL' },
       'public-minimum-draft', false);
@@ -665,6 +668,7 @@ test('attendance diagnostic preserves the deadline cohort and separates later wi
 test('formation time uses first accessible publication and first confirmed audit, excluding test and unlisted activity', async () => {
   const db = await createDatabase();
   try {
+    await openSyntheticPublicCoverage(db, [valid('2027-01-02T12:00:00.000Z')]);
     const base = Date.parse('2027-01-01T00:00:00.000Z');
     const sample = [
       ['formation-30', false, false, 30],

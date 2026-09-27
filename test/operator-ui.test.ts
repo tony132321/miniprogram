@@ -114,6 +114,56 @@ test('operator report closure sends the selected outcome verdict with the writte
     status: 'RESOLVED', resolution: '已核对场地与到场证据，确认活动举办', outcomeDecision: 'HELD_CONFIRMED' } }]);
 });
 
+test('safety workbench inspects one report with a reason and assigns it to a named reviewer', async () => {
+  const writes: Array<{ path: string; body: Record<string, unknown> }> = [];
+  const ui = await workbench(async (path, options) => {
+    if (options?.method === 'POST') {
+      writes.push({ path, body: JSON.parse(options.body || '{}') });
+      return { ok: true, status: 200, json: async () => path.endsWith('/inspect')
+        ? { id: 'case-1', kind: 'SAFETY', status: 'OPEN', description: '逐单核查的安全举报' }
+        : { report_id: 'case-1', assignee_id: 'operator:reviewer2' } };
+    }
+    if (path === '/ops/reports/triage?offset=0') return { ok: true, status: 200,
+      json: async () => ({ items: [{ id: 'case-1', kind: 'SAFETY', status: 'OPEN' }], total: 1,
+        nextOffset: null, snapshot: 'a'.repeat(32) }) };
+    return { ok: true, status: 200, json: async () => ({ items: [] }) };
+  });
+  await ui.item('loadReportTriage').onclick?.();
+  assert.equal(ui.item('reportTriage').children.length, 1);
+  assert.doesNotMatch((ui.item('reportTriage').children[0] as { textContent: string }).textContent, /逐单核查的安全举报/);
+  ui.item('reportCaseId').value = 'case-1';
+  ui.item('reportScopeReason').value = '接到现场安全告警，需逐单查看';
+  await ui.item('inspectReport').onclick?.();
+  assert.match(ui.item('reportInspection').textContent, /逐单核查的安全举报/);
+  ui.item('reportAssignee').value = 'reviewer2';
+  await ui.item('assignReport').onclick?.();
+  assert.deepEqual(writes, [
+    { path: '/ops/reports/case-1/inspect', body: { reason: '接到现场安全告警，需逐单查看' } },
+    { path: '/ops/reports/case-1/assign', body: { assignee: 'reviewer2', reason: '接到现场安全告警，需逐单查看' } }
+  ]);
+});
+
+test('logging out removes the safety inspection and triage details from the workbench', async () => {
+  const ui = await workbench(async (path, options) => {
+    if (path === '/ops/reports/triage?offset=0') return { ok: true, status: 200,
+      json: async () => ({ items: [{ id: 'private-case', kind: 'SAFETY', status: 'OPEN' }],
+        total: 1, nextOffset: null, snapshot: 'a'.repeat(32) }) };
+    if (path === '/ops/reports/private-case/inspect' && options?.method === 'POST')
+      return { ok: true, status: 200, json: async () => ({ id: 'private-case', kind: 'SAFETY',
+        status: 'OPEN', description: '退出后不能保留的私密举报' }) };
+    return { ok: true, status: 200, json: async () => ({ items: [] }) };
+  });
+  await ui.item('loadReportTriage').onclick?.();
+  ui.item('reportCaseId').value = 'private-case';
+  ui.item('reportScopeReason').value = '本班次安全事件逐单核查原因';
+  await ui.item('inspectReport').onclick?.();
+  assert.match(ui.item('reportInspection').textContent, /退出后不能保留/);
+  await ui.item('operatorLogout').onclick?.();
+  assert.equal(ui.item('reportInspection').textContent, '');
+  assert.equal(ui.item('reportTriage').children.length, 0);
+  assert.equal(ui.item('reportCaseId').value, '');
+});
+
 test('operator privacy row can inspect redacted deletion impact counts without showing raw records', async () => {
   const ui = await workbench(async path => {
     if (path === '/ops/privacy?offset=0') return { ok: true, status: 200,
@@ -121,7 +171,8 @@ test('operator privacy row can inspect redacted deletion impact counts without s
     if (path === '/ops/privacy/request-1/impact') return { ok: true, status: 200,
       json: async () => ({ assessmentStatus: 'POLICY_REVIEW_REQUIRED',
         counts: { profile: 1, sessions: 1, hostedEvents: 2, registrations: 3, authoredContent: 4,
-          reportedDisputes: 1, appeals: 0, notifications: 2, notificationConsents: 1, notificationConsentHistory: 2,
+          reportedDisputes: 1, hostedOutcomeReviews: 2, reportedOutcomeReviews: 1,
+          appeals: 0, notifications: 2, notificationConsents: 1, notificationConsentHistory: 2,
           eventAliases: 1, shareIntents: 2, personalExportTickets: 1, blocksCreated: 1, blocksReceived: 1,
           shareOpens: 3, unknownSourceInviteOpens: 1, checkIns: 2, outcomeFeedback: 1,
           cohostGrants: 1, privacyRequests: 1, idempotencyRecords: 4 } }) };
@@ -133,6 +184,7 @@ test('operator privacy row can inspect redacted deletion impact counts without s
   assert.match(row.children[1]!.textContent, /活动 2.*报名 3.*争议 1/);
   assert.match(row.children[1]!.textContent, /通知授权 1.*活动昵称 1.*分享发起 2.*导出凭证 1.*屏蔽发起 1.*被屏蔽 1/);
   assert.match(row.children[1]!.textContent, /授权变更 2/);
+  assert.match(row.children[1]!.textContent, /主办活动复核 2.*本人举报裁决 1/);
   assert.match(row.children[1]!.textContent, /分享打开 3.*未知来源邀请打开 1.*签到 2.*结束反馈 1.*协办授权 1.*隐私请求 1.*幂等记录 4/);
   assert.doesNotMatch(row.children[1]!.textContent, /正文|openid/);
 });
@@ -154,6 +206,48 @@ test('operator workbench shows global stop state and sends a reason when safety 
   ui.item('emergencyReason').value = '发现容量异常需要止损';
   await ui.item('closeEmergencyGate').onclick?.();
   assert.deepEqual(writes, [{ path: '/ops/emergency', body: { status: 'CLOSED', reason: '发现容量异常需要止损' } }]);
+});
+
+test('operator can record, independently confirm, open and revoke a public duty shift from the workbench', async () => {
+  const writes: Array<{ path: string; body: Record<string, unknown> }> = [];
+  const ui = await workbench(async (path, options) => {
+    if (options?.method === 'POST') {
+      const body = JSON.parse(options.body || '{}') as Record<string, unknown>;
+      writes.push({ path, body });
+      if (path === '/ops/public-coverage') return { ok: true, status: 201,
+        json: async () => ({ id: '11111111-1111-4111-8111-111111111111', responsibleActor: 'duty-owner',
+          confirmedBy: null, startsAt: body.startsAt, endsAt: body.endsAt }) };
+      return { ok: true, status: 200, json: async () => ({ status: 'OPEN',
+        id: '11111111-1111-4111-8111-111111111111', confirmedBy: 'reviewer' }) };
+    }
+    if (path === '/ops/public-recruitment') return { ok: true, status: 200,
+      json: async () => ({ status: 'CLOSED', reason: '尚无值守', changedBy: 'system', coverageId: null }) };
+    return { ok: true, status: 200, json: async () => ({ items: [] }) };
+  });
+  await ui.item('refresh').onclick?.();
+  ui.item('coverageStartsAt').value = '2027-01-02T10:00';
+  ui.item('coverageEndsAt').value = '2027-01-02T13:00';
+  ui.item('coverageDrillCompletedAt').value = '2026-09-27T10:00';
+  ui.item('coverageDrillReference').value = 'drill-reference-123';
+  await ui.item('createPublicCoverage').onclick?.();
+  const coverageId = '11111111-1111-4111-8111-111111111111';
+  assert.equal(ui.item('coverageId').value, coverageId);
+  assert.deepEqual(writes[0], { path: '/ops/public-coverage', body: {
+    startsAt: new Date('2027-01-02T10:00').toISOString(),
+    endsAt: new Date('2027-01-02T13:00').toISOString(),
+    drillCompletedAt: new Date('2026-09-27T10:00').toISOString(), drillReference: 'drill-reference-123' } });
+  ui.item('coverageReason').value = '另一位安全运营核对了值守与演练';
+  await ui.item('confirmPublicCoverage').onclick?.();
+  assert.deepEqual(writes[1], { path: `/ops/public-coverage/${coverageId}/confirm`,
+    body: { reason: '另一位安全运营核对了值守与演练' } });
+  ui.item('publicGateReason').value = '已确认当前具名值守覆盖';
+  await ui.item('openPublicGate').onclick?.();
+  assert.deepEqual(writes[2], { path: '/ops/public-recruitment', body: {
+    status: 'OPEN', reason: '已确认当前具名值守覆盖', coverageId } });
+  ui.item('coverageReason').value = '排班人临时缺席，撤销本次覆盖';
+  await ui.item('revokePublicCoverage').onclick?.();
+  assert.deepEqual(writes[3], { path: `/ops/public-coverage/${coverageId}/revoke`,
+    body: { reason: '排班人临时缺席，撤销本次覆盖' } });
 });
 
 test('operator workbench loads later report pages and keeps the full queue count', async () => {

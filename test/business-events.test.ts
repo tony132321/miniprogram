@@ -9,6 +9,7 @@ import { checkIn, confirmEvent, createCheckInToken, requestManualCheckIn, respon
 import { recordAttributedOpen, recordShareIntent, getShareMetrics } from '../src/sharing.ts';
 import { createReport } from '../src/operations.ts';
 import { recordSupportMinutes } from '../src/support-minutes.ts';
+import { openSyntheticPublicCoverage } from './helpers/public-coverage.ts';
 
 const valid = (visibility: 'INVITE' | 'PUBLIC') => {
   const start = Date.now() + 4 * 24 * 60 * 60_000;
@@ -53,7 +54,9 @@ test('committed business events are pseudonymous, versioned and idempotent', asy
 test('public review submission is not a publication event; approval emits once at approved version', async () => {
   const db = await createDatabase();
   try {
-    const draft = await createDraft(db, 'public-host', valid('PUBLIC'), 'public-create', true);
+    const publicInput = valid('PUBLIC');
+    await openSyntheticPublicCoverage(db, [publicInput]);
+    const draft = await createDraft(db, 'public-host', publicInput, 'public-create', true);
     const submitted = await publishEvent(db, 'public-host', draft.id, draft.version, 'public-submit');
     let { rows } = await db.query<BusinessEvent>('SELECT * FROM business_events WHERE activity_id=$1', [draft.id]);
     assert.equal(rows.filter(row => row.event_name === 'PUBLIC_REVIEW_SUBMITTED').length, 1);

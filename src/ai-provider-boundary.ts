@@ -46,6 +46,8 @@ function candidateFields(value: unknown): EventInput | null {
 export async function runDraftProvider(text: string, at: number, provider: DraftProvider, budgetFen: number,
   deadlineMs = 30_000): Promise<ProviderResult | FallbackResult> {
   const rule = localDraftSuggestion(text, at);
+  const providerText = text.replace(/(?<![0-9])(?:(?:\+?86)[\s().-]*)?1[3-9](?:[\s().-]*[0-9]){9}(?![0-9])/g,
+    '[手机号]');
   if (!Number.isSafeInteger(budgetFen) || budgetFen < 0) throw new Error('AI draft budget must be a nonnegative integer fen');
   if (!Number.isSafeInteger(deadlineMs) || deadlineMs < 1 || deadlineMs > 30_000) throw new Error('AI draft deadline must be 1..30000 ms');
   let spent = 0;
@@ -60,11 +62,11 @@ export async function runDraftProvider(text: string, at: number, provider: Draft
   try {
     for (let attempt = 0; attempt < 2; attempt++) {
       let bound: number;
-      try { bound = provider.estimateUpperBoundFen(text, attempt === 1); }
+      try { bound = provider.estimateUpperBoundFen(providerText, attempt === 1); }
       catch { return fallback('BUDGET'); }
       if (!Number.isSafeInteger(bound) || bound < 0 || spent + bound > budgetFen) return fallback('BUDGET');
       let output: unknown;
-      try { output = await Promise.race([provider.generate(text, { signal: controller.signal, correction: attempt === 1, at }), deadline]); }
+      try { output = await Promise.race([provider.generate(providerText, { signal: controller.signal, correction: attempt === 1, at }), deadline]); }
       catch (error) { return fallback(error instanceof ProviderDeadline ? 'TIMEOUT' : 'PROVIDER_ERROR', true); }
       if (!output || typeof output !== 'object' || Array.isArray(output)) return fallback('INVALID_RESPONSE', true);
       const result = output as { costFen?: unknown; fields?: unknown };

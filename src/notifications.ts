@@ -89,7 +89,8 @@ export async function listMemberNotifications(db: Database, actor: string, offse
         (SELECT 1 FROM event_safety_holds h WHERE h.event_id=n.event_id AND h.status='ACTIVE')
         AND EXISTS (SELECT 1 FROM emergency_gate g WHERE g.id=1 AND g.status='OPEN')
         AND EXISTS (SELECT 1 FROM events e WHERE e.id=n.event_id AND (e.payload->>'visibility'<>'PUBLIC' OR
-          EXISTS (SELECT 1 FROM public_recruitment_gate g WHERE g.id=1 AND g.status='OPEN'))) ELSE false END AS actionable,
+          public_recruitment_covered((e.payload->>'startAt')::timestamptz,
+            (e.payload->>'endAt')::timestamptz))) ELSE false END AS actionable,
       CASE WHEN n.kind='WAITLIST_OFFER' THEN EXISTS (SELECT 1 FROM offers o WHERE o.id=n.detail->>'offerId'
         AND o.status='ACTIVE' AND o.expires_at>now()) ELSE false END AS declinable
       FROM notifications n WHERE n.user_id=$1
@@ -180,7 +181,10 @@ export async function dispatchNotification(db: Database, notificationId: string,
     const { rows: holds } = claimed.kind === 'WAITLIST_OFFER'
       ? await tx.query<{ id: string }>("SELECT id FROM event_safety_holds WHERE event_id=$1 AND status='ACTIVE' FOR SHARE", [claimed.event_id]) : { rows: [] };
     const { rows: publicGate } = claimed.kind === 'WAITLIST_OFFER' && events[0]?.visibility === 'PUBLIC'
-      ? await tx.query<{ status: string }>('SELECT status FROM public_recruitment_gate WHERE id=1 FOR SHARE') : { rows: [] };
+      ? await tx.query<{ open: boolean }>(`SELECT public_recruitment_covered(
+          (e.payload->>'startAt')::timestamptz,(e.payload->>'endAt')::timestamptz) AS open
+          FROM public_recruitment_gate g JOIN events e ON e.id=$1 WHERE g.id=1 FOR SHARE OF g`,
+        [claimed.event_id]) : { rows: [] };
     const { rows: offers } = claimed.kind === 'WAITLIST_OFFER'
       ? await tx.query<{ active: boolean }>(`SELECT (status='ACTIVE' AND expires_at>clock_timestamp()) AS active
           FROM offers WHERE id=$1 AND event_id=$2 FOR SHARE`, [claimed.detail.offerId, claimed.event_id]) : { rows: [] };
@@ -193,7 +197,7 @@ export async function dispatchNotification(db: Database, notificationId: string,
         !['EVENT_CANCELLED', 'EVENT_EXPIRED', 'REGISTRATION_REMOVED'].includes(claimed.kind)) ||
       (claimed.kind === 'EVENT_REMINDER' && (!['NOT_REQUIRED', 'APPROVED'].includes(event?.review_status ?? '') || !event?.before_start)) ||
       (claimed.kind === 'WAITLIST_OFFER' && (registrationStatus !== 'OFFERED' || emergency[0]?.status !== 'OPEN' ||
-        holds.length > 0 || (event?.visibility === 'PUBLIC' && publicGate[0]?.status !== 'OPEN') || !offers[0]?.active));
+        holds.length > 0 || (event?.visibility === 'PUBLIC' && publicGate[0]?.open !== true) || !offers[0]?.active));
     const outcome = !consents[0]?.granted ? 'CONSENT_WITHDRAWN' :
       consents[0].notice_version !== consentNotice('EVENT_REMINDER').version ? 'CONSENT_RECONFIRM_REQUIRED' :
       !event || event.version !== claimed.event_version ? 'STALE_VERSION' :

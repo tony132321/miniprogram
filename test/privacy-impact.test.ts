@@ -18,7 +18,8 @@ test('privacy impact inventory is operator-only, counted by purpose, and audited
     await db.query("INSERT INTO registrations(id,event_id,user_id,status) VALUES('registration-1',$1,'p1','CONFIRMED')", [event.id]);
     await db.query("INSERT INTO offers(id,event_id,registration_id,expires_at,status) VALUES('offer-1',$1,'registration-1',now()+interval '15 minutes','ACTIVE')", [event.id]);
     await db.query("INSERT INTO activity_content(id,event_id,author_id,kind,body) VALUES('content-1',$1,'p1','QUESTION','private question')", [event.id]);
-    await db.query("INSERT INTO reports(id,reporter_id,kind,description) VALUES('report-1','p1','SAFETY','private report')");
+    await db.query("INSERT INTO reports(id,reporter_id,event_id,kind,description) VALUES('report-1','p1',$1,'ATTENDANCE','private report')", [event.id]);
+    await db.query("INSERT INTO outcome_reviews(id,event_id,report_id,decision,reason,reviewed_by) VALUES('review-1',$1,'report-1','HELD_CONFIRMED','private operator reason','ops')", [event.id]);
     await setConsent(db, 'p1', 'EVENT_REMINDER', true, 'impact-reminder-consent');
     await db.query("INSERT INTO event_aliases(event_id,user_id,display_name) VALUES($1,'p1','private alias')", [event.id]);
     await db.query("INSERT INTO share_intents(source_token,event_id,sender_id,invite_token_hash) VALUES('source-1',$1,'p1','private-hash')", [event.id]);
@@ -50,6 +51,8 @@ test('privacy impact inventory is operator-only, counted by purpose, and audited
     assert.equal(body.counts.waitlistOfferHistory, 1);
     assert.equal(body.counts.authoredContent, 1);
     assert.equal(body.counts.reportedDisputes, 1);
+    assert.equal(body.counts.reportedOutcomeReviews, 1);
+    assert.equal(body.counts.hostedOutcomeReviews, 1);
     assert.equal(body.counts.notificationConsents, 1);
     assert.equal(body.counts.notificationConsentHistory, 1);
     assert.equal(body.counts.eventAliases, 1);

@@ -118,7 +118,7 @@ export async function getEvent(db: Queryable, actorId: string, id: string): Prom
   const cohostCapabilities = row.host_id === actorId ? [] : await getCohostCapabilities(db, actorId, id);
   if (row.host_id !== actorId) {
     if (row.status === 'DRAFT') throw new AppError('FORBIDDEN', '无权查看此活动', 403);
-    if (row.payload.visibility === 'PUBLIC' && (row.review_status !== 'APPROVED' || !(await publicRecruitmentOpen(db)))) {
+    if (row.payload.visibility === 'PUBLIC' && (row.review_status !== 'APPROVED' || !(await publicRecruitmentOpen(db, false, row.payload)))) {
       const access = cohostCapabilities.length ? { rows: [1] } : await db.query(row.review_status === 'APPROVED'
         ? 'SELECT 1 FROM registrations WHERE event_id=$1 AND user_id=$2'
         : "SELECT 1 FROM registrations WHERE event_id=$1 AND user_id=$2 AND status IN ('INTERESTED','REQUESTED','WAITLISTED','OFFERED','CONFIRMED','RECONFIRM_REQUIRED')", [id, actorId]);
@@ -211,7 +211,7 @@ export async function publishEvent(db: Database, actorId: string, id: string, ex
     if (row.version !== expectedVersion) throw new AppError('VERSION_CONFLICT', '活动已更新，请刷新', 409);
     if (row.status !== 'DRAFT') throw new AppError('INVALID_STATE', '仅草稿可发布');
     validatePublish(row.payload);
-    await assertPublicRecruitmentOpen(tx, row.payload.visibility);
+    await assertPublicRecruitmentOpen(tx, row.payload.visibility, row.payload);
     if (Date.parse(row.payload.confirmationDeadline!) <= await databaseNow(tx))
       throw new AppError('INVALID_EVENT', '成局确认截止时间已过');
     const publicReview = row.payload.visibility === 'PUBLIC';
@@ -252,7 +252,7 @@ export async function rotateInvite(db: Database, actorId: string, id: string, ex
     if (!row) throw new AppError('NOT_FOUND', '活动不存在', 404);
     if (row.host_id !== actorId) throw new AppError('FORBIDDEN', '只有主办方可以撤销邀请', 403);
     if (row.version !== expectedVersion) throw new AppError('VERSION_CONFLICT', '活动已更新，请刷新', 409);
-    await assertPublicRecruitmentOpen(tx, row.payload.visibility);
+    await assertPublicRecruitmentOpen(tx, row.payload.visibility, row.payload);
     if (!row.recruiting || await databaseNow(tx) >= Date.parse(row.payload.registrationDeadline!))
       throw new AppError('INVALID_STATE', '邀请已停止');
     const token = randomBytes(24).toString('base64url');

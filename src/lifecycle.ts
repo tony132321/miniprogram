@@ -89,7 +89,7 @@ export async function changeEvent(db: Database, actor: string, eventId: string, 
     if (next.maxParticipants! > event.payload.maxParticipants! ||
       Date.parse(next.registrationDeadline!) > Date.parse(event.payload.registrationDeadline!))
       await assertNewActionsOpen(tx);
-    if (next.visibility === 'PUBLIC' && event.payload.visibility !== 'PUBLIC') await assertPublicRecruitmentOpen(tx, next.visibility);
+    if (next.visibility === 'PUBLIC' && event.payload.visibility !== 'PUBLIC') await assertPublicRecruitmentOpen(tx, next.visibility, next);
     validatePublish(next);
     if (Date.parse(next.startAt!) <= now) throw new AppError('INVALID_EVENT', '活动开始时间必须在未来');
     if (await occupancy(tx, eventId) > next.maxParticipants!) throw new AppError('EVENT_FULL', '新人数上限小于已占名额');
@@ -171,7 +171,7 @@ export async function confirmEvent(db: Database, actor: string, eventId: string,
     if (event.host_id !== actor) throw new AppError('FORBIDDEN', '只有主办方可以确认成局', 403);
     if (event.review_status === 'PENDING' || event.review_status === 'REJECTED') throw new AppError('REVIEW_PENDING', '公开活动尚未通过人工审核', 409);
     await assertEventNotHeld(tx, eventId);
-    await assertPublicRecruitmentOpen(tx, event.payload.visibility);
+    await assertPublicRecruitmentOpen(tx, event.payload.visibility, event.payload);
     if (event.status !== 'RECRUITING' || await databaseNow(tx) >= Date.parse(event.payload.confirmationDeadline!))
       throw new AppError('INVALID_STATE', '当前不能确认成局');
     const { rows: counts } = await tx.query<{ n: number }>("SELECT count(*)::int AS n FROM registrations WHERE event_id=$1 AND status='CONFIRMED' AND accepted_version=$2", [eventId, event.version]);

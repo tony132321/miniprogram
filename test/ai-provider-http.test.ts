@@ -45,6 +45,33 @@ test('production cannot activate an unapproved draft provider', async () => {
   } finally { await db.close(); }
 });
 
+test('invalid draft input never creates an uncertain provider request or consumes its key', async () => {
+  const db = await createDatabase();
+  let calls = 0;
+  const counted: DraftProvider = { estimateUpperBoundFen: () => 10,
+    generate: async () => { calls++; return { costFen: 7, fields: { title: '建议标题' } }; } };
+  const server = createApp(db, { environment: 'test', devAuth: true, checkInSecret: 'test-secret',
+    aiDraftProvider: counted, aiDraftBudgetFen: 20 });
+  server.listen(0, '127.0.0.1'); await once(server, 'listening');
+  const url = `http://127.0.0.1:${(server.address() as { port: number }).port}/events/drafts:suggest-local`;
+  const post = async (text: string) => {
+    const response = await fetch(url, { method: 'POST', headers: { 'X-Dev-User': 'host',
+      'Content-Type': 'application/json', 'Idempotency-Key': 'corrected-input-key' }, body: JSON.stringify({ text }) });
+    return { status: response.status, body: await response.json() as Record<string, unknown> };
+  };
+  try {
+    assert.equal((await post('   ')).status, 400);
+    const { rows: invalidRows } = await db.query<{ status: string }>(
+      "SELECT status FROM ai_draft_requests WHERE actor_id='host' AND request_key='corrected-input-key'");
+    assert.deepEqual(invalidRows, []);
+    assert.equal(calls, 0);
+    const corrected = await post('周六晚上打羽毛球');
+    assert.equal(corrected.status, 200);
+    assert.equal(corrected.body.aiStatus, 'GENERATED');
+    assert.equal(calls, 1);
+  } finally { await new Promise<void>(resolve => server.close(() => resolve())); await db.close(); }
+});
+
 test('draft provider retries replay one durable result and never bill another call for the same key', async () => {
   const db = await createDatabase();
   let calls = 0;
@@ -67,6 +94,9 @@ test('draft provider retries replay one durable result and never bill another ca
     assert.equal(calls, 1);
     const mismatch = await post('host', 'same-key', '周日晚上打球');
     assert.equal(mismatch.status, 409);
+    const malformedMismatch = await post('host', 'same-key', '   ');
+    assert.equal(malformedMismatch.status, 409);
+    assert.equal(malformedMismatch.body.code, 'IDEMPOTENCY_MISMATCH');
     assert.equal(calls, 1);
     assert.equal((await post('other', 'same-key', '周六晚上打球')).status, 200);
     assert.equal(calls, 2);

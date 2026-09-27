@@ -1548,6 +1548,102 @@ test('event page follows current cohost grant while preserving own participation
   assert.equal(page.data.canCheckIn, true);
 });
 
+test('a check-in token arriving after the event page hides is not displayed or refreshed', async () => {
+  let page: Record<string, any> | undefined;
+  let finishToken!: (value: unknown) => void;
+  const tokenResponse = new Promise(resolve => { finishToken = resolve; });
+  let qrDraws = 0;
+  let refreshTimers = 0;
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: { post: () => tokenResponse } };
+      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() { qrDraws++; } };
+      if (path === '../../config.js') return { developmentUser: 'host' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: { getStorageSync(key: string) { return key === 'devUser' ? 'host' : ''; }, createCanvasContext() { return {}; } },
+    setTimeout() { refreshTimers++; return 1; }, clearTimeout() {}
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>, callback?: () => void) {
+    Object.assign(this.data, patch);
+    callback?.();
+  };
+  page.setData({ id: 'e1', event: { id: 'e1', version: 2, status: 'CONFIRMED' }, isHost: true });
+  const pending = page.showCheckInToken();
+  page.onHide();
+  finishToken({ token: 'signed-token', expiresInSeconds: 30 });
+  await pending;
+  assert.equal(page.data.displayedCheckInToken, '');
+  assert.equal(qrDraws, 0);
+  assert.equal(refreshTimers, 0);
+});
+
+test('an expired check-in token is hidden while its replacement is still loading', async () => {
+  let page: Record<string, any> | undefined;
+  let finishToken!: (value: unknown) => void;
+  const replacement = new Promise(resolve => { finishToken = resolve; });
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: { post: () => replacement } };
+      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
+      if (path === '../../config.js') return { developmentUser: 'host' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: { getStorageSync(key: string) { return key === 'devUser' ? 'host' : ''; }, createCanvasContext() { return {}; } },
+    setTimeout() { return 1; }, clearTimeout() {}
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>, callback?: () => void) {
+    Object.assign(this.data, patch);
+    callback?.();
+  };
+  page.setData({ id: 'e1', event: { id: 'e1', version: 2, status: 'CONFIRMED' }, isHost: true,
+    displayedCheckInToken: 'expired-token', checkInExpiresIn: 0 });
+  const pending = page.showCheckInToken();
+  const visibleDuringReplacement = page.data.displayedCheckInToken;
+  finishToken({ token: 'fresh-token', expiresInSeconds: 30 });
+  await pending;
+  assert.equal(visibleDuringReplacement, '');
+  assert.equal(page.data.displayedCheckInToken, 'fresh-token');
+});
+
+test('a check-in token received after its remaining lifetime is never shown', async () => {
+  let page: Record<string, any> | undefined;
+  let finishToken!: (value: unknown) => void;
+  const tokenResponse = new Promise(resolve => { finishToken = resolve; });
+  let now = 1_000;
+  let qrDraws = 0;
+  const timers: number[] = [];
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: { post: () => tokenResponse } };
+      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() { qrDraws++; } };
+      if (path === '../../config.js') return { developmentUser: 'host' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: { getStorageSync(key: string) { return key === 'devUser' ? 'host' : ''; }, createCanvasContext() { return {}; } },
+    Date: class extends Date { static now() { return now; } },
+    setTimeout(_callback: () => void, delay: number) { timers.push(delay); return 1; }, clearTimeout() {}
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>, callback?: () => void) {
+    Object.assign(this.data, patch);
+    callback?.();
+  };
+  page.setData({ id: 'e1', event: { id: 'e1', version: 2, status: 'CONFIRMED' }, isHost: true });
+  const pending = page.showCheckInToken();
+  now += 2_500;
+  finishToken({ token: 'already-expired', expiresInSeconds: 2 });
+  await pending;
+  assert.equal(page.data.displayedCheckInToken, '');
+  assert.equal(qrDraws, 0);
+  assert.ok(timers.length > 0, 'expired response should schedule a fresh request');
+});
+
 test('host page grants selected capabilities for this event and can revoke the returned grant', async () => {
   let page: Record<string, any> | undefined;
   const posts: Array<{ path: string; body: Record<string, any> }> = [];

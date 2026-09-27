@@ -669,6 +669,7 @@ test('personal export ticket is bound to its owner and expires before another do
     assert.ok('account' in own.body);
     await db.query("UPDATE personal_export_tickets SET expires_at=clock_timestamp()-interval '1 second' WHERE id=$1",
       [issued.body.path.split('/').at(-1)]);
+    await runDueJobs(db);
     const expired = await request(issued.body.path, 'p1');
     assert.equal(expired.status, 410);
     assert.equal(expired.body.code, 'EXPORT_EXPIRED');

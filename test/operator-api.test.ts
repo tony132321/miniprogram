@@ -82,6 +82,8 @@ test('two named operators sign in separately and removing one blocks only that s
     assert.equal((await fetch(base + '/ops/reports', { headers: { Authorization: `Bearer ${first.body.token}` } })).status, 200);
     assert.equal((await fetch(base + '/ops/reports', { headers: { Authorization: `Bearer ${other.body.token}` } })).status, 200);
     const report = await createReport(db, 'reporter', { kind: 'SAFETY', description: '需要人工核查活动安全问题' }, 'multi-operator-report');
+    await db.query(`INSERT INTO report_assignments(report_id,assignee_id,assigned_by,assignment_reason)
+      VALUES($1,'operator:safety','operator:reviewer','合成测试明确指派处理人')`, [report.id]);
     const reviewed = await fetch(base + `/ops/reports/${report.id}/status`, { method: 'POST',
       headers: { Authorization: `Bearer ${other.body.token}`, 'Content-Type': 'application/json', 'Idempotency-Key': 'multi-operator-review' },
       body: JSON.stringify({ status: 'IN_REVIEW' }) });

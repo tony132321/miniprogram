@@ -5,7 +5,7 @@ import { createDraft, publishEvent } from '../src/events.ts';
 import { changeEvent, confirmEvent, listExpenses } from '../src/lifecycle.ts';
 import { reviewEvent } from '../src/event-review.ts';
 import { acceptOffer, cancelRegistration, claimReservation, expireOffers, expireReservations, expressInterest, register, reserveSeats } from '../src/registrations.ts';
-import { getPublicGate, setPublicGate } from '../src/public-gate.ts';
+import { getPublicGate, revokePublicCoverage, setPublicGate } from '../src/public-gate.ts';
 import { getEmergencyGate, setEmergencyGate } from '../src/emergency-gate.ts';
 import { runDueJobs } from '../src/jobs.ts';
 import { setConsent } from '../src/notifications.ts';
@@ -19,6 +19,7 @@ import { recordSupportMinutes } from '../src/support-minutes.ts';
 import { hashOperatorPassword, loginOperator, logoutOperator, operatorFromBearer, totpCode } from '../src/operator-auth.ts';
 import { actorFromBearer, loginWithWechat, logoutMember } from '../src/auth.ts';
 import { assertEmptyPostgresTestDatabase, validatePostgresTestUrl } from './verify-postgres-guard.ts';
+import { openSyntheticPublicCoverage } from '../test/helpers/public-coverage.ts';
 
 const url = process.env.IRL_PG_TEST_URL;
 if (!url) throw new Error('IRL_PG_TEST_URL is required');
@@ -110,6 +111,7 @@ try {
     totpCode(secondOperator.totpSecret, at), at);
   assert.equal(await operatorFromBearer(first, `Bearer ${secondLogin.token}`, [operator, secondOperator]), 'operator:pg_safety');
   await assert.rejects(operatorFromBearer(first, `Bearer ${secondLogin.token}`, [operator]));
+  const coverage = await openSyntheticPublicCoverage(first, [input]);
   const publicDraft = await createDraft(first, 'pg_public_host', { ...input, visibility: 'PUBLIC', approvalMode: 'MANUAL' }, 'public-gate-draft');
   const publicEvent = await publishEvent(first, 'pg_public_host', publicDraft.id, publicDraft.version, 'public-gate-publish');
   await reviewEvent(second, 'operator:pg_reviewer', publicEvent.id, publicEvent.version, 'APPROVED', '已核查活动事实与场地', 'public-gate-approve');
@@ -120,7 +122,7 @@ try {
   assert.equal((await first.query("SELECT id FROM notifications WHERE kind='PUBLIC_RECRUITMENT_CLOSED' AND user_id='pg_public_host'")).rows.length, 1);
   await assert.rejects(() => register(second!, 'pg_public_p1', publicEvent.id, publicEvent.version, 'public-gate-blocked', null),
     { code: 'PUBLIC_RECRUITMENT_PAUSED' });
-  await setPublicGate(second, 'operator:pg_safety', 'OPEN', '核查完成允许继续招募', 'public-gate-open');
+  await setPublicGate(second, 'operator:pg_safety', 'OPEN', '核查完成允许继续招募', 'public-gate-open', coverage.id);
   assert.equal((await register(first, 'pg_public_p1', publicEvent.id, publicEvent.version, 'public-gate-joined', null)).status, 'REQUESTED');
   const blocker = new pg.Client({ connectionString: url });
   await blocker.connect();
@@ -128,7 +130,7 @@ try {
     await blocker.query('BEGIN');
     await blocker.query('INSERT INTO idempotency(actor_id,route,key,result) VALUES($1,$2,$3,$4)',
       ['operator:pg_safety', 'public-recruitment-gate', 'race-open', '{}']);
-    const opening = setPublicGate(second, 'operator:pg_safety', 'OPEN', '并发核查结束允许恢复', 'race-open');
+    const opening = setPublicGate(second, 'operator:pg_safety', 'OPEN', '并发核查结束允许恢复', 'race-open', coverage.id);
     const early = await Promise.race([opening.then(() => 'finished', () => 'failed'),
       new Promise<string>(resolve => setTimeout(() => resolve('waiting'), 100))]);
     assert.equal(early, 'waiting');
@@ -238,13 +240,13 @@ try {
   await first.query(`INSERT INTO reports(id,reporter_id,kind,description,status,created_at) VALUES
     ('pg-queue-resolved','pg_public_p1','OTHER','已结案','RESOLVED',clock_timestamp()),
     ('pg-queue-safety','pg_public_p1','SAFETY','安全待核查','OPEN',clock_timestamp()-interval '1 day')`);
-  const reportPage = await listReports(second);
+  const reportPage = await listReports(second, 'pg_case_operator');
   assert.equal(reportPage.items[0]?.id, 'pg-queue-safety');
   assert.equal(reportPage.total, 2);
-  assert.equal((await listReports(second, 1, reportPage.snapshot)).items[0]?.id, 'pg-queue-resolved');
+  assert.equal((await listReports(second, 'pg_case_operator', 1, reportPage.snapshot)).items[0]?.id, 'pg-queue-resolved');
   await first.query("INSERT INTO reports(id,reporter_id,kind,description) VALUES('pg-queue-new','pg_public_p1','SAFETY','新安全举报')");
-  await assert.rejects(() => listReports(second!, 1, reportPage.snapshot), { code: 'QUEUE_CHANGED' });
-  assert.equal((await listReports(second)).items.some(item => item.id === 'pg-queue-new'), true);
+  await assert.rejects(() => listReports(second!, 'pg_case_operator', 1, reportPage.snapshot), { code: 'QUEUE_CHANGED' });
+  assert.equal((await listReports(second, 'pg_case_operator')).items.some(item => item.id === 'pg-queue-new'), true);
   const caseReport = await createReport(first, 'pg_case_reporter', { kind: 'SAFETY', description: '独立连接池举报验证' }, 'pg-case-create');
   await changeReportStatus(second, 'pg_case_operator', caseReport.id, 'RESOLVED', '已由独立连接池核查并结案', 'pg-case-resolve');
   assert.equal((await listMyReports(first, 'pg_case_reporter'))[0]?.resolution, '已由独立连接池核查并结案');
@@ -636,12 +638,28 @@ try {
   [{ status: 'IN_PROGRESS', recruiting: false }]);
   assert.equal((await second.query<{ n: number }>(
     "SELECT count(*)::int AS n FROM audit WHERE event_id=$1 AND action='EVENT_STARTED'", [startEvent.id])).rows[0]?.n, 1);
+  const { rows: eventShift } = await first.query<{ id: string }>(`SELECT id FROM public_recruitment_coverage
+    WHERE id<>$1 AND starts_at<=$2::timestamptz AND ends_at>=$3::timestamptz`,
+  [coverage.id, input.startAt, input.endAt]);
+  assert.equal(eventShift.length, 1);
+  await revokePublicCoverage(first, 'operator:pg_safety', eventShift[0]!.id,
+    '合成活动时段覆盖已撤销并通知参与者', 'pg-event-shift-revoke');
+  assert.equal((await getPublicGate(second)).status, 'OPEN');
+  await assert.rejects(() => register(second!, 'pg_public_late', publicEvent.id, publicEvent.version,
+    'pg-event-shift-late', null), { code: 'PUBLIC_COVERAGE_REQUIRED' });
+  const { rows: coverageNotices } = await second.query<{ user_id: string }>(`SELECT j.payload->>'userId' AS user_id
+    FROM jobs j JOIN public_recruitment_coverage c ON c.id=$2
+    WHERE j.kind='PUBLIC_GATE_NOTICE' AND j.payload->>'eventId'=$1
+      AND j.payload->>'status'='CLOSED' AND j.created_at=c.revoked_at
+    ORDER BY j.payload->>'userId'`, [publicEvent.id, eventShift[0]!.id]);
+  assert.deepEqual(coverageNotices.map(row => row.user_id), ['pg_public_host', 'pg_public_p1']);
   process.stdout.write(JSON.stringify({ database: databaseName, eventId: event.id, migrations: migrations.length,
     pools: 2, contenders: contenders.length, confirmed: counts[0]?.confirmed, waitlisted: counts[0]?.waitlisted,
     auditRows: audit[0]?.total, operatorOtpSingleUse: true, operatorCrossPoolSession: true, memberLogoutCrossPool: true,
     emptyExpenseMemberCrossPool: true,
     operatorIndividualAccounts: true,
     publicGateCrossPool: true, publicGateNoticeCrossPool: true, publicGateConcurrentOrder: true,
+    eventCoverageRevokeCrossPool: true,
     notificationFollowupCrossPool: true, personalExportCrossPool: true, personalExportSnapshot: true,
     pilotMetricsCrossPool: true, waitlistOfferCrossPool: true, formationTimeCrossPool: true,
     supportMinutesCrossPool: true, publicPublicationGateCrossPool: true,

@@ -34,6 +34,16 @@
     <p class="muted">最近 100 条人工时间记录（仅记录权限可见）</p><ul id="supportMinutesHistory"></ul>
   </section>
   <section><h2>举报</h2><ul id="reports"></ul><button id="moreReports" disabled>加载更多举报</button></section>
+  <section><h2>举报工单分派</h2>
+    <p class="muted">安全运营先查看待分配工单的最小信息。逐单查看正文须填写原因并留下审计；处理人员只能看到分配给自己的工单。</p>
+    <button id="loadReportTriage">加载待分配工单</button><ul id="reportTriage"></ul>
+    <button id="moreReportTriage" disabled>加载更多待分配工单</button><br>
+    <label>工单 ID <input id="reportCaseId" autocomplete="off"></label>
+    <label>处理账号 <input id="reportAssignee" autocomplete="off" placeholder="具 REPORTS 权限的账号名"></label>
+    <label>逐单核查或分配原因 <input id="reportScopeReason" autocomplete="off" placeholder="至少 10 字"></label><br>
+    <button id="inspectReport">逐单核查并留痕</button><button id="assignReport">分配给处理账号</button>
+    <p id="reportInspection" role="status"></p>
+  </section>
   <section><h2>待审核公开活动</h2><ul id="eventReviews"></ul><button id="moreEventReviews" disabled>加载更多待审活动</button></section>
   <section><h2>活动风险暂停</h2>
     <p class="muted">暂停新报名、预留、补位和成局；活动仍可查看或退出。仅运营人员可记录核查原因和解除。</p>
@@ -44,6 +54,16 @@
   <section><h2>公开活动招募总开关</h2>
     <p class="muted">关闭后暂停公开活动发布、审核通过、新报名与占位；已参与者仍可查看和退出，邀请制活动不受影响。</p>
     <p id="publicGate">读取中…</p>
+    <p class="muted">先记录具名值守和已完成的应急演练，再由另一名安全运营复核。每场公开活动还须有覆盖完整活动时段的已复核记录。以下记录 ID 可复制到另一名运营的工作台；当前值守记录须已开始且尚未结束，才可恢复总开关。</p>
+    <label>值守开始 <input id="coverageStartsAt" type="datetime-local"></label>
+    <label>值守结束 <input id="coverageEndsAt" type="datetime-local"></label>
+    <label>演练完成时间 <input id="coverageDrillCompletedAt" type="datetime-local"></label>
+    <label>演练记录引用 <input id="coverageDrillReference" autocomplete="off" placeholder="至少 8 字"></label>
+    <button id="createPublicCoverage">记录值守时段</button><br>
+    <label>值守记录 ID <input id="coverageId" autocomplete="off" placeholder="创建后自动填入，也可粘贴现有 ID"></label>
+    <label>复核或撤销原因 <input id="coverageReason" autocomplete="off" placeholder="至少 5 字"></label>
+    <button id="confirmPublicCoverage">由另一名安全运营复核</button><button id="revokePublicCoverage">撤销值守记录</button>
+    <p id="coverageResult" role="status"></p>
     <label>操作原因 <input id="publicGateReason" autocomplete="off" placeholder="至少 5 字"></label>
     <button id="closePublicGate">关闭公开招募</button><button id="openPublicGate">恢复公开招募</button>
   </section>
@@ -245,6 +265,7 @@
               ['shareIntents', '分享发起'], ['personalExportTickets', '导出凭证'],
               ['blocksCreated', '屏蔽发起'], ['blocksReceived', '被屏蔽'],
               ['hostedEventVersions', '活动版本'], ['hostedOutcomes', '活动结果'],
+              ['hostedOutcomeReviews', '主办活动复核'], ['reportedOutcomeReviews', '本人举报裁决'],
               ['hostedVenueEvidence', '场地证据'], ['createdExpenseLedgers', '费用账本'],
               ['shareOpens', '分享打开'], ['unknownSourceInviteOpens', '未知来源邀请打开'],
               ['claimedReservations', '占位'], ['waitlistOffers', '候补邀请'],
@@ -309,6 +330,66 @@
         }
       }
     }
+    let nextTriageOffset = null;
+    let triageSnapshot = null;
+    async function loadReportTriagePage(offset, snapshot) {
+      const generation = requestGeneration;
+      const response = await fetch(`/ops/reports/triage?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+        { headers: headers() });
+      const data = await response.json();
+      if (generation !== requestGeneration) return;
+      if (response.status === 403) { $('status').textContent = '无权限查看待分配工单'; return; }
+      if (response.status === 409 && data.code === 'QUEUE_CHANGED') {
+        $('reportTriage').replaceChildren(); nextTriageOffset = null; triageSnapshot = null;
+        $('status').textContent = '待分配工单已变化，请重新加载'; return;
+      }
+      if (!response.ok) throw new Error(data.message || data.code || '读取待分配工单失败');
+      for (const item of data.items || []) {
+        const row = line($('reportTriage'), `${item.kind} · ${item.status} · 工单 ${item.id}`);
+        const pick = document.createElement('button'); pick.textContent = '填入工单 ID';
+        pick.onclick = () => { $('reportCaseId').value = item.id; $('reportScopeReason').focus(); };
+        row.appendChild(pick);
+      }
+      nextTriageOffset = data.nextOffset ?? null;
+      triageSnapshot = data.snapshot ?? null;
+      $('moreReportTriage').disabled = nextTriageOffset === null;
+    }
+    $('loadReportTriage').onclick = async () => {
+      $('reportTriage').replaceChildren(); nextTriageOffset = null; triageSnapshot = null;
+      $('moreReportTriage').disabled = true;
+      try { await loadReportTriagePage(0, null); }
+      catch (error) { $('status').textContent = error.message || '读取待分配工单失败'; }
+    };
+    $('moreReportTriage').onclick = async () => {
+      if (nextTriageOffset === null) return;
+      const offset = nextTriageOffset;
+      nextTriageOffset = null; $('moreReportTriage').disabled = true;
+      try { await loadReportTriagePage(offset, triageSnapshot); }
+      catch (error) { nextTriageOffset = offset; $('moreReportTriage').disabled = false;
+        $('status').textContent = error.message || '读取待分配工单失败'; }
+    };
+    $('inspectReport').onclick = async () => {
+      const id = $('reportCaseId').value.trim();
+      if (!id) { $('reportInspection').textContent = '请先填写工单 ID'; return; }
+      const generation = requestGeneration;
+      $('reportInspection').textContent = '逐单核查中…';
+      try {
+        const item = await post(`/ops/reports/${encodeURIComponent(id)}/inspect`, { reason: $('reportScopeReason').value.trim() });
+        if (generation !== requestGeneration) return;
+        $('reportInspection').textContent = `${item.kind} · ${item.status} · 活动 ${item.event_id || '未关联'} · ${item.description}`;
+      } catch (error) { if (generation === requestGeneration)
+        $('reportInspection').textContent = error.message || '逐单核查失败'; }
+    };
+    $('assignReport').onclick = async () => {
+      const id = $('reportCaseId').value.trim();
+      const assignee = $('reportAssignee').value.trim();
+      if (!id || !assignee) { $('status').textContent = '请填写工单 ID 和处理账号'; return; }
+      try {
+        await post(`/ops/reports/${encodeURIComponent(id)}/assign`,
+          { assignee, reason: $('reportScopeReason').value.trim() });
+        if (await refresh()) $('status').textContent += ` · 工单已分配给 ${assignee}`;
+      } catch (error) { $('status').textContent = error.message || '分配失败'; }
+    };
     function renderAppeals(appeals) {
       for (const item of appeals) {
         const li = line($('appeals'), `${item.status} · ${item.description} · ${item.content_id ? '内容审核申诉' : item.removal_reason || '举报申诉'} · ${item.resolution || '待复核'}${item.outcome ? ' · ' + item.outcome : ''}`);
@@ -437,6 +518,14 @@
     async function refresh() {
       const generation = ++requestGeneration;
       const denied = [];
+      nextTriageOffset = null;
+      triageSnapshot = null;
+      $('moreReportTriage').disabled = true;
+      $('reportTriage').replaceChildren();
+      $('reportInspection').textContent = '';
+      $('reportCaseId').value = '';
+      $('reportAssignee').value = '';
+      $('reportScopeReason').value = '';
       nextReportOffset = null;
       reportSnapshot = null;
       $('moreReports').disabled = true;
@@ -537,9 +626,10 @@
             : '报名到场诊断未返回';
           $('metrics').textContent = `${weeks}；到期活动 ${due.dueEvents || 0}、证据合格 ${due.evidenceQualified || 0}、待复核 ${due.pendingReview || 0}、保守完成率 ${dueRate}（${dueGate}）；成熟主办方 ${reuse.maturedHosts || 0}、28 天复用 ${reuse.reusedHosts || 0}、复用率 ${reuse.rate == null ? '样本未成熟' : (reuse.rate * 100).toFixed(1) + '%'}；二次活动已到期 ${reuse.secondEventDue || 0}、合格 ${reuse.secondEventQualified || 0}；有参与证据的用户 ${return30.observedParticipants || 0}、成熟 30 天 ${return30.maturedParticipants || 0}、首场待复核 ${return30.pendingFirstParticipants || 0}、再次参与 ${return30.returnedParticipants || 0}、再参与待补证据 ${return30.pendingReturnParticipants || 0}、D30 再参与率 ${return30.rate == null ? '样本未成熟' : (return30.rate * 100).toFixed(1) + '%'}（${returnGate}）；${attendanceText}；${waitlistText}；${formationText}；已记录人工 ${support.recordedMinutes || 0} 分钟，${support.eventsWithEntries || 0}/${support.dueEvents || 0} 场有条目（记录不完整）；贡献利润：不可计算（缺实际收入与成本来源）。`;
         }
-        $('publicGate').textContent = publicGate ? `${publicGate.status === 'OPEN' ? '开放' : '关闭'} · 原因：${publicGate.reason} · 操作人：${publicGate.changedBy}` : '无权限查看';
+        $('publicGate').textContent = publicGate ? `${publicGate.status === 'OPEN' ? '开放' : '关闭'} · 原因：${publicGate.reason} · 操作人：${publicGate.changedBy}${publicGate.coverageId ? ' · 当前值守记录 ID：' + publicGate.coverageId : ''}` : '无权限查看';
         $('closePublicGate').disabled = !publicGate || publicGate.status === 'CLOSED';
         $('openPublicGate').disabled = !publicGate || publicGate.status === 'OPEN';
+        for (const id of ['createPublicCoverage', 'confirmPublicCoverage', 'revokePublicCoverage']) $(id).disabled = !publicGate;
         $('emergencyGate').textContent = emergencyGate?.status ? `${emergencyGate.status === 'OPEN' ? '开放' : '关闭'} · 原因：${emergencyGate.reason} · 操作人：${emergencyGate.changedBy}` : '无权限查看';
         $('closeEmergencyGate').disabled = !emergencyGate?.status || emergencyGate.status === 'CLOSED';
         $('openEmergencyGate').disabled = !emergencyGate?.status || emergencyGate.status === 'OPEN';
@@ -854,9 +944,45 @@
       try { await post(`/ops/events/${encodeURIComponent($('holdEventId').value.trim())}/hold`, { reason: $('holdReason').value }); refresh(); }
       catch (error) { $('status').textContent = error.message; }
     };
+    function coverageTimestamp(id) {
+      const raw = $(id).value;
+      if (!raw || !Number.isFinite(Date.parse(raw))) throw new Error('请填写有效的值守开始、结束和演练时间');
+      return new Date(raw).toISOString();
+    }
+    function selectedCoverageId() {
+      const id = $('coverageId').value.trim();
+      if (!/^[a-f0-9-]{36}$/i.test(id)) throw new Error('请填写有效的值守记录 ID');
+      return id;
+    }
+    $('createPublicCoverage').onclick = async () => {
+      try {
+        const created = await post('/ops/public-coverage', {
+          startsAt: coverageTimestamp('coverageStartsAt'), endsAt: coverageTimestamp('coverageEndsAt'),
+          drillCompletedAt: coverageTimestamp('coverageDrillCompletedAt'),
+          drillReference: $('coverageDrillReference').value.trim() });
+        $('coverageId').value = created.id;
+        $('coverageResult').textContent = `已记录值守时段 ${created.id}，责任人 ${created.responsibleActor}；等待另一名安全运营复核。`;
+      } catch (error) { $('coverageResult').textContent = error.message; }
+    };
+    $('confirmPublicCoverage').onclick = async () => {
+      try {
+        const id = selectedCoverageId();
+        const confirmed = await post(`/ops/public-coverage/${id}/confirm`, { reason: $('coverageReason').value.trim() });
+        $('coverageResult').textContent = `值守记录 ${id} 已由 ${confirmed.confirmedBy} 复核；请按活动时段配置其他覆盖记录。`;
+      } catch (error) { $('coverageResult').textContent = error.message; }
+    };
+    $('revokePublicCoverage').onclick = async () => {
+      try {
+        const id = selectedCoverageId();
+        await post(`/ops/public-coverage/${id}/revoke`, { reason: $('coverageReason').value.trim() });
+        $('coverageResult').textContent = `值守记录 ${id} 已撤销。`;
+        await refresh();
+      } catch (error) { $('coverageResult').textContent = error.message; }
+    };
     for (const [id, status] of [['closePublicGate', 'CLOSED'], ['openPublicGate', 'OPEN']]) {
       $(id).onclick = async () => {
-        try { await post('/ops/public-recruitment', { status, reason: $('publicGateReason').value }); $('publicGateReason').value = ''; refresh(); }
+        try { await post('/ops/public-recruitment', { status, reason: $('publicGateReason').value,
+          ...(status === 'OPEN' ? { coverageId: selectedCoverageId() } : {}) }); $('publicGateReason').value = ''; await refresh(); }
         catch (error) { $('status').textContent = error.message; }
       };
     }
@@ -884,6 +1010,14 @@
           if (!response.ok) throw new Error('服务器未确认退出');
         }
         requestGeneration++;
+        nextTriageOffset = null;
+        triageSnapshot = null;
+        $('moreReportTriage').disabled = true;
+        $('reportTriage').replaceChildren();
+        $('reportInspection').textContent = '';
+        $('reportCaseId').value = '';
+        $('reportAssignee').value = '';
+        $('reportScopeReason').value = '';
         nextNotificationFollowupOffset = null;
         notificationFollowupSnapshot = null;
         $('moreNotificationFollowups').disabled = true;

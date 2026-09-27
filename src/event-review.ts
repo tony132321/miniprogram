@@ -48,7 +48,7 @@ export async function reviewEvent(db: Database, actor: string, eventId: string, 
       throw new AppError('INVALID_STATE', '活动当前无需此审核');
     if (decision === 'APPROVED' && current.payload.approvalMode !== 'MANUAL')
       throw new AppError('REVIEW_REQUIRES_MANUAL_APPROVAL', '公开活动需先由主办方改为逐人审批报名', 409);
-    if (decision === 'APPROVED') await assertPublicRecruitmentOpen(tx, 'PUBLIC');
+    if (decision === 'APPROVED') await assertPublicRecruitmentOpen(tx, 'PUBLIC', current.payload);
     if (decision === 'APPROVED') {
       const now = await databaseNow(tx);
       if (!((current.status === 'RECRUITING' && now < Date.parse(current.payload.confirmationDeadline!)) ||

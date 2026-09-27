@@ -20,6 +20,17 @@ export async function downloadPersonalExport(db: Database, actor: string, ticket
   return exportPersonalData(db, actor);
 }
 
+export async function pruneExpiredPersonalExportTickets(db: Database): Promise<void> {
+  // Retain an expired ticket briefly so its owner receives the explicit 410
+  // recovery response; the ticket remains unusable throughout this period.
+  await db.query(`WITH removed AS (
+    DELETE FROM personal_export_tickets WHERE expires_at<=clock_timestamp()-interval '1 day'
+    RETURNING id,user_id
+  ) DELETE FROM idempotency i USING removed t
+    WHERE i.actor_id=t.user_id AND i.route='personal-export-ticket'
+      AND i.result->>'path'='/privacy/exports/' || t.id`);
+}
+
 // Return only records owned by this account. Shared activity facts stay in the event table;
 // another participant's identity is never included in this export.
 export async function exportPersonalData(db: Database, actor: string) {
@@ -39,6 +50,8 @@ export async function exportPersonalData(db: Database, actor: string) {
       JOIN events e ON e.id=o.event_id WHERE e.host_id=$1 ORDER BY o.completed_at,o.event_id`),
     hostedOutcomeReviews: await own(`SELECT r.event_id,r.decision,r.created_at FROM outcome_reviews r
       JOIN events e ON e.id=r.event_id WHERE e.host_id=$1 ORDER BY r.created_at,r.id`),
+    reportedOutcomeReviews: await own(`SELECT r.report_id,r.event_id,r.decision,r.created_at FROM outcome_reviews r
+      JOIN reports p ON p.id=r.report_id WHERE p.reporter_id=$1 ORDER BY r.created_at,r.id`),
     hostedVenueEvidence: await own(`SELECT v.event_id,v.event_version,v.venue_name,v.source_type,v.phase,v.recorded_at,v.expires_at,v.activity_end_at
       FROM venue_evidence v JOIN events e ON e.id=v.event_id WHERE e.host_id=$1 ORDER BY v.event_id,v.event_version`),
     createdExpenseLedgers: await own('SELECT id,event_id,total_fen,status,revision,superseded_by,created_at FROM expense_ledgers WHERE created_by=$1 ORDER BY created_at,id'),

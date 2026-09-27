@@ -5,14 +5,15 @@ import { isIP } from 'node:net';
 import type { Database } from './db.ts';
 import { AppError } from './errors.ts';
 import { createDraft, getEvent, publishEvent, rotateInvite, updateDraft } from './events.ts';
-import { getPublicGate, publicRecruitmentOpen, setPublicGate } from './public-gate.ts';
+import { confirmPublicCoverage, createPublicCoverage, getPublicGate, publicRecruitmentOpen,
+  revokePublicCoverage, setPublicGate } from './public-gate.ts';
 import { getEmergencyGate, setEmergencyGate } from './emergency-gate.ts';
 import { register, expressInterest, cancelRegistration, removeRegistration, reserveSeats, claimReservation, acceptOffer, declineOffer, approveRegistration, databaseNow } from './registrations.ts';
 import { previewEventChange, getPendingReconfirmation, changeEvent, reconfirm, confirmEvent, cancelEvent, createCheckInToken, checkIn, listCheckIns, requestManualCheckIn, respondManualCheckIn, listManualCheckIns, completeEvent, repeatEvent, listRepeatCandidates, recordExpense, listExpenses, markExpenseShare, recordOutcomeFeedback, getOutcomeEvidence } from './lifecycle.ts';
 import { localDraftSuggestion } from './ai.ts';
 import type { DraftProvider } from './ai-provider-boundary.ts';
 import { listAiDraftAlerts, runRecordedDraftProvider } from './ai-draft-requests.ts';
-import { createReport, listReports, listMyReports, changeReportStatus, createAppeal, listAppeals, listMyAppeals, changeAppealStatus, listMyRemovals, createPrivacyRequest, listPrivacyRequests, listPrivacyForOperations, getPrivacyRequestImpact } from './operations.ts';
+import { createReport, listReports, listReportTriage, inspectReportForSafety, assignReport, listMyReports, changeReportStatus, createAppeal, listAppeals, listMyAppeals, changeAppealStatus, listMyRemovals, createPrivacyRequest, listPrivacyRequests, listPrivacyForOperations, getPrivacyRequestImpact } from './operations.ts';
 import { actorFromBearer, loginWithWechat, logoutMember, type WechatExchange } from './auth.ts';
 import { setConsent, consentNotice, markNotificationOpened, getAttentionItems, listMemberNotifications } from './notifications.ts';
 import { listNotificationFollowups, listNotificationFollowupHistory, recordNotificationFollowup } from './notification-followups.ts';
@@ -139,7 +140,7 @@ export function createApp(db: Database, options: AppOptions) {
   const permissionsByActor = new Map(operatorAccounts.map(account => [`operator:${account.username}`,
     account.permissions ?? (options.operatorAuth ? [...OPERATOR_PERMISSIONS] : [])]));
   function requireOperator(actor: string, permission: OperatorPermission): void {
-    if (!operators.has(actor) || (options.environment === 'production' && !permissionsByActor.get(actor)?.includes(permission)))
+    if (!operators.has(actor) || (permissionsByActor.has(actor) && !permissionsByActor.get(actor)?.includes(permission)))
       throw new AppError('FORBIDDEN', '无运营权限', 403);
   }
   const trustedProxyIps = new Set((options.trustedProxyIps ?? []).map(canonicalIp));
@@ -195,9 +196,11 @@ export function createApp(db: Database, options: AppOptions) {
         await consumeRateLimit(db, `invite-ip:${peerScope(req, trustedProxyIps)}`, 60, 60_000);
         const token = path.slice(3);
         const { rows } = await db.query<{ id: string; status: string; payload: Record<string, unknown>; version: number;
-          recruiting: boolean; review_status: string }>("SELECT id,status,payload,version,recruiting,review_status FROM events WHERE invite_token=$1 AND invite_expires_at>now() AND status<>'DRAFT' AND (payload->>'visibility'<>'PUBLIC' OR (review_status='APPROVED' AND EXISTS (SELECT 1 FROM public_recruitment_gate WHERE id=1 AND status='OPEN')))", [token]);
+          recruiting: boolean; review_status: string }>("SELECT id,status,payload,version,recruiting,review_status FROM events WHERE invite_token=$1 AND invite_expires_at>now() AND status<>'DRAFT' AND (payload->>'visibility'<>'PUBLIC' OR review_status='APPROVED')", [token]);
         const row = rows[0];
         if (!row) throw new AppError('NOT_FOUND', '邀请已失效', 404);
+        if (row.payload.visibility === 'PUBLIC' && !(await publicRecruitmentOpen(db, false, row.payload)))
+          throw new AppError('NOT_FOUND', '邀请已失效', 404);
         const visitor = await actorFrom(req, db, options).catch(() => null);
         await recordAttributedOpen(db, visitor, row.id, token, requestUrl.searchParams.get('source'));
         const payload = { title: row.payload.title, startAt: row.payload.startAt, endAt: row.payload.endAt,
@@ -212,7 +215,7 @@ export function createApp(db: Database, options: AppOptions) {
           feeMode: row.payload.feeMode, feeCapFen: row.payload.feeCapFen, cancellationRule: row.payload.cancellationRule });
       }
       let actor: string;
-      if (path.startsWith('/ops/') && options.environment === 'production') {
+      if (path.startsWith('/ops/') && (options.environment === 'production' || req.headers.authorization?.startsWith('Bearer '))) {
         if (!operatorAccounts.length) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
         actor = await operatorFromBearer(db, req.headers.authorization, operatorAccounts);
       } else actor = await actorFrom(req, db, options);
@@ -294,7 +297,16 @@ export function createApp(db: Database, options: AppOptions) {
         requireOperator(actor, 'REPORTS');
         const offsetText = requestUrl.searchParams.get('offset') ?? '0';
         if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', '举报列表页码无效');
-        return send(res, 200, await listReports(db, Number(offsetText), requestUrl.searchParams.get('snapshot')));
+        return send(res, 200, await listReports(db, actor, Number(offsetText), requestUrl.searchParams.get('snapshot')));
+      }
+      if (path === '/ops/reports/triage' && method === 'GET') {
+        requireOperator(actor, 'SAFETY');
+        const offsetText = requestUrl.searchParams.get('offset') ?? '0';
+        if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', '待分配举报页码无效');
+        const activeAssignees = [...permissionsByActor].filter(([, permissions]) => permissions.includes('REPORTS'))
+          .map(([operatorId]) => operatorId);
+        return send(res, 200, await listReportTriage(db, activeAssignees, Number(offsetText),
+          requestUrl.searchParams.get('snapshot')));
       }
       if (path === '/ops/holds' && method === 'GET') {
         requireOperator(actor, 'SAFETY');
@@ -303,6 +315,24 @@ export function createApp(db: Database, options: AppOptions) {
       if (path === '/ops/public-recruitment' && method === 'GET') {
         requireOperator(actor, 'SAFETY');
         return send(res, 200, await getPublicGate(db));
+      }
+      if (path === '/ops/public-coverage' && method === 'POST') {
+        requireOperator(actor, 'SAFETY');
+        const key = keyFrom(req); const body = await readJson(req);
+        return send(res, 201, await createPublicCoverage(db, actor, body.startsAt, body.endsAt,
+          body.drillReference, body.drillCompletedAt, key));
+      }
+      const coverageConfirm = path.match(/^\/ops\/public-coverage\/([a-f0-9-]{36})\/confirm$/);
+      if (coverageConfirm && method === 'POST') {
+        requireOperator(actor, 'SAFETY');
+        const key = keyFrom(req); const body = await readJson(req);
+        return send(res, 200, await confirmPublicCoverage(db, actor, coverageConfirm[1]!, body.reason, key));
+      }
+      const coverageRevoke = path.match(/^\/ops\/public-coverage\/([a-f0-9-]{36})\/revoke$/);
+      if (coverageRevoke && method === 'POST') {
+        requireOperator(actor, 'SAFETY');
+        const key = keyFrom(req); const body = await readJson(req);
+        return send(res, 200, await revokePublicCoverage(db, actor, coverageRevoke[1]!, body.reason, key));
       }
       if (path === '/ops/emergency' && method === 'GET') {
         requireOperator(actor, 'SAFETY');
@@ -316,7 +346,7 @@ export function createApp(db: Database, options: AppOptions) {
       if (path === '/ops/public-recruitment' && method === 'POST') {
         requireOperator(actor, 'SAFETY');
         const key = keyFrom(req); const body = await readJson(req);
-        return send(res, 200, await setPublicGate(db, actor, body.status, body.reason, key));
+        return send(res, 200, await setPublicGate(db, actor, body.status, body.reason, key, body.coverageId));
       }
       if (path === '/ops/rate-limits' && method === 'GET') {
         requireOperator(actor, 'RATE_LIMITS');
@@ -413,6 +443,21 @@ export function createApp(db: Database, options: AppOptions) {
         return send(res, 200, await releaseEventHold(db, actor, releaseHold[1]!, body.reason, key));
       }
       const reportStatus = path.match(/^\/ops\/reports\/([^/]+)\/status$/);
+      const reportInspect = path.match(/^\/ops\/reports\/([^/]+)\/inspect$/);
+      if (reportInspect && method === 'POST') {
+        requireOperator(actor, 'SAFETY');
+        const body = await readJson(req);
+        return send(res, 200, await inspectReportForSafety(db, actor, reportInspect[1]!, body.reason));
+      }
+      const reportAssign = path.match(/^\/ops\/reports\/([^/]+)\/assign$/);
+      if (reportAssign && method === 'POST') {
+        requireOperator(actor, 'SAFETY');
+        const key = keyFrom(req); const body = await readJson(req);
+        const account = typeof body.assignee === 'string' ? operatorByName.get(body.assignee) : undefined;
+        if (!account || !(account.permissions ?? (options.operatorAuth ? [...OPERATOR_PERMISSIONS] : [])).includes('REPORTS'))
+          throw new AppError('BAD_REQUEST', '分配对象须为当前具名举报处理人员');
+        return send(res, 200, await assignReport(db, actor, reportAssign[1]!, `operator:${account.username}`, body.reason, key));
+      }
       if (reportStatus && method === 'POST') {
         requireOperator(actor, 'REPORTS');
         const key = keyFrom(req); const body = await readJson(req);
@@ -479,7 +524,7 @@ export function createApp(db: Database, options: AppOptions) {
             WHERE event_id=$1 AND claimed_by IS NULL AND released_at IS NULL AND expires_at>now()`, [id]);
           const stats = { ...(counts[0] ?? { confirmed: 0, waitlisted: 0, reconfirmRequired: 0, requested: 0 }), reserved: reservations[0]?.reserved ?? 0 };
           return send(res, 200, { ...event, stats, riskPaused: Boolean(await getActiveEventHold(db, id)) ||
-            (event.payload.visibility === 'PUBLIC' && !(await publicRecruitmentOpen(db))),
+            (event.payload.visibility === 'PUBLIC' && !(await publicRecruitmentOpen(db, false, event.payload))),
             formationRisk: event.status === 'CONFIRMED' && stats.confirmed < event.payload.minParticipants! });
         }
         if (action === 'registrations' && method === 'GET') {

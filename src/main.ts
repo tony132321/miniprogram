@@ -34,6 +34,10 @@ if (environment === 'production') {
   if (!operatorAccounts.some(account => account.permissions?.includes('JOBS')))
     throw new Error('OPS_ACCOUNTS_JSON requires a named JOBS operator for failed task recovery');
   validateRetentionPolicy(process.env.RETENTION_POLICY_JSON);
+  if (!operatorAccounts.some(dispatcher => dispatcher.permissions?.includes('SAFETY') &&
+    operatorAccounts.some(assignee => assignee.username !== dispatcher.username &&
+      assignee.permissions?.includes('REPORTS'))))
+    throw new Error('OPS_ACCOUNTS_JSON requires an independent SAFETY dispatcher and REPORTS assignee');
 }
 const dataPath = process.env.DATA_PATH ?? runtime.dataPath ?? '';
 if (environment !== 'production') await mkdir(dataPath, { recursive: true });

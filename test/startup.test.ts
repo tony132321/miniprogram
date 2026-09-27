@@ -75,9 +75,22 @@ test('production startup accepts separately assigned review roles before checkin
   const result = startWith({ WECHAT_APP_ID: 'test-appid', WECHAT_APP_SECRET: 'test-secret',
     RETENTION_POLICY_JSON: syntheticRetentionPolicy,
     OPS_ACCOUNTS_JSON: JSON.stringify([{ ...operator, permissions: [...operator.permissions, 'JOBS'] }, { ...operator, username: 'reviewer',
-      totpSecret: 'JBSWY3DPEHPK3PXPJBSWY3DPEHPK3PXP', permissions: ['APPEALS'] }]) });
+      totpSecret: 'JBSWY3DPEHPK3PXPJBSWY3DPEHPK3PXP', permissions: ['APPEALS'] }, { ...operator, username: 'safetydispatcher',
+      totpSecret: 'KRSXG5AUKRSXG5AUKRSXG5AUKRSXG5AU', permissions: ['SAFETY'] }]) });
   assert.equal(result.status, 1);
   assert.match(result.stderr, /DATABASE_URL is required/);
+});
+
+test('production startup requires a safety dispatcher independent of the report assignee', () => {
+  const shared = { ...operator, permissions: [...operator.permissions, 'JOBS', 'SAFETY'] };
+  const appealReviewer = { ...operator, username: 'appealreviewer',
+    totpSecret: 'JBSWY3DPEHPK3PXPJBSWY3DPEHPK3PXP', permissions: ['APPEALS'] };
+  const result = startWith({ WECHAT_APP_ID: 'test-appid', WECHAT_APP_SECRET: 'test-secret',
+    RETENTION_POLICY_JSON: syntheticRetentionPolicy,
+    OPS_ACCOUNTS_JSON: JSON.stringify([shared, appealReviewer]) });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /SAFETY.*REPORTS.*independent|independent.*SAFETY.*REPORTS/);
+  assert.doesNotMatch(result.stderr, /DATABASE_URL is required/);
 });
 
 test('production refuses real data startup without owner-approved purpose retention policy', () => {
