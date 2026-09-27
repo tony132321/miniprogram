@@ -21,4 +21,6 @@
 
 2026-09-27 复核：开发包 `check_package.py --verify-manifest` 返回 `package_contract=PASS`，但该检查明确未运行产品测试。当前仓库 `pnpm preflight:release` 仍以退出码 1 列出上述五项；因此没有发布配置或正式环境验收结果。
 
+2026-09-28 复核：[第 49 版候选验证](evidence/candidate-49-verification-2026-09-28.md)取得 510/510 本地测试、本机 PostgreSQL 双池与 48→49 升级证据；微信开发者工具另做[邀请审核](evidence/wechat-invite48-simulator-2026-09-28.md)和[通知页](evidence/wechat-pg02-schema49-simulator-2026-09-28.md)模拟器回归。`pnpm preflight:release` 再次以退出码 1 报相同五项正式配置缺口；这些本机证据不改变上表真实账号、目标环境和真人活动闸门。
+
 先取得主体／类目及真实 AppID、HTTPS 域名，再配置微信登录与订阅模板；同时确认个人信息保存与删除方案、值守人员和受控试点名单。随后完成目标环境演练、模拟器及真机验收、三场真人活动和负责人签署。任一高风险缺口仍未证明时维持受控原型范围，不把测试账号、演示活动或本机负载写成上线证据。
