@@ -388,7 +388,8 @@ export async function getPrivacyRequestImpact(db: Database, operator: string, re
        (SELECT count(*)::int FROM cohost_grants WHERE user_id=$1) AS cohost_grants,
        (SELECT count(*)::int FROM cohost_grants WHERE granted_by=$1) AS cohost_grants_issued,
        (SELECT count(*)::int FROM idempotency WHERE actor_id=$1) AS idempotency_records,
-       (SELECT count(*)::int FROM ai_draft_requests WHERE actor_id=$1) AS ai_draft_requests`, [request.user_id]);
+       (SELECT count(*)::int FROM ai_draft_requests WHERE actor_id=$1) AS ai_draft_requests,
+       (SELECT count(*)::int FROM ai_action_proposals WHERE actor_id=$1) AS ai_action_proposals`, [request.user_id]);
     const count = rows[0]!;
     await tx.query('INSERT INTO audit(id,actor_id,action,detail) VALUES($1,$2,$3,$4)',
       [randomUUID(), operator, 'READ_PRIVACY_IMPACT', JSON.stringify({ requestId })]);
@@ -415,7 +416,8 @@ export async function getPrivacyRequestImpact(db: Database, operator: string, re
       registrationRemovals: count.registration_removals, privacyRequests: count.privacy_requests,
       auditActions: count.audit_actions, businessEvents: count.business_events,
       cohostGrants: count.cohost_grants, cohostGrantsIssued: count.cohost_grants_issued,
-      idempotencyRecords: count.idempotency_records, aiDraftRequests: count.ai_draft_requests
+      idempotencyRecords: count.idempotency_records, aiDraftRequests: count.ai_draft_requests,
+      aiActionProposals: count.ai_action_proposals
     } };
   });
 }

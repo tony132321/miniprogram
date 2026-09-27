@@ -1,6 +1,12 @@
-# R1 验收状态（2026-09-25）
+# R1 验收状态（2026-09-27）
 
-2026-09-27 [本轮代码候选验证](evidence/public-coverage-v31-2026-09-27.md)：在原有工程上补齐公开活动具名值守与到期自动关闭、第 44 版举报工单分派权限、AI 草稿请求与手机号数据最小化、签到口令页面生命周期，以及个人导出中的人工裁决和过期票据清理。工单权限见[逐单权限证据](evidence/report-case-scope-2026-09-27.md)，签到与隐私变更分别见[签到证据](evidence/miniprogram-checkin-token-lifecycle-2026-09-27.md)和[隐私证据](evidence/privacy-reviewed-outcomes-and-expired-export-tickets-2026-09-27.md)。当前工作区执行 `pnpm test` **460/460**、`pnpm typecheck`、`pnpm audit --audit-level high` 和 `git diff --check` 均通过；本机 PostgreSQL 18.6 独立空库运行第 44 版迁移及双池验证，包含公开值守撤销跨池检查，退出码 0。`pnpm preflight:release` 明确未通过：仍缺正式 HTTPS API 合法域名、正式 AppID 与开发身份清理，并须启用开发者工具合法域名校验。合成测试和本机 PostgreSQL 不代表真人值守、真机、目标环境或三场线下试点通过。
+2026-09-27 [第 45 版代码候选验证](evidence/candidate-45-verification-2026-09-27.md)：合成 AI 动作审批/一次性事务执行与公告最小上下文见[协议说明](ai-action-protocol.md)，停用账号已排队通知与昵称边界也已补齐。当前合并工作树 `pnpm test` **473/473**、类型检查、高危依赖审计与格式检查通过；本机 PostgreSQL 18.6 第 45 版空库双池、40–45 旧库升级及 AI 动作同版本争用/跨到期验证通过。独立审查发现并复现的死锁、时限和权限竞态已修复。发布预检仍因正式 HTTPS/AppID/开发设置缺失失败；微信真机、真实值守、数据保留删除与三场线下试点仍待验。
+
+2026-09-27 [候选版微信开发者工具模拟器核验](evidence/wechat-candidate-2026-09-27.md)：当前候选工作区的活动页在已更新的微信开发者工具中编译打开成功；合成账号实际点击邀请报名与主办成局，页面和 HTTP 回读一致；通过真实输入框与页面方法完成动态口令签到，页面与 HTTP 都记录 `SCAN`。弹窗使用临时 mock，签到提交使用页面方法；本机测试身份与合成活动不代表真机、正式微信或真实线下验收。
+
+2026-09-27 [停用账号外部通知与昵称边界](evidence/disabled-account-login-2026-09-27.md)：已排队通知在最终发送前核对现有用户行的 `ACTIVE` 状态；非活跃用户不会被发送，旧活动昵称也不会继续显示给其他成员，原站内通知与审计保留。新增两条回归先失败后通过，通知与昵称定向测试 20/20、类型检查通过。真实账号停用、数据删除、完整去标识和备份重放仍未实施。
+
+2026-09-27 [第 44 版基线候选验证](evidence/public-coverage-v31-2026-09-27.md)：在原有工程上补齐公开活动具名值守与到期自动关闭、第 44 版举报工单分派权限、AI 草稿请求与手机号数据最小化、签到口令页面生命周期，以及个人导出中的人工裁决和过期票据清理。工单权限见[逐单权限证据](evidence/report-case-scope-2026-09-27.md)，签到与隐私变更分别见[签到证据](evidence/miniprogram-checkin-token-lifecycle-2026-09-27.md)和[隐私证据](evidence/privacy-reviewed-outcomes-and-expired-export-tickets-2026-09-27.md)。基线提交 `140d808` 前的工作区执行 `pnpm test` **460/460**、`pnpm typecheck`、`pnpm audit --audit-level high` 和 `git diff --check` 均通过；本机 PostgreSQL 18.6 独立空库运行第 44 版迁移及双池验证，包含公开值守撤销跨池检查，退出码 0。`pnpm preflight:release` 明确未通过：仍缺正式 HTTPS API 合法域名、正式 AppID 与开发身份清理，并须启用开发者工具合法域名校验。合成测试和本机 PostgreSQL 不代表真人值守、真机、目标环境或三场线下试点通过。
 
 2026-09-27 [独立席位整链路 API 与模拟器回归](evidence/r1-independent-seats-smoke-2026-09-27.md)补充 T33 本地证据：容量 4 且主办不占席，四位独立成员确认、第五人候补、退出后主动补位、外部提供方不可用的通知进入运营待跟进、成员签到、结项反馈及再约草稿不继承旧报名；更新后的微信开发者工具实际点击发布、五人报名、退出、补位和主办确认成局。隔离库副本调整活动时间后，又验证模拟扫码、结项、独立反馈和再约草稿，页面与 HTTP 回读一致。时间调整和扫码 mock 不代表真实时钟或真机；真实分享投递、真人活动与外部回执仍待验。
 

@@ -166,12 +166,14 @@ export async function dispatchNotification(db: Database, notificationId: string,
   });
   if (!claimed) return;
   await db.transaction(async tx => {
-    // Hold these locks through the provider call: a completed consent withdrawal,
-    // event change, or registration exit cannot be followed by a new send.
+    // Hold these locks through the provider call: a completed account disable,
+    // consent withdrawal, event change, or registration exit cannot be followed by a new send.
     const { rows: events } = await tx.query<{ version: number; status: string; review_status: string; visibility: string; before_start: boolean }>(
       `SELECT version,status,review_status,payload->>'visibility' AS visibility,
         clock_timestamp() < (payload->>'startAt')::timestamptz AS before_start
         FROM events WHERE id=$1 FOR SHARE`, [claimed.event_id]);
+    const { rows: users } = await tx.query<{ status: string }>(
+      'SELECT status FROM users WHERE id=$1 FOR SHARE', [claimed.user_id]);
     const { rows: registrations } = await tx.query<{ status: string }>('SELECT status FROM registrations WHERE event_id=$1 AND user_id=$2 FOR SHARE', [claimed.event_id, claimed.user_id]);
     const { rows: consents } = await tx.query<{ granted: boolean; notice_version: string | null }>(
       'SELECT granted,notice_version FROM notification_consents WHERE user_id=$1 AND purpose=$2 FOR SHARE',
@@ -198,7 +200,8 @@ export async function dispatchNotification(db: Database, notificationId: string,
       (claimed.kind === 'EVENT_REMINDER' && (!['NOT_REQUIRED', 'APPROVED'].includes(event?.review_status ?? '') || !event?.before_start)) ||
       (claimed.kind === 'WAITLIST_OFFER' && (registrationStatus !== 'OFFERED' || emergency[0]?.status !== 'OPEN' ||
         holds.length > 0 || (event?.visibility === 'PUBLIC' && publicGate[0]?.open !== true) || !offers[0]?.active));
-    const outcome = !consents[0]?.granted ? 'CONSENT_WITHDRAWN' :
+    const outcome = users[0] && users[0].status !== 'ACTIVE' ? 'ACCOUNT_DISABLED' :
+      !consents[0]?.granted ? 'CONSENT_WITHDRAWN' :
       consents[0].notice_version !== consentNotice('EVENT_REMINDER').version ? 'CONSENT_RECONFIRM_REQUIRED' :
       !event || event.version !== claimed.event_version ? 'STALE_VERSION' :
       noLongerRelevant ? 'STALE_STATE' : !adapter ? 'UNAVAILABLE' : null;

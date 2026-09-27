@@ -45,6 +45,7 @@ export async function listEventAliases(db: Database, actor: string, eventId: str
     `SELECT a.user_id,a.display_name,(a.user_id=e.host_id) AS is_host FROM event_aliases a
       JOIN events e ON e.id=a.event_id LEFT JOIN registrations r ON r.event_id=a.event_id AND r.user_id=a.user_id
       WHERE a.event_id=$1 AND (a.user_id=e.host_id OR r.status IN ('CONFIRMED','RECONFIRM_REQUIRED','WAITLISTED','OFFERED'))
+        AND NOT EXISTS (SELECT 1 FROM users u WHERE u.id=a.user_id AND u.status<>'ACTIVE')
         AND NOT EXISTS (SELECT 1 FROM user_blocks b WHERE b.revoked_at IS NULL
           AND ((b.blocker_id=$2 AND b.blocked_id=a.user_id) OR (b.blocker_id=a.user_id AND b.blocked_id=$2)))
       ORDER BY a.consented_at,a.user_id`, [eventId, actor]);

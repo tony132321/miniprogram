@@ -5,6 +5,7 @@ import { createDatabase } from '../src/db.ts';
 import { createApp } from '../src/server.ts';
 import { createDraft } from '../src/events.ts';
 import { setConsent } from '../src/notifications.ts';
+import { prepareAiAction } from '../src/ai-actions.ts';
 
 test('privacy impact inventory is operator-only, counted by purpose, and audited without raw content', async () => {
   const db = await createDatabase();
@@ -32,6 +33,8 @@ test('privacy impact inventory is operator-only, counted by purpose, and audited
     await db.query("INSERT INTO cohost_grants(id,event_id,user_id,granted_by,capabilities,expires_at) VALUES('grant-1',$1,'p1','p2',ARRAY['CHECK_IN'],now()+interval '1 day')", [event.id]);
     await db.query("INSERT INTO idempotency(actor_id,route,key,result) VALUES('p1','test','private-key','{}')");
     await db.query("INSERT INTO ai_draft_requests(actor_id,request_key,request_hash,status,budget_fen,known_cost_fen,result) VALUES('p1','private-ai-key',$1,'COMPLETED',20,7,'{}')", ['a'.repeat(64)]);
+    await prepareAiAction(db, 'p1', { kind: 'SAVE_DRAFT', eventId: event.id,
+      expectedVersion: event.version, payload: { title: '仅本人的建议' } }, 'private-ai-action');
     await db.query("INSERT INTO privacy_requests(id,user_id,kind) VALUES('request-1','p1','DELETE')");
     assert.equal((await get('/ops/privacy/request-1/impact', 'p1')).status, 403);
     assert.equal((await get('/ops/privacy/missing/impact', 'ops')).status, 404);
@@ -66,8 +69,9 @@ test('privacy impact inventory is operator-only, counted by purpose, and audited
     assert.equal(body.counts.outcomeFeedback, 1);
     assert.equal(body.counts.cohostGrants, 1);
     assert.equal(body.counts.privacyRequests, 1);
-    assert.equal(body.counts.idempotencyRecords, 3);
+    assert.equal(body.counts.idempotencyRecords, 4);
     assert.equal(body.counts.aiDraftRequests, 1);
+    assert.equal(body.counts.aiActionProposals, 1);
     assert.doesNotMatch(JSON.stringify(body), /private-openid|private question|private report|private alias|private-hash/);
     const audit = await db.query<{ actor_id: string; detail: { requestId: string } }>(
       "SELECT actor_id,detail FROM audit WHERE action='READ_PRIVACY_IMPACT'");

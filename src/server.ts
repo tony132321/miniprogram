@@ -13,6 +13,7 @@ import { previewEventChange, getPendingReconfirmation, changeEvent, reconfirm, c
 import { localDraftSuggestion } from './ai.ts';
 import type { DraftProvider } from './ai-provider-boundary.ts';
 import { listAiDraftAlerts, runRecordedDraftProvider } from './ai-draft-requests.ts';
+import { approveAiAction, executeAiAction, prepareAiAction, revokeAiAction } from './ai-actions.ts';
 import { createReport, listReports, listReportTriage, inspectReportForSafety, assignReport, listMyReports, changeReportStatus, createAppeal, listAppeals, listMyAppeals, changeAppealStatus, listMyRemovals, createPrivacyRequest, listPrivacyRequests, listPrivacyForOperations, getPrivacyRequestImpact } from './operations.ts';
 import { actorFromBearer, loginWithWechat, logoutMember, type WechatExchange } from './auth.ts';
 import { setConsent, consentNotice, markNotificationOpened, getAttentionItems, listMemberNotifications } from './notifications.ts';
@@ -153,6 +154,8 @@ export function createApp(db: Database, options: AppOptions) {
       if (path === '/health' && method === 'GET') return send(res, 200, { status: 'ok' });
       if (path === '/system/capabilities' && method === 'GET') return send(res, 200, { flags: R1_FEATURE_FLAGS });
       if (disabledFeatureForPath(path)) throw new AppError('FEATURE_DISABLED', '当前版本未开放此功能', 403);
+      if (path.startsWith('/ai/actions') && options.environment !== 'test')
+        throw new AppError('FEATURE_DISABLED', 'AI 动作协议仅用于隔离测试', 403);
       if (path === '/system/safety' && method === 'GET') {
         const gate = await getEmergencyGate(db);
         return send(res, 200, { status: gate.status, changedAt: gate.changedAt });
@@ -222,6 +225,23 @@ export function createApp(db: Database, options: AppOptions) {
       if (options.environment === 'production' && requiresVerifiedPilot(method, path) && !verifiedPilotUsers.has(actor))
         throw new AppError('PILOT_NOT_VERIFIED', '仅已人工核验的成年试点成员可发起或参加活动', 403);
       await limitAuthenticatedRequest(db, actor, method, path);
+      if (path === '/ai/actions:prepare' && method === 'POST') {
+        const key = keyFrom(req); const body = await readJson(req);
+        return send(res, 201, await prepareAiAction(db, actor, {
+          kind: body.kind, eventId: body.eventId, expectedVersion: versionFrom(body.expectedVersion), payload: body.payload
+        }, key));
+      }
+      const aiAction = path.match(/^\/ai\/actions\/([a-f0-9-]{36})\/(approve|revoke|execute)$/);
+      if (aiAction && method === 'POST') {
+        const key = keyFrom(req); const body = await readJson(req); const id = aiAction[1]!;
+        if (aiAction[2] === 'approve') return send(res, 200, await approveAiAction(db, actor, id,
+          body.approved, body.payloadHash, key));
+        if (aiAction[2] === 'revoke') return send(res, 200, await revokeAiAction(db, actor, id, key));
+        return send(res, 200, await executeAiAction(db, actor, id, {
+          kind: body.kind, eventId: body.eventId, expectedVersion: versionFrom(body.expectedVersion),
+          payload: body.payload, payloadHash: body.payloadHash
+        }, key));
+      }
       if (path === '/events/drafts:suggest-local' && method === 'POST') {
         const key = keyFrom(req);
         const body = await readJson(req);

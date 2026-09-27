@@ -18,6 +18,7 @@ let second: Database | undefined;
 try {
   original = await createProductionDatabase(url);
   await original.transaction(async tx => {
+    await tx.query('DROP TABLE ai_action_proposals');
     await tx.query('DROP TABLE report_assignments');
     await tx.query('DROP FUNCTION public_recruitment_covered(timestamptz,timestamptz)');
     await tx.query('ALTER TABLE public_recruitment_gate DROP COLUMN coverage_id');
@@ -50,7 +51,7 @@ try {
   [first, second] = await Promise.all([createProductionDatabase(url), createProductionDatabase(url)]);
   const { rows: migrations } = await second.query<{ version: number }>(
     'SELECT version FROM schema_migrations WHERE version>=40 ORDER BY version');
-  assert.deepEqual(migrations.map(row => row.version), [40, 41, 42, 43, 44]);
+  assert.deepEqual(migrations.map(row => row.version), [40, 41, 42, 43, 44, 45]);
   const { rows: snapshots } = await first.query<{ offer: number; event: number; registration: number }>(`SELECT
     (SELECT count(*)::int FROM offer_status_history WHERE legacy_snapshot=true) AS offer,
     (SELECT count(*)::int FROM event_status_history WHERE legacy_snapshot=true) AS event,

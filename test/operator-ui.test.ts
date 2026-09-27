@@ -175,7 +175,7 @@ test('operator privacy row can inspect redacted deletion impact counts without s
           appeals: 0, notifications: 2, notificationConsents: 1, notificationConsentHistory: 2,
           eventAliases: 1, shareIntents: 2, personalExportTickets: 1, blocksCreated: 1, blocksReceived: 1,
           shareOpens: 3, unknownSourceInviteOpens: 1, checkIns: 2, outcomeFeedback: 1,
-          cohostGrants: 1, privacyRequests: 1, idempotencyRecords: 4 } }) };
+          cohostGrants: 1, privacyRequests: 1, idempotencyRecords: 4, aiActionProposals: 2 } }) };
     return { ok: true, status: 200, json: async () => ({ items: [] }) };
   });
   await ui.item('refresh').onclick?.();
@@ -186,6 +186,7 @@ test('operator privacy row can inspect redacted deletion impact counts without s
   assert.match(row.children[1]!.textContent, /授权变更 2/);
   assert.match(row.children[1]!.textContent, /主办活动复核 2.*本人举报裁决 1/);
   assert.match(row.children[1]!.textContent, /分享打开 3.*未知来源邀请打开 1.*签到 2.*结束反馈 1.*协办授权 1.*隐私请求 1.*幂等记录 4/);
+  assert.match(row.children[1]!.textContent, /AI 动作提议 2/);
   assert.doesNotMatch(row.children[1]!.textContent, /正文|openid/);
 });
 

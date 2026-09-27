@@ -11,7 +11,7 @@ export type ContentStatus = 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED';
 export type ContentRow = { id: string; event_id: string; author_id: string; kind: ContentKind; parent_id: string | null; body: string; status: ContentStatus;
   moderation_reason?: string | null; event_version?: number | null; fact_event_version?: number | null; created_at: Date };
 
-async function requireMember(db: Queryable, actor: string, eventId: string) {
+export async function requireMember(db: Queryable, actor: string, eventId: string) {
   const event = await getEvent(db, actor, eventId);
   if (event.hostId !== actor && !event.cohostCapabilities?.length) {
     const { rows } = await db.query("SELECT 1 FROM registrations WHERE event_id=$1 AND user_id=$2 AND status IN ('CONFIRMED','RECONFIRM_REQUIRED','WAITLISTED','OFFERED')", [eventId, actor]);

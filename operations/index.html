@@ -275,7 +275,8 @@
               ['registrationRemovals', '报名移除'], ['cohostGrants', '协办授权'],
               ['cohostGrantsIssued', '发出的协办授权'], ['privacyRequests', '隐私请求'],
               ['auditActions', '审计记录'], ['businessEvents', '业务事件'],
-              ['idempotencyRecords', '幂等记录'], ['aiDraftRequests', 'AI 草稿请求']
+              ['idempotencyRecords', '幂等记录'], ['aiDraftRequests', 'AI 草稿请求'],
+              ['aiActionProposals', 'AI 动作提议']
             ];
             details.textContent = `待政策复核；已识别部分类别：${fields.map(([key, label]) => `${label} ${Number.isInteger(counts[key]) ? counts[key] : '—'}`).join('、')}。此清单未执行删除。`;
           } catch {

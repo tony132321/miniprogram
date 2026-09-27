@@ -44,7 +44,7 @@ function parseExplicitDateTime(value: unknown): number {
   return Date.parse(value);
 }
 
-function validateDraftFields(input: EventInput): void {
+export function validateDraftFields(input: EventInput): void {
   if (!input || typeof input !== 'object' || Array.isArray(input))
     throw new AppError('INVALID_EVENT', '草稿内容必须是字段对象');
   const fail = (field: string) => { throw new AppError('INVALID_EVENT', `草稿${field}无效，请修改后重试`); };
@@ -177,8 +177,12 @@ export async function createDraft(db: Database, actorId: string, input: EventInp
 }
 
 export async function updateDraft(db: Database, actorId: string, id: string, expectedVersion: number, patch: EventInput, key: string): Promise<EventRecord> {
+  return db.transaction(tx => updateDraftInTransaction(tx, actorId, id, expectedVersion, patch, key));
+}
+
+export async function updateDraftInTransaction(tx: Queryable, actorId: string, id: string, expectedVersion: number,
+  patch: EventInput, key: string): Promise<EventRecord> {
   if (!key || !patch || typeof patch !== 'object' || Array.isArray(patch)) throw new AppError('BAD_REQUEST', '草稿修改内容无效');
-  return db.transaction(async tx => {
     const route = `update-draft:${id}`;
     const old = await replay(tx, actorId, route, key);
     if (old) return old;
@@ -195,12 +199,15 @@ export async function updateDraft(db: Database, actorId: string, id: string, exp
     await saveReplay(tx, actorId, route, key, result);
     await tx.query('INSERT INTO audit(id,actor_id,event_id,action) VALUES($1,$2,$3,$4)', [randomUUID(), actorId, id, 'UPDATE_DRAFT']);
     return result;
-  });
 }
 
 export async function publishEvent(db: Database, actorId: string, id: string, expectedVersion: number, key: string): Promise<EventRecord> {
+  return db.transaction(tx => publishEventInTransaction(tx, actorId, id, expectedVersion, key));
+}
+
+export async function publishEventInTransaction(tx: Queryable, actorId: string, id: string, expectedVersion: number,
+  key: string): Promise<EventRecord> {
   if (!key) throw new AppError('BAD_REQUEST', '幂等键必填');
-  return db.transaction(async (tx) => {
     const route = `publish:${id}`;
     const old = await replay(tx, actorId, route, key);
     if (old) return old;
@@ -238,7 +245,6 @@ export async function publishEvent(db: Database, actorId: string, id: string, ex
     if (result.payload.hostParticipates) await tx.query('INSERT INTO audit(id,actor_id,event_id,action) VALUES($1,$2,$3,$4)',
       [randomUUID(), actorId, id, 'REGISTER_CONFIRMED']);
     return result;
-  });
 }
 
 export async function rotateInvite(db: Database, actorId: string, id: string, expectedVersion: number, key: string): Promise<EventRecord> {

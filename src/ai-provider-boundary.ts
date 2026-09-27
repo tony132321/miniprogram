@@ -1,5 +1,6 @@
 import type { EventInput } from './events.ts';
 import { localDraftSuggestion } from './ai.ts';
+import { redactAiContactText } from './ai-data-minimization.ts';
 
 export interface DraftProvider {
   // A conservative per-attempt upper bound in fen. An unknown bound disables the call.
@@ -46,8 +47,7 @@ function candidateFields(value: unknown): EventInput | null {
 export async function runDraftProvider(text: string, at: number, provider: DraftProvider, budgetFen: number,
   deadlineMs = 30_000): Promise<ProviderResult | FallbackResult> {
   const rule = localDraftSuggestion(text, at);
-  const providerText = text.replace(/(?<![0-9])(?:(?:\+?86)[\s().-]*)?1[3-9](?:[\s().-]*[0-9]){9}(?![0-9])/g,
-    '[手机号]');
+  const providerText = redactAiContactText(text);
   if (!Number.isSafeInteger(budgetFen) || budgetFen < 0) throw new Error('AI draft budget must be a nonnegative integer fen');
   if (!Number.isSafeInteger(deadlineMs) || deadlineMs < 1 || deadlineMs > 30_000) throw new Error('AI draft deadline must be 1..30000 ms');
   let spent = 0;
