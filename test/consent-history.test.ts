@@ -98,3 +98,25 @@ test('legacy grant is shown as requiring reconfirmation until a current-version 
     assert.equal((await get('/me/similar-invites')).granted, false);
   } finally { await new Promise<void>(resolve => app.close(() => resolve())); await db.close(); }
 });
+
+test('development identity creates a synthetic account only for a valid consent grant', async () => {
+  const db = await createDatabase();
+  const app = createApp(db, { environment: 'test', devAuth: true, checkInSecret: 'test-secret' });
+  app.listen(0, '127.0.0.1'); await once(app, 'listening');
+  const base = `http://127.0.0.1:${(app.address() as { port: number }).port}`;
+  const headers = { 'X-Dev-User': 'new-simulator-member', 'Content-Type': 'application/json',
+    'Idempotency-Key': 'synthetic-consent' };
+  try {
+    const status = await (await fetch(base + '/me/consents', { headers })).json() as { eventReminderNotice: { version: string } };
+    const post = (version: string) => fetch(base + '/me/consents', { method: 'POST', headers,
+      body: JSON.stringify({ eventReminder: true, noticeVersion: version }) });
+    assert.equal((await post('stale')).status, 409);
+    assert.equal((await db.query("SELECT id FROM users WHERE id='new-simulator-member'")).rows.length, 0);
+    assert.equal((await post(status.eventReminderNotice.version)).status, 200);
+    const { rows } = await db.query<{ wechat_openid: string }>(
+      "SELECT wechat_openid FROM users WHERE id='new-simulator-member'");
+    assert.equal(rows[0]?.wechat_openid, 'dev:new-simulator-member');
+    assert.equal((await db.query("SELECT granted FROM notification_consents WHERE user_id='new-simulator-member'"))
+      .rows[0]?.granted, true);
+  } finally { await new Promise<void>(resolve => app.close(() => resolve())); await db.close(); }
+});

@@ -84,6 +84,13 @@ async function actorFrom(req: IncomingMessage, db: Database, options: AppOptions
   return actorFromBearer(db, req.headers.authorization);
 }
 
+async function ensureDevelopmentConsentAccount(req: IncomingMessage, db: Database,
+  options: AppOptions, actor: string): Promise<void> {
+  if (!options.devAuth || options.environment === 'production' || req.headers['x-dev-user'] !== actor) return;
+  await db.query(`INSERT INTO users(id,wechat_openid) VALUES($1,$2)
+    ON CONFLICT (id) DO NOTHING`, [actor, `dev:${actor}`]);
+}
+
 function keyFrom(req: IncomingMessage): string {
   const key = req.headers['idempotency-key'];
   if (typeof key !== 'string' || key.length < 1 || key.length > 128) throw new AppError('MISSING_IDEMPOTENCY_KEY', '缺少有效幂等键');
@@ -306,6 +313,7 @@ export function createApp(db: Database, options: AppOptions) {
         const key = keyFrom(req); const body = await readJson(req);
         if (body.eventReminder === true && body.noticeVersion !== consentNotice('EVENT_REMINDER').version)
           throw new AppError('CONSENT_NOTICE_CHANGED', '授权说明已变化，请重新加载后再确认', 409);
+        if (body.eventReminder === true) await ensureDevelopmentConsentAccount(req, db, options, actor);
         return send(res, 200, await setConsent(db, actor, 'EVENT_REMINDER', body.eventReminder, key));
       }
       if (path === '/me/similar-invites' && method === 'GET') {
@@ -320,6 +328,7 @@ export function createApp(db: Database, options: AppOptions) {
         const key = keyFrom(req); const body = await readJson(req);
         if (body.granted === true && body.noticeVersion !== consentNotice('SIMILAR_ACTIVITY_INVITES').version)
           throw new AppError('CONSENT_NOTICE_CHANGED', '授权说明已变化，请重新加载后再确认', 409);
+        if (body.granted === true) await ensureDevelopmentConsentAccount(req, db, options, actor);
         return send(res, 200, await setConsent(db, actor, 'SIMILAR_ACTIVITY_INVITES', body.granted, key));
       }
       if (path === '/reports' && method === 'POST') return send(res, 201, await createReport(db, actor,
