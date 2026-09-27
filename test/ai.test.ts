@@ -71,5 +71,14 @@ test('duration alone does not invent a date or an end time', () => {
   const result = localDraftSuggestion('周六晚上八点打两小时羽毛球', Date.parse('2026-09-23T04:00:00.000Z'));
   assert.equal(result.fields.startAt, undefined);
   assert.equal(result.fields.endAt, undefined);
+  assert.equal(result.fields.templateDurationMinutes, 120);
+  assert.equal(result.fieldSources.templateDurationMinutes, 'USER_EXPLICIT');
+  assert.ok(result.unknown.includes('具体日期时间'));
+});
+
+test('an explicit three-hour duration remains available while its date needs confirmation', () => {
+  const result = localDraftSuggestion('周六晚上八点打三小时羽毛球', Date.parse('2026-09-23T04:00:00.000Z'));
+  assert.equal(result.fields.templateDurationMinutes, 180);
+  assert.equal(result.fields.endAt, undefined);
   assert.ok(result.unknown.includes('具体日期时间'));
 });

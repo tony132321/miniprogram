@@ -76,8 +76,10 @@ export function localDraftSuggestion(text: string, at = Date.now()): { aiStatus:
   if (city) { const startAt = localStartAt(text, at); if (startAt) put('startAt', startAt); }
   const duration = text.match(/([一二两三四五六七八九十\d]+)(?:个)?小时(半)?/);
   const hours = duration ? number(duration[1]!) : undefined;
-  if (fields.startAt && hours !== undefined && hours > 0 && hours <= 24) {
-    put('endAt', new Date(Date.parse(fields.startAt) + (hours + (duration![2] ? 0.5 : 0)) * 60 * 60_000).toISOString());
+  const durationMinutes = hours === undefined ? undefined : hours * 60 + (duration?.[2] ? 30 : 0);
+  if (durationMinutes !== undefined && durationMinutes > 0 && durationMinutes <= 24 * 60) {
+    put('templateDurationMinutes', durationMinutes);
+    if (fields.startAt) put('endAt', new Date(Date.parse(fields.startAt) + durationMinutes * 60_000).toISOString());
   }
   const unknown = [...(fields.startAt ? (fields.endAt ? [] : ['结束时间']) : ['具体日期时间']), ...(!fields.city ? ['城市'] : []),
     '公共场馆及预约依据', '最少人数', '主办方是否参加并占位', '报名与成局截止',

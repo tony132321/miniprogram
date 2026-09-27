@@ -542,6 +542,13 @@ test('AI unavailable exposes a labeled rule fallback without inventing venue', a
     assert.equal(answer.body.source, 'RULE_FALLBACK');
     assert.equal(answer.body.fields.maxParticipants, 6);
     assert.equal(answer.body.fields.venueName, undefined);
+    const duration = await f.request('/events/drafts:suggest-local', 'host', 'POST',
+      { text: '周六晚上八点打三小时羽毛球' }, 'ai-duration');
+    assert.equal(duration.body.fields.templateDurationMinutes, 180);
+    assert.equal(duration.body.fields.startAt, undefined);
+    const draft = await f.request('/events', 'host', 'POST', duration.body.fields, 'ai-duration-draft');
+    assert.equal(draft.status, 201);
+    assert.equal((await f.request(`/events/${draft.body.id}`, 'host')).body.payload.templateDurationMinutes, 180);
   } finally { await f.close(); }
 });
 

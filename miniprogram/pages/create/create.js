@@ -110,7 +110,7 @@ Page({
         form: { title: p.title || '', city: p.city || '', venueName: p.venueName || '', skillLevel: p.skillLevel || '',
           minParticipants: String(p.minParticipants ?? 4),
           maxParticipants: String(p.maxParticipants ?? 6),
-          feeCapYuan: templateDurationMinutes !== null ? '' : String((p.feeCapFen ?? 5000) / 100),
+          feeCapYuan: templateDurationMinutes !== null && p.feeCapFen === undefined ? '' : String((p.feeCapFen ?? 5000) / 100),
           cancellationRule: p.cancellationRule || '开始前可退出' },
         message: eventId ? '已载入当前活动规则。修改后先预览受影响成员，再确认生效。' : '已载入保存的草稿。' });
       wx.removeStorageSync('editDraftId');
@@ -244,12 +244,13 @@ Page({
           ? 'AI 生成建议未经核验；日期、场地、人数和费用请逐项确认。'
           : '当前未连接 AI，已用规则提取部分字段；日期、场地和费用请逐项确认。' };
       const names = { title: '标题', type: '类型', city: '城市', venueName: '场地', timeZone: '时区', startAt: '开始时间', endAt: '结束时间', maxParticipants: '最多人数',
-        skillLevel: '水平要求',
+        skillLevel: '水平要求', templateDurationMinutes: '活动时长',
         feeMode: '费用模式', feeCapFen: '每人费用上限' };
       const sources = { USER_EXPLICIT: '来自原话', TEMPLATE_DEFAULT: '模板默认', NEEDS_CONFIRMATION: '待确认' };
       updates.suggestionNotes = Object.keys(fields).map(key => {
         const value = key === 'startAt' || key === 'endAt' ? localDateTimeLabel(fields[key])
           : key === 'feeCapFen' ? fields[key] / 100 + ' 元'
+            : key === 'templateDurationMinutes' ? fields[key] + ' 分钟'
             : key === 'type' && fields[key] === 'badminton' ? '羽毛球' : fields[key];
         return `${names[key] || key}：${value}（${sources[result.fieldSources[key]] || '待确认'}）`;
       });
@@ -266,6 +267,15 @@ Page({
       if (fields.endAt) {
         const end = localParts(fields.endAt);
         updates.endDate = end.date; updates.endTime = end.time;
+      }
+      if (Number.isSafeInteger(fields.templateDurationMinutes) && fields.templateDurationMinutes > 0) {
+        updates.templateDurationMinutes = fields.templateDurationMinutes;
+        updates.repeatEndEdited = false;
+        if (!fields.endAt && (updates.startDate || this.data.startDate)) {
+          const end = endFromDuration(updates.startDate || this.data.startDate,
+            updates.startTime || this.data.startTime, fields.templateDurationMinutes);
+          updates.endDate = end.date; updates.endTime = end.time;
+        }
       }
       if (fields.maxParticipants) updates['form.maxParticipants'] = String(fields.maxParticipants);
       if (fields.skillLevel) updates['form.skillLevel'] = fields.skillLevel;
@@ -291,6 +301,7 @@ Page({
     const endAt = this.data.endDate ? iso(this.data.endDate, this.data.endTime) : undefined;
     const feeCapFen = f.feeCapYuan === '' ? undefined : Math.round(Number(f.feeCapYuan) * 100);
     return { title: f.title, type: 'badminton', startAt, endAt, timeZone: 'Asia/Shanghai', city: f.city,
+      ...(!this.data.editingEvent && this.data.templateDurationMinutes ? { templateDurationMinutes: this.data.templateDurationMinutes } : {}),
       skillLevel: (f.skillLevel || '').trim(),
       venueName: f.venueName, venueStatus: this.data.venueConfirmed ? 'HOST_CONFIRMED' : 'UNCONFIRMED', minParticipants: Number(f.minParticipants),
       maxParticipants: Number(f.maxParticipants),

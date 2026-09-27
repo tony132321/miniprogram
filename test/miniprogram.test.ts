@@ -696,9 +696,9 @@ test('relative-date draft suggestion shows the full city-local date and weekday 
   let page: Record<string, any> | undefined;
   const requests: Array<Record<string, unknown>> = [];
   const suggestion = { fields: { city: '深圳', timeZone: 'Asia/Shanghai', startAt: '2026-09-26T12:00:00.000Z',
-    endAt: '2026-09-26T14:00:00.000Z' },
+    endAt: '2026-09-26T14:00:00.000Z', templateDurationMinutes: 120 },
     fieldSources: { city: 'USER_EXPLICIT', timeZone: 'TEMPLATE_DEFAULT', startAt: 'USER_EXPLICIT',
-      endAt: 'USER_EXPLICIT' }, unknown: [], draft: { id: 'model-draft', version: 1 } };
+      endAt: 'USER_EXPLICIT', templateDurationMinutes: 'USER_EXPLICIT' }, unknown: [], draft: { id: 'model-draft', version: 1 } };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if (path === '../../utils/api.js') return { api: { async post(_path: string, body: Record<string, unknown>) {
@@ -720,10 +720,41 @@ test('relative-date draft suggestion shows the full city-local date and weekday 
   assert.equal(page.data.startTime, '20:00');
   assert.equal(page.data.endDate, '2026-09-26');
   assert.equal(page.data.endTime, '22:00');
+  assert.equal(page.data.templateDurationMinutes, 120);
+  page.setStartTime({ detail: { value: '21:00' } });
+  assert.equal(page.data.endTime, '23:00');
   assert.equal(page.data.draft.id, 'model-draft');
   await page.suggest();
   assert.equal(requests[0]?.eventId, undefined);
   assert.equal(requests[1]?.eventId, 'model-draft');
+});
+
+test('explicit duration survives a missing city until the host chooses a date', async () => {
+  let page: Record<string, any> | undefined;
+  const suggestion = { fields: { type: 'badminton', templateDurationMinutes: 180 },
+    fieldSources: { type: 'USER_EXPLICIT', templateDurationMinutes: 'USER_EXPLICIT' },
+    unknown: ['具体日期时间', '城市'] };
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: { async post() { return suggestion; } } };
+      if (path === '../../config.js') return { developmentUser: 'host' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: { getStorageSync() { return ''; } }, setTimeout() { return 1; }, clearTimeout() {}
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.setData({ aiText: '周六晚上八点打三小时羽毛球' });
+  await page.suggest();
+  assert.equal(page.data.startDate, '');
+  assert.equal(page.data.endDate, '');
+  assert.equal(page.data.templateDurationMinutes, 180);
+  assert.ok(page.data.suggestionNotes.includes('活动时长：180 分钟（来自原话）'));
+  page.setStartDate({ detail: { value: '2026-09-26' } });
+  assert.equal(page.data.endDate, '2026-09-26');
+  assert.equal(page.data.endTime, '23:00');
+  assert.equal(page.buildInput().templateDurationMinutes, 180);
 });
 
 test('a generated draft is labeled as unverified and still asks the host to confirm fields', async () => {
@@ -1094,6 +1125,32 @@ test('repeat draft carries its prior duration to a newly chosen date without ove
   page.setStartTime({ detail: { value: '21:00' } });
   assert.equal(page.data.endDate, '2027-01-03');
   assert.equal(page.data.endTime, '02:00');
+});
+
+test('a saved spoken-duration draft keeps its stated fee on reload', async () => {
+  let page: Record<string, any> | undefined;
+  const storage = new Map([['editDraftId', 'spoken-draft']]);
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: { async get(url: string) {
+        if (url === '/events/spoken-draft') return { id: 'spoken-draft', status: 'DRAFT', version: 1,
+          payload: { title: '球局', templateDurationMinutes: 180, feeMode: 'AA', feeCapFen: 5000 } };
+        throw new Error(`unexpected request ${url}`);
+      } } };
+      if (path === '../../config.js') return { developmentUser: 'host' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    getApp() { return { globalData: { ready: Promise.resolve() } }; },
+    wx: { getStorageSync(key: string) { return storage.get(key) || ''; }, removeStorageSync(key: string) { storage.delete(key); } }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  await page.onShow();
+  assert.equal(page.data.templateDurationMinutes, 180);
+  assert.equal(page.data.form.feeCapYuan, '50');
+  page.setStartDate({ detail: { value: '2027-01-02' } });
+  assert.equal(page.data.endTime, '23:00');
 });
 
 test('host seat is undecided until the creator explicitly chooses yes or no', async () => {
