@@ -1066,6 +1066,7 @@ test('repeat candidates include only participants who separately opted in', asyn
     await register(db, 'p1', e.id, e.version, 'repeat-p1');
     await register(db, 'p2', e.id, e.version, 'repeat-p2');
     await register(db, 'p3', e.id, e.version, 'repeat-p3');
+    await db.query("INSERT INTO users(id,wechat_openid) VALUES('p1','repeat-p1-openid')");
     await setConsent(db, 'p1', 'SIMILAR_ACTIVITY_INVITES', true, 'repeat-optin');
     await setConsent(db, 'p2', 'SIMILAR_ACTIVITY_INVITES', false, 'repeat-optout');
     await confirmEvent(db, 'host', e.id, e.version, 'repeat-confirm');
@@ -1077,6 +1078,14 @@ test('repeat candidates include only participants who separately opted in', asyn
     assert.deepEqual(await listRepeatCandidates(db, 'host', e.id), []);
     await setConsent(db, 'p1', 'SIMILAR_ACTIVITY_INVITES', true, 'repeat-reconfirm');
     assert.deepEqual(await listRepeatCandidates(db, 'host', e.id), ['p1']);
+    await db.query("UPDATE users SET status='DISABLED' WHERE id='p1'");
+    assert.deepEqual(await listRepeatCandidates(db, 'host', e.id), [],
+      'disabled account must not remain visible from a previous opt-in');
+    await db.query("UPDATE users SET status='ACTIVE' WHERE id='p1'");
+    assert.deepEqual(await listRepeatCandidates(db, 'host', e.id), ['p1']);
+    await db.query("INSERT INTO privacy_requests(id,user_id,kind) VALUES('repeat-delete-p1','p1','DELETE')");
+    assert.deepEqual(await listRepeatCandidates(db, 'host', e.id), [],
+      'an active account with old invite consent is hidden after requesting deletion');
     await setConsent(db, 'p1', 'SIMILAR_ACTIVITY_INVITES', false, 'repeat-withdraw');
     assert.deepEqual(await listRepeatCandidates(db, 'host', e.id), []);
   } finally { await db.close(); }

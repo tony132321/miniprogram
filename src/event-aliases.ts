@@ -19,7 +19,11 @@ export async function requireActiveMember(db: Queryable, actor: string, eventId:
 
 export async function setEventAlias(db: Database, actor: string, eventId: string, displayName: string | null,
   granted: boolean, key: string): Promise<{ granted: boolean; displayName: string | null }> {
+  // Check before the idempotency replay too: an old successful grant must not
+  // look like a new grant after a deletion request has been accepted.
+  if (granted === true) await assertAliasGrantAllowed(db, actor);
   return command(db, actor, `event-alias:${eventId}`, key, async tx => {
+    if (granted === true) await assertAliasGrantAllowed(tx, actor);
     await requireActiveMember(tx, actor, eventId);
     if (granted === false && displayName === null) {
       await tx.query('DELETE FROM event_aliases WHERE event_id=$1 AND user_id=$2', [eventId, actor]);
@@ -37,6 +41,14 @@ export async function setEventAlias(db: Database, actor: string, eventId: string
   });
 }
 
+async function assertAliasGrantAllowed(db: Queryable, actor: string): Promise<void> {
+  const { rows: users } = await db.query<{ status: string }>('SELECT status FROM users WHERE id=$1 FOR SHARE', [actor]);
+  if (users[0] && users[0].status !== 'ACTIVE') throw new AppError('ACCOUNT_DISABLED', '账号已停用', 403);
+  const { rows: deletions } = await db.query(`SELECT 1 FROM privacy_requests
+    WHERE user_id=$1 AND kind='DELETE' AND status NOT IN ('FULFILLED','CANCELLED') LIMIT 1 FOR SHARE`, [actor]);
+  if (deletions.length) throw new AppError('DELETE_REQUEST_PENDING', '注销或删除申请处理中，暂不能设置活动内昵称', 409);
+}
+
 export async function listEventAliases(db: Database, actor: string, eventId: string): Promise<Array<{
   id: string; displayName: string; isHost: boolean; isMine: boolean
 }>> {
@@ -46,6 +58,8 @@ export async function listEventAliases(db: Database, actor: string, eventId: str
       JOIN events e ON e.id=a.event_id LEFT JOIN registrations r ON r.event_id=a.event_id AND r.user_id=a.user_id
       WHERE a.event_id=$1 AND (a.user_id=e.host_id OR r.status IN ('CONFIRMED','RECONFIRM_REQUIRED','WAITLISTED','OFFERED'))
         AND NOT EXISTS (SELECT 1 FROM users u WHERE u.id=a.user_id AND u.status<>'ACTIVE')
+        AND NOT EXISTS (SELECT 1 FROM privacy_requests pr WHERE pr.user_id=a.user_id
+          AND pr.kind='DELETE' AND pr.status NOT IN ('FULFILLED','CANCELLED'))
         AND NOT EXISTS (SELECT 1 FROM user_blocks b WHERE b.revoked_at IS NULL
           AND ((b.blocker_id=$2 AND b.blocked_id=a.user_id) OR (b.blocker_id=a.user_id AND b.blocked_id=$2)))
       ORDER BY a.consented_at,a.user_id`, [eventId, actor]);

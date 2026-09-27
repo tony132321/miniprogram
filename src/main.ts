@@ -7,6 +7,8 @@ import { runDueJobs } from './jobs.ts';
 import { operatorAccountsFromEnvironment, type OperatorConfig } from './operator-auth.ts';
 import { resolveRuntimeStage } from './runtime-stage.ts';
 import { validateRetentionPolicy } from './retention-policy.ts';
+import { parseReportResponsePolicy } from './report-response-policy.ts';
+import { protectPendingDeletionRequests } from './operations.ts';
 
 const runtime = resolveRuntimeStage(process.env);
 const environment = runtime.environment;
@@ -20,6 +22,7 @@ if (process.env.OPS_ACCOUNTS_JSON !== undefined && operatorValues.some(Boolean))
 const operatorAuth: OperatorConfig | undefined = operatorValues.every(Boolean)
   ? { username: operatorValues[0]!, passwordHash: operatorValues[1]!, totpSecret: operatorValues[2]! } : undefined;
 const operatorAccounts = operatorAccountsFromEnvironment(process.env.OPS_ACCOUNTS_JSON);
+const reportResponsePolicy = parseReportResponsePolicy(process.env.REPORT_RESPONSE_POLICY_JSON);
 if (environment === 'production') {
   if (!process.env.WECHAT_APP_ID?.trim() || !process.env.WECHAT_APP_SECRET?.trim())
     throw new Error('WECHAT_APP_ID and WECHAT_APP_SECRET are required in production');
@@ -44,11 +47,12 @@ if (environment !== 'production') await mkdir(dataPath, { recursive: true });
 const db = environment === 'production'
   ? await createProductionDatabase(process.env.DATABASE_URL ?? '')
   : await createDatabase(dataPath);
+await protectPendingDeletionRequests(db);
 const wechatExchange = process.env.WECHAT_APP_ID && process.env.WECHAT_APP_SECRET
   ? createWechatExchange(process.env.WECHAT_APP_ID, process.env.WECHAT_APP_SECRET)
   : undefined;
 const server = createApp(db, {
-  environment, devAuth, checkInSecret, wechatExchange, operatorAuth, operatorAccounts,
+  environment, devAuth, checkInSecret, wechatExchange, operatorAuth, operatorAccounts, reportResponsePolicy,
   operationsUsers: environment === 'production' ? [] : (process.env.OPERATIONS_USERS ?? '').split(',').filter(Boolean),
   trustedProxyIps: (process.env.TRUSTED_PROXY_IPS ?? '').split(',').map(value => value.trim()).filter(Boolean),
   pilotUserIds: (process.env.PILOT_USER_IDS ?? '').split(',').map(value => value.trim()).filter(Boolean)

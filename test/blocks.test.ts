@@ -25,6 +25,7 @@ test('blocking an identified event member hides aliases both ways and excludes l
     await register(db, 'p2', event.id, event.version, 'block-p2');
     await setEventAlias(db, 'p1', event.id, '小明', true, 'block-alias-p1');
     await setEventAlias(db, 'p2', event.id, '小红', true, 'block-alias-p2');
+    await db.query("INSERT INTO users(id,wechat_openid) VALUES('p2','block-p2-openid')");
     const target = (await listEventAliases(db, 'p1', event.id)).find(item => item.displayName === '小红');
     assert.ok(target);
     await setConsent(db, 'p2', 'SIMILAR_ACTIVITY_INVITES', true, 'block-consent');

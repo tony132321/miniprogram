@@ -126,6 +126,38 @@ test('queued external notice skips a disabled account while keeping its in-app r
   } finally { await db.close(); }
 });
 
+test('an unresolved deletion request blocks queued external delivery and renewed consent', async () => {
+  const db = await createDatabase();
+  try {
+    const event = await published(db);
+    await db.query(`INSERT INTO users(id,wechat_openid) VALUES
+      ('p1','synthetic-delete-p1'),('p2','synthetic-delete-p2')`);
+    await setConsent(db, 'p1', 'EVENT_REMINDER', true, 'before-delete-p1');
+    await setConsent(db, 'p2', 'EVENT_REMINDER', true, 'before-delete-p2');
+    await register(db, 'p1', event.id, event.version, 'delete-register-p1');
+    await register(db, 'p2', event.id, event.version, 'delete-register-p2');
+    await db.query("INSERT INTO privacy_requests(id,user_id,kind) VALUES('delete-p1','p1','DELETE')");
+    await assert.rejects(() => setConsent(db, 'p1', 'EVENT_REMINDER', true, 'renew-after-delete'),
+      { code: 'DELETE_REQUEST_PENDING' });
+    await assert.rejects(() => setConsent(db, 'p1', 'EVENT_REMINDER', true, 'before-delete-p1'),
+      { code: 'DELETE_REQUEST_PENDING' }, 'old idempotency key cannot replay a grant while deletion is pending');
+    const sentTo: string[] = [];
+    await runDueJobs(db, Date.now(), { send: async item => {
+      sentTo.push(item.userId);
+      return { status: 'ACCEPTED', providerRef: `synthetic-${item.userId}` };
+    } });
+    assert.deepEqual(sentTo, ['p2']);
+    const { rows } = await db.query<{ user_id: string; external_status: string }>(
+      "SELECT user_id,external_status FROM notifications WHERE event_id=$1 AND kind='REGISTRATION_STATUS' ORDER BY user_id",
+      [event.id]);
+    assert.deepEqual(rows, [
+      { user_id: 'p1', external_status: 'DELETE_REQUEST_PENDING' },
+      { user_id: 'p2', external_status: 'PROVIDER_ACCEPTED' }
+    ]);
+    assert.equal((await setConsent(db, 'p1', 'EVENT_REMINDER', false, 'withdraw-during-delete')).granted, false);
+  } finally { await db.close(); }
+});
+
 test('a legacy reminder grant without the current notice version cannot authorize external dispatch', async () => {
   const db = await createDatabase();
   try {

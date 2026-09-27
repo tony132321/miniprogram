@@ -75,7 +75,7 @@ export async function exportPersonalData(db: Database, actor: string) {
     issuedCohostGrants: await own(`SELECT event_id,capabilities,expires_at,revoked_at,created_at
       FROM cohost_grants WHERE granted_by=$1 ORDER BY created_at,id`),
     notificationConsents: await own('SELECT purpose,granted,scope,notice_version,updated_at FROM notification_consents WHERE user_id=$1 ORDER BY purpose'),
-    notificationConsentHistory: await own(`SELECT purpose,scope,notice_version,notice_text,granted,changed_at
+    notificationConsentHistory: await own(`SELECT purpose,scope,notice_version,notice_text,granted,source,changed_at
       FROM notification_consent_history WHERE user_id=$1 ORDER BY changed_at,id`),
     aiDraftRequests: await own(`SELECT status,budget_fen,known_cost_fen,cost_status,result,created_at,finished_at
       FROM ai_draft_requests WHERE actor_id=$1 ORDER BY created_at,request_key`),
@@ -93,7 +93,8 @@ export async function exportPersonalData(db: Database, actor: string) {
     reports: await own('SELECT id,event_id,kind,description,status,resolution,updated_at,created_at FROM reports WHERE reporter_id=$1 ORDER BY created_at,id'),
     appeals: await own('SELECT id,report_id,removal_id,content_id,description,status,resolution,outcome,created_at,updated_at FROM appeals WHERE appellant_id=$1 ORDER BY created_at,id'),
     removals: await own('SELECT id,registration_id,event_id,reason,created_at FROM registration_removals WHERE user_id=$1 ORDER BY created_at,id'),
-    privacyRequests: await own('SELECT id,kind,status,created_at FROM privacy_requests WHERE user_id=$1 ORDER BY created_at,id'),
+    privacyRequests: await own(`SELECT id,kind,status,protection_applied_at,consents_revoked_count,
+      aliases_removed_count,created_at FROM privacy_requests WHERE user_id=$1 ORDER BY created_at,id`),
     auditActions: await own('SELECT id,event_id,action,created_at FROM audit WHERE actor_id=$1 ORDER BY created_at,id'),
     businessEvents: await own(`SELECT b.event_uuid,b.event_name,b.occurred_at,b.user_id_pseudonymous,
       b.activity_id,b.version,b.source,b.release,b.is_test FROM business_events b

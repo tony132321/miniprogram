@@ -48,3 +48,23 @@ test('disabled member nickname disappears from other members without deleting it
     assert.ok(audits.some(row => row.action === 'SET_EVENT_ALIAS'));
   } finally { await db.close(); }
 });
+
+test('pending deletion hides old nicknames and prevents granting a new visible alias', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'delete-alias-draft');
+    const event = await publishEvent(db, 'host', draft.id, draft.version, 'delete-alias-publish');
+    await register(db, 'p1', event.id, event.version, 'delete-alias-p1');
+    await register(db, 'p2', event.id, event.version, 'delete-alias-p2');
+    await db.query("INSERT INTO users(id,wechat_openid) VALUES('p1','delete-alias-openid')");
+    await setEventAlias(db, 'p1', event.id, '合成旧昵称', true, 'alias-before-delete');
+    assert.equal((await listEventAliases(db, 'p2', event.id))[0]?.displayName, '合成旧昵称');
+    await db.query("INSERT INTO privacy_requests(id,user_id,kind) VALUES('alias-delete-p1','p1','DELETE')");
+    assert.deepEqual(await listEventAliases(db, 'p2', event.id), []);
+    await assert.rejects(() => setEventAlias(db, 'p1', event.id, '合成新昵称', true, 'alias-after-delete'),
+      { code: 'DELETE_REQUEST_PENDING' });
+    await assert.rejects(() => setEventAlias(db, 'p1', event.id, '合成旧昵称', true, 'alias-before-delete'),
+      { code: 'DELETE_REQUEST_PENDING' });
+    assert.equal((await setEventAlias(db, 'p1', event.id, null, false, 'alias-withdraw-after-delete')).granted, false);
+  } finally { await db.close(); }
+});

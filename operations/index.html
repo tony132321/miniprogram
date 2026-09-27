@@ -34,14 +34,20 @@
     <p class="muted">最近 100 条人工时间记录（仅记录权限可见）</p><ul id="supportMinutesHistory"></ul>
   </section>
   <section><h2>举报</h2><ul id="reports"></ul><button id="moreReports" disabled>加载更多举报</button></section>
+  <section><h2>首次响应关注</h2>
+    <p class="muted">仅向安全运营显示逾期或尚未配置目标的工单元数据，不显示举报正文。目标时限仅用于内部提醒；实际人工响应与服务目标是否达成须另行核验。</p>
+    <button id="loadReportResponseAlerts">刷新首次响应关注</button><ul id="reportResponseAlerts"></ul>
+    <button id="moreReportResponseAlerts" disabled>加载更多关注工单</button>
+  </section>
   <section><h2>举报工单分派</h2>
-    <p class="muted">安全运营先查看待分配工单的最小信息。逐单查看正文须填写原因并留下审计；处理人员只能看到分配给自己的工单。</p>
+    <p class="muted">安全运营先查看待分配工单的最小信息。逐单查看正文须填写原因并留下审计；处理人员只能看到分配给自己的工单。改级前须从列表选取或逐单核查当前严重度；逾期高危工单不可降级。</p>
     <button id="loadReportTriage">加载待分配工单</button><ul id="reportTriage"></ul>
     <button id="moreReportTriage" disabled>加载更多待分配工单</button><br>
     <label>工单 ID <input id="reportCaseId" autocomplete="off"></label>
     <label>处理账号 <input id="reportAssignee" autocomplete="off" placeholder="具 REPORTS 权限的账号名"></label>
+    <label>严重度 <select id="reportSeverity"><option value="HIGH">高</option><option value="NORMAL">普通</option></select></label>
     <label>逐单核查或分配原因 <input id="reportScopeReason" autocomplete="off" placeholder="至少 10 字"></label><br>
-    <button id="inspectReport">逐单核查并留痕</button><button id="assignReport">分配给处理账号</button>
+    <button id="inspectReport">逐单核查并留痕</button><button id="assignReport">分配给处理账号</button><button id="classifyReportSeverity">逐单改级并留痕</button>
     <p id="reportInspection" role="status"></p>
   </section>
   <section><h2>待审核公开活动</h2><ul id="eventReviews"></ul><button id="moreEventReviews" disabled>加载更多待审活动</button></section>
@@ -86,6 +92,7 @@
     const $ = id => document.getElementById(id);
     $('token').value = sessionStorage.getItem('operatorToken') || '';
     let requestGeneration = 0;
+    const reportSeverityById = new Map();
     function headers() {
       const result = {};
       if ($('devUser').value.trim()) result['X-Dev-User'] = $('devUser').value.trim();
@@ -108,6 +115,17 @@
       if (response.status === 409 && data.code === 'QUEUE_CHANGED')
         throw Object.assign(new Error(data.message), { code: data.code });
       if (!response.ok) throw new Error(data.message || data.code || '读取举报失败');
+      return data;
+    }
+    async function loadReportResponseAlerts(denied, offset = 0, snapshot = null) {
+      const path = '/ops/reports/response-alerts';
+      const response = await fetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+        { headers: headers() });
+      const data = await response.json();
+      if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
+      if (response.status === 409 && data.code === 'QUEUE_CHANGED')
+        throw Object.assign(new Error(data.message), { code: data.code });
+      if (!response.ok) throw new Error(data.message || data.code || '读取首次响应关注失败');
       return data;
     }
     async function loadRegistrationAnomalies(denied, offset = 0, snapshot = null) {
@@ -227,6 +245,8 @@
     }
     let nextReportOffset = null;
     let reportSnapshot = null;
+    let nextResponseAlertOffset = null;
+    let responseAlertSnapshot = null;
     let nextAnomalyOffset = null;
     let anomalySnapshot = null;
     let nextPrivacyOffset = null;
@@ -288,7 +308,9 @@
     }
     function renderReports(reports) {
       for (const item of reports) {
-        const li = line($('reports'), `${item.kind} · ${item.status} · 活动 ${item.event_id || '未关联'} · ${item.description}`);
+        const li = line($('reports'), `${item.kind} · ${item.status} · ${item.severity || 'UNCLASSIFIED'} · ` +
+          `${item.first_response_due_at ? '目标时间 ' + item.first_response_due_at : '未配置目标'} · ` +
+          `活动 ${item.event_id || '未关联'} · ${item.description}`);
         if (item.event_id && item.kind === 'SAFETY') {
           const select = document.createElement('button'); select.textContent = '填入活动 ID';
           select.onclick = () => { $('holdEventId').value = item.event_id; $('holdReason').focus(); };
@@ -331,6 +353,53 @@
         }
       }
     }
+    function renderReportResponseAlerts(items) {
+      for (const item of items) {
+        line($('reportResponseAlerts'),
+          `${item.attention === 'OVERDUE' ? '逾期' : '未配置目标'} · ${item.kind} · ${item.severity} · 工单 ${item.id} · ` +
+          `处理人 ${item.assignee_id || '未分配'} · ${item.first_response_due_at ? '目标时间 ' + item.first_response_due_at : '目标时间待配置'}`);
+      }
+    }
+    $('loadReportResponseAlerts').onclick = async () => {
+      const generation = requestGeneration;
+      $('reportResponseAlerts').replaceChildren(); nextResponseAlertOffset = null; responseAlertSnapshot = null;
+      $('moreReportResponseAlerts').disabled = true;
+      try {
+        const denied = [];
+        const page = await loadReportResponseAlerts(denied);
+        if (generation !== requestGeneration) return;
+        if (denied.length) { $('status').textContent = '无权限查看首次响应关注'; return; }
+        renderReportResponseAlerts(page.items);
+        nextResponseAlertOffset = page.nextOffset ?? null;
+        responseAlertSnapshot = page.snapshot ?? null;
+        $('moreReportResponseAlerts').disabled = nextResponseAlertOffset === null;
+      } catch (error) { if (generation === requestGeneration)
+        $('status').textContent = error.message || '读取首次响应关注失败'; }
+    };
+    $('moreReportResponseAlerts').onclick = async () => {
+      if (nextResponseAlertOffset === null) return;
+      const generation = requestGeneration;
+      const offset = nextResponseAlertOffset;
+      nextResponseAlertOffset = null; $('moreReportResponseAlerts').disabled = true;
+      try {
+        const denied = [];
+        const page = await loadReportResponseAlerts(denied, offset, responseAlertSnapshot);
+        if (generation !== requestGeneration) return;
+        if (denied.length) { $('status').textContent = '无权限查看首次响应关注'; return; }
+        renderReportResponseAlerts(page.items);
+        nextResponseAlertOffset = page.nextOffset ?? null;
+        responseAlertSnapshot = page.snapshot ?? null;
+        $('moreReportResponseAlerts').disabled = nextResponseAlertOffset === null;
+      } catch (error) {
+        if (generation !== requestGeneration) return;
+        if (error.code === 'QUEUE_CHANGED') {
+          $('reportResponseAlerts').replaceChildren(); responseAlertSnapshot = null;
+          $('status').textContent = '首次响应关注已变化，请重新加载'; return;
+        }
+        nextResponseAlertOffset = offset; $('moreReportResponseAlerts').disabled = false;
+        $('status').textContent = error.message || '读取首次响应关注失败';
+      }
+    };
     let nextTriageOffset = null;
     let triageSnapshot = null;
     async function loadReportTriagePage(offset, snapshot) {
@@ -346,7 +415,9 @@
       }
       if (!response.ok) throw new Error(data.message || data.code || '读取待分配工单失败');
       for (const item of data.items || []) {
-        const row = line($('reportTriage'), `${item.kind} · ${item.status} · 工单 ${item.id}`);
+        reportSeverityById.set(item.id, item.severity);
+        const row = line($('reportTriage'), `${item.kind} · ${item.status} · ${item.severity || 'UNCLASSIFIED'} · ` +
+          `${item.first_response_due_at ? '目标时间 ' + item.first_response_due_at : '未配置目标'} · 工单 ${item.id}`);
         const pick = document.createElement('button'); pick.textContent = '填入工单 ID';
         pick.onclick = () => { $('reportCaseId').value = item.id; $('reportScopeReason').focus(); };
         row.appendChild(pick);
@@ -356,6 +427,7 @@
       $('moreReportTriage').disabled = nextTriageOffset === null;
     }
     $('loadReportTriage').onclick = async () => {
+      reportSeverityById.clear();
       $('reportTriage').replaceChildren(); nextTriageOffset = null; triageSnapshot = null;
       $('moreReportTriage').disabled = true;
       try { await loadReportTriagePage(0, null); }
@@ -377,7 +449,8 @@
       try {
         const item = await post(`/ops/reports/${encodeURIComponent(id)}/inspect`, { reason: $('reportScopeReason').value.trim() });
         if (generation !== requestGeneration) return;
-        $('reportInspection').textContent = `${item.kind} · ${item.status} · 活动 ${item.event_id || '未关联'} · ${item.description}`;
+        reportSeverityById.set(id, item.severity);
+        $('reportInspection').textContent = `${item.kind} · ${item.status} · ${item.severity || 'UNCLASSIFIED'} · 活动 ${item.event_id || '未关联'} · ${item.description}`;
       } catch (error) { if (generation === requestGeneration)
         $('reportInspection').textContent = error.message || '逐单核查失败'; }
     };
@@ -390,6 +463,23 @@
           { assignee, reason: $('reportScopeReason').value.trim() });
         if (await refresh()) $('status').textContent += ` · 工单已分配给 ${assignee}`;
       } catch (error) { $('status').textContent = error.message || '分配失败'; }
+    };
+    $('classifyReportSeverity').onclick = async () => {
+      const id = $('reportCaseId').value.trim();
+      if (!id) { $('status').textContent = '请填写工单 ID'; return; }
+      const expectedSeverity = reportSeverityById.get(id);
+      if (!['HIGH', 'NORMAL', 'UNCLASSIFIED'].includes(expectedSeverity)) {
+        $('status').textContent = '请先从待分配列表选取工单或逐单核查当前严重度'; return;
+      }
+      try {
+        await post(`/ops/reports/${encodeURIComponent(id)}/severity`,
+          { severity: $('reportSeverity').value, expectedSeverity,
+            reason: $('reportScopeReason').value.trim() });
+        if (await refresh()) $('status').textContent += ' · 工单严重度已更新并留痕';
+      } catch (error) {
+        reportSeverityById.delete(id);
+        $('status').textContent = error.message || '工单改级失败';
+      }
     };
     function renderAppeals(appeals) {
       for (const item of appeals) {
@@ -524,12 +614,16 @@
       $('moreReportTriage').disabled = true;
       $('reportTriage').replaceChildren();
       $('reportInspection').textContent = '';
+      reportSeverityById.clear();
       $('reportCaseId').value = '';
       $('reportAssignee').value = '';
       $('reportScopeReason').value = '';
       nextReportOffset = null;
       reportSnapshot = null;
       $('moreReports').disabled = true;
+      nextResponseAlertOffset = null;
+      responseAlertSnapshot = null;
+      $('moreReportResponseAlerts').disabled = true;
       nextAnomalyOffset = null;
       anomalySnapshot = null;
       $('moreRegistrationAnomalies').disabled = true;
@@ -556,9 +650,9 @@
       $('moreAiDraftAlerts').disabled = true;
       $('status').textContent = '读取中…';
       $('metrics').textContent = '读取中…';
-      for (const id of ['reports', 'eventReviews', 'holds', 'rateLimits', 'registrationAnomalies', 'notificationFollowups', 'notificationHistory', 'failedJobs', 'aiDraftAlerts', 'supportMinutesHistory', 'appeals', 'privacy', 'content']) $(id).replaceChildren();
+      for (const id of ['reports', 'reportResponseAlerts', 'eventReviews', 'holds', 'rateLimits', 'registrationAnomalies', 'notificationFollowups', 'notificationHistory', 'failedJobs', 'aiDraftAlerts', 'supportMinutesHistory', 'appeals', 'privacy', 'content']) $(id).replaceChildren();
       try {
-        const [reportPage, eventReviewPage, holds, rateLimits, anomalyPage, notificationFollowupPage, notificationHistory, failedJobPage, aiDraftAlertPage, supportMinutesHistory, appealPage, privacyPage, contentPage, publicGate, emergencyGate, metrics] = await Promise.all([loadReports(denied), loadEventReviews(denied), load('/ops/holds', denied), load('/ops/rate-limits', denied), loadRegistrationAnomalies(denied), loadNotificationFollowups(denied), load('/ops/notifications/followups/history', denied), loadFailedJobs(denied), loadAiDraftAlerts(denied), load('/ops/support-minutes', denied), loadAppeals(denied), loadPrivacy(denied), loadContent(denied), loadPublicGate(denied), loadEmergencyGate(denied), loadMetrics(denied)]);
+        const [reportPage, responseAlertPage, eventReviewPage, holds, rateLimits, anomalyPage, notificationFollowupPage, notificationHistory, failedJobPage, aiDraftAlertPage, supportMinutesHistory, appealPage, privacyPage, contentPage, publicGate, emergencyGate, metrics] = await Promise.all([loadReports(denied), loadReportResponseAlerts(denied), loadEventReviews(denied), load('/ops/holds', denied), load('/ops/rate-limits', denied), loadRegistrationAnomalies(denied), loadNotificationFollowups(denied), load('/ops/notifications/followups/history', denied), loadFailedJobs(denied), loadAiDraftAlerts(denied), load('/ops/support-minutes', denied), loadAppeals(denied), loadPrivacy(denied), loadContent(denied), loadPublicGate(denied), loadEmergencyGate(denied), loadMetrics(denied)]);
         if (generation !== requestGeneration) return false;
         const reports = reportPage.items;
         const registrationAnomalies = anomalyPage.items;
@@ -572,6 +666,9 @@
         nextReportOffset = reportPage.nextOffset ?? null;
         reportSnapshot = reportPage.snapshot ?? null;
         $('moreReports').disabled = nextReportOffset === null;
+        nextResponseAlertOffset = responseAlertPage.nextOffset ?? null;
+        responseAlertSnapshot = responseAlertPage.snapshot ?? null;
+        $('moreReportResponseAlerts').disabled = nextResponseAlertOffset === null;
         nextAnomalyOffset = anomalyPage.nextOffset ?? null;
         anomalySnapshot = anomalyPage.snapshot ?? null;
         $('moreRegistrationAnomalies').disabled = nextAnomalyOffset === null;
@@ -635,6 +732,7 @@
         $('closeEmergencyGate').disabled = !emergencyGate?.status || emergencyGate.status === 'CLOSED';
         $('openEmergencyGate').disabled = !emergencyGate?.status || emergencyGate.status === 'OPEN';
         renderReports(reports);
+        renderReportResponseAlerts(responseAlertPage.items);
         renderEventReviews(eventReviews);
         for (const item of holds) {
           const li = line($('holds'), `${item.status} · 活动 ${item.eventId} · 暂停原因：${item.reason} · 创建人 ${item.createdBy}${item.releaseReason ? ' · 解除原因：' + item.releaseReason : ''}`);
@@ -660,7 +758,7 @@
           line($('supportMinutesHistory'), `${item.recordedAt} · 活动 ${item.eventId} · ${item.category} · ${item.minutes} 分钟 · ${item.recordedBy}`);
         renderContent(content);
         const count = (path, amount) => denied.includes(path) ? '无权限' : amount;
-        $('status').textContent = `举报 ${count('/ops/reports', reportPage.total ?? reports.length)}、公开活动待审 ${count('/ops/events/reviews', eventReviewPage.total ?? eventReviews.length)}、活动暂停 ${count('/ops/holds', holds.filter(item => item.status === 'ACTIVE').length)}、异常请求 ${count('/ops/rate-limits', rateLimits.length)}、异常报名 ${count('/ops/registration-anomalies', anomalyPage.total ?? registrationAnomalies.length)}、通知待跟进 ${count('/ops/notifications/followups', notificationFollowupPage.total ?? notificationFollowups.length)}、最近已跟进 ${count('/ops/notifications/followups/history', notificationHistory.length)}、失败任务 ${count('/ops/jobs/failed', failedJobPage.total ?? failedJobs.length)}、AI 草稿异常 ${count('/ops/ai-draft-alerts', aiDraftAlertPage.total ?? aiDraftAlerts.length)}、申诉 ${count('/ops/appeals', appealPage.total ?? appeals.length)}、个人信息请求 ${count('/ops/privacy', privacyPage.total ?? privacy.length)}、待审核内容 ${count('/ops/content', contentPage.total ?? content.length)}${denied.length ? ' · 无权限：' + denied.join('、') : ''}`;
+        $('status').textContent = `举报 ${count('/ops/reports', reportPage.total ?? reports.length)}、首次响应关注 ${count('/ops/reports/response-alerts', responseAlertPage.total ?? responseAlertPage.items.length)}、公开活动待审 ${count('/ops/events/reviews', eventReviewPage.total ?? eventReviews.length)}、活动暂停 ${count('/ops/holds', holds.filter(item => item.status === 'ACTIVE').length)}、异常请求 ${count('/ops/rate-limits', rateLimits.length)}、异常报名 ${count('/ops/registration-anomalies', anomalyPage.total ?? registrationAnomalies.length)}、通知待跟进 ${count('/ops/notifications/followups', notificationFollowupPage.total ?? notificationFollowups.length)}、最近已跟进 ${count('/ops/notifications/followups/history', notificationHistory.length)}、失败任务 ${count('/ops/jobs/failed', failedJobPage.total ?? failedJobs.length)}、AI 草稿异常 ${count('/ops/ai-draft-alerts', aiDraftAlertPage.total ?? aiDraftAlerts.length)}、申诉 ${count('/ops/appeals', appealPage.total ?? appeals.length)}、个人信息请求 ${count('/ops/privacy', privacyPage.total ?? privacy.length)}、待审核内容 ${count('/ops/content', contentPage.total ?? content.length)}${denied.length ? ' · 无权限：' + denied.join('、') : ''}`;
         return true;
       } catch (error) {
         if (generation === requestGeneration) {
@@ -1015,7 +1113,12 @@
         triageSnapshot = null;
         $('moreReportTriage').disabled = true;
         $('reportTriage').replaceChildren();
+        nextResponseAlertOffset = null;
+        responseAlertSnapshot = null;
+        $('moreReportResponseAlerts').disabled = true;
+        $('reportResponseAlerts').replaceChildren();
         $('reportInspection').textContent = '';
+        reportSeverityById.clear();
         $('reportCaseId').value = '';
         $('reportAssignee').value = '';
         $('reportScopeReason').value = '';
@@ -1037,7 +1140,7 @@
         $('token').value = ''; sessionStorage.removeItem('operatorToken');
         $('status').textContent = '已退出登录';
         $('metrics').textContent = '已退出登录';
-        for (const id of ['reports', 'eventReviews', 'holds', 'rateLimits', 'registrationAnomalies', 'notificationFollowups', 'notificationHistory', 'failedJobs', 'appeals', 'privacy', 'content']) $(id).replaceChildren();
+        for (const id of ['reports', 'reportResponseAlerts', 'eventReviews', 'holds', 'rateLimits', 'registrationAnomalies', 'notificationFollowups', 'notificationHistory', 'failedJobs', 'appeals', 'privacy', 'content']) $(id).replaceChildren();
       } catch (error) { $('status').textContent = '退出失败：' + error.message; }
     };
     $('refresh').onclick = refresh;

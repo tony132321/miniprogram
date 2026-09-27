@@ -1,10 +1,66 @@
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { test } from 'node:test';
-import { mkdtemp, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, readdir, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { PGlite } from '@electric-sql/pglite';
 import { createDatabase, LATEST_SCHEMA_VERSION } from '../src/db.ts';
 import { getPilotMetrics } from '../src/metrics.ts';
+import { changeReportStatus, listReportResponseAlerts } from '../src/operations.ts';
+
+test('legacy in-review reports keep first response unknown through upgrade and closure', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'project-irl-report-response-upgrade-'));
+  try {
+    const old = await PGlite.create(directory);
+    try {
+      const migrationNames = (await readdir(new URL('../src/migrations/', import.meta.url)))
+        .filter(name => /^\d{4}_.*\.sql$/.test(name) && Number(name.slice(0, 4)) <= 45).sort();
+      assert.equal(migrationNames.length, 44);
+      await old.transaction(async tx => {
+        await tx.exec(`CREATE TABLE schema_migrations (
+          version integer PRIMARY KEY, checksum text NOT NULL, applied_at timestamptz NOT NULL DEFAULT now())`);
+        const files = [{ version: 1, url: new URL('../src/schema.sql', import.meta.url) },
+          ...migrationNames.map(name => ({ version: Number(name.slice(0, 4)),
+            url: new URL(`../src/migrations/${name}`, import.meta.url) }))];
+        for (const { version, url } of files) {
+          const sql = await readFile(url, 'utf8');
+          await tx.exec(sql);
+          await tx.query('INSERT INTO schema_migrations(version,checksum) VALUES($1,$2)',
+            [version, createHash('sha256').update(sql).digest('hex')]);
+        }
+      });
+      assert.equal((await old.query<{ version: number }>('SELECT max(version)::int AS version FROM schema_migrations'))
+        .rows[0]?.version, 45);
+      await old.query(`INSERT INTO reports(id,reporter_id,kind,description,status)
+        VALUES('legacy-review','member','SAFETY','旧工单已在处理中','IN_REVIEW')`);
+      await old.query(`INSERT INTO report_assignments(report_id,assignee_id,assigned_by,assignment_reason)
+        VALUES('legacy-review','operator:reviewer','operator:safety','迁移前已分配的工单')`);
+    } finally { await old.close(); }
+
+    const upgraded = await createDatabase(directory);
+    try {
+      const expectedChecksum = createHash('sha256').update(await readFile(
+        new URL('../src/migrations/0046_report_response_tracking.sql', import.meta.url), 'utf8')).digest('hex');
+      const migration = await upgraded.query<{ checksum: string }>(
+        'SELECT checksum FROM schema_migrations WHERE version=46');
+      assert.equal(migration.rows[0]?.checksum, expectedChecksum);
+      const before = await upgraded.query<{ first_response_state: string; first_responded_at: Date | null;
+        first_responded_by: string | null }>(
+        "SELECT first_response_state,first_responded_at,first_responded_by FROM reports WHERE id='legacy-review'");
+      assert.deepEqual(before.rows, [{ first_response_state: 'LEGACY_UNKNOWN',
+        first_responded_at: null, first_responded_by: null }]);
+      const attention = await listReportResponseAlerts(upgraded);
+      assert.equal(attention.items.some(item => item.id === 'legacy-review'), false);
+      await changeReportStatus(upgraded, 'operator:reviewer', 'legacy-review', 'RESOLVED',
+        '已完成迁移后核查并通知举报人', 'legacy-response-close');
+      const after = await upgraded.query<{ first_response_state: string; first_responded_at: Date | null;
+        first_responded_by: string | null }>(
+        "SELECT first_response_state,first_responded_at,first_responded_by FROM reports WHERE id='legacy-review'");
+      assert.deepEqual(after.rows, before.rows);
+    } finally { await upgraded.close(); }
+  } finally { await rm(directory, { recursive: true, force: true }); }
+});
 
 test('schema migration is recorded once and rejects a changed checksum on restart', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'project-irl-migration-'));

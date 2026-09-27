@@ -35,6 +35,13 @@ export async function setConsent(db: Database, actor: string, purpose: Notificat
   if (!['EVENT_REMINDER', 'SIMILAR_ACTIVITY_INVITES'].includes(purpose) || typeof granted !== 'boolean' || !actor || !key)
     throw new AppError('BAD_REQUEST', '通知同意参数无效');
   return db.transaction(async tx => {
+    if (granted) {
+      const { rows: users } = await tx.query<{ status: string }>('SELECT status FROM users WHERE id=$1 FOR SHARE', [actor]);
+      if (users[0] && users[0].status !== 'ACTIVE') throw new AppError('ACCOUNT_DISABLED', '账号已停用', 403);
+      const { rows: deletions } = await tx.query('SELECT 1 FROM privacy_requests WHERE user_id=$1 AND kind=$2 AND status NOT IN ($3,$4) LIMIT 1 FOR SHARE',
+        [actor, 'DELETE', 'FULFILLED', 'CANCELLED']);
+      if (deletions.length) throw new AppError('DELETE_REQUEST_PENDING', '注销或删除申请处理中，暂不能重新开启授权', 409);
+    }
     if (!(await claimIdempotency(tx, actor, `consent:${purpose}`, key))) {
       const { rows } = await tx.query<{ result: { purpose: NotificationPurpose; granted: boolean } }>('SELECT result FROM idempotency WHERE actor_id=$1 AND route=$2 AND key=$3', [actor, `consent:${purpose}`, key]);
       return rows[0]!.result;
@@ -174,6 +181,8 @@ export async function dispatchNotification(db: Database, notificationId: string,
         FROM events WHERE id=$1 FOR SHARE`, [claimed.event_id]);
     const { rows: users } = await tx.query<{ status: string }>(
       'SELECT status FROM users WHERE id=$1 FOR SHARE', [claimed.user_id]);
+    const { rows: deletions } = await tx.query(`SELECT 1 FROM privacy_requests
+      WHERE user_id=$1 AND kind='DELETE' AND status NOT IN ('FULFILLED','CANCELLED') LIMIT 1 FOR SHARE`, [claimed.user_id]);
     const { rows: registrations } = await tx.query<{ status: string }>('SELECT status FROM registrations WHERE event_id=$1 AND user_id=$2 FOR SHARE', [claimed.event_id, claimed.user_id]);
     const { rows: consents } = await tx.query<{ granted: boolean; notice_version: string | null }>(
       'SELECT granted,notice_version FROM notification_consents WHERE user_id=$1 AND purpose=$2 FOR SHARE',
@@ -201,6 +210,7 @@ export async function dispatchNotification(db: Database, notificationId: string,
       (claimed.kind === 'WAITLIST_OFFER' && (registrationStatus !== 'OFFERED' || emergency[0]?.status !== 'OPEN' ||
         holds.length > 0 || (event?.visibility === 'PUBLIC' && publicGate[0]?.open !== true) || !offers[0]?.active));
     const outcome = users[0] && users[0].status !== 'ACTIVE' ? 'ACCOUNT_DISABLED' :
+      deletions.length ? 'DELETE_REQUEST_PENDING' :
       !consents[0]?.granted ? 'CONSENT_WITHDRAWN' :
       consents[0].notice_version !== consentNotice('EVENT_REMINDER').version ? 'CONSENT_RECONFIRM_REQUIRED' :
       !event || event.version !== claimed.event_version ? 'STALE_VERSION' :

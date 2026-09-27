@@ -7,9 +7,11 @@ async function workbench(fetchMock: (path: string, options?: { method?: string; 
   const html = await readFile(new URL('../operations/index.html', import.meta.url), 'utf8');
   const script = html.match(/<script>([\s\S]*?)<\/script>/)?.[1];
   assert.ok(script);
-  const elements = new Map<string, { value: string; textContent: string; disabled: boolean; onclick?: () => Promise<void>; replaceChildren: () => void; appendChild: (child: unknown) => void; children: unknown[] }>();
+  const elements = new Map<string, { value: string; textContent: string; disabled: boolean; onclick?: () => Promise<void>;
+    focus: () => void; replaceChildren: () => void; appendChild: (child: unknown) => void; children: unknown[] }>();
   const item = (id: string) => {
-    if (!elements.has(id)) elements.set(id, { value: '', textContent: '', disabled: false, children: [], replaceChildren() { this.children = []; }, appendChild(child) { this.children.push(child); } });
+    if (!elements.has(id)) elements.set(id, { value: '', textContent: '', disabled: false, children: [],
+      focus() {}, replaceChildren() { this.children = []; }, appendChild(child) { this.children.push(child); } });
     return elements.get(id)!;
   };
   const storage = new Map([['operatorToken', 'session-token']]);
@@ -141,6 +143,72 @@ test('safety workbench inspects one report with a reason and assigns it to a nam
     { path: '/ops/reports/case-1/inspect', body: { reason: '接到现场安全告警，需逐单查看' } },
     { path: '/ops/reports/case-1/assign', body: { assignee: 'reviewer2', reason: '接到现场安全告警，需逐单查看' } }
   ]);
+});
+
+test('safety workbench shows overdue and unconfigured first-response cases without private descriptions', async () => {
+  const ui = await workbench(async path => {
+    if (path === '/ops/reports/response-alerts?offset=0') return { ok: true, status: 200,
+      json: async () => ({ items: [
+        { id: 'late-case', kind: 'SAFETY', status: 'OPEN', severity: 'HIGH', attention: 'OVERDUE',
+          first_response_due_at: '2026-09-27T09:00:00Z', assignee_id: 'operator:reviewer',
+          description: '不能在安全队列展示的举报正文' },
+        { id: 'old-case', kind: 'OTHER', status: 'OPEN', severity: 'UNCLASSIFIED',
+          attention: 'TARGET_UNCONFIGURED', first_response_due_at: null, assignee_id: null }
+      ], total: 2, nextOffset: null, snapshot: 'a'.repeat(32) }) };
+    return { ok: true, status: 200, json: async () => ({ items: [] }) };
+  });
+  await ui.item('loadReportResponseAlerts').onclick?.();
+  assert.equal(ui.item('reportResponseAlerts').children.length, 2);
+  const rendered = ui.item('reportResponseAlerts').children.map(item => (item as { textContent: string }).textContent).join(' ');
+  assert.match(rendered, /逾期/);
+  assert.match(rendered, /未配置目标/);
+  assert.doesNotMatch(rendered, /不能在安全队列展示的举报正文|15 分钟达标|24 小时达标/);
+});
+
+test('safety workbench sends a reason when reclassifying one report', async () => {
+  const writes: Array<{ path: string; body: Record<string, unknown> }> = [];
+  const ui = await workbench(async (path, options) => {
+    if (options?.method === 'POST') {
+      writes.push({ path, body: JSON.parse(options.body || '{}') });
+      return { ok: true, status: 200, json: async () => ({ reportId: 'case-2', severity: 'HIGH' }) };
+    }
+    if (path === '/ops/reports/triage?offset=0') return { ok: true, status: 200,
+      json: async () => ({ items: [{ id: 'case-2', kind: 'OTHER', status: 'OPEN', severity: 'NORMAL' }],
+        total: 1, nextOffset: null, snapshot: 'a'.repeat(32) }) };
+    return { ok: true, status: 200, json: async () => ({ items: [] }) };
+  });
+  ui.item('reportCaseId').value = 'case-2';
+  ui.item('reportSeverity').value = 'HIGH';
+  ui.item('reportScopeReason').value = '现场安全线索要求尽快核查';
+  await ui.item('classifyReportSeverity').onclick?.();
+  assert.equal(writes.length, 0);
+  assert.match(ui.item('status').textContent, /核查|列表|刷新/);
+  await ui.item('loadReportTriage').onclick?.();
+  const row = ui.item('reportTriage').children[0] as { children: Array<{ onclick?: () => void }> };
+  row.children[0]!.onclick?.();
+  await ui.item('classifyReportSeverity').onclick?.();
+  assert.deepEqual(writes, [{ path: '/ops/reports/case-2/severity', body: {
+    severity: 'HIGH', expectedSeverity: 'NORMAL', reason: '现场安全线索要求尽快核查' } }]);
+});
+
+test('report workbench shows severity and target time without exposing triage descriptions', async () => {
+  const ui = await workbench(async path => {
+    if (path === '/ops/reports?offset=0') return { ok: true, status: 200, json: async () => ({ items: [{
+      id: 'assigned-case', kind: 'CONTENT', status: 'OPEN', description: '处理员可见正文', severity: 'NORMAL',
+      first_response_due_at: '2026-09-27T11:00:00Z' }], total: 1, nextOffset: null }) };
+    if (path === '/ops/reports/triage?offset=0') return { ok: true, status: 200, json: async () => ({ items: [{
+      id: 'triage-case', kind: 'SAFETY', status: 'OPEN', severity: 'UNCLASSIFIED',
+      first_response_due_at: null, description: '安全页不得展示的正文' }], total: 1, nextOffset: null }) };
+    return { ok: true, status: 200, json: async () => ({ items: [] }) };
+  });
+  await ui.item('refresh').onclick?.();
+  await ui.item('loadReportTriage').onclick?.();
+  assert.match((ui.item('reports').children[0] as { textContent: string }).textContent,
+    /NORMAL.*2026-09-27T11:00:00Z/);
+  assert.match((ui.item('reportTriage').children[0] as { textContent: string }).textContent,
+    /UNCLASSIFIED.*未配置目标/);
+  assert.doesNotMatch((ui.item('reportTriage').children[0] as { textContent: string }).textContent,
+    /安全页不得展示的正文/);
 });
 
 test('logging out removes the safety inspection and triage details from the workbench', async () => {

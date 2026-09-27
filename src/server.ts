@@ -14,7 +14,8 @@ import { localDraftSuggestion } from './ai.ts';
 import type { DraftProvider } from './ai-provider-boundary.ts';
 import { listAiDraftAlerts, runRecordedDraftProvider } from './ai-draft-requests.ts';
 import { approveAiAction, executeAiAction, prepareAiAction, revokeAiAction } from './ai-actions.ts';
-import { createReport, listReports, listReportTriage, inspectReportForSafety, assignReport, listMyReports, changeReportStatus, createAppeal, listAppeals, listMyAppeals, changeAppealStatus, listMyRemovals, createPrivacyRequest, listPrivacyRequests, listPrivacyForOperations, getPrivacyRequestImpact } from './operations.ts';
+import { createReport, listReports, listReportTriage, listReportResponseAlerts, inspectReportForSafety, assignReport, classifyReportSeverity, listMyReports, changeReportStatus, createAppeal, listAppeals, listMyAppeals, changeAppealStatus, listMyRemovals, createPrivacyRequest, listPrivacyRequests, listPrivacyForOperations, getPrivacyRequestImpact } from './operations.ts';
+import type { ReportResponsePolicy } from './report-response-policy.ts';
 import { actorFromBearer, loginWithWechat, logoutMember, type WechatExchange } from './auth.ts';
 import { setConsent, consentNotice, markNotificationOpened, getAttentionItems, listMemberNotifications } from './notifications.ts';
 import { listNotificationFollowups, listNotificationFollowupHistory, recordNotificationFollowup } from './notification-followups.ts';
@@ -49,6 +50,7 @@ export interface AppOptions {
   pilotUserIds?: string[];
   aiDraftProvider?: DraftProvider;
   aiDraftBudgetFen?: number;
+  reportResponsePolicy?: ReportResponsePolicy;
 }
 
 function send(res: ServerResponse, status: number, data: unknown): void {
@@ -311,7 +313,8 @@ export function createApp(db: Database, options: AppOptions) {
           throw new AppError('CONSENT_NOTICE_CHANGED', '授权说明已变化，请重新加载后再确认', 409);
         return send(res, 200, await setConsent(db, actor, 'SIMILAR_ACTIVITY_INVITES', body.granted, key));
       }
-      if (path === '/reports' && method === 'POST') return send(res, 201, await createReport(db, actor, await readJson(req), keyFrom(req)));
+      if (path === '/reports' && method === 'POST') return send(res, 201, await createReport(db, actor,
+        await readJson(req), keyFrom(req), options.reportResponsePolicy));
       if (path === '/me/reports' && method === 'GET') return send(res, 200, { items: await listMyReports(db, actor) });
       if (path === '/ops/reports' && method === 'GET') {
         requireOperator(actor, 'REPORTS');
@@ -326,6 +329,13 @@ export function createApp(db: Database, options: AppOptions) {
         const activeAssignees = [...permissionsByActor].filter(([, permissions]) => permissions.includes('REPORTS'))
           .map(([operatorId]) => operatorId);
         return send(res, 200, await listReportTriage(db, activeAssignees, Number(offsetText),
+          requestUrl.searchParams.get('snapshot')));
+      }
+      if (path === '/ops/reports/response-alerts' && method === 'GET') {
+        requireOperator(actor, 'SAFETY');
+        const offsetText = requestUrl.searchParams.get('offset') ?? '0';
+        if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', '首次响应关注列表页码无效');
+        return send(res, 200, await listReportResponseAlerts(db, Number(offsetText),
           requestUrl.searchParams.get('snapshot')));
       }
       if (path === '/ops/holds' && method === 'GET') {
@@ -477,6 +487,13 @@ export function createApp(db: Database, options: AppOptions) {
         if (!account || !(account.permissions ?? (options.operatorAuth ? [...OPERATOR_PERMISSIONS] : [])).includes('REPORTS'))
           throw new AppError('BAD_REQUEST', '分配对象须为当前具名举报处理人员');
         return send(res, 200, await assignReport(db, actor, reportAssign[1]!, `operator:${account.username}`, body.reason, key));
+      }
+      const reportSeverity = path.match(/^\/ops\/reports\/([^/]+)\/severity$/);
+      if (reportSeverity && method === 'POST') {
+        requireOperator(actor, 'SAFETY');
+        const key = keyFrom(req); const body = await readJson(req);
+        return send(res, 200, await classifyReportSeverity(db, actor, reportSeverity[1]!, body.severity,
+          body.expectedSeverity, body.reason, key, options.reportResponsePolicy));
       }
       if (reportStatus && method === 'POST') {
         requireOperator(actor, 'REPORTS');

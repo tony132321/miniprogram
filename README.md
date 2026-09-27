@@ -59,6 +59,8 @@ pnpm preflight:release
 
 候选和生产阶段还要求已核查的用途级 `RETENTION_POLICY_JSON`，格式见[保留策略配置](docs/retention-policy-contract.md)。开发包中未批准的提案会被拒绝；格式通过仍不能替代删除执行与恢复演练。
 
+举报首次响应的默认严重度与目标分钟数可通过 `REPORT_RESPONSE_POLICY_JSON` 配置，格式及实际能力边界见[首次响应目标配置](docs/report-response-policy.md)。未配置时工单仍可提交，但安全运营队列会标出缺少目标；界面不宣称服务时限达成。
+
 初次配置可在可信终端生成一组新凭据（命令不会把密码作为进程参数）：
 
 ```bash

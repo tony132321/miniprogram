@@ -8,13 +8,15 @@ import { acceptOffer, cancelRegistration, claimReservation, expireOffers, expire
 import { getPublicGate, revokePublicCoverage, setPublicGate } from '../src/public-gate.ts';
 import { getEmergencyGate, setEmergencyGate } from '../src/emergency-gate.ts';
 import { runDueJobs } from '../src/jobs.ts';
-import { setConsent } from '../src/notifications.ts';
+import { dispatchNotification, setConsent } from '../src/notifications.ts';
+import { listEventAliases, setEventAlias } from '../src/event-aliases.ts';
 import { listNotificationFollowups, listNotificationFollowupHistory, recordNotificationFollowup } from '../src/notification-followups.ts';
 import { listFailedJobs, retryFailedJob } from '../src/job-recovery.ts';
 import { exportPersonalData } from '../src/privacy.ts';
 import { getPilotMetrics } from '../src/metrics.ts';
 import { askCurrentFact, createContent, moderateContent, listContent } from '../src/collaboration.ts';
-import { createReport, listReports, listMyReports, changeReportStatus, createAppeal, changeAppealStatus } from '../src/operations.ts';
+import { createPrivacyRequest, listPrivacyRequests, createReport, listReports, listMyReports, changeReportStatus, classifyReportSeverity,
+  createAppeal, changeAppealStatus } from '../src/operations.ts';
 import { recordSupportMinutes } from '../src/support-minutes.ts';
 import { hashOperatorPassword, loginOperator, logoutOperator, operatorFromBearer, totpCode } from '../src/operator-auth.ts';
 import { actorFromBearer, loginWithWechat, logoutMember } from '../src/auth.ts';
@@ -48,6 +50,70 @@ try {
   };
   const draft = await createDraft(first, 'pg_host', input, 'postgres-draft');
   const event = await publishEvent(first, 'pg_host', draft.id, draft.version, 'postgres-publish');
+  await first.query("INSERT INTO users(id,wechat_openid) VALUES('pg_privacy_member','pg-privacy-openid')");
+  const privacyEvent = await createDraft(first, 'pg_privacy_member', input, 'pg-privacy-event');
+  await setConsent(first, 'pg_privacy_member', 'EVENT_REMINDER', true, 'pg-privacy-reminder-grant');
+  await setConsent(first, 'pg_privacy_member', 'SIMILAR_ACTIVITY_INVITES', true, 'pg-privacy-repeat-grant');
+  await setEventAlias(first, 'pg_privacy_member', privacyEvent.id, '待撤销活动昵称', true, 'pg-privacy-alias');
+  assert.equal((await listEventAliases(second, 'pg_privacy_member', privacyEvent.id))[0]?.displayName, '待撤销活动昵称');
+  await first.query(`INSERT INTO notifications(id,event_id,user_id,kind,event_version)
+    VALUES('pg-privacy-before-delete',$1,'pg_privacy_member','EVENT_CANCELLED',$2)`,
+  [privacyEvent.id, privacyEvent.version]);
+  let signalSend!: () => void;
+  let releaseSend!: () => void;
+  const sendEntered = new Promise<void>(resolve => { signalSend = resolve; });
+  const sendRelease = new Promise<void>(resolve => { releaseSend = resolve; });
+  let privacyProviderCalls = 0;
+  const sending = dispatchNotification(first, 'pg-privacy-before-delete', { send: async () => {
+    privacyProviderCalls++;
+    signalSend();
+    await sendRelease;
+    return { status: 'ACCEPTED', providerRef: 'pg-privacy-before-delete-ref' };
+  } });
+  await Promise.race([sendEntered, sending.then(() => { throw new Error('privacy provider was not entered'); })]);
+  const deleting = createPrivacyRequest(second, 'pg_privacy_member', { kind: 'DELETE' }, 'pg-privacy-delete');
+  try {
+    const beforeRelease = await Promise.race([deleting.then(() => 'finished', () => 'failed'),
+      new Promise<string>(resolve => setTimeout(() => resolve('waiting'), 150))]);
+    assert.equal(beforeRelease, 'waiting', 'DELETE must wait for the final external send holding the user row');
+  } finally { releaseSend(); }
+  await sending;
+  const privacyReceipt = await deleting;
+  assert.equal(privacyReceipt.status, 'PROTECTED_PENDING_POLICY');
+  assert.equal(privacyReceipt.protection?.state, 'APPLIED');
+  assert.equal(privacyReceipt.protection?.consentWithdrawals, 2);
+  assert.equal(privacyReceipt.protection?.aliasesRemoved, 1);
+  assert.deepEqual((await listPrivacyRequests(first, 'pg_privacy_member')).find(row => row.id === privacyReceipt.id), privacyReceipt);
+  assert.deepEqual((await first.query<{ purpose: string; granted: boolean }>(`SELECT purpose,granted FROM notification_consents
+    WHERE user_id='pg_privacy_member' ORDER BY purpose`)).rows,
+  [{ purpose: 'EVENT_REMINDER', granted: false }, { purpose: 'SIMILAR_ACTIVITY_INVITES', granted: false }]);
+  assert.deepEqual(await listEventAliases(first, 'pg_privacy_member', privacyEvent.id), []);
+  assert.equal((await first.query<{ external_status: string }>(
+    "SELECT external_status FROM notifications WHERE id='pg-privacy-before-delete'")).rows[0]?.external_status,
+  'PROVIDER_ACCEPTED');
+  assert.deepEqual(await createPrivacyRequest(first, 'pg_privacy_member', { kind: 'DELETE' }, 'pg-privacy-delete-repeat'),
+    privacyReceipt);
+  assert.deepEqual(await createPrivacyRequest(second, 'pg_privacy_member', { kind: 'DELETE' }, 'pg-privacy-delete'),
+    privacyReceipt);
+  assert.equal((await second.query<{ n: number }>(`SELECT count(*)::int AS n FROM notification_consent_history
+    WHERE user_id='pg_privacy_member' AND source='DELETE_REQUEST'`)).rows[0]?.n, 2);
+  assert.equal((await second.query<{ n: number }>(`SELECT count(*)::int AS n FROM audit
+    WHERE actor_id='pg_privacy_member' AND action='PRIVACY_DELETE_PROTECTED'`)).rows[0]?.n, 1);
+  await assert.rejects(() => setConsent(first!, 'pg_privacy_member', 'EVENT_REMINDER', true,
+    'pg-privacy-reminder-regrant'), { code: 'DELETE_REQUEST_PENDING' });
+  await assert.rejects(() => setEventAlias(second!, 'pg_privacy_member', privacyEvent.id, '新昵称', true,
+    'pg-privacy-alias-regrant'), { code: 'DELETE_REQUEST_PENDING' });
+  await second.query(`INSERT INTO notifications(id,event_id,user_id,kind,event_version)
+    VALUES('pg-privacy-after-delete',$1,'pg_privacy_member','EVENT_CANCELLED',$2)`,
+  [privacyEvent.id, privacyEvent.version]);
+  await dispatchNotification(first, 'pg-privacy-after-delete', { send: async () => {
+    privacyProviderCalls++;
+    return { status: 'ACCEPTED', providerRef: 'unexpected-after-delete' };
+  } });
+  assert.equal(privacyProviderCalls, 1);
+  assert.equal((await second.query<{ external_status: string }>(
+    "SELECT external_status FROM notifications WHERE id='pg-privacy-after-delete'")).rows[0]?.external_status,
+  'DELETE_REQUEST_PENDING');
   await setConsent(first, 'pg_p1', 'EVENT_REMINDER', true, 'postgres-consent-p1');
   await register(first, 'pg_p1', event.id, event.version, 'postgres-p1', event.inviteToken!);
   await register(second, 'pg_p2', event.id, event.version, 'postgres-p2', event.inviteToken!);
@@ -251,6 +317,32 @@ try {
   await changeReportStatus(second, 'pg_case_operator', caseReport.id, 'RESOLVED', '已由独立连接池核查并结案', 'pg-case-resolve');
   assert.equal((await listMyReports(first, 'pg_case_reporter'))[0]?.resolution, '已由独立连接池核查并结案');
   assert.equal((await first.query("SELECT id FROM notifications WHERE user_id='pg_case_reporter' AND kind='REPORT_RESOLVED' AND event_id IS NULL")).rows.length, 1);
+  const responsePolicy = { defaultSeverityByKind: { SAFETY: 'HIGH' as const, CONTENT: 'NORMAL' as const,
+    ATTENDANCE: 'NORMAL' as const, OTHER: 'NORMAL' as const },
+  targetMinutesBySeverity: { HIGH: 5, NORMAL: 120 } };
+  const lockedReport = await createReport(first, 'pg_case_reporter',
+    { kind: 'SAFETY', description: '行锁等待后跨过首次响应截止时间' }, 'pg-response-lock-case', responsePolicy);
+  const reportBlocker = new pg.Client({ connectionString: url });
+  await reportBlocker.connect();
+  try {
+    await reportBlocker.query('BEGIN');
+    await reportBlocker.query(`UPDATE reports SET first_response_due_at=clock_timestamp()+interval '250 milliseconds'
+      WHERE id=$1`, [lockedReport.id]);
+    const downgrade = classifyReportSeverity(second, 'operator:pg_safety', lockedReport.id, 'NORMAL', 'HIGH',
+      '等候行锁时跨过高严重度首响截止时间', 'pg-response-downgrade-lock', responsePolicy);
+    const waiting = await Promise.race([downgrade.then(() => 'finished', () => 'failed'),
+      new Promise<string>(resolve => setTimeout(() => resolve('waiting'), 450))]);
+    assert.equal(waiting, 'waiting');
+    await reportBlocker.query('COMMIT');
+    await assert.rejects(downgrade, { code: 'OVERDUE_REVIEW_REQUIRED' });
+    const { rows: protectedReport } = await first.query<{ severity: string; first_response_due_at: Date }>(
+      'SELECT severity,first_response_due_at FROM reports WHERE id=$1', [lockedReport.id]);
+    assert.equal(protectedReport[0]?.severity, 'HIGH');
+    assert.ok(new Date(protectedReport[0]!.first_response_due_at).getTime() < Date.now());
+  } finally {
+    await reportBlocker.query('ROLLBACK');
+    await reportBlocker.end();
+  }
   const caseAppeal = await createAppeal(first, 'pg_case_reporter', { reportId: caseReport.id, description: '请独立复核' }, 'pg-case-appeal');
   await assert.rejects(() => changeAppealStatus(second!, 'pg_case_operator', caseAppeal.id, 'RESOLVED', '维持原结论', 'pg-case-self-review'), { code: 'INVALID_STATE' });
   await changeAppealStatus(second, 'pg_case_reviewer', caseAppeal.id, 'RESOLVED', '已由另一名人员复核并记录结论', 'pg-case-independent-review');
@@ -663,14 +755,16 @@ try {
     notificationFollowupCrossPool: true, personalExportCrossPool: true, personalExportSnapshot: true,
     pilotMetricsCrossPool: true, waitlistOfferCrossPool: true, formationTimeCrossPool: true,
     supportMinutesCrossPool: true, publicPublicationGateCrossPool: true,
-    reportQueueCrossPool: true, reportResolutionCrossPool: true, appealReviewCrossPool: true,
+    reportQueueCrossPool: true, reportResolutionCrossPool: true,
+    reportResponseLockDeadlineCrossPool: true, appealReviewCrossPool: true,
     contentAppealCrossPool: true, contentAnswerVersionLock: true, currentFactVersionLock: true,
     contentAppealVersionLock: true, contentAnnouncementCrossPool: true, failedJobRecoveryCrossPool: true,
     staleJobClaimCrossPool: true, waitlistTieCrossPool: true, offerDatabaseClockCrossPool: true,
     offerExpiryRaceCrossPool: true, reservationExpiryRaceCrossPool: true,
     offerWriteClockCrossPool: true, reservationWriteClockCrossPool: true, registrationWriteClockCrossPool: true,
     interestWriteClockCrossPool: true, reservationCreationClockCrossPool: true,
-    emergencyGateCrossPool: true, eventStartCrossPool: true }) + '\n');
+    emergencyGateCrossPool: true, eventStartCrossPool: true,
+    privacyDeleteProtectionCrossPool: true, privacyDeleteSendLockCrossPool: true }) + '\n');
 } finally {
   await Promise.all([first?.close(), second?.close()]);
 }

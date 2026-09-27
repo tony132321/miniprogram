@@ -458,9 +458,12 @@ export async function listRepeatCandidates(db: Database, actor: string, eventId:
   if (event.hostId !== actor) throw new AppError('FORBIDDEN', '只有主办方可查看候选名单', 403);
   if (event.status !== 'COMPLETED') throw new AppError('INVALID_STATE', '活动结项后才能查看候选名单');
   const { rows } = await db.query<{ user_id: string }>(`SELECT r.user_id FROM registrations r
+    JOIN users u ON u.id=r.user_id AND u.status='ACTIVE'
     JOIN notification_consents c ON c.user_id=r.user_id AND c.purpose='SIMILAR_ACTIVITY_INVITES' AND c.granted=true
       AND c.notice_version=$3
     WHERE r.event_id=$1 AND r.status='CONFIRMED' AND r.user_id<>$2
+      AND NOT EXISTS (SELECT 1 FROM privacy_requests pr WHERE pr.user_id=r.user_id
+        AND pr.kind='DELETE' AND pr.status NOT IN ('FULFILLED','CANCELLED'))
       AND NOT EXISTS (SELECT 1 FROM user_blocks b WHERE b.revoked_at IS NULL
         AND ((b.blocker_id=$2 AND b.blocked_id=r.user_id) OR (b.blocker_id=r.user_id AND b.blocked_id=$2)))
     ORDER BY r.created_at,r.id`, [eventId, actor, consentNotice('SIMILAR_ACTIVITY_INVITES').version]);

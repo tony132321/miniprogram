@@ -616,8 +616,9 @@ test('report list is operations-only and privacy requests stay with owner', asyn
     assert.equal((await f.request('/ops/privacy', 'ops')).body.items.length, 1);
     const deletion = await f.request('/privacy/requests', 'p1', 'POST', { kind: 'DELETE' }, 'privacy-delete');
     assert.equal(deletion.status, 201);
-    assert.equal(deletion.body.status, 'OPEN');
-    assert.match(deletion.body.notice, /尚未.*停用.*删除.*去标识/);
+    assert.equal(deletion.body.status, 'PROTECTED_PENDING_POLICY');
+    assert.equal(deletion.body.protection.state, 'APPLIED');
+    assert.match(deletion.body.notice, /已阻止.*外部通知.*尚未.*停用.*删除.*去标识/);
     const ownDeletion = (await f.request('/privacy/requests', 'p1')).body.items.find((item: Record<string, any>) => item.id === deletion.body.id);
     assert.equal(ownDeletion.notice, deletion.body.notice);
     assert.equal((await f.request('/privacy/requests', 'other')).body.items.length, 0);
