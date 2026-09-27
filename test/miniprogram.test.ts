@@ -694,9 +694,10 @@ test('creation page clears another identity’s draft and ignores its late edit 
 
 test('relative-date draft suggestion shows the full city-local date and weekday before saving', async () => {
   let page: Record<string, any> | undefined;
-  const suggestion = { fields: { city: '深圳', timeZone: 'Asia/Shanghai', startAt: '2026-09-26T12:00:00.000Z' },
-    fieldSources: { city: 'USER_EXPLICIT', timeZone: 'TEMPLATE_DEFAULT', startAt: 'USER_EXPLICIT' },
-    unknown: ['结束时间'] };
+  const suggestion = { fields: { city: '深圳', timeZone: 'Asia/Shanghai', startAt: '2026-09-26T12:00:00.000Z',
+    endAt: '2026-09-26T14:00:00.000Z' },
+    fieldSources: { city: 'USER_EXPLICIT', timeZone: 'TEMPLATE_DEFAULT', startAt: 'USER_EXPLICIT',
+      endAt: 'USER_EXPLICIT' }, unknown: [] };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if (path === '../../utils/api.js') return { api: { async post() { return suggestion; } } };
@@ -712,8 +713,11 @@ test('relative-date draft suggestion shows the full city-local date and weekday 
   page.setData({ aiText: '本周六晚上八点在深圳打羽毛球' });
   await page.suggest();
   assert.ok(page.data.suggestionNotes.includes('开始时间：2026-09-26 周六 20:00（来自原话）'));
+  assert.ok(page.data.suggestionNotes.includes('结束时间：2026-09-26 周六 22:00（来自原话）'));
   assert.equal(page.data.startDate, '2026-09-26');
   assert.equal(page.data.startTime, '20:00');
+  assert.equal(page.data.endDate, '2026-09-26');
+  assert.equal(page.data.endTime, '22:00');
 });
 
 test('a generated draft is labeled as unverified and still asks the host to confirm fields', async () => {
