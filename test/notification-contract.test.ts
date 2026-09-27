@@ -6,6 +6,8 @@ import { reviewEvent } from '../src/event-review.ts';
 import { dispatchNotification, enqueueNotification, enqueueStartReminder, setConsent } from '../src/notifications.ts';
 import { listNotificationFollowups, recordNotificationFollowup } from '../src/notification-followups.ts';
 import { exportPersonalData } from '../src/privacy.ts';
+import { confirmEvent } from '../src/lifecycle.ts';
+import { register } from './helpers.ts';
 
 const input = { title: '通知契约测试', type: 'badminton', startAt: '2027-01-02T12:00:00.000Z',
   endAt: '2027-01-02T14:00:00.000Z', timeZone: 'Asia/Shanghai', city: '深圳',
@@ -73,9 +75,13 @@ test('synthetic provider acceptance, definite rejection and uncertainty persist 
   try {
     const event = await published(db);
     for (const actor of ['accepted', 'rejected', 'unknown']) {
+      await db.query('INSERT INTO users(id,wechat_openid) VALUES($1,$2)', [actor, `synthetic-contract-${actor}`]);
       await setConsent(db, actor, 'EVENT_REMINDER', true, `grant-${actor}`);
-      await enqueueStartReminder(db, event.id, actor, event.version);
+      await register(db, actor, event.id, event.version, `register-${actor}`);
     }
+    await confirmEvent(db, 'host', event.id, event.version, 'contract-confirm');
+    for (const actor of ['accepted', 'rejected', 'unknown'])
+      await enqueueStartReminder(db, event.id, actor, event.version);
     const { rows: notices } = await db.query<{ id: string; user_id: string }>(
       "SELECT id,user_id FROM notifications WHERE event_id=$1 AND kind='EVENT_REMINDER'", [event.id]);
     for (const notice of notices) await dispatchNotification(db, notice.id, { send: async item => {
@@ -101,11 +107,11 @@ test('synthetic provider acceptance, definite rejection and uncertainty persist 
     assert.equal(rows[1]?.provider_responded_at !== null, true);
     assert.equal(rows[2]?.provider_responded_at, null);
     const own = await exportPersonalData(db, 'accepted');
-    assert.equal(own.notifications.length, 1);
-    assert.equal(own.notifications[0]?.external_purpose, 'EVENT_REMINDER');
-    assert.equal(own.notifications[0]?.template_slot, 'EVENT_START_REMINDER');
-    assert.equal(own.notifications[0]?.provider_ref, 'provider-accepted');
-    assert.equal(own.notifications[0]?.provider_responded_at !== null, true);
+    const ownReminder = own.notifications.filter(item => item.external_purpose === 'EVENT_REMINDER');
+    assert.equal(ownReminder.length, 1);
+    assert.equal(ownReminder[0]?.template_slot, 'EVENT_START_REMINDER');
+    assert.equal(ownReminder[0]?.provider_ref, 'provider-accepted');
+    assert.equal(ownReminder[0]?.provider_responded_at !== null, true);
     const followups = await listNotificationFollowups(db);
     assert.deepEqual(new Set(followups.items.map(item => item.externalStatus)),
       new Set(['PROVIDER_REJECTED', 'UNKNOWN_REQUIRES_RECONCILIATION']));

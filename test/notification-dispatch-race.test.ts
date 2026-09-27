@@ -26,13 +26,52 @@ async function queuedReminder(db: Database): Promise<string> {
     hostParticipates: true };
   const draft = await createDraft(db, 'host', input, 'race-draft');
   const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'race-publish');
+  await db.query("INSERT INTO users(id,wechat_openid) VALUES('member','synthetic-race-member')");
   await setConsent(db, 'member', 'EVENT_REMINDER', true, 'race-grant');
   await register(db, 'member', event.id, event.version, 'race-register');
+  await db.query("UPDATE events SET status='CONFIRMED' WHERE id=$1", [event.id]);
   await enqueueStartReminder(db, event.id, 'member', event.version);
   const { rows } = await db.query<{ id: string }>(
     "SELECT id FROM notifications WHERE event_id=$1 AND user_id='member' AND kind='EVENT_REMINDER'", [event.id]);
   return rows[0]!.id;
 }
+
+test('nested local send fence rejects promptly without waiting on its own gate', async () => {
+  const db = await createDatabase();
+  try {
+    const fence = db.withExternalSendFence!;
+    const outcome = await fence(async () => Promise.race([
+      fence(async () => 'unexpected').then(() => 'nested send ran', error => String(error)),
+      after(300)
+    ]));
+    assert.match(outcome, /Nested external send fence is not allowed/);
+  } finally { await db.close(); }
+});
+
+test('a participating host with a current confirmed registration can receive the reminder', async () => {
+  const db = await createDatabase();
+  try {
+    const memberReminderId = await queuedReminder(db);
+    const { rows } = await db.query<{ event_id: string; event_version: number }>(
+      'SELECT event_id,event_version FROM notifications WHERE id=$1', [memberReminderId]);
+    const eventId = rows[0]!.event_id;
+    await db.query("INSERT INTO users(id,wechat_openid) VALUES('host','synthetic-race-host')");
+    await setConsent(db, 'host', 'EVENT_REMINDER', true, 'host-grant');
+    await enqueueStartReminder(db, eventId, 'host', rows[0]!.event_version);
+    const hostReminder = (await db.query<{ id: string }>(
+      "SELECT id FROM notifications WHERE event_id=$1 AND user_id='host' AND kind='EVENT_REMINDER'", [eventId]
+    )).rows[0]!.id;
+    let sends = 0;
+    await dispatchNotification(db, hostReminder, { send: async () => {
+      sends++;
+      return { status: 'ACCEPTED', providerRef: 'participating-host' };
+    } });
+    assert.equal(sends, 1);
+    assert.equal((await db.query<{ external_status: string }>(
+      'SELECT external_status FROM notifications WHERE id=$1', [hostReminder]
+    )).rows[0]?.external_status, 'PROVIDER_ACCEPTED');
+  } finally { await db.close(); }
+});
 
 test('withdrawal after the durable dispatch marker is rechecked before provider send', async () => {
   const db = await createDatabase();
@@ -146,5 +185,122 @@ test('a completed consent withdrawal cannot precede a new provider call across t
       releaseSend.resolve();
       await Promise.allSettled([sending, withdrawing]);
     }
+  } finally { await db.close(); }
+});
+
+test('provider send does not hold a database transaction while it waits for the external response', async () => {
+  const db = await createDatabase();
+  try {
+    const notificationId = await queuedReminder(db);
+    let readFinished = false;
+    await dispatchNotification(db, notificationId, { send: async () => {
+      const read = db.query('SELECT 1 AS healthy').then(() => { readFinished = true; });
+      const first = await Promise.race([read.then(() => 'read'), after(250)]);
+      assert.equal(first, 'read', 'database read remained blocked by an open send transaction');
+      return { status: 'ACCEPTED', providerRef: 'outside-transaction' };
+    } });
+    assert.equal(readFinished, true);
+    assert.equal((await db.query<{ external_status: string }>(
+      'SELECT external_status FROM notifications WHERE id=$1', [notificationId]
+    )).rows[0]?.external_status, 'PROVIDER_ACCEPTED');
+  } finally { await db.close(); }
+});
+
+test('a queued reminder fails closed when its user row has been deleted', async () => {
+  const db = await createDatabase();
+  try {
+    const notificationId = await queuedReminder(db);
+    await db.query("DELETE FROM users WHERE id='member'");
+    let sends = 0;
+    await dispatchNotification(db, notificationId, { send: async () => {
+      sends++;
+      return { status: 'ACCEPTED', providerRef: 'must-not-send' };
+    } });
+    assert.equal(sends, 0);
+    assert.equal((await db.query<{ external_status: string }>(
+      'SELECT external_status FROM notifications WHERE id=$1', [notificationId]
+    )).rows[0]?.external_status, 'ACCOUNT_DISABLED');
+  } finally { await db.close(); }
+});
+
+for (const [name, sql] of [
+  ['deleted', "DELETE FROM registrations WHERE event_id=(SELECT event_id FROM notifications WHERE id=$1) AND user_id='member'"],
+  ['waitlisted', "UPDATE registrations SET status='WAITLISTED' WHERE event_id=(SELECT event_id FROM notifications WHERE id=$1) AND user_id='member'"],
+  ['old accepted version', "UPDATE registrations SET accepted_version=0 WHERE event_id=(SELECT event_id FROM notifications WHERE id=$1) AND user_id='member'"]
+] as const) {
+  test(`a queued reminder fails closed when registration is ${name}`, async () => {
+    const db = await createDatabase();
+    try {
+      const notificationId = await queuedReminder(db);
+      if (name === 'deleted') await db.query(`DELETE FROM registration_status_history
+        WHERE registration_id=(SELECT id FROM registrations
+          WHERE event_id=(SELECT event_id FROM notifications WHERE id=$1) AND user_id='member')`, [notificationId]);
+      await db.query(sql, [notificationId]);
+      let sends = 0;
+      await dispatchNotification(db, notificationId, { send: async () => {
+        sends++;
+        return { status: 'ACCEPTED', providerRef: 'must-not-send' };
+      } });
+      assert.equal(sends, 0);
+      assert.equal((await db.query<{ external_status: string }>(
+        'SELECT external_status FROM notifications WHERE id=$1', [notificationId]
+      )).rows[0]?.external_status, 'STALE_STATE');
+    } finally { await db.close(); }
+  });
+}
+
+test('a queued reminder fails closed after event starts or consent scope changes', async () => {
+  for (const mutation of [
+    "UPDATE events SET status='IN_PROGRESS' WHERE id=(SELECT event_id FROM notifications WHERE id=$1)",
+    "UPDATE notification_consents SET scope='OTHER_SCOPE' WHERE user_id='member' AND purpose='EVENT_REMINDER'"
+  ]) {
+    const db = await createDatabase();
+    try {
+      const notificationId = await queuedReminder(db);
+      await db.query(mutation, mutation.includes('$1') ? [notificationId] : []);
+      let sends = 0;
+      await dispatchNotification(db, notificationId, { send: async () => {
+        sends++;
+        return { status: 'ACCEPTED', providerRef: 'must-not-send' };
+      } });
+      assert.equal(sends, 0);
+      assert.equal((await db.query<{ external_status: string }>(
+        'SELECT external_status FROM notifications WHERE id=$1', [notificationId]
+      )).rows[0]?.external_status,
+      mutation.includes('notification_consents') ? 'CONSENT_RECONFIRM_REQUIRED' : 'STALE_STATE');
+    } finally { await db.close(); }
+  }
+});
+
+test('a notification whose recipient changes after claim is not sent using the old recipient', async () => {
+  const db = await createDatabase();
+  try {
+    const notificationId = await queuedReminder(db);
+    const claimed = deferred();
+    const resume = deferred();
+    let first = true;
+    const pausedDb: Database = { ...db, transaction: async fn => {
+      const result = await db.transaction(fn);
+      if (first) {
+        first = false;
+        claimed.resolve();
+        await resume.promise;
+      }
+      return result;
+    } };
+    let sends = 0;
+    const sending = dispatchNotification(pausedDb, notificationId, { send: async () => {
+      sends++;
+      return { status: 'ACCEPTED', providerRef: 'must-not-send' };
+    } });
+    try {
+      assert.equal(await Promise.race([claimed.promise.then(() => 'claimed'), after(3000)]), 'claimed');
+      await db.query("UPDATE notifications SET user_id='other' WHERE id=$1", [notificationId]);
+    } finally { resume.resolve(); }
+    await sending;
+    assert.equal(sends, 0);
+    assert.equal((await db.query<{ external_status: string }>(
+      'SELECT external_status FROM notifications WHERE id=$1', [notificationId]
+    )).rows[0]?.external_status, 'STALE_STATE');
   } finally { await db.close(); }
 });

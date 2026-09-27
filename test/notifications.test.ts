@@ -23,6 +23,15 @@ async function published(db: Awaited<ReturnType<typeof createDatabase>>) {
   return publishApprovedInvite(db, 'host', d.id, d.version, 'publish');
 }
 
+async function syntheticUsers(db: Awaited<ReturnType<typeof createDatabase>>, actors: string[]) {
+  for (const actor of actors) await db.query(`INSERT INTO users(id,wechat_openid) VALUES($1,$2)
+    ON CONFLICT (id) DO NOTHING`, [actor, `synthetic-notification-${actor}`]);
+}
+
+async function markConfirmed(db: Awaited<ReturnType<typeof createDatabase>>, eventId: string) {
+  await db.query("UPDATE events SET status='CONFIRMED' WHERE id=$1", [eventId]);
+}
+
 test('event end prompts a host to conclude and completed outcome prompts members once', async () => {
   const db = await createDatabase();
   try {
@@ -84,6 +93,8 @@ test('withdrawing consent before dispatch prevents external message', async () =
     const e = await published(db);
     await setConsent(db, 'p1', 'EVENT_REMINDER', true, 'grant');
     await register(db, 'p1', e.id, e.version, 'register');
+    await syntheticUsers(db, ['p1']);
+    await markConfirmed(db, e.id);
     await enqueueStartReminder(db, e.id, 'p1', e.version);
     await setConsent(db, 'p1', 'EVENT_REMINDER', false, 'withdraw');
     let sends = 0;
@@ -106,6 +117,7 @@ test('queued external notice skips a disabled account while keeping its in-app r
     await setConsent(db, 'p2', 'EVENT_REMINDER', true, 'disabled-consent-p2');
     await register(db, 'p1', event.id, event.version, 'disabled-register-p1');
     const p2 = await register(db, 'p2', event.id, event.version, 'disabled-register-p2');
+    await markConfirmed(db, event.id);
     for (const actor of ['p1', 'p2']) await enqueueStartReminder(db, event.id, actor, event.version);
     await db.query("UPDATE users SET status='DISABLED' WHERE id='p1'");
     const sentTo: string[] = [];
@@ -139,6 +151,7 @@ test('an unresolved deletion request blocks queued external delivery and renewed
     await setConsent(db, 'p2', 'EVENT_REMINDER', true, 'before-delete-p2');
     await register(db, 'p1', event.id, event.version, 'delete-register-p1');
     await register(db, 'p2', event.id, event.version, 'delete-register-p2');
+    await markConfirmed(db, event.id);
     for (const actor of ['p1', 'p2']) await enqueueStartReminder(db, event.id, actor, event.version);
     await db.query("INSERT INTO privacy_requests(id,user_id,kind) VALUES('delete-p1','p1','DELETE')");
     await assert.rejects(() => setConsent(db, 'p1', 'EVENT_REMINDER', true, 'renew-after-delete'),
@@ -168,6 +181,8 @@ test('a legacy reminder grant without the current notice version cannot authoriz
     const event = await published(db);
     await db.query("INSERT INTO notification_consents(user_id,purpose,granted) VALUES('p1','EVENT_REMINDER',true)");
     await register(db, 'p1', event.id, event.version, 'legacy-consent-register');
+    await syntheticUsers(db, ['p1']);
+    await markConfirmed(db, event.id);
     await enqueueStartReminder(db, event.id, 'p1', event.version);
     let sends = 0;
     await runDueJobs(db, Date.now(), { send: async () => { sends++; return { status: 'ACCEPTED', providerRef: 'ref' }; } });
@@ -185,6 +200,8 @@ test('provider acceptance is recorded without claiming delivery', async () => {
     const e = await published(db);
     await setConsent(db, 'p1', 'EVENT_REMINDER', true, 'grant');
     await register(db, 'p1', e.id, e.version, 'register');
+    await syntheticUsers(db, ['p1']);
+    await markConfirmed(db, e.id);
     await enqueueStartReminder(db, e.id, 'p1', e.version);
     await runDueJobs(db, Date.now(), { send: async () => ({ status: 'ACCEPTED', providerRef: 'provider-1' }) });
     const { rows } = await db.query<{ external_status: string }>("SELECT external_status FROM notifications WHERE event_id=$1 AND user_id='p1' AND kind='EVENT_REMINDER'", [e.id]);
@@ -245,6 +262,7 @@ test('an already queued start reminder is not sent externally after the event st
   try {
     const e = await published(db);
     for (const actor of ['p1', 'p2', 'p3']) await register(db, actor, e.id, e.version, `queued-reminder-${actor}`);
+    await syntheticUsers(db, ['p1', 'p2']);
     await setConsent(db, 'p1', 'EVENT_REMINDER', true, 'queued-reminder-consent');
     await setConsent(db, 'p2', 'EVENT_REMINDER', true, 'prestart-reminder-consent');
     await confirmEvent(db, 'host', e.id, e.version, 'queued-reminder-confirm');

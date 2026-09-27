@@ -29,7 +29,7 @@ export interface ExternalNotification extends ExternalNoticeContract {
 }
 
 export interface NotificationAdapter {
-  send(notification: ExternalNotification): Promise<
+  send(notification: ExternalNotification, signal: AbortSignal): Promise<
     { status: 'ACCEPTED'; providerRef: string } |
     { status: 'REJECTED'; failureCode: string } |
     { status: 'UNKNOWN'; failureCode: string }>;
@@ -170,7 +170,8 @@ export async function enqueueStartReminder(tx: Queryable, eventId: string, userI
 
 type NotificationRow = { id: string; event_id: string; user_id: string; kind: string; event_version: number;
   detail: Record<string, unknown>; external_status: string; external_purpose: string | null;
-  external_channel: string; template_slot: string | null };
+  external_channel: string; template_slot: string | null; external_dispatch_token: string | null;
+  same_detail?: boolean };
 
 function safeFailureCode(value: unknown, fallback: string): string {
   return typeof value === 'string' && /^[A-Z][A-Z0-9_]{0,63}$/.test(value) ? value : fallback;
@@ -179,24 +180,25 @@ function safeFailureCode(value: unknown, fallback: string): string {
 export async function dispatchNotification(db: Database, notificationId: string, adapter?: NotificationAdapter): Promise<void> {
   // Commit the in-flight marker before contacting the provider. If the process
   // stops after sending, the next worker records uncertainty instead of retrying.
+  const token = randomUUID();
   const claimed = await db.transaction(async tx => {
     const { rows } = await tx.query<NotificationRow>('SELECT * FROM notifications WHERE id=$1 FOR UPDATE', [notificationId]);
     const item = rows[0];
     if (!item) throw new AppError('MALFORMED_JOB', '外部通知任务关联记录不存在');
     if (item.external_status === 'DISPATCHING') {
       await tx.query(`UPDATE notifications SET external_status='UNKNOWN_REQUIRES_RECONCILIATION',
-        external_failure_code='INTERRUPTED_DISPATCH' WHERE id=$1`, [item.id]);
+        external_failure_code='INTERRUPTED_DISPATCH',external_dispatch_token=NULL WHERE id=$1`, [item.id]);
       return null;
     }
     if (item.external_status !== 'NOT_REQUESTED') return null;
-    await tx.query(`UPDATE notifications SET external_status='DISPATCHING',
-      external_dispatch_started_at=clock_timestamp() WHERE id=$1`, [item.id]);
+    await tx.query(`UPDATE notifications SET external_status='DISPATCHING',external_dispatch_token=$2,
+      external_dispatch_started_at=clock_timestamp() WHERE id=$1`, [item.id, token]);
     return item;
   });
   if (!claimed) return;
-  await db.transaction(async tx => {
-    // Hold these locks through the provider call: a completed account disable,
-    // consent withdrawal, event change, or registration exit cannot be followed by a new send.
+  const prepare = async (tx: Queryable): Promise<boolean> => {
+    // Session fencing covers this short validation transaction and the later
+    // network call. Business row locks are released before adapter.send.
     const { rows: events } = await tx.query<{ version: number; status: string; review_status: string; visibility: string; before_start: boolean }>(
       `SELECT version,status,review_status,payload->>'visibility' AS visibility,
         clock_timestamp() < (payload->>'startAt')::timestamptz AS before_start
@@ -205,13 +207,15 @@ export async function dispatchNotification(db: Database, notificationId: string,
       'SELECT status FROM users WHERE id=$1 FOR SHARE', [claimed.user_id]);
     const { rows: deletions } = await tx.query(`SELECT 1 FROM privacy_requests
       WHERE user_id=$1 AND kind='DELETE' AND status NOT IN ('FULFILLED','CANCELLED') LIMIT 1 FOR SHARE`, [claimed.user_id]);
-    const { rows: registrations } = await tx.query<{ status: string }>('SELECT status FROM registrations WHERE event_id=$1 AND user_id=$2 FOR SHARE', [claimed.event_id, claimed.user_id]);
+    const { rows: registrations } = await tx.query<{ status: string; accepted_version: number | null }>(
+      'SELECT status,accepted_version FROM registrations WHERE event_id=$1 AND user_id=$2 FOR SHARE',
+      [claimed.event_id, claimed.user_id]);
     const contract = externalNoticeContract(claimed.kind);
     const purposeConfigured = claimed.kind === 'EVENT_REMINDER' && claimed.external_purpose === 'EVENT_REMINDER' &&
       claimed.external_channel === contract.externalChannel && claimed.template_slot === contract.templateSlot;
     const { rows: consents } = purposeConfigured
-      ? await tx.query<{ granted: boolean; notice_version: string | null }>(
-        'SELECT granted,notice_version FROM notification_consents WHERE user_id=$1 AND purpose=$2 FOR SHARE',
+      ? await tx.query<{ granted: boolean; scope: string | null; notice_version: string | null }>(
+        'SELECT granted,scope,notice_version FROM notification_consents WHERE user_id=$1 AND purpose=$2 FOR SHARE',
         [claimed.user_id, 'EVENT_REMINDER']) : { rows: [] };
     const { rows: emergency } = claimed.kind === 'WAITLIST_OFFER'
       ? await tx.query<{ status: string }>('SELECT status FROM emergency_gate WHERE id=1 FOR SHARE') : { rows: [] };
@@ -225,51 +229,86 @@ export async function dispatchNotification(db: Database, notificationId: string,
     const { rows: offers } = claimed.kind === 'WAITLIST_OFFER'
       ? await tx.query<{ active: boolean }>(`SELECT (status='ACTIVE' AND expires_at>clock_timestamp()) AS active
           FROM offers WHERE id=$1 AND event_id=$2 FOR SHARE`, [claimed.detail.offerId, claimed.event_id]) : { rows: [] };
-    const { rows: current } = await tx.query<NotificationRow>('SELECT * FROM notifications WHERE id=$1 FOR UPDATE', [notificationId]);
-    if (current[0]?.external_status !== 'DISPATCHING') return;
+    const { rows: current } = await tx.query<NotificationRow>(
+      'SELECT *,detail=$2::jsonb AS same_detail FROM notifications WHERE id=$1 FOR UPDATE',
+      [notificationId, JSON.stringify(claimed.detail)]);
+    if (current[0]?.external_status !== 'DISPATCHING' || current[0].external_dispatch_token !== token) return false;
     const event = events[0];
     const registrationStatus = registrations[0]?.status;
+    const metadataChanged = current[0].event_id !== claimed.event_id || current[0].user_id !== claimed.user_id ||
+      current[0].event_version !== claimed.event_version || current[0].kind !== claimed.kind ||
+      current[0].external_purpose !== claimed.external_purpose ||
+      current[0].external_channel !== claimed.external_channel ||
+      current[0].template_slot !== claimed.template_slot || current[0].same_detail !== true;
     const noLongerRelevant = (['CANCELLED', 'EXPIRED'].includes(event?.status ?? '') && !['EVENT_CANCELLED', 'EVENT_EXPIRED'].includes(claimed.kind)) ||
       (['CANCELLED', 'EXPIRED', 'REJECTED', 'REMOVED'].includes(registrationStatus ?? '') &&
         !['EVENT_CANCELLED', 'EVENT_EXPIRED', 'REGISTRATION_REMOVED'].includes(claimed.kind)) ||
-      (claimed.kind === 'EVENT_REMINDER' && (!['NOT_REQUIRED', 'APPROVED'].includes(event?.review_status ?? '') || !event?.before_start)) ||
+      (claimed.kind === 'EVENT_REMINDER' && (event?.status !== 'CONFIRMED' ||
+        registrationStatus !== 'CONFIRMED' || registrations[0]?.accepted_version !== claimed.event_version ||
+        !['NOT_REQUIRED', 'APPROVED'].includes(event?.review_status ?? '') || !event?.before_start)) ||
       (claimed.kind === 'WAITLIST_OFFER' && (registrationStatus !== 'OFFERED' || event?.review_status !== 'APPROVED' ||
         emergency[0]?.status !== 'OPEN' ||
         holds.length > 0 || (event?.visibility === 'PUBLIC' && publicGate[0]?.open !== true) || !offers[0]?.active));
-    const outcome = users[0] && users[0].status !== 'ACTIVE' ? 'ACCOUNT_DISABLED' :
+    const outcome = metadataChanged ? 'STALE_STATE' :
       deletions.length ? 'DELETE_REQUEST_PENDING' :
       !event || event.version !== claimed.event_version ? 'STALE_VERSION' :
       noLongerRelevant ? 'STALE_STATE' :
       !purposeConfigured ? 'PURPOSE_NOT_CONFIGURED' :
+      users[0]?.status !== 'ACTIVE' ? 'ACCOUNT_DISABLED' :
       !consents[0]?.granted ? 'CONSENT_WITHDRAWN' :
-      consents[0].notice_version !== consentNotice('EVENT_REMINDER').version ? 'CONSENT_RECONFIRM_REQUIRED' :
+      (consents[0].scope !== consentNotice('EVENT_REMINDER').scope ||
+        consents[0].notice_version !== consentNotice('EVENT_REMINDER').version) ? 'CONSENT_RECONFIRM_REQUIRED' :
       !adapter ? 'UNAVAILABLE' : null;
     if (outcome) {
-      await tx.query('UPDATE notifications SET external_status=$2,external_failure_code=$3 WHERE id=$1',
-        [notificationId, outcome, outcome === 'UNAVAILABLE' ? 'NO_PROVIDER' : outcome]);
-      return;
+      await tx.query(`UPDATE notifications SET external_status=$2,external_failure_code=$3,
+        external_dispatch_token=NULL WHERE id=$1 AND external_status='DISPATCHING' AND external_dispatch_token=$4`,
+        [notificationId, outcome, outcome === 'UNAVAILABLE' ? 'NO_PROVIDER' : outcome, token]);
+      return false;
     }
+    return true;
+  };
+  const send = async (): Promise<Awaited<ReturnType<NotificationAdapter['send']>>> => {
+    const contract = externalNoticeContract(claimed.kind);
+    const signal = AbortSignal.timeout(10_000);
     try {
-      const result = await adapter!.send({ id: claimed.id, eventId: claimed.event_id, userId: claimed.user_id, kind: claimed.kind,
-        eventVersion: claimed.event_version, detail: claimed.detail, ...contract });
-      if (result.status === 'ACCEPTED' && typeof result.providerRef === 'string' &&
-        result.providerRef.trim() && result.providerRef.length <= 200) {
-        await tx.query(`UPDATE notifications SET external_status='PROVIDER_ACCEPTED',provider_ref=$2,
-          provider_responded_at=clock_timestamp(),external_failure_code=NULL WHERE id=$1`,
-          [notificationId, result.providerRef]);
-      } else if (result.status === 'REJECTED') {
-        await tx.query(`UPDATE notifications SET external_status='PROVIDER_REJECTED',
-          provider_responded_at=clock_timestamp(),external_failure_code=$2 WHERE id=$1`,
-          [notificationId, safeFailureCode(result.failureCode, 'PROVIDER_REJECTION_UNSPECIFIED')]);
-      } else {
-        await tx.query(`UPDATE notifications SET external_status='UNKNOWN_REQUIRES_RECONCILIATION',
-          external_failure_code=$2 WHERE id=$1`,
-          [notificationId, result.status === 'UNKNOWN'
-            ? safeFailureCode(result.failureCode, 'PROVIDER_RESULT_UNKNOWN') : 'INVALID_PROVIDER_RESPONSE']);
-      }
+      return await adapter!.send({ id: claimed.id, eventId: claimed.event_id, userId: claimed.user_id, kind: claimed.kind,
+        eventVersion: claimed.event_version, detail: claimed.detail, ...contract }, signal);
     } catch {
-      await tx.query(`UPDATE notifications SET external_status='UNKNOWN_REQUIRES_RECONCILIATION',
-        external_failure_code='PROVIDER_EXCEPTION' WHERE id=$1`, [notificationId]);
+      return { status: 'UNKNOWN', failureCode: signal.aborted ? 'PROVIDER_TIMEOUT' : 'PROVIDER_EXCEPTION' };
     }
-  });
+  };
+  const persist = async (tx: Queryable, result: Awaited<ReturnType<NotificationAdapter['send']>>): Promise<void> => {
+    if (result.status === 'ACCEPTED' && typeof result.providerRef === 'string' &&
+      result.providerRef.trim() && result.providerRef.length <= 200) {
+      await tx.query(`UPDATE notifications SET external_status='PROVIDER_ACCEPTED',provider_ref=$3,
+        provider_responded_at=clock_timestamp(),external_failure_code=NULL,external_dispatch_token=NULL
+        WHERE id=$1 AND external_dispatch_token=$2 AND external_status='DISPATCHING'`,
+        [notificationId, token, result.providerRef]);
+    } else if (result.status === 'REJECTED') {
+      await tx.query(`UPDATE notifications SET external_status='PROVIDER_REJECTED',
+        provider_responded_at=clock_timestamp(),external_failure_code=$3,external_dispatch_token=NULL
+        WHERE id=$1 AND external_dispatch_token=$2 AND external_status='DISPATCHING'`,
+        [notificationId, token, safeFailureCode(result.failureCode, 'PROVIDER_REJECTION_UNSPECIFIED')]);
+    } else {
+      await tx.query(`UPDATE notifications SET external_status='UNKNOWN_REQUIRES_RECONCILIATION',
+        external_failure_code=$3,external_dispatch_token=NULL
+        WHERE id=$1 AND external_dispatch_token=$2 AND external_status='DISPATCHING'`,
+        [notificationId, token, result.status === 'UNKNOWN'
+          ? safeFailureCode(result.failureCode, 'PROVIDER_RESULT_UNKNOWN') : 'INVALID_PROVIDER_RESPONSE']);
+    }
+  };
+  if (db.withExternalSendFence) {
+    await db.withExternalSendFence(async fenced => {
+      if (!await fenced.transaction(prepare)) return;
+      const result = await send();
+      await fenced.transaction(tx => persist(tx, result));
+    });
+  } else {
+    // Instrumented Database wrappers in tests retain the older conservative
+    // ordering when they do not expose a pinned-session fence.
+    await db.transaction(async tx => {
+      if (!await prepare(tx)) return;
+      await persist(tx, await send());
+    });
+  }
 }

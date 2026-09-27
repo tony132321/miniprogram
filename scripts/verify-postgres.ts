@@ -66,6 +66,7 @@ try {
   await setEventAlias(first, 'pg_privacy_member', privacyEvent.id, '待撤销活动昵称', true, 'pg-privacy-alias',
     eventAliasNotice(privacyEvent.id).version);
   assert.equal((await listEventAliases(second, 'pg_privacy_member', privacyEvent.id))[0]?.displayName, '待撤销活动昵称');
+  await first.query("UPDATE events SET status='CONFIRMED' WHERE id=$1", [privacyEvent.id]);
   await enqueueStartReminder(first, privacyEvent.id, 'pg_privacy_member', privacyEvent.version);
   const { rows: privacyNotices } = await first.query<{ id: string }>(
     "SELECT id FROM notifications WHERE event_id=$1 AND user_id='pg_privacy_member' AND kind='EVENT_REMINDER'",

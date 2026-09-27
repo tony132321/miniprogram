@@ -3,13 +3,55 @@ import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { PGlite } from '@electric-sql/pglite';
 import pg from 'pg';
+import { AsyncLocalStorage } from 'node:async_hooks';
 
 export interface Queryable {
   query<T extends Record<string, unknown> = Record<string, unknown>>(sql: string, params?: unknown[]): Promise<{ rows: T[] }>;
 }
 export interface Database extends Queryable {
   transaction<T>(fn: (tx: Queryable) => Promise<T>): Promise<T>;
+  withExternalSendFence?<T>(fn: (fenced: Pick<Database, 'query' | 'transaction'>) => Promise<T>): Promise<T>;
   close(): Promise<void>;
+}
+
+// One global namespace is intentionally conservative for the small R1 pilot:
+// unrelated writes and other external sends wait while a provider is in flight.
+// The sender holds a session lock; normal writers take the conflicting
+// transaction lock before any business row lock.
+const externalSendLock: [number, number] = [1229737265, 1];
+const readOnlyTopLevelQuery = /^\s*(?:SELECT|SHOW|EXPLAIN)\b/i;
+const transactionSettings = /^\s*SET\s+TRANSACTION\b/i;
+const protectedTable = /\b(?:events|users|registrations|offers|privacy_requests|notification_consents|event_safety_holds|emergency_gate|public_recruitment_gate|public_recruitment_coverage|notifications)\b/i;
+const rowLockOrWrite = /\b(?:FOR\s+(?:UPDATE|SHARE|NO\s+KEY\s+UPDATE|KEY\s+SHARE)|INSERT|UPDATE|DELETE|TRUNCATE|MERGE)\b/i;
+const needsExternalSendBarrier = (sql: string) => protectedTable.test(sql) && rowLockOrWrite.test(sql);
+const canRunUnfencedRead = (sql: string) => readOnlyTopLevelQuery.test(sql) &&
+  !sql.includes(';') && !needsExternalSendBarrier(sql);
+const externalSendContext = new AsyncLocalStorage<boolean>();
+
+function localGate() {
+  let tail = Promise.resolve();
+  return async <T>(fn: () => Promise<T>): Promise<T> => {
+    const previous = tail;
+    let release!: () => void;
+    tail = new Promise<void>(resolve => { release = resolve; });
+    await previous;
+    try { return await fn(); } finally { release(); }
+  };
+}
+
+function localSlots(limit: number) {
+  let active = 0;
+  const pending: Array<() => void> = [];
+  return async <T>(fn: () => Promise<T>): Promise<T> => {
+    if (active >= limit) await new Promise<void>(resolve => pending.push(resolve));
+    else active++;
+    try { return await fn(); }
+    finally {
+      const next = pending.shift();
+      if (next) next();
+      else active--;
+    }
+  };
 }
 
 const schemaPath = fileURLToPath(new URL('./schema.sql', import.meta.url));
@@ -63,7 +105,8 @@ const migrations = [
   { version: 47, path: fileURLToPath(new URL('./migrations/0047_privacy_delete_protection.sql', import.meta.url)) },
   { version: 48, path: fileURLToPath(new URL('./migrations/0048_invite_event_review.sql', import.meta.url)) },
   { version: 49, path: fileURLToPath(new URL('./migrations/0049_notification_delivery_contract.sql', import.meta.url)) },
-  { version: 50, path: fileURLToPath(new URL('./migrations/0050_event_alias_consent.sql', import.meta.url)) }
+  { version: 50, path: fileURLToPath(new URL('./migrations/0050_event_alias_consent.sql', import.meta.url)) },
+  { version: 51, path: fileURLToPath(new URL('./migrations/0051_external_send_barrier.sql', import.meta.url)) }
 ];
 export const LATEST_SCHEMA_VERSION = migrations[migrations.length - 1]!.version;
 type MigrationExecutor = Queryable & { exec(sql: string): Promise<unknown> };
@@ -89,21 +132,36 @@ export async function createDatabase(path?: string): Promise<Database> {
   const engine = path ? await PGlite.create(path) : await PGlite.create();
   try { await engine.transaction(tx => migrate(tx)); }
   catch (error) { await engine.close(); throw error; }
+  const gate = localGate();
+  const rawTransaction = <T>(fn: (tx: Queryable) => Promise<T>) =>
+    engine.transaction((tx) => fn({ query: (sql, params = []) => tx.query(sql, params) }));
   return {
-    query: (sql, params = []) => engine.query(sql, params),
-    transaction: (fn) => engine.transaction((tx) => fn({ query: (sql, params = []) => tx.query(sql, params) })),
+    query: (sql, params = []) => canRunUnfencedRead(sql) ? engine.query(sql, params) :
+      externalSendContext.getStore() ? Promise.reject(new Error('Use the fenced database inside external send')) :
+        gate(() => engine.query(sql, params)),
+    transaction: fn => externalSendContext.getStore() ? Promise.reject(new Error('Use the fenced database inside external send')) :
+      gate(() => rawTransaction(fn)),
+    withExternalSendFence: fn => externalSendContext.getStore()
+      ? Promise.reject(new Error('Nested external send fence is not allowed'))
+      : gate(() => externalSendContext.run(true, () => fn({
+        query: (sql, params = []) => engine.query(sql, params),
+        transaction: rawTransaction
+      }))),
     close: () => engine.close()
   };
 }
 
 export async function createProductionDatabase(connectionString: string): Promise<Database> {
   if (!connectionString) throw new Error('DATABASE_URL is required');
-  const pool = new pg.Pool({ connectionString });
+  // Four pinned send sessions leave eight connections for reads and writers.
+  const pool = new pg.Pool({ connectionString, max: 12 });
+  const sendSlots = localSlots(4);
   try {
     const client = await pool.connect();
     try {
       await client.query('BEGIN');
       await client.query('SELECT pg_advisory_xact_lock(1229737265)');
+      await client.query('SELECT pg_advisory_xact_lock($1::integer,$2::integer)', externalSendLock);
       await migrate({
         query: async <T extends Record<string, unknown>>(sql: string, params: unknown[] = []) => ({ rows: (await client.query(sql, params)).rows as T[] }),
         exec: async sql => { await client.query(sql); }
@@ -112,19 +170,64 @@ export async function createProductionDatabase(connectionString: string): Promis
     } catch (error) { await client.query('ROLLBACK'); throw error; }
     finally { client.release(); }
   } catch (error) { await pool.end(); throw error; }
+  const rawTransaction = async <T>(client: pg.PoolClient, fn: (tx: Queryable) => Promise<T>): Promise<T> => {
+    await client.query('BEGIN');
+    try {
+      const result = await fn({ query: (sql, params = []) => client.query(sql, params) });
+      await client.query('COMMIT');
+      return result;
+    } catch (error) {
+      await client.query('ROLLBACK');
+      throw error;
+    }
+  };
+  const guardedTransaction = async <T>(fn: (tx: Queryable) => Promise<T>): Promise<T> => {
+    const client = await pool.connect();
+    try {
+      return await rawTransaction(client, async tx => {
+        let guarded = false;
+        return fn({ query: async <R extends Record<string, unknown>>(sql: string, params: unknown[] = []) => {
+          if (!guarded && transactionSettings.test(sql)) return tx.query<R>(sql, params);
+          if (!guarded && needsExternalSendBarrier(sql)) {
+            await tx.query('SELECT pg_advisory_xact_lock($1::integer,$2::integer)', externalSendLock);
+            guarded = true;
+          }
+          return tx.query<R>(sql, params);
+        } });
+      });
+    } finally { client.release(); }
+  };
   return {
-    query: (sql, params = []) => pool.query(sql, params),
-    transaction: async (fn) => {
-      const client = await pool.connect();
-      try {
-        await client.query('BEGIN');
-        const result = await fn({ query: (sql, params = []) => client.query(sql, params) });
-        await client.query('COMMIT');
-        return result;
-      } catch (error) {
-        await client.query('ROLLBACK');
-        throw error;
-      } finally { client.release(); }
+    query: (sql, params = []) => externalSendContext.getStore() && !canRunUnfencedRead(sql)
+      ? Promise.reject(new Error('Use the fenced database inside external send')) :
+        needsExternalSendBarrier(sql) || sql.includes(';')
+          ? guardedTransaction(tx => tx.query(sql, params)) : pool.query(sql, params),
+    transaction: fn => externalSendContext.getStore() ? Promise.reject(new Error('Use the fenced database inside external send')) :
+      guardedTransaction(fn),
+    withExternalSendFence: fn => {
+      if (externalSendContext.getStore()) throw new Error('Nested external send fence is not allowed');
+      return sendSlots(async () => {
+        const client = await pool.connect();
+        let locked = false;
+        let broken = false;
+        try {
+          await client.query('SELECT pg_advisory_lock($1::integer,$2::integer)', externalSendLock);
+          locked = true;
+          return await externalSendContext.run(true, () => fn({
+            query: (sql, params = []) => client.query(sql, params),
+            transaction: txFn => rawTransaction(client, txFn)
+          }));
+        } finally {
+          if (locked) {
+            try {
+              const { rows } = await client.query<{ unlocked: boolean }>(
+                'SELECT pg_advisory_unlock($1::integer,$2::integer) AS unlocked', externalSendLock);
+              if (rows[0]?.unlocked !== true) broken = true;
+            } catch { broken = true; }
+          }
+          client.release(broken ? new Error('External send lock connection lost') : undefined);
+        }
+      });
     },
     close: () => pool.end()
   };
