@@ -1,0 +1,11 @@
+{
+  "pages": ["pages/index/index", "pages/create/create", "pages/event/event", "pages/me/me"],
+  "window": { "navigationBarTitleText": "Project IRL" },
+  "tabBar": {
+    "list": [
+      { "pagePath": "pages/index/index", "text": "我的活动" },
+      { "pagePath": "pages/create/create", "text": "发起" },
+      { "pagePath": "pages/me/me", "text": "我的" }
+    ]
+  }
+}

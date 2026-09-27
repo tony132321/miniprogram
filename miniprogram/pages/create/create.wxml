@@ -1,0 +1,72 @@
+<view>
+  <text>活动信息以确认后的字段为准</text>
+  <textarea placeholder="一句话描述活动（可选）" value="{{aiText}}" bindinput="aiInput" />
+  <button bindtap="suggest" disabled="{{suggestionLoading}}">提取草稿字段</button>
+  <view wx:if="{{suggestionLoading}}">正在提取字段；下方表单仍可手动填写。</view>
+  <view wx:if="{{suggestionSlow}}">提取较慢，可以继续等待，也可以转为手动填写。</view>
+  <button id="manualSuggestionButton" wx:if="{{suggestionSlow}}" bindtap="cancelSuggestion">继续手动填写（保留原输入）</button>
+  <view wx:for="{{suggestionNotes}}" wx:key="*this">{{item}}</view>
+  <view wx:if="{{suggestionUnknown}}">仍需确认：{{suggestionUnknown}}</view>
+  <view wx:if="{{message}}" class="muted">{{message}}</view>
+  <view wx:if="{{editorLoadState === 'LOADING'}}">正在读取活动当前版本…</view>
+  <view wx:if="{{editorLoadState === 'ERROR'}}">
+    <button bindtap="retryEditorLoad">重试载入活动</button>
+    <button bindtap="returnToMyActivities">回到我的活动</button>
+  </view>
+  <view wx:if="{{conflict}}">
+    <view>重新载入将以服务端当前版本替换本页未保存的修改，请先核对。</view>
+    <button bindtap="reloadConflict">载入服务端当前版本</button>
+  </view>
+  <view wx:if="{{safetyMessage}}" class="muted">{{safetyMessage}} <button bindtap="retrySafety">重试读取状态</button></view>
+  <view wx:if="{{editingEvent}}">编辑已发布活动 · 当前版本 {{editingEvent.version}}。重大变更会暂停招募并要求原参与者重新确认。</view>
+  <input placeholder="活动标题" data-field="title" value="{{form.title}}" bindinput="input" />
+  <input placeholder="城市" data-field="city" value="{{form.city}}" bindinput="input" />
+  <input id="skillLevelInput" placeholder="本场水平要求（可选，由主办方填写）" data-field="skillLevel" value="{{form.skillLevel}}" bindinput="input" />
+  <input placeholder="公共场馆名称（需主办方自行确认预约）" data-field="venueName" value="{{form.venueName}}" bindinput="input" />
+  <view>我已核实当前场地与活动时间的可用及预约情况 <switch checked="{{venueConfirmed}}" bindchange="setVenueConfirmed" /></view>
+  <view>开始日期 <picker mode="date" bindchange="setStartDate"><view>{{startDate || '选择日期'}}</view></picker></view>
+  <view>开始时间 <picker mode="time" bindchange="setStartTime"><view>{{startTime}}</view></picker></view>
+  <view wx:if="{{templateDurationMinutes}}" class="muted">上场时长 {{templateDurationMinutes}} 分钟；选择新开始时间后预填结束时间，发布前请核对。</view>
+  <view>结束日期 <picker mode="date" bindchange="setEndDate"><view>{{endDate || '选择日期'}}</view></picker></view>
+  <view>结束时间 <picker mode="time" bindchange="setEndTime"><view>{{endTime}}</view></picker></view>
+  <view>报名截止：默认开始前 30 分钟；成局确认截止：默认开始前 90 分钟。</view>
+  <view>自定义两个截止时间 <switch checked="{{customDeadlines}}" bindchange="setCustomDeadlines" /></view>
+  <view wx:if="{{customDeadlines}}">
+    <view>报名截止日期 <picker mode="date" bindchange="setRegistrationDate"><view>{{registrationDate || '选择日期'}}</view></picker></view>
+    <view>报名截止时间 <picker mode="time" bindchange="setRegistrationTime"><view>{{registrationTime}}</view></picker></view>
+    <view>成局确认截止日期 <picker mode="date" bindchange="setConfirmationDate"><view>{{confirmationDate || '选择日期'}}</view></picker></view>
+    <view>成局确认截止时间 <picker mode="time" bindchange="setConfirmationTime"><view>{{confirmationTime}}</view></picker></view>
+  </view>
+  <input type="number" placeholder="最少人数" data-field="minParticipants" value="{{form.minParticipants}}" bindinput="input" />
+  <input type="number" placeholder="最多人数" data-field="maxParticipants" value="{{form.maxParticipants}}" bindinput="input" />
+  <view>免费 <switch checked="{{feeMode === 'FREE'}}" bindchange="setFeeMode" /></view>
+  <input wx:if="{{feeMode === 'AA'}}" type="digit" placeholder="每人费用上限（元）" data-field="feeCapYuan" value="{{form.feeCapYuan}}" bindinput="input" />
+  <input placeholder="取消规则" data-field="cancellationRule" value="{{form.cancellationRule}}" bindinput="input" />
+  <view>可见范围 <picker range="{{visibilityLabels}}" value="{{visibilityIndex}}" bindchange="setVisibility"><view>{{visibilityLabels[visibilityIndex]}}</view></picker></view>
+  <view>报名方式 <picker range="{{approvalLabels}}" value="{{approvalIndex}}" bindchange="setApprovalMode"><view>{{approvalLabels[approvalIndex]}}</view></picker></view>
+  <view>主办方本人是否参加？参加会占用一个名额，请明确选择。</view>
+  <radio-group id="hostParticipationGroup" bindchange="setHostParticipates">
+    <label id="hostParticipatesYes"><radio value="yes" checked="{{hostParticipates === true}}" />参加，占用一席</label>
+    <label id="hostParticipatesNo"><radio value="no" checked="{{hostParticipates === false}}" />不参加，不占席</label>
+  </radio-group>
+  <button id="saveDraftButton" wx:if="{{!editingEvent}}" disabled="{{editorLoadState === 'LOADING' || editorLoadState === 'ERROR' || (!draft && safetyStatus !== 'OPEN')}}" bindtap="saveDraft">保存草稿</button>
+  <button id="publishPreviewButton" disabled="{{editorLoadState === 'LOADING' || editorLoadState === 'ERROR' || (!editingEvent && safetyStatus !== 'OPEN')}}" bindtap="publish">{{editingEvent ? '生成活动变更预览' : '生成发布前预览'}}</button>
+  <view wx:if="{{changePreview}}" class="item">
+    <view>活动变更预览：受影响 {{changePreview.affectedCount}} 人 · {{changePreview.material ? '需本人重新确认' : '信息更新'}}</view>
+    <view wx:for="{{changePreview.changes}}" wx:key="field">{{item.label}}：{{item.before === null ? '待定' : item.before}} → {{item.after === null ? '待定' : item.after}}</view>
+    <button bindtap="confirmPublish">上述差异已核实，最终确认变更</button>
+  </view>
+  <view wx:if="{{publishPreview}}" class="item">
+    <view>发布前逐项核对（版本 {{publishPreview.version}}）</view>
+    <view>类型：羽毛球 · 标题：{{publishPreview.payload.title}}</view>
+    <view wx:if="{{publishPreview.payload.skillLevel}}">水平要求：{{publishPreview.payload.skillLevel}}</view>
+    <view>时间：{{publishPreview.payload.startAt}} 至 {{publishPreview.payload.endAt}} · 时区 {{publishPreview.payload.timeZone}}</view>
+    <view>城市与公共场馆：{{publishPreview.payload.city}} · {{publishPreview.payload.venueName}} · 场地状态 {{publishPreview.payload.venueStatus}}</view>
+    <view>人数：至少 {{publishPreview.payload.minParticipants}}、最多 {{publishPreview.payload.maxParticipants}}；主办本人参加 {{publishPreview.payload.hostParticipates}}</view>
+    <view>报名截止：{{publishPreview.payload.registrationDeadline}} · 成局确认截止：{{publishPreview.payload.confirmationDeadline}}</view>
+    <view>费用：{{publishPreview.payload.feeMode}} · 每人上限 {{publishPreview.payload.feeCapFen}} 分</view>
+    <view>取消规则：{{publishPreview.payload.cancellationRule}}</view>
+    <view>可见范围：{{publishPreview.payload.visibility}} · 报名方式：{{publishPreview.payload.approvalMode}}</view>
+    <button disabled="{{safetyStatus !== 'OPEN'}}" bindtap="confirmPublish">以上均已核实，最终发布</button>
+  </view>
+</view>

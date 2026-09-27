@@ -1,0 +1,1 @@
+`qrcode.js` is the unmodified CommonJS distribution of `qrcode-generator` 2.0.4 by Kazuhiko Arase, licensed under MIT. Its original copyright and license notice is retained in the file header. The file is vendored because the native WeChat mini-program runtime does not read this repository's root `node_modules` directly.

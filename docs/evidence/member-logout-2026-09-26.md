@@ -1,0 +1,15 @@
+# Member logout and safe re-entry
+
+The v3.1 PG10 contract requires an account exit that returns the member to a safe entry. The existing profile page had only login and local test identity switching. Member bearer sessions lasted seven days without a member logout endpoint.
+
+The new `POST /auth/logout` deletes only the presented active bearer session hash in one transaction and writes a `MEMBER_LOGOUT` audit action. It ignores a forged development identity header. The mini-program calls the endpoint before clearing its local token and user ID, clears pending mutation keys and private profile data, and switches to the activity-list tab. A network failure leaves the session in place with a retryable error. A deliberate logout marker suppresses automatic login at the next app launch; explicit login or the unauthenticated activity-list action clears it.
+
+Verification on 2026-09-26:
+
+- The HTTP integration test failed against the missing route, then passed: a revoked bearer receives 401 on a private endpoint while a second session for the same member remains valid; a development identity header alone cannot revoke it.
+- Mini-program tests cover successful logout, network failure, private data clearance, no-session profile re-entry, restart behavior, and explicit login. Review found two asynchronous races: a login response could restore credentials after logout, and an export response could copy former member data after logout. Both regression tests failed against the original implementation and pass with generation checks. Full `pnpm test`: 311/311 passed; `pnpm typecheck` and `git diff --check` passed.
+- Fresh local PostgreSQL 18.6 database `irl_r1_test_member_logout_20260926`: migrations 1–26 and two connection pools passed; `memberLogoutCrossPool=true` verified a session created in one pool is revoked from another. The existing 100-contender capacity test remained at 4 confirmed and 99 waitlisted.
+- Updated WeChat Developer Tools simulator with a temporary local code-exchange fixture and formal-style mini-program config: the profile displayed the [logout control](wechat-member-logout-before-2026-09-26.jpg); tapping it returned HTTP 200, removed local credentials, and navigated to the unauthenticated entry. The entry reported `UNAUTHENTICATED`; tapping its login action restored a session and `READY` state. A separate cold-launch check with the deliberate-logout marker set showed the [unauthenticated entry](wechat-member-logout-after-2026-09-26.jpg) with a clear “微信登录” action. The local fixture was stopped, temporary config restored, and test-only storage cleared.
+- After the review fix, WeChat Developer Tools `0.3.11` compiled `pages/me/me.wxml` and opened `pages/me/me` successfully. The simulator console had no syntax or template compile errors. The two race scenarios were verified with delayed-response tests, not simulator timing automation.
+
+The local fixture validates page behavior and server session revocation. It does not prove formal AppID code exchange, real-device lifecycle, or production domain configuration.

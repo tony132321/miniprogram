@@ -1,0 +1,911 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Project IRL 运营工作台</title>
+  <style>
+    body { font: 16px system-ui, sans-serif; max-width: 960px; margin: 24px auto; padding: 0 16px; line-height: 1.5; }
+    label, button { display: inline-block; margin: 6px 8px 6px 0; }
+    input { padding: 8px; min-width: 240px; }
+    button { padding: 8px 12px; }
+    section { border-top: 1px solid #ccc; margin-top: 20px; }
+    li { margin: 10px 0; }
+    .muted { color: #555; }
+  </style>
+</head>
+<body>
+  <h1>运营工作台</h1>
+  <p class="muted">仅显示真实工单与请求。正式环境使用运营账号、密码和动态验证码登录。</p>
+  <label>运营账号 <input id="operatorUser" autocomplete="username"></label>
+  <label>密码 <input id="operatorPassword" type="password" autocomplete="current-password"></label>
+  <label>动态验证码 <input id="operatorCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6"></label>
+  <button id="operatorLogin">登录</button><button id="operatorLogout">退出登录</button><br>
+  <label>开发账号 <input id="devUser" autocomplete="off" placeholder="仅本地开发使用"></label>
+  <input id="token" type="hidden">
+  <button id="refresh">刷新</button>
+  <p id="status" role="status"></p>
+  <section><h2>试点指标</h2><p class="muted">按当前复核状态和活动结束时间截止统计；测试活动不计入。证据完成率是保守参考口径，不单独决定发布闸门。</p><p id="metrics">读取中…</p>
+    <p class="muted">记录某场活动的直接人工工作分钟。0 表示本人明确记录零分钟；未填写不等于零。记录后保留原始条目及操作人。</p>
+    <label>活动 ID <input id="supportEventId" autocomplete="off"></label>
+    <label>分钟 <input id="supportMinutes" type="number" min="0" max="1440" step="1"></label>
+    <label>类别 <select id="supportCategory"><option value="SUPPORT">日常支持</option><option value="SAFETY">安全处置</option><option value="REVIEW">审核</option></select></label>
+    <button id="recordSupportMinutes">记录人工时间</button>
+    <p class="muted">最近 100 条人工时间记录（仅记录权限可见）</p><ul id="supportMinutesHistory"></ul>
+  </section>
+  <section><h2>举报</h2><ul id="reports"></ul><button id="moreReports" disabled>加载更多举报</button></section>
+  <section><h2>待审核公开活动</h2><ul id="eventReviews"></ul><button id="moreEventReviews" disabled>加载更多待审活动</button></section>
+  <section><h2>活动风险暂停</h2>
+    <p class="muted">暂停新报名、预留、补位和成局；活动仍可查看或退出。仅运营人员可记录核查原因和解除。</p>
+    <label>活动 ID <input id="holdEventId" autocomplete="off"></label>
+    <label>核查原因 <input id="holdReason" autocomplete="off" placeholder="至少 5 字"></label>
+    <button id="placeHold">暂停活动</button><ul id="holds"></ul>
+  </section>
+  <section><h2>公开活动招募总开关</h2>
+    <p class="muted">关闭后暂停公开活动发布、审核通过、新报名与占位；已参与者仍可查看和退出，邀请制活动不受影响。</p>
+    <p id="publicGate">读取中…</p>
+    <label>操作原因 <input id="publicGateReason" autocomplete="off" placeholder="至少 5 字"></label>
+    <button id="closePublicGate">关闭公开招募</button><button id="openPublicGate">恢复公开招募</button>
+  </section>
+  <section><h2>全局新增止损</h2>
+    <p class="muted">关闭后暂停新建活动、发布、新报名、预留和补位；查询、退出及举报仍可使用。原因仅在运营后台可见。</p>
+    <p id="emergencyGate">读取中…</p>
+    <label>操作原因 <input id="emergencyReason" autocomplete="off" placeholder="至少 5 字"></label>
+    <button id="closeEmergencyGate">暂停新增</button><button id="openEmergencyGate">恢复新增</button>
+  </section>
+  <section><h2>近期异常请求</h2><ul id="rateLimits"></ul></section>
+  <section><h2>异常报名待复核</h2><p class="muted">同一用户在同一活动 24 小时内至少三次报名、两次退出。复核后只统计新行为；线索不自动限制用户。</p><ul id="registrationAnomalies"></ul><button id="moreRegistrationAnomalies" disabled>加载更多异常报名</button></section>
+  <section><h2>通知待跟进</h2><p class="muted">外部发送失败或结果不确定。人工跟进记录不代表用户已收到消息。</p><ul id="notificationFollowups"></ul><button id="moreNotificationFollowups" disabled>加载更多待跟进通知</button></section>
+  <section><h2>最近已跟进</h2><p class="muted">展示最近 100 条处理说明，供有通知权限的运营人员复核；原外部发送状态保留。</p><ul id="notificationHistory"></ul></section>
+  <section><h2>失败任务</h2><p class="muted">重新排队仅表示等待后台处理；外部通知状态不确定时须先人工核对。</p><ul id="failedJobs"></ul><button id="moreFailedJobs" disabled>加载更多失败任务</button></section>
+  <section><h2>AI 草稿异常</h2><p class="muted">费用与请求状态须对照供应商账单核查；异常请求不会自动重试。此处不展示草稿原文。</p><ul id="aiDraftAlerts"></ul><button id="moreAiDraftAlerts" disabled>加载更多 AI 草稿异常</button></section>
+  <section><h2>申诉</h2><ul id="appeals"></ul><button id="moreAppeals" disabled>加载更多申诉</button></section>
+  <section><h2>个人信息请求</h2><ul id="privacy"></ul><button id="morePrivacy" disabled>加载更多请求</button></section>
+  <section><h2>待审核活动内容</h2><ul id="content"></ul><button id="moreContent" disabled>加载更多待审内容</button></section>
+  <script>
+    const $ = id => document.getElementById(id);
+    $('token').value = sessionStorage.getItem('operatorToken') || '';
+    let requestGeneration = 0;
+    function headers() {
+      const result = {};
+      if ($('devUser').value.trim()) result['X-Dev-User'] = $('devUser').value.trim();
+      if ($('token').value.trim()) result.Authorization = 'Bearer ' + $('token').value.trim();
+      return result;
+    }
+    async function load(path, denied) {
+      const response = await fetch(path, { headers: headers() });
+      const data = await response.json();
+      if (response.status === 403) { denied.push(path); return []; }
+      if (!response.ok) throw new Error(data.message || data.code || '请求失败');
+      return data.items;
+    }
+    async function loadReports(denied, offset = 0, snapshot = null) {
+      const path = '/ops/reports';
+      const response = await fetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+        { headers: headers() });
+      const data = await response.json();
+      if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
+      if (response.status === 409 && data.code === 'QUEUE_CHANGED')
+        throw Object.assign(new Error(data.message), { code: data.code });
+      if (!response.ok) throw new Error(data.message || data.code || '读取举报失败');
+      return data;
+    }
+    async function loadRegistrationAnomalies(denied, offset = 0, snapshot = null) {
+      const path = '/ops/registration-anomalies';
+      const response = await fetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+        { headers: headers() });
+      const data = await response.json();
+      if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
+      if (response.status === 409 && data.code === 'QUEUE_CHANGED')
+        throw Object.assign(new Error(data.message), { code: data.code });
+      if (!response.ok) throw new Error(data.message || data.code || '读取异常报名失败');
+      return data;
+    }
+    async function loadNotificationFollowups(denied, offset = 0, snapshot = null) {
+      const path = '/ops/notifications/followups';
+      const response = await fetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+        { headers: headers() });
+      const data = await response.json();
+      if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
+      if (response.status === 409 && data.code === 'QUEUE_CHANGED')
+        throw Object.assign(new Error(data.message), { code: data.code });
+      if (!response.ok) throw new Error(data.message || data.code || '读取通知待跟进失败');
+      return data;
+    }
+    async function loadEventReviews(denied, offset = 0, snapshot = null) {
+      const path = '/ops/events/reviews';
+      const response = await fetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+        { headers: headers() });
+      const data = await response.json();
+      if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
+      if (response.status === 409 && data.code === 'QUEUE_CHANGED')
+        throw Object.assign(new Error(data.message), { code: data.code });
+      if (!response.ok) throw new Error(data.message || data.code || '读取公开活动审核失败');
+      return data;
+    }
+    async function loadContent(denied, offset = 0, snapshot = null) {
+      const path = '/ops/content';
+      const response = await fetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+        { headers: headers() });
+      const data = await response.json();
+      if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
+      if (response.status === 409 && data.code === 'QUEUE_CHANGED')
+        throw Object.assign(new Error(data.message), { code: data.code });
+      if (!response.ok) throw new Error(data.message || data.code || '读取待审核内容失败');
+      return data;
+    }
+    async function loadFailedJobs(denied, offset = 0, snapshot = null) {
+      const path = '/ops/jobs/failed';
+      const response = await fetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+        { headers: headers() });
+      const data = await response.json();
+      if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
+      if (response.status === 409 && data.code === 'QUEUE_CHANGED')
+        throw Object.assign(new Error(data.message), { code: data.code });
+      if (!response.ok) throw new Error(data.message || data.code || '读取失败任务失败');
+      return data;
+    }
+    async function loadAiDraftAlerts(denied, offset = 0, snapshot = null) {
+      const path = '/ops/ai-draft-alerts';
+      const response = await fetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+        { headers: headers() });
+      const data = await response.json();
+      if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
+      if (response.status === 409 && data.code === 'QUEUE_CHANGED')
+        throw Object.assign(new Error(data.message), { code: data.code });
+      if (!response.ok) throw new Error(data.message || data.code || '读取 AI 草稿异常失败');
+      return data;
+    }
+    async function loadPrivacy(denied, offset = 0, snapshot = null) {
+      const path = '/ops/privacy';
+      const response = await fetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+        { headers: headers() });
+      const data = await response.json();
+      if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
+      if (response.status === 409 && data.code === 'QUEUE_CHANGED')
+        throw Object.assign(new Error(data.message), { code: data.code });
+      if (!response.ok) throw new Error(data.message || data.code || '读取个人信息请求失败');
+      return data;
+    }
+    async function loadAppeals(denied, offset = 0, snapshot = null) {
+      const path = '/ops/appeals';
+      const response = await fetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+        { headers: headers() });
+      const data = await response.json();
+      if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
+      if (response.status === 409 && data.code === 'QUEUE_CHANGED')
+        throw Object.assign(new Error(data.message), { code: data.code });
+      if (!response.ok) throw new Error(data.message || data.code || '读取申诉失败');
+      return data;
+    }
+    async function loadPublicGate(denied) {
+      const response = await fetch('/ops/public-recruitment', { headers: headers() });
+      if (response.status === 403) { denied.push('/ops/public-recruitment'); return null; }
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || data.code || '读取公开招募状态失败');
+      return data;
+    }
+    async function loadEmergencyGate(denied) {
+      const response = await fetch('/ops/emergency', { headers: headers() });
+      if (response.status === 403) { denied.push('/ops/emergency'); return null; }
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || data.code || '读取全局止损状态失败');
+      return data;
+    }
+    async function loadMetrics(denied) {
+      const response = await fetch('/ops/metrics', { headers: headers() });
+      if (response.status === 403) { denied.push('/ops/metrics'); return null; }
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || data.code || '读取试点指标失败');
+      return data;
+    }
+    function line(parent, text) {
+      const li = document.createElement('li');
+      li.textContent = text;
+      parent.appendChild(li);
+      return li;
+    }
+    let nextReportOffset = null;
+    let reportSnapshot = null;
+    let nextAnomalyOffset = null;
+    let anomalySnapshot = null;
+    let nextPrivacyOffset = null;
+    let privacySnapshot = null;
+    let nextAppealOffset = null;
+    let appealSnapshot = null;
+    let nextNotificationFollowupOffset = null;
+    let notificationFollowupSnapshot = null;
+    let nextEventReviewOffset = null;
+    let eventReviewSnapshot = null;
+    let nextContentOffset = null;
+    let contentSnapshot = null;
+    let nextFailedJobOffset = null;
+    let failedJobSnapshot = null;
+    let nextAiDraftAlertOffset = null;
+    let aiDraftAlertSnapshot = null;
+    function renderPrivacy(items) {
+      for (const item of items) {
+        const row = line($('privacy'), `${item.kind} · ${item.status} · ${item.id}`);
+        if (item.kind !== 'DELETE') continue;
+        const button = document.createElement('button'); button.textContent = '核查记录类别';
+        const details = document.createElement('div');
+        button.onclick = async () => {
+          const token = sessionStorage.getItem('operatorToken');
+          try {
+            const response = await fetch(`/ops/privacy/${encodeURIComponent(item.id)}/impact`, { headers: headers() });
+            const data = await response.json();
+            if (sessionStorage.getItem('operatorToken') !== token) return;
+            if (!response.ok) return void (details.textContent = data.message || '影响清单读取失败');
+            const counts = data.counts;
+            const fields = [
+              ['profile', '资料'], ['sessions', '会话'], ['hostedEvents', '活动'],
+              ['registrations', '报名'], ['authoredContent', '本人内容'],
+              ['reportedDisputes', '争议'], ['appeals', '申诉'], ['notifications', '通知'],
+              ['notificationConsents', '通知授权'], ['notificationConsentHistory', '授权变更'], ['eventAliases', '活动昵称'],
+              ['shareIntents', '分享发起'], ['personalExportTickets', '导出凭证'],
+              ['blocksCreated', '屏蔽发起'], ['blocksReceived', '被屏蔽'],
+              ['hostedEventVersions', '活动版本'], ['hostedOutcomes', '活动结果'],
+              ['hostedVenueEvidence', '场地证据'], ['createdExpenseLedgers', '费用账本'],
+              ['shareOpens', '分享打开'], ['unknownSourceInviteOpens', '未知来源邀请打开'],
+              ['claimedReservations', '占位'], ['waitlistOffers', '候补邀请'],
+              ['checkIns', '签到'], ['manualCheckIns', '人工签到'],
+              ['requestedManualCheckIns', '发起人工签到'], ['outcomeFeedback', '结束反馈'],
+              ['expenseShares', '费用分摊'], ['factQuestions', '活动问题'],
+              ['registrationRemovals', '报名移除'], ['cohostGrants', '协办授权'],
+              ['cohostGrantsIssued', '发出的协办授权'], ['privacyRequests', '隐私请求'],
+              ['auditActions', '审计记录'], ['businessEvents', '业务事件'],
+              ['idempotencyRecords', '幂等记录'], ['aiDraftRequests', 'AI 草稿请求']
+            ];
+            details.textContent = `待政策复核；已识别部分类别：${fields.map(([key, label]) => `${label} ${Number.isInteger(counts[key]) ? counts[key] : '—'}`).join('、')}。此清单未执行删除。`;
+          } catch {
+            if (sessionStorage.getItem('operatorToken') === token) details.textContent = '影响清单读取失败，请重试';
+          }
+        };
+        row.appendChild(button); row.appendChild(details);
+      }
+    }
+    function renderReports(reports) {
+      for (const item of reports) {
+        const li = line($('reports'), `${item.kind} · ${item.status} · 活动 ${item.event_id || '未关联'} · ${item.description}`);
+        if (item.event_id && item.kind === 'SAFETY') {
+          const select = document.createElement('button'); select.textContent = '填入活动 ID';
+          select.onclick = () => { $('holdEventId').value = item.event_id; $('holdReason').focus(); };
+          li.appendChild(select);
+        }
+        if (item.status === 'OPEN') {
+          const button = document.createElement('button'); button.textContent = '标记处理中';
+          button.onclick = async () => {
+            const response = await fetch(`/ops/reports/${encodeURIComponent(item.id)}/status`, {
+              method: 'POST', headers: { ...headers(), 'Content-Type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
+              body: JSON.stringify({ status: 'IN_REVIEW' })
+            });
+            if (!response.ok) $('status').textContent = (await response.json()).message || '更新失败';
+            else refresh();
+          };
+          li.appendChild(button);
+        }
+        if (item.status !== 'RESOLVED') {
+          const explanation = document.createElement('input');
+          explanation.placeholder = '给举报人的处理结论（至少 5 字）';
+          li.appendChild(explanation);
+          let outcomeDecision = null;
+          if (item.outcome_review_required) {
+            outcomeDecision = document.createElement('select');
+            for (const [value, label] of [['', '请选择结项复核结论'], ['HELD_CONFIRMED', '已核实举办'],
+              ['NOT_HELD_CONFIRMED', '确认未举办'], ['INCONCLUSIVE', '证据不足，继续待核查']]) {
+              const option = document.createElement('option'); option.value = value; option.textContent = label;
+              outcomeDecision.appendChild(option);
+            }
+            li.appendChild(outcomeDecision);
+          }
+          const close = document.createElement('button'); close.textContent = '结案并通知举报人';
+          close.onclick = async () => {
+            try { await post(`/ops/reports/${encodeURIComponent(item.id)}/status`,
+              { status: 'RESOLVED', resolution: explanation.value,
+                ...(outcomeDecision ? { outcomeDecision: outcomeDecision.value } : {}) }); refresh(); }
+            catch (error) { $('status').textContent = error.message; }
+          };
+          li.appendChild(close);
+        }
+      }
+    }
+    function renderAppeals(appeals) {
+      for (const item of appeals) {
+        const li = line($('appeals'), `${item.status} · ${item.description} · ${item.content_id ? '内容审核申诉' : item.removal_reason || '举报申诉'} · ${item.resolution || '待复核'}${item.outcome ? ' · ' + item.outcome : ''}`);
+        if (item.report_id) {
+          const source = document.createElement('div');
+          source.textContent = `原举报：${item.report_kind} · ${item.report_description} · 原结论：${item.report_resolution || '未记录'} · 原结案人员：${item.report_resolved_by || '待核实'}`;
+          li.appendChild(source);
+        }
+        if (item.content_id) {
+          const source = document.createElement('div');
+          source.textContent = `原内容：${item.content_kind} · ${item.content_body} · 驳回原因：${item.content_moderation_reason || '未记录'} · 原审核人员：${item.content_moderated_by || '待核实'}`;
+          li.appendChild(source);
+        }
+        if (item.status !== 'RESOLVED') {
+          if (item.status === 'OPEN') {
+            const review = document.createElement('button'); review.textContent = '标记处理中';
+            review.onclick = async () => {
+              const response = await fetch(`/ops/appeals/${encodeURIComponent(item.id)}/status`, {
+                method: 'POST', headers: { ...headers(), 'Content-Type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
+                body: JSON.stringify({ status: 'IN_REVIEW' })
+              });
+              if (!response.ok) $('status').textContent = (await response.json()).message || '更新失败'; else refresh();
+            };
+            li.appendChild(review);
+          }
+          const resolution = document.createElement('input'); resolution.placeholder = '复核结论（至少 5 字）'; li.appendChild(resolution);
+          for (const [label, outcome] of item.content_id
+            ? [['维持驳回', 'UPHOLD'], ['撤销驳回并公开', 'OVERTURN']] : [['结案', null]]) {
+            const resolve = document.createElement('button'); resolve.textContent = label;
+            resolve.onclick = async () => {
+              try { await post(`/ops/appeals/${encodeURIComponent(item.id)}/status`,
+                { status: 'RESOLVED', resolution: resolution.value, ...(outcome ? { outcome } : {}) }); refresh(); }
+              catch (error) { $('status').textContent = error.message; }
+            };
+            li.appendChild(resolve);
+          }
+        }
+      }
+    }
+    function renderNotificationFollowups(items) {
+      for (const item of items) {
+        const li = line($('notificationFollowups'), `${item.externalStatus} · ${item.kind} · 活动 ${item.eventId} · 用户 ${item.userId} · 创建 ${item.createdAt} · 已读 ${item.readAt || '否'}`);
+        const note = document.createElement('input'); note.placeholder = '人工跟进说明（5 至 500 字）'; li.appendChild(note);
+        const button = document.createElement('button'); button.textContent = '记录人工跟进';
+        button.onclick = async () => {
+          try { await post(`/ops/notifications/${encodeURIComponent(item.notificationId)}/followup`, { note: note.value }); refresh(); }
+          catch (error) { $('status').textContent = error.message; }
+        };
+        li.appendChild(button);
+      }
+    }
+    function renderEventReviews(items) {
+      for (const item of items) {
+        const p = item.payload;
+        const li = line($('eventReviews'), `活动 ${item.id} · 版本 ${item.version} · 主办 ${item.hostId} · ${p.title} · ${p.city}/${p.venueName} · 场地声明 ${p.venueStatus} · ${p.startAt} 至 ${p.endAt} · ${p.minParticipants}-${p.maxParticipants} 人 · ${p.feeMode} 上限 ${p.feeCapFen} 分 · 报名审批 ${p.approvalMode} · 取消规则 ${p.cancellationRule}`);
+        const reason = document.createElement('input'); reason.placeholder = '核查结论（至少 5 字）'; li.appendChild(reason);
+        for (const [label, decision] of [['通过', 'APPROVED'], ['驳回', 'REJECTED']]) {
+          const button = document.createElement('button'); button.textContent = label;
+          button.onclick = async () => {
+            try { await post(`/ops/events/${encodeURIComponent(item.id)}/review`, { expectedVersion: item.version, decision, reason: reason.value }); refresh(); }
+            catch (error) { $('status').textContent = error.message; }
+          };
+          li.appendChild(button);
+        }
+      }
+    }
+    function renderContent(items) {
+      for (const item of items) {
+        const li = line($('content'), `内容 ${item.id} · 作者 ${item.author_id} · ${item.kind} · 活动 ${item.event_id} · ${item.body}`);
+        const reason = document.createElement('input'); reason.placeholder = '驳回原因（至少 5 字）'; li.appendChild(reason);
+        for (const [label, decision] of [['通过', 'APPROVED'], ['驳回', 'REJECTED']]) {
+          const button = document.createElement('button'); button.textContent = label;
+          button.onclick = async () => {
+            const response = await fetch(`/ops/content/${encodeURIComponent(item.id)}/moderate`, {
+              method: 'POST', headers: { ...headers(), 'Content-Type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
+              body: JSON.stringify({ status: decision, ...(decision === 'REJECTED' ? { reason: reason.value } : {}) })
+            });
+            if (!response.ok) $('status').textContent = (await response.json()).message || '审核失败';
+            else refresh();
+          };
+          li.appendChild(button);
+        }
+      }
+    }
+    function renderFailedJobs(items) {
+      for (const item of items) {
+        const li = line($('failedJobs'), `${item.kind} · ${item.id} · 活动 ${item.eventId || '无'} · 失败 ${item.attempts} 次 · ${item.errorCode || '未知错误'} · 应执行 ${item.dueAt}`);
+        const retry = document.createElement('button'); retry.textContent = '重新排队';
+        const retryKey = crypto.randomUUID();
+        retry.onclick = async () => {
+          try { await post(`/ops/jobs/${encodeURIComponent(item.id)}/retry`, {}, retryKey); await refresh(); }
+          catch (error) { $('status').textContent = error.message; }
+        };
+        li.appendChild(retry);
+      }
+    }
+    function renderRegistrationAnomalies(items) {
+      for (const item of items) {
+        const li = line($('registrationAnomalies'), `活动 ${item.eventId} · 用户 ${item.userId} · 本轮报名 ${item.registrations} 次、退出 ${item.cancellations} 次 · 最新 ${item.lastSignalAt}`);
+        const evidence = document.createElement('p'); evidence.className = 'muted'; evidence.textContent = '先查看行为记录，再作人工判断。'; li.appendChild(evidence);
+        const inspect = document.createElement('button'); inspect.textContent = '查看行为记录'; li.appendChild(inspect);
+        const disposition = document.createElement('select');
+        for (const [value, label] of [['MONITOR', '继续观察'], ['FALSE_POSITIVE', '误报'], ['ESCALATE', '升级核查']]) {
+          const option = document.createElement('option'); option.value = value; option.textContent = label; disposition.appendChild(option);
+        }
+        const note = document.createElement('input'); note.placeholder = '人工核查说明（至少 5 字）'; li.append(disposition, note);
+        const review = document.createElement('button'); review.textContent = '记录复核'; review.disabled = true; li.appendChild(review);
+        inspect.onclick = async () => {
+          try {
+            const path = `/ops/registration-anomalies/evidence?userId=${encodeURIComponent(item.userId)}&eventId=${encodeURIComponent(item.eventId)}`;
+            const response = await fetch(path, { headers: headers() });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message || data.code || '读取行为记录失败');
+            if (data.lastSignalAt !== item.lastSignalAt) throw new Error('线索已变化，请刷新后复核');
+            evidence.textContent = `当前报名状态 ${data.registrationStatus || '无'}；${data.actions.slice().reverse().map(action => `${action.at} ${action.action}`).join('；')}${data.truncated ? '；仅显示最近 100 条，请查原始审计记录' : ''}`;
+            review.disabled = false;
+          } catch (error) { review.disabled = true; $('status').textContent = error.message; }
+        };
+        review.onclick = async () => {
+          try { await post('/ops/registration-anomalies/review', { userId: item.userId, eventId: item.eventId,
+            lastSignalAt: item.lastSignalAt, disposition: disposition.value, note: note.value }); refresh(); }
+          catch (error) { $('status').textContent = error.message; }
+        };
+      }
+    }
+    async function refresh() {
+      const generation = ++requestGeneration;
+      const denied = [];
+      nextReportOffset = null;
+      reportSnapshot = null;
+      $('moreReports').disabled = true;
+      nextAnomalyOffset = null;
+      anomalySnapshot = null;
+      $('moreRegistrationAnomalies').disabled = true;
+      nextPrivacyOffset = null;
+      privacySnapshot = null;
+      $('morePrivacy').disabled = true;
+      nextAppealOffset = null;
+      appealSnapshot = null;
+      $('moreAppeals').disabled = true;
+      nextNotificationFollowupOffset = null;
+      notificationFollowupSnapshot = null;
+      $('moreNotificationFollowups').disabled = true;
+      nextEventReviewOffset = null;
+      eventReviewSnapshot = null;
+      $('moreEventReviews').disabled = true;
+      nextContentOffset = null;
+      contentSnapshot = null;
+      $('moreContent').disabled = true;
+      nextFailedJobOffset = null;
+      failedJobSnapshot = null;
+      $('moreFailedJobs').disabled = true;
+      nextAiDraftAlertOffset = null;
+      aiDraftAlertSnapshot = null;
+      $('moreAiDraftAlerts').disabled = true;
+      $('status').textContent = '读取中…';
+      $('metrics').textContent = '读取中…';
+      for (const id of ['reports', 'eventReviews', 'holds', 'rateLimits', 'registrationAnomalies', 'notificationFollowups', 'notificationHistory', 'failedJobs', 'aiDraftAlerts', 'supportMinutesHistory', 'appeals', 'privacy', 'content']) $(id).replaceChildren();
+      try {
+        const [reportPage, eventReviewPage, holds, rateLimits, anomalyPage, notificationFollowupPage, notificationHistory, failedJobPage, aiDraftAlertPage, supportMinutesHistory, appealPage, privacyPage, contentPage, publicGate, emergencyGate, metrics] = await Promise.all([loadReports(denied), loadEventReviews(denied), load('/ops/holds', denied), load('/ops/rate-limits', denied), loadRegistrationAnomalies(denied), loadNotificationFollowups(denied), load('/ops/notifications/followups/history', denied), loadFailedJobs(denied), loadAiDraftAlerts(denied), load('/ops/support-minutes', denied), loadAppeals(denied), loadPrivacy(denied), loadContent(denied), loadPublicGate(denied), loadEmergencyGate(denied), loadMetrics(denied)]);
+        if (generation !== requestGeneration) return false;
+        const reports = reportPage.items;
+        const registrationAnomalies = anomalyPage.items;
+        const appeals = appealPage.items;
+        const privacy = privacyPage.items;
+        const notificationFollowups = notificationFollowupPage.items;
+        const eventReviews = eventReviewPage.items;
+        const content = contentPage.items;
+        const failedJobs = failedJobPage.items;
+        const aiDraftAlerts = aiDraftAlertPage.items;
+        nextReportOffset = reportPage.nextOffset ?? null;
+        reportSnapshot = reportPage.snapshot ?? null;
+        $('moreReports').disabled = nextReportOffset === null;
+        nextAnomalyOffset = anomalyPage.nextOffset ?? null;
+        anomalySnapshot = anomalyPage.snapshot ?? null;
+        $('moreRegistrationAnomalies').disabled = nextAnomalyOffset === null;
+        nextPrivacyOffset = privacyPage.nextOffset ?? null;
+        privacySnapshot = privacyPage.snapshot ?? null;
+        $('morePrivacy').disabled = nextPrivacyOffset === null;
+        nextAppealOffset = appealPage.nextOffset ?? null;
+        appealSnapshot = appealPage.snapshot ?? null;
+        $('moreAppeals').disabled = nextAppealOffset === null;
+        nextNotificationFollowupOffset = notificationFollowupPage.nextOffset ?? null;
+        notificationFollowupSnapshot = notificationFollowupPage.snapshot ?? null;
+        $('moreNotificationFollowups').disabled = nextNotificationFollowupOffset === null;
+        nextEventReviewOffset = eventReviewPage.nextOffset ?? null;
+        eventReviewSnapshot = eventReviewPage.snapshot ?? null;
+        $('moreEventReviews').disabled = nextEventReviewOffset === null;
+        nextContentOffset = contentPage.nextOffset ?? null;
+        contentSnapshot = contentPage.snapshot ?? null;
+        $('moreContent').disabled = nextContentOffset === null;
+        nextFailedJobOffset = failedJobPage.nextOffset ?? null;
+        failedJobSnapshot = failedJobPage.snapshot ?? null;
+        $('moreFailedJobs').disabled = nextFailedJobOffset === null;
+        nextAiDraftAlertOffset = aiDraftAlertPage.nextOffset ?? null;
+        aiDraftAlertSnapshot = aiDraftAlertPage.snapshot ?? null;
+        $('moreAiDraftAlerts').disabled = nextAiDraftAlertOffset === null;
+        $('recordSupportMinutes').disabled = denied.includes('/ops/support-minutes');
+        if (!metrics) $('metrics').textContent = '无权限查看';
+        else {
+          const weeks = (metrics.weeks || []).map(item => `${item.weekStart} 周：合格 ${item.qualified}、待复核 ${item.pendingReview}、未达标 ${item.unqualified}`).join('；') || '暂无到期的正式活动';
+          const reuse = metrics.hostReuse28d || {};
+          const support = metrics.directSupportMinutes || {};
+          const due = metrics.dueEventCompletion || {};
+          const return30 = metrics.participantReturn30d || {};
+          const waitlist = metrics.waitlistOfferConversion || {};
+          const formation = metrics.formationTime || {};
+          const attendance = metrics.attendanceDiagnostic || {};
+          const dueRate = due.evidenceQualifiedRate == null ? '暂无到期样本' : (due.evidenceQualifiedRate * 100).toFixed(1) + '%';
+          const dueGate = !due.minimumSampleMet ? '样本不足，不判定 70% 参考线'
+            : due.threshold70Met == null ? `待复核可能改变结论（最高 ${((due.possibleRateAfterReview || 0) * 100).toFixed(1)}%）`
+              : due.threshold70Met ? '达到证据口径 70% 参考线' : '未达到证据口径 70% 参考线';
+          const returnGate = !return30.minimumSampleMet ? '成熟用户不足 100，不判定 25% 参考线'
+            : (return30.pendingFirstParticipants || 0) > 0 ? '首场参与待复核，成熟样本口径未定'
+              : return30.threshold25Met == null ? `待补结项证据可能改变结论（最高 ${((return30.possibleRateAfterReview || 0) * 100).toFixed(1)}%）`
+              : return30.threshold25Met ? '达到证据口径 25% 参考线' : '未达到证据口径 25% 参考线';
+          const waitlistRate = waitlist.acceptanceRate == null ? '无成熟邀请' : (waitlist.acceptanceRate * 100).toFixed(1) + '%';
+          const waitlistText = `候补邀请已发 ${waitlist.issued || 0}、确认 ${waitlist.accepted || 0}、过期 ${waitlist.expired || 0}、取消 ${waitlist.cancelled || 0}、未到期 ${waitlist.active || 0}${waitlist.unclassified ? '、未知状态 ' + waitlist.unclassified : ''}、确认率 ${waitlistRate}（确认÷确认与过期，不含取消和未到期）`;
+          const formationText = `成局耗时：${formation.formedEvents || 0} 场、中位数 ${formation.medianMinutes == null ? '暂无成局样本' : formation.medianMinutes.toFixed(1) + ' 分钟'}`;
+          const attendanceRate = attendance.status === 'PARTIAL'
+            ? `旧状态或截止规则不完整，${attendance.unknownDeadlineStates || 0} 条报名状态未知、${attendance.missingDeadlineEvents || 0} 场缺截止时间，不判定比率`
+            : attendance.cohortAttendanceRate == null ? '无截止时确认样本'
+              : (attendance.cohortAttendanceRate * 100).toFixed(1) + '%';
+          const attendanceText = attendance.status
+            ? `报名截止${attendance.status === 'PARTIAL' ? '已知确认' : '已确认'} ${attendance.confirmedAtDeadline || 0}、其中到场 ${attendance.attendedFromDeadlineCohort || 0}、最终实际到场 ${attendance.finalActualAttended || 0}、截止后本人退出 ${attendance.cancelledAfterDeadline || 0}、主办移除 ${attendance.removedAfterDeadline || 0}、报名到场率 ${attendanceRate}`
+            : '报名到场诊断未返回';
+          $('metrics').textContent = `${weeks}；到期活动 ${due.dueEvents || 0}、证据合格 ${due.evidenceQualified || 0}、待复核 ${due.pendingReview || 0}、保守完成率 ${dueRate}（${dueGate}）；成熟主办方 ${reuse.maturedHosts || 0}、28 天复用 ${reuse.reusedHosts || 0}、复用率 ${reuse.rate == null ? '样本未成熟' : (reuse.rate * 100).toFixed(1) + '%'}；二次活动已到期 ${reuse.secondEventDue || 0}、合格 ${reuse.secondEventQualified || 0}；有参与证据的用户 ${return30.observedParticipants || 0}、成熟 30 天 ${return30.maturedParticipants || 0}、首场待复核 ${return30.pendingFirstParticipants || 0}、再次参与 ${return30.returnedParticipants || 0}、再参与待补证据 ${return30.pendingReturnParticipants || 0}、D30 再参与率 ${return30.rate == null ? '样本未成熟' : (return30.rate * 100).toFixed(1) + '%'}（${returnGate}）；${attendanceText}；${waitlistText}；${formationText}；已记录人工 ${support.recordedMinutes || 0} 分钟，${support.eventsWithEntries || 0}/${support.dueEvents || 0} 场有条目（记录不完整）；贡献利润：不可计算（缺实际收入与成本来源）。`;
+        }
+        $('publicGate').textContent = publicGate ? `${publicGate.status === 'OPEN' ? '开放' : '关闭'} · 原因：${publicGate.reason} · 操作人：${publicGate.changedBy}` : '无权限查看';
+        $('closePublicGate').disabled = !publicGate || publicGate.status === 'CLOSED';
+        $('openPublicGate').disabled = !publicGate || publicGate.status === 'OPEN';
+        $('emergencyGate').textContent = emergencyGate?.status ? `${emergencyGate.status === 'OPEN' ? '开放' : '关闭'} · 原因：${emergencyGate.reason} · 操作人：${emergencyGate.changedBy}` : '无权限查看';
+        $('closeEmergencyGate').disabled = !emergencyGate?.status || emergencyGate.status === 'CLOSED';
+        $('openEmergencyGate').disabled = !emergencyGate?.status || emergencyGate.status === 'OPEN';
+        renderReports(reports);
+        renderEventReviews(eventReviews);
+        for (const item of holds) {
+          const li = line($('holds'), `${item.status} · 活动 ${item.eventId} · 暂停原因：${item.reason} · 创建人 ${item.createdBy}${item.releaseReason ? ' · 解除原因：' + item.releaseReason : ''}`);
+          if (item.status === 'ACTIVE') {
+            const reason = document.createElement('input'); reason.placeholder = '解除原因（至少 5 字）'; li.appendChild(reason);
+            const release = document.createElement('button'); release.textContent = '人工解除';
+            release.onclick = async () => {
+              try { await post(`/ops/holds/${encodeURIComponent(item.id)}/release`, { reason: reason.value }); refresh(); }
+              catch (error) { $('status').textContent = error.message; }
+            };
+            li.appendChild(release);
+          }
+        }
+        for (const item of rateLimits) line($('rateLimits'), `${item.windowStart} · ${item.scope} · 请求 ${item.attempts} · 已拒绝 ${item.rejectedCount}`);
+        renderRegistrationAnomalies(registrationAnomalies);
+        renderNotificationFollowups(notificationFollowups);
+        for (const item of notificationHistory) line($('notificationHistory'), `${item.recordedAt} · ${item.recordedBy} · 活动 ${item.eventId} · 用户 ${item.userId} · ${item.kind} · 外部状态 ${item.externalStatus} · ${item.note}`);
+        renderFailedJobs(failedJobs);
+        for (const item of aiDraftAlerts) line($('aiDraftAlerts'), `${item.created_at} · 用户 ${item.actor_id} · 请求 ${item.request_key} · ${item.status} · 原因 ${item.fallback_reason || '待核查'} · 预算 ${item.budget_fen} 分 · 已知费用 ${item.known_cost_fen == null ? '未知' : item.known_cost_fen + ' 分'} · 费用状态 ${item.cost_status || '未知'}`);
+        renderAppeals(appeals);
+        renderPrivacy(privacy);
+        for (const item of supportMinutesHistory)
+          line($('supportMinutesHistory'), `${item.recordedAt} · 活动 ${item.eventId} · ${item.category} · ${item.minutes} 分钟 · ${item.recordedBy}`);
+        renderContent(content);
+        const count = (path, amount) => denied.includes(path) ? '无权限' : amount;
+        $('status').textContent = `举报 ${count('/ops/reports', reportPage.total ?? reports.length)}、公开活动待审 ${count('/ops/events/reviews', eventReviewPage.total ?? eventReviews.length)}、活动暂停 ${count('/ops/holds', holds.filter(item => item.status === 'ACTIVE').length)}、异常请求 ${count('/ops/rate-limits', rateLimits.length)}、异常报名 ${count('/ops/registration-anomalies', anomalyPage.total ?? registrationAnomalies.length)}、通知待跟进 ${count('/ops/notifications/followups', notificationFollowupPage.total ?? notificationFollowups.length)}、最近已跟进 ${count('/ops/notifications/followups/history', notificationHistory.length)}、失败任务 ${count('/ops/jobs/failed', failedJobPage.total ?? failedJobs.length)}、AI 草稿异常 ${count('/ops/ai-draft-alerts', aiDraftAlertPage.total ?? aiDraftAlerts.length)}、申诉 ${count('/ops/appeals', appealPage.total ?? appeals.length)}、个人信息请求 ${count('/ops/privacy', privacyPage.total ?? privacy.length)}、待审核内容 ${count('/ops/content', contentPage.total ?? content.length)}${denied.length ? ' · 无权限：' + denied.join('、') : ''}`;
+        return true;
+      } catch (error) {
+        if (generation === requestGeneration) {
+          const message = String(error?.message || '读取失败');
+          $('status').textContent = /Failed to fetch|NetworkError|network unavailable/i.test(message)
+            ? '网络连接失败，请检查网络后点击刷新' : `读取失败：${message}。请点击刷新重试`;
+          $('metrics').textContent = '读取失败，可点击刷新重试';
+        }
+        return false;
+      }
+    }
+    $('moreReports').onclick = async () => {
+      if (nextReportOffset === null) return;
+      const generation = requestGeneration;
+      const offset = nextReportOffset;
+      const snapshot = reportSnapshot;
+      nextReportOffset = null;
+      $('moreReports').disabled = true;
+      try {
+        const denied = [];
+        const page = await loadReports(denied, offset, snapshot);
+        if (generation !== requestGeneration) return;
+        if (denied.length) { $('status').textContent = '无权限查看举报'; return; }
+        renderReports(page.items);
+        nextReportOffset = page.nextOffset ?? null;
+        reportSnapshot = page.snapshot ?? null;
+        $('moreReports').disabled = nextReportOffset === null;
+      } catch (error) {
+        if (generation !== requestGeneration) return;
+        if (error.code === 'QUEUE_CHANGED') {
+          if (await refresh()) $('status').textContent += ' · 举报列表变化，已从第一页刷新';
+          return;
+        }
+        nextReportOffset = offset;
+        $('moreReports').disabled = false;
+        $('status').textContent = error.message;
+      }
+    };
+    $('moreRegistrationAnomalies').onclick = async () => {
+      if (nextAnomalyOffset === null) return;
+      const generation = requestGeneration;
+      const offset = nextAnomalyOffset;
+      const snapshot = anomalySnapshot;
+      nextAnomalyOffset = null;
+      $('moreRegistrationAnomalies').disabled = true;
+      try {
+        const denied = [];
+        const page = await loadRegistrationAnomalies(denied, offset, snapshot);
+        if (generation !== requestGeneration) return;
+        if (denied.length) { $('status').textContent = '无权限查看异常报名'; return; }
+        renderRegistrationAnomalies(page.items);
+        nextAnomalyOffset = page.nextOffset ?? null;
+        anomalySnapshot = page.snapshot ?? null;
+        $('moreRegistrationAnomalies').disabled = nextAnomalyOffset === null;
+      } catch (error) {
+        if (generation !== requestGeneration) return;
+        if (error.code === 'QUEUE_CHANGED') {
+          if (await refresh()) $('status').textContent += ' · 异常报名队列变化，已从第一页刷新';
+          return;
+        }
+        nextAnomalyOffset = offset;
+        $('moreRegistrationAnomalies').disabled = false;
+        $('status').textContent = error.message;
+      }
+    };
+    $('morePrivacy').onclick = async () => {
+      if (nextPrivacyOffset === null) return;
+      const generation = requestGeneration;
+      const offset = nextPrivacyOffset;
+      const snapshot = privacySnapshot;
+      nextPrivacyOffset = null;
+      $('morePrivacy').disabled = true;
+      try {
+        const denied = [];
+        const page = await loadPrivacy(denied, offset, snapshot);
+        if (generation !== requestGeneration) return;
+        if (denied.length) { $('status').textContent = '无权限查看个人信息请求'; return; }
+        renderPrivacy(page.items);
+        nextPrivacyOffset = page.nextOffset ?? null;
+        privacySnapshot = page.snapshot ?? null;
+        $('morePrivacy').disabled = nextPrivacyOffset === null;
+      } catch (error) {
+        if (generation !== requestGeneration) return;
+        if (error.code === 'QUEUE_CHANGED') {
+          if (await refresh()) $('status').textContent += ' · 个人信息请求列表变化，已从第一页刷新';
+          return;
+        }
+        nextPrivacyOffset = offset;
+        $('morePrivacy').disabled = false;
+        $('status').textContent = error.message;
+      }
+    };
+    $('moreAppeals').onclick = async () => {
+      if (nextAppealOffset === null) return;
+      const generation = requestGeneration;
+      const offset = nextAppealOffset;
+      const snapshot = appealSnapshot;
+      nextAppealOffset = null;
+      $('moreAppeals').disabled = true;
+      try {
+        const denied = [];
+        const page = await loadAppeals(denied, offset, snapshot);
+        if (generation !== requestGeneration) return;
+        if (denied.length) { $('status').textContent = '无权限查看申诉'; return; }
+        renderAppeals(page.items);
+        nextAppealOffset = page.nextOffset ?? null;
+        appealSnapshot = page.snapshot ?? null;
+        $('moreAppeals').disabled = nextAppealOffset === null;
+      } catch (error) {
+        if (generation !== requestGeneration) return;
+        if (error.code === 'QUEUE_CHANGED') {
+          if (await refresh()) $('status').textContent += ' · 申诉列表变化，已从第一页刷新';
+          return;
+        }
+        nextAppealOffset = offset;
+        $('moreAppeals').disabled = false;
+        $('status').textContent = error.message;
+      }
+    };
+    $('moreNotificationFollowups').onclick = async () => {
+      if (nextNotificationFollowupOffset === null) return;
+      const generation = requestGeneration;
+      const offset = nextNotificationFollowupOffset;
+      const snapshot = notificationFollowupSnapshot;
+      nextNotificationFollowupOffset = null;
+      $('moreNotificationFollowups').disabled = true;
+      try {
+        const denied = [];
+        const page = await loadNotificationFollowups(denied, offset, snapshot);
+        if (generation !== requestGeneration) return;
+        if (denied.length) { $('status').textContent = '无权限查看通知待跟进'; return; }
+        renderNotificationFollowups(page.items);
+        nextNotificationFollowupOffset = page.nextOffset ?? null;
+        notificationFollowupSnapshot = page.snapshot ?? null;
+        $('moreNotificationFollowups').disabled = nextNotificationFollowupOffset === null;
+      } catch (error) {
+        if (generation !== requestGeneration) return;
+        if (error.code === 'QUEUE_CHANGED') {
+          if (await refresh()) $('status').textContent += ' · 通知待跟进列表变化，已从第一页刷新';
+          return;
+        }
+        nextNotificationFollowupOffset = offset;
+        $('moreNotificationFollowups').disabled = false;
+        $('status').textContent = error.message;
+      }
+    };
+    $('moreEventReviews').onclick = async () => {
+      if (nextEventReviewOffset === null) return;
+      const generation = requestGeneration;
+      const offset = nextEventReviewOffset;
+      const snapshot = eventReviewSnapshot;
+      nextEventReviewOffset = null;
+      $('moreEventReviews').disabled = true;
+      try {
+        const denied = [];
+        const page = await loadEventReviews(denied, offset, snapshot);
+        if (generation !== requestGeneration) return;
+        if (denied.length) { $('status').textContent = '无权限查看公开活动审核'; return; }
+        renderEventReviews(page.items);
+        nextEventReviewOffset = page.nextOffset ?? null;
+        eventReviewSnapshot = page.snapshot ?? null;
+        $('moreEventReviews').disabled = nextEventReviewOffset === null;
+      } catch (error) {
+        if (generation !== requestGeneration) return;
+        if (error.code === 'QUEUE_CHANGED') {
+          if (await refresh()) $('status').textContent += ' · 公开活动审核列表变化，已从第一页刷新';
+          return;
+        }
+        nextEventReviewOffset = offset;
+        $('moreEventReviews').disabled = false;
+        $('status').textContent = error.message;
+      }
+    };
+    $('moreContent').onclick = async () => {
+      if (nextContentOffset === null) return;
+      const generation = requestGeneration;
+      const offset = nextContentOffset;
+      const snapshot = contentSnapshot;
+      nextContentOffset = null;
+      $('moreContent').disabled = true;
+      try {
+        const denied = [];
+        const page = await loadContent(denied, offset, snapshot);
+        if (generation !== requestGeneration) return;
+        if (denied.length) { $('status').textContent = '无权限查看待审核内容'; return; }
+        renderContent(page.items);
+        nextContentOffset = page.nextOffset ?? null;
+        contentSnapshot = page.snapshot ?? null;
+        $('moreContent').disabled = nextContentOffset === null;
+      } catch (error) {
+        if (generation !== requestGeneration) return;
+        if (error.code === 'QUEUE_CHANGED') {
+          if (await refresh()) $('status').textContent += ' · 内容审核列表变化，已从第一页刷新';
+          return;
+        }
+        nextContentOffset = offset;
+        $('moreContent').disabled = false;
+        $('status').textContent = error.message;
+      }
+    };
+    $('moreFailedJobs').onclick = async () => {
+      if (nextFailedJobOffset === null) return;
+      const generation = requestGeneration;
+      const offset = nextFailedJobOffset;
+      const snapshot = failedJobSnapshot;
+      nextFailedJobOffset = null;
+      $('moreFailedJobs').disabled = true;
+      try {
+        const denied = [];
+        const page = await loadFailedJobs(denied, offset, snapshot);
+        if (generation !== requestGeneration) return;
+        if (denied.length) { $('status').textContent = '无权限查看失败任务'; return; }
+        renderFailedJobs(page.items);
+        nextFailedJobOffset = page.nextOffset ?? null;
+        failedJobSnapshot = page.snapshot ?? null;
+        $('moreFailedJobs').disabled = nextFailedJobOffset === null;
+      } catch (error) {
+        if (generation !== requestGeneration) return;
+        if (error.code === 'QUEUE_CHANGED') {
+          if (await refresh()) $('status').textContent += ' · 失败任务列表变化，已从第一页刷新';
+          return;
+        }
+        nextFailedJobOffset = offset;
+        $('moreFailedJobs').disabled = false;
+        $('status').textContent = error.message;
+      }
+    };
+    $('moreAiDraftAlerts').onclick = async () => {
+      if (nextAiDraftAlertOffset === null) return;
+      const generation = requestGeneration;
+      const offset = nextAiDraftAlertOffset;
+      const snapshot = aiDraftAlertSnapshot;
+      nextAiDraftAlertOffset = null;
+      $('moreAiDraftAlerts').disabled = true;
+      try {
+        const denied = [];
+        const page = await loadAiDraftAlerts(denied, offset, snapshot);
+        if (generation !== requestGeneration) return;
+        if (denied.length) { $('status').textContent = '无权限查看 AI 草稿异常'; return; }
+        for (const item of page.items) line($('aiDraftAlerts'), `${item.created_at} · 用户 ${item.actor_id} · 请求 ${item.request_key} · ${item.status} · 原因 ${item.fallback_reason || '待核查'} · 预算 ${item.budget_fen} 分 · 已知费用 ${item.known_cost_fen == null ? '未知' : item.known_cost_fen + ' 分'} · 费用状态 ${item.cost_status || '未知'}`);
+        nextAiDraftAlertOffset = page.nextOffset ?? null;
+        aiDraftAlertSnapshot = page.snapshot ?? null;
+        $('moreAiDraftAlerts').disabled = nextAiDraftAlertOffset === null;
+      } catch (error) {
+        if (generation !== requestGeneration) return;
+        if (error.code === 'QUEUE_CHANGED') {
+          if (await refresh()) $('status').textContent += ' · AI 草稿异常列表变化，已从第一页刷新';
+          return;
+        }
+        nextAiDraftAlertOffset = offset;
+        $('moreAiDraftAlerts').disabled = false;
+        $('status').textContent = error.message;
+      }
+    };
+    async function post(path, body, idempotencyKey = crypto.randomUUID()) {
+      const response = await fetch(path, { method: 'POST', headers: { ...headers(), 'Content-Type': 'application/json', 'Idempotency-Key': idempotencyKey }, body: JSON.stringify(body) });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || data.code || '操作失败');
+      return data;
+    }
+    let pendingSupportWrite = null;
+    $('recordSupportMinutes').onclick = async () => {
+      const eventId = $('supportEventId').value.trim();
+      const rawMinutes = $('supportMinutes').value.trim();
+      const minutes = Number(rawMinutes);
+      if (!eventId || rawMinutes === '' || !Number.isInteger(minutes) || minutes < 0 || minutes > 1440) {
+        $('status').textContent = '请填写活动 ID 与 0 至 1440 的整数分钟'; return;
+      }
+      const category = $('supportCategory').value;
+      const fingerprint = JSON.stringify([eventId, minutes, category, $('token').value, $('devUser').value]);
+      if (!pendingSupportWrite || pendingSupportWrite.fingerprint !== fingerprint)
+        pendingSupportWrite = { fingerprint, key: crypto.randomUUID() };
+      try {
+        await post(`/ops/events/${encodeURIComponent(eventId)}/support-minutes`,
+          { minutes, category }, pendingSupportWrite.key);
+        pendingSupportWrite = null;
+        $('supportMinutes').value = '';
+        await refresh();
+      } catch (error) { $('status').textContent = error.message; }
+    };
+    $('placeHold').onclick = async () => {
+      try { await post(`/ops/events/${encodeURIComponent($('holdEventId').value.trim())}/hold`, { reason: $('holdReason').value }); refresh(); }
+      catch (error) { $('status').textContent = error.message; }
+    };
+    for (const [id, status] of [['closePublicGate', 'CLOSED'], ['openPublicGate', 'OPEN']]) {
+      $(id).onclick = async () => {
+        try { await post('/ops/public-recruitment', { status, reason: $('publicGateReason').value }); $('publicGateReason').value = ''; refresh(); }
+        catch (error) { $('status').textContent = error.message; }
+      };
+    }
+    for (const [id, status] of [['closeEmergencyGate', 'CLOSED'], ['openEmergencyGate', 'OPEN']]) {
+      $(id).onclick = async () => {
+        try { await post('/ops/emergency', { status, reason: $('emergencyReason').value }); $('emergencyReason').value = ''; refresh(); }
+        catch (error) { $('status').textContent = error.message; }
+      };
+    }
+    $('operatorLogin').onclick = async () => {
+      try {
+        const response = await fetch('/ops/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: $('operatorUser').value.trim(), password: $('operatorPassword').value, code: $('operatorCode').value.trim() }) });
+        const data = await response.json();
+        $('operatorPassword').value = ''; $('operatorCode').value = '';
+        if (!response.ok) throw new Error(data.message || '登录失败');
+        $('token').value = data.token; sessionStorage.setItem('operatorToken', data.token);
+        await refresh();
+      } catch (error) { $('status').textContent = error.message; }
+    };
+    $('operatorLogout').onclick = async () => {
+      try {
+        if ($('token').value) {
+          const response = await fetch('/ops/auth/logout', { method: 'POST', headers: headers() });
+          if (!response.ok) throw new Error('服务器未确认退出');
+        }
+        requestGeneration++;
+        nextNotificationFollowupOffset = null;
+        notificationFollowupSnapshot = null;
+        $('moreNotificationFollowups').disabled = true;
+        nextEventReviewOffset = null;
+        eventReviewSnapshot = null;
+        $('moreEventReviews').disabled = true;
+        nextAnomalyOffset = null;
+        anomalySnapshot = null;
+        $('moreRegistrationAnomalies').disabled = true;
+        nextContentOffset = null;
+        contentSnapshot = null;
+        $('moreContent').disabled = true;
+        nextFailedJobOffset = null;
+        failedJobSnapshot = null;
+        $('moreFailedJobs').disabled = true;
+        $('token').value = ''; sessionStorage.removeItem('operatorToken');
+        $('status').textContent = '已退出登录';
+        $('metrics').textContent = '已退出登录';
+        for (const id of ['reports', 'eventReviews', 'holds', 'rateLimits', 'registrationAnomalies', 'notificationFollowups', 'notificationHistory', 'failedJobs', 'appeals', 'privacy', 'content']) $(id).replaceChildren();
+      } catch (error) { $('status').textContent = '退出失败：' + error.message; }
+    };
+    $('refresh').onclick = refresh;
+  </script>
+</body>
+</html>

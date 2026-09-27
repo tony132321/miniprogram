@@ -1,0 +1,25 @@
+<view>
+  <view wx:if="{{loadState === 'LOADING'}}">正在加载我的活动…</view>
+  <view wx:if="{{loadState === 'ERROR'}}" class="error">{{message}} <button bindtap="retry">{{errorCode === 'UNAUTHENTICATED' ? '微信登录' : '重试'}}</button></view>
+  <view wx:if="{{loadState === 'READY' && items.length === 0}}" class="muted">暂无活动。可从邀请进入或发起真实活动。</view>
+  <block wx:if="{{loadState === 'READY'}}">
+  <view wx:if="{{organized.length}}">我组织</view>
+  <view wx:for="{{organized}}" wx:key="id" class="item" data-id="{{item.id}}" bindtap="openEvent">
+    <view>{{item.title || '未命名草稿'}}</view><view>{{item.statusLabel}} · {{item.startAt || '时间待定'}}</view>
+  </view>
+  <view wx:if="{{pending.length}}">待确认</view>
+  <view wx:for="{{pending}}" wx:key="id" class="item" data-id="{{item.id}}" bindtap="openEvent">
+    <view>{{item.title || '活动'}}</view><view>{{item.registrationLabel}} · {{item.statusLabel}} · {{item.startAt || '时间待定'}}</view>
+  </view>
+  <view wx:if="{{attending.length}}">即将参加</view>
+  <view wx:for="{{attending}}" wx:key="id" class="item" data-id="{{item.id}}" bindtap="openEvent">
+    <view>{{item.title || '活动'}}</view><view>{{item.statusLabel}} · {{item.startAt || '时间待定'}}</view>
+  </view>
+  <view wx:if="{{history.length}}">历史</view>
+  <view wx:for="{{history}}" wx:key="id" class="item" data-id="{{item.id}}" bindtap="openEvent">
+    <view>{{item.title || '活动'}}</view><view>{{item.statusLabel}} · {{item.startAt || '时间待定'}}</view>
+  </view>
+  </block>
+  <input placeholder="输入邀请口令" value="{{tokenInput}}" bindinput="tokenChanged" />
+  <button bindtap="openInvite">打开邀请</button>
+</view>

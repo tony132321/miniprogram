@@ -1,0 +1,23 @@
+{
+  "name": "project-irl-r1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "start": "tsx src/main.ts",
+    "test": "tsx --test test/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "preflight:release": "tsx scripts/preflight-release.ts"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "^0.5.8",
+    "pg": "^8.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "@types/pg": "^8.23.1",
+    "qrcode-generator": "2.0.4",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
