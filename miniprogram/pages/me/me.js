@@ -1,5 +1,25 @@
 const { api } = require('../../utils/api.js');
 const config = require('../../config.js');
+const externalStatusLabels = {
+  NOT_REQUESTED: '外部提醒待处理',
+  DISPATCHING: '外部提醒请求处理中',
+  UNAVAILABLE: '外部提醒不可用，请查看站内通知',
+  CONSENT_WITHDRAWN: '未开通外部提醒',
+  CONSENT_RECONFIRM_REQUIRED: '外部提醒需重新授权',
+  PROVIDER_ACCEPTED: '提供方已受理，未确认送达',
+  UNKNOWN_REQUIRES_RECONCILIATION: '外部提醒结果待核对，请查看站内通知',
+  STALE_VERSION: '旧版本提醒已取消',
+  STALE_STATE: '过期外部提醒未发送',
+  ACCOUNT_DISABLED: '账号已停用，外部提醒未发送',
+  DELETE_REQUEST_PENDING: '删除申请处理中，外部提醒未发送',
+  PROVIDER_REJECTED: '外部提醒发送失败，请查看站内通知',
+  FAILED: '外部提醒发送失败，请查看站内通知'
+};
+function withExternalStatusLabels(items) {
+  return items.map(item => ({ ...item, externalStatusLabel:
+    Object.prototype.hasOwnProperty.call(externalStatusLabels, item.external_status)
+      ? externalStatusLabels[item.external_status] : '外部提醒状态待核对' }));
+}
 Page({
   data: { devUser: '', developmentMode: Boolean(config.developmentUser), hasSession: false, notifications: [], notificationsTotal: 0,
     nextNotificationOffset: null, notificationSnapshot: null, privacy: [], blocks: [], removals: [], reports: [], appeals: [], rejectedContent: [],
@@ -28,7 +48,7 @@ Page({
       const [notifications, privacy, blocks, removals, reports, appeals, rejectedContent, consents, similar] = await Promise.all([api.get('/me/notifications?offset=0'), api.get('/privacy/requests'), api.get('/me/blocks'),
         api.get('/me/removals'), api.get('/me/reports'), api.get('/me/appeals'), api.get('/me/content'), api.get('/me/consents'), api.get('/me/similar-invites')]);
       if (generation !== this._refreshGeneration) return false;
-      this.setData({ notifications: notifications.items, notificationsTotal: notifications.total ?? notifications.items.length,
+      this.setData({ notifications: withExternalStatusLabels(notifications.items), notificationsTotal: notifications.total ?? notifications.items.length,
         nextNotificationOffset: notifications.nextOffset ?? null, notificationSnapshot: notifications.snapshot ?? null,
         privacy: privacy.items, blocks: blocks.items, removals: removals.items, reports: reports.items,
         appeals: appeals.items, rejectedContent: rejectedContent.items,
@@ -56,7 +76,7 @@ Page({
     try {
       const page = await api.get(`/me/notifications?offset=${offset}&snapshot=${encodeURIComponent(snapshot)}`);
       if (generation !== this._refreshGeneration) return;
-      this.setData({ notifications: this.data.notifications.concat(page.items), notificationsTotal: page.total,
+      this.setData({ notifications: this.data.notifications.concat(withExternalStatusLabels(page.items)), notificationsTotal: page.total,
         nextNotificationOffset: page.nextOffset ?? null, notificationSnapshot: page.snapshot });
     } catch (error) {
       if (generation !== this._refreshGeneration) return;

@@ -5,7 +5,8 @@ import { request as httpRequest } from 'node:http';
 import { createDatabase } from '../src/db.ts';
 import type { Database } from '../src/db.ts';
 import { createApp } from '../src/server.ts';
-import { createDraft, publishEvent } from '../src/events.ts';
+import { createDraft } from '../src/events.ts';
+import { approveInviteById, publishApprovedInvite } from './helpers.ts';
 import { confirmEvent, createCheckInToken } from '../src/lifecycle.ts';
 import { cancelRegistration } from '../src/registrations.ts';
 import { register } from './helpers.ts';
@@ -66,6 +67,7 @@ test('HTTP cancellation uses database time when the application clock is fast', 
     const draft = await f.request('/events', 'host', 'POST', input, 'fast-http-cancel-draft');
     const event = await f.request(`/events/${draft.body.id}/publish`, 'host', 'POST',
       { expectedVersion: draft.body.version }, 'fast-http-cancel-publish');
+    await approveInviteById(f.db, 'host', event.body.id);
     Date.now = () => actualNow() + 2 * 365 * 24 * 60 * 60_000;
     try {
       const result = await f.request(`/events/${event.body.id}/cancel`, 'host', 'POST',
@@ -83,12 +85,14 @@ test('HTTP reconfirmation uses database time when the application clock is fast'
     const draft = await f.request('/events', 'host', 'POST', input, 'fast-http-reconfirm-draft');
     const event = await f.request(`/events/${draft.body.id}/publish`, 'host', 'POST',
       { expectedVersion: draft.body.version }, 'fast-http-reconfirm-publish');
+    await approveInviteById(f.db, 'host', event.body.id);
     const joined = await f.request(`/events/${event.body.id}/registrations`, 'p1', 'POST',
       { expectedVersion: event.body.version, inviteToken: event.body.inviteToken, acceptedRules: true }, 'fast-http-reconfirm-seat');
     assert.equal(joined.status, 201);
     const changed = await f.request(`/events/${event.body.id}/changes`, 'host', 'POST',
       { expectedVersion: event.body.version, patch: { venueName: '新的公共球馆', venueStatus: 'HOST_CONFIRMED' } }, 'fast-http-reconfirm-change');
     assert.equal(changed.status, 200);
+    await approveInviteById(f.db, 'host', event.body.id);
     Date.now = () => actualNow() + 2 * 365 * 24 * 60 * 60_000;
     try {
       const accepted = await f.request(`/registrations/${joined.body.id}/reconfirm`, 'p1', 'POST',
@@ -110,6 +114,7 @@ test('HTTP manual check-in uses database windows for request and response', asyn
       confirmationDeadline: new Date(now + 5 * 60_000).toISOString() }, 'http-manual-clock-draft');
     const event = await f.request(`/events/${draft.body.id}/publish`, 'host', 'POST',
       { expectedVersion: draft.body.version }, 'http-manual-clock-publish');
+    await approveInviteById(f.db, 'host', event.body.id);
     for (const actor of ['p1', 'p2', 'p3']) {
       const joined = await f.request(`/events/${event.body.id}/registrations`, actor, 'POST',
         { expectedVersion: event.body.version, inviteToken: event.body.inviteToken, acceptedRules: true }, `http-manual-clock-${actor}`);
@@ -192,7 +197,7 @@ test('a late shortfall job leaves the started activity visible with a formation 
   const f = await fixture();
   try {
     const draft = await createDraft(f.db, 'host', input, 'late-risk-draft');
-    const event = await publishEvent(f.db, 'host', draft.id, draft.version, 'late-risk-publish');
+    const event = await publishApprovedInvite(f.db, 'host', draft.id, draft.version, 'late-risk-publish');
     const p1 = await register(f.db, 'p1', event.id, event.version, 'late-risk-p1');
     await register(f.db, 'p2', event.id, event.version, 'late-risk-p2');
     await register(f.db, 'p3', event.id, event.version, 'late-risk-p3');
@@ -222,6 +227,7 @@ test('current-fact API gives a versioned answer and creates a host-only todo for
   try {
     const draft = await f.request('/events', 'host', 'POST', input, 'fact-draft');
     const event = await f.request(`/events/${draft.body.id}/publish`, 'host', 'POST', { expectedVersion: draft.body.version }, 'fact-publish');
+    await approveInviteById(f.db, 'host', event.body.id);
     await f.request(`/events/${event.body.id}/registrations`, 'p1', 'POST', { expectedVersion: event.body.version, inviteToken: event.body.inviteToken, acceptedRules: true }, 'fact-join');
     const known = await f.request(`/events/${event.body.id}/facts:ask`, 'p1', 'POST', { question: '活动几点开始？' }, 'fact-known');
     assert.equal(known.status, 200);
@@ -239,7 +245,7 @@ test('current-fact API gives a versioned answer and creates a host-only todo for
 test('host QR token reports its actual remaining lifetime and is restricted to the check-in window', async () => {
   const db = await createDatabase();
   const draft = await createDraft(db, 'host', input, 'qr-draft');
-  const event = await publishEvent(db, 'host', draft.id, draft.version, 'qr-publish');
+  const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'qr-publish');
   await register(db, 'p1', event.id, event.version, 'qr-p1');
   await register(db, 'p2', event.id, event.version, 'qr-p2');
   await register(db, 'p3', event.id, event.version, 'qr-p3');
@@ -294,7 +300,7 @@ test('a fast application clock cannot complete an activity before the database e
     registrationDeadline: new Date(start - 30 * 60_000).toISOString(),
     confirmationDeadline: new Date(start - 60 * 60_000).toISOString() };
   const draft = await createDraft(db, 'host', data, 'fast-completion-draft');
-  const event = await publishEvent(db, 'host', draft.id, draft.version, 'fast-completion-publish');
+  const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'fast-completion-publish');
   for (const actor of ['p1', 'p2', 'p3']) await register(db, actor, event.id, event.version, `fast-completion-${actor}`);
   await confirmEvent(db, 'host', event.id, event.version, 'fast-completion-confirm');
   let applicationTime = Date.parse(data.endAt) + 60_000;
@@ -343,7 +349,7 @@ test('QR issuance and HTTP scan use database time despite a skewed application c
     registrationDeadline: new Date(start - 30 * 60_000).toISOString(),
     confirmationDeadline: new Date(start - 60 * 60_000).toISOString() };
   const draft = await createDraft(db, 'host', data, 'skewed-qr-draft');
-  const event = await publishEvent(db, 'host', draft.id, draft.version, 'skewed-qr-publish');
+  const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'skewed-qr-publish');
   for (const actor of ['p1', 'p2', 'p3']) await register(db, actor, event.id, event.version, `skewed-qr-${actor}`);
   await confirmEvent(db, 'host', event.id, event.version, 'skewed-qr-confirm');
   let appNow = start + 1000;
@@ -391,6 +397,7 @@ test('private event requires invite token, and mutations require idempotency', a
     const draft = await f.request('/events', 'host', 'POST', { ...input, skillLevel: '中等水平' }, 'draft');
     assert.equal(draft.status, 201);
     const published = await f.request(`/events/${draft.body.id}/publish`, 'host', 'POST', { expectedVersion: draft.body.version }, 'publish');
+    await approveInviteById(f.db, 'host', published.body.id);
     assert.equal(published.status, 200);
     const denied = await f.request(`/events/${draft.body.id}`, 'other');
     assert.equal(denied.status, 403);
@@ -429,7 +436,7 @@ test('offer decline HTTP route advances the next waiting member and is owner-onl
   const f = await fixture();
   try {
     const draft = await createDraft(f.db, 'host', input, 'offer-http-draft');
-    const event = await publishEvent(f.db, 'host', draft.id, draft.version, 'offer-http-publish');
+    const event = await publishApprovedInvite(f.db, 'host', draft.id, draft.version, 'offer-http-publish');
     const p1 = await register(f.db, 'p1', event.id, event.version, 'offer-http-p1');
     for (const actor of ['p2', 'p3', 'p4', 'p5', 'w1', 'w2'])
       await register(f.db, actor, event.id, event.version, `offer-http-${actor}`);
@@ -486,6 +493,7 @@ test('registration transaction rejects a changed payload for an existing key', a
     const draft = await f.request('/events', 'host', 'POST', input, 'join-mismatch-draft');
     const event = await f.request(`/events/${draft.body.id}/publish`, 'host', 'POST',
       { expectedVersion: draft.body.version }, 'join-mismatch-publish');
+    await approveInviteById(f.db, 'host', event.body.id);
     const path = `/events/${event.body.id}/registrations`;
     const firstBody = { expectedVersion: event.body.version, inviteToken: event.body.inviteToken, acceptedRules: true };
     const first = await f.request(path, 'member', 'POST', firstBody, 'join-mismatch');
@@ -507,6 +515,7 @@ test('HTTP registration requires explicit acceptance of the current event rules'
     const draft = await f.request('/events', 'host', 'POST', input, 'rules-draft');
     const event = await f.request(`/events/${draft.body.id}/publish`, 'host', 'POST',
       { expectedVersion: draft.body.version }, 'rules-publish');
+    await approveInviteById(f.db, 'host', event.body.id);
     const path = `/events/${event.body.id}/registrations`;
     const body = { expectedVersion: event.body.version, inviteToken: event.body.inviteToken };
     for (const [suffix, patch] of [['missing', {}], ['false', { acceptedRules: false }]] as const) {
@@ -540,6 +549,7 @@ test('host can revoke an old invite without changing participant consent version
   try {
     const draft = await f.request('/events', 'host', 'POST', input, 'draft-revoke');
     const e = await f.request(`/events/${draft.body.id}/publish`, 'host', 'POST', { expectedVersion: draft.body.version }, 'pub-revoke');
+    await approveInviteById(f.db, 'host', e.body.id);
     const rotated = await f.request(`/events/${e.body.id}/invite:rotate`, 'host', 'POST', { expectedVersion: e.body.version }, 'rotate');
     assert.equal(rotated.status, 200);
     assert.notEqual(rotated.body.inviteToken, e.body.inviteToken);
@@ -556,6 +566,7 @@ test('share intent and attributed opens are counted separately without trusting 
   try {
     const draft = await f.request('/events', 'host', 'POST', input, 'share-draft');
     const e = await f.request(`/events/${draft.body.id}/publish`, 'host', 'POST', { expectedVersion: draft.body.version }, 'share-publish');
+    await approveInviteById(f.db, 'host', e.body.id);
     const sourceToken = 'a'.repeat(32);
     assert.equal((await f.request(`/i/${e.body.inviteToken}?source=${sourceToken}`, 'p1')).status, 200);
     const intent = await f.request(`/events/${e.body.id}/share-intents`, 'host', 'POST',
@@ -579,6 +590,7 @@ test('host sees unacknowledged cancellation notices as manual follow-up work', a
   try {
     const draft = await f.request('/events', 'host', 'POST', input, 'attention-draft');
     const e = await f.request(`/events/${draft.body.id}/publish`, 'host', 'POST', { expectedVersion: draft.body.version }, 'attention-publish');
+    await approveInviteById(f.db, 'host', e.body.id);
     await f.request(`/events/${e.body.id}/registrations`, 'p1', 'POST',
       { expectedVersion: e.body.version, inviteToken: e.body.inviteToken, acceptedRules: true }, 'attention-join');
     await f.request(`/events/${e.body.id}/cancel`, 'host', 'POST', { expectedVersion: e.body.version }, 'attention-cancel');
@@ -630,6 +642,7 @@ test('personal data export contains only the authenticated person’s records', 
   try {
     const draft = await f.request('/events', 'host', 'POST', input, 'export-draft');
     const event = await f.request(`/events/${draft.body.id}/publish`, 'host', 'POST', { expectedVersion: draft.body.version }, 'export-publish');
+    await approveInviteById(f.db, 'host', event.body.id);
     await f.request(`/events/${event.body.id}/registrations`, 'p1', 'POST', { expectedVersion: event.body.version, inviteToken: event.body.inviteToken, acceptedRules: true }, 'export-p1');
     await f.request(`/events/${event.body.id}/registrations`, 'p2', 'POST', { expectedVersion: event.body.version, inviteToken: event.body.inviteToken, acceptedRules: true }, 'export-p2');
     const own = await f.request('/privacy/export', 'p1');
@@ -682,6 +695,7 @@ test('activity alias API requires member consent and hides unconsented identitie
   try {
     const draft = await f.request('/events', 'host', 'POST', input, 'alias-draft');
     const event = await f.request(`/events/${draft.body.id}/publish`, 'host', 'POST', { expectedVersion: draft.body.version }, 'alias-publish');
+    await approveInviteById(f.db, 'host', event.body.id);
     await f.request(`/events/${event.body.id}/registrations`, 'p1', 'POST', { expectedVersion: event.body.version, inviteToken: event.body.inviteToken, acceptedRules: true }, 'alias-p1');
     assert.equal((await f.request(`/events/${event.body.id}/aliases`, 'outsider')).status, 403);
     assert.deepEqual((await f.request(`/events/${event.body.id}/aliases`, 'host')).body.items, []);
@@ -702,6 +716,7 @@ test('removed participant sees the private reason and can appeal the decision', 
   try {
     const draft = await f.request('/events', 'host', 'POST', input, 'remove-draft');
     const event = await f.request(`/events/${draft.body.id}/publish`, 'host', 'POST', { expectedVersion: draft.body.version }, 'remove-publish');
+    await approveInviteById(f.db, 'host', event.body.id);
     const joined = await f.request(`/events/${event.body.id}/registrations`, 'p1', 'POST',
       { expectedVersion: event.body.version, inviteToken: event.body.inviteToken, acceptedRules: true }, 'remove-join');
     const removed = await f.request(`/registrations/${joined.body.id}/remove`, 'host', 'POST',
@@ -785,6 +800,7 @@ test('content review endpoints enforce operator role and member visibility', asy
   try {
     const draft = await f.request('/events', 'host', 'POST', input, 'content-draft');
     const event = await f.request(`/events/${draft.body.id}/publish`, 'host', 'POST', { expectedVersion: draft.body.version }, 'content-publish');
+    await approveInviteById(f.db, 'host', event.body.id);
     const joined = await f.request(`/events/${event.body.id}/registrations`, 'member', 'POST',
       { expectedVersion: event.body.version, inviteToken: event.body.inviteToken, acceptedRules: true }, 'content-join');
     const created = await f.request(`/events/${event.body.id}/content`, 'member', 'POST', { kind: 'QUESTION', body: '要带球拍吗？' }, 'content-question');
@@ -820,6 +836,7 @@ test('content moderation queue pages every pending item and rejects stale contin
   try {
     const draft = await f.request('/events', 'host', 'POST', input, 'content-page-draft');
     const event = await f.request(`/events/${draft.body.id}/publish`, 'host', 'POST', { expectedVersion: draft.body.version }, 'content-page-publish');
+    await approveInviteById(f.db, 'host', event.body.id);
     await f.db.query(`INSERT INTO activity_content(id,event_id,author_id,kind,body,status)
       SELECT 'content-page-'||n,$1,'host','QUESTION','待审核问题 '||n,'PENDING_REVIEW'
       FROM generate_series(1,105) n`, [event.body.id]);

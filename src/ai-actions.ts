@@ -154,7 +154,8 @@ export async function executeAiAction(db: Database, actor: string, id: string, i
     const receipt: AiActionReceipt = { actionId: randomUUID(), status: 'SUCCEEDED', eventId: row.event_id,
       resourceVersion: changed.version,
       actualChanges,
-      pendingItems: changed.reviewStatus === 'PENDING' ? ['PUBLIC_REVIEW'] : [], providerReference: null };
+      pendingItems: changed.reviewStatus === 'PENDING'
+        ? [changed.payload.visibility === 'PUBLIC' ? 'PUBLIC_REVIEW' : 'INVITE_REVIEW'] : [], providerReference: null };
     await tx.query(`INSERT INTO audit(id,actor_id,event_id,action,detail)
       VALUES($1,$2,$3,'AI_ACTION_EXECUTE',$4::jsonb)`,
     [receipt.actionId, actor, row.event_id, JSON.stringify({ proposalId: id, kind: row.kind })]);

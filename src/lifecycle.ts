@@ -66,6 +66,7 @@ export async function getPendingReconfirmation(db: Database, actor: string, even
   fromVersion: number; toVersion: number; deadline: string; changes: ReturnType<typeof eventChanges>
 } | null> {
   const event = await getEvent(db, actor, eventId);
+  if (event.reviewStatus !== 'APPROVED') return null;
   const { rows: registrations } = await db.query<{ accepted_version: number | null; status: string }>(
     'SELECT accepted_version,status FROM registrations WHERE event_id=$1 AND user_id=$2', [eventId, actor]);
   const registration = registrations[0];
@@ -97,19 +98,17 @@ export async function changeEvent(db: Database, actor: string, eventId: string, 
     if (!changes.length) throw new AppError('BAD_REQUEST', '活动内容没有变化');
     const material = changes.some(change => materialFields.includes(change.field));
     if (material && Date.parse(next.confirmationDeadline!) <= now) throw new AppError('INVALID_EVENT', '重大变更需设置未来的确认截止时间');
-    const publicReview = next.visibility === 'PUBLIC';
-    const resumeAfterReview = !material && (event.review_status === 'APPROVED' || event.review_status === 'NOT_REQUIRED'
+    const resumeAfterReview = !material && (event.review_status === 'APPROVED'
       ? event.recruiting : event.resume_recruiting_after_review);
     const { rows } = await tx.query<EventDatabaseRow>(`UPDATE events SET payload=$2,version=version+1,
       status=CASE WHEN $3 THEN 'RECRUITING' ELSE status END,
-      recruiting=CASE WHEN $3 OR $4 THEN false ELSE recruiting END,
-      review_status=CASE WHEN $4 THEN 'PENDING' ELSE 'NOT_REQUIRED' END,
-      review_reason=NULL,resume_recruiting_after_review=CASE WHEN $4 THEN $5 ELSE false END,
-      invite_expires_at=$6,
+      recruiting=false,review_status='PENDING',
+      review_reason=NULL,resume_recruiting_after_review=$4,
+      invite_expires_at=$5,
       updated_at=now() WHERE id=$1 AND clock_timestamp() < (payload->>'startAt')::timestamptz
-        AND clock_timestamp() < $7::timestamptz
-        AND (NOT $3::boolean OR clock_timestamp() < $8::timestamptz) RETURNING *`,
-    [eventId, JSON.stringify(next), material, publicReview, resumeAfterReview, next.registrationDeadline,
+        AND clock_timestamp() < $6::timestamptz
+        AND (NOT $3::boolean OR clock_timestamp() < $7::timestamptz) RETURNING *`,
+    [eventId, JSON.stringify(next), material, resumeAfterReview, next.registrationDeadline,
       next.startAt, next.confirmationDeadline]);
     if (!rows[0]) throw new AppError('INVALID_STATE', '活动开始时间或重大变更确认截止时间已过，请刷新');
     const result = eventResult(rows[0]!);
@@ -119,7 +118,9 @@ export async function changeEvent(db: Database, actor: string, eventId: string, 
         VALUES($1,$2,$3,'HOST_STATEMENT','CHANGE',$4,$5,$6)`,
         [eventId, result.version, next.venueName, actor, next.startAt, next.endAt]);
     await tx.query("INSERT INTO activity_content(id,event_id,author_id,kind,body,status,event_version) VALUES($1,$2,'system','ANNOUNCEMENT',$3,'APPROVED',$4)",
-      [randomUUID(), eventId, material ? `活动规则已更新至版本 ${result.version}，参与者需要重新确认。` : `活动信息已更新至版本 ${result.version}，请以当前详情为准。`, result.version]);
+      [randomUUID(), eventId, material
+        ? `活动规则新版本 ${result.version} 审核中；审核通过后参与者需要重新确认。审核前请查看活动页的已审核信息。`
+        : `活动信息新版本 ${result.version} 审核中；审核前请查看活动页的已审核信息。`, result.version]);
     await tx.query('INSERT INTO jobs(id,kind,event_id,due_at,payload) VALUES($1,$2,$3,$4,$5)', [randomUUID(), 'FORMATION_DEADLINE', eventId, next.confirmationDeadline, JSON.stringify({ version: result.version })]);
     await tx.query('INSERT INTO jobs(id,kind,event_id,due_at,payload) VALUES($1,$2,$3,$4,$5)', [randomUUID(), 'REGISTRATION_DEADLINE', eventId, next.registrationDeadline, JSON.stringify({ version: result.version })]);
     if (material) {
@@ -152,6 +153,7 @@ export async function reconfirm(db: Database, actor: string, registrationId: str
     if (!registration) throw new AppError('NOT_FOUND', '报名不存在', 404);
     const event = await lockEvent(tx, registration.event_id, expectedVersion);
     if (registration.user_id !== actor) throw new AppError('FORBIDDEN', '只能确认自己的报名', 403);
+    if (event.review_status !== 'APPROVED') throw new AppError('REVIEW_PENDING', '活动内容尚未通过审核', 409);
     const now = at ?? await databaseNow(tx);
     if (event.status !== 'RECRUITING' || registration.status !== 'RECONFIRM_REQUIRED' || now >= Date.parse(event.payload.confirmationDeadline!))
       throw new AppError('INVALID_STATE', '重新确认期限已结束');
@@ -169,7 +171,7 @@ export async function confirmEvent(db: Database, actor: string, eventId: string,
   return command(db, actor, `confirm-event:${eventId}`, key, async tx => {
     const event = await lockEvent(tx, eventId, expectedVersion);
     if (event.host_id !== actor) throw new AppError('FORBIDDEN', '只有主办方可以确认成局', 403);
-    if (event.review_status === 'PENDING' || event.review_status === 'REJECTED') throw new AppError('REVIEW_PENDING', '公开活动尚未通过人工审核', 409);
+    if (event.review_status !== 'APPROVED') throw new AppError('REVIEW_PENDING', '活动内容尚未通过人工审核', 409);
     await assertEventNotHeld(tx, eventId);
     await assertPublicRecruitmentOpen(tx, event.payload.visibility, event.payload);
     if (event.status !== 'RECRUITING' || await databaseNow(tx) >= Date.parse(event.payload.confirmationDeadline!))

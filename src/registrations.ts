@@ -67,6 +67,8 @@ export async function audit(tx: Queryable, actor: string, eventId: string, actio
 
 export async function promote(tx: Queryable, event: EventRow): Promise<void> {
   if (!event.recruiting) return;
+  const { rows: reviews } = await tx.query<{ review_status: string }>('SELECT review_status FROM events WHERE id=$1', [event.id]);
+  if (reviews[0]?.review_status !== 'APPROVED') return;
   if (!(await newActionsOpen(tx, true))) return;
   if (await getActiveEventHold(tx, event.id)) return;
   if (event.payload.visibility === 'PUBLIC' && !(await publicRecruitmentOpen(tx, true, event.payload))) return;
@@ -103,6 +105,7 @@ export async function register(db: Database, actor: string, eventId: string, exp
     const inviteRequired = event.payload.visibility === 'INVITE' && actor !== event.host_id;
     await assertEventNotHeld(tx, eventId);
     await assertPublicRecruitmentOpen(tx, event.payload.visibility, event.payload);
+    if (event.review_status !== 'APPROVED') throw new AppError('REVIEW_PENDING', '活动内容尚未通过审核', 409);
     if (!event.recruiting || !['RECRUITING', 'CONFIRMED'].includes(event.status) ||
       await databaseNow(tx) >= Date.parse(event.payload.registrationDeadline!))
       throw new AppError('REGISTRATION_CLOSED', '当前不能报名');
@@ -143,6 +146,7 @@ export async function expressInterest(db: Database, actor: string, eventId: stri
     const inviteRequired = event.payload.visibility === 'INVITE' && actor !== event.host_id;
     await assertEventNotHeld(tx, eventId);
     await assertPublicRecruitmentOpen(tx, event.payload.visibility, event.payload);
+    if (event.review_status !== 'APPROVED') throw new AppError('REVIEW_PENDING', '活动内容尚未通过审核', 409);
     if (!event.recruiting || !['RECRUITING', 'CONFIRMED'].includes(event.status) ||
       await databaseNow(tx) >= Date.parse(event.payload.registrationDeadline!))
       throw new AppError('REGISTRATION_CLOSED', '当前不能表达待定意向');
@@ -228,6 +232,7 @@ export async function reserveSeats(db: Database, actor: string, eventId: string,
     if (event.host_id !== actor) throw new AppError('FORBIDDEN', '只有主办方可以预留', 403);
     await assertEventNotHeld(tx, eventId);
     await assertPublicRecruitmentOpen(tx, event.payload.visibility, event.payload);
+    if (event.review_status !== 'APPROVED') throw new AppError('REVIEW_PENDING', '活动内容尚未通过审核', 409);
     if (!event.recruiting || !Number.isInteger(count) || count < 1 || count > 12) throw new AppError('INVALID_RESERVATION', '预留数量无效');
     if (await occupancy(tx, eventId) + count > event.payload.maxParticipants!) throw new AppError('EVENT_FULL', '名额不足');
     const expiry = event.payload.confirmationDeadline!;
@@ -256,6 +261,7 @@ export async function claimReservation(db: Database, actor: string, token: strin
     const event = await lockEvent(tx, initial.event_id, expectedVersion);
     await assertEventNotHeld(tx, event.id);
     await assertPublicRecruitmentOpen(tx, event.payload.visibility, event.payload);
+    if (event.review_status !== 'APPROVED') throw new AppError('REVIEW_PENDING', '活动内容尚未通过审核', 409);
     const { rows } = await tx.query<Reservation>('SELECT * FROM reservations WHERE id=$1 FOR UPDATE', [initial.id]);
     const reservation = rows[0]!;
     if (reservation.claimed_by || reservation.released_at || new Date(reservation.expires_at).getTime() <= await databaseNow(tx) || !event.recruiting)
@@ -283,6 +289,7 @@ export async function acceptOffer(db: Database, actor: string, offerId: string, 
     const event = await lockEvent(tx, initial.event_id, expectedVersion);
     await assertEventNotHeld(tx, event.id);
     await assertPublicRecruitmentOpen(tx, event.payload.visibility, event.payload);
+    if (event.review_status !== 'APPROVED') throw new AppError('REVIEW_PENDING', '活动内容尚未通过审核', 409);
     const { rows } = await tx.query<Offer>('SELECT * FROM offers WHERE id=$1 FOR UPDATE', [offerId]);
     const offer = rows[0]!;
     const { rows: registrations } = await tx.query<RegistrationRow>('SELECT * FROM registrations WHERE id=$1 FOR UPDATE', [offer.registration_id]);
@@ -354,6 +361,7 @@ export async function approveRegistration(db: Database, actor: string, registrat
       throw new AppError('FORBIDDEN', '没有本活动报名审批权限', 403);
     await assertEventNotHeld(tx, event.id);
     await assertPublicRecruitmentOpen(tx, event.payload.visibility, event.payload);
+    if (event.review_status !== 'APPROVED') throw new AppError('REVIEW_PENDING', '活动内容尚未通过审核', 409);
     if (registration.status !== 'REQUESTED') throw new AppError('INVALID_STATE', '申请不可审核');
     if (!event.recruiting || !['RECRUITING', 'CONFIRMED'].includes(event.status) ||
       await databaseNow(tx) >= Date.parse(event.payload.registrationDeadline!))

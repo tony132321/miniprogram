@@ -201,7 +201,7 @@ export function createApp(db: Database, options: AppOptions) {
         await consumeRateLimit(db, `invite-ip:${peerScope(req, trustedProxyIps)}`, 60, 60_000);
         const token = path.slice(3);
         const { rows } = await db.query<{ id: string; status: string; payload: Record<string, unknown>; version: number;
-          recruiting: boolean; review_status: string }>("SELECT id,status,payload,version,recruiting,review_status FROM events WHERE invite_token=$1 AND invite_expires_at>now() AND status<>'DRAFT' AND (payload->>'visibility'<>'PUBLIC' OR review_status='APPROVED')", [token]);
+          recruiting: boolean; review_status: string }>("SELECT id,status,payload,version,recruiting,review_status FROM events WHERE invite_token=$1 AND invite_expires_at>now() AND status<>'DRAFT' AND review_status='APPROVED'", [token]);
         const row = rows[0];
         if (!row) throw new AppError('NOT_FOUND', '邀请已失效', 404);
         if (row.payload.visibility === 'PUBLIC' && !(await publicRecruitmentOpen(db, false, row.payload)))
@@ -261,12 +261,21 @@ export function createApp(db: Database, options: AppOptions) {
       }
       if (path === '/me/events' && method === 'GET') {
         const { rows } = await db.query<{ id: string; status: string; payload: { title?: string; startAt?: string };
-          is_host: boolean; my_status: string | null }>(`SELECT e.id,e.status,e.payload,(e.host_id=$1) AS is_host,r.status AS my_status FROM events e
+          review_status: string; legacy_review_closed: boolean | null; is_host: boolean; my_status: string | null }>(`SELECT e.id,e.status,e.payload,e.review_status,
+          clock_timestamp()>=CASE WHEN e.status='RECRUITING' THEN
+            (e.payload->>'confirmationDeadline')::timestamptz ELSE (e.payload->>'startAt')::timestamptz END
+            AS legacy_review_closed,
+          (e.host_id=$1) AS is_host,r.status AS my_status FROM events e
           LEFT JOIN registrations r ON r.event_id=e.id AND r.user_id=$1
           WHERE e.host_id=$1 OR r.status IN ('INTERESTED','REQUESTED','WAITLISTED','OFFERED','CONFIRMED','RECONFIRM_REQUIRED')
           ORDER BY e.id`, [actor]);
-        return send(res, 200, { items: rows.map(r => ({ id: r.id, status: r.status, title: r.payload.title,
-          startAt: r.payload.startAt, isHost: r.is_host, myRegistrationStatus: r.my_status })) });
+        return send(res, 200, { items: rows.map(r => {
+          const reviewed = r.is_host || r.review_status === 'APPROVED' ||
+            (r.review_status === 'NOT_REQUIRED' &&
+              (r.legacy_review_closed === true || ['IN_PROGRESS', 'COMPLETED', 'CANCELLED', 'EXPIRED'].includes(r.status)));
+          return { id: r.id, status: r.status, title: reviewed ? r.payload.title : '活动审核中',
+            startAt: reviewed ? r.payload.startAt : undefined, isHost: r.is_host, myRegistrationStatus: r.my_status };
+        }) });
       }
       if (path === '/me/registrations' && method === 'GET') {
         const { rows } = await db.query('SELECT id,event_id,status,accepted_version,created_at FROM registrations WHERE user_id=$1 ORDER BY created_at DESC', [actor]);
@@ -451,7 +460,7 @@ export function createApp(db: Database, options: AppOptions) {
       if (path === '/ops/events/reviews' && method === 'GET') {
         requireOperator(actor, 'EVENT_REVIEWS');
         const offsetText = requestUrl.searchParams.get('offset') ?? '0';
-        if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', '公开活动审核列表页码无效');
+        if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', '活动审核列表页码无效');
         return send(res, 200, await listPendingEventReviews(db, Number(offsetText), requestUrl.searchParams.get('snapshot')));
       }
       const eventReview = path.match(/^\/ops\/events\/([^/]+)\/review$/);

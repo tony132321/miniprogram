@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { once } from 'node:events';
 import { createDatabase, type Database } from '../src/db.ts';
-import { createDraft, publishEvent } from '../src/events.ts';
+import { createDraft } from '../src/events.ts';
+import { publishApprovedInvite } from './helpers.ts';
 import { confirmEvent } from '../src/lifecycle.ts';
 import { acceptOffer, cancelRegistration, reserveSeats } from '../src/registrations.ts';
 import { register } from './helpers.ts';
@@ -26,7 +27,7 @@ test('operator safety hold blocks new seats and formation while preserving exits
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'publish');
     const p1 = await register(db, 'p1', event.id, event.version, 'p1');
     const p2 = await register(db, 'p2', event.id, event.version, 'p2');
     await register(db, 'p3', event.id, event.version, 'p3');
@@ -58,7 +59,7 @@ test('an offer issued before a hold cannot be accepted until release', async () 
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'offer-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'offer-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'offer-publish');
     const p1 = await register(db, 'p1', event.id, event.version, 'offer-p1');
     for (const actor of ['p2', 'p3', 'p4']) await register(db, actor, event.id, event.version, `offer-${actor}`);
     await cancelRegistration(db, 'p1', p1.id, event.version, 'offer-exit');
@@ -74,7 +75,7 @@ test('closing a hold after an event expires does not announce that recruiting re
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'expired-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'expired-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'expired-publish');
     const hold = await placeEventHold(db, 'ops', event.id, '等待安全核查结果后结案', 'expired-hold');
     await db.query("UPDATE events SET status='EXPIRED',recruiting=false WHERE id=$1", [event.id]);
     await releaseEventHold(db, 'ops', hold.id, '已记录结案结果不再招募', 'expired-release');
@@ -87,7 +88,7 @@ test('a delayed start transition cannot make a safety release announce recruitin
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'late-start-hold-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'late-start-hold-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'late-start-hold-publish');
     const hold = await placeEventHold(db, 'ops', event.id, '核查开始时间附近的风险', 'late-start-hold');
     const lateDatabaseClock = new Date(Date.parse(input.startAt) + 1000);
     const clockDb: Database = {
@@ -110,7 +111,7 @@ test('a delayed registration deadline transition cannot make a safety release an
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'late-deadline-hold-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'late-deadline-hold-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'late-deadline-hold-publish');
     const hold = await placeEventHold(db, 'ops', event.id, '核查报名截止时间附近的风险', 'late-deadline-hold');
     const lateDatabaseClock = new Date(Date.parse(input.registrationDeadline) + 1000);
     const clockDb: Database = {
@@ -133,7 +134,7 @@ test('a safety hold cannot be placed after the database start time even if statu
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'late-place-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'late-place-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'late-place-publish');
     const lateDatabaseClock = new Date(Date.parse(input.startAt) + 1000);
     const clockDb: Database = {
       ...db,
@@ -154,7 +155,7 @@ test('a safety hold cannot be inserted if the activity starts before the final w
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'place-write-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'place-write-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'place-write-publish');
     let crossed = false;
     const racingDb: Database = {
       ...db,
@@ -180,7 +181,7 @@ test('releasing a hold does not claim recruiting resumed while another activity 
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'paused-rule-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'paused-rule-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'paused-rule-publish');
     const hold = await placeEventHold(db, 'ops', event.id, '核查仍需保持招募暂停', 'paused-rule-hold');
     await db.query('UPDATE events SET recruiting=false WHERE id=$1', [event.id]);
     await releaseEventHold(db, 'ops', hold.id, '单场安全核查已经结案', 'paused-rule-release');
@@ -194,7 +195,7 @@ test('releasing a hold while the global safety gate is closed does not announce 
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'global-gate-hold-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'global-gate-hold-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'global-gate-hold-publish');
     const hold = await placeEventHold(db, 'ops', event.id, '核查全局暂停期间的活动', 'global-gate-hold');
     await setEmergencyGate(db, 'ops', 'CLOSED', '暂停所有新报名及成局操作', 'global-gate-close');
     await releaseEventHold(db, 'ops', hold.id, '本场核查已完成结案', 'global-gate-release');
@@ -209,7 +210,7 @@ test('releasing a public activity hold while public recruitment is closed does n
   try {
     await openSyntheticPublicCoverage(db, [input]);
     const draft = await createDraft(db, 'host', { ...input, visibility: 'PUBLIC', approvalMode: 'MANUAL' }, 'public-gate-hold-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'public-gate-hold-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'public-gate-hold-publish');
     await reviewEvent(db, 'ops', event.id, event.version, 'APPROVED', '审核通过公开活动', 'public-gate-review');
     const hold = await placeEventHold(db, 'ops', event.id, '核查公开活动的风险状态', 'public-gate-hold');
     await setPublicGate(db, 'ops', 'CLOSED', '暂停所有公开活动招募', 'public-gate-close');
@@ -237,7 +238,7 @@ test('safety hold API is operator-only and event viewers see no investigation re
   }
   try {
     const draft = await createDraft(db, 'host', { ...input, visibility: 'PUBLIC', approvalMode: 'MANUAL' }, 'api-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'api-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'api-publish');
     await reviewEvent(db, 'ops', event.id, event.version, 'APPROVED', '核对公开活动安全信息', 'api-review');
     assert.equal((await request('/ops/holds', 'host')).status, 403);
     assert.equal((await request(`/ops/events/${event.id}/hold`, 'host', 'POST', { reason: '私密举报详情不能展示' })).status, 403);

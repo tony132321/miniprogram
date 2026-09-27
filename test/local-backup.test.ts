@@ -4,7 +4,8 @@ import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createDatabase, LATEST_SCHEMA_VERSION } from '../src/db.ts';
-import { createDraft, publishEvent } from '../src/events.ts';
+import { createDraft } from '../src/events.ts';
+import { publishApprovedInvite } from './helpers.ts';
 import { register } from '../src/registrations.ts';
 import { createLocalBackup, restoreLocalBackup } from '../src/local-backup.ts';
 import { setConsent } from '../src/notifications.ts';
@@ -27,7 +28,7 @@ test('local backup restores event, registration, audit, and migration state', as
   try {
     const db = await createDatabase(source);
     const draft = await createDraft(db, 'host', input, 'backup-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'backup-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'backup-publish');
     await register(db, 'p1', event.id, event.version, 'backup-join', event.inviteToken!);
     await setConsent(db, 'p1', 'EVENT_REMINDER', true, 'backup-reminder-grant');
     await setConsent(db, 'p1', 'SIMILAR_ACTIVITY_INVITES', true, 'backup-similar-grant');

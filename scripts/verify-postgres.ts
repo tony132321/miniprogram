@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import pg from 'pg';
 import { createProductionDatabase, LATEST_SCHEMA_VERSION, type Database, type Queryable } from '../src/db.ts';
-import { createDraft, publishEvent } from '../src/events.ts';
+import { createDraft, getEvent, publishEvent as submitEventForReview } from '../src/events.ts';
 import { changeEvent, confirmEvent, listExpenses } from '../src/lifecycle.ts';
 import { reviewEvent } from '../src/event-review.ts';
 import { acceptOffer, cancelRegistration, claimReservation, expireOffers, expireReservations, expressInterest, register, reserveSeats } from '../src/registrations.ts';
@@ -22,6 +22,14 @@ import { hashOperatorPassword, loginOperator, logoutOperator, operatorFromBearer
 import { actorFromBearer, loginWithWechat, logoutMember } from '../src/auth.ts';
 import { assertEmptyPostgresTestDatabase, validatePostgresTestUrl } from './verify-postgres-guard.ts';
 import { openSyntheticPublicCoverage } from '../test/helpers/public-coverage.ts';
+
+async function publishEvent(db: Database, hostId: string, eventId: string, version: number, key: string) {
+  const submitted = await submitEventForReview(db, hostId, eventId, version, key);
+  if (submitted.payload.visibility !== 'INVITE') return submitted;
+  await reviewEvent(db, 'operator:pg_reviewer', submitted.id, submitted.version,
+    'APPROVED', '已人工核查邀请活动发布文本', `${key}-review`);
+  return getEvent(db, hostId, submitted.id);
+}
 
 const url = process.env.IRL_PG_TEST_URL;
 if (!url) throw new Error('IRL_PG_TEST_URL is required');
@@ -152,9 +160,12 @@ try {
   const { rows: business } = await second.query<{ event_name: string; user_id_pseudonymous: string | null; source: string; is_test: boolean }>(
     'SELECT event_name,user_id_pseudonymous,source,is_test FROM business_events WHERE activity_id=$1', [event.id]);
   assert.equal(business.filter(row => row.event_name === 'ACTIVITY_PUBLISHED').length, 1);
+  assert.equal(business.filter(row => row.event_name === 'INVITE_REVIEW_SUBMITTED').length, 1);
   assert.equal(business.filter(row => row.event_name === 'REGISTER_CONFIRMED').length, 4);
   assert.equal(business.filter(row => row.event_name === 'REGISTER_WAITLISTED').length, 99);
-  assert.equal(business.every(row => row.source === 'API' && row.is_test && /^[a-f0-9]{64}$/.test(row.user_id_pseudonymous ?? '')), true);
+  assert.equal(business.every(row => row.is_test && /^[a-f0-9]{64}$/.test(row.user_id_pseudonymous ?? '')), true);
+  assert.equal(business.filter(row => row.source === 'OPS').length, 1);
+  assert.equal(business.find(row => row.event_name === 'ACTIVITY_PUBLISHED')?.source, 'OPS');
   const operator = { username: 'pg_reviewer', passwordHash: hashOperatorPassword('temporary verification password', 'c'.repeat(64)),
     totpSecret: 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ' };
   const at = Date.now();
@@ -257,8 +268,8 @@ try {
   await first.query('INSERT INTO outcome_feedback(event_id,user_id,held,would_repeat,created_at) VALUES($1,$2,true,true,$3)',
     [metricEvent.id, 'pg_metric_p1', new Date(start + 2 * 60 * 60_000 + 60_000).toISOString()]);
   await first.query(`INSERT INTO audit(id,actor_id,event_id,action,created_at)
-    SELECT 'pg-metric-confirm-audit','pg_metric_host',$1,'CONFIRM_EVENT',created_at+interval '30 minutes'
-    FROM event_versions WHERE event_id=$1 AND version=2`, [metricEvent.id]);
+    SELECT 'pg-metric-confirm-audit','pg_metric_host',$1,'CONFIRM_EVENT',reviewed_at+interval '30 minutes'
+    FROM event_review_decisions WHERE event_id=$1 AND event_version=2`, [metricEvent.id]);
   await recordSupportMinutes(first, 'operator:pg_metrics', metricEvent.id, 18, 'SUPPORT', 'postgres-metric-support');
   const { rows: metricRegistrations } = await first.query<{ id: string }>(
     "SELECT id FROM registrations WHERE event_id=$1 AND user_id='pg_metric_p1'", [metricEvent.id]);
@@ -398,7 +409,9 @@ try {
     assert.equal(outcome, 'blocked', 'event version update must wait for the answer transaction');
   } finally { releaseChecked(); }
   await pendingAnswer;
-  await pendingChange;
+  const changedAfterAnswer = await pendingChange;
+  await reviewEvent(first, 'operator:pg_reviewer', event.id, changedAfterAnswer.version,
+    'APPROVED', '已人工复核信息更新标题', 'pg-race-version-review');
   let signalFactChecked!: () => void;
   let releaseFactChecked!: () => void;
   const factChecked = new Promise<void>(resolve => { signalFactChecked = resolve; });
@@ -427,7 +440,9 @@ try {
     assert.equal(outcome, 'blocked', 'event version update must wait for current-fact creation');
   } finally { releaseFactChecked(); }
   await pendingFact;
-  await pendingFactChange;
+  const changedAfterFact = await pendingFactChange;
+  await reviewEvent(first, 'operator:pg_reviewer', event.id, changedAfterFact.version,
+    'APPROVED', '已人工复核再次更新标题', 'pg-race-fact-version-review');
   const appealRaceFact = await askCurrentFact(first, 'pg_p1', event.id, '报名需要带证件吗？', 'pg-appeal-race-fact');
   const { rows: appealRaceTodo } = await first.query<{ question_content_id: string }>(
     'SELECT question_content_id FROM activity_fact_todos WHERE id=$1', [appealRaceFact.todoId]);
@@ -464,7 +479,9 @@ try {
     assert.equal(outcome, 'blocked', 'event version update must wait for content appeal reversal');
   } finally { releaseAppealChecked(); }
   await pendingAppeal;
-  await pendingAppealChange;
+  const changedAfterAppeal = await pendingAppealChange;
+  await reviewEvent(first, 'operator:pg_reviewer', event.id, changedAfterAppeal.version,
+    'APPROVED', '已人工复核申诉后标题', 'pg-appeal-race-version-review');
   const { rows: recoveryEvents } = await first.query<{ version: number }>('SELECT version FROM events WHERE id=$1', [event.id]);
   await first.query(`INSERT INTO jobs(id,kind,event_id,due_at,payload,status,attempts,last_error_code)
     VALUES('pg-failed-recovery','PUBLIC_GATE_NOTICE',$1,now()-interval '1 minute',$2,'FAILED',5,'INTERNAL_ERROR')`,
@@ -472,7 +489,12 @@ try {
   assert.equal((await listFailedJobs(second)).items.some(item => item.id === 'pg-failed-recovery'), true);
   await retryFailedJob(first, 'operator:pg_job_operator', 'pg-failed-recovery', 'pg-job-retry');
   assert.equal((await second.query<{ status: string }>("SELECT status FROM jobs WHERE id='pg-failed-recovery'")).rows[0]?.status, 'PENDING');
-  await runDueJobs(second);
+  for (let batch = 0; batch < 5; batch++) {
+    await runDueJobs(second);
+    const status = (await first.query<{ status: string }>(
+      "SELECT status FROM jobs WHERE id='pg-failed-recovery'")).rows[0]?.status;
+    if (status === 'DONE') break;
+  }
   assert.equal((await first.query<{ status: string }>("SELECT status FROM jobs WHERE id='pg-failed-recovery'")).rows[0]?.status, 'DONE');
   assert.equal((await first.query<{ id: string }>("SELECT id FROM notifications WHERE id='pg-failed-recovery'")).rows.length, 1);
   await first.query(`INSERT INTO jobs(id,kind,due_at,payload,attempts)

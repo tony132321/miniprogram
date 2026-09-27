@@ -28,7 +28,7 @@ test('public publication waits for human review before outsiders can view or joi
     assert.equal(published.recruiting, false);
     assert.equal((await listPendingEventReviews(db)).items[0]?.id, published.id);
     await assert.rejects(() => getEvent(db, 'outsider', published.id), { code: 'FORBIDDEN' });
-    await assert.rejects(() => register(db, 'p1', published.id, published.version, 'join', null), { code: 'REGISTRATION_CLOSED' });
+    await assert.rejects(() => register(db, 'p1', published.id, published.version, 'join', null), { code: 'REVIEW_PENDING' });
     await assert.rejects(() => confirmEvent(db, 'host', published.id, published.version, 'confirm'), { code: 'REVIEW_PENDING' });
 
     const approved = await reviewEvent(db, 'ops', published.id, published.version, 'APPROVED', '核对主办、公共场地、时间与费用', 'approve');

@@ -12,9 +12,9 @@ type ReviewRow = { id: string; host_id: string; status: string; version: number;
 
 export async function listPendingEventReviews(db: Database, offset = 0, snapshot?: string | null) {
   if (!Number.isSafeInteger(offset) || offset < 0 || offset > 2_147_483_647)
-    throw new AppError('BAD_REQUEST', '公开活动审核列表页码无效');
+    throw new AppError('BAD_REQUEST', '活动审核列表页码无效');
   if (offset > 0 && (!snapshot || !/^[a-f0-9]{32}$/.test(snapshot)))
-    throw new AppError('BAD_REQUEST', '继续读取公开活动审核需要有效快照');
+    throw new AppError('BAD_REQUEST', '继续读取活动审核需要有效快照');
   return db.transaction(async tx => {
     await tx.query('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY');
     const { rows: totals } = await tx.query<{ total: number; snapshot: string }>(`SELECT count(*)::int AS total,
@@ -22,7 +22,7 @@ export async function listPendingEventReviews(db: Database, offset = 0, snapshot
       FROM events WHERE review_status='PENDING'`);
     const currentSnapshot = totals[0]!.snapshot;
     if (offset > 0 && snapshot !== currentSnapshot)
-      throw new AppError('QUEUE_CHANGED', '公开活动审核列表已变化，请从第一页刷新', 409);
+      throw new AppError('QUEUE_CHANGED', '活动审核列表已变化，请从第一页刷新', 409);
     const { rows } = await tx.query<ReviewRow>(`SELECT id,host_id,status,version,payload,recruiting,review_status,review_reason,
       resume_recruiting_after_review,updated_at FROM events WHERE review_status='PENDING'
       ORDER BY updated_at,id LIMIT 100 OFFSET $1`, [offset]);
@@ -44,11 +44,11 @@ export async function reviewEvent(db: Database, actor: string, eventId: string, 
     const current = found[0];
     if (!current) throw new AppError('NOT_FOUND', '活动不存在', 404);
     if (current.version !== expectedVersion) throw new AppError('VERSION_CONFLICT', '活动已更新，请重新审核当前版本', 409);
-    if (current.payload.visibility !== 'PUBLIC' || current.review_status !== 'PENDING')
+    if (!['PUBLIC', 'INVITE'].includes(current.payload.visibility ?? '') || current.review_status !== 'PENDING')
       throw new AppError('INVALID_STATE', '活动当前无需此审核');
-    if (decision === 'APPROVED' && current.payload.approvalMode !== 'MANUAL')
+    if (decision === 'APPROVED' && current.payload.visibility === 'PUBLIC' && current.payload.approvalMode !== 'MANUAL')
       throw new AppError('REVIEW_REQUIRES_MANUAL_APPROVAL', '公开活动需先由主办方改为逐人审批报名', 409);
-    if (decision === 'APPROVED') await assertPublicRecruitmentOpen(tx, 'PUBLIC', current.payload);
+    if (decision === 'APPROVED') await assertPublicRecruitmentOpen(tx, current.payload.visibility, current.payload);
     if (decision === 'APPROVED') {
       const now = await databaseNow(tx);
       if (!((current.status === 'RECRUITING' && now < Date.parse(current.payload.confirmationDeadline!)) ||
@@ -56,7 +56,8 @@ export async function reviewEvent(db: Database, actor: string, eventId: string, 
         throw new AppError('REVIEW_WINDOW_CLOSED', '活动当前不在可通过审核的时间窗', 409);
     }
     const { rows } = await tx.query<ReviewRow>(`UPDATE events SET review_status=$2,review_reason=$3,
-      recruiting=CASE WHEN $2='APPROVED' THEN resume_recruiting_after_review ELSE false END,
+      recruiting=CASE WHEN $2='APPROVED' AND (payload->>'registrationDeadline')::timestamptz>clock_timestamp()
+        THEN resume_recruiting_after_review ELSE false END,
       resume_recruiting_after_review=CASE WHEN $2='APPROVED' THEN false ELSE resume_recruiting_after_review END,
       updated_at=now() WHERE id=$1 AND ($2::text<>'APPROVED' OR
         (status='RECRUITING' AND (payload->>'confirmationDeadline')::timestamptz>clock_timestamp()) OR

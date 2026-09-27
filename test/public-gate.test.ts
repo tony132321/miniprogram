@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import { once } from 'node:events';
 import { test } from 'node:test';
 import { createDatabase } from '../src/db.ts';
-import { createDraft, getEvent, publishEvent, rotateInvite } from '../src/events.ts';
+import { createDraft, getEvent, rotateInvite } from '../src/events.ts';
+import { publishApprovedInvite } from './helpers.ts';
 import { reviewEvent } from '../src/event-review.ts';
 import { approveRegistration, cancelRegistration, claimReservation, register, removeRegistration, reserveSeats } from '../src/registrations.ts';
 import { confirmEvent } from '../src/lifecycle.ts';
@@ -26,7 +27,7 @@ test('public gate notice timestamps follow a strictly ordered database transitio
   try {
     const coverage = await openSyntheticPublicCoverage(db, [input]);
     const draft = await createDraft(db, 'host', { ...input, hostParticipates: false }, 'timestamp-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'timestamp-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'timestamp-publish');
     await reviewEvent(db, 'ops', event.id, event.version, 'APPROVED', '场地与活动资料已核实', 'timestamp-review');
     await db.query("UPDATE public_recruitment_gate SET changed_at='2030-01-01T00:00:00.123456Z' WHERE id=1");
     await setPublicGate(db, 'ops', 'CLOSED', '暂停招募检查时间顺序', 'timestamp-close');
@@ -96,13 +97,13 @@ test('closed gate blocks new public recruitment while keeping members and privat
   }
   try {
     const draft = await createDraft(db, 'host', input, 'public-draft');
-    const published = await publishEvent(db, 'host', draft.id, draft.version, 'public-publish');
+    const published = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'public-publish');
     await reviewEvent(db, 'ops', published.id, published.version, 'APPROVED', '核对活动地点时间费用', 'public-approve');
     const member = await register(db, 'member', published.id, published.version, 'member-join', null);
     const removedMember = await register(db, 'removed-member', published.id, published.version, 'removed-join', null);
     const reserved = await reserveSeats(db, 'host', published.id, published.version, 1, 'reserve-before-close');
     const privateDraft = await createDraft(db, 'private-host', { ...input, visibility: 'INVITE', approvalMode: 'AUTO' }, 'private-draft');
-    const privateEvent = await publishEvent(db, 'private-host', privateDraft.id, privateDraft.version, 'private-publish');
+    const privateEvent = await publishApprovedInvite(db, 'private-host', privateDraft.id, privateDraft.version, 'private-publish');
     await close();
     assert.equal((await fetch(base + `/i/${published.inviteToken}`)).status, 404);
     await assert.rejects(() => getEvent(db, 'outsider', published.id), { code: 'FORBIDDEN' });
@@ -120,7 +121,7 @@ test('closed gate blocks new public recruitment while keeping members and privat
     await assert.rejects(() => rotateInvite(db, 'host', published.id, published.version, 'public-rotate'),
       { code: 'PUBLIC_RECRUITMENT_PAUSED' });
     const newDraft = await createDraft(db, 'host', input, 'new-public-draft');
-    await assert.rejects(() => publishEvent(db, 'host', newDraft.id, newDraft.version, 'new-public-publish'), { code: 'PUBLIC_RECRUITMENT_PAUSED' });
+    await assert.rejects(() => publishApprovedInvite(db, 'host', newDraft.id, newDraft.version, 'new-public-publish'), { code: 'PUBLIC_RECRUITMENT_PAUSED' });
     assert.equal((await register(db, 'private-host', privateEvent.id, privateEvent.version, 'private-join', null)).status, 'CONFIRMED');
     assert.equal((await cancelRegistration(db, 'member', member.id, published.version, 'member-exit')).status, 'CANCELLED');
     assert.equal((await getEvent(db, 'member', published.id)).id, published.id);
@@ -134,7 +135,7 @@ test('closed gate prevents a pending public approval from reopening recruitment'
   try {
     await openSyntheticPublicCoverage(db, [input]);
     const draft = await createDraft(db, 'host', input, 'pending-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'pending-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'pending-publish');
     await setPublicGate(db, 'ops', 'CLOSED', '核查公开活动安全事件', 'pending-close');
     await assert.rejects(() => reviewEvent(db, 'ops', event.id, event.version, 'APPROVED', '核对活动地点时间费用', 'blocked-approval'),
       { code: 'PUBLIC_RECRUITMENT_PAUSED' });
@@ -148,7 +149,7 @@ test('gate changes create durable in-app notices for active public hosts and reg
   try {
     const coverage = await openSyntheticPublicCoverage(db, [input]);
     const draft = await createDraft(db, 'public-host', { ...input, hostParticipates: false }, 'notice-public-draft');
-    const event = await publishEvent(db, 'public-host', draft.id, draft.version, 'notice-public-publish');
+    const event = await publishApprovedInvite(db, 'public-host', draft.id, draft.version, 'notice-public-publish');
     await reviewEvent(db, 'ops', event.id, event.version, 'APPROVED', '核对活动地点时间费用', 'notice-review');
     await register(db, 'active-member', event.id, event.version, 'active-join', null);
     const departed = await register(db, 'departed-member', event.id, event.version, 'departed-join', null);
@@ -156,9 +157,9 @@ test('gate changes create durable in-app notices for active public hosts and reg
     const removed = await register(db, 'removed-member', event.id, event.version, 'removed-join', null);
     await removeRegistration(db, 'public-host', removed.id, event.version, '需要复核报名情况', 'removed');
     const privateDraft = await createDraft(db, 'private-host', { ...input, visibility: 'INVITE', approvalMode: 'AUTO' }, 'notice-private-draft');
-    await publishEvent(db, 'private-host', privateDraft.id, privateDraft.version, 'notice-private-publish');
+    await publishApprovedInvite(db, 'private-host', privateDraft.id, privateDraft.version, 'notice-private-publish');
     const pendingDraft = await createDraft(db, 'pending-host', input, 'notice-pending-draft');
-    await publishEvent(db, 'pending-host', pendingDraft.id, pendingDraft.version, 'notice-pending-publish');
+    await publishApprovedInvite(db, 'pending-host', pendingDraft.id, pendingDraft.version, 'notice-pending-publish');
     await createDraft(db, 'draft-host', input, 'unpublished-public');
 
     await setPublicGate(db, 'ops', 'CLOSED', '私密调查原因不得外泄', 'notice-close');
@@ -188,7 +189,7 @@ test('a delayed close notice remains older than a later reopening notice', async
   try {
     const coverage = await openSyntheticPublicCoverage(db, [input]);
     const draft = await createDraft(db, 'host', input, 'ordered-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'ordered-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'ordered-publish');
     await reviewEvent(db, 'ops', event.id, event.version, 'APPROVED', '核对活动地点时间费用', 'ordered-review');
     await setPublicGate(db, 'ops', 'CLOSED', '核查公开活动安全事件', 'ordered-close');
     await db.query("UPDATE jobs SET status='PROCESSING',locked_at=now() WHERE kind='PUBLIC_GATE_NOTICE' AND payload->>'status'='CLOSED'");

@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { createDatabase } from '../src/db.ts';
 import type { Database } from '../src/db.ts';
-import { createDraft, publishEvent } from '../src/events.ts';
+import { createDraft } from '../src/events.ts';
+import { publishApprovedInvite } from './helpers.ts';
 import { cancelRegistration, removeRegistration, acceptOffer, declineOffer, expireOffers, reserveSeats, claimReservation, approveRegistration, expireReservations, expressInterest, register as registerWithInvite } from '../src/registrations.ts';
 import { register } from './helpers.ts';
 import { cancelEvent } from '../src/lifecycle.ts';
@@ -19,7 +20,7 @@ const input = {
 
 async function event(db: Awaited<ReturnType<typeof createDatabase>>) {
   const draft = await createDraft(db, 'host', input, 'draft');
-  return publishEvent(db, 'host', draft.id, draft.version, 'publish');
+  return publishApprovedInvite(db, 'host', draft.id, draft.version, 'publish');
 }
 
 test('an expired invite cannot register or express interest when application time lags database time', async () => {
@@ -525,7 +526,7 @@ test('manual approval allocates only when space exists and only by host', async 
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', { ...input, approvalMode: 'MANUAL' }, 'manual');
-    const e = await publishEvent(db, 'host', draft.id, draft.version, 'publish-manual');
+    const e = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'publish-manual');
     const applicant = await register(db, 'applicant', e.id, e.version, 'request');
     assert.equal(applicant.status, 'REQUESTED');
     await assert.rejects(() => approveRegistration(db, 'stranger', applicant.id, e.version, 'approve-x'), { code: 'FORBIDDEN' });
@@ -567,7 +568,7 @@ test('manual approval cannot add a seat after the registration deadline', async 
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', { ...input, approvalMode: 'MANUAL' }, 'late-approval-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'late-approval-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'late-approval-publish');
     const request = await register(db, 'applicant', event.id, event.version, 'late-approval-request');
     await db.query("UPDATE events SET payload=jsonb_set(payload,'{registrationDeadline}',to_jsonb($2::text),true) WHERE id=$1",
       [event.id, new Date(Date.now() - 1000).toISOString()]);
@@ -585,7 +586,7 @@ test('manual approval cannot commit when the deadline passes immediately before 
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', { ...input, approvalMode: 'MANUAL' }, 'cross-approval-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'cross-approval-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'cross-approval-publish');
     const request = await register(db, 'applicant', event.id, event.version, 'cross-approval-request');
     let crossed = false;
     const racingDb: Database = {

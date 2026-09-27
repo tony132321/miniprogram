@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import { once } from 'node:events';
 import { test } from 'node:test';
 import { createDatabase } from '../src/db.ts';
-import { createDraft, publishEvent } from '../src/events.ts';
+import { createDraft } from '../src/events.ts';
+import { publishApprovedInvite } from './helpers.ts';
 import { setConsent, markNotificationOpened } from '../src/notifications.ts';
 import { runDueJobs } from '../src/jobs.ts';
 import { createApp } from '../src/server.ts';
@@ -21,7 +22,7 @@ test('operator follows up unavailable and uncertain external notifications witho
   const get = async () => fetch(base + '/ops/notifications/followups', { headers: { 'X-Dev-User': 'ops' } });
   try {
     const draft = await createDraft(db, 'host', input, 'draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'publish');
     await setConsent(db, 'p1', 'EVENT_REMINDER', true, 'consent1');
     await setConsent(db, 'p2', 'EVENT_REMINDER', true, 'consent2');
     await register(db, 'p1', event.id, event.version, 'join1');

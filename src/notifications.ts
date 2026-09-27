@@ -95,7 +95,8 @@ export async function listMemberNotifications(db: Database, actor: string, offse
         AND o.status='ACTIVE' AND o.expires_at>now()) AND NOT EXISTS
         (SELECT 1 FROM event_safety_holds h WHERE h.event_id=n.event_id AND h.status='ACTIVE')
         AND EXISTS (SELECT 1 FROM emergency_gate g WHERE g.id=1 AND g.status='OPEN')
-        AND EXISTS (SELECT 1 FROM events e WHERE e.id=n.event_id AND (e.payload->>'visibility'<>'PUBLIC' OR
+        AND EXISTS (SELECT 1 FROM events e WHERE e.id=n.event_id AND e.review_status='APPROVED'
+          AND (e.payload->>'visibility'<>'PUBLIC' OR
           public_recruitment_covered((e.payload->>'startAt')::timestamptz,
             (e.payload->>'endAt')::timestamptz))) ELSE false END AS actionable,
       CASE WHEN n.kind='WAITLIST_OFFER' THEN EXISTS (SELECT 1 FROM offers o WHERE o.id=n.detail->>'offerId'
@@ -207,7 +208,8 @@ export async function dispatchNotification(db: Database, notificationId: string,
       (['CANCELLED', 'EXPIRED', 'REJECTED', 'REMOVED'].includes(registrationStatus ?? '') &&
         !['EVENT_CANCELLED', 'EVENT_EXPIRED', 'REGISTRATION_REMOVED'].includes(claimed.kind)) ||
       (claimed.kind === 'EVENT_REMINDER' && (!['NOT_REQUIRED', 'APPROVED'].includes(event?.review_status ?? '') || !event?.before_start)) ||
-      (claimed.kind === 'WAITLIST_OFFER' && (registrationStatus !== 'OFFERED' || emergency[0]?.status !== 'OPEN' ||
+      (claimed.kind === 'WAITLIST_OFFER' && (registrationStatus !== 'OFFERED' || event?.review_status !== 'APPROVED' ||
+        emergency[0]?.status !== 'OPEN' ||
         holds.length > 0 || (event?.visibility === 'PUBLIC' && publicGate[0]?.open !== true) || !offers[0]?.active));
     const outcome = users[0] && users[0].status !== 'ACTIVE' ? 'ACCOUNT_DISABLED' :
       deletions.length ? 'DELETE_REQUEST_PENDING' :

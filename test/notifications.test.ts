@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { createDatabase } from '../src/db.ts';
-import { createDraft, publishEvent } from '../src/events.ts';
+import { createDraft } from '../src/events.ts';
+import { publishApprovedInvite } from './helpers.ts';
 import { register } from './helpers.ts';
 import { approveRegistration, cancelRegistration, declineOffer, removeRegistration } from '../src/registrations.ts';
 import { confirmEvent, completeEvent } from '../src/lifecycle.ts';
@@ -19,7 +20,7 @@ const input = { title: '通知测试', type: 'badminton', startAt: '2027-01-02T1
 
 async function published(db: Awaited<ReturnType<typeof createDatabase>>) {
   const d = await createDraft(db, 'host', input, 'draft');
-  return publishEvent(db, 'host', d.id, d.version, 'publish');
+  return publishApprovedInvite(db, 'host', d.id, d.version, 'publish');
 }
 
 test('event end prompts a host to conclude and completed outcome prompts members once', async () => {
@@ -348,7 +349,7 @@ test('closing public recruitment suppresses a persisted queued offer for a publi
   try {
     await openSyntheticPublicCoverage(db, [input]);
     const draft = await createDraft(db, 'host', { ...input, visibility: 'PUBLIC', approvalMode: 'MANUAL' }, 'public-offer-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'public-offer-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'public-offer-publish');
     await reviewEvent(db, 'ops', event.id, event.version, 'APPROVED', '已核对公开活动资料', 'public-offer-review');
     const first = await register(db, 'p1', event.id, event.version, 'public-offer-p1');
     await approveRegistration(db, 'host', first.id, event.version, 'public-offer-approve-p1');

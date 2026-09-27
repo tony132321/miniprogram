@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import { createDatabase, type Database } from '../src/db.ts';
 import { createDraft, getEvent, publishEvent, rotateInvite, updateDraft, type EventInput } from '../src/events.ts';
 import { cancelRegistration } from '../src/registrations.ts';
-import { register } from './helpers.ts';
+import { publishApprovedInvite, register } from './helpers.ts';
 
 const valid = {
   title: '周六羽毛球', type: 'badminton', startAt: '2027-01-02T12:00:00.000Z',
@@ -70,7 +70,7 @@ test('a person who leaves an invite-only event loses access to member details', 
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host-1', valid, 'exit-draft');
-    const event = await publishEvent(db, 'host-1', draft.id, draft.version, 'exit-publish');
+    const event = await publishApprovedInvite(db, 'host-1', draft.id, draft.version, 'exit-publish');
     const registration = await register(db, 'p1', event.id, event.version, 'exit-join');
     assert.equal((await getEvent(db, 'p1', event.id)).id, event.id);
     await cancelRegistration(db, 'p1', registration.id, event.version, 'exit');
@@ -168,7 +168,7 @@ test('invite rotation uses database time and rejects a closed registration windo
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host-1', valid, 'rotate-db-clock-draft');
-    const event = await publishEvent(db, 'host-1', draft.id, draft.version, 'rotate-db-clock-publish');
+    const event = await publishApprovedInvite(db, 'host-1', draft.id, draft.version, 'rotate-db-clock-publish');
     const lateDatabaseClock = new Date(Date.parse(valid.registrationDeadline) + 1000);
     const clockDb: Database = {
       ...db,
@@ -189,7 +189,7 @@ test('invite rotation cannot commit if registration closes before token replacem
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host-1', valid, 'rotate-write-clock-draft');
-    const event = await publishEvent(db, 'host-1', draft.id, draft.version, 'rotate-write-clock-publish');
+    const event = await publishApprovedInvite(db, 'host-1', draft.id, draft.version, 'rotate-write-clock-publish');
     let crossed = false;
     const racingDb: Database = {
       ...db,

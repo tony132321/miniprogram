@@ -213,10 +213,14 @@ test('offer history migration snapshots legacy state without inventing its earli
     await db.query('DELETE FROM schema_migrations WHERE version=40');
     const payload = { visibility: 'INVITE', startAt: '2027-01-02T12:00:00Z', endAt: '2027-01-02T14:00:00Z',
       timeZone: 'Asia/Shanghai' };
-    await db.query(`INSERT INTO events(id,host_id,status,version,payload,is_test)
-      VALUES('legacy-offer-event','host','RECRUITING',2,$1::jsonb,false)`, [JSON.stringify(payload)]);
+    await db.query(`INSERT INTO events(id,host_id,status,version,payload,is_test,review_status)
+      VALUES('legacy-offer-event','host','RECRUITING',2,$1::jsonb,false,'APPROVED')`, [JSON.stringify(payload)]);
     await db.query(`INSERT INTO event_versions(event_id,version,payload)
       VALUES('legacy-offer-event',2,$1::jsonb)`, [JSON.stringify(payload)]);
+    // This fixture exercises migration 40 offer history in today's schema;
+    // make its invitation event accessible under the current review policy.
+    await db.query(`INSERT INTO event_review_decisions(id,event_id,event_version,decision,reason,reviewed_by)
+      VALUES('legacy-offer-review','legacy-offer-event',2,'APPROVED','合成活动已审核','operator:fixture')`);
     await db.query(`INSERT INTO registrations(id,event_id,user_id,status)
       VALUES('legacy-offer-reg','legacy-offer-event','p1','CONFIRMED')`);
     await db.query(`INSERT INTO offers(id,event_id,registration_id,expires_at,status)

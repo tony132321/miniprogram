@@ -5,7 +5,8 @@ import { createDatabase } from '../src/db.ts';
 import { confirmPublicCoverage, createPublicCoverage, getPublicGate, revokePublicCoverage,
   setPublicGate } from '../src/public-gate.ts';
 import { createApp } from '../src/server.ts';
-import { createDraft, getEvent, publishEvent, type EventInput } from '../src/events.ts';
+import { createDraft, getEvent, type EventInput } from '../src/events.ts';
+import { publishApprovedInvite } from './helpers.ts';
 import { reviewEvent } from '../src/event-review.ts';
 import { cancelRegistration, register } from '../src/registrations.ts';
 import { createReport } from '../src/operations.ts';
@@ -109,10 +110,10 @@ test('confirmed current duty and event shift permit only public events whose ful
   try {
     await openSyntheticCoverage(db, start);
     const inside = await createDraft(db, 'host', publicInput(start), 'inside-shift-draft');
-    const published = await publishEvent(db, 'host', inside.id, inside.version, 'inside-shift-publish');
+    const published = await publishApprovedInvite(db, 'host', inside.id, inside.version, 'inside-shift-publish');
     assert.equal(published.reviewStatus, 'PENDING');
     const outside = await createDraft(db, 'host', publicInput(start + 48 * hour), 'outside-shift-draft');
-    await assert.rejects(() => publishEvent(db, 'host', outside.id, outside.version, 'outside-shift-publish'),
+    await assert.rejects(() => publishApprovedInvite(db, 'host', outside.id, outside.version, 'outside-shift-publish'),
       { code: 'PUBLIC_COVERAGE_REQUIRED' });
   } finally { await db.close(); }
 });
@@ -127,7 +128,7 @@ test('revoking covered duty closes public reads and recruitment but preserves me
   try {
     const shifts = await openSyntheticCoverage(db, start);
     const draft = await createDraft(db, 'host', publicInput(start), 'revoke-covered-draft');
-    const published = await publishEvent(db, 'host', draft.id, draft.version, 'revoke-covered-publish');
+    const published = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'revoke-covered-publish');
     await reviewEvent(db, 'synthetic-duty-reviewer', published.id, published.version, 'APPROVED',
       '合成审核已核对活动资料', 'revoke-covered-review');
     const member = await register(db, 'member', published.id, published.version, 'revoke-covered-join', null);
@@ -155,7 +156,7 @@ test('revoking a confirmed event shift fails closed for that event while current
   try {
     const shifts = await openSyntheticCoverage(db, start);
     const draft = await createDraft(db, 'host', publicInput(start), 'event-shift-revoke-draft');
-    const published = await publishEvent(db, 'host', draft.id, draft.version, 'event-shift-revoke-publish');
+    const published = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'event-shift-revoke-publish');
     await reviewEvent(db, 'synthetic-duty-reviewer', published.id, published.version, 'APPROVED',
       '合成审核已核对活动资料', 'event-shift-revoke-review');
     const member = await register(db, 'member', published.id, published.version, 'event-shift-revoke-join', null);
@@ -192,7 +193,7 @@ test('a stored OPEN gate reports closed at both the future-start and expired-end
   try {
     const shifts = await openSyntheticCoverage(db, start);
     const draft = await createDraft(db, 'host', publicInput(start), 'duty-boundary-draft');
-    const published = await publishEvent(db, 'host', draft.id, draft.version, 'duty-boundary-publish');
+    const published = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'duty-boundary-publish');
     await reviewEvent(db, 'synthetic-duty-reviewer', published.id, published.version, 'APPROVED',
       '合成审核已核对活动资料', 'duty-boundary-review');
     assert.equal((await getPublicGate(db)).status, 'OPEN');
@@ -218,7 +219,7 @@ test('an expired current shift hides a public invitation even while its old gate
   try {
     const shifts = await openSyntheticCoverage(db, start);
     const draft = await createDraft(db, 'host', publicInput(start), 'expiry-draft');
-    const published = await publishEvent(db, 'host', draft.id, draft.version, 'expiry-publish');
+    const published = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'expiry-publish');
     await reviewEvent(db, 'synthetic-duty-reviewer', published.id, published.version, 'APPROVED',
       '合成审核已核对活动资料', 'expiry-review');
     assert.equal((await fetch(`${base}/i/${published.inviteToken}`)).status, 200);
@@ -236,7 +237,7 @@ test('an expired current shift makes a queued public offer nonactionable and sup
   try {
     const shifts = await openSyntheticCoverage(db, start);
     const draft = await createDraft(db, 'host', publicInput(start), 'offer-expiry-draft');
-    const published = await publishEvent(db, 'host', draft.id, draft.version, 'offer-expiry-publish');
+    const published = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'offer-expiry-publish');
     await reviewEvent(db, 'synthetic-duty-reviewer', published.id, published.version, 'APPROVED',
       '合成审核已核对活动资料', 'offer-expiry-review');
     const waiting = await register(db, 'waiting', published.id, published.version, 'offer-expiry-join', null);
@@ -269,7 +270,7 @@ test('a due current-duty expiry job closes recruitment once and queues durable p
   try {
     const shifts = await openSyntheticCoverage(db, start);
     const draft = await createDraft(db, 'host', publicInput(start), 'expiry-job-draft');
-    const published = await publishEvent(db, 'host', draft.id, draft.version, 'expiry-job-publish');
+    const published = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'expiry-job-publish');
     await reviewEvent(db, 'synthetic-duty-reviewer', published.id, published.version, 'APPROVED',
       '合成审核已核对活动资料', 'expiry-job-review');
     await register(db, 'member', published.id, published.version, 'expiry-job-join', null);

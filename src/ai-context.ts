@@ -5,7 +5,7 @@ import { parseAnnouncementFaq } from './announcement-faq.ts';
 import { minimizeAiContextText } from './ai-data-minimization.ts';
 
 export type AiEventContext = {
-  event: { id: string; version: number; status: string; reviewStatus: string;
+  event: { id: string; version: number; visibleContentVersion?: number | null; status: string; reviewStatus: string;
     title?: string; startAt?: string; endAt?: string;
     timeZone?: string; city?: string; venueName?: string; venueStatus?: string;
     feeMode?: string; feeCapFen?: number; cancellationRule?: string };
@@ -23,8 +23,9 @@ export async function buildAiEventContext(db: Database, actor: string, eventId: 
     const safe = (value: string | undefined) => value === undefined ? undefined : minimizeAiContextText(value) ?? undefined;
     const { rows } = await tx.query<{ id: string; body: string }>(`SELECT id,body FROM activity_content
       WHERE event_id=$1 AND event_version=$2 AND kind='ANNOUNCEMENT' AND status='APPROVED'
-      ORDER BY created_at DESC,id DESC LIMIT 10`, [eventId, event.version]);
+      ORDER BY created_at DESC,id DESC LIMIT 10`, [eventId, event.visibleContentVersion ?? event.version]);
     return { event: { id: event.id, version: event.version, status: event.status,
+      ...(event.visibleContentVersion !== undefined ? { visibleContentVersion: event.visibleContentVersion } : {}),
       reviewStatus: event.reviewStatus, title: safe(p.title), startAt: p.startAt,
       endAt: p.endAt, timeZone: p.timeZone, city: safe(p.city), venueName: safe(p.venueName),
       venueStatus: p.venueStatus, feeMode: p.feeMode, feeCapFen: p.feeCapFen,
@@ -32,7 +33,7 @@ export async function buildAiEventContext(db: Database, actor: string, eventId: 
     announcements: rows.flatMap(row => {
       if (!parseAnnouncementFaq(row.body)) return [];
       const text = minimizeAiContextText(row.body);
-      return text === null ? [] : [{ sourceContentId: row.id, eventVersion: event.version,
+      return text === null ? [] : [{ sourceContentId: row.id, eventVersion: event.visibleContentVersion ?? event.version,
         trust: 'UNTRUSTED_CONTENT' as const, text }];
     }) };
   });

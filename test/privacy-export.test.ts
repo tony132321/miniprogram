@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { createDatabase } from '../src/db.ts';
-import { createDraft, publishEvent } from '../src/events.ts';
+import { createDraft } from '../src/events.ts';
+import { publishApprovedInvite } from './helpers.ts';
 import { register } from './helpers.ts';
 import { recordShareIntent, recordAttributedOpen } from '../src/sharing.ts';
 import { askCurrentFact } from '../src/collaboration.ts';
@@ -17,7 +18,7 @@ test('personal export includes own sharing, offers, questions and history withou
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'publish');
     const p1 = await register(db, 'p1', event.id, event.version, 'join1');
     const p2 = await register(db, 'p2', event.id, event.version, 'join2');
     await recordShareIntent(db, 'host', event.id, event.version, 'a'.repeat(32), 'share');
@@ -69,7 +70,7 @@ test('personal export includes own sharing, offers, questions and history withou
     assert.equal(host.shareIntents.length, 1);
     assert.equal(host.hostedEventVersions.length, 1);
     assert.deepEqual(host.hostedEventStatusHistory.map(item => item.status), ['DRAFT', 'RECRUITING']);
-    assert.equal(host.businessEvents.some(item => item.event_name === 'ACTIVITY_PUBLISHED'), true);
+    assert.equal(host.businessEvents.some(item => item.event_name === 'INVITE_REVIEW_SUBMITTED'), true);
     assert.equal(host.hostedOutcomes[0]?.actual_count, 3);
     assert.deepEqual(host.hostedOutcomes[0]?.issues, ['场地照明不足']);
     assert.equal(host.createdExpenseLedgers[0]?.total_fen, 3000);

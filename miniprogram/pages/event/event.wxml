@@ -6,14 +6,16 @@
   <view>场地状态：{{event.payload.venueStatus || '待确认'}}（仅为主办方声明）</view>
   <view id="venueEvidenceView" wx:if="{{event.venueEvidence}}">场地依据：主办方声明场地可用；未由场馆接口锁位。</view>
   <view wx:if="{{event.updatedAt}}">更新时间：{{event.updatedAt}}</view>
+  <view wx:if="{{event.visibleContentVersion && event.visibleContentVersion !== event.version}}">当前展示已审核版本 {{event.visibleContentVersion}} 的活动信息；最新版本仍在审核或未通过审核。</view>
+  <view wx:if="{{event.visibleContentVersion === null}}">活动文字尚无已审核版本，请联系主办方核对安排。</view>
   <view>时间：{{event.payload.startAt || event.startAt || '待定'}} 至 {{event.payload.endAt || event.endAt || '待定'}}</view>
   <view>地点：{{event.payload.city || event.city || '待定'}} · {{event.payload.venueName || event.venueName || '待定'}}</view>
-  <view>费用：{{event.payload.feeMode || event.feeMode || '待定'}}，上限 {{event.payload.feeCapFen || event.feeCapFen || 0}} 分</view>
+  <view>费用：{{event.payload.feeMode || event.feeMode || '待定'}}，上限 {{event.payload.feeCapFen === 0 ? 0 : event.payload.feeCapFen || event.feeCapFen || '待定'}} 分</view>
   <view>报名方式：{{event.payload.approvalMode === 'MANUAL' ? '主办方逐一审批' : '自动接受或候补'}}</view>
   <view wx:if="{{event.stats}}">已确认 {{event.stats.confirmed}} · 主办预留 {{event.stats.reserved}} · 候补 {{event.stats.waitlisted}} · 待审核 {{event.stats.requested}} · 待重新确认 {{event.stats.reconfirmRequired}}</view>
   <view wx:if="{{event.formationRisk}}">当前确认人数不足，成局有风险。</view>
-  <view wx:if="{{event.reviewStatus === 'PENDING'}}">受控公开活动正在人工审核；通过前不开放新报名或分享。</view>
-  <view wx:if="{{event.reviewStatus === 'REJECTED'}}">受控公开活动未通过审核；主办方修改后可重新提交。</view>
+  <view wx:if="{{event.reviewStatus === 'PENDING'}}">活动内容正在人工审核；通过前不开放新报名或分享。</view>
+  <view wx:if="{{event.reviewStatus === 'REJECTED'}}">活动内容未通过审核；主办方修改后可重新提交。</view>
   <view wx:if="{{isHost && event.reviewReason}}">运营审核意见：{{event.reviewReason}}</view>
   <view wx:if="{{event.riskPaused}}">活动因风险核查暂时停止新报名、补位和成局。仍可查看详情或退出；请等待运营处理。</view>
   <view wx:if="{{event.status === 'RECRUITING' && !event.recruiting && (event.reviewStatus === 'APPROVED' || event.reviewStatus === 'NOT_REQUIRED')}}">活动变更后已暂停新报名，等待原参与者重新确认。</view>

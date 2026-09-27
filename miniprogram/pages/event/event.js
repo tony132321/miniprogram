@@ -78,8 +78,15 @@ Page({
     this.setData({ loadState: 'LOADING' });
     let summary = null;
     try {
-      if (this.data.token) summary = await api.get('/i/' + encodeURIComponent(this.data.token) +
-        (this.data.source ? '?source=' + encodeURIComponent(this.data.source) : ''));
+      if (this.data.token) {
+        try {
+          summary = await api.get('/i/' + encodeURIComponent(this.data.token) +
+            (this.data.source ? '?source=' + encodeURIComponent(this.data.source) : ''));
+        } catch (error) {
+          // A known member may still read the last approved activity details by id.
+          if (!this.data.id) throw error;
+        }
+      }
       const id = this.data.id || summary?.id;
       if (!id) {
         if (refreshId === this.refreshId) this.setData({ loadState: 'ERROR', message: '邀请或活动不存在' });
@@ -469,7 +476,7 @@ Page({
   async prepareShare() {
     const event = this.data.event;
     if (this.data.preparingShare) return;
-    if (!this.data.isHost || !event?.inviteToken || !event.recruiting || event.riskPaused)
+    if (!this.data.isHost || !event?.inviteToken || event.reviewStatus !== 'APPROVED' || !event.recruiting || event.riskPaused)
       return this.setData({ message: '当前活动不能生成分享卡' });
     const sourceToken = newSourceToken();
     this.setData({ preparingShare: true, shareSourceToken: '' });
@@ -482,7 +489,8 @@ Page({
     finally { this.setData({ preparingShare: false }); }
   },
   onShareAppMessage() {
-    if (!this.data.isHost || !this.data.event?.inviteToken || !this.data.event.recruiting || this.data.event.riskPaused)
+    if (!this.data.isHost || !this.data.event?.inviteToken || this.data.event.reviewStatus !== 'APPROVED' ||
+      !this.data.event.recruiting || this.data.event.riskPaused)
       return { title: '活动详情', path: '/pages/index/index' };
     const source = this.data.shareSourceToken ? '&source=' + this.data.shareSourceToken : '';
     return { title: this.data.event.payload.title,

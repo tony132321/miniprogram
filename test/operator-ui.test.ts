@@ -352,7 +352,7 @@ test('operator workbench loads later public reviews and shows their full count',
     return { ok: true, status: 200, json: async () => ({ items: [] }) };
   });
   await ui.item('refresh').onclick?.();
-  assert.match(ui.item('status').textContent, /公开活动待审 2/);
+  assert.match(ui.item('status').textContent, /活动待审 2/);
   assert.equal(ui.item('eventReviews').children.length, 1);
   await ui.item('moreEventReviews').onclick?.();
   assert.equal(ui.item('eventReviews').children.length, 2);
@@ -393,7 +393,7 @@ test('operator workbench restarts public review pages when a case changes', asyn
   assert.equal(firstPageReads, 2);
   assert.equal(ui.item('eventReviews').children.length, 1);
   assert.match((ui.item('eventReviews').children[0] as { textContent: string }).textContent, /新活动/);
-  assert.match(ui.item('status').textContent, /公开活动审核列表变化，已从第一页刷新/);
+  assert.match(ui.item('status').textContent, /活动审核列表变化，已从第一页刷新/);
 });
 
 test('failed public review page retains its retry offset', async () => {

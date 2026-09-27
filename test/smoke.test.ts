@@ -4,6 +4,7 @@ import { once } from 'node:events';
 import { createDatabase } from '../src/db.ts';
 import { runDueJobs } from '../src/jobs.ts';
 import { createApp } from '../src/server.ts';
+import { approveInviteById } from './helpers.ts';
 
 test('API workflow with four independent seats fills, promotes, checks in, completes, and repeats one activity', async () => {
   const db = await createDatabase();
@@ -32,6 +33,7 @@ test('API workflow with four independent seats fills, promotes, checks in, compl
     assert.equal(draft.status, 201);
     const e = await api(`/events/${draft.body.id}/publish`, 'host', 'POST', { expectedVersion: draft.body.version }, 'publish');
     assert.equal(e.status, 200);
+    await approveInviteById(db, 'host', e.body.id);
     assert.equal((await api(`/events/${e.body.id}`, 'host')).body.stats.confirmed, 0);
     const sourceToken = 'a'.repeat(32);
     assert.equal((await api(`/events/${e.body.id}/share-intents`, 'host', 'POST',

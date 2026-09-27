@@ -26,15 +26,19 @@ function localTime(value: string): string {
 
 function answerFromCurrentEvent(question: string, event: Awaited<ReturnType<typeof getEvent>>): string | null {
   const p = event.payload;
+  const sourceVersion = event.visibleContentVersion;
+  const versionLabel = sourceVersion !== undefined && sourceVersion !== null && sourceVersion !== event.version
+    ? `已审核版本 ${sourceVersion}（当前版本 ${event.version}${event.reviewStatus === 'REJECTED' ? '未通过审核' : '待审核'}）`
+    : `当前版本 ${event.version}`;
   if (/几点开始|什么时候开始|开始时间/.test(question) && p.startAt)
-    return `当前版本 ${event.version}：活动开始时间为 ${localTime(p.startAt)}（Asia/Shanghai）。`;
+    return `${versionLabel}：活动开始时间为 ${localTime(p.startAt)}（Asia/Shanghai）。`;
   if (/几点结束|什么时候结束|结束时间/.test(question) && p.endAt)
-    return `当前版本 ${event.version}：活动结束时间为 ${localTime(p.endAt)}（Asia/Shanghai）。`;
+    return `${versionLabel}：活动结束时间为 ${localTime(p.endAt)}（Asia/Shanghai）。`;
   if (/地点|场地|球馆|在哪里/.test(question) && p.venueStatus === 'HOST_CONFIRMED' && p.venueName)
-    return `当前版本 ${event.version}：主办方已确认公共场地为 ${p.city} ${p.venueName}；平台未核验场馆库存。`;
+    return `${versionLabel}：主办方已确认公共场地为 ${p.city} ${p.venueName}；平台未核验场馆库存。`;
   if (/费用|多少钱|收费|免费/.test(question) && p.feeMode)
-    return p.feeMode === 'FREE' ? `当前版本 ${event.version}：活动规则写明免费。`
-      : p.feeCapFen !== undefined ? `当前版本 ${event.version}：AA，每人费用上限 ${p.feeCapFen / 100} 元；实际费用以结项记录为准。` : null;
+    return p.feeMode === 'FREE' ? `${versionLabel}：活动规则写明免费。`
+      : p.feeCapFen !== undefined ? `${versionLabel}：AA，每人费用上限 ${p.feeCapFen / 100} 元；实际费用以结项记录为准。` : null;
   return null;
 }
 
@@ -49,22 +53,25 @@ export async function askCurrentFact(db: Database, actor: string, eventId: strin
     if (locked[0]?.version !== event.version) throw new AppError('VERSION_CONFLICT', '活动规则已更新，请刷新', 409);
     if (!['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(event.status)) throw new AppError('INVALID_STATE', '当前活动不能提问');
     const cleanQuestion = question.trim();
+    const factSourceVersion = event.visibleContentVersion ?? event.version;
+    const factSourceLabel = factSourceVersion === event.version ? `当前版本 ${event.version}`
+      : `已审核版本 ${factSourceVersion}`;
     const answer = answerFromCurrentEvent(cleanQuestion, event);
-    if (answer) return { answer, source: 'CURRENT_EVENT', eventVersion: event.version };
+    if (answer) return { answer, source: 'CURRENT_EVENT', eventVersion: factSourceVersion };
     const { rows: approved } = await tx.query<{ id: string; body: string }>(
       `SELECT t.id,a.body FROM activity_fact_todos t JOIN activity_content a ON a.parent_id=t.question_content_id
         AND a.kind='ANSWER' AND a.status='APPROVED' WHERE t.event_id=$1 AND t.event_version=$2
         AND t.question_text=$3 AND t.status='RESOLVED' ORDER BY a.created_at DESC,a.id DESC LIMIT 1`,
-      [eventId, event.version, cleanQuestion]);
-    if (approved[0]) return { answer: `当前版本 ${event.version}，主办方已审核回答：${approved[0].body}`,
-      source: 'APPROVED_ANSWER', eventVersion: event.version, todoId: approved[0].id };
+      [eventId, factSourceVersion, cleanQuestion]);
+    if (approved[0]) return { answer: `${factSourceLabel}，主办方已审核回答：${approved[0].body}`,
+      source: 'APPROVED_ANSWER', eventVersion: factSourceVersion, todoId: approved[0].id };
     const { rows: announcements } = await tx.query<{ id: string; body: string }>(
       `SELECT id,body FROM activity_content WHERE event_id=$1 AND event_version=$2
-       AND kind='ANNOUNCEMENT' AND status='APPROVED' ORDER BY created_at DESC,id DESC`, [eventId, event.version]);
+       AND kind='ANNOUNCEMENT' AND status='APPROVED' ORDER BY created_at DESC,id DESC`, [eventId, factSourceVersion]);
     for (const announcement of announcements) {
       const faq = parseAnnouncementFaq(announcement.body);
-      if (faq?.question === cleanQuestion) return { answer: `当前版本 ${event.version}，已审核公告：${faq.answer}`,
-        source: 'APPROVED_ANNOUNCEMENT', eventVersion: event.version, sourceContentId: announcement.id };
+      if (faq?.question === cleanQuestion) return { answer: `${factSourceLabel}，已审核公告：${faq.answer}`,
+        source: 'APPROVED_ANNOUNCEMENT', eventVersion: factSourceVersion, sourceContentId: announcement.id };
     }
     const previous = await tx.query<{ id: string; status: string; question_content_id: string }>(
       'SELECT id,status,question_content_id FROM activity_fact_todos WHERE event_id=$1 AND event_version=$2 AND requester_id=$3 AND question_text=$4',

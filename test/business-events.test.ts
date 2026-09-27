@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { createDatabase } from '../src/db.ts';
-import { createDraft, publishEvent } from '../src/events.ts';
+import { createDraft, publishEvent as publishRawEvent } from '../src/events.ts';
+import { approveInviteEvent, publishApprovedInvite } from './helpers.ts';
 import { register } from '../src/registrations.ts';
 import { reviewEvent } from '../src/event-review.ts';
 import { checkIn, confirmEvent, createCheckInToken, requestManualCheckIn, respondManualCheckIn,
@@ -29,18 +30,22 @@ test('committed business events are pseudonymous, versioned and idempotent', asy
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host-secret', valid('INVITE'), 'create', false);
-    const published = await publishEvent(db, 'host-secret', draft.id, draft.version, 'publish');
-    await publishEvent(db, 'host-secret', draft.id, draft.version, 'publish');
+    const submitted = await publishRawEvent(db, 'host-secret', draft.id, draft.version, 'publish');
+    await publishRawEvent(db, 'host-secret', draft.id, draft.version, 'publish');
+    const published = await approveInviteEvent(db, submitted);
     await register(db, 'participant-secret', draft.id, published.version, 'join', published.inviteToken!);
     await register(db, 'participant-secret', draft.id, published.version, 'join', published.inviteToken!);
     const { rows } = await db.query<BusinessEvent>('SELECT * FROM business_events WHERE activity_id=$1 ORDER BY occurred_at,event_uuid', [draft.id]);
-    assert.deepEqual(rows.map(row => row.event_name).sort(), ['ACTIVITY_PUBLISHED', 'REGISTER_CONFIRMED', 'REGISTER_CONFIRMED']);
+    assert.deepEqual(rows.map(row => row.event_name).sort(),
+      ['ACTIVITY_PUBLISHED', 'INVITE_REVIEW_SUBMITTED', 'REGISTER_CONFIRMED', 'REGISTER_CONFIRMED']);
     assert.ok(rows.every(row => row.activity_id === draft.id && row.version === published.version && !row.is_test));
-    assert.ok(rows.every(row => row.source === 'API' && row.release === 'R1' && row.occurred_at));
+    assert.ok(rows.every(row => row.release === 'R1' && row.occurred_at));
+    assert.equal(rows.find(row => row.event_name === 'INVITE_REVIEW_SUBMITTED')?.source, 'API');
+    assert.equal(rows.find(row => row.event_name === 'ACTIVITY_PUBLISHED')?.source, 'OPS');
     assert.ok(rows.every(row => /^[a-f0-9]{64}$/.test(row.user_id_pseudonymous ?? '')));
     assert.ok(rows.every(row => !JSON.stringify(row).includes('secret')));
     assert.equal(new Set(rows.filter(row => row.event_name === 'REGISTER_CONFIRMED').map(row => row.user_id_pseudonymous)).size, 2);
-    const { rows: audit } = await db.query<{ id: string }>("SELECT id FROM audit WHERE event_id=$1 AND action='PUBLISH'", [draft.id]);
+    const { rows: audit } = await db.query<{ id: string }>("SELECT id FROM audit WHERE event_id=$1 AND action='EVENT_REVIEW'", [draft.id]);
     assert.equal(rows.find(row => row.event_name === 'ACTIVITY_PUBLISHED')?.event_uuid, audit[0]?.id);
     await assert.rejects(db.transaction(async tx => {
       await tx.query("INSERT INTO audit(id,actor_id,event_id,action) VALUES('rollback-audit','host-secret',$1,'CHECK_IN')", [draft.id]);
@@ -57,7 +62,7 @@ test('public review submission is not a publication event; approval emits once a
     const publicInput = valid('PUBLIC');
     await openSyntheticPublicCoverage(db, [publicInput]);
     const draft = await createDraft(db, 'public-host', publicInput, 'public-create', true);
-    const submitted = await publishEvent(db, 'public-host', draft.id, draft.version, 'public-submit');
+    const submitted = await publishApprovedInvite(db, 'public-host', draft.id, draft.version, 'public-submit');
     let { rows } = await db.query<BusinessEvent>('SELECT * FROM business_events WHERE activity_id=$1', [draft.id]);
     assert.equal(rows.filter(row => row.event_name === 'PUBLIC_REVIEW_SUBMITTED').length, 1);
     assert.equal(rows.filter(row => row.event_name === 'ACTIVITY_PUBLISHED').length, 0);
@@ -76,7 +81,7 @@ test('a repeat scan and a superseded manual request do not emit new attendance e
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', valid('INVITE'), 'attendance-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'attendance-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'attendance-publish');
     for (const actor of ['p1', 'p2', 'p3']) await register(db, actor, event.id, event.version, `join-${actor}`, event.inviteToken!);
     await confirmEvent(db, 'host', event.id, event.version, 'attendance-confirm');
     const at = Date.parse(event.payload.startAt!);
@@ -96,7 +101,7 @@ test('share intent, attributed invite open, and unknown-source open have distinc
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', valid('INVITE'), 'share-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'share-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'share-publish');
     const source = 'a'.repeat(32);
     await recordShareIntent(db, 'host', event.id, event.version, source, 'share-intent');
     await recordShareIntent(db, 'host', event.id, event.version, source, 'share-intent');
@@ -121,7 +126,7 @@ test('expense, activity report and support actions enter the privacy-safe event 
   try {
     const draft = await createDraft(db, 'expense-host-secret',
       { ...valid('INVITE'), feeMode: 'AA', feeCapFen: 5000 }, 'expense-events-draft', true);
-    const event = await publishEvent(db, 'expense-host-secret', draft.id, draft.version, 'expense-events-publish');
+    const event = await publishApprovedInvite(db, 'expense-host-secret', draft.id, draft.version, 'expense-events-publish');
     for (const actor of ['expense-p1-secret', 'expense-p2-secret'])
       await register(db, actor, event.id, event.version, `join-${actor}`, event.inviteToken!);
     await assert.rejects(() => recordExpense(db, 'expense-host-secret', event.id, event.version,

@@ -50,7 +50,7 @@
     <button id="inspectReport">逐单核查并留痕</button><button id="assignReport">分配给处理账号</button><button id="classifyReportSeverity">逐单改级并留痕</button>
     <p id="reportInspection" role="status"></p>
   </section>
-  <section><h2>待审核公开活动</h2><ul id="eventReviews"></ul><button id="moreEventReviews" disabled>加载更多待审活动</button></section>
+  <section><h2>待审核活动</h2><ul id="eventReviews"></ul><button id="moreEventReviews" disabled>加载更多待审活动</button></section>
   <section><h2>活动风险暂停</h2>
     <p class="muted">暂停新报名、预留、补位和成局；活动仍可查看或退出。仅运营人员可记录核查原因和解除。</p>
     <label>活动 ID <input id="holdEventId" autocomplete="off"></label>
@@ -158,7 +158,7 @@
       if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
       if (response.status === 409 && data.code === 'QUEUE_CHANGED')
         throw Object.assign(new Error(data.message), { code: data.code });
-      if (!response.ok) throw new Error(data.message || data.code || '读取公开活动审核失败');
+      if (!response.ok) throw new Error(data.message || data.code || '读取活动审核失败');
       return data;
     }
     async function loadContent(denied, offset = 0, snapshot = null) {
@@ -758,7 +758,7 @@
           line($('supportMinutesHistory'), `${item.recordedAt} · 活动 ${item.eventId} · ${item.category} · ${item.minutes} 分钟 · ${item.recordedBy}`);
         renderContent(content);
         const count = (path, amount) => denied.includes(path) ? '无权限' : amount;
-        $('status').textContent = `举报 ${count('/ops/reports', reportPage.total ?? reports.length)}、首次响应关注 ${count('/ops/reports/response-alerts', responseAlertPage.total ?? responseAlertPage.items.length)}、公开活动待审 ${count('/ops/events/reviews', eventReviewPage.total ?? eventReviews.length)}、活动暂停 ${count('/ops/holds', holds.filter(item => item.status === 'ACTIVE').length)}、异常请求 ${count('/ops/rate-limits', rateLimits.length)}、异常报名 ${count('/ops/registration-anomalies', anomalyPage.total ?? registrationAnomalies.length)}、通知待跟进 ${count('/ops/notifications/followups', notificationFollowupPage.total ?? notificationFollowups.length)}、最近已跟进 ${count('/ops/notifications/followups/history', notificationHistory.length)}、失败任务 ${count('/ops/jobs/failed', failedJobPage.total ?? failedJobs.length)}、AI 草稿异常 ${count('/ops/ai-draft-alerts', aiDraftAlertPage.total ?? aiDraftAlerts.length)}、申诉 ${count('/ops/appeals', appealPage.total ?? appeals.length)}、个人信息请求 ${count('/ops/privacy', privacyPage.total ?? privacy.length)}、待审核内容 ${count('/ops/content', contentPage.total ?? content.length)}${denied.length ? ' · 无权限：' + denied.join('、') : ''}`;
+        $('status').textContent = `举报 ${count('/ops/reports', reportPage.total ?? reports.length)}、首次响应关注 ${count('/ops/reports/response-alerts', responseAlertPage.total ?? responseAlertPage.items.length)}、活动待审 ${count('/ops/events/reviews', eventReviewPage.total ?? eventReviews.length)}、活动暂停 ${count('/ops/holds', holds.filter(item => item.status === 'ACTIVE').length)}、异常请求 ${count('/ops/rate-limits', rateLimits.length)}、异常报名 ${count('/ops/registration-anomalies', anomalyPage.total ?? registrationAnomalies.length)}、通知待跟进 ${count('/ops/notifications/followups', notificationFollowupPage.total ?? notificationFollowups.length)}、最近已跟进 ${count('/ops/notifications/followups/history', notificationHistory.length)}、失败任务 ${count('/ops/jobs/failed', failedJobPage.total ?? failedJobs.length)}、AI 草稿异常 ${count('/ops/ai-draft-alerts', aiDraftAlertPage.total ?? aiDraftAlerts.length)}、申诉 ${count('/ops/appeals', appealPage.total ?? appeals.length)}、个人信息请求 ${count('/ops/privacy', privacyPage.total ?? privacy.length)}、待审核内容 ${count('/ops/content', contentPage.total ?? content.length)}${denied.length ? ' · 无权限：' + denied.join('、') : ''}`;
         return true;
       } catch (error) {
         if (generation === requestGeneration) {
@@ -916,7 +916,7 @@
         const denied = [];
         const page = await loadEventReviews(denied, offset, snapshot);
         if (generation !== requestGeneration) return;
-        if (denied.length) { $('status').textContent = '无权限查看公开活动审核'; return; }
+        if (denied.length) { $('status').textContent = '无权限查看活动审核'; return; }
         renderEventReviews(page.items);
         nextEventReviewOffset = page.nextOffset ?? null;
         eventReviewSnapshot = page.snapshot ?? null;
@@ -924,7 +924,7 @@
       } catch (error) {
         if (generation !== requestGeneration) return;
         if (error.code === 'QUEUE_CHANGED') {
-          if (await refresh()) $('status').textContent += ' · 公开活动审核列表变化，已从第一页刷新';
+          if (await refresh()) $('status').textContent += ' · 活动审核列表变化，已从第一页刷新';
           return;
         }
         nextEventReviewOffset = offset;

@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { createDatabase } from '../src/db.ts';
-import { createDraft, publishEvent } from '../src/events.ts';
+import { createDraft } from '../src/events.ts';
+import { publishApprovedInvite } from './helpers.ts';
 import { register } from './helpers.ts';
 import { listEventAliases, setEventAlias } from '../src/event-aliases.ts';
 
@@ -14,7 +15,7 @@ test('activity nickname is opt-in, visible only to members and revocable', async
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'alias-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'alias-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'alias-publish');
     await register(db, 'p1', event.id, event.version, 'alias-p1');
     await register(db, 'p2', event.id, event.version, 'alias-p2');
     assert.deepEqual(await listEventAliases(db, 'p2', event.id), []);
@@ -31,7 +32,7 @@ test('disabled member nickname disappears from other members without deleting it
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'disabled-alias-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'disabled-alias-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'disabled-alias-publish');
     await register(db, 'p1', event.id, event.version, 'disabled-alias-p1');
     await register(db, 'p2', event.id, event.version, 'disabled-alias-p2');
     await db.query(`INSERT INTO users(id,wechat_openid,status) VALUES
@@ -53,7 +54,7 @@ test('pending deletion hides old nicknames and prevents granting a new visible a
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'delete-alias-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'delete-alias-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'delete-alias-publish');
     await register(db, 'p1', event.id, event.version, 'delete-alias-p1');
     await register(db, 'p2', event.id, event.version, 'delete-alias-p2');
     await db.query("INSERT INTO users(id,wechat_openid) VALUES('p1','delete-alias-openid')");

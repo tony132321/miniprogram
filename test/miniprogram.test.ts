@@ -301,6 +301,48 @@ test('profile load failure offers a retry that restores live private data', asyn
   assert.equal(requests, 18);
 });
 
+test('profile shows honest external reminder states on initial and later notification pages', async () => {
+  let page: Record<string, any> | undefined;
+  const notices = [
+    { id: 'off', external_status: 'UNAVAILABLE' },
+    { id: 'accepted', external_status: 'PROVIDER_ACCEPTED' },
+    { id: 'no-consent', external_status: 'CONSENT_WITHDRAWN' },
+    { id: 'uncertain', external_status: 'UNKNOWN_REQUIRES_RECONCILIATION' },
+    { id: 'stale', external_status: 'STALE_VERSION' },
+    { id: 'pending', external_status: 'NOT_REQUESTED' },
+    { id: 'unknown', external_status: 'UNRECOGNIZED_PROVIDER_STATE' }
+  ];
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: { get: async (route: string) => {
+        if (route === '/me/notifications?offset=0') return { items: notices.slice(0, 4), total: notices.length,
+          nextOffset: 4, snapshot: 'a'.repeat(32) };
+        if (route.startsWith('/me/notifications?offset=4&snapshot=')) return { items: notices.slice(4),
+          total: notices.length, nextOffset: null, snapshot: 'a'.repeat(32) };
+        if (route === '/me/consents') return { eventReminder: false };
+        if (route === '/me/similar-invites') return { granted: false };
+        return { items: [] };
+      } } };
+      if (path === '../../config.js') return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  await page.refresh();
+  assert.deepEqual(Array.from(page.data.notifications, (item: any) => item.externalStatusLabel), [
+    '外部提醒不可用，请查看站内通知', '提供方已受理，未确认送达',
+    '未开通外部提醒', '外部提醒结果待核对，请查看站内通知'
+  ]);
+  await page.loadMoreNotifications();
+  assert.deepEqual(Array.from(page.data.notifications.slice(4), (item: any) => item.externalStatusLabel), [
+    '旧版本提醒已取消', '外部提醒待处理', '外部提醒状态待核对'
+  ]);
+  assert.match(readFileSync(new URL('../miniprogram/pages/me/me.wxml', import.meta.url), 'utf8'),
+    /{{item\.externalStatusLabel}}/);
+});
+
 test('production-style mini-program config ignores a stale development identity', async () => {
   let captured: Record<string, any> | undefined;
   const api = createApi({
@@ -1465,7 +1507,7 @@ test('share card only uses a source after its intent has been committed', async 
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
-  page.setData({ id: 'e1', isHost: true, event: { id: 'e1', version: 2, inviteToken: 'invite-1', recruiting: true,
+  page.setData({ id: 'e1', isHost: true, event: { id: 'e1', version: 2, inviteToken: 'invite-1', recruiting: true, reviewStatus: 'APPROVED',
     payload: { title: '羽毛球' } } });
   const pending = page.prepareShare();
   assert.equal(requests.length, 1);
