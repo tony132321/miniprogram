@@ -74,12 +74,17 @@ export function localDraftSuggestion(text: string, at = Date.now()): { aiStatus:
   if (/\bAA\b/i.test(text)) put('feeMode', 'AA');
   if (/免费|不收费/.test(text)) { put('feeMode', 'FREE'); put('feeCapFen', 0); feeNeedsConfirmation = false; }
   if (city) { const startAt = localStartAt(text, at); if (startAt) put('startAt', startAt); }
-  const unknown = [fields.startAt ? '结束时间' : '具体日期时间', ...(!fields.city ? ['城市'] : []),
+  const duration = text.match(/([一二两三四五六七八九十\d]+)(?:个)?小时(半)?/);
+  const hours = duration ? number(duration[1]!) : undefined;
+  if (fields.startAt && hours !== undefined && hours > 0 && hours <= 24) {
+    put('endAt', new Date(Date.parse(fields.startAt) + (hours + (duration![2] ? 0.5 : 0)) * 60 * 60_000).toISOString());
+  }
+  const unknown = [...(fields.startAt ? (fields.endAt ? [] : ['结束时间']) : ['具体日期时间']), ...(!fields.city ? ['城市'] : []),
     '公共场馆及预约依据', '最少人数', '主办方是否参加并占位', '报名与成局截止',
     ...(!fields.feeMode || (fields.feeMode === 'AA' && fields.feeCapFen === undefined) ? ['费用规则和上限'] : []),
     ...(feeNeedsConfirmation ? ['每人费用上限'] : []),
     '取消规则', '公开范围'];
   for (const key of ['endAt', 'venueName', 'venueStatus', 'minParticipants', 'registrationDeadline', 'confirmationDeadline',
-    'cancellationRule', 'visibility', 'approvalMode', 'hostParticipates']) fieldSources[key] = 'NEEDS_CONFIRMATION';
+    'cancellationRule', 'visibility', 'approvalMode', 'hostParticipates']) fieldSources[key] ??= 'NEEDS_CONFIRMATION';
   return { aiStatus: 'UNAVAILABLE', source: 'RULE_FALLBACK', fields, fieldSources, unknown };
 }

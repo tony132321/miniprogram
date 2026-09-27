@@ -57,3 +57,19 @@ test('a named city anchors a short weekday but a past same-day time stays unconf
   assert.equal(past.fields.startAt, undefined);
   assert.ok(past.unknown.includes('具体日期时间'));
 });
+
+test('an explicit two-hour duration completes the draft time range', () => {
+  const at = Date.parse('2026-09-23T04:00:00.000Z');
+  const result = localDraftSuggestion('本周六晚上八点在深圳打两小时羽毛球，六个人', at);
+  assert.equal(result.fields.startAt, '2026-09-26T12:00:00.000Z');
+  assert.equal(result.fields.endAt, '2026-09-26T14:00:00.000Z');
+  assert.equal(result.fieldSources.endAt, 'USER_EXPLICIT');
+  assert.ok(!result.unknown.includes('结束时间'));
+});
+
+test('duration alone does not invent a date or an end time', () => {
+  const result = localDraftSuggestion('周六晚上八点打两小时羽毛球', Date.parse('2026-09-23T04:00:00.000Z'));
+  assert.equal(result.fields.startAt, undefined);
+  assert.equal(result.fields.endAt, undefined);
+  assert.ok(result.unknown.includes('具体日期时间'));
+});
