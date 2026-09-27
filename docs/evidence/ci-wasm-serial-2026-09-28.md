@@ -21,3 +21,7 @@
 该运行的第二次尝试在相同提交、未改代码的情况下通过类型检查、测试及依赖审计。这支持“间歇性原生故障”的判断，但并未证明当前串行命令稳定。
 
 下一候选将测试命令改为 `node --no-wasm-tier-up --import tsx --test --test-concurrency=1 test/*.test.ts`。该 V8 参数由测试运行器传给文件子进程，已用独立临时测试读取 `process.execArgv` 核对。Node 上游问题报告记录 Node 25 在此参数下的受控对照，但也说明 Node 27 仍曾复现，故这里只把它作为试验性缓解。macOS Node 24.19.0 本地 `pnpm test` **537/537** 通过，耗时约 218 秒；`pnpm typecheck` 与 `git diff --check` 通过。必须看新候选的 Linux CI 结果，单次通过亦不能证明原生问题已根治。
+
+[R1 CI run 36356948118](https://github.com/tony132321/miniprogram/actions/runs/36356948118) 已证明此试验**无效**：同样的 `jit_page_->allocations_.erase(addr) == 1` 与 `ThreadIsolation::UnregisterWasmAllocation` 原生崩溃改在 `ai-provider-http.test.ts` 出现。该运行 534 项通过、1 个测试文件进程失败，约 633 秒，依赖审计被跳过。参数未能消除故障且明显增加 Linux 测试耗时，后续候选应撤回。前述本地通过只说明功能断言在那次 macOS 运行中通过。
+
+第二种候选改用 Node 24 测试运行器的 `--test-isolation=none`，仍保留全部 `test/*.test.ts` 文件和串行执行，让测试不再为每个文件创建新的 Node/V8 子进程。先对触发过原生崩溃的 AI 草稿 HTTP 与个人导出文件联合运行 13/13，再在 macOS Node 24.19.0 完整运行 **537/537**，耗时约 194 秒；这些结果还不能证明 Linux CI 稳定。该模式允许测试文件共享一个进程，若后续出现跨文件状态串扰，应修复隔离而非隐藏失败。生产代码不依赖此测试运行器参数。
