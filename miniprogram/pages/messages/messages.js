@@ -112,16 +112,17 @@ Page({
   },
   async loadApprovals() {
     const generation = this._generation;
+    const approvalLoadId = this._approvalLoadId = (this._approvalLoadId || 0) + 1;
     this.setData({ approvalLoadState: 'LOADING', approvalNextOffset: null,
-      approvalSnapshot: null, approvals: [], approvalTotal: 0 });
+      approvalSnapshot: null, approvals: [], approvalTotal: 0, loadingMoreApprovals: false });
     try {
       const page = await api.get('/me/approval-requests?offset=0');
-      if (generation !== this._generation) return;
+      if (generation !== this._generation || approvalLoadId !== this._approvalLoadId) return;
       this.setData({ approvals: page.items || [], approvalTotal: page.total || 0,
         approvalNextOffset: page.nextOffset ?? null, approvalSnapshot: page.snapshot ?? null,
         approvalLoadState: 'READY' });
     } catch (error) {
-      if (generation === this._generation) this.setData({ approvalLoadState: 'ERROR',
+      if (generation === this._generation && approvalLoadId === this._approvalLoadId) this.setData({ approvalLoadState: 'ERROR',
         message: error.message || '待审核报名加载失败' });
     }
   },
@@ -129,15 +130,16 @@ Page({
     const offset = this.data.approvalNextOffset;
     if (this.data.loadingMoreApprovals || offset === null || offset === undefined) return;
     const generation = this._generation;
+    const approvalLoadId = this._approvalLoadId;
     this.setData({ loadingMoreApprovals: true });
     try {
       const page = await api.get(`/me/approval-requests?offset=${offset}&snapshot=${encodeURIComponent(this.data.approvalSnapshot)}`);
-      if (generation !== this._generation) return;
+      if (generation !== this._generation || approvalLoadId !== this._approvalLoadId) return;
       this.setData({ approvals: this.data.approvals.concat(page.items || []), approvalTotal: page.total,
         approvalNextOffset: page.nextOffset ?? null, approvalSnapshot: page.snapshot ?? null,
         loadingMoreApprovals: false });
     } catch (error) {
-      if (generation !== this._generation) return;
+      if (generation !== this._generation || approvalLoadId !== this._approvalLoadId) return;
       if (error.code === 'QUEUE_CHANGED') {
         await this.loadApprovals();
         return this.setData({ message: '审核列表已变化，已重新加载。', loadingMoreApprovals: false });

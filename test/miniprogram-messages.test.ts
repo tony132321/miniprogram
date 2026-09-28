@@ -274,3 +274,45 @@ test('approval pagination restarts after another reviewer changes the queue', as
   assert.equal(page.data.loadingMoreApprovals, false);
   assert.ok(paths.includes(`/me/approval-requests?offset=1&snapshot=${'a'.repeat(32)}`));
 });
+
+test('late approval list response cannot replace a newer request', async () => {
+  const resolvePages: Array<(value: object) => void> = [];
+  const page = mount({
+    get(path: string) {
+      assert.equal(path, '/me/approval-requests?offset=0');
+      return new Promise(resolve => { resolvePages.push(resolve); });
+    }
+  }, {});
+  const first = page.loadApprovals();
+  const second = page.loadApprovals();
+  assert.equal(resolvePages.length, 2);
+  resolvePages[1]!({ items: [{ registrationId: 'current' }], total: 1, nextOffset: null });
+  await second;
+  resolvePages[0]!({ items: [{ registrationId: 'stale' }], total: 1, nextOffset: null });
+  await first;
+  assert.equal(page.data.approvalLoadState, 'READY');
+  assert.equal(page.data.approvals[0]?.registrationId, 'current');
+});
+
+test('old approval continuation cannot append after the list restarts', async () => {
+  let firstPageReads = 0;
+  let finishOldPage!: (value: object) => void;
+  const page = mount({
+    get(path: string) {
+      if (path === '/me/approval-requests?offset=0') {
+        firstPageReads++;
+        return Promise.resolve({ items: [{ registrationId: firstPageReads === 1 ? 'old-first' : 'current' }],
+          total: firstPageReads === 1 ? 2 : 1, nextOffset: firstPageReads === 1 ? 1 : null,
+          snapshot: (firstPageReads === 1 ? 'a' : 'b').repeat(32) });
+      }
+      return new Promise(resolve => { finishOldPage = resolve; });
+    }
+  }, {});
+  await page.loadApprovals();
+  const oldContinuation = page.loadMoreApprovals();
+  await page.loadApprovals();
+  finishOldPage({ items: [{ registrationId: 'stale-second' }], total: 2, nextOffset: null });
+  await oldContinuation;
+  assert.deepEqual(Array.from(page.data.approvals, (item: Record<string, unknown>) => item.registrationId), ['current']);
+  assert.equal(page.data.loadingMoreApprovals, false);
+});
