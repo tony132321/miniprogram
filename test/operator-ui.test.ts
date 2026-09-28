@@ -53,6 +53,21 @@ test('logout removes every visible operator result and resets private page contr
     assert.equal(ui.item(id).disabled, true, `${id} still loads private data`);
 });
 
+test('signing in as another operator clears the previous account’s private page state', async () => {
+  const ui = await workbench(async (path, options) => path === '/ops/auth/login' && options?.method === 'POST'
+    ? { ok: true, status: 200, json: async () => ({ token: 'second-operator-token' }) }
+    : { ok: true, status: 200, json: async () => ({ items: [], status: 'OPEN', weeks: [] }) });
+  ui.item('coverageResult').textContent = '前一账号的值守核查结果';
+  ui.item('hostReviewResult').textContent = '前一账号的主办方核验结果';
+  ui.item('hostReviewUserId').value = 'previous-host-id';
+  ui.item('operatorUser').value = 'second-operator';
+  await ui.item('operatorLogin').onclick?.();
+  assert.equal(ui.storage.get('operatorToken'), 'second-operator-token');
+  assert.equal(ui.item('coverageResult').textContent, '');
+  assert.equal(ui.item('hostReviewResult').textContent, '');
+  assert.equal(ui.item('hostReviewUserId').value, '');
+});
+
 test('a pending refresh cannot overwrite logged-out state', async () => {
   let resolveReads!: (value: unknown) => void;
   const reads = new Promise(resolve => { resolveReads = resolve; });

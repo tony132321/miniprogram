@@ -1210,6 +1210,35 @@
         catch (error) { $('status').textContent = error.message; }
       };
     }
+    function clearPrivateWorkbench() {
+      requestGeneration++;
+      nextReportOffset = nextResponseAlertOffset = nextTriageOffset = nextEventReviewOffset = null;
+      nextAnomalyOffset = nextNotificationFollowupOffset = nextFailedJobOffset = null;
+      nextAiDraftAlertOffset = nextAiDraftAlertReviewOffset = null;
+      nextPrivacyOffset = nextAppealOffset = nextContentOffset = null;
+      reportSnapshot = responseAlertSnapshot = triageSnapshot = eventReviewSnapshot = null;
+      anomalySnapshot = notificationFollowupSnapshot = failedJobSnapshot = null;
+      aiDraftAlertSnapshot = aiDraftAlertReviewSnapshot = null;
+      privacySnapshot = appealSnapshot = contentSnapshot = aiEventCostCursor = null;
+      reportSeverityById.clear();
+      pendingHostReview = null;
+      for (const id of ['reports', 'reportResponseAlerts', 'reportTriage', 'eventReviews', 'holds',
+        'rateLimits', 'registrationAnomalies', 'notificationFollowups', 'notificationHistory',
+        'failedJobs', 'aiDraftAlerts', 'aiDraftAlertReviews', 'aiEventCosts', 'supportMinutesHistory',
+        'appeals', 'privacy', 'content']) $(id).replaceChildren();
+      for (const id of ['moreReports', 'moreReportResponseAlerts', 'moreReportTriage', 'moreEventReviews',
+        'moreRegistrationAnomalies', 'moreNotificationFollowups', 'moreFailedJobs', 'moreAiDraftAlerts',
+        'moreAiDraftAlertReviews', 'moreAiEventCosts', 'moreAppeals', 'morePrivacy', 'moreContent'])
+        $(id).disabled = true;
+      $('moreAiEventCosts').textContent = '加载活动成本';
+      for (const id of ['devUser', 'operatorUser', 'operatorPassword', 'operatorCode', 'reportCaseId',
+        'reportAssignee', 'reportScopeReason', 'holdEventId', 'holdReason', 'supportEventId',
+        'supportMinutes', 'coverageStartsAt', 'coverageEndsAt', 'coverageDrillCompletedAt',
+        'coverageDrillReference', 'coverageId', 'coverageReason', 'hostReviewUserId',
+        'hostReviewReason', 'publicGateReason', 'emergencyReason']) $(id).value = '';
+      for (const id of ['publicGate', 'emergencyGate', 'coverageResult', 'reportInspection',
+        'hostReviewResult']) $(id).textContent = '';
+    }
     $('operatorLogin').onclick = async () => {
       try {
         const response = await fetch('/ops/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -1217,6 +1246,7 @@
         const data = await response.json();
         $('operatorPassword').value = ''; $('operatorCode').value = '';
         if (!response.ok) throw new Error(data.message || '登录失败');
+        clearPrivateWorkbench();
         $('token').value = data.token; sessionStorage.setItem('operatorToken', data.token);
         await refresh();
       } catch (error) { $('status').textContent = error.message; }
@@ -1227,33 +1257,7 @@
           const response = await fetch('/ops/auth/logout', { method: 'POST', headers: headers() });
           if (!response.ok) throw new Error('服务器未确认退出');
         }
-        requestGeneration++;
-        nextReportOffset = nextResponseAlertOffset = nextTriageOffset = nextEventReviewOffset = null;
-        nextAnomalyOffset = nextNotificationFollowupOffset = nextFailedJobOffset = null;
-        nextAiDraftAlertOffset = nextAiDraftAlertReviewOffset = null;
-        nextPrivacyOffset = nextAppealOffset = nextContentOffset = null;
-        reportSnapshot = responseAlertSnapshot = triageSnapshot = eventReviewSnapshot = null;
-        anomalySnapshot = notificationFollowupSnapshot = failedJobSnapshot = null;
-        aiDraftAlertSnapshot = aiDraftAlertReviewSnapshot = null;
-        privacySnapshot = appealSnapshot = contentSnapshot = aiEventCostCursor = null;
-        reportSeverityById.clear();
-        pendingHostReview = null;
-        for (const id of ['reports', 'reportResponseAlerts', 'reportTriage', 'eventReviews', 'holds',
-          'rateLimits', 'registrationAnomalies', 'notificationFollowups', 'notificationHistory',
-          'failedJobs', 'aiDraftAlerts', 'aiDraftAlertReviews', 'aiEventCosts', 'supportMinutesHistory',
-          'appeals', 'privacy', 'content']) $(id).replaceChildren();
-        for (const id of ['moreReports', 'moreReportResponseAlerts', 'moreReportTriage', 'moreEventReviews',
-          'moreRegistrationAnomalies', 'moreNotificationFollowups', 'moreFailedJobs', 'moreAiDraftAlerts',
-          'moreAiDraftAlertReviews', 'moreAiEventCosts', 'moreAppeals', 'morePrivacy', 'moreContent'])
-          $(id).disabled = true;
-        $('moreAiEventCosts').textContent = '加载活动成本';
-        for (const id of ['devUser', 'operatorUser', 'operatorPassword', 'operatorCode', 'reportCaseId',
-          'reportAssignee', 'reportScopeReason', 'holdEventId', 'holdReason', 'supportEventId',
-          'supportMinutes', 'coverageStartsAt', 'coverageEndsAt', 'coverageDrillCompletedAt',
-          'coverageDrillReference', 'coverageId', 'coverageReason', 'hostReviewUserId',
-          'hostReviewReason', 'publicGateReason', 'emergencyReason']) $(id).value = '';
-        for (const id of ['publicGate', 'emergencyGate', 'coverageResult', 'reportInspection',
-          'hostReviewResult']) $(id).textContent = '';
+        clearPrivateWorkbench();
         $('token').value = ''; sessionStorage.removeItem('operatorToken');
         $('status').textContent = '已退出登录';
         $('metrics').textContent = '已退出登录';
