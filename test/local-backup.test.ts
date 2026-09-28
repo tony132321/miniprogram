@@ -20,7 +20,7 @@ const input = {
   cancellationRule: '开始前可退出', visibility: 'INVITE', approvalMode: 'AUTO', hostParticipates: true
 };
 
-test('local backup restores event, registration, audit, and migration state', async () => {
+test('local backup restores registration, consent, outbox, audit, and current migration state', async t => {
   const root = await mkdtemp(join(tmpdir(), 'irl-backup-'));
   const source = join(root, 'source');
   const archive = join(root, 'backup.tgz');
@@ -34,18 +34,30 @@ test('local backup restores event, registration, audit, and migration state', as
     await setConsent(db, 'p1', 'EVENT_REMINDER', true, 'backup-reminder-grant');
     await setConsent(db, 'p1', 'SIMILAR_ACTIVITY_INVITES', true, 'backup-similar-grant');
     await setConsent(db, 'p1', 'EVENT_REMINDER', false, 'backup-reminder-withdraw');
+    await db.query(`INSERT INTO notifications(id,event_id,user_id,kind,event_version,detail)
+      VALUES('backup-outbox-notice',$1,'p1','MATERIAL_CHANGE',$2,'{}'::jsonb)`, [event.id, event.version]);
+    await db.query(`INSERT INTO jobs(id,kind,event_id,due_at,payload,status)
+      VALUES('backup-outbox-job','SEND_EXTERNAL',$1,now(),$2::jsonb,'PENDING')`,
+    [event.id, JSON.stringify({ notificationId: 'backup-outbox-notice' })]);
     const before = {
       events: (await db.query('SELECT id,status,version,payload FROM events ORDER BY id')).rows,
       registrations: (await db.query('SELECT event_id,user_id,status FROM registrations ORDER BY user_id')).rows,
       audit: (await db.query('SELECT action,event_id,actor_id FROM audit ORDER BY action')).rows,
       migrations: (await db.query('SELECT version,checksum FROM schema_migrations ORDER BY version')).rows,
       consents: (await db.query('SELECT user_id,purpose,granted,scope,notice_version FROM notification_consents ORDER BY user_id,purpose')).rows,
-      consentHistory: (await db.query('SELECT user_id,purpose,scope,notice_version,notice_text,granted,changed_at FROM notification_consent_history ORDER BY changed_at,id')).rows
+      consentHistory: (await db.query('SELECT user_id,purpose,scope,notice_version,notice_text,granted,changed_at FROM notification_consent_history ORDER BY changed_at,id')).rows,
+      outbox: (await db.query(`SELECT j.id,j.kind,j.status,j.payload,n.external_status,n.detail
+        FROM jobs j JOIN notifications n ON n.id=j.payload->>'notificationId'
+        WHERE j.id='backup-outbox-job'`)).rows
     };
+    assert.equal(before.outbox.length, 1);
     await db.close();
+    const backupStartedAt = Date.now();
     const backup = await createLocalBackup(source, archive);
+    const backupDurationMs = Date.now() - backupStartedAt;
     assert.match(backup.sha256, /^[0-9a-f]{64}$/);
     assert.ok((await readFile(archive)).length > 0);
+    const recoveryStartedAt = Date.now();
     await restoreLocalBackupUnprotectedSynthetic(archive, restored);
     const recovered = await createDatabase(restored);
     try {
@@ -56,7 +68,13 @@ test('local backup restores event, registration, audit, and migration state', as
       assert.equal(before.migrations.length, LATEST_SCHEMA_VERSION);
       assert.deepEqual((await recovered.query('SELECT user_id,purpose,granted,scope,notice_version FROM notification_consents ORDER BY user_id,purpose')).rows, before.consents);
       assert.deepEqual((await recovered.query('SELECT user_id,purpose,scope,notice_version,notice_text,granted,changed_at FROM notification_consent_history ORDER BY changed_at,id')).rows, before.consentHistory);
+      assert.deepEqual((await recovered.query(`SELECT j.id,j.kind,j.status,j.payload,n.external_status,n.detail
+        FROM jobs j JOIN notifications n ON n.id=j.payload->>'notificationId'
+        WHERE j.id='backup-outbox-job'`)).rows, before.outbox);
       assert.equal((await exportPersonalData(recovered, 'p1')).notificationConsentHistory.length, 3);
+      t.diagnostic(JSON.stringify({ schemaVersion: LATEST_SCHEMA_VERSION,
+        backupDurationMs, localRestoreAndReadbackMs: Date.now() - recoveryStartedAt,
+        recoveredRegistration: true, recoveredConsent: true, recoveredOutbox: true }));
     } finally { await recovered.close(); }
   } finally { await rm(root, { recursive: true, force: true }); }
 });

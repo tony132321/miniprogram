@@ -3,6 +3,10 @@ const config = require('../../config.js');
 
 const noticeTitles = {
   WAITLIST_OFFER: '收到补位邀请', WAITLIST_WINDOW_CLOSED: '补位时间窗口已结束',
+  REGISTRATION_STATUS: '报名状态已更新', REGISTRATION_APPROVED: '报名已通过',
+  MANUAL_CHECKIN_REQUEST: '请核对到场补记', MATERIAL_CHANGE: '活动规则已更新',
+  EVENT_CONFIRMED: '活动已成局', EVENT_CANCELLED: '活动已取消', EVENT_EXPIRED: '活动未成局',
+  EVENT_SAFETY_PAUSED: '活动暂时停止招募', EVENT_SAFETY_RESUMED: '活动恢复招募',
   EVENT_REMINDER: '活动提醒', EVENT_OUTCOME_DUE: '请记录活动结项',
   EVENT_OUTCOME_REVIEW: '请反馈活动结项', PUBLIC_RECRUITMENT_CLOSED: '活动招募暂停',
   PUBLIC_RECRUITMENT_OPEN: '活动招募恢复', REGISTRATION_REMOVED: '报名已移除',
@@ -10,8 +14,12 @@ const noticeTitles = {
   APPEAL_IN_REVIEW: '申诉正在复核', APPEAL_RESOLVED: '申诉已有复核结论',
   CONTENT_REJECTED: '活动内容未通过审核'
 };
+const interactionKinds = new Set(['WAITLIST_OFFER', 'REGISTRATION_STATUS', 'REGISTRATION_APPROVED',
+  'REGISTRATION_REMOVED', 'MANUAL_CHECKIN_REQUEST', 'CONTENT_REJECTED', 'REPORT_IN_REVIEW',
+  'REPORT_RESOLVED', 'APPEAL_IN_REVIEW', 'APPEAL_RESOLVED']);
 function visible(item, filter) {
-  return filter === 'ALL' || (filter === 'ACTIVITY' && Boolean(item.event_id)) ||
+  return filter === 'ALL' || (filter === 'ACTIVITY' && Boolean(item.event_id) && !interactionKinds.has(item.kind)) ||
+    (filter === 'INTERACTION' && interactionKinds.has(item.kind)) ||
     (filter === 'SYSTEM' && !item.event_id);
 }
 function present(items, filter) {
@@ -22,8 +30,10 @@ function present(items, filter) {
 }
 function countVisible(items) { return items.filter(item => item.visible).length; }
 Page({
-  data: { items: [], filteredCount: 0, total: 0, nextOffset: null, snapshot: null,
-    loadState: 'IDLE', loadingMore: false, message: '',
+  data: { items: [], filteredCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
+    loadState: 'IDLE', loadingMore: false, markingAllRead: false, message: '',
+    approvals: [], approvalTotal: 0, approvalNextOffset: null, approvalSnapshot: null, approvalLoadState: 'IDLE',
+    approvingId: '', loadingMoreApprovals: false,
     filter: 'ALL', hasSession: false, developmentMode: Boolean(config.developmentUser) },
   async onShow() {
     await getApp().globalData.ready;
@@ -31,8 +41,10 @@ Page({
     const actor = hasSession ? wx.getStorageSync('userId') : this.data.developmentMode ? (wx.getStorageSync('devUser') || config.developmentUser) : '';
     if (this._actor !== actor) {
       this._generation = (this._generation || 0) + 1;
-      this.setData({ items: [], filteredCount: 0, total: 0, nextOffset: null, snapshot: null,
-        loadingMore: false });
+      this.setData({ items: [], filteredCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
+        loadingMore: false, markingAllRead: false, approvals: [], approvalTotal: 0,
+        approvalNextOffset: null, approvalSnapshot: null, approvalLoadState: 'IDLE',
+        approvingId: '', loadingMoreApprovals: false });
     }
     this._actor = actor;
     this.setData({ hasSession });
@@ -47,15 +59,19 @@ Page({
       if (generation !== this._generation) return;
       const items = present(page.items || [], this.data.filter);
       this.setData({ items, filteredCount: countVisible(items), total: page.total ?? (page.items || []).length,
+        unreadTotal: page.unreadTotal ?? (page.items || []).filter(item => item.status !== 'OPENED').length,
         nextOffset: page.nextOffset ?? null, snapshot: page.snapshot ?? null, loadState: 'READY' });
+      if (this.data.filter === 'INTERACTION') await this.loadApprovals();
     } catch (error) {
       if (generation === this._generation) this.setData({ loadState: 'ERROR', message: error.message || '消息加载失败' });
     }
   },
   setFilter(event) {
     const filter = event.currentTarget.dataset.filter;
+    if (!['ALL', 'ACTIVITY', 'INTERACTION', 'SYSTEM'].includes(filter)) return;
     const items = this.data.items.map(item => ({ ...item, visible: visible(item, filter) }));
     this.setData({ filter, items, filteredCount: countVisible(items) });
+    if (filter === 'INTERACTION' && this.data.approvalLoadState === 'IDLE') return this.loadApprovals();
   },
   async loadMore() {
     const offset = this.data.nextOffset;
@@ -66,7 +82,8 @@ Page({
       const page = await api.get(`/me/notifications?offset=${offset}&snapshot=${encodeURIComponent(this.data.snapshot)}`);
       if (generation !== this._generation) return;
       const items = this.data.items.concat(present(page.items || [], this.data.filter));
-      this.setData({ items, filteredCount: countVisible(items), total: page.total, loadingMore: false,
+      this.setData({ items, filteredCount: countVisible(items), total: page.total,
+        unreadTotal: page.unreadTotal ?? this.data.unreadTotal, loadingMore: false,
         nextOffset: page.nextOffset ?? null, snapshot: page.snapshot });
     } catch (error) {
       if (generation !== this._generation) return;
@@ -77,15 +94,92 @@ Page({
       this.setData({ loadingMore: false, message: error.message || '加载更多失败' });
     }
   },
+  async markAllRead() {
+    if (this.data.markingAllRead || this.data.loadState !== 'READY' || !this.data.unreadTotal) return;
+    const generation = this._generation;
+    const actor = this._actor;
+    this.setData({ markingAllRead: true, message: '' });
+    try {
+      await api.post('/me/notifications/open-all', {});
+      if (generation !== this._generation) return;
+      await this.refresh();
+      if (actor === this._actor && this.data.loadState === 'READY') this.setData({ message: '已将全部站内通知标为已读。' });
+    } catch (error) {
+      if (actor === this._actor) this.setData({ message: error.message || '标记失败，请重试' });
+    } finally {
+      if (actor === this._actor) this.setData({ markingAllRead: false });
+    }
+  },
+  async loadApprovals() {
+    const generation = this._generation;
+    this.setData({ approvalLoadState: 'LOADING', approvalNextOffset: null,
+      approvalSnapshot: null, approvals: [], approvalTotal: 0 });
+    try {
+      const page = await api.get('/me/approval-requests?offset=0');
+      if (generation !== this._generation) return;
+      this.setData({ approvals: page.items || [], approvalTotal: page.total || 0,
+        approvalNextOffset: page.nextOffset ?? null, approvalSnapshot: page.snapshot ?? null,
+        approvalLoadState: 'READY' });
+    } catch (error) {
+      if (generation === this._generation) this.setData({ approvalLoadState: 'ERROR',
+        message: error.message || '待审核报名加载失败' });
+    }
+  },
+  async loadMoreApprovals() {
+    const offset = this.data.approvalNextOffset;
+    if (this.data.loadingMoreApprovals || offset === null || offset === undefined) return;
+    const generation = this._generation;
+    this.setData({ loadingMoreApprovals: true });
+    try {
+      const page = await api.get(`/me/approval-requests?offset=${offset}&snapshot=${encodeURIComponent(this.data.approvalSnapshot)}`);
+      if (generation !== this._generation) return;
+      this.setData({ approvals: this.data.approvals.concat(page.items || []), approvalTotal: page.total,
+        approvalNextOffset: page.nextOffset ?? null, approvalSnapshot: page.snapshot ?? null,
+        loadingMoreApprovals: false });
+    } catch (error) {
+      if (generation !== this._generation) return;
+      if (error.code === 'QUEUE_CHANGED') {
+        await this.loadApprovals();
+        return this.setData({ message: '审核列表已变化，已重新加载。', loadingMoreApprovals: false });
+      }
+      this.setData({ loadingMoreApprovals: false, message: error.message || '加载更多审核失败' });
+    }
+  },
+  async approveRequest(event) {
+    const { id, version } = event.currentTarget.dataset;
+    if (!id || this.data.approvingId || !this.data.approvals.some(item => item.registrationId === id && item.canApprove)) return;
+    const generation = this._generation;
+    this.setData({ approvingId: id, message: '' });
+    try {
+      await api.post(`/registrations/${encodeURIComponent(id)}/approve`, { expectedVersion: Number(version) });
+      if (generation !== this._generation) return;
+      await this.loadApprovals();
+      if (generation === this._generation) this.setData({ message: '报名已通过，名额以服务端结果为准。' });
+    } catch (error) {
+      if (generation === this._generation) {
+        await this.loadApprovals();
+        this.setData({ message: error.message || '审核失败，请重试' });
+      }
+    } finally {
+      if (generation === this._generation) this.setData({ approvingId: '' });
+    }
+  },
+  viewApproval(event) {
+    const { eventId, isHost } = event.currentTarget.dataset;
+    if (eventId) wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(eventId) +
+      '&section=' + (isHost ? 'hostSection' : 'cohostApprovalSection') });
+  },
   async openNotice(event) {
-    const { id, eventId, kind } = event.currentTarget.dataset;
+    const { id, eventId, kind, section } = event.currentTarget.dataset;
     const profileKinds = ['REGISTRATION_REMOVED', 'REPORT_IN_REVIEW', 'REPORT_RESOLVED',
       'APPEAL_IN_REVIEW', 'APPEAL_RESOLVED', 'CONTENT_REJECTED', 'WAITLIST_OFFER'];
     const generation = this._generation;
     try {
       if (eventId && !profileKinds.includes(kind)) {
         await new Promise((resolve, reject) => wx.navigateTo({
-          url: '/pages/event/event?id=' + encodeURIComponent(eventId), success: resolve, fail: reject
+          url: '/pages/event/event?id=' + encodeURIComponent(eventId) +
+            (['checkinSection', 'expenseSection', 'detailsSection'].includes(section) ? '&section=' + section : ''),
+          success: resolve, fail: reject
         }));
       }
       await api.post(`/me/notifications/${encodeURIComponent(id)}/open`, {});

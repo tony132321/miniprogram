@@ -126,8 +126,49 @@ try {
   const { rows: noticeRows } = await pool.query<{ detail: unknown }>(
     "SELECT detail FROM notifications WHERE id='pg_privacy_notice_row'");
   assert.deepEqual(noticeRows[0]?.detail, {});
+
+  // Exercise migration 0066 on PostgreSQL itself. The PGlite unit tests cover
+  // more transitions; this checks trigger semantics, rollback, and the exact
+  // aggregate-only row shape on the database used by CI.
+  await pool.query("INSERT INTO users(id,wechat_openid) VALUES('pg_business_actor','synthetic-pg-business-actor')");
+  await pool.query(`INSERT INTO notifications(id,event_id,user_id,kind,event_version,detail)
+    VALUES('pg_business_notice','pg_privacy_notice_event','pg_business_actor','EVENT_CANCELLED',1,$1::jsonb)`,
+  [JSON.stringify({ privateText: 'pg-business-secret' })]);
+  await pool.query("UPDATE notifications SET external_status='DISPATCHING' WHERE id='pg_business_notice'");
+  await pool.query("UPDATE notifications SET external_status='UNKNOWN_REQUIRES_RECONCILIATION' WHERE id='pg_business_notice'");
+  await pool.query("UPDATE notifications SET external_status='PROVIDER_ACCEPTED' WHERE id='pg_business_notice'");
+  await pool.query(`INSERT INTO reports(id,reporter_id,kind,description)
+    VALUES('pg_business_report','pg_business_actor','OTHER','pg-business-report-secret')`);
+  await pool.query("UPDATE reports SET status='IN_REVIEW' WHERE id='pg_business_report'");
+  await pool.query("UPDATE reports SET status='RESOLVED' WHERE id='pg_business_report'");
+  await pool.query(`INSERT INTO appeals(id,report_id,appellant_id,description)
+    VALUES('pg_business_appeal','pg_business_report','pg_business_actor','pg-business-appeal-secret')`);
+  const { rows: businessRows } = await pool.query<{
+    event_name: string; occurred_at: Date; is_test: boolean | null }>(
+    'SELECT * FROM system_business_events ORDER BY occurred_at');
+  const businessNames = businessRows.map(row => row.event_name);
+  for (const name of ['EXTERNAL_DISPATCH_CLAIMED', 'EXTERNAL_OUTCOME_UNKNOWN',
+    'EXTERNAL_RECONCILED_ACCEPTED', 'REPORT_CREATED_UNSCOPED',
+    'REPORT_IN_REVIEW_UNSCOPED', 'REPORT_RESOLVED_UNSCOPED', 'APPEAL_CREATED'])
+    assert.equal(businessNames.filter(item => item === name).length, 1, name);
+  assert.equal(businessNames.filter(name => name === 'PRIVACY_DELETE_REQUESTED').length, cases.length);
+  assert.deepEqual(Object.keys(businessRows[0]!).sort(), ['event_name', 'is_test', 'occurred_at']);
+  const serializedBusinessRows = JSON.stringify(businessRows);
+  for (const secret of ['pg_business_actor', 'pg_business_notice', 'pg_business_report',
+    'pg_business_appeal', 'pg-business-secret', 'pg-business-report-secret',
+    'pg-business-appeal-secret']) assert.equal(serializedBusinessRows.includes(secret), false, secret);
+  const beforeRollback = businessRows.length;
+  const rollbackClient = await pool.connect();
+  try {
+    await rollbackClient.query('BEGIN');
+    await rollbackClient.query(`INSERT INTO reports(id,reporter_id,kind,description)
+      VALUES('pg_business_rollback','pg_business_actor','OTHER','rolled back')`);
+    await rollbackClient.query('ROLLBACK');
+  } finally { rollbackClient.release(); }
+  assert.equal((await pool.query('SELECT 1 FROM system_business_events')).rows.length, beforeRollback);
   process.stdout.write(JSON.stringify({ database: databaseName, schemaVersion: LATEST_SCHEMA_VERSION,
     independentConnections: 2, lockWaitObserved: true,
     rejectedAfterCommit: ['AI content update', 'AI content insert',
-      'ordinary consent insert', 'ordinary notification detail update'] }) + '\n');
+      'ordinary consent insert', 'ordinary notification detail update'],
+    systemBusinessEvents: businessRows.length, systemEventRollbackVerified: true }) + '\n');
 } finally { await pool.end(); }

@@ -5,9 +5,12 @@
 .title-row { display:flex; align-items:center; justify-content:space-between; padding:34rpx 0 24rpx; }
 .page-title { font-size:50rpx; font-weight:800; }
 .subtitle { color:#888d9c; font-size:23rpx; margin-top:4rpx; }
-.title-count { color:#fff; background:#f93450; border-radius:50%; padding:5rpx 16rpx; font-size:24rpx; font-weight:800; }
-.filter-row { display:flex; gap:12rpx; margin-bottom:24rpx; }
-.filter { border-radius:30rpx; padding:12rpx 20rpx; margin:0; background:#fff; color:#3f4350; font-size:23rpx; font-weight:650; line-height:1.5; }
+.title-actions { display:flex; align-items:center; gap:12rpx; }
+.title-count { color:#e92b51; background:#fff0f3; border-radius:50rpx; padding:7rpx 13rpx; font-size:20rpx; font-weight:700; white-space:nowrap; }
+.mark-all-read { margin:0; padding:8rpx 14rpx; border-radius:14rpx; background:#eef2fa; color:#004cc8; font-size:20rpx; line-height:1.4; white-space:nowrap; }
+.mark-all-read::after { border:0; }
+.filter-row { display:flex; gap:12rpx; margin-bottom:24rpx; overflow-x:auto; white-space:nowrap; }
+.filter { border-radius:30rpx; padding:12rpx 20rpx; margin:0; background:#fff; color:#3f4350; font-size:23rpx; font-weight:650; line-height:1.5; flex-shrink:0; }
 .filter::after { border:0; }
 .filter.active { background:#1d64f2; color:#fff; }
 .card { background:#fff; border-radius:28rpx; box-shadow:0 5rpx 24rpx rgba(16,38,80,.045); }
@@ -15,6 +18,21 @@
 .notice-row { display:flex; width:100%; box-sizing:border-box; align-items:center; padding:24rpx 0; margin:0; background:transparent; color:inherit; text-align:left; border-radius:0; line-height:1.5; border-bottom:1rpx solid #eef0f4; }
 .notice-row::after { border:0; }
 .notice-row:last-child { border-bottom:0; }
+.notice-actions { padding:0 0 20rpx 86rpx; }
+.notice-actions button { display:inline-block; margin:0; padding:8rpx 20rpx; border-radius:30rpx; background:#1d64f2; color:#fff; font-size:21rpx; line-height:1.5; }
+.notice-actions button::after { border:0; }
+.approval-list { margin:0 0 22rpx; }
+.approval-heading { font-size:24rpx; color:#676e7b; font-weight:700; margin-bottom:10rpx; }
+.approval-card { display:flex; gap:16rpx; padding:22rpx; margin-bottom:14rpx; }
+.approval-icon { width:60rpx; height:60rpx; line-height:60rpx; border-radius:50%; text-align:center; flex-shrink:0; background:#f2f1fd; color:#5856d6; font-size:27rpx; }
+.approval-copy { flex:1; min-width:0; }
+.approval-title { font-size:27rpx; font-weight:700; }
+.approval-actions { display:flex; justify-content:flex-end; gap:12rpx; margin-top:16rpx; }
+.approval-actions button { margin:0; padding:9rpx 20rpx; border-radius:30rpx; font-size:22rpx; line-height:1.5; }
+.approval-actions button::after { border:0; }
+.approval-detail { background:#eef0f4; color:#424655; }
+.approval-accept { background:#1d64f2; color:#fff; }
+.approval-full { align-self:center; font-size:22rpx; color:#8a6d35; }
 .notice-badge { width:66rpx; height:66rpx; line-height:66rpx; text-align:center; border-radius:50%; background:#ebf2fe; color:#1d64f2; font-size:25rpx; font-weight:800; margin-right:20rpx; flex-shrink:0; }
 .notice-content { flex:1; min-width:0; }
 .notice-title { font-size:26rpx; font-weight:700; }

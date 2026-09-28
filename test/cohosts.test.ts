@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import { once } from 'node:events';
 import { createDatabase } from '../src/db.ts';
 import type { Database } from '../src/db.ts';
-import { createDraft } from '../src/events.ts';
+import { createDraft, publishEvent } from '../src/events.ts';
 import { publishApprovedInvite } from './helpers.ts';
 import { grantCohost, revokeCohost, hasCohostCapability } from '../src/cohosts.ts';
 import { createApp } from '../src/server.ts';
@@ -147,6 +147,13 @@ test('cohost bearer session has only current event capability and loses it immed
         expiresAt: new Date(Date.now() + 30 * 60_000).toISOString() }, 'http-grant');
     assert.equal(granted.status, 200);
     const grant = await granted.json() as { id: string };
+    const cohostActivities = await get('/me/events', helper.token);
+    assert.equal(cohostActivities.status, 200);
+    assert.deepEqual((await cohostActivities.json() as { items: Array<{ id: string; isHost: boolean;
+      isCohost: boolean; myRegistrationStatus: string | null }> }).items.map(item => ({
+        id: item.id, isHost: item.isHost, isCohost: item.isCohost,
+        myRegistrationStatus: item.myRegistrationStatus
+      })), [{ id: event.id, isHost: false, isCohost: true, myRegistrationStatus: null }]);
     const grants = await get(`/events/${event.id}/cohosts`, host.token);
     assert.equal(grants.status, 200);
     assert.equal(((await grants.json() as { items: unknown[] }).items).length, 1);
@@ -173,7 +180,40 @@ test('cohost bearer session has only current event capability and loses it immed
     assert.equal((await post(`/events/${event.id}/checkin-token`, helper.token,
       { expectedVersion: event.version }, 'http-revoked-token')).status, 403);
     assert.equal((await get(`/events/${event.id}`, helper.token)).status, 403);
-    assert.equal((await get('/me/events', helper.token)).status, 200);
+    const afterRevoke = await get('/me/events', helper.token);
+    assert.equal(afterRevoke.status, 200);
+    assert.deepEqual((await afterRevoke.json() as { items: unknown[] }).items, []);
+  } finally { await new Promise<void>(resolve => server.close(() => resolve())); await db.close(); }
+});
+
+test('an unregistered cohost loses the own-event listing on expiry and cannot read unreviewed text', async () => {
+  const db = await createDatabase();
+  const server = createApp(db, { environment: 'test', devAuth: true, checkInSecret: 'cohost-expiry' });
+  server.listen(0, '127.0.0.1'); await once(server, 'listening');
+  const base = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
+  const read = (path: string, actor: string) => fetch(base + path, { headers: { 'X-Dev-User': actor } });
+  try {
+    const draft = await createDraft(db, 'host', { ...input, title: '尚未审核的秘密活动标题' }, 'pending-cohost-draft');
+    const pending = await publishEvent(db, 'host', draft.id, draft.version, 'pending-cohost-publish');
+    assert.equal(pending.reviewStatus, 'PENDING');
+    const grant = await grantCohost(db, 'host', pending.id, pending.version, 'helper', ['MANAGE_ANNOUNCEMENTS'],
+      '2027-01-04T14:00:00.000Z', 'pending-cohost-grant');
+    const listed = await read('/me/events', 'helper');
+    assert.equal(listed.status, 200);
+    const listedText = await listed.text();
+    assert.equal(JSON.parse(listedText).items[0]?.isCohost, true);
+    assert.equal(JSON.parse(listedText).items[0]?.title, '活动审核中');
+    assert.equal(listedText.includes('尚未审核的秘密活动标题'), false);
+    const detail = await read(`/events/${pending.id}`, 'helper');
+    assert.equal(detail.status, 200);
+    const detailText = await detail.text();
+    assert.equal(JSON.parse(detailText).payload.title, '活动审核中');
+    assert.equal(detailText.includes('尚未审核的秘密活动标题'), false);
+    await db.query("UPDATE cohost_grants SET expires_at=clock_timestamp()-interval '1 second' WHERE id=$1", [grant.id]);
+    const expired = await read('/me/events', 'helper');
+    assert.equal(expired.status, 200);
+    assert.deepEqual((await expired.json() as { items: unknown[] }).items, []);
+    assert.equal((await read(`/events/${pending.id}`, 'helper')).status, 403);
   } finally { await new Promise<void>(resolve => server.close(() => resolve())); await db.close(); }
 });
 

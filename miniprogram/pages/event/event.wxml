@@ -1,4 +1,21 @@
-<view wx:if="{{event && loadState === 'READY'}}" class="event-page">
+<view wx:if="{{joinConfirmation}}" class="join-review" aria-label="报名确认">
+  <view class="join-review-header"><button class="join-review-back" bindtap="cancelJoin" disabled="{{joinSubmitting}}" aria-label="返回活动详情">‹ 返回活动</button><view class="join-review-heading">报名确认</view><view class="join-review-spacer"></view></view>
+  <scroll-view scroll-y="true" class="join-review-scroll">
+    <view class="join-review-poster"><view class="join-poster-kicker">PROJECT IRL ✦</view><view class="join-poster-mark">🏸</view><view class="join-poster-title"><view>BADMINTON</view><view>TOGETHER</view></view><view class="join-poster-ribbon">运动让生活更好看！</view></view>
+    <view class="join-review-card"><view class="join-card-title">{{joinConfirmation.title}}</view><view class="join-card-tag">请核对活动版本 {{joinConfirmation.version}}</view>
+      <view class="join-review-row"><text class="join-row-icon">▣</text><view><view>{{joinConfirmation.date}} – {{joinConfirmation.end}}</view><view class="join-row-caption">活动时间以当前版本为准</view></view></view>
+      <view class="join-review-row"><text class="join-row-icon">⌖</text><view>{{joinConfirmation.location}}</view></view>
+      <view wx:if="{{joinConfirmation.confirmed !== null && joinConfirmation.capacity !== null}}" class="join-review-row"><text class="join-row-icon">♧</text><view>已确认 {{joinConfirmation.confirmed}} / {{joinConfirmation.capacity}} 人</view></view>
+      <view class="join-review-row"><text class="join-row-icon">◉</text><view>{{joinConfirmation.fee}}</view></view>
+      <view wx:if="{{joinConfirmation.skillLevel}}" class="join-review-row"><text class="join-row-icon">✦</text><view>水平要求：{{joinConfirmation.skillLevel}}</view></view>
+      <view class="join-rule-card"><view class="join-rule-title">报名与取消规则</view><view>{{joinConfirmation.approval}}</view><view>取消规则：{{joinConfirmation.cancellationRule}}</view></view>
+    </view>
+    <view class="join-review-choice"><view class="join-choice-label">参与方式</view><view class="join-choice-selected"><view class="join-choice-check">✓</view><view><view class="join-choice-title">本人报名或申请</view><view class="join-choice-hint">提交后根据审核和实际名额确定报名状态。</view></view></view></view>
+    <view class="join-review-caution">报名后可能是待审批或候补。只有活动页回读为“已确认报名”才表示已获得席位；本页面不承诺场地或费用已由平台核实。</view>
+  </scroll-view>
+  <view class="join-review-footer"><button class="join-cancel" bindtap="cancelJoin" disabled="{{joinSubmitting}}">取消</button><button id="confirmJoinButton" class="join-confirm" bindtap="confirmJoin" disabled="{{joinSubmitting}}">{{joinSubmitting ? '正在核对最新规则…' : '确认报名'}}</button></view>
+</view>
+<view wx:if="{{event && loadState === 'READY'}}" class="event-page" aria-hidden="{{joinConfirmation ? 'true' : 'false'}}">
   <view wx:if="{{successState === 'PUBLISHED'}}" class="success-panel published-success">
     <view class="success-mark">✓</view><view class="success-kicker">组局成功创建 · 当前状态以活动页为准</view>
     <view class="success-title">活动已成功发布！</view><view class="success-copy">{{display.title}} 已进入活动流程。邀请分享、审核与招募状态请以本页实时信息为准。</view>
@@ -211,7 +228,7 @@
     <button id="repeatDraftButton" wx:if="{{safetyStatus === 'OPEN' && event.status === 'COMPLETED'}}" bindtap="repeat">再约一场草稿</button>
     <view wx:if="{{event.status === 'COMPLETED'}}">允许类似活动邀请的旧成员：{{repeatCandidateNames}}。生成草稿不会自动邀请。</view>
   </view>
-  <view wx:if="{{!isHost && canApproveRegistration}}">
+  <view id="cohostApprovalSection" wx:if="{{!isHost && canApproveRegistration}}">
     <view>本场协办：报名审批</view>
     <view wx:for="{{registrations}}" wx:key="id" class="item">
       <view>{{item.user_id}} · {{item.status}}</view>
@@ -238,7 +255,7 @@
       <button id="manualRequest-{{item.user_id}}" wx:if="{{canRequestManualCheckIn && item.status === 'CONFIRMED'}}" data-user="{{item.user_id}}" bindtap="requestManualCheckIn">申请人工补记到场</button>
     </view>
   </view>
-  <view class="bottom-actions" wx:if="{{safetyStatus === 'OPEN' && canJoin && !event.riskPaused && event.recruiting && (event.status === 'RECRUITING' || event.status === 'CONFIRMED')}}"><button id="joinButton" bindtap="join">● 本人报名或申请</button></view>
+  <view class="bottom-actions" wx:if="{{!joinConfirmation && safetyStatus === 'OPEN' && canJoin && !event.riskPaused && event.recruiting && (event.status === 'RECRUITING' || event.status === 'CONFIRMED')}}"><button id="joinButton" bindtap="openJoinConfirmation">● 本人报名或申请</button></view>
 </view>
 <view wx:else>
   <view wx:if="{{loadState === 'LOADING'}}">正在读取活动当前信息…</view>

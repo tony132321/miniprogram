@@ -33,8 +33,14 @@ function eventDisplay(event) {
       COMPLETED: '已结束', CANCELLED: '已取消', EXPIRED: '未成局' }[event.status] || event.status || '状态待确认'
   };
 }
+function sectionAvailable(section, isHost, canApproveRegistration) {
+  return ['detailsSection', 'registrationSection', 'contentSection', 'checkinSection', 'expenseSection'].includes(section) ||
+    (section === 'hostSection' && isHost) ||
+    (section === 'cohostApprovalSection' && !isHost && canApproveRegistration);
+}
 Page({
   data: { id: '', token: '', source: '', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '',
+    joinConfirmation: null, joinSubmitting: false,
     canJoin: false, canExpressInterest: false, canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
     canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
     myRegistration: null, registrations: [], cohostGrants: [], cohostUserId: '', selectedCohostCapabilities: ['CHECKIN_MANAGE'], aliases: [],
@@ -56,6 +62,11 @@ Page({
     if (loaded && options.success === 'published' && this.data.isHost &&
       this.data.event?.id === options.id && this.data.event.status === 'RECRUITING')
       this.setData({ successState: 'PUBLISHED' });
+    if (loaded && this.data.loadState === 'READY' &&
+      sectionAvailable(options.section, this.data.isHost, this.data.canApproveRegistration)) {
+      if (typeof wx.nextTick === 'function') await new Promise(resolve => wx.nextTick(resolve));
+      this.scrollToSection(options.section);
+    }
   },
   async onShow() {
     this.checkInPageHidden = false;
@@ -64,6 +75,7 @@ Page({
       this.refreshId = (this.refreshId || 0) + 1;
       this.clearCheckInToken();
       this.setData({ token: '', source: '', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '',
+        joinConfirmation: null, joinSubmitting: false,
         canJoin: false, canExpressInterest: false, canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
         canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
         safetyStatus: 'UNKNOWN', myRegistration: null,
@@ -86,11 +98,13 @@ Page({
   onHide() {
     this.checkInPageHidden = true;
     this.clearCheckInToken();
+    this.closeJoinConfirmation();
     if (this.data.successState) this.setData({ successState: '' });
   },
   onUnload() {
     this.checkInPageHidden = true;
     this.clearCheckInToken();
+    this.closeJoinConfirmation();
   },
   clearCheckInToken() {
     this.checkInRequestId = (this.checkInRequestId || 0) + 1;
@@ -120,9 +134,19 @@ Page({
         if (refreshId === this.refreshId) this.setData({ loadState: 'ERROR', message: '邀请或活动不存在' });
         return false;
       }
+      const mine = await api.get('/me/registrations');
+      const myRegistration = mine.items.find(item => item.event_id === id) || null;
+      const myStatus = myRegistration?.status;
+      const knownMember = ['INTERESTED', 'REQUESTED', 'WAITLISTED', 'OFFERED', 'CONFIRMED', 'RECONFIRM_REQUIRED'].includes(myStatus);
+      const privilegedFromOwnList = summary && !knownMember && summary.payload?.visibility !== 'PUBLIC'
+        ? (await api.get('/me/events').catch(() => ({ items: [] }))).items.some(item =>
+          item.id === id && (item.isHost || item.isCohost))
+        : false;
       let event = summary;
-      try { event = await api.get('/events/' + encodeURIComponent(id)); }
-      catch (error) { if (!summary) throw error; }
+      if (!summary || summary.payload?.visibility === 'PUBLIC' || knownMember || privilegedFromOwnList) {
+        try { event = await api.get('/events/' + encodeURIComponent(id)); }
+        catch (error) { if (!summary) throw error; }
+      }
       const isHost = event.hostId === actor;
       const cohostCapabilities = Array.isArray(event.cohostCapabilities) ? event.cohostCapabilities : [];
       const canApproveRegistration = isHost || cohostCapabilities.includes('APPROVE_REGISTRATION');
@@ -130,9 +154,6 @@ Page({
       const canManageAnnouncements = isHost || cohostCapabilities.includes('MANAGE_ANNOUNCEMENTS');
       const safety = await api.get('/system/safety').catch(() => ({ status: 'UNKNOWN' }));
       const safetyStatus = ['OPEN', 'CLOSED'].includes(safety?.status) ? safety.status : 'UNKNOWN';
-      const mine = await api.get('/me/registrations');
-      const myRegistration = mine.items.find(item => item.event_id === id) || null;
-      const myStatus = myRegistration?.status;
       const registrationLabel = { CONFIRMED: '已确认报名', REQUESTED: '待主办方审核', WAITLISTED: '候补中',
         OFFERED: '待确认补位', INTERESTED: '暂不确定', RECONFIRM_REQUIRED: '待重新确认',
         CANCELLED: '已退出', EXPIRED: '已过期', REJECTED: '未通过' }[myStatus] || '未报名';
@@ -142,8 +163,9 @@ Page({
       const canPostQuestion = canUseCollaboration && ['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(event.status);
       const canCheckIn = myStatus === 'CONFIRMED' && ['CONFIRMED', 'IN_PROGRESS'].includes(event.status);
       let aliasResponse = { items: [], notice: null, reconfirmationRequired: false };
-      let aliasLoadState = 'READY'; let aliasError = '';
-      try {
+      const canReadAliases = isHost || ['CONFIRMED', 'RECONFIRM_REQUIRED', 'WAITLISTED', 'OFFERED'].includes(myStatus);
+      let aliasLoadState = canReadAliases ? 'READY' : 'FORBIDDEN'; let aliasError = '';
+      if (canReadAliases) try {
         aliasResponse = await api.get(`/events/${encodeURIComponent(id)}/aliases`);
         if (!Array.isArray(aliasResponse.items) || !aliasResponse.notice?.version || !aliasResponse.notice?.text)
           throw new Error('昵称授权信息无效，请重试');
@@ -167,9 +189,9 @@ Page({
         ? (await api.get(`/events/${encodeURIComponent(id)}/attention`)).items : [];
       const factTodos = isHost && event.status !== 'DRAFT' ? (await api.get(`/events/${encodeURIComponent(id)}/fact-todos`)).items : [];
       let content = [];
-      let contentLoadState = 'EMPTY';
+      let contentLoadState = canUseCollaboration ? 'EMPTY' : 'FORBIDDEN';
       let contentError = '';
-      try {
+      if (canUseCollaboration) try {
         const response = await api.get(`/events/${encodeURIComponent(id)}/content`);
         if (!Array.isArray(response.items)) throw new Error('公告问答记录无效，请重试');
         content = response.items;
@@ -179,9 +201,10 @@ Page({
         contentError = error.message || '公告问答加载失败，请重试';
       }
       let expenses = [];
-      let expenseLoadState = 'EMPTY';
+      const canReadExpenses = isHost || ['CONFIRMED', 'RECONFIRM_REQUIRED'].includes(myStatus);
+      let expenseLoadState = canReadExpenses ? 'EMPTY' : 'FORBIDDEN';
       let expenseError = '';
-      try {
+      if (canReadExpenses) try {
         const response = await api.get(`/events/${encodeURIComponent(id)}/expenses`);
         if (!Array.isArray(response.items)) throw new Error('费用记录无效，请重试');
         expenses = response.items;
@@ -192,9 +215,11 @@ Page({
       }
       let manualCheckIns = [];
       let checkIns = [];
-      let attendanceLoadState = 'EMPTY';
+      const canReadAttendance = isHost || cohostCapabilities.length > 0 ||
+        ['INTERESTED', 'REQUESTED', 'WAITLISTED', 'OFFERED', 'CONFIRMED', 'RECONFIRM_REQUIRED'].includes(myStatus);
+      let attendanceLoadState = canReadAttendance ? 'EMPTY' : 'FORBIDDEN';
       let attendanceError = '';
-      try {
+      if (canReadAttendance) try {
         const [manual, scanned] = await Promise.all([
           api.get(`/events/${encodeURIComponent(id)}/manual-checkins`),
           api.get(`/events/${encodeURIComponent(id)}/checkins`)
@@ -272,7 +297,7 @@ Page({
   goToMyActivities() { wx.switchTab({ url: '/pages/index/index' }); },
   jumpToSection(event) {
     const id = event.currentTarget.dataset.section;
-    if (['detailsSection', 'registrationSection', 'contentSection', 'checkinSection', 'expenseSection', 'hostSection'].includes(id))
+    if (sectionAvailable(id, this.data.isHost, this.data.canApproveRegistration))
       this.scrollToSection(id);
   },
   scrollToSection(id) {
@@ -328,6 +353,74 @@ Page({
       return result;
     } catch (error) { this.setData({ message: error.message || '操作失败' }); return null; }
   },
+  openJoinConfirmation() {
+    if (this.data.loadState !== 'READY' || !this.data.canJoin || !this.data.event) return;
+    const event = this.data.event;
+    const payload = event.payload || {};
+    const display = eventDisplay(event);
+    this.joinConfirmationGeneration = (this.joinConfirmationGeneration || 0) + 1;
+    this.joinConfirmationActor = currentIdentity();
+    this.setData({ joinSubmitting: false, joinConfirmation: {
+      id: event.id, version: event.version, token: this.data.token,
+      title: display.title, date: display.date, end: display.end, location: display.location, fee: display.fee,
+      confirmed: event.stats?.confirmed ?? null, capacity: payload.maxParticipants || null,
+      skillLevel: payload.skillLevel || '', cancellationRule: payload.cancellationRule || '请查看活动规则',
+      approval: payload.approvalMode === 'MANUAL' ? '提交后由主办方逐一审批' : '自动接受；满员时可能进入候补'
+    } });
+  },
+  closeJoinConfirmation() {
+    this.joinConfirmationGeneration = (this.joinConfirmationGeneration || 0) + 1;
+    this.joinConfirmationActor = '';
+    if (this.data.joinConfirmation || this.data.joinSubmitting)
+      this.setData({ joinConfirmation: null, joinSubmitting: false });
+  },
+  cancelJoin() {
+    if (!this.data.joinSubmitting) this.closeJoinConfirmation();
+  },
+  async submitRegistration(event, actor) {
+    if (this.data.loadState !== 'READY' || !this.data.canJoin || this.data.event?.id !== event.id ||
+      this.data.event?.version !== event.version || actor !== currentIdentity()) {
+      this.setData({ message: '活动信息已变化，请刷新后重新确认报名规则' });
+      return null;
+    }
+    const result = await this.action(`/events/${event.id}/registrations`,
+      { inviteToken: this.data.token, acceptedRules: true }, '报名状态已更新');
+    if (result && this.data.loadState === 'READY' && this.data.event?.id === event.id &&
+      actor === currentIdentity() && this.data.myRegistration?.status === 'CONFIRMED')
+      this.setData({ successState: 'JOINED' });
+    return result;
+  },
+  async confirmJoin() {
+    const review = this.data.joinConfirmation;
+    if (!review || this.data.joinSubmitting) return;
+    const generation = this.joinConfirmationGeneration;
+    const actor = this.joinConfirmationActor;
+    if (actor !== currentIdentity()) {
+      this.closeJoinConfirmation();
+      this.setData({ message: '登录身份已变化，请重新打开活动并核对报名规则。' });
+      return;
+    }
+    if (this.data.event?.id !== review.id || this.data.event?.version !== review.version || this.data.token !== review.token) {
+      this.closeJoinConfirmation();
+      this.setData({ message: '活动信息已变化，请重新核对报名规则。' });
+      return;
+    }
+    this.setData({ joinSubmitting: true });
+    const loaded = await this.refresh();
+    if (generation !== this.joinConfirmationGeneration) return;
+    if (!loaded || this.data.loadState !== 'READY') {
+      this.closeJoinConfirmation();
+      return;
+    }
+    if (!this.data.canJoin || this.data.event?.id !== review.id || this.data.event?.version !== review.version ||
+      this.data.token !== review.token || actor !== currentIdentity()) {
+      this.closeJoinConfirmation();
+      this.setData({ message: '活动或登录身份已变化，请重新核对报名规则。' });
+      return;
+    }
+    await this.submitRegistration(this.data.event, actor);
+    if (generation === this.joinConfirmationGeneration) this.closeJoinConfirmation();
+  },
   async join() {
     if (this.data.loadState !== 'READY' || !this.data.canJoin || !this.data.event) return;
     const event = this.data.event;
@@ -343,17 +436,7 @@ Page({
     const decision = await new Promise(resolve => wx.showModal({ title: '确认本次报名规则', content,
       confirmText: '确认参加', success: resolve, fail: () => resolve({ confirm: false }) }));
     if (!decision.confirm) return;
-    if (this.data.loadState !== 'READY' || !this.data.canJoin || this.data.event?.id !== event.id ||
-      this.data.event?.version !== event.version || actor !== currentIdentity()) {
-      this.setData({ message: '活动信息已变化，请刷新后重新确认报名规则' });
-      return;
-    }
-    const result = await this.action(`/events/${event.id}/registrations`,
-      { inviteToken: this.data.token, acceptedRules: true }, '报名状态已更新');
-    if (result && this.data.loadState === 'READY' && this.data.event?.id === event.id &&
-      actor === currentIdentity() && this.data.myRegistration?.status === 'CONFIRMED')
-      this.setData({ successState: 'JOINED' });
-    return result;
+    return this.submitRegistration(event, actor);
   },
   interested() { this.action(`/events/${this.data.id}/interests`, { inviteToken: this.data.token }, '已记录待定意向，不占用名额'); },
   async leave() {

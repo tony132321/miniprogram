@@ -407,6 +407,7 @@ test('private event requires invite token, and mutations require idempotency', a
     assert.equal(opened.body.recruiting, true);
     assert.equal(opened.body.payload.title, input.title);
     assert.equal(opened.body.payload.approvalMode, input.approvalMode);
+    assert.equal(opened.body.payload.visibility, 'INVITE');
     assert.equal(opened.body.payload.skillLevel, '中等水平');
     assert.equal(opened.body.payload.hostId, undefined);
     assert.equal(opened.body.inviteToken, undefined);

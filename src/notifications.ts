@@ -90,6 +90,29 @@ export async function markNotificationOpened(db: Database, actor: string, notifi
   });
 }
 
+export async function markAllNotificationsOpened(db: Database, actor: string, key: string): Promise<{ opened: number }> {
+  if (!actor || !key) throw new AppError('BAD_REQUEST', '身份与幂等键必填');
+  return db.transaction(async tx => {
+    const route = 'open-all-notifications';
+    if (!(await claimIdempotency(tx, actor, route, key))) {
+      const { rows } = await tx.query<{ result: { opened: number } }>(
+        'SELECT result FROM idempotency WHERE actor_id=$1 AND route=$2 AND key=$3', [actor, route, key]);
+      return rows[0]!.result;
+    }
+    const { rows } = await tx.query<{ id: string }>(`WITH opened AS (
+        UPDATE notifications SET status='OPENED',read_at=clock_timestamp()
+        WHERE user_id=$1 AND status<>'OPENED' RETURNING event_id
+      ) INSERT INTO audit(id,actor_id,event_id,action)
+      SELECT gen_random_uuid(),$1,event_id,'OPEN_NOTIFICATION' FROM opened RETURNING id`, [actor]);
+    if (rows.length) await tx.query('INSERT INTO audit(id,actor_id,action,detail) VALUES($1,$2,$3,$4)',
+      [randomUUID(), actor, 'OPEN_ALL_NOTIFICATIONS', JSON.stringify({ count: rows.length })]);
+    const result = { opened: rows.length };
+    await tx.query('UPDATE idempotency SET result=$4 WHERE actor_id=$1 AND route=$2 AND key=$3',
+      [actor, route, key, JSON.stringify(result)]);
+    return result;
+  });
+}
+
 export async function listMemberNotifications(db: Database, actor: string, offset = 0, snapshot?: string | null) {
   if (!Number.isSafeInteger(offset) || offset < 0 || offset > 2_147_483_647)
     throw new AppError('BAD_REQUEST', '通知列表页码无效');
@@ -97,7 +120,8 @@ export async function listMemberNotifications(db: Database, actor: string, offse
     throw new AppError('BAD_REQUEST', '继续读取通知需要有效快照');
   return db.transaction(async tx => {
     await tx.query('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY');
-    const { rows: totals } = await tx.query<{ total: number; snapshot: string }>(`SELECT count(*)::int AS total,
+    const { rows: totals } = await tx.query<{ total: number; unreadTotal: number; snapshot: string }>(`SELECT count(*)::int AS total,
+      count(*) FILTER (WHERE status<>'OPENED')::int AS "unreadTotal",
       md5(COALESCE(string_agg(jsonb_build_array(id,read_at,created_at)::text,',' ORDER BY id),'')) AS snapshot
       FROM notifications WHERE user_id=$1`, [actor]);
     const currentSnapshot = totals[0]!.snapshot;
@@ -118,7 +142,8 @@ export async function listMemberNotifications(db: Database, actor: string, offse
       ORDER BY CASE WHEN n.read_at IS NULL THEN 0 ELSE 1 END,n.created_at DESC,n.id DESC
       LIMIT 100 OFFSET $2`, [actor, offset]);
     const total = totals[0]!.total;
-    return { items: rows, total, nextOffset: offset + rows.length < total ? offset + rows.length : null,
+    return { items: rows, total, unreadTotal: totals[0]!.unreadTotal,
+      nextOffset: offset + rows.length < total ? offset + rows.length : null,
       snapshot: currentSnapshot };
   });
 }

@@ -162,3 +162,115 @@ test('loading more keeps a pending state and ignores a second tap until the requ
   assert.equal(page.data.loadingMore, false);
   assert.equal(page.data.nextOffset, null);
 });
+
+test('all-read updates the whole inbox through one server action and exposes the Stitch button', async () => {
+  const calls: string[] = [];
+  let unreadTotal = 3;
+  const page = mount({
+    async get(path: string) {
+      calls.push(path);
+      return { items: [{ id: 'notice', kind: 'EVENT_REMINDER', status: unreadTotal ? 'QUEUED' : 'OPENED',
+        event_id: 'event-1' }], total: 3, unreadTotal, nextOffset: 1, snapshot: 'a'.repeat(32) };
+    },
+    async post(path: string) { calls.push(path); unreadTotal = 0; return { opened: 3 }; }
+  }, { getStorageSync(key: string) { return key === 'sessionToken' ? 'token' : 'member'; } });
+  await page.onShow();
+  assert.equal(page.data.unreadTotal, 3);
+  await page.markAllRead();
+  assert.equal(page.data.unreadTotal, 0);
+  assert.deepEqual(calls, ['/me/notifications?offset=0', '/me/notifications/open-all', '/me/notifications?offset=0']);
+  const wxml = readFileSync(new URL('../miniprogram/pages/messages/messages.wxml', import.meta.url), 'utf8');
+  assert.match(wxml, /id="markAllReadButton"[^\n]*bindtap="markAllRead"/);
+  assert.match(wxml, /data-section="checkinSection"[^>]*bindtap="openNotice"/);
+});
+
+test('interaction filter reads authorized pending approvals and one tap approves the exact request', async () => {
+  const calls: string[] = [];
+  let pending = true;
+  const page = mount({
+    async get(path: string) {
+      calls.push(path);
+      if (path.startsWith('/me/notifications')) return { items: [], total: 0, unreadTotal: 0, nextOffset: null };
+      if (path === '/me/approval-requests?offset=0') return { items: pending ? [{
+        registrationId: 'request-1', eventId: 'event-1', eventTitle: '周五桌游局', expectedVersion: 2,
+        canApprove: true
+      }] : [], total: pending ? 1 : 0, nextOffset: null };
+      throw new Error('unexpected GET ' + path);
+    },
+    async post(path: string, body: object) {
+      calls.push(path + ':' + JSON.stringify(body));
+      pending = false;
+      return { status: 'CONFIRMED' };
+    }
+  }, { getStorageSync(key: string) { return key === 'sessionToken' ? 'token' : 'host'; } });
+  await page.onShow();
+  assert.equal(calls.includes('/me/approval-requests?offset=0'), false);
+  await page.setFilter({ currentTarget: { dataset: { filter: 'INTERACTION' } } });
+  assert.equal(page.data.approvals[0].registrationId, 'request-1');
+  await page.approveRequest({ currentTarget: { dataset: { id: 'request-1', version: 2 } } });
+  assert.equal(page.data.approvals.length, 0);
+  assert.ok(calls.includes('/registrations/request-1/approve:{"expectedVersion":2}'));
+  const wxml = readFileSync(new URL('../miniprogram/pages/messages/messages.wxml', import.meta.url), 'utf8');
+  assert.match(wxml, /data-filter="INTERACTION"[^>]*bindtap="setFilter"/);
+  assert.match(wxml, /data-id="{{item.registrationId}}"[^>]*bindtap="approveRequest"/);
+});
+
+test('full approval card offers detail but cannot submit approval', async () => {
+  const posts: string[] = [];
+  const page = mount({
+    async get(path: string) {
+      if (path.startsWith('/me/notifications')) return { items: [], total: 0, nextOffset: null };
+      return { items: [{ registrationId: 'full-request', eventId: 'full-event', expectedVersion: 2,
+        canApprove: false }], total: 1, nextOffset: null };
+    },
+    async post(path: string) { posts.push(path); }
+  }, { getStorageSync(key: string) { return key === 'sessionToken' ? 'token' : 'host'; } });
+  await page.onShow();
+  await page.setFilter({ currentTarget: { dataset: { filter: 'INTERACTION' } } });
+  await page.approveRequest({ currentTarget: { dataset: { id: 'full-request', version: 2 } } });
+  assert.deepEqual(posts, []);
+  const wxml = readFileSync(new URL('../miniprogram/pages/messages/messages.wxml', import.meta.url), 'utf8');
+  assert.match(wxml, /item\.canApprove/);
+  assert.match(wxml, /名额已满，暂不可通过/);
+  assert.match(wxml, /bindtap="viewApproval"/);
+});
+
+test('approval detail and reminder receipt navigate to the matching event section', async () => {
+  const navigations: string[] = [];
+  const page = mount({ async post() { return { status: 'OPENED' }; } }, {
+    navigateTo(options: Record<string, any>) { navigations.push(options.url); options.success?.(); }
+  });
+  page.viewApproval({ currentTarget: { dataset: { eventId: 'event/1', isHost: true } } });
+  page.viewApproval({ currentTarget: { dataset: { eventId: 'event/2', isHost: false } } });
+  await page.openNotice({ currentTarget: { dataset: {
+    id: 'reminder', eventId: 'event/1', kind: 'EVENT_REMINDER', section: 'checkinSection'
+  } } });
+  assert.deepEqual(navigations, ['/pages/event/event?id=event%2F1&section=hostSection',
+    '/pages/event/event?id=event%2F2&section=cohostApprovalSection',
+    '/pages/event/event?id=event%2F1&section=checkinSection']);
+});
+
+test('approval pagination restarts after another reviewer changes the queue', async () => {
+  const paths: string[] = [];
+  let firstPageReads = 0;
+  const page = mount({
+    async get(path: string) {
+      paths.push(path);
+      if (path.startsWith('/me/notifications')) return { items: [], total: 0, nextOffset: null };
+      if (path === '/me/approval-requests?offset=0') {
+        firstPageReads++;
+        return { items: [{ registrationId: firstPageReads === 1 ? 'old' : 'current' }],
+          total: firstPageReads === 1 ? 2 : 1, nextOffset: firstPageReads === 1 ? 1 : null,
+          snapshot: (firstPageReads === 1 ? 'a' : 'b').repeat(32) };
+      }
+      throw Object.assign(new Error('审核列表已变化'), { code: 'QUEUE_CHANGED' });
+    }
+  }, { getStorageSync(key: string) { return key === 'sessionToken' ? 'token' : 'host'; } });
+  await page.onShow();
+  await page.setFilter({ currentTarget: { dataset: { filter: 'INTERACTION' } } });
+  await page.loadMoreApprovals();
+  assert.equal(page.data.approvals[0].registrationId, 'current');
+  assert.equal(page.data.approvalNextOffset, null);
+  assert.equal(page.data.loadingMoreApprovals, false);
+  assert.ok(paths.includes(`/me/approval-requests?offset=1&snapshot=${'a'.repeat(32)}`));
+});

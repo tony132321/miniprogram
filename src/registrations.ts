@@ -379,6 +379,56 @@ export async function approveRegistration(db: Database, actor: string, registrat
   });
 }
 
+export async function listPendingApprovals(db: Database, actor: string, offset = 0, snapshot?: string | null): Promise<{
+  items: Array<{ registrationId: string; eventId: string; eventTitle: string; expectedVersion: number;
+    isHost: boolean; canApprove: boolean; createdAt: Date }>;
+  total: number; nextOffset: number | null; snapshot: string;
+}> {
+  if (!Number.isSafeInteger(offset) || offset < 0 || offset > 2_147_483_647)
+    throw new AppError('BAD_REQUEST', '审核列表页码无效');
+  if (offset > 0 && (!snapshot || !/^[a-f0-9]{32}$/.test(snapshot)))
+    throw new AppError('BAD_REQUEST', '继续读取审核列表需要有效快照');
+  return db.transaction(async tx => {
+    await tx.query('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY');
+    const from = `FROM registrations r JOIN events e ON e.id=r.event_id
+      CROSS JOIN LATERAL (SELECT
+        (SELECT count(*)::int FROM registrations occupied WHERE occupied.event_id=e.id
+          AND occupied.status IN ('CONFIRMED','RECONFIRM_REQUIRED')) +
+        (SELECT count(*)::int FROM offers o WHERE o.event_id=e.id AND o.status='ACTIVE'
+          AND o.expires_at>clock_timestamp()) +
+        (SELECT count(*)::int FROM reservations reserved WHERE reserved.event_id=e.id
+          AND reserved.claimed_by IS NULL AND reserved.released_at IS NULL
+          AND reserved.expires_at>clock_timestamp()) AS occupied) capacity
+      WHERE r.status='REQUESTED' AND e.review_status='APPROVED' AND e.recruiting=true
+        AND e.status IN ('RECRUITING','CONFIRMED')
+        AND clock_timestamp() < (e.payload->>'registrationDeadline')::timestamptz
+        AND EXISTS (SELECT 1 FROM emergency_gate g WHERE g.id=1 AND g.status='OPEN')
+        AND NOT EXISTS (SELECT 1 FROM event_safety_holds h WHERE h.event_id=e.id AND h.status='ACTIVE')
+        AND (e.payload->>'visibility'<>'PUBLIC' OR public_recruitment_covered(
+          (e.payload->>'startAt')::timestamptz,(e.payload->>'endAt')::timestamptz))
+        AND (e.host_id=$1 OR EXISTS (SELECT 1 FROM cohost_grants c WHERE c.event_id=e.id AND c.user_id=$1
+          AND c.revoked_at IS NULL AND c.expires_at>clock_timestamp()
+          AND 'APPROVE_REGISTRATION'=ANY(c.capabilities)))`;
+    const { rows: counts } = await tx.query<{ total: number; snapshot: string }>(`SELECT count(*)::int AS total,
+      md5(COALESCE(string_agg(jsonb_build_array(r.id,r.updated_at,e.version,capacity.occupied)::text,',' ORDER BY r.id),'')) AS snapshot
+      ${from}`, [actor]);
+    const currentSnapshot = counts[0]!.snapshot;
+    if (offset > 0 && snapshot !== currentSnapshot)
+      throw new AppError('QUEUE_CHANGED', '审核列表已变化，请从第一页刷新', 409);
+    const { rows } = await tx.query<{ registration_id: string; event_id: string; event_title: string;
+      expected_version: number; is_host: boolean; can_approve: boolean; created_at: Date }>(`SELECT r.id AS registration_id,e.id AS event_id,
+        e.payload->>'title' AS event_title,e.version AS expected_version,(e.host_id=$1) AS is_host,
+        (capacity.occupied < (e.payload->>'maxParticipants')::int) AS can_approve,r.created_at ${from}
+        ORDER BY r.created_at,r.id LIMIT 100 OFFSET $2`, [actor, offset]);
+    const total = counts[0]?.total ?? 0;
+    return { items: rows.map(row => ({ registrationId: row.registration_id, eventId: row.event_id,
+      eventTitle: row.event_title, expectedVersion: row.expected_version, isHost: row.is_host,
+      canApprove: row.can_approve,
+      createdAt: row.created_at })),
+    total, nextOffset: offset + rows.length < total ? offset + rows.length : null, snapshot: currentSnapshot };
+  });
+}
+
 export async function expireReservations(db: Database): Promise<number> {
   const { rows } = await db.query<Reservation>('SELECT * FROM reservations WHERE claimed_by IS NULL AND released_at IS NULL AND expires_at<=now() ORDER BY expires_at,id');
   let count = 0;

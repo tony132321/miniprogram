@@ -1525,7 +1525,7 @@ test('activity page hides new seat actions but keeps the exit path during a glob
   assert.equal(await page.refresh(), true);
   assert.equal(page.data.safetyStatus, 'CLOSED');
   const wxml = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
-  assert.match(wxml, /safetyStatus === 'OPEN'[^\n]*bindtap="join"/);
+  assert.match(wxml, /safetyStatus === 'OPEN'[^\n]*bindtap="openJoinConfirmation"/);
   assert.match(wxml, /bindtap="leave"/);
 });
 
@@ -2184,6 +2184,74 @@ test('a deletion request receipt remains visible after the profile refresh and n
   assert.equal(page.data.message, notice);
   const wxml = readFileSync(new URL('../miniprogram/pages/me/me.wxml', import.meta.url), 'utf8');
   assert.match(wxml, /item\.notice/);
+});
+
+test('event only reads protected sections for an eligible member or host', async () => {
+  let page: Record<string, any> | undefined;
+  let actor = 'visitor';
+  let cohostActive = true;
+  let summaryVisibility: 'PUBLIC' | undefined;
+  const requests: string[] = [];
+  const protectedRoutes = ['/events/e1/content', '/events/e1/expenses', '/events/e1/manual-checkins', '/events/e1/checkins'];
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: { get: async (route: string) => {
+        requests.push(route);
+        if (route === '/i/t') return { id: 'e1', status: 'RECRUITING', version: 2,
+          payload: { title: '合成活动', ...(summaryVisibility ? { visibility: summaryVisibility } : {}),
+            startAt: '2027-01-02T12:00:00Z', endAt: '2027-01-02T14:00:00Z', feeMode: 'FREE' } };
+        if (route === '/events/e1') return { id: 'e1', hostId: 'host', status: 'RECRUITING', version: 2,
+          cohostCapabilities: actor === 'cohost' && cohostActive ? ['CHECKIN_MANAGE', 'MANAGE_ANNOUNCEMENTS'] : [],
+          payload: { title: '合成活动', visibility: summaryVisibility || 'INVITE',
+            startAt: '2027-01-02T12:00:00Z', endAt: '2027-01-02T14:00:00Z', feeMode: 'FREE' } };
+        if (route === '/system/safety') return { status: 'OPEN' };
+        if (route === '/me/registrations') return { items: actor === 'member' ? [{ event_id: 'e1', status: 'CONFIRMED' }] : [] };
+        if (route === '/me/events') return { items: actor === 'host' ? [{ id: 'e1', isHost: true }] :
+          actor === 'cohost' && cohostActive ? [{ id: 'e1', isHost: false, isCohost: true }] : [] };
+        if (route === '/events/e1/aliases') return { items: [], notice: { version: 'v1', text: '测试说明' } };
+        return { items: [] };
+      } } };
+      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
+      if (path === '../../config.js') return { developmentUser: 'visitor' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: { getStorageSync(key: string) { return key === 'devUser' ? actor : ''; } }, setTimeout, clearTimeout
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.setData({ id: 'e1', token: 't' });
+  assert.equal(await page.refresh(), true);
+  assert.deepEqual(requests.filter(route => protectedRoutes.includes(route)), []);
+  assert.ok(!requests.includes('/events/e1'));
+  assert.ok(!requests.includes('/events/e1/aliases'));
+  assert.equal(page.data.expenseLoadState, 'FORBIDDEN');
+  assert.equal(page.data.attendanceLoadState, 'FORBIDDEN');
+  actor = 'member'; requests.length = 0;
+  assert.equal(await page.refresh(), true);
+  assert.deepEqual(requests.filter(route => protectedRoutes.includes(route)).sort(), [...protectedRoutes].sort());
+  assert.ok(requests.includes('/events/e1'));
+  actor = 'host'; requests.length = 0;
+  assert.equal(await page.refresh(), true);
+  assert.deepEqual(requests.filter(route => protectedRoutes.includes(route)).sort(), [...protectedRoutes].sort());
+  assert.ok(requests.includes('/events/e1'));
+  assert.equal(page.data.isHost, true);
+  actor = 'cohost'; requests.length = 0;
+  assert.equal(await page.refresh(), true);
+  assert.ok(requests.includes('/events/e1'));
+  assert.equal(page.data.canManageCheckins, true);
+  assert.equal(page.data.canManageAnnouncements, true);
+  assert.deepEqual(requests.filter(route => protectedRoutes.includes(route)).sort(),
+    ['/events/e1/checkins', '/events/e1/content', '/events/e1/manual-checkins']);
+  cohostActive = false; requests.length = 0;
+  assert.equal(await page.refresh(), true);
+  assert.ok(!requests.includes('/events/e1'));
+  assert.deepEqual(requests.filter(route => protectedRoutes.includes(route)), []);
+  assert.equal(page.data.canManageCheckins, false);
+  assert.equal(page.data.canManageAnnouncements, false);
+  summaryVisibility = 'PUBLIC'; actor = 'visitor'; requests.length = 0;
+  assert.equal(await page.refresh(), true);
+  assert.ok(requests.includes('/events/e1'));
 });
 
 test('event expense area distinguishes network failure, empty ledger, and forbidden access', async () => {

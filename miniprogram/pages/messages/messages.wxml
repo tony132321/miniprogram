@@ -1,18 +1,28 @@
 <view class="messages-page">
   <view class="messages-brand"><view class="brand-dot">✦</view><text>Project IRL</text><text class="brand-light">消息</text></view>
-  <view class="title-row"><view><view class="page-title">消息</view><view class="subtitle">和一起组织活动的人保持联系</view></view><view class="title-count">{{total}}</view></view>
-  <view class="filter-row"><button class="{{filter === 'ALL' ? 'filter active' : 'filter'}}" data-filter="ALL" bindtap="setFilter">全部消息</button><button class="{{filter === 'ACTIVITY' ? 'filter active' : 'filter'}}" data-filter="ACTIVITY" bindtap="setFilter">活动相关</button><button class="{{filter === 'SYSTEM' ? 'filter active' : 'filter'}}" data-filter="SYSTEM" bindtap="setFilter">系统通知</button></view>
+  <view class="title-row"><view><view class="page-title">消息</view><view class="subtitle">和一起组织活动的人保持联系</view></view><view class="title-actions"><view class="title-count">{{unreadTotal}} 条未读</view><button id="markAllReadButton" wx:if="{{loadState === 'READY' && unreadTotal > 0}}" bindtap="markAllRead" disabled="{{markingAllRead}}" class="mark-all-read">{{markingAllRead ? '处理中…' : '全部已读'}}</button></view></view>
+  <view class="filter-row"><button class="{{filter === 'ALL' ? 'filter active' : 'filter'}}" data-filter="ALL" bindtap="setFilter">全部消息</button><button class="{{filter === 'ACTIVITY' ? 'filter active' : 'filter'}}" data-filter="ACTIVITY" bindtap="setFilter">活动提醒</button><button class="{{filter === 'INTERACTION' ? 'filter active' : 'filter'}}" data-filter="INTERACTION" bindtap="setFilter">互动消息</button><button class="{{filter === 'SYSTEM' ? 'filter active' : 'filter'}}" data-filter="SYSTEM" bindtap="setFilter">系统通知</button></view>
   <view wx:if="{{message}}" class="message-banner">{{message}}</view>
   <button wx:if="{{loadState === 'ERROR'}}" bindtap="refresh" class="retry">重新加载消息</button>
   <view wx:if="{{loadState === 'UNAUTHENTICATED'}}" class="empty card"><view class="empty-symbol">✉</view><view>登录后可查看本人消息</view><button bindtap="goProfile">前往我的页面</button></view>
   <view wx:if="{{loadState === 'LOADING'}}" class="empty">正在加载站内通知…</view>
-  <block wx:if="{{loadState === 'READY'}}"><view wx:if="{{items.length === 0}}" class="empty card"><view class="empty-symbol">✉</view><view>暂无站内通知</view><view class="hint">活动更新和安全处理结果会显示在这里。</view></view></block>
-  <view wx:if="{{loadState === 'READY' && items.length > 0 && filteredCount === 0}}" class="empty card"><view class="empty-symbol">✉</view><view>{{filter === 'ACTIVITY' ? '暂无活动相关通知' : '暂无系统通知'}}</view><view class="hint">{{loadingMore ? '正在加载后续消息…' : nextOffset !== null ? '当前已加载消息中没有此类通知，可继续加载更多。' : '当前没有此类通知，可切换到全部消息查看。'}}</view></view>
+  <view wx:if="{{filter === 'INTERACTION' && approvalLoadState === 'LOADING'}}" class="empty">正在加载待审核报名…</view>
+  <view wx:if="{{filter === 'INTERACTION' && approvalLoadState === 'ERROR'}}" class="empty card">待审核报名暂时无法加载<button bindtap="loadApprovals">重新加载审核</button></view>
+  <view wx:if="{{filter === 'INTERACTION' && approvalLoadState === 'READY' && approvals.length > 0}}" class="approval-list">
+    <view class="approval-heading">待审核报名 · {{approvalTotal}}</view>
+    <view wx:for="{{approvals}}" wx:key="registrationId" class="card approval-card">
+      <view class="approval-icon">✦</view><view class="approval-copy"><view class="approval-title">{{item.eventTitle}}</view><view class="hint">有一位球友申请加入，请在报名截止前确认名额。</view><view class="approval-actions"><button class="approval-detail" data-event-id="{{item.eventId}}" data-is-host="{{item.isHost}}" bindtap="viewApproval">查看详情</button><button wx:if="{{item.canApprove}}" class="approval-accept" data-id="{{item.registrationId}}" data-version="{{item.expectedVersion}}" bindtap="approveRequest" disabled="{{approvingId !== ''}}">{{approvingId === item.registrationId ? '审核中…' : '一键通过'}}</button><view wx:else class="approval-full">名额已满，暂不可通过</view></view></view>
+    </view>
+    <button wx:if="{{approvalNextOffset !== null}}" class="load-more" bindtap="loadMoreApprovals" disabled="{{loadingMoreApprovals}}">{{loadingMoreApprovals ? '正在加载…' : '加载更多审核'}}</button>
+  </view>
+  <block wx:if="{{loadState === 'READY'}}"><view wx:if="{{items.length === 0 && (filter !== 'INTERACTION' || (approvalLoadState === 'READY' && approvals.length === 0))}}" class="empty card"><view class="empty-symbol">✉</view><view>暂无站内通知</view><view class="hint">活动更新和安全处理结果会显示在这里。</view></view></block>
+  <view wx:if="{{loadState === 'READY' && items.length > 0 && filteredCount === 0 && (filter !== 'INTERACTION' || (approvalLoadState === 'READY' && approvals.length === 0))}}" class="empty card"><view class="empty-symbol">✉</view><view>{{filter === 'ACTIVITY' ? '暂无活动相关通知' : filter === 'INTERACTION' ? '暂无互动消息' : '暂无系统通知'}}</view><view class="hint">{{loadingMore ? '正在加载后续消息…' : nextOffset !== null ? '当前已加载消息中没有此类通知，可继续加载更多。' : '当前没有此类通知，可切换到全部消息查看。'}}</view></view>
   <view wx:if="{{loadState === 'READY' && (filteredCount > 0 || nextOffset !== null)}}" class="card notice-list">
     <block wx:for="{{items}}" wx:key="id">
       <button wx:if="{{item.visible}}" class="notice-row" data-id="{{item.id}}" data-event-id="{{item.event_id}}" data-kind="{{item.kind}}" bindtap="openNotice">
         <view class="notice-badge">{{item.event_id ? '活' : '系'}}</view><view class="notice-content"><view class="notice-title">{{item.title}}<text wx:if="{{item.status !== 'OPENED'}}" class="unread-dot">●</text></view><view class="notice-description">{{item.event_id ? '关联活动 ' + item.event_id : 'Project IRL 站内通知'}}</view><view class="notice-state">{{item.externalHint}}</view></view><view class="chevron">›</view>
       </button>
+      <view wx:if="{{item.visible && (item.kind === 'EVENT_REMINDER' || item.kind === 'MANUAL_CHECKIN_REQUEST')}}" class="notice-actions"><button data-id="{{item.id}}" data-event-id="{{item.event_id}}" data-kind="{{item.kind}}" data-section="checkinSection" bindtap="openNotice">查看签到与入场凭证</button></view>
     </block>
     <button wx:if="{{nextOffset !== null}}" bindtap="loadMore" disabled="{{loadingMore}}" class="load-more">{{loadingMore ? '正在加载…' : '加载更多'}}</button>
   </view>

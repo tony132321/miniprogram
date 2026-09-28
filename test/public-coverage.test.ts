@@ -222,7 +222,9 @@ test('an expired current shift hides a public invitation even while its old gate
     const published = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'expiry-publish');
     await reviewEvent(db, 'synthetic-duty-reviewer', published.id, published.version, 'APPROVED',
       '合成审核已核对活动资料', 'expiry-review');
-    assert.equal((await fetch(`${base}/i/${published.inviteToken}`)).status, 200);
+    const inviteResponse = await fetch(`${base}/i/${published.inviteToken}`);
+    assert.equal(inviteResponse.status, 200);
+    assert.equal((await inviteResponse.json()).payload.visibility, 'PUBLIC');
     await db.query(`UPDATE public_recruitment_coverage SET ends_at=clock_timestamp()-interval '30 minutes'
       WHERE id=$1`, [shifts.gateShift.id]);
     assert.equal((await db.query<{ status: string }>('SELECT status FROM public_recruitment_gate WHERE id=1')).rows[0]?.status, 'OPEN');

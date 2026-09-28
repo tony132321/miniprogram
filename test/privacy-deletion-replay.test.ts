@@ -4,12 +4,15 @@ import { mkdtemp, readFile, rm, stat } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test } from 'node:test';
-import { createDatabase } from '../src/db.ts';
+import { createDatabase, LATEST_SCHEMA_VERSION } from '../src/db.ts';
 import { createLocalBackup } from '../src/local-backup.ts';
 import { createPrivacyRequest } from '../src/operations.ts';
 import { getPrivacyDeletionDisposition } from '../src/privacy-deletion.ts';
+import { setConsent } from '../src/notifications.ts';
+import { register } from '../src/registrations.ts';
 import { FileDeletionMarkerStore, executePrivacyDeletionWithMarker,
   replayPrivacyDeletionMarkers, restoreLocalBackupWithPrivacyReplay } from '../src/privacy-deletion-journal.ts';
+import { publishApprovedInvite } from './helpers.ts';
 
 const policy = JSON.stringify({
   schema: 'project-irl/retention-policy-v1', status: 'OWNER_APPROVED_FOR_REAL_DATA',
@@ -21,7 +24,7 @@ const policy = JSON.stringify({
     ...['voice_raw', 'photo'].map(name => ({ class: name, status: 'NOT_ENABLED' }))]
 });
 
-test('an external deletion marker prevents an old backup from reviving an account', async () => {
+test('an external deletion marker prevents an old backup from reviving an account', async t => {
   const root = await mkdtemp(join(tmpdir(), 'irl-deletion-replay-'));
   const source = join(root, 'live');
   const archive = join(root, 'before-delete.tgz');
@@ -34,6 +37,38 @@ test('an external deletion marker prevents an old backup from reviving an accoun
     const event = await createDraft(db, 'p1', { title: 'private title before backup' }, 'replay-draft');
     await db.query(`INSERT INTO reports(id,reporter_id,event_id,kind,description)
       VALUES('replay-report','p1',$1,'ATTENDANCE','private report before backup')`, [event.id]);
+    await db.query("INSERT INTO users(id,wechat_openid) VALUES('backup-member','backup-member-openid')");
+    const memberDraft = await createDraft(db, 'backup-host', {
+      title: '恢复后保留的合成活动', type: 'badminton', startAt: '2027-01-02T12:00:00.000Z',
+      endAt: '2027-01-02T14:00:00.000Z', timeZone: 'Asia/Shanghai', city: '深圳',
+      venueName: '公共球馆', venueStatus: 'HOST_CONFIRMED', minParticipants: 4,
+      maxParticipants: 6, registrationDeadline: '2027-01-02T11:30:00.000Z',
+      confirmationDeadline: '2027-01-02T10:30:00.000Z', feeMode: 'FREE', feeCapFen: 0,
+      cancellationRule: '开始前可退出', visibility: 'INVITE', approvalMode: 'AUTO', hostParticipates: true
+    }, 'replay-member-draft');
+    const memberEvent = await publishApprovedInvite(db, 'backup-host', memberDraft.id,
+      memberDraft.version, 'replay-member-publish');
+    await register(db, 'backup-member', memberEvent.id, memberEvent.version,
+      'replay-member-register', memberEvent.inviteToken!);
+    await setConsent(db, 'backup-member', 'EVENT_REMINDER', true, 'replay-member-consent');
+    await db.query(`INSERT INTO notifications(id,event_id,user_id,kind,event_version,detail)
+      VALUES('replay-outbox-notice',$1,'backup-member','MATERIAL_CHANGE',$2,'{}'::jsonb)`,
+    [memberEvent.id, memberEvent.version]);
+    await db.query(`INSERT INTO jobs(id,kind,event_id,due_at,payload,status)
+      VALUES('replay-outbox-job','SEND_EXTERNAL',$1,now(),$2::jsonb,'PENDING')`,
+    [memberEvent.id, JSON.stringify({ notificationId: 'replay-outbox-notice' })]);
+    const preservedBefore = {
+      registration: (await db.query(`SELECT event_id,user_id,status,accepted_version FROM registrations
+        WHERE event_id=$1 AND user_id='backup-member'`, [memberEvent.id])).rows,
+      consent: (await db.query(`SELECT user_id,purpose,granted,scope,notice_version FROM notification_consents
+        WHERE user_id='backup-member'`)).rows,
+      outbox: (await db.query(`SELECT j.id,j.kind,j.status,j.payload,n.external_status
+        FROM jobs j JOIN notifications n ON n.id=j.payload->>'notificationId'
+        WHERE j.id='replay-outbox-job'`)).rows
+    };
+    assert.equal(preservedBefore.registration.length, 1);
+    assert.equal(preservedBefore.consent.length, 1);
+    assert.equal(preservedBefore.outbox.length, 1);
     await db.close();
     await createLocalBackup(source, archive);
     db = await createDatabase(source);
@@ -61,6 +96,7 @@ test('an external deletion marker prevents an old backup from reviving an accoun
       .rows[0]?.host_id, 'p1');
     await db.close();
 
+    const recoveryStartedAt = Date.now();
     await restoreLocalBackupWithPrivacyReplay(archive, restored, journal, policy);
     const recovered = await createDatabase(restored);
     try {
@@ -74,10 +110,21 @@ test('an external deletion marker prevents an old backup from reviving an accoun
         .rows[0]?.host_id, 'p1');
       assert.equal((await recovered.query('SELECT request_id FROM privacy_shared_deidentifications WHERE request_id=$1', [receipt.id]))
         .rows.length, 1);
+      assert.deepEqual((await recovered.query(`SELECT event_id,user_id,status,accepted_version FROM registrations
+        WHERE event_id=$1 AND user_id='backup-member'`, [memberEvent.id])).rows, preservedBefore.registration);
+      assert.deepEqual((await recovered.query(`SELECT user_id,purpose,granted,scope,notice_version FROM notification_consents
+        WHERE user_id='backup-member'`)).rows, preservedBefore.consent);
+      assert.deepEqual((await recovered.query(`SELECT j.id,j.kind,j.status,j.payload,n.external_status
+        FROM jobs j JOIN notifications n ON n.id=j.payload->>'notificationId'
+        WHERE j.id='replay-outbox-job'`)).rows, preservedBefore.outbox);
       const restoredExpiry = (await recovered.query<{ expires_at: Date }>(`SELECT expires_at FROM privacy_quarantine
         WHERE request_id=$1 AND source_table='reports' AND source_id='replay-report'`, [receipt.id])).rows[0]!.expires_at;
       assert.ok(Math.abs(new Date(restoredExpiry).getTime() - new Date(originalExpiry).getTime()) < 5_000,
         'duplicate marker must not extend retention after backup restore');
+      t.diagnostic(JSON.stringify({ schemaVersion: LATEST_SCHEMA_VERSION,
+        localRestoreMarkerReplayAndReadbackMs: Date.now() - recoveryStartedAt,
+        deletionMarkerReplayed: true, restoredAccountDisabled: true,
+        preservedOtherMemberRegistrationConsentAndOutbox: true }));
     } finally { await recovered.close(); }
   } finally { await rm(root, { recursive: true, force: true }); }
 });

@@ -9,7 +9,7 @@ import { reviewHostStatus } from './host-limits.ts';
 import { confirmPublicCoverage, createPublicCoverage, getPublicGate, publicRecruitmentOpen,
   revokePublicCoverage, setPublicGate } from './public-gate.ts';
 import { getEmergencyGate, setEmergencyGate } from './emergency-gate.ts';
-import { register, expressInterest, cancelRegistration, removeRegistration, reserveSeats, claimReservation, acceptOffer, declineOffer, approveRegistration, databaseNow } from './registrations.ts';
+import { register, expressInterest, cancelRegistration, removeRegistration, reserveSeats, claimReservation, acceptOffer, declineOffer, approveRegistration, listPendingApprovals, databaseNow } from './registrations.ts';
 import { previewEventChange, getPendingReconfirmation, changeEvent, reconfirm, confirmEvent, cancelEvent, createCheckInToken, checkIn, listCheckIns, requestManualCheckIn, respondManualCheckIn, listManualCheckIns, completeEvent, repeatEvent, listRepeatCandidates, recordExpense, listExpenses, markExpenseShare, recordOutcomeFeedback, getOutcomeEvidence } from './lifecycle.ts';
 import { localDraftSuggestion } from './ai.ts';
 import type { DraftProvider } from './ai-provider-boundary.ts';
@@ -20,7 +20,7 @@ import { approveAiAction, executeAiAction, prepareAiAction, revokeAiAction } fro
 import { createReport, listReports, listReportTriage, listReportResponseAlerts, inspectReportForSafety, assignReport, classifyReportSeverity, listMyReports, changeReportStatus, createAppeal, listAppeals, listMyAppeals, changeAppealStatus, listMyRemovals, createPrivacyRequest, listPrivacyRequests, listPrivacyForOperations, getPrivacyRequestImpact } from './operations.ts';
 import type { ReportResponsePolicy } from './report-response-policy.ts';
 import { actorFromBearer, loginWithWechat, logoutMember, type WechatExchange } from './auth.ts';
-import { setConsent, consentNotice, markNotificationOpened, getAttentionItems, listMemberNotifications,
+import { setConsent, consentNotice, markNotificationOpened, markAllNotificationsOpened, getAttentionItems, listMemberNotifications,
   reconcileUnknownNotification, type NotificationLookupAdapter } from './notifications.ts';
 import { listNotificationFollowups, listNotificationFollowupHistory, recordNotificationFollowup } from './notification-followups.ts';
 import { askCurrentFact, createContent, listContent, listMyRejectedContent, listFactTodos, listPendingContent, moderateContent } from './collaboration.ts';
@@ -236,6 +236,7 @@ export function createApp(db: Database, options: AppOptions) {
           timeZone: row.payload.timeZone, city: row.payload.city, venueName: row.payload.venueName,
           venueStatus: row.payload.venueStatus, feeMode: row.payload.feeMode, feeCapFen: row.payload.feeCapFen,
           cancellationRule: row.payload.cancellationRule, approvalMode: row.payload.approvalMode,
+          visibility: row.payload.visibility,
           skillLevel: row.payload.skillLevel };
         return send(res, 200, { id: row.id, status: row.status, version: row.version, recruiting: row.recruiting,
           aiSuggestionGenerated: await hasGeneratedAiSuggestion(db, row.id),
@@ -293,20 +294,25 @@ export function createApp(db: Database, options: AppOptions) {
       }
       if (path === '/me/events' && method === 'GET') {
         const { rows } = await db.query<{ id: string; status: string; payload: { title?: string; startAt?: string };
-          review_status: string; legacy_review_closed: boolean | null; is_host: boolean; my_status: string | null }>(`SELECT e.id,e.status,e.payload,e.review_status,
+          review_status: string; legacy_review_closed: boolean | null; is_host: boolean; is_cohost: boolean;
+          my_status: string | null }>(`SELECT e.id,e.status,e.payload,e.review_status,
           clock_timestamp()>=CASE WHEN e.status='RECRUITING' THEN
             (e.payload->>'confirmationDeadline')::timestamptz ELSE (e.payload->>'startAt')::timestamptz END
             AS legacy_review_closed,
-          (e.host_id=$1) AS is_host,r.status AS my_status FROM events e
+          (e.host_id=$1) AS is_host,(c.id IS NOT NULL) AS is_cohost,r.status AS my_status FROM events e
           LEFT JOIN registrations r ON r.event_id=e.id AND r.user_id=$1
-          WHERE e.host_id=$1 OR r.status IN ('INTERESTED','REQUESTED','WAITLISTED','OFFERED','CONFIRMED','RECONFIRM_REQUIRED')
+          LEFT JOIN cohost_grants c ON c.event_id=e.id AND c.user_id=$1
+            AND c.revoked_at IS NULL AND c.expires_at>clock_timestamp()
+          WHERE e.host_id=$1 OR c.id IS NOT NULL OR
+            r.status IN ('INTERESTED','REQUESTED','WAITLISTED','OFFERED','CONFIRMED','RECONFIRM_REQUIRED')
           ORDER BY e.id`, [actor]);
         return send(res, 200, { items: rows.map(r => {
           const reviewed = r.is_host || r.review_status === 'APPROVED' ||
             (r.review_status === 'NOT_REQUIRED' &&
               (r.legacy_review_closed === true || ['IN_PROGRESS', 'COMPLETED', 'CANCELLED', 'EXPIRED'].includes(r.status)));
           return { id: r.id, status: r.status, title: reviewed ? r.payload.title : '活动审核中',
-            startAt: reviewed ? r.payload.startAt : undefined, isHost: r.is_host, myRegistrationStatus: r.my_status };
+            startAt: reviewed ? r.payload.startAt : undefined, isHost: r.is_host, isCohost: r.is_cohost,
+            myRegistrationStatus: r.my_status };
         }) });
       }
       if (path === '/me/registrations' && method === 'GET') {
@@ -324,6 +330,14 @@ export function createApp(db: Database, options: AppOptions) {
         if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', '通知列表页码无效');
         return send(res, 200, await listMemberNotifications(db, actor, Number(offsetText), requestUrl.searchParams.get('snapshot')));
       }
+      if (path === '/me/approval-requests' && method === 'GET') {
+        const offsetText = requestUrl.searchParams.get('offset') ?? '0';
+        if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', '审核列表页码无效');
+        return send(res, 200, await listPendingApprovals(db, actor, Number(offsetText),
+          requestUrl.searchParams.get('snapshot')));
+      }
+      if (path === '/me/notifications/open-all' && method === 'POST')
+        return send(res, 200, await markAllNotificationsOpened(db, actor, keyFrom(req)));
       const openedNotification = path.match(/^\/me\/notifications\/([^/]+)\/open$/);
       if (openedNotification && method === 'POST') return send(res, 200, await markNotificationOpened(db, actor, openedNotification[1]!, keyFrom(req)));
       if (path === '/me/consents' && method === 'GET') {
