@@ -18,3 +18,14 @@ test('PostgreSQL verification refuses another user schema or a nonpublic search 
     active_schema: 'app', user_relations: 1, extra_schemas: 1 }] }) };
   await assert.rejects(() => assertEmptyPostgresTestDatabase(probe, 'irl_r1_test_safe'), /empty|public/i);
 });
+
+test('CI container address needs an explicit opt-in and an empty public test database', async () => {
+  const safe = { database: 'irl_r1_test_ci', server_address: '172.18.0.2',
+    active_schema: 'public', user_relations: 0, extra_schemas: 0 };
+  const probe = { query: async () => ({ rows: [safe] }) };
+  await assert.rejects(() => assertEmptyPostgresTestDatabase(probe, 'irl_r1_test_ci'), /empty loopback/i);
+  await assertEmptyPostgresTestDatabase(probe, 'irl_r1_test_ci', { allowContainerServiceAddress: true });
+  await assert.rejects(() => assertEmptyPostgresTestDatabase({ query: async () => ({ rows: [
+    { ...safe, user_relations: 1 }
+  ] }) }, 'irl_r1_test_ci', { allowContainerServiceAddress: true }), /empty loopback/i);
+});

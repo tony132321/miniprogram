@@ -6,6 +6,7 @@
     "dev": "tsx watch src/main.ts",
     "start": "tsx src/main.ts",
     "test": "node --import tsx --test --test-isolation=none --test-concurrency=1 test/*.test.ts",
+    "test:ci": "node --import tsx --test --test-isolation=process --test-concurrency=1 test/*.test.ts",
     "typecheck": "tsc --noEmit",
     "preflight:release": "tsx scripts/preflight-release.ts"
   },

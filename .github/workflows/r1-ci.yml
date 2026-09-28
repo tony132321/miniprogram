@@ -23,7 +23,7 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
       - name: Test
-        run: pnpm test
+        run: pnpm test:ci
       - name: Dependency audit
         run: pnpm audit --audit-level high
   postgres-privacy-expiry:
