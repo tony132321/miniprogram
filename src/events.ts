@@ -6,6 +6,7 @@ import { assertPublicRecruitmentOpen, publicRecruitmentOpen } from './public-gat
 import { assertNewActionsOpen } from './emergency-gate.ts';
 import { getCohostCapabilities, type CohostCapability } from './cohosts.ts';
 import { databaseNow } from './registrations.ts';
+import { assertHostCanPublish } from './host-limits.ts';
 
 export interface EventInput {
   title?: string; type?: string; startAt?: string; endAt?: string; timeZone?: string;
@@ -25,7 +26,7 @@ export interface EventRecord {
   venueEvidence?: { venueName: string; sourceType: 'HOST_STATEMENT'; phase: 'PUBLISH' | 'CHANGE' | 'FORMATION';
     recordedAt: string; expiresAt: string };
 }
-type EventRow = { id: string; host_id: string; status: string; version: number; payload: EventInput; recruiting: boolean;
+type EventRow = { id: string; host_id: string; status: string; version: number; payload: EventInput; recruiting: boolean; is_test: boolean;
   invite_token: string | null; updated_at: Date; review_status: string; review_reason: string | null };
 
 function rowToEvent(row: EventRow): EventRecord {
@@ -263,6 +264,7 @@ export async function publishEventInTransaction(tx: Queryable, actorId: string, 
     if (row.version !== expectedVersion) throw new AppError('VERSION_CONFLICT', '活动已更新，请刷新', 409);
     if (row.status !== 'DRAFT') throw new AppError('INVALID_STATE', '仅草稿可发布');
     validatePublish(row.payload);
+    if (!row.is_test) await assertHostCanPublish(tx, actorId, row.payload.maxParticipants!);
     await assertPublicRecruitmentOpen(tx, row.payload.visibility, row.payload);
     if (Date.parse(row.payload.confirmationDeadline!) <= await databaseNow(tx))
       throw new AppError('INVALID_EVENT', '成局确认截止时间已过');

@@ -5,6 +5,7 @@ import { isIP } from 'node:net';
 import type { Database } from './db.ts';
 import { AppError } from './errors.ts';
 import { createDraft, getEvent, hasGeneratedAiSuggestion, publishEvent, rotateInvite, updateDraft } from './events.ts';
+import { reviewHostStatus } from './host-limits.ts';
 import { confirmPublicCoverage, createPublicCoverage, getPublicGate, publicRecruitmentOpen,
   revokePublicCoverage, setPublicGate } from './public-gate.ts';
 import { getEmergencyGate, setEmergencyGate } from './emergency-gate.ts';
@@ -479,6 +480,12 @@ export function createApp(db: Database, options: AppOptions) {
         const offsetText = requestUrl.searchParams.get('offset') ?? '0';
         if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', '活动审核列表页码无效');
         return send(res, 200, await listPendingEventReviews(db, Number(offsetText), requestUrl.searchParams.get('snapshot')));
+      }
+      const hostStatusReview = path.match(/^\/ops\/hosts\/([^/]+)\/status$/);
+      if (hostStatusReview && method === 'POST') {
+        requireOperator(actor, 'SAFETY');
+        const key = keyFrom(req); const body = await readJson(req);
+        return send(res, 200, await reviewHostStatus(db, actor, hostStatusReview[1]!, body.status, body.reason, key));
       }
       const eventReview = path.match(/^\/ops\/events\/([^/]+)\/review$/);
       if (eventReview && method === 'POST') {

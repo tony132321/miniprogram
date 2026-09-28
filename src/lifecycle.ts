@@ -10,6 +10,7 @@ import { assertEventNotHeld } from './safety.ts';
 import { assertPublicRecruitmentOpen } from './public-gate.ts';
 import { assertNewActionsOpen } from './emergency-gate.ts';
 import { hasCohostCapability } from './cohosts.ts';
+import { assertHostParticipantCap } from './host-limits.ts';
 
 type EventDatabaseRow = { id: string; host_id: string; status: string; version: number; payload: EventInput; recruiting: boolean;
   invite_token: string | null; updated_at: Date; review_status: string; review_reason: string | null; is_test: boolean };
@@ -52,6 +53,7 @@ export async function previewEventChange(db: Database, actor: string, eventId: s
   const next = { ...event.payload, ...patch };
   assertVenueReassertion(event.payload, patch);
   validatePublish(next);
+  await assertHostParticipantCap(db, eventId, actor, next.maxParticipants!);
   if (Date.parse(next.startAt!) <= now) throw new AppError('INVALID_EVENT', '活动开始时间必须在未来');
   if (await occupancy(db, eventId) > next.maxParticipants!) throw new AppError('EVENT_FULL', '新人数上限小于已占名额');
   const changes = eventChanges(event.payload, next);
@@ -92,6 +94,7 @@ export async function changeEvent(db: Database, actor: string, eventId: string, 
       await assertNewActionsOpen(tx);
     if (next.visibility === 'PUBLIC' && event.payload.visibility !== 'PUBLIC') await assertPublicRecruitmentOpen(tx, next.visibility, next);
     validatePublish(next);
+    await assertHostParticipantCap(tx, eventId, actor, next.maxParticipants!, true);
     if (Date.parse(next.startAt!) <= now) throw new AppError('INVALID_EVENT', '活动开始时间必须在未来');
     if (await occupancy(tx, eventId) > next.maxParticipants!) throw new AppError('EVENT_FULL', '新人数上限小于已占名额');
     const changes = eventChanges(event.payload, next);

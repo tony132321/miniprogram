@@ -9,6 +9,7 @@ import { reviewEvent } from '../src/event-review.ts';
 import { changeEvent, repeatEvent } from '../src/lifecycle.ts';
 import { createApp } from '../src/server.ts';
 import { getPilotMetrics } from '../src/metrics.ts';
+import { reviewHostStatus } from '../src/host-limits.ts';
 import { openSyntheticPublicCoverage } from './helpers/public-coverage.ts';
 
 const valid = (startAt: string) => {
@@ -26,6 +27,13 @@ async function metricEvent(db: Awaited<ReturnType<typeof createDatabase>>, host:
   isTest = false) {
   const draft = await createDraft(db, host, valid(startAt), `${key}-draft`, isTest);
   return publishApprovedInvite(db, host, draft.id, draft.version, `${key}-publish`);
+}
+
+async function allowMultiEventMetricFixture(db: Awaited<ReturnType<typeof createDatabase>>, host: string) {
+  await db.query('INSERT INTO users(id,wechat_openid) VALUES($1,$2) ON CONFLICT(id) DO NOTHING',
+    [host, `synthetic-metric-${host}`]);
+  await reviewHostStatus(db, 'operator:metric-fixture', host, 'ESTABLISHED',
+    '合成指标多场活动夹具，不代表真人主办资质核验', `metric-host-${host}`);
 }
 
 async function approveSyntheticInvites(db: Awaited<ReturnType<typeof createDatabase>>, idPattern: string,
@@ -218,6 +226,8 @@ test('WQCA uses first published minimum, local weeks, individual evidence and ex
 test('host reuse counts only mature non-test first-publish cohorts and does not invent profit', async () => {
   const db = await createDatabase();
   try {
+    await allowMultiEventMetricFixture(db, 'reused');
+    await allowMultiEventMetricFixture(db, 'late-repeat');
     const publishedAt = async (host: string, key: string, date: string, startAt = '2027-01-20T12:00:00.000Z', isTest = false) => {
       const event = await metricEvent(db, host, key, startAt, isTest);
       await db.query('UPDATE event_versions SET created_at=$2 WHERE event_id=$1', [event.id, date]);
@@ -253,6 +263,8 @@ test('host reuse counts only mature non-test first-publish cohorts and does not 
 test('public review submission is not publication for the 28-day host cohort or repeat', async () => {
   const db = await createDatabase();
   try {
+    await allowMultiEventMetricFixture(db, 'approved-host');
+    await allowMultiEventMetricFixture(db, 'unapproved-repeat-host');
     await openSyntheticPublicCoverage(db, [valid('2027-03-10T12:00:00.000Z'), valid('2027-03-13T12:00:00.000Z')]);
     const publicDraft = await createDraft(db, 'pending-host',
       { ...valid('2027-03-10T12:00:00.000Z'), visibility: 'PUBLIC', approvalMode: 'MANUAL' }, 'pending-public-draft', false);
@@ -564,6 +576,7 @@ test('a mature due cohort leaves the threshold undecided when pending review cou
 test('waitlist offer diagnostic separates accepted, expired, cancelled and still active invitations', async () => {
   const db = await createDatabase();
   try {
+    await allowMultiEventMetricFixture(db, 'host');
     const asOf = Date.parse('2027-01-10T00:00:00.000Z');
     const event = await metricEvent(db, 'host', 'offer-metric', '2027-01-02T12:00:00.000Z');
     const states = [
@@ -713,6 +726,7 @@ test('attendance diagnostic preserves the deadline cohort and separates later wi
 test('formation time uses first accessible publication and first confirmed audit, excluding test and unlisted activity', async () => {
   const db = await createDatabase();
   try {
+    await allowMultiEventMetricFixture(db, 'host');
     await openSyntheticPublicCoverage(db, [valid('2027-01-02T12:00:00.000Z')]);
     const base = Date.parse('2027-01-01T00:00:00.000Z');
     const sample = [

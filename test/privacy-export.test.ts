@@ -14,6 +14,24 @@ const input = { title: '导出测试', type: 'badminton', startAt: '2027-01-02T1
   registrationDeadline: '2027-01-02T11:30:00.000Z', confirmationDeadline: '2027-01-02T10:30:00.000Z', feeMode: 'FREE',
   feeCapFen: 0, cancellationRule: '开始前可退出', visibility: 'INVITE', approvalMode: 'AUTO', hostParticipates: true };
 
+test('personal export includes only the owner’s host publication review', async () => {
+  const db = await createDatabase();
+  try {
+    await db.query(`INSERT INTO host_publication_status(host_id,status,reviewed_by,reviewed_at,reason) VALUES
+      ('host-one','ESTABLISHED','operator:safety',now(),'本人活动经历已核验'),
+      ('host-two','NEW','operator:safety',now(),'另一人的复核资料')`);
+    const own = await exportPersonalData(db, 'host-one');
+    assert.equal(own.hostPublicationStatus?.status, 'ESTABLISHED');
+    assert.equal(own.hostPublicationStatus?.reason, '本人活动经历已核验');
+    assert.equal(own.hostPublicationStatus?.reviewed_by, undefined);
+    assert.equal(JSON.stringify(own).includes('另一人的复核资料'), false);
+    const other = await exportPersonalData(db, 'host-two');
+    assert.equal(other.hostPublicationStatus?.status, 'NEW');
+    assert.equal(other.hostPublicationStatus?.reason, '另一人的复核资料');
+    assert.equal((await exportPersonalData(db, 'unreviewed')).hostPublicationStatus, null);
+  } finally { await db.close(); }
+});
+
 test('personal export includes own sharing, offers, questions and history without another participant data', async () => {
   const db = await createDatabase();
   try {

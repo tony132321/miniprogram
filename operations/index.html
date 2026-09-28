@@ -51,6 +51,13 @@
     <p id="reportInspection" role="status"></p>
   </section>
   <section><h2>待审核活动</h2><ul id="eventReviews"></ul><button id="moreEventReviews" disabled>加载更多待审活动</button></section>
+  <section><h2>主办方等级复核</h2>
+    <p class="muted">新主办方默认受发布频率和单场人数限制。仅具 SAFETY 权限的运营人员可依据人工核验结果调整；此操作会保留原因和审计记录，不自动核实经历。</p>
+    <label>主办方用户 ID <input id="hostReviewUserId" autocomplete="off"></label>
+    <label>复核结果 <select id="hostReviewStatus"><option value="ESTABLISHED">晋级为已复核</option><option value="NEW">恢复新主办方限制</option></select></label>
+    <label>核验依据 <input id="hostReviewReason" autocomplete="off" placeholder="至少 5 字"></label>
+    <button id="submitHostReview">记录复核结果</button><p id="hostReviewResult" role="status"></p>
+  </section>
   <section><h2>活动风险暂停</h2>
     <p class="muted">暂停新报名、预留、补位和成局；活动仍可查看或退出。仅运营人员可记录核查原因和解除。</p>
     <label>活动 ID <input id="holdEventId" autocomplete="off"></label>
@@ -1048,6 +1055,25 @@
       if (!response.ok) throw new Error(data.message || data.code || '操作失败');
       return data;
     }
+    let pendingHostReview = null;
+    $('submitHostReview').onclick = async () => {
+      const hostId = $('hostReviewUserId').value.trim();
+      const status = $('hostReviewStatus').value;
+      const reason = $('hostReviewReason').value.trim();
+      if (!hostId || reason.length < 5) {
+        $('hostReviewResult').textContent = '请填写主办方用户 ID 和至少 5 字的核验依据'; return;
+      }
+      const fingerprint = JSON.stringify([hostId, status, reason, $('token').value]);
+      if (!pendingHostReview || pendingHostReview.fingerprint !== fingerprint)
+        pendingHostReview = { fingerprint, key: crypto.randomUUID() };
+      try {
+        const result = await post(`/ops/hosts/${encodeURIComponent(hostId)}/status`,
+          { status, reason }, pendingHostReview.key);
+        pendingHostReview = null;
+        $('hostReviewResult').textContent = `已记录 ${result.hostId}：${result.status}，复核人 ${result.reviewedBy}。`;
+        $('hostReviewReason').value = '';
+      } catch (error) { $('hostReviewResult').textContent = error.message; }
+    };
     let pendingSupportWrite = null;
     $('recordSupportMinutes').onclick = async () => {
       const eventId = $('supportEventId').value.trim();
@@ -1151,6 +1177,10 @@
         $('reportCaseId').value = '';
         $('reportAssignee').value = '';
         $('reportScopeReason').value = '';
+        pendingHostReview = null;
+        $('hostReviewUserId').value = '';
+        $('hostReviewReason').value = '';
+        $('hostReviewResult').textContent = '';
         nextNotificationFollowupOffset = null;
         notificationFollowupSnapshot = null;
         $('moreNotificationFollowups').disabled = true;
