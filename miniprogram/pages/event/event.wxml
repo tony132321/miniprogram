@@ -1,4 +1,18 @@
 <view wx:if="{{event && loadState === 'READY'}}" class="event-page">
+  <view wx:if="{{successState === 'PUBLISHED'}}" class="success-panel published-success">
+    <view class="success-mark">✓</view><view class="success-kicker">组局成功创建 · 当前状态以活动页为准</view>
+    <view class="success-title">活动已成功发布！</view><view class="success-copy">{{display.title}} 已进入活动流程。邀请分享、审核与招募状态请以本页实时信息为准。</view>
+    <view class="success-summary"><view class="success-summary-title">{{display.title}}</view><view>{{display.date}} – {{display.end}}</view><view>{{display.location}} · {{display.fee}}</view><view>当前状态：{{display.status}}</view></view>
+    <button class="success-primary" data-section="hostSection" bindtap="jumpToSection">进入主办方工作台 ›</button>
+    <button class="success-secondary" bindtap="viewSuccessDetails">查看活动详情</button>
+  </view>
+  <view wx:if="{{successState === 'JOINED'}}" class="success-panel joined-success">
+    <view class="success-mark">✓</view><view class="success-kicker">YOU'RE IN · 已由活动当前状态确认</view>
+    <view class="success-title">报名成功，已确认席位！</view><view class="success-copy">你已加入 {{display.title}}。请按当前活动规则与通知准备出行。</view>
+    <view class="success-summary"><view class="success-summary-title">{{display.title}}</view><view>{{display.date}} – {{display.end}}</view><view>{{display.location}} · {{display.fee}}</view><view>我的报名：{{registrationLabel}}</view></view>
+    <button class="success-primary" bindtap="viewSuccessDetails">查看报名与活动详情 ›</button>
+    <button class="success-secondary" bindtap="dismissSuccess">继续浏览活动</button>
+  </view>
   <view class="poster"><view class="poster-top">PROJECT IRL <text>✦</text></view><view class="poster-art">🏸</view><view class="poster-title"><view>BADMINTON</view><view>TOGETHER</view></view><view class="poster-ribbon">运动让生活更好看！</view><view class="poster-bottom">Play More · Meet Cool People</view></view>
   <view class="event-tabs"><button data-section="detailsSection" bindtap="jumpToSection">详情</button><button data-section="registrationSection" bindtap="jumpToSection">报名</button><button data-section="contentSection" bindtap="jumpToSection">公告问答</button><button data-section="checkinSection" bindtap="jumpToSection">签到</button><button data-section="expenseSection" bindtap="jumpToSection">费用</button><button wx:if="{{isHost}}" data-section="hostSection" bindtap="jumpToSection">主办工作台</button></view>
   <view id="detailsSection" class="event-section detail-section"><view class="detail-heading"><text class="detail-title">{{display.title}}</text><text class="status-pill">{{display.status}}</text></view>
@@ -76,7 +90,7 @@
   <input placeholder="主办方预留认领口令" value="{{reservationToken}}" bindinput="reservationInput" />
   <button wx:if="{{safetyStatus === 'OPEN' && !event.riskPaused}}" bindtap="claim">认领预留</button>
   </view>
-  <view id="checkinSection" class="event-section"><view class="section-heading">签到与到场</view>
+  <view id="checkinSection" class="event-section checkin-section"><view class="section-kicker">SEE YOU IN REAL LIFE</view><view class="section-heading">签到与到场</view><view class="section-intro">现场见面，留下真实到场证据。扫码与人工补记结果以服务端记录为准。</view>
   <view wx:if="{{canCheckIn}}">
     <input placeholder="现场动态签到口令" value="{{checkInToken}}" bindinput="checkInInput" />
     <button bindtap="scanCheckIn">扫描现场二维码签到</button>
@@ -85,8 +99,8 @@
   <view wx:if="{{attendanceLoadState === 'EMPTY'}}" class="muted">暂无到场记录或人工补记。</view>
   <view wx:if="{{attendanceLoadState === 'FORBIDDEN'}}" class="muted">当前无权查看到场记录。</view>
   <view wx:if="{{attendanceLoadState === 'ERROR'}}" class="error">{{attendanceError}} <button id="attendanceRetryButton" bindtap="refresh">重新加载到场记录</button></view>
-  <view wx:for="{{checkIns}}" wx:key="id" class="item">{{item.userId}} · 到场证据 {{item.evidence}} · {{item.checkedAt}}</view>
-  <view wx:for="{{manualCheckIns}}" wx:key="id" class="item">
+  <view wx:for="{{checkIns}}" wx:key="id" class="item attendance-entry">{{item.userId}} · 到场证据 {{item.evidence}} · {{item.checkedAt}}</view>
+  <view wx:for="{{manualCheckIns}}" wx:key="id" class="item attendance-entry">
     <view>到场补记 {{item.userId}} · {{item.status}}</view>
     <view wx:if="{{item.userId === currentUser && item.status === 'PENDING'}}">
       <button id="manualAccept-{{item.id}}" data-id="{{item.id}}" data-accepted="{{true}}" bindtap="respondManualCheckIn">确认本人到场</button>
@@ -94,7 +108,7 @@
     </view>
   </view>
   </view>
-  <view id="contentSection" class="event-section"><view class="section-heading">活动公告与问答</view>
+  <view id="contentSection" class="event-section content-section"><view class="section-kicker">STAY IN THE LOOP</view><view class="section-heading">活动公告与问答</view><view class="section-intro">一起把这场活动变得更好。主办公告与提问会按审核状态展示。</view>
   <view wx:if="{{contentLoadState === 'EMPTY'}}" class="muted">暂无活动公告或问答。</view>
   <view wx:if="{{contentLoadState === 'FORBIDDEN'}}" class="muted">当前无权查看活动公告与问答。</view>
   <view wx:if="{{contentLoadState === 'ERROR'}}" class="error">{{contentError}} <button id="contentRetryButton" bindtap="refresh">重新加载公告与问答</button></view>
@@ -102,8 +116,9 @@
     <input placeholder="按当前活动事实提问，例如活动几点开始" value="{{factQuestionText}}" bindinput="factQuestionInput" />
     <button bindtap="askFact">查询当前事实；未知事项交主办方</button>
   </view>
-  <view wx:for="{{content}}" wx:key="id" class="item">
-    <view>{{item.kind}} · {{item.status}} · {{item.body}}</view>
+  <view wx:for="{{content}}" wx:key="id" class="item content-entry">
+    <view class="content-entry-meta">{{item.kind === 'ANNOUNCEMENT' ? '主办公告' : item.kind === 'QUESTION' ? '成员提问' : item.kind === 'ANSWER' ? '主办回答' : '活动更新'}} · {{item.status}}</view>
+    <view class="content-entry-body">{{item.body}}</view>
     <view wx:if="{{item.status === 'REJECTED' && item.author_id === currentUser}}">未通过原因：{{item.moderation_reason || '原审核未记录原因'}}</view>
     <button wx:if="{{item.status === 'REJECTED' && item.author_id === currentUser}}" bindtap="goToContentAppeal">到我的页面申请复核</button>
     <view wx:if="{{item.kind === 'QUESTION'}}">问题 ID：{{item.id}}</view>
@@ -114,24 +129,26 @@
     <button bindtap="askQuestion">提交问题</button>
   </view>
   </view>
-  <view id="expenseSection" class="event-section"><view class="section-heading">费用记录</view>
+  <view id="expenseSection" class="event-section expense-section"><view class="section-kicker">SHALL WE SPLIT?</view><view class="section-heading">费用记录</view><view class="section-intro">AA 制，更轻松也更尽兴。金额与双方处理状态以当前账单版本为准。</view>
   <view class="muted">费用由参与者与服务提供者按约定处理；本页为记录，不是平台支付凭证。</view>
   <view class="muted">总费用按已确认人数分成整数分，尾差逐分分配；请以各人显示金额为准。修订费用后需重新确认新版。</view>
   <view wx:if="{{expenseLoadState === 'EMPTY'}}" class="muted">暂无费用记录。</view>
   <view wx:if="{{expenseLoadState === 'FORBIDDEN'}}" class="muted">当前无权查看费用记录。</view>
   <view wx:if="{{expenseLoadState === 'ERROR'}}" class="error">{{expenseError}} <button id="expenseRetryButton" bindtap="refresh">重新加载费用记录</button></view>
-  <view wx:for="{{expenses}}" wx:for-item="ledger" wx:key="id" class="item">
-    <view>总费用 {{ledger.totalFen}} 分 · 第 {{ledger.revision}} 版 · {{ledger.current ? '当前费用' : '历史费用'}} · {{ledger.status}}</view>
+  <view wx:for="{{expenses}}" wx:for-item="ledger" wx:key="id" class="item expense-ledger">
+    <view class="expense-total-label">{{ledger.current ? '当前账单' : '历史账单'}} · 第 {{ledger.revision}} 版 · {{ledger.status}}</view>
+    <view class="expense-total">总费用 {{ledger.totalFen}} 分</view>
     <view wx:if="{{!ledger.current}}" class="muted">此版确认只对应旧金额，不能代表接受当前费用。</view>
     <view wx:for="{{ledger.shares}}" wx:for-item="share" wx:key="userId">
-      <view>{{share.userId}}：{{share.amountFen}} 分 · 本人已处理 {{share.participantHandled ? '是' : '否'}} · 主办已收到 {{share.hostReceived ? '是' : '否'}}</view>
+      <view class="expense-share"><text>{{share.userId}}</text><text>{{share.amountFen}} 分</text></view>
+      <view class="muted">本人已处理 {{share.participantHandled ? '是' : '否'}} · 主办已收到 {{share.hostReceived ? '是' : '否'}}</view>
       <view wx:if="{{ledger.current && share.participantHandled !== share.hostReceived}}" class="muted">双方记录尚不一致，请核对；本记录不是付款凭证。</view>
       <button id="markHandled-{{share.userId}}" wx:if="{{ledger.current && share.userId === currentUser && !share.participantHandled}}" data-ledger="{{ledger.id}}" data-user="{{share.userId}}" bindtap="markHandled">标记本人已处理</button>
       <button id="markReceived-{{share.userId}}" wx:if="{{ledger.current && isHost && !share.hostReceived}}" data-ledger="{{ledger.id}}" data-user="{{share.userId}}" bindtap="markReceived">标记已收到</button>
     </view>
   </view>
   </view>
-  <view id="hostSection" class="event-section" wx:if="{{isHost}}"><view class="section-heading">主办方工作台</view>
+  <view id="hostSection" class="event-section host-section" wx:if="{{isHost}}"><view class="section-kicker">ORGANIZER DASHBOARD</view><view class="section-heading">主办方工作台</view><view class="section-intro">{{display.title}} · {{display.status}}。这里显示服务端的真实人数与待处理事项。</view>
     <view wx:if="{{event.stats}}" class="host-overview"><view><text>{{event.stats.confirmed}}</text><text>已确认</text></view><view><text>{{event.stats.reserved}}</text><text>预留名额</text></view><view><text>{{event.stats.waitlisted}}</text><text>候补中</text></view><view><text>{{event.stats.requested}}</text><text>待审核</text></view></view>
     <view wx:if="{{event.stats}}" class="formation-card"><view>成局核对</view><view>人数：至少 {{event.payload.minParticipants}} 人，目前确认 {{event.stats.confirmed}} 人</view><view>场地：{{event.payload.venueStatus === 'HOST_CONFIRMED' ? '主办方已核实' : '尚未核实'}}</view><view class="muted">实际成局仍须使用下方确认操作，系统不代表场馆锁位。</view></view>
     <view wx:if="{{event.status !== 'DRAFT' && event.status !== 'CANCELLED' && event.status !== 'EXPIRED'}}">

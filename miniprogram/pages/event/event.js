@@ -34,7 +34,7 @@ function eventDisplay(event) {
   };
 }
 Page({
-  data: { id: '', token: '', source: '', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false,
+  data: { id: '', token: '', source: '', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '',
     canJoin: false, canExpressInterest: false, canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
     canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
     myRegistration: null, registrations: [], cohostGrants: [], cohostUserId: '', selectedCohostCapabilities: ['CHECKIN_MANAGE'], aliases: [],
@@ -50,9 +50,12 @@ Page({
     canRequestManualCheckIn: false, currentUser: '',
     feedbackHeld: null, feedbackWouldRepeat: null, feedbackReason: '', questionText: '', factQuestionText: '', announcementText: '', answerText: '', answerQuestionId: '', removalReason: '' },
   async onLoad(options) {
-    this.setData({ id: options.id || '', token: options.token || '', source: options.source || '' });
+    this.setData({ id: options.id || '', token: options.token || '', source: options.source || '', successState: '' });
     await getApp().globalData.ready;
-    await this.refresh();
+    const loaded = await this.refresh();
+    if (loaded && options.success === 'published' && this.data.isHost &&
+      this.data.event?.id === options.id && this.data.event.status === 'RECRUITING')
+      this.setData({ successState: 'PUBLISHED' });
   },
   async onShow() {
     this.checkInPageHidden = false;
@@ -60,7 +63,7 @@ Page({
     if (this.data.currentUser && this.data.currentUser !== actor) {
       this.refreshId = (this.refreshId || 0) + 1;
       this.clearCheckInToken();
-      this.setData({ token: '', source: '', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false,
+      this.setData({ token: '', source: '', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '',
         canJoin: false, canExpressInterest: false, canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
         canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
         safetyStatus: 'UNKNOWN', myRegistration: null,
@@ -83,6 +86,7 @@ Page({
   onHide() {
     this.checkInPageHidden = true;
     this.clearCheckInToken();
+    if (this.data.successState) this.setData({ successState: '' });
   },
   onUnload() {
     this.checkInPageHidden = true;
@@ -243,6 +247,7 @@ Page({
         expenses, expenseLoadState, expenseError,
         outcome, outcomeLoadState, outcomeError, checkIns, manualCheckIns, attendanceLoadState, attendanceError, reconfirmation,
         canRequestManualCheckIn, currentUser: actor, message: '' });
+      this.reconcileSuccessState();
       return true;
     } catch (error) {
       if (refreshId !== this.refreshId || actor !== currentIdentity()) return false;
@@ -268,7 +273,32 @@ Page({
   jumpToSection(event) {
     const id = event.currentTarget.dataset.section;
     if (['detailsSection', 'registrationSection', 'contentSection', 'checkinSection', 'expenseSection', 'hostSection'].includes(id))
-      wx.pageScrollTo({ selector: '#' + id, duration: 260 });
+      this.scrollToSection(id);
+  },
+  scrollToSection(id) {
+    const selector = '#' + id;
+    if (typeof wx.createSelectorQuery !== 'function') return wx.pageScrollTo({ selector, duration: 260 });
+    const query = wx.createSelectorQuery();
+    query.select(selector).boundingClientRect();
+    query.selectViewport().scrollOffset();
+    query.exec(([rect, viewport]) => {
+      if (!rect || !viewport || !Number.isFinite(rect.top) || !Number.isFinite(viewport.scrollTop))
+        return wx.pageScrollTo({ selector, duration: 260 });
+      wx.pageScrollTo({ scrollTop: Math.max(0, viewport.scrollTop + rect.top - 64), duration: 260 });
+    });
+  },
+  dismissSuccess() { this.setData({ successState: '' }); },
+  reconcileSuccessState() {
+    const { successState, event, isHost, myRegistration } = this.data;
+    const publishedStillCurrent = successState === 'PUBLISHED' && isHost && event?.status === 'RECRUITING';
+    const joinedStillCurrent = successState === 'JOINED' && myRegistration?.status === 'CONFIRMED' &&
+      ['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(event?.status);
+    if (successState && !publishedStillCurrent && !joinedStillCurrent) this.dismissSuccess();
+  },
+  viewSuccessDetails() {
+    const section = this.data.successState === 'JOINED' ? 'registrationSection' : 'detailsSection';
+    this.dismissSuccess();
+    this.scrollToSection(section);
   },
   goToReport() {
     const actor = currentIdentity();
@@ -318,8 +348,12 @@ Page({
       this.setData({ message: '活动信息已变化，请刷新后重新确认报名规则' });
       return;
     }
-    return this.action(`/events/${event.id}/registrations`,
+    const result = await this.action(`/events/${event.id}/registrations`,
       { inviteToken: this.data.token, acceptedRules: true }, '报名状态已更新');
+    if (result && this.data.loadState === 'READY' && this.data.event?.id === event.id &&
+      actor === currentIdentity() && this.data.myRegistration?.status === 'CONFIRMED')
+      this.setData({ successState: 'JOINED' });
+    return result;
   },
   interested() { this.action(`/events/${this.data.id}/interests`, { inviteToken: this.data.token }, '已记录待定意向，不占用名额'); },
   async leave() {

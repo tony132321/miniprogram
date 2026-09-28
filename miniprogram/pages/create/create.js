@@ -425,7 +425,7 @@ Page({
     try {
       const event = await api.post(`/events/${preview.id}/publish`, { expectedVersion: preview.version });
       this.setData({ ...emptyEditor() });
-      wx.navigateTo({ url: `/pages/event/event?id=${encodeURIComponent(event.id)}` });
+      wx.navigateTo({ url: `/pages/event/event?id=${encodeURIComponent(event.id)}&success=published` });
     } catch (error) {
       if (!this.markVersionConflict(error, 'draft', preview.id))
         this.setData({ message: error.message || '发布未完成' });

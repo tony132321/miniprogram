@@ -16,6 +16,49 @@ test('mini-program fingerprint hashing matches SHA-256 for plain and Unicode tex
     assert.equal(sha256(value), createHash('sha256').update(value).digest('hex'));
 });
 
+test('event success state appears only after the server confirms the published event or registration', async () => {
+  let page: Record<string, any> | undefined;
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: {} };
+      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
+      if (path === '../../config.js') return { developmentUser: 'host' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    getApp() { return { globalData: { ready: Promise.resolve() } }; },
+    wx: { getStorageSync() { return ''; }, showModal(options: Record<string, any>) { options.success({ confirm: true }); } },
+    setTimeout, clearTimeout
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.refresh = async function () {
+    this.setData({ loadState: 'READY', event: { id: 'e1', status: 'RECRUITING', version: 2,
+      payload: { title: '羽毛球', startAt: '2026-10-01T10:00:00Z', feeMode: 'FREE' } }, isHost: true });
+    return true;
+  };
+  await page.onLoad({ id: 'e1', success: 'published' });
+  assert.equal(page.data.successState, 'PUBLISHED');
+  page.setData({ successState: '' });
+  page.refresh = async function () {
+    this.setData({ loadState: 'READY', event: { id: 'e1', status: 'RECRUITING', version: 2,
+      payload: { title: '羽毛球', startAt: '2026-10-01T10:00:00Z', feeMode: 'FREE' } }, isHost: false });
+    return true;
+  };
+  await page.onLoad({ id: 'e1', success: 'published' });
+  assert.equal(page.data.successState, '');
+  page.setData({ canJoin: true, myRegistration: null, successState: '' });
+  page.action = async function () { this.setData({ myRegistration: { status: 'CONFIRMED' } }); return { id: 'r1' }; };
+  await page.join();
+  assert.equal(page.data.successState, 'JOINED');
+  page.setData({ myRegistration: { status: 'CANCELLED' } });
+  page.reconcileSuccessState();
+  assert.equal(page.data.successState, '');
+  page.setData({ successState: 'PUBLISHED', isHost: true, event: { id: 'e1', status: 'CANCELLED' } });
+  page.reconcileSuccessState();
+  assert.equal(page.data.successState, '');
+});
+
 test('mini-program API sends the current login token and preserves server errors', async () => {
   let captured: Record<string, any> | undefined;
   const api = createApi({
