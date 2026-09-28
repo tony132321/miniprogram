@@ -71,12 +71,14 @@ export async function markNotificationOpened(db: Database, actor: string, notifi
       const { rows } = await tx.query<{ result: { id: string; status: 'OPENED'; externalStatus: string } }>('SELECT result FROM idempotency WHERE actor_id=$1 AND route=$2 AND key=$3', [actor, route, key]);
       return rows[0]!.result;
     }
-    const { rows } = await tx.query<{ user_id: string; event_id: string; external_status: string }>('SELECT user_id,event_id,external_status FROM notifications WHERE id=$1 FOR UPDATE', [notificationId]);
+    const { rows } = await tx.query<{ user_id: string; event_id: string; status: string; external_status: string }>('SELECT user_id,event_id,status,external_status FROM notifications WHERE id=$1 FOR UPDATE', [notificationId]);
     if (!rows[0]) throw new AppError('NOT_FOUND', '通知不存在', 404);
     if (rows[0].user_id !== actor) throw new AppError('FORBIDDEN', '只能查看自己的通知', 403);
-    await tx.query("UPDATE notifications SET status='OPENED',read_at=now() WHERE id=$1", [notificationId]);
+    if (rows[0].status !== 'OPENED')
+      await tx.query("UPDATE notifications SET status='OPENED',read_at=now() WHERE id=$1", [notificationId]);
     const result = { id: notificationId, status: 'OPENED' as const, externalStatus: rows[0].external_status };
-    await tx.query('INSERT INTO audit(id,actor_id,event_id,action) VALUES($1,$2,$3,$4)', [randomUUID(), actor, rows[0].event_id, 'OPEN_NOTIFICATION']);
+    if (rows[0].status !== 'OPENED')
+      await tx.query('INSERT INTO audit(id,actor_id,event_id,action) VALUES($1,$2,$3,$4)', [randomUUID(), actor, rows[0].event_id, 'OPEN_NOTIFICATION']);
     await tx.query('UPDATE idempotency SET result=$4 WHERE actor_id=$1 AND route=$2 AND key=$3', [actor, route, key, JSON.stringify(result)]);
     return result;
   });

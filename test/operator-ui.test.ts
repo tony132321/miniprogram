@@ -54,6 +54,69 @@ test('a denied queue does not hide other permitted operator queues', async () =>
   assert.match(ui.item('status').textContent, /无权限.*privacy/i);
 });
 
+test('AI draft alert can be reviewed from the operator list without claiming cost settlement', async () => {
+  let pending = true;
+  const posts: Array<{ path: string; body: Record<string, unknown> }> = [];
+  const ui = await workbench(async (path, options) => {
+    if (path === '/ops/ai-draft-alerts/review' && options?.method === 'POST') {
+      posts.push({ path, body: JSON.parse(options.body!) }); pending = false;
+      return { ok: true, status: 200, json: async () => ({ reviewState: 'REVIEW_RECORDED' }) };
+    }
+    if (path === '/ops/ai-draft-alerts?offset=0') return { ok: true, status: 200,
+      json: async () => ({ items: pending ? [{ actor_id: 'host', request_key: 'uncertain',
+        event_id: null, status: 'UNKNOWN', reserved_fen: 20, known_cost_fen: null, cost_status: null }] : [],
+        total: pending ? 1 : 0, nextOffset: null, snapshot: 'a'.repeat(32) }) };
+    if (path === '/ops/ai-draft-alerts/reviews?offset=0') return { ok: true, status: 200,
+      json: async () => ({ items: pending ? [] : [{ actor_id: 'host', request_key: 'uncertain',
+        reviewed_by: 'operator:ops', note: '已核查内部异常，待供应商账单', status: 'UNKNOWN', reserved_fen: 20 }] }) };
+    return { ok: true, status: 200, json: async () => ({ items: [], status: 'OPEN', weeks: [] }) };
+  });
+  await ui.item('refresh').onclick?.();
+  const row = ui.item('aiDraftAlerts').children[0] as { children: Array<{ value?: string; onclick?: () => Promise<void> }> };
+  const note = row.children.find(child => child.value !== undefined)!;
+  note.value = '已核查内部异常，待供应商账单';
+  await row.children.find(child => child.onclick)?.onclick?.();
+  assert.deepEqual(posts, [{ path: '/ops/ai-draft-alerts/review',
+    body: { userId: 'host', requestKey: 'uncertain', note: '已核查内部异常，待供应商账单' } }]);
+  assert.equal(ui.item('aiDraftAlerts').children.length, 0);
+  const history = ui.item('aiDraftAlertReviews').children[0] as { textContent: string };
+  assert.match(history.textContent, /待供应商账单/);
+  assert.doesNotMatch(history.textContent, /已结清|已送达/);
+});
+
+test('operator workbench pages AI review history and restarts when history changes', async () => {
+  const paths: string[] = [];
+  let changed = false;
+  const row = (key: string) => ({ actor_id: 'host', request_key: key, reviewed_by: 'operator:ops',
+    note: '内部复核完成，外部账单待查', status: 'UNKNOWN', reserved_fen: 20, cost_status: null });
+  const ui = await workbench(async path => {
+    paths.push(path);
+    if (path === '/ops/ai-draft-alerts/reviews?offset=0') return { ok: true, status: 200,
+      json: async () => ({ items: [row(changed ? 'new-review' : 'first-review')], total: 3,
+        nextOffset: 1, snapshot: (changed ? 'b' : 'a').repeat(32) }) };
+    if (path === `/ops/ai-draft-alerts/reviews?offset=1&snapshot=${'a'.repeat(32)}`) {
+      if (changed) return { ok: false, status: 409,
+        json: async () => ({ code: 'QUEUE_CHANGED', message: '复核历史已变化' }) };
+      return { ok: true, status: 200,
+        json: async () => ({ items: [row('older-review')], total: 3, nextOffset: 2, snapshot: 'a'.repeat(32) }) };
+    }
+    if (path === `/ops/ai-draft-alerts/reviews?offset=2&snapshot=${'a'.repeat(32)}`) return { ok: false,
+      status: 409, json: async () => ({ code: 'QUEUE_CHANGED', message: '复核历史已变化' }) };
+    return { ok: true, status: 200, json: async () => ({ items: [], status: 'OPEN', weeks: [] }) };
+  });
+  await ui.item('refresh').onclick?.();
+  assert.equal(ui.item('aiDraftAlertReviews').children.length, 1);
+  await ui.item('moreAiDraftAlertReviews').onclick?.();
+  assert.equal(ui.item('aiDraftAlertReviews').children.length, 2);
+  assert.deepEqual(paths.filter(path => path.startsWith('/ops/ai-draft-alerts/reviews?')),
+    ['/ops/ai-draft-alerts/reviews?offset=0', `/ops/ai-draft-alerts/reviews?offset=1&snapshot=${'a'.repeat(32)}`]);
+  changed = true;
+  await ui.item('moreAiDraftAlertReviews').onclick?.();
+  assert.equal(ui.item('aiDraftAlertReviews').children.length, 1);
+  assert.match((ui.item('aiDraftAlertReviews').children[0] as { textContent: string }).textContent, /new-review/);
+  assert.match(ui.item('status').textContent, /AI 草稿复核历史变化，已从第一页刷新/);
+});
+
 test('operator refresh shows a recoverable network error instead of a perpetual loading state', async () => {
   let offline = true;
   const ui = await workbench(async path => {

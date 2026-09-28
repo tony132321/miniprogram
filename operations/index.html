@@ -91,7 +91,7 @@
   <section><h2>通知待跟进</h2><p class="muted">未配置用途、外部发送不可用、明确失败或结果不确定。人工跟进记录不代表用户已收到消息。</p><ul id="notificationFollowups"></ul><button id="moreNotificationFollowups" disabled>加载更多待跟进通知</button></section>
   <section><h2>最近已跟进</h2><p class="muted">展示最近 100 条处理说明，供有通知权限的运营人员复核；原外部发送状态保留。</p><ul id="notificationHistory"></ul></section>
   <section><h2>失败任务</h2><p class="muted">重新排队仅表示等待后台处理；外部通知状态不确定时须先人工核对。</p><ul id="failedJobs"></ul><button id="moreFailedJobs" disabled>加载更多失败任务</button></section>
-  <section><h2>AI 草稿异常</h2><p class="muted">费用与请求状态须对照供应商账单核查；异常请求不会自动重试。此处不展示草稿原文。</p><ul id="aiDraftAlerts"></ul><button id="moreAiDraftAlerts" disabled>加载更多 AI 草稿异常</button></section>
+  <section><h2>AI 草稿异常</h2><p class="muted">人工复核只记录内部处理，未知费用与预算预留仍保留；须另行核对供应商账单。异常请求不会自动重试。此处不展示草稿原文。</p><ul id="aiDraftAlerts"></ul><button id="moreAiDraftAlerts" disabled>加载更多 AI 草稿异常</button><h3>人工复核历史</h3><ul id="aiDraftAlertReviews"></ul><button id="moreAiDraftAlertReviews" disabled>加载更多 AI 草稿复核历史</button></section>
   <section><h2>每场 AI 草稿成本</h2><p class="muted">已知费用与不确定占额分别列示；供应商账单未核对前，不作为最终结算。此处不展示草稿原文。</p><ul id="aiEventCosts"></ul><button id="moreAiEventCosts">加载活动成本</button></section>
   <section><h2>申诉</h2><ul id="appeals"></ul><button id="moreAppeals" disabled>加载更多申诉</button></section>
   <section><h2>个人信息请求</h2><ul id="privacy"></ul><button id="morePrivacy" disabled>加载更多请求</button></section>
@@ -202,6 +202,17 @@
       if (!response.ok) throw new Error(data.message || data.code || '读取 AI 草稿异常失败');
       return data;
     }
+    async function loadAiDraftAlertReviews(denied, offset = 0, snapshot = null) {
+      const path = '/ops/ai-draft-alerts/reviews';
+      const response = await fetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+        { headers: headers() });
+      const data = await response.json();
+      if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
+      if (response.status === 409 && data.code === 'QUEUE_CHANGED')
+        throw Object.assign(new Error(data.message), { code: data.code });
+      if (!response.ok) throw new Error(data.message || data.code || '读取 AI 草稿复核历史失败');
+      return data;
+    }
     async function loadPrivacy(denied, offset = 0, snapshot = null) {
       const path = '/ops/privacy';
       const response = await fetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
@@ -271,6 +282,8 @@
     let failedJobSnapshot = null;
     let nextAiDraftAlertOffset = null;
     let aiDraftAlertSnapshot = null;
+    let nextAiDraftAlertReviewOffset = null;
+    let aiDraftAlertReviewSnapshot = null;
     let aiEventCostCursor = null;
     function renderPrivacy(items) {
       for (const item of items) {
@@ -307,6 +320,7 @@
               ['cohostGrantsIssued', '发出的协办授权'], ['privacyRequests', '隐私请求'],
               ['auditActions', '审计记录'], ['businessEvents', '业务事件'],
               ['idempotencyRecords', '幂等记录'], ['aiDraftRequests', 'AI 草稿请求'],
+              ['aiDraftAlertReviews', 'AI 草稿异常复核'],
               ['aiActionProposals', 'AI 动作提议']
             ];
             details.textContent = `待政策复核；已识别部分类别：${fields.map(([key, label]) => `${label} ${Number.isInteger(counts[key]) ? counts[key] : '—'}`).join('、')}。此清单未执行删除。`;
@@ -543,6 +557,21 @@
         li.appendChild(button);
       }
     }
+    function renderAiDraftAlerts(items) {
+      for (const item of items) {
+        const li = line($('aiDraftAlerts'), `${item.created_at} · 用户 ${item.actor_id} · 活动 ${item.event_id || '历史未关联'} · 请求 ${item.request_key} · ${item.status} · 原因 ${item.fallback_reason || '待核查'} · 预留 ${item.reserved_fen ?? item.budget_fen} 分 · 已知费用 ${item.known_cost_fen == null ? '未知' : item.known_cost_fen + ' 分'} · 费用状态 ${item.cost_status || '未知'}`);
+        const note = document.createElement('input'); note.placeholder = '内部复核说明（5 至 500 字）'; li.appendChild(note);
+        const button = document.createElement('button'); button.textContent = '记录人工复核';
+        button.onclick = async () => {
+          try { await post('/ops/ai-draft-alerts/review', { userId: item.actor_id, requestKey: item.request_key, note: note.value }); await refresh(); }
+          catch (error) { $('status').textContent = error.message; }
+        };
+        li.appendChild(button);
+      }
+    }
+    function renderAiDraftAlertReviews(items) {
+      for (const item of items) line($('aiDraftAlertReviews'), `${item.reviewed_at} · ${item.reviewed_by} · 用户 ${item.actor_id} · 活动 ${item.event_id || '历史未关联'} · 请求 ${item.request_key} · ${item.status} · 预留 ${item.reserved_fen} 分 · 费用状态 ${item.cost_status || '未知'} · ${item.note}`);
+    }
     function renderEventReviews(items) {
       for (const item of items) {
         const p = item.payload;
@@ -659,15 +688,18 @@
       nextAiDraftAlertOffset = null;
       aiDraftAlertSnapshot = null;
       $('moreAiDraftAlerts').disabled = true;
+      nextAiDraftAlertReviewOffset = null;
+      aiDraftAlertReviewSnapshot = null;
+      $('moreAiDraftAlertReviews').disabled = true;
       aiEventCostCursor = null;
       $('moreAiEventCosts').disabled = false;
       $('moreAiEventCosts').textContent = '加载活动成本';
       $('aiEventCosts').replaceChildren();
       $('status').textContent = '读取中…';
       $('metrics').textContent = '读取中…';
-      for (const id of ['reports', 'reportResponseAlerts', 'eventReviews', 'holds', 'rateLimits', 'registrationAnomalies', 'notificationFollowups', 'notificationHistory', 'failedJobs', 'aiDraftAlerts', 'supportMinutesHistory', 'appeals', 'privacy', 'content']) $(id).replaceChildren();
+      for (const id of ['reports', 'reportResponseAlerts', 'eventReviews', 'holds', 'rateLimits', 'registrationAnomalies', 'notificationFollowups', 'notificationHistory', 'failedJobs', 'aiDraftAlerts', 'aiDraftAlertReviews', 'supportMinutesHistory', 'appeals', 'privacy', 'content']) $(id).replaceChildren();
       try {
-        const [reportPage, responseAlertPage, eventReviewPage, holds, rateLimits, anomalyPage, notificationFollowupPage, notificationHistory, failedJobPage, aiDraftAlertPage, supportMinutesHistory, appealPage, privacyPage, contentPage, publicGate, emergencyGate, metrics] = await Promise.all([loadReports(denied), loadReportResponseAlerts(denied), loadEventReviews(denied), load('/ops/holds', denied), load('/ops/rate-limits', denied), loadRegistrationAnomalies(denied), loadNotificationFollowups(denied), load('/ops/notifications/followups/history', denied), loadFailedJobs(denied), loadAiDraftAlerts(denied), load('/ops/support-minutes', denied), loadAppeals(denied), loadPrivacy(denied), loadContent(denied), loadPublicGate(denied), loadEmergencyGate(denied), loadMetrics(denied)]);
+        const [reportPage, responseAlertPage, eventReviewPage, holds, rateLimits, anomalyPage, notificationFollowupPage, notificationHistory, failedJobPage, aiDraftAlertPage, aiDraftAlertReviews, supportMinutesHistory, appealPage, privacyPage, contentPage, publicGate, emergencyGate, metrics] = await Promise.all([loadReports(denied), loadReportResponseAlerts(denied), loadEventReviews(denied), load('/ops/holds', denied), load('/ops/rate-limits', denied), loadRegistrationAnomalies(denied), loadNotificationFollowups(denied), load('/ops/notifications/followups/history', denied), loadFailedJobs(denied), loadAiDraftAlerts(denied), loadAiDraftAlertReviews(denied), load('/ops/support-minutes', denied), loadAppeals(denied), loadPrivacy(denied), loadContent(denied), loadPublicGate(denied), loadEmergencyGate(denied), loadMetrics(denied)]);
         if (generation !== requestGeneration) return false;
         const reports = reportPage.items;
         const registrationAnomalies = anomalyPage.items;
@@ -708,6 +740,9 @@
         nextAiDraftAlertOffset = aiDraftAlertPage.nextOffset ?? null;
         aiDraftAlertSnapshot = aiDraftAlertPage.snapshot ?? null;
         $('moreAiDraftAlerts').disabled = nextAiDraftAlertOffset === null;
+        nextAiDraftAlertReviewOffset = aiDraftAlertReviews.nextOffset ?? null;
+        aiDraftAlertReviewSnapshot = aiDraftAlertReviews.snapshot ?? null;
+        $('moreAiDraftAlertReviews').disabled = nextAiDraftAlertReviewOffset === null;
         $('recordSupportMinutes').disabled = denied.includes('/ops/support-minutes');
         if (!metrics) $('metrics').textContent = '无权限查看';
         else {
@@ -766,7 +801,8 @@
         renderNotificationFollowups(notificationFollowups);
         for (const item of notificationHistory) line($('notificationHistory'), `${item.recordedAt} · ${item.recordedBy} · 活动 ${item.eventId} · 用户 ${item.userId} · ${item.kind} · 外部状态 ${item.externalStatus} · 原因 ${item.failureCode || '未记录'} · ${item.note}`);
         renderFailedJobs(failedJobs);
-        for (const item of aiDraftAlerts) line($('aiDraftAlerts'), `${item.created_at} · 用户 ${item.actor_id} · 活动 ${item.event_id || '历史未关联'} · 请求 ${item.request_key} · ${item.status} · 原因 ${item.fallback_reason || '待核查'} · 预留 ${item.reserved_fen ?? item.budget_fen} 分 · 已知费用 ${item.known_cost_fen == null ? '未知' : item.known_cost_fen + ' 分'} · 费用状态 ${item.cost_status || '未知'}`);
+        renderAiDraftAlerts(aiDraftAlerts);
+        renderAiDraftAlertReviews(aiDraftAlertReviews.items);
         renderAppeals(appeals);
         renderPrivacy(privacy);
         for (const item of supportMinutesHistory)
@@ -1013,7 +1049,7 @@
         const page = await loadAiDraftAlerts(denied, offset, snapshot);
         if (generation !== requestGeneration) return;
         if (denied.length) { $('status').textContent = '无权限查看 AI 草稿异常'; return; }
-        for (const item of page.items) line($('aiDraftAlerts'), `${item.created_at} · 用户 ${item.actor_id} · 请求 ${item.request_key} · ${item.status} · 原因 ${item.fallback_reason || '待核查'} · 预算 ${item.budget_fen} 分 · 已知费用 ${item.known_cost_fen == null ? '未知' : item.known_cost_fen + ' 分'} · 费用状态 ${item.cost_status || '未知'}`);
+        renderAiDraftAlerts(page.items);
         nextAiDraftAlertOffset = page.nextOffset ?? null;
         aiDraftAlertSnapshot = page.snapshot ?? null;
         $('moreAiDraftAlerts').disabled = nextAiDraftAlertOffset === null;
@@ -1025,6 +1061,33 @@
         }
         nextAiDraftAlertOffset = offset;
         $('moreAiDraftAlerts').disabled = false;
+        $('status').textContent = error.message;
+      }
+    };
+    $('moreAiDraftAlertReviews').onclick = async () => {
+      if (nextAiDraftAlertReviewOffset === null) return;
+      const generation = requestGeneration;
+      const offset = nextAiDraftAlertReviewOffset;
+      const snapshot = aiDraftAlertReviewSnapshot;
+      nextAiDraftAlertReviewOffset = null;
+      $('moreAiDraftAlertReviews').disabled = true;
+      try {
+        const denied = [];
+        const page = await loadAiDraftAlertReviews(denied, offset, snapshot);
+        if (generation !== requestGeneration) return;
+        if (denied.length) { $('status').textContent = '无权限查看 AI 草稿复核历史'; return; }
+        renderAiDraftAlertReviews(page.items);
+        nextAiDraftAlertReviewOffset = page.nextOffset ?? null;
+        aiDraftAlertReviewSnapshot = page.snapshot ?? null;
+        $('moreAiDraftAlertReviews').disabled = nextAiDraftAlertReviewOffset === null;
+      } catch (error) {
+        if (generation !== requestGeneration) return;
+        if (error.code === 'QUEUE_CHANGED') {
+          if (await refresh()) $('status').textContent += ' · AI 草稿复核历史变化，已从第一页刷新';
+          return;
+        }
+        nextAiDraftAlertReviewOffset = offset;
+        $('moreAiDraftAlertReviews').disabled = false;
         $('status').textContent = error.message;
       }
     };

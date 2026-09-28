@@ -86,6 +86,9 @@ export async function exportPersonalData(db: Database, actor: string) {
       FROM notification_consent_history WHERE user_id=$1 ORDER BY changed_at,id`),
     aiDraftRequests: await own(`SELECT event_id,status,budget_fen,reserved_fen,known_cost_fen,cost_status,result,created_at,finished_at
       FROM ai_draft_requests WHERE actor_id=$1 ORDER BY created_at,request_key`),
+    aiDraftAlertReviews: await own(`SELECT request_key,status_at_review,cost_status_at_review,
+      reserved_fen_at_review,known_cost_fen_at_review,note,reviewed_at
+      FROM ai_draft_alert_reviews WHERE actor_id=$1 ORDER BY reviewed_at,request_key`),
     aiActionProposals: await own(`SELECT id,event_id,kind,expected_version,payload,status,expires_at,
       approved_at,revoked_at,executed_at,receipt,created_at
       FROM ai_action_proposals WHERE actor_id=$1 ORDER BY created_at,id`),

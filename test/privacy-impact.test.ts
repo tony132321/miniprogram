@@ -6,6 +6,7 @@ import { createApp } from '../src/server.ts';
 import { createDraft } from '../src/events.ts';
 import { setConsent } from '../src/notifications.ts';
 import { prepareAiAction } from '../src/ai-actions.ts';
+import { reviewAiDraftAlert } from '../src/ai-draft-requests.ts';
 import { eventAliasNotice, setEventAlias } from '../src/event-aliases.ts';
 
 test('privacy impact inventory is operator-only, counted by purpose, and audited without raw content', async () => {
@@ -35,7 +36,9 @@ test('privacy impact inventory is operator-only, counted by purpose, and audited
     await db.query("INSERT INTO outcome_feedback(event_id,user_id,held,would_repeat) VALUES($1,'p1',true,true)", [event.id]);
     await db.query("INSERT INTO cohost_grants(id,event_id,user_id,granted_by,capabilities,expires_at) VALUES('grant-1',$1,'p1','p2',ARRAY['CHECK_IN'],now()+interval '1 day')", [event.id]);
     await db.query("INSERT INTO idempotency(actor_id,route,key,result) VALUES('p1','test','private-key','{}')");
-    await db.query("INSERT INTO ai_draft_requests(actor_id,request_key,request_hash,status,budget_fen,known_cost_fen,result) VALUES('p1','private-ai-key',$1,'COMPLETED',20,7,'{}')", ['a'.repeat(64)]);
+    await db.query("INSERT INTO ai_draft_requests(actor_id,request_key,request_hash,status,budget_fen,known_cost_fen,cost_status,result) VALUES('p1','private-ai-key',$1,'COMPLETED',20,7,'LOWER_BOUND','{}')", ['a'.repeat(64)]);
+    await reviewAiDraftAlert(db, 'operator:jobs', 'p1', 'private-ai-key',
+      '本人异常记录待人工复核', 'impact-ai-review');
     await prepareAiAction(db, 'p1', { kind: 'SAVE_DRAFT', eventId: event.id,
       expectedVersion: event.version, payload: { title: '仅本人的建议' } }, 'private-ai-action');
     await db.query("INSERT INTO privacy_requests(id,user_id,kind) VALUES('request-1','p1','DELETE')");
@@ -76,6 +79,7 @@ test('privacy impact inventory is operator-only, counted by purpose, and audited
     assert.equal(body.counts.privacyRequests, 1);
     assert.equal(body.counts.idempotencyRecords, 5);
     assert.equal(body.counts.aiDraftRequests, 1);
+    assert.equal(body.counts.aiDraftAlertReviews, 1);
     assert.equal(body.counts.aiActionProposals, 1);
     assert.doesNotMatch(JSON.stringify(body), /private-openid|private question|private report|private alias|private-hash/);
     const audit = await db.query<{ actor_id: string; detail: { requestId: string } }>(

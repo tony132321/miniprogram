@@ -8,6 +8,7 @@ import { recordShareIntent, recordAttributedOpen } from '../src/sharing.ts';
 import { askCurrentFact } from '../src/collaboration.ts';
 import { createPersonalExportTicket, exportPersonalData } from '../src/privacy.ts';
 import { runDueJobs } from '../src/jobs.ts';
+import { reviewAiDraftAlert } from '../src/ai-draft-requests.ts';
 
 const input = { title: '导出测试', type: 'badminton', startAt: '2027-01-02T12:00:00.000Z', endAt: '2027-01-02T14:00:00.000Z',
   timeZone: 'Asia/Shanghai', city: '深圳', venueName: '公共场馆', venueStatus: 'HOST_CONFIRMED', minParticipants: 4, maxParticipants: 4,
@@ -29,6 +30,23 @@ test('personal export includes only the owner’s host publication review', asyn
     assert.equal(other.hostPublicationStatus?.status, 'NEW');
     assert.equal(other.hostPublicationStatus?.reason, '另一人的复核资料');
     assert.equal((await exportPersonalData(db, 'unreviewed')).hostPublicationStatus, null);
+  } finally { await db.close(); }
+});
+
+test('personal export includes own AI alert review without another user or operator identity', async () => {
+  const db = await createDatabase();
+  try {
+    await db.query(`INSERT INTO ai_draft_requests(actor_id,request_key,request_hash,status,budget_fen,reserved_fen)
+      VALUES('p1','uncertain-one',$1,'UNKNOWN',20,20),
+            ('p2','uncertain-two',$2,'UNKNOWN',20,20)`, ['a'.repeat(64), 'b'.repeat(64)]);
+    await reviewAiDraftAlert(db, 'operator:jobs', 'p1', 'uncertain-one', '本人的异常核查说明', 'review-one');
+    await reviewAiDraftAlert(db, 'operator:jobs', 'p2', 'uncertain-two', '另一人的异常核查说明', 'review-two');
+    const own = await exportPersonalData(db, 'p1');
+    assert.equal(own.aiDraftAlertReviews.length, 1);
+    assert.equal(own.aiDraftAlertReviews[0]?.note, '本人的异常核查说明');
+    assert.equal(own.aiDraftAlertReviews[0]?.status_at_review, 'UNKNOWN');
+    assert.equal(own.aiDraftAlertReviews[0]?.reviewed_by, undefined);
+    assert.equal(JSON.stringify(own).includes('另一人的异常核查说明'), false);
   } finally { await db.close(); }
 });
 
@@ -71,7 +89,7 @@ test('personal export includes own sharing, offers, questions and history withou
     assert.equal(own.factQuestions[0]?.question_text, '需要自带球拍吗？');
     assert.equal(own.auditActions.some(item => item.action === 'UNKNOWN_FACT_QUESTION'), true);
     assert.deepEqual(own.businessEvents.map(item => item.event_name).sort(),
-      ['REGISTER_CONFIRMED', 'SHARE_OPEN_ATTRIBUTED', 'SHARE_OPEN_UNKNOWN']);
+      ['REGISTER_CONFIRMED', 'SHARE_OPEN_ATTRIBUTED', 'SHARE_OPEN_UNKNOWN', 'UNKNOWN_FACT_QUESTION']);
     assert.ok(/^[a-f0-9]{64}$/.test(String(own.businessEvents[0]?.user_id_pseudonymous ?? '')));
     assert.deepEqual(own.notifications[0]?.detail, { status: 'CONFIRMED' });
     assert.equal(own.manualCheckIns[0]?.requested_by, undefined);

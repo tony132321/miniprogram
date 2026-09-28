@@ -11,6 +11,8 @@ import { recordAttributedOpen, recordShareIntent, getShareMetrics } from '../src
 import { createReport } from '../src/operations.ts';
 import { recordSupportMinutes } from '../src/support-minutes.ts';
 import { openSyntheticPublicCoverage } from './helpers/public-coverage.ts';
+import { askCurrentFact, createContent, moderateContent } from '../src/collaboration.ts';
+import { markNotificationOpened } from '../src/notifications.ts';
 
 const valid = (visibility: 'INVITE' | 'PUBLIC') => {
   const start = Date.now() + 4 * 24 * 60 * 60_000;
@@ -25,6 +27,36 @@ const valid = (visibility: 'INVITE' | 'PUBLIC') => {
 
 type BusinessEvent = { event_uuid: string; event_name: string; occurred_at: Date; user_id_pseudonymous: string | null;
   activity_id: string; version: number; source: string; release: string; is_test: boolean };
+
+test('activity content and first notification open emit committed events without private text', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', valid('INVITE'), 'content-event-draft');
+    const submitted = await publishRawEvent(db, 'host', draft.id, draft.version, 'content-event-publish');
+    const published = await approveInviteEvent(db, submitted);
+    const question = await createContent(db, 'host', draft.id, 'QUESTION', '私人问题原文', null, 'content-question');
+    await createContent(db, 'host', draft.id, 'QUESTION', '私人问题原文', null, 'content-question');
+    await moderateContent(db, 'operator:reviewer', question.id, 'APPROVED', 'content-approve');
+    await createContent(db, 'host', draft.id, 'ANSWER', '私人回答原文', question.id, 'content-answer');
+    await askCurrentFact(db, 'host', draft.id, '没有现成答案的私密提问', 'unknown-fact');
+    await db.query(`INSERT INTO notifications(id,event_id,user_id,kind,event_version,status,external_status)
+      VALUES('content-notice',$1,'host','EVENT_UPDATED',$2,'IN_APP','UNAVAILABLE')`, [draft.id, published.version]);
+    await markNotificationOpened(db, 'host', 'content-notice', 'open-one');
+    await markNotificationOpened(db, 'host', 'content-notice', 'open-two');
+    const { rows } = await db.query<BusinessEvent>(`SELECT * FROM business_events WHERE activity_id=$1
+      AND event_name IN ('CONTENT_QUESTION','CONTENT_ANSWER','MODERATE_APPROVED','UNKNOWN_FACT_QUESTION','OPEN_NOTIFICATION')`, [draft.id]);
+    assert.deepEqual(rows.map(row => row.event_name).sort(),
+      ['CONTENT_ANSWER','CONTENT_QUESTION','MODERATE_APPROVED','OPEN_NOTIFICATION','UNKNOWN_FACT_QUESTION']);
+    assert.ok(rows.every(row => row.version === published.version && row.is_test));
+    assert.equal(rows.find(row => row.event_name === 'MODERATE_APPROVED')?.source, 'OPS');
+    assert.equal(JSON.stringify(rows).includes('私人'), false);
+    await assert.rejects(db.transaction(async tx => {
+      await tx.query("INSERT INTO audit(id,actor_id,event_id,action) VALUES('content-rollback','host',$1,'CONTENT_QUESTION')", [draft.id]);
+      throw new Error('rollback');
+    }), /rollback/);
+    assert.equal((await db.query("SELECT 1 FROM business_events WHERE event_uuid='content-rollback'")).rows.length, 0);
+  } finally { await db.close(); }
+});
 
 test('committed business events are pseudonymous, versioned and idempotent', async () => {
   const db = await createDatabase();

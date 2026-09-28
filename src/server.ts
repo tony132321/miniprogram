@@ -13,7 +13,7 @@ import { register, expressInterest, cancelRegistration, removeRegistration, rese
 import { previewEventChange, getPendingReconfirmation, changeEvent, reconfirm, confirmEvent, cancelEvent, createCheckInToken, checkIn, listCheckIns, requestManualCheckIn, respondManualCheckIn, listManualCheckIns, completeEvent, repeatEvent, listRepeatCandidates, recordExpense, listExpenses, markExpenseShare, recordOutcomeFeedback, getOutcomeEvidence } from './lifecycle.ts';
 import { localDraftSuggestion } from './ai.ts';
 import type { DraftProvider } from './ai-provider-boundary.ts';
-import { listAiDraftAlerts, listAiEventCosts, runRecordedDraftProvider } from './ai-draft-requests.ts';
+import { listAiDraftAlerts, listAiDraftAlertReviews, listAiEventCosts, reviewAiDraftAlert, runRecordedDraftProvider } from './ai-draft-requests.ts';
 import { approveAiAction, executeAiAction, prepareAiAction, revokeAiAction } from './ai-actions.ts';
 import { createReport, listReports, listReportTriage, listReportResponseAlerts, inspectReportForSafety, assignReport, classifyReportSeverity, listMyReports, changeReportStatus, createAppeal, listAppeals, listMyAppeals, changeAppealStatus, listMyRemovals, createPrivacyRequest, listPrivacyRequests, listPrivacyForOperations, getPrivacyRequestImpact } from './operations.ts';
 import type { ReportResponsePolicy } from './report-response-policy.ts';
@@ -459,6 +459,17 @@ export function createApp(db: Database, options: AppOptions) {
         const offsetText = requestUrl.searchParams.get('offset') ?? '0';
         if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', 'AI 草稿异常列表页码无效');
         return send(res, 200, await listAiDraftAlerts(db, Number(offsetText), requestUrl.searchParams.get('snapshot')));
+      }
+      if (path === '/ops/ai-draft-alerts/reviews' && method === 'GET') {
+        requireOperator(actor, 'JOBS');
+        const offsetText = requestUrl.searchParams.get('offset') ?? '0';
+        if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', 'AI 草稿复核历史页码无效');
+        return send(res, 200, await listAiDraftAlertReviews(db, Number(offsetText), requestUrl.searchParams.get('snapshot')));
+      }
+      if (path === '/ops/ai-draft-alerts/review' && method === 'POST') {
+        requireOperator(actor, 'JOBS');
+        const key = keyFrom(req); const body = await readJson(req);
+        return send(res, 200, await reviewAiDraftAlert(db, actor, body.userId, body.requestKey, body.note, key));
       }
       if (path === '/ops/ai-event-costs' && method === 'GET') {
         requireOperator(actor, 'JOBS');
