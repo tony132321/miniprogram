@@ -1,0 +1,8 @@
+<view class="city-page">
+  <view class="search"><text>⌕</text><input placeholder="搜索城市名称" value="{{query}}" bindinput="search" /></view>
+  <view class="current-card"><view class="overline">当前选择的城市</view><view class="current-name">{{currentCity}} <text>✓</text></view><view class="hint">城市仅作为浏览偏好；公开找局目前尚未开放。</view></view>
+  <view class="section-heading">热门城市</view>
+  <view class="popular-grid"><button wx:for="{{popularCities}}" wx:key="*this" class="popular {{currentCity === item ? 'active' : ''}}" data-city="{{item}}" bindtap="selectCity">{{item}}</button></view>
+  <view class="section-heading">城市列表</view>
+  <view class="city-list"><button wx:for="{{visibleCities}}" wx:key="name" class="city-row" data-city="{{item.name}}" bindtap="selectCity"><text>{{item.name}}</text><text class="province">{{item.province}}　{{currentCity === item.name ? '✓' : '›'}}</text></button><view wx:if="{{visibleCities.length === 0}}" class="empty">没有找到匹配的城市</view></view>
+</view>

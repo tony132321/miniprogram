@@ -12,8 +12,29 @@ function editorIdentity() {
 function newSourceToken() {
   return Array.from({ length: 4 }, () => Math.floor(Math.random() * 0x100000000).toString(16).padStart(8, '0')).join('');
 }
+function eventDisplay(event) {
+  const payload = event.payload || {};
+  const format = value => {
+    const timestamp = Date.parse(value || '');
+    if (!Number.isFinite(timestamp)) return '待确认';
+    const local = new Date(timestamp + 8 * 60 * 60_000);
+    const weekday = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][local.getUTCDay()];
+    return `${local.getUTCMonth() + 1} 月 ${local.getUTCDate()} 日（${weekday}）${local.toISOString().slice(11, 16)}`;
+  };
+  const feeCap = Number(payload.feeCapFen);
+  return {
+    title: payload.title || event.title || '未命名活动',
+    date: format(payload.startAt || event.startAt),
+    end: format(payload.endAt || event.endAt),
+    location: [payload.city || event.city, payload.venueName || event.venueName].filter(Boolean).join(' · ') || '地点待确认',
+    fee: payload.feeMode === 'FREE' ? '免费' : payload.feeMode === 'AA' && Number.isFinite(feeCap)
+      ? `AA 制 · 每人上限 ¥${feeCap / 100}` : '费用待确认',
+    status: { DRAFT: '草稿', RECRUITING: '招募中', CONFIRMED: '已成局', IN_PROGRESS: '进行中',
+      COMPLETED: '已结束', CANCELLED: '已取消', EXPIRED: '未成局' }[event.status] || event.status || '状态待确认'
+  };
+}
 Page({
-  data: { id: '', token: '', source: '', event: null, inviteSummary: null, loadState: 'IDLE', isHost: false,
+  data: { id: '', token: '', source: '', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false,
     canJoin: false, canExpressInterest: false, canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
     canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
     myRegistration: null, registrations: [], cohostGrants: [], cohostUserId: '', selectedCohostCapabilities: ['CHECKIN_MANAGE'], aliases: [],
@@ -39,7 +60,7 @@ Page({
     if (this.data.currentUser && this.data.currentUser !== actor) {
       this.refreshId = (this.refreshId || 0) + 1;
       this.clearCheckInToken();
-      this.setData({ token: '', source: '', event: null, inviteSummary: null, loadState: 'IDLE', isHost: false,
+      this.setData({ token: '', source: '', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false,
         canJoin: false, canExpressInterest: false, canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
         canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
         safetyStatus: 'UNKNOWN', myRegistration: null,
@@ -108,6 +129,9 @@ Page({
       const mine = await api.get('/me/registrations');
       const myRegistration = mine.items.find(item => item.event_id === id) || null;
       const myStatus = myRegistration?.status;
+      const registrationLabel = { CONFIRMED: '已确认报名', REQUESTED: '待主办方审核', WAITLISTED: '候补中',
+        OFFERED: '待确认补位', INTERESTED: '暂不确定', RECONFIRM_REQUIRED: '待重新确认',
+        CANCELLED: '已退出', EXPIRED: '已过期', REJECTED: '未通过' }[myStatus] || '未报名';
       const canJoin = !myStatus || ['CANCELLED', 'EXPIRED', 'REJECTED', 'INTERESTED'].includes(myStatus);
       const canExpressInterest = !myStatus || ['CANCELLED', 'EXPIRED', 'REJECTED'].includes(myStatus);
       const canUseCollaboration = isHost || cohostCapabilities.length > 0 || ['CONFIRMED', 'RECONFIRM_REQUIRED', 'WAITLISTED', 'OFFERED'].includes(myStatus);
@@ -208,9 +232,9 @@ Page({
       const previous = this.data.event;
       const shareSourceToken = event.recruiting && !event.riskPaused && previous?.id === id && previous.version === event.version &&
         previous.inviteToken === event.inviteToken ? this.data.shareSourceToken : '';
-      this.setData({ id, event, inviteSummary: null, loadState: 'READY', isHost, canJoin, canExpressInterest,
+      this.setData({ id, event, display: eventDisplay(event), inviteSummary: null, loadState: 'READY', isHost, canJoin, canExpressInterest,
         canUseCollaboration, canPostQuestion, canCheckIn, canApproveRegistration, canManageCheckins, canManageAnnouncements,
-        safetyStatus, myRegistration, registrations, cohostGrants, aliases, hostAlias,
+        safetyStatus, myRegistration, registrationLabel, registrations, cohostGrants, aliases, hostAlias,
         aliasInput: aliases.find(item => item.isMine)?.displayName || '', canSetAlias,
         aliasNoticeVersion: aliasResponse.notice?.version || '', aliasNoticeText: aliasResponse.notice?.text || '',
         aliasReconfirmationRequired: Boolean(aliasResponse.reconfirmationRequired), aliasLoadState, aliasError,
@@ -223,7 +247,7 @@ Page({
     } catch (error) {
       if (refreshId !== this.refreshId || actor !== currentIdentity()) return false;
       const needsLogin = error.code === 'UNAUTHENTICATED' && summary && !config.developmentUser;
-      this.setData({ event: null, inviteSummary: needsLogin ? summary : null,
+      this.setData({ event: null, display: null, registrationLabel: '未报名', inviteSummary: needsLogin ? summary : null,
         loadState: needsLogin ? 'LOGIN_REQUIRED' : 'ERROR', canJoin: false, canExpressInterest: false,
         canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
         canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
@@ -241,6 +265,11 @@ Page({
     catch (error) { this.setData({ loadState: 'LOGIN_REQUIRED', message: error.message || '登录失败，请重试' }); }
   },
   goToMyActivities() { wx.switchTab({ url: '/pages/index/index' }); },
+  jumpToSection(event) {
+    const id = event.currentTarget.dataset.section;
+    if (['detailsSection', 'registrationSection', 'contentSection', 'checkinSection', 'expenseSection', 'hostSection'].includes(id))
+      wx.pageScrollTo({ selector: '#' + id, duration: 260 });
+  },
   goToReport() {
     const actor = currentIdentity();
     getApp().globalData.reportContext = undefined;

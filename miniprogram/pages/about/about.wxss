@@ -1,0 +1,14 @@
+.about-page { box-sizing:border-box; min-height:100vh; padding:60rpx 30rpx; background:#f7f8fc; color:#1a1b1f; text-align:center; }
+.logo { width:122rpx; height:122rpx; border:4rpx solid #1d64f2; border-radius:35rpx; margin:0 auto 26rpx; line-height:115rpx; background:#fff; color:#1d64f2; font-size:80rpx; font-weight:800; box-shadow:0 16rpx 45rpx rgba(29,100,242,.12); }
+.title { font-size:46rpx; font-weight:800; }
+.slogan { color:#1d64f2; font-size:25rpx; font-weight:700; margin:8rpx 0 48rpx; }
+.card { background:#fff; border-radius:28rpx; padding:30rpx; margin-bottom:24rpx; text-align:left; box-shadow:0 5rpx 25rpx rgba(25,46,97,.045); }
+.eyebrow { color:#1d64f2; font-size:22rpx; font-weight:800; }
+.manifesto { font-size:31rpx; font-weight:800; line-height:1.4; margin:12rpx 0 22rpx; }
+.body { color:#626979; font-size:24rpx; line-height:1.7; }
+.action-list { padding:0 26rpx; }
+.action-list button { display:flex; width:100%; box-sizing:border-box; justify-content:space-between; padding:28rpx 0; margin:0; color:inherit; background:transparent; text-align:left; line-height:1.5; border-radius:0; border-bottom:1rpx solid #edf0f4; font-size:25rpx; font-weight:650; }
+.action-list button::after { border:0; }
+.action-list button:last-child { border-bottom:0; }
+.action-list text { color:#1d64f2; font-size:32rpx; }
+.foot { color:#a8adba; font-size:19rpx; letter-spacing:3rpx; margin-top:60rpx; }

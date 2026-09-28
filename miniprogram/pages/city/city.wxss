@@ -1,0 +1,9 @@
+page { background: #faf8fe; color: #18202e; }
+.city-page { min-height: 100vh; padding: 24rpx 32rpx 60rpx; box-sizing: border-box; }
+.search { height: 78rpx; border-radius: 19rpx; background: #ececf1; display: flex; gap: 12rpx; align-items: center; padding: 0 21rpx; }.search text { color: #6c7180; font-size: 36rpx; }.search input { border: 0; width: auto; flex: 1; margin: 0; font-size: 24rpx; }
+.current-card { margin-top: 24rpx; border-radius: 23rpx; padding: 25rpx; background: #fff; box-shadow: 0 6rpx 22rpx rgba(30,42,80,.04); }.overline { font-size: 20rpx; color: #1d64f2; font-weight: 750; }.current-name { font-size: 35rpx; font-weight: 850; margin-top: 9rpx; }.current-name text { color: #1d64f2; margin-left: 9rpx; }.hint { color: #7c8290; font-size: 21rpx; margin-top: 9rpx; }
+.section-heading { font-size: 27rpx; font-weight: 800; margin: 31rpx 0 16rpx; }.popular-grid { display: flex; flex-wrap: wrap; gap: 12rpx; }.popular { width: 21%; padding: 15rpx 0; text-align: center; border-radius: 15rpx; background: #fff; font-size: 24rpx; }.popular.active { background: #1d64f2; color: #fff; font-weight: 750; }
+.city-list { background: #fff; border-radius: 19rpx; overflow: hidden; }.city-row { display: flex; justify-content: space-between; align-items: center; min-height: 76rpx; margin: 0 22rpx; border-bottom: 1rpx solid #f0f0f4; font-size: 24rpx; }.city-row:last-child { border-bottom: 0; }.province { color: #838997; font-size: 20rpx; }.empty { color: #838997; text-align: center; padding: 46rpx; font-size: 23rpx; }
+.popular { line-height: normal; }
+.popular::after,.city-row::after { border: 0; }
+.city-row { width: calc(100% - 44rpx); padding: 0; border-radius: 0; background: #fff; text-align: left; line-height: normal; }

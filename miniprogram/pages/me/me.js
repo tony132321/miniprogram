@@ -267,5 +267,9 @@ Page({
       wx.setClipboardData({ data, success: () => { if (isCurrent()) this.setData({ message: '本人数据 JSON 已复制，可粘贴保存。' }); },
         fail: () => { if (isCurrent()) this.setData({ message: '复制失败，请点击“申请导出”。' }); } });
     } catch (error) { if (isCurrent()) this.setData({ message: error.message }); }
-  }
+  },
+  goMessages() { wx.switchTab({ url: '/pages/messages/messages' }); },
+  goAbout() { wx.navigateTo({ url: '/pages/about/about' }); },
+  goDiscover() { wx.switchTab({ url: '/pages/discover/discover' }); },
+  goCreate() { wx.switchTab({ url: '/pages/create/create' }); }
 });

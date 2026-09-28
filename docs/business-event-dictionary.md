@@ -50,3 +50,23 @@
 | `OPEN_NOTIFICATION` | 用户首次打开一条关联活动的站内通知；同一条通知以不同请求键再次打开不重复计数，不表示外部消息投递 |
 
 迁移 31 起新增上述分享事件，不回填旧打开记录，避免把迁移时间或当前活动版本伪装成历史打开时间。匿名访客因缺少可安全去重的身份，不计入两类新打开；来源未知可能包含无来源、无效来源或已换链的旧来源。相同访客先未知后有来源会在两类中各有一次，不能把两类相加视为去重人数。迁移 34 起新增费用、活动举报和人工时间动作；迁移 39 起新增结项人工裁决，均不回填历史审计。迁移 48 起邀请活动亦须审核，提交和驳回用独立事件名；首次可访问发布改以批准时间为准，迁移前邀请活动仍按当时的活动版本时间保留历史指标口径。迁移 55 起补充活动内容、事实待办、内容审核和站内通知首次打开事件，不回填旧记录。草稿、普通页面曝光/点击、外部消息尝试、无活动 ID 的举报、申诉及隐私请求仍未进入此按活动索引的业务事件表；它们的服务端原始记录仍在业务表或审计表。跨流程全量埋点和正式实验事件字典仍需补齐。收入、支付成功或预约成功没有提供方证据，绝不产生对应成功事件。
+
+## 跨活动或无活动 ID 的聚合事件（迁移 66）
+
+`system_business_events` 是独立的事务性、仅聚合事件流。它只有固定枚举的 `event_name`、数据库写入时间 `occurred_at`、可空的 `is_test`；**没有**用户、活动、通知、举报、申诉、隐私请求的 ID 或散列，也没有正文、token、提供方回执与错误码。活动关联通知的 `is_test` 来自服务端活动标记；无活动范围的请求为 `NULL`，分析时必须单列“测试范围未知”，不可自动当成正式样本。该表不支持个人级漏斗、单条通知去重或归因；这些问题只能由受控业务表回答。迁移不回填旧记录。
+
+| 事件 | 精确含义 |
+| --- | --- |
+| `EXTERNAL_DISPATCH_CLAIMED` | 通知从 `NOT_REQUESTED` 进入持久化 `DISPATCHING`。这是发送尝试的领取，后续校验仍可能拦截；**不表示已调用提供方** |
+| `EXTERNAL_PROVIDER_ACCEPTED`、`EXTERNAL_PROVIDER_REJECTED` | 一次已领取的发送得到提供方明确接受或拒绝并写库；接受仅是提供方接收请求，**不表示用户收到或阅读** |
+| `EXTERNAL_OUTCOME_UNKNOWN` | 发送异常、中断或超时后进入待核对；不能当作接受、拒绝或送达 |
+| `EXTERNAL_RECONCILED_ACCEPTED`、`EXTERNAL_RECONCILED_REJECTED` | 原未知结果经过提供方查询转成明确接受或拒绝；与原 `UNKNOWN` 构成两次状态转移，不能把事件条数直接相加当通知数 |
+| `EXTERNAL_RECONCILIATION_INCONCLUSIVE` | 复查仍无法确认结果；通知仍处于未知状态 |
+| `EXTERNAL_NOT_SENT` | 已领取后因账号、活动、同意、用途或提供方可用性等前置条件而未调用提供方；原因仍在受限通知表 |
+| `REPORT_CREATED_UNSCOPED`、`REPORT_IN_REVIEW_UNSCOPED`、`REPORT_RESOLVED_UNSCOPED` | 无活动 ID 的举报创建、进入复核、结案；有活动 ID 的创建事件仍走 `business_events` |
+| `APPEAL_CREATED`、`APPEAL_IN_REVIEW`、`APPEAL_RESOLVED` | 申诉创建及状态变化；不复制所申诉的工单、移除或内容 ID |
+| `PRIVACY_EXPORT_REQUESTED`、`PRIVACY_DELETE_REQUESTED`、`PRIVACY_CORRECTION_REQUESTED`、`PRIVACY_REQUESTED_OTHER` | 对应个人信息请求新行已提交；删除请求创建不代表执行完成 |
+| `PRIVACY_DELETE_PROTECTED`、`PRIVACY_DELETE_EXECUTION_INTENT`、`PRIVACY_DELETE_SAFEGUARDS_APPLIED` | 删除请求的即时保护、执行标记、保护措施状态已写入；均不宣称所有数据已删除 |
+| `PRIVACY_REQUEST_FULFILLED`、`PRIVACY_REQUEST_CANCELLED` | 请求状态明确变更；须按请求类型和受控业务记录解释 |
+
+事件由通知状态、举报、申诉、隐私请求的表触发器或复查审计在同一事务生成。幂等重试及无状态变化的重复更新不增加事件；事务回滚时对应事件也回滚。提供方拒绝、未知、未发送和已接受须分别报告，不能据此推断微信最终送达。旧表 `business_events` 的活动级指标口径不因本迁移改变。

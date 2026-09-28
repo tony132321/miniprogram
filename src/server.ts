@@ -1,6 +1,6 @@
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { readFile } from 'node:fs/promises';
-import { createHash } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { isIP } from 'node:net';
 import type { Database } from './db.ts';
 import { AppError } from './errors.ts';
@@ -42,6 +42,7 @@ import { blockEventMember, listMyBlocks, revokeBlock } from './blocks.ts';
 import { disabledFeatureForPath, R1_FEATURE_FLAGS } from './feature-flags.ts';
 import { requiresVerifiedPilot } from './pilot-access.ts';
 import { grantCohost, revokeCohost, listCohostGrants, hasCohostCapability } from './cohosts.ts';
+import { accessDenialRoute, recordAccessDenial, type AuthenticationClass } from './access-denial-audit.ts';
 
 export interface AppOptions {
   environment: 'development' | 'test' | 'production';
@@ -168,9 +169,13 @@ export function createApp(db: Database, options: AppOptions) {
   const trustedProxyIps = new Set((options.trustedProxyIps ?? []).map(canonicalIp));
   const verifiedPilotUsers = new Set(options.pilotUserIds ?? []);
   return createServer((req, res) => withRequestFingerprint(req.method ?? 'GET', req.url ?? '/', async () => {
+    let auditPath = '/';
+    let auditActor: string | null = null;
+    let authenticationClass: AuthenticationClass = 'UNAUTHENTICATED';
     try {
       const requestUrl = new URL(req.url ?? '/', 'http://localhost');
       const path = requestUrl.pathname;
+      auditPath = path;
       const method = req.method ?? 'GET';
       if (path === '/health' && method === 'GET') return send(res, 200, { status: 'ok' });
       if (path === '/system/capabilities' && method === 'GET') return send(res, 200, { flags: R1_FEATURE_FLAGS });
@@ -244,6 +249,10 @@ export function createApp(db: Database, options: AppOptions) {
         if (!operatorAccounts.length) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
         actor = await operatorFromBearer(db, req.headers.authorization, operatorAccounts);
       } else actor = await actorFrom(req, db, options);
+      auditActor = actor;
+      authenticationClass = actor.startsWith('operator:') ? 'OPERATOR' :
+        operators.has(actor) ? 'DEVELOPMENT_OPERATOR' :
+          options.devAuth && req.headers['x-dev-user'] === actor ? 'DEVELOPMENT_MEMBER' : 'MEMBER';
       if (options.environment === 'production' && requiresVerifiedPilot(method, path) && !verifiedPilotUsers.has(actor))
         throw new AppError('PILOT_NOT_VERIFIED', '仅已人工核验的成年试点成员可发起或参加活动', 403);
       await limitAuthenticatedRequest(db, actor, method, path);
@@ -781,6 +790,20 @@ export function createApp(db: Database, options: AppOptions) {
       throw new AppError('NOT_FOUND', '接口不存在', 404);
     } catch (error) {
       if (error instanceof AppError) {
+        const route = accessDenialRoute(auditPath);
+        if (error.status === 403 || (error.status === 404 && route.protectedRoute)) {
+          const requestId = randomUUID();
+          res.setHeader('X-Request-Id', requestId);
+          try {
+            await recordAccessDenial(db, {
+              actor: auditActor, authenticationClass, routeTemplate: route.routeTemplate,
+              errorCode: error.code, requestId
+            });
+          } catch {
+            // Audit storage failure never changes the denial outcome or reveals
+            // request data in an application log.
+          }
+        }
         if (error.retryAfterSeconds) res.setHeader('Retry-After', String(error.retryAfterSeconds));
         send(res, error.status, { code: error.code, message: error.message });
       }

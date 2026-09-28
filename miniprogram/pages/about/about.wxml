@@ -1,0 +1,8 @@
+<view class="about-page">
+  <view class="logo">∞</view>
+  <view class="title">Project IRL</view>
+  <view class="slogan">把有趣的人聚在真实世界</view>
+  <view class="card"><view class="eyebrow">关于我们</view><view class="manifesto">在屏幕之外，找到真实相聚的心跳与温度。</view><view class="body">Project IRL 帮助人们发起和发现线下活动。活动报名、候补、站内提醒与安全处理以应用中的实时记录为准。</view></view>
+  <view class="card action-list"><button bindtap="goDiscover">发现活动 <text>›</text></button><button bindtap="goHome">返回首页 <text>›</text></button><button bindtap="goProfile">账号、隐私与安全 <text>›</text></button></view>
+  <view class="foot">REAL PEOPLE · REAL MEETUPS</view>
+</view>

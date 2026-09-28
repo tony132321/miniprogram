@@ -1,0 +1,20 @@
+<view class="messages-page">
+  <view class="messages-brand"><view class="brand-dot">✦</view><text>Project IRL</text><text class="brand-light">消息</text></view>
+  <view class="title-row"><view><view class="page-title">消息</view><view class="subtitle">和一起组织活动的人保持联系</view></view><view class="title-count">{{total}}</view></view>
+  <view class="filter-row"><button class="{{filter === 'ALL' ? 'filter active' : 'filter'}}" data-filter="ALL" bindtap="setFilter">全部消息</button><button class="{{filter === 'ACTIVITY' ? 'filter active' : 'filter'}}" data-filter="ACTIVITY" bindtap="setFilter">活动相关</button><button class="{{filter === 'SYSTEM' ? 'filter active' : 'filter'}}" data-filter="SYSTEM" bindtap="setFilter">系统通知</button></view>
+  <view wx:if="{{message}}" class="message-banner">{{message}}</view>
+  <button wx:if="{{loadState === 'ERROR'}}" bindtap="refresh" class="retry">重新加载消息</button>
+  <view wx:if="{{loadState === 'UNAUTHENTICATED'}}" class="empty card"><view class="empty-symbol">✉</view><view>登录后可查看本人消息</view><button bindtap="goProfile">前往我的页面</button></view>
+  <view wx:if="{{loadState === 'LOADING'}}" class="empty">正在加载站内通知…</view>
+  <block wx:if="{{loadState === 'READY'}}"><view wx:if="{{items.length === 0}}" class="empty card"><view class="empty-symbol">✉</view><view>暂无站内通知</view><view class="hint">活动更新和安全处理结果会显示在这里。</view></view></block>
+  <view wx:if="{{loadState === 'READY'}}" class="card notice-list">
+    <block wx:for="{{items}}" wx:key="id">
+      <button wx:if="{{item.visible}}" class="notice-row" data-id="{{item.id}}" data-event-id="{{item.event_id}}" data-kind="{{item.kind}}" bindtap="openNotice">
+        <view class="notice-badge">{{item.event_id ? '活' : '系'}}</view><view class="notice-content"><view class="notice-title">{{item.title}}<text wx:if="{{item.status !== 'OPENED'}}" class="unread-dot">●</text></view><view class="notice-description">{{item.event_id ? '关联活动 ' + item.event_id : 'Project IRL 站内通知'}}</view><view class="notice-state">{{item.externalHint}}</view></view><view class="chevron">›</view>
+      </button>
+    </block>
+    <button wx:if="{{nextOffset !== null}}" bindtap="loadMore" class="load-more">加载更多</button>
+  </view>
+  <view class="card unavailable"><view class="unavailable-title">私聊功能尚未开放</view><view class="hint">当前只显示真实站内通知。请使用活动页面和报名流程与主办方互动。</view></view>
+  <view class="messages-foot">REAL PEOPLE · REAL MEETUPS</view>
+</view>

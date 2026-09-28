@@ -1,72 +1,92 @@
-<view>
-  <view wx:if="{{message}}" class="muted">{{message}}</view>
+<view class="profile-page">
+  <view class="brand-row"><view class="brand-dot">✦</view><text class="brand-name">Project IRL</text><text class="brand-sub">让有趣的事，真的发生</text></view>
+  <view class="hero card"><view class="hero-top"><view class="avatar">我</view><view class="hero-copy"><view class="hero-name">我的空间</view><view class="hero-caption">{{hasSession ? '已通过微信登录' : developmentMode ? '本地测试身份' : '登录后管理活动与通知'}}</view></view><view class="hero-spark">✦</view></view><view class="hero-quick"><button bindtap="goDiscover">找活动 ›</button><button bindtap="goCreate">发起活动 ›</button><button bindtap="goMessages">站内消息 ›</button></view></view>
+  <view wx:if="{{message}}" class="notice-banner">{{message}}</view>
   <button id="profileRetryButton" wx:if="{{loadState === 'ERROR'}}" bindtap="retryRefresh">重新加载</button>
-  <view>账号与隐私</view>
+  <view class="section-head"><text class="section-mark"></text><text>账号与隐私</text></view>
+  <view class="section-card card">
   <button wx:if="{{!hasSession}}" bindtap="login">微信登录</button>
-  <button id="logoutButton" wx:if="{{hasSession && !developmentMode}}" bindtap="logout">退出登录</button>
-  <view wx:if="{{developmentMode}}">
-    <view class="muted">本地多账号测试入口：</view>
+  <view wx:if="{{developmentMode}}" class="dev-box">
+    <view class="hint">本地多账号测试入口：</view>
     <input placeholder="本地测试账号" value="{{devUser}}" bindinput="devInput" />
     <button id="switchDevUserButton" bindtap="setDevUser">切换本地测试账号</button>
   </view>
-  <view>活动提醒同意</view>
+  <view class="setting-title">活动提醒同意</view>
   <switch id="reminderConsentSwitch" checked="{{eventReminder}}" bindchange="toggleReminder" />
-  <view class="muted">{{eventReminderNotice}}</view>
-  <view wx:if="{{eventReminderNeedsReconfirmation}}" class="muted">授权说明已更新，请阅读后重新开启活动提醒。</view>
-  <view>允许类似活动邀请候选名单收录</view>
+  <view class="hint">{{eventReminderNotice}}</view>
+  <view wx:if="{{eventReminderNeedsReconfirmation}}" class="hint">授权说明已更新，请阅读后重新开启活动提醒。</view>
+  <view class="setting-title">允许类似活动邀请候选名单收录</view>
   <switch id="similarInvitesConsentSwitch" checked="{{similarInvites}}" bindchange="toggleSimilarInvites" />
-  <view class="muted">{{similarInvitesNotice}}</view>
-  <view wx:if="{{similarInvitesNeedsReconfirmation}}" class="muted">授权说明已更新，请阅读后重新允许类似活动候选名单收录。</view>
-  <view>已屏蔽成员</view>
-  <view wx:if="{{blocks.length === 0}}" class="muted">暂无屏蔽记录</view>
-  <view wx:for="{{blocks}}" wx:key="id" class="item">
+  <view class="hint">{{similarInvitesNotice}}</view>
+  <view wx:if="{{similarInvitesNeedsReconfirmation}}" class="hint">授权说明已更新，请阅读后重新允许类似活动候选名单收录。</view>
+  </view>
+  <view class="section-head"><text class="section-mark"></text><text>已屏蔽成员</text></view>
+  <view class="section-card card">
+  <view wx:if="{{blocks.length === 0}}" class="hint">暂无屏蔽记录</view>
+  <view wx:for="{{blocks}}" wx:key="id" class="list-row">
     <view>来自活动：{{item.eventTitle}}</view>
     <button data-id="{{item.id}}" bindtap="revokeBlock">撤销此屏蔽</button>
   </view>
-  <view>站内通知</view>
-  <view wx:if="{{notifications.length === 0}}" class="muted">暂无通知</view>
-  <view wx:if="{{notificationsTotal > 0}}" class="muted">已显示 {{notifications.length}} / {{notificationsTotal}} 条；未打开的通知优先显示。</view>
-  <view wx:for="{{notifications}}" wx:key="id" class="item">
+  </view>
+  <view class="section-head"><text class="section-mark"></text><text>站内通知</text><button class="section-link" bindtap="goMessages">查看全部 ›</button></view>
+  <view class="section-card card">
+  <view wx:if="{{notifications.length === 0}}" class="empty">暂无站内通知</view>
+  <view wx:if="{{notificationsTotal > 0}}" class="hint">已显示 {{notifications.length}} / {{notificationsTotal}} 条；未打开的通知优先显示。</view>
+  <view wx:for="{{notifications}}" wx:key="id" class="list-row">
     <view>{{item.kind === 'EVENT_OUTCOME_DUE' ? '活动已结束，请主办方记录是否举办' : item.kind === 'EVENT_OUTCOME_REVIEW' ? '主办方已结项，请独立反馈' : item.kind === 'PUBLIC_RECRUITMENT_CLOSED' ? '公开活动招募已暂停' : item.kind === 'PUBLIC_RECRUITMENT_OPEN' ? '公开活动招募已恢复' : item.kind === 'WAITLIST_WINDOW_CLOSED' ? '补位时间不足五分钟，请主办方处理空位' : item.kind === 'REPORT_IN_REVIEW' ? '举报正在处理' : item.kind === 'REPORT_RESOLVED' ? '举报已有处理结论' : item.kind === 'APPEAL_IN_REVIEW' ? '申诉正在复核' : item.kind === 'APPEAL_RESOLVED' ? '申诉已有复核结论' : item.kind === 'CONTENT_REJECTED' ? '活动内容未通过审核' : item.kind}} · {{item.status}}</view>
     <view wx:if="{{item.event_id}}">活动 {{item.event_id}} · 版本 {{item.event_version}}</view>
-    <view class="muted">{{item.externalStatusLabel}}</view>
+    <view class="hint">{{item.externalStatusLabel}}</view>
     <button data-id="{{item.id}}" data-event="{{item.event_id}}" data-kind="{{item.kind}}" bindtap="openNotice">查看通知并标记已打开</button>
-    <view wx:if="{{item.kind === 'WAITLIST_OFFER' && item.declinable}}" class="muted">补位确认截止：{{item.detail.expiresAt}}</view>
-    <button wx:if="{{item.kind === 'WAITLIST_OFFER' && item.actionable}}" data-id="{{item.detail.offerId}}" data-version="{{item.event_version}}" bindtap="acceptOffer">主动确认补位</button>
-    <button wx:if="{{item.kind === 'WAITLIST_OFFER' && item.declinable}}" id="declineOfferButton" data-id="{{item.detail.offerId}}" data-version="{{item.event_version}}" bindtap="declineOffer">拒绝补位</button>
+    <block wx:if="{{item.kind === 'WAITLIST_OFFER'}}">
+      <view wx:if="{{item.declinable}}" class="hint">补位确认截止：{{item.detail.expiresAt}}</view>
+      <button wx:if="{{item.actionable}}" data-id="{{item.detail.offerId}}" data-version="{{item.event_version}}" bindtap="acceptOffer">主动确认补位</button>
+      <button wx:if="{{item.declinable}}" id="declineOfferButton" data-id="{{item.detail.offerId}}" data-version="{{item.event_version}}" bindtap="declineOffer">拒绝补位</button>
+    </block>
   </view>
   <button wx:if="{{nextNotificationOffset !== null}}" bindtap="loadMoreNotifications">加载更多通知</button>
-  <view>报名移除与申诉</view>
+  </view>
+  <view class="section-head"><text class="section-mark"></text><text>报名移除与申诉</text></view>
+  <view class="section-card card">
   <textarea placeholder="如需申诉，请先填写复核说明" value="{{appealDescription}}" bindinput="appealInput" />
-  <view wx:for="{{removals}}" wx:key="id" class="item">
+  <view wx:for="{{removals}}" wx:key="id" class="list-row">
     <view>活动 {{item.event_id}} · 移除原因：{{item.reason}}</view>
     <button data-id="{{item.id}}" bindtap="appealRemoval">就此移除申请复核</button>
   </view>
-  <view wx:for="{{appeals}}" wx:key="id" class="item">申诉 {{item.status}} · {{item.description}} · {{item.resolution || '待复核'}}{{item.outcome ? ' · ' + item.outcome : ''}}</view>
-  <view>内容审核与复核</view>
+  <view wx:for="{{appeals}}" wx:key="id" class="list-row">申诉 {{item.status}} · {{item.description}} · {{item.resolution || '待复核'}}{{item.outcome ? ' · ' + item.outcome : ''}}</view>
+  </view>
+  <view class="section-head"><text class="section-mark"></text><text>内容审核与复核</text></view>
+  <view class="section-card card">
   <textarea wx:if="{{rejectedContent.length > 0}}" placeholder="如需复核，请先填写说明" value="{{contentAppealDescription}}" bindinput="contentAppealInput" />
-  <view wx:if="{{rejectedContent.length === 0}}" class="muted">暂无被驳回的本人内容</view>
-  <view wx:for="{{rejectedContent}}" wx:key="id" class="item">
+  <view wx:if="{{rejectedContent.length === 0}}" class="hint">暂无被驳回的本人内容</view>
+  <view wx:for="{{rejectedContent}}" wx:key="id" class="list-row">
     <view>活动 {{item.event_id}} · {{item.kind}} · {{item.body}}</view>
     <view>未通过原因：{{item.moderation_reason || '原审核未记录原因'}}</view>
     <view wx:if="{{item.appeal_id}}">复核申请：{{item.appeal_status}}</view>
-    <button wx:else data-id="{{item.id}}" bindtap="appealContent">就此内容申请复核</button>
+    <button wx:else="" data-id="{{item.id}}" bindtap="appealContent">就此内容申请复核</button>
   </view>
-  <view>个人信息请求</view>
+  </view>
+  <view class="section-head"><text class="section-mark"></text><text>个人信息请求</text></view>
+  <view class="section-card card">
   <button id="exportDataButton" bindtap="exportData">复制本人数据 JSON</button>
   <button data-kind="EXPORT" bindtap="privacyRequest">申请导出</button>
-  <view class="muted">申请注销或删除会先进入人工核查；提交申请不会立即停用账号或删除共享、争议记录。</view>
+  <view class="hint">申请注销或删除会先进入人工核查；提交申请不会立即停用账号或删除共享、争议记录。</view>
   <button data-kind="DELETE" bindtap="privacyRequest">申请注销或删除</button>
-  <view wx:for="{{privacy}}" wx:key="id" class="item">{{item.kind}} · {{item.status}}<view wx:if="{{item.notice}}" class="muted">{{item.notice}}</view></view>
-  <view>举报与求助</view>
+  <view wx:for="{{privacy}}" wx:key="id" class="list-row">{{item.kind}} · {{item.status}}<view wx:if="{{item.notice}}" class="hint">{{item.notice}}</view></view>
+  </view>
+  <view class="section-head"><text class="section-mark"></text><text>举报与求助</text></view>
+  <view class="section-card card">
   <input placeholder="活动 ID（可选）" value="{{reportEventId}}" bindinput="reportEventInput" />
   <textarea placeholder="描述真实情况；紧急人身危险请先联系当地应急服务" value="{{reportDescription}}" bindinput="reportInput" />
   <button bindtap="report">提交举报工单</button>
   <textarea wx:if="{{reports.length > 0}}" placeholder="如需复核举报结论，请先填写说明" value="{{reportAppealDescription}}" bindinput="reportAppealInput" />
-  <view wx:if="{{reports.length === 0}}" class="muted">暂无本人举报</view>
-  <view wx:for="{{reports}}" wx:key="id" class="item">
+  <view wx:if="{{reports.length === 0}}" class="hint">暂无本人举报</view>
+  <view wx:for="{{reports}}" wx:key="id" class="list-row">
     <view>{{item.kind}} · {{item.status}} · {{item.description}}</view>
     <view wx:if="{{item.resolution}}">处理结论：{{item.resolution}}</view>
     <button wx:if="{{item.status === 'RESOLVED'}}" data-id="{{item.id}}" bindtap="appealReport">就此结论申请复核</button>
   </view>
+  </view>
+  <button id="aboutButton" class="about-row card" bindtap="goAbout"><text>关于 Project IRL</text><text>›</text></button>
+  <block wx:if="{{hasSession}}"><button id="logoutButton" wx:if="{{!developmentMode}}" bindtap="logout" class="logout-button">退出登录</button></block>
+  <view class="page-foot">REAL PEOPLE · REAL MEETUPS</view>
 </view>

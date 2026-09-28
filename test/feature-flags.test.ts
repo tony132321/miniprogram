@@ -41,7 +41,10 @@ test('R1 explicitly denies deferred and unapproved AI APIs while local draft hel
 
 test('mini program has no deferred deep-link page and uses the local rule endpoint', async () => {
   const app = JSON.parse(await readFile(new URL('../miniprogram/app.json', import.meta.url), 'utf8')) as { pages: string[] };
-  assert.deepEqual(app.pages, ['pages/index/index', 'pages/create/create', 'pages/event/event', 'pages/me/me']);
+  for (const page of ['pages/index/index', 'pages/create/create', 'pages/event/event', 'pages/me/me'])
+    assert.ok(app.pages.includes(page), `${page} remains available`);
+  assert.equal(new Set(app.pages).size, app.pages.length);
+  assert.ok(app.pages.every(page => !/payments|matching|albums|bookings/.test(page)));
   const create = await readFile(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8');
   assert.match(create, /\/events\/drafts:suggest-local/);
   assert.doesNotMatch(create, /\/events\/drafts:generate/);

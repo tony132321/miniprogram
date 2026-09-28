@@ -1,28 +1,29 @@
-<view wx:if="{{event && loadState === 'READY'}}">
-  <view>{{event.payload.title || event.title || '未命名活动'}}</view>
-  <view id="aiSuggestionNoticeView" wx:if="{{event.aiSuggestionGenerated}}">本活动曾生成 AI 草稿建议；请以主办方确认及当前审核通过的活动信息为准。</view>
-  <view wx:if="{{event.payload.skillLevel}}">水平要求：{{event.payload.skillLevel}}</view>
-  <view>状态：{{event.status}}</view>
-  <view>主办方：{{hostAlias}}</view>
-  <view>场地状态：{{event.payload.venueStatus || '待确认'}}（仅为主办方声明）</view>
-  <view id="venueEvidenceView" wx:if="{{event.venueEvidence}}">场地依据：主办方声明场地可用；未由场馆接口锁位。</view>
-  <view wx:if="{{event.updatedAt}}">更新时间：{{event.updatedAt}}</view>
-  <view wx:if="{{event.visibleContentVersion && event.visibleContentVersion !== event.version}}">当前展示已审核版本 {{event.visibleContentVersion}} 的活动信息；最新版本仍在审核或未通过审核。</view>
-  <view wx:if="{{event.visibleContentVersion === null}}">活动文字尚无已审核版本，请联系主办方核对安排。</view>
-  <view>时间：{{event.payload.startAt || event.startAt || '待定'}} 至 {{event.payload.endAt || event.endAt || '待定'}}</view>
-  <view>地点：{{event.payload.city || event.city || '待定'}} · {{event.payload.venueName || event.venueName || '待定'}}</view>
-  <view id="emergencySafetyNotice" class="muted">如遇人身紧急危险，请先离开风险地点并联系当地应急服务；本平台不是救援机构。</view>
-  <button id="eventReportButton" bindtap="goToReport">举报与求助（关联本活动）</button>
-  <button id="copySafetyDetailsButton" bindtap="copySafetyDetails">复制活动信息给可信任的人</button>
-  <view>费用：{{event.payload.feeMode || event.feeMode || '待定'}}，上限 {{event.payload.feeCapFen === 0 ? 0 : event.payload.feeCapFen || event.feeCapFen || '待定'}} 分</view>
-  <view>报名方式：{{event.payload.approvalMode === 'MANUAL' ? '主办方逐一审批' : '自动接受或候补'}}</view>
-  <view wx:if="{{event.stats}}">已确认 {{event.stats.confirmed}} · 主办预留 {{event.stats.reserved}} · 候补 {{event.stats.waitlisted}} · 待审核 {{event.stats.requested}} · 待重新确认 {{event.stats.reconfirmRequired}}</view>
-  <view wx:if="{{event.formationRisk}}">当前确认人数不足，成局有风险。</view>
-  <view wx:if="{{event.reviewStatus === 'PENDING'}}">活动内容正在人工审核；通过前不开放新报名或分享。</view>
-  <view wx:if="{{event.reviewStatus === 'REJECTED'}}">活动内容未通过审核；主办方修改后可重新提交。</view>
-  <view wx:if="{{isHost && event.reviewReason}}">运营审核意见：{{event.reviewReason}}</view>
-  <view wx:if="{{event.riskPaused}}">活动因风险核查暂时停止新报名、补位和成局。仍可查看详情或退出；请等待运营处理。</view>
-  <view wx:if="{{event.status === 'RECRUITING' && !event.recruiting && (event.reviewStatus === 'APPROVED' || event.reviewStatus === 'NOT_REQUIRED')}}">活动变更后已暂停新报名，等待原参与者重新确认。</view>
+<view wx:if="{{event && loadState === 'READY'}}" class="event-page">
+  <view class="poster"><view class="poster-top">PROJECT IRL <text>✦</text></view><view class="poster-art">🏸</view><view class="poster-title"><view>BADMINTON</view><view>TOGETHER</view></view><view class="poster-ribbon">运动让生活更好看！</view><view class="poster-bottom">Play More · Meet Cool People</view></view>
+  <view class="event-tabs"><button data-section="detailsSection" bindtap="jumpToSection">详情</button><button data-section="registrationSection" bindtap="jumpToSection">报名</button><button data-section="contentSection" bindtap="jumpToSection">公告问答</button><button data-section="checkinSection" bindtap="jumpToSection">签到</button><button data-section="expenseSection" bindtap="jumpToSection">费用</button><button wx:if="{{isHost}}" data-section="hostSection" bindtap="jumpToSection">主办工作台</button></view>
+  <view id="detailsSection" class="event-section detail-section"><view class="detail-heading"><text class="detail-title">{{display.title}}</text><text class="status-pill">{{display.status}}</text></view>
+    <view id="aiSuggestionNoticeView" wx:if="{{event.aiSuggestionGenerated}}" class="info-note">本活动曾生成 AI 草稿建议；请以主办方确认及当前审核通过的活动信息为准。</view>
+    <view wx:if="{{event.payload.skillLevel}}" class="tag">水平要求：{{event.payload.skillLevel}}</view>
+    <view class="detail-row"><text class="detail-icon">▣</text><view><view class="detail-value">{{display.date}} – {{display.end}}</view><view class="detail-help">活动时间以主办方最终确认版本为准</view></view></view>
+    <view class="detail-row"><text class="detail-icon">⌖</text><view><view class="detail-value">{{display.location}}</view><view class="detail-help">场地状态：{{event.payload.venueStatus === 'HOST_CONFIRMED' ? '主办方已核实' : '待主办方确认'}}</view></view></view>
+    <view id="venueEvidenceView" wx:if="{{event.venueEvidence}}" class="info-note">场地依据为主办方声明，未由场馆接口锁位。</view>
+    <view class="host-strip"><text class="host-avatar">★</text><view><view>由 {{hostAlias}} 发起</view><view class="detail-help">活动内授权昵称</view></view></view>
+    <view class="detail-row"><text class="detail-icon">◉</text><view><view class="detail-value">{{display.fee}}</view><view class="detail-help">取消规则：{{event.payload.cancellationRule || '请查看活动规则'}}</view></view></view>
+    <view wx:if="{{event.stats}}" class="detail-row"><text class="detail-icon">♧</text><view><view class="detail-value">已确认 {{event.stats.confirmed}} / {{event.payload.maxParticipants || '待定'}} 人</view><view class="detail-help">主办预留 {{event.stats.reserved}} · 候补 {{event.stats.waitlisted}} · 待审核 {{event.stats.requested}} · 待重新确认 {{event.stats.reconfirmRequired}}</view></view></view>
+    <view class="detail-help">报名方式：{{event.payload.approvalMode === 'MANUAL' ? '主办方逐一审批' : '自动接受或候补'}} · {{event.payload.visibility === 'PUBLIC' ? '受控公开' : '仅邀请'}}</view>
+    <view wx:if="{{event.updatedAt}}" class="detail-help">更新时间：{{event.updatedAt}}</view>
+    <view wx:if="{{event.visibleContentVersion && event.visibleContentVersion !== event.version}}" class="info-note">当前展示已审核版本 {{event.visibleContentVersion}} 的活动信息；最新版本仍在审核或未通过审核。</view>
+    <view wx:if="{{event.visibleContentVersion === null}}" class="info-note">活动文字尚无已审核版本，请联系主办方核对安排。</view>
+    <view wx:if="{{event.formationRisk}}" class="alert-note">当前确认人数不足，成局有风险。</view>
+    <view wx:if="{{event.reviewStatus === 'PENDING'}}" class="alert-note">活动内容正在人工审核；通过前不开放新报名或分享。</view>
+    <view wx:if="{{event.reviewStatus === 'REJECTED'}}" class="alert-note">活动内容未通过审核；主办方修改后可重新提交。</view>
+    <view wx:if="{{isHost && event.reviewReason}}" class="alert-note">运营审核意见：{{event.reviewReason}}</view>
+    <view wx:if="{{event.riskPaused}}" class="alert-note">活动因风险核查暂时停止新报名、补位和成局。仍可查看详情或退出；请等待运营处理。</view>
+    <view wx:if="{{event.status === 'RECRUITING' && !event.recruiting && (event.reviewStatus === 'APPROVED' || event.reviewStatus === 'NOT_REQUIRED')}}" class="alert-note">活动变更后已暂停新报名，等待原参与者重新确认。</view>
+    <view id="emergencySafetyNotice" class="safety-note">如遇人身紧急危险，请先离开风险地点并联系当地应急服务；本平台不是救援机构。</view>
+    <view class="detail-actions"><button id="eventReportButton" bindtap="goToReport">举报与求助</button><button id="copySafetyDetailsButton" bindtap="copySafetyDetails">复制活动信息给可信任的人</button></view>
+  </view>
+  <view class="event-section outcome-section"><view class="section-heading">活动结项与反馈</view>
   <view wx:if="{{outcome}}">结项证据：{{outcome.level}} · 实际人数 {{outcome.actualCount}} · 独立确认 {{outcome.independentFeedback}}</view>
   <view wx:if="{{outcome && outcome.reviewDecision === 'HELD_CONFIRMED'}}">人工复核：已核实举办；原争议记录保留。</view>
   <view wx:if="{{outcome && outcome.reviewDecision === 'NOT_HELD_CONFIRMED'}}">人工复核：确认未举办；不计入可信完成。</view>
@@ -46,7 +47,8 @@
     <textarea placeholder="如未举办或有争议，请说明" value="{{feedbackReason}}" bindinput="feedbackReasonInput" />
     <button id="submitFeedbackButton" bindtap="submitFeedback">提交独立反馈</button>
   </view>
-  <view>我的报名：{{myRegistration.status || '未报名'}}</view>
+  </view>
+  <view id="registrationSection" class="event-section"><view class="section-heading">报名与成员</view><view class="registration-status">我的报名：{{registrationLabel}}</view>
   <view wx:for="{{aliases}}" wx:key="id" class="item">
     <view>活动内授权昵称：{{item.displayName}}{{item.isHost ? ' · 主办方' : ''}}{{item.isMine ? ' · 本人' : ''}}</view>
     <button wx:if="{{!item.isMine}}" data-member="{{item.id}}" bindtap="blockMember">屏蔽此成员</button>
@@ -68,12 +70,13 @@
   <view wx:if="{{message}}" class="muted">{{message}}</view>
   <view wx:if="{{safetyStatus === 'CLOSED'}}" class="muted">平台已暂停新增活动和报名；可继续查看、退出和举报。</view>
   <view wx:if="{{safetyStatus === 'UNKNOWN'}}" class="muted">安全状态暂不可用，新增操作请稍后重试。</view>
-  <button id="joinButton" wx:if="{{safetyStatus === 'OPEN' && canJoin && !event.riskPaused && event.recruiting && (event.status === 'RECRUITING' || event.status === 'CONFIRMED')}}" bindtap="join">本人报名或申请</button>
   <button wx:if="{{safetyStatus === 'OPEN' && canExpressInterest && !event.riskPaused && event.recruiting && (event.status === 'RECRUITING' || event.status === 'CONFIRMED')}}" bindtap="interested">暂不确定（不占名额）</button>
   <button id="leaveButton" wx:if="{{myRegistration && myRegistration.status !== 'CANCELLED'}}" bindtap="leave">退出报名</button>
   <button id="reconfirmButton" wx:if="{{myRegistration.status === 'RECONFIRM_REQUIRED'}}" bindtap="reconfirm">确认新版本规则</button>
   <input placeholder="主办方预留认领口令" value="{{reservationToken}}" bindinput="reservationInput" />
   <button wx:if="{{safetyStatus === 'OPEN' && !event.riskPaused}}" bindtap="claim">认领预留</button>
+  </view>
+  <view id="checkinSection" class="event-section"><view class="section-heading">签到与到场</view>
   <view wx:if="{{canCheckIn}}">
     <input placeholder="现场动态签到口令" value="{{checkInToken}}" bindinput="checkInInput" />
     <button bindtap="scanCheckIn">扫描现场二维码签到</button>
@@ -90,7 +93,8 @@
       <button data-id="{{item.id}}" data-accepted="{{false}}" bindtap="respondManualCheckIn">拒绝补记</button>
     </view>
   </view>
-  <view>活动公告与问答</view>
+  </view>
+  <view id="contentSection" class="event-section"><view class="section-heading">活动公告与问答</view>
   <view wx:if="{{contentLoadState === 'EMPTY'}}" class="muted">暂无活动公告或问答。</view>
   <view wx:if="{{contentLoadState === 'FORBIDDEN'}}" class="muted">当前无权查看活动公告与问答。</view>
   <view wx:if="{{contentLoadState === 'ERROR'}}" class="error">{{contentError}} <button id="contentRetryButton" bindtap="refresh">重新加载公告与问答</button></view>
@@ -109,7 +113,8 @@
     <input placeholder="向主办方提问" value="{{questionText}}" bindinput="questionInput" />
     <button bindtap="askQuestion">提交问题</button>
   </view>
-  <view>费用记录</view>
+  </view>
+  <view id="expenseSection" class="event-section"><view class="section-heading">费用记录</view>
   <view class="muted">费用由参与者与服务提供者按约定处理；本页为记录，不是平台支付凭证。</view>
   <view class="muted">总费用按已确认人数分成整数分，尾差逐分分配；请以各人显示金额为准。修订费用后需重新确认新版。</view>
   <view wx:if="{{expenseLoadState === 'EMPTY'}}" class="muted">暂无费用记录。</view>
@@ -125,7 +130,10 @@
       <button id="markReceived-{{share.userId}}" wx:if="{{ledger.current && isHost && !share.hostReceived}}" data-ledger="{{ledger.id}}" data-user="{{share.userId}}" bindtap="markReceived">标记已收到</button>
     </view>
   </view>
-  <view wx:if="{{isHost}}">
+  </view>
+  <view id="hostSection" class="event-section" wx:if="{{isHost}}"><view class="section-heading">主办方工作台</view>
+    <view wx:if="{{event.stats}}" class="host-overview"><view><text>{{event.stats.confirmed}}</text><text>已确认</text></view><view><text>{{event.stats.reserved}}</text><text>预留名额</text></view><view><text>{{event.stats.waitlisted}}</text><text>候补中</text></view><view><text>{{event.stats.requested}}</text><text>待审核</text></view></view>
+    <view wx:if="{{event.stats}}" class="formation-card"><view>成局核对</view><view>人数：至少 {{event.payload.minParticipants}} 人，目前确认 {{event.stats.confirmed}} 人</view><view>场地：{{event.payload.venueStatus === 'HOST_CONFIRMED' ? '主办方已核实' : '尚未核实'}}</view><view class="muted">实际成局仍须使用下方确认操作，系统不代表场馆锁位。</view></view>
     <view wx:if="{{event.status !== 'DRAFT' && event.status !== 'CANCELLED' && event.status !== 'EXPIRED'}}">
       <view>本场协办权限（仅限下列能力，可随时撤回）</view>
       <input id="cohostUserId" placeholder="从下方报名名单选择，或填入协办用户 ID" value="{{cohostUserId}}" bindinput="cohostUserInput" />
@@ -213,6 +221,7 @@
       <button id="manualRequest-{{item.user_id}}" wx:if="{{canRequestManualCheckIn && item.status === 'CONFIRMED'}}" data-user="{{item.user_id}}" bindtap="requestManualCheckIn">申请人工补记到场</button>
     </view>
   </view>
+  <view class="bottom-actions" wx:if="{{safetyStatus === 'OPEN' && canJoin && !event.riskPaused && event.recruiting && (event.status === 'RECRUITING' || event.status === 'CONFIRMED')}}"><button id="joinButton" bindtap="join">● 本人报名或申请</button></view>
 </view>
 <view wx:else>
   <view wx:if="{{loadState === 'LOADING'}}">正在读取活动当前信息…</view>

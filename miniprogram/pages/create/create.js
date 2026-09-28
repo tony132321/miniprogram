@@ -22,7 +22,7 @@ function currentIdentity() {
     : 'dev:' + (wx.getStorageSync('devUser') || config.developmentUser || '');
 }
 function emptyEditor() {
-  return { aiText: '', message: '', draft: null, editingEvent: null, publishPreview: null, changePreview: null,
+  return { stage: 'IDEA', aiText: '', message: '', draft: null, editingEvent: null, publishPreview: null, changePreview: null,
     editorLoadState: 'IDLE', editorErrorCode: '', conflict: null,
     safetyStatus: 'UNKNOWN', safetyMessage: '',
     suggestionNotes: [], suggestionUnknown: '', suggestionLoading: false, suggestionSlow: false, form: { ...emptyForm },
@@ -33,7 +33,13 @@ function emptyEditor() {
 }
 Page({
   data: {
-    ...emptyEditor(), visibilityLabels: ['仅邀请', '受控公开'], approvalLabels: ['自动接受', '逐一审批']
+    ...emptyEditor(), visibilityLabels: ['仅邀请', '受控公开'], approvalLabels: ['自动接受', '逐一审批'],
+    statusBarHeight: (wx.getWindowInfo?.() || wx.getSystemInfoSync?.() || {}).statusBarHeight || 0,
+    inspirations: [
+      { icon: '🏸', title: '周末羽毛球', subtitle: '运动社交，认识新朋友', text: '周末组织一场羽毛球活动，认识新朋友。' },
+      { icon: '🤝', title: '新手双打局', subtitle: '轻松练习，一起进步', text: '周末组织一场新手友好的羽毛球双打活动。' },
+      { icon: '🌙', title: '下班练球', subtitle: '工作日晚上，动起来', text: '周五下班后组织一场羽毛球活动。' }
+    ]
   },
   async onShow() {
     this.stopSuggestion();
@@ -97,7 +103,7 @@ Page({
       const templateDurationMinutes = Number.isSafeInteger(p.templateDurationMinutes) && p.templateDurationMinutes > 0
         ? p.templateDurationMinutes : null;
       const savedDurationMinutes = p.startAt && p.endAt ? Math.round((Date.parse(p.endAt) - Date.parse(p.startAt)) / 60_000) : null;
-      this.setData({ draft: draftId ? draft : null, editingEvent: eventId ? draft : null,
+      this.setData({ draft: draftId ? draft : null, editingEvent: eventId ? draft : null, stage: 'FORM',
         editorLoadState: 'READY', editorErrorCode: '', conflict: null,
         startDate: start.date, startTime: start.time || '20:00', endDate: end.date, endTime: end.time || '22:00',
         templateDurationMinutes, repeatEndEdited: templateDurationMinutes !== null && savedDurationMinutes !== null &&
@@ -134,7 +140,7 @@ Page({
   },
   cancelSuggestion() {
     this.stopSuggestion();
-    this.setData({ message: '已转为手动填写，原输入与已填字段仍保留。' });
+    this.setData({ stage: 'FORM', message: '已转为手动填写，原输入与已填字段仍保留。' });
   },
   async retryEditorLoad() {
     if (this.data.editorErrorCode === 'UNAUTHENTICATED' && !config.developmentUser) {
@@ -146,7 +152,7 @@ Page({
   returnToMyActivities() { wx.switchTab({ url: '/pages/index/index' }); },
   markVersionConflict(error, type, id) {
     if (error.code !== 'VERSION_CONFLICT' || !id) return false;
-    this.setData({ conflict: { type, id }, publishPreview: null, changePreview: null,
+    this.setData({ stage: 'FORM', conflict: { type, id }, publishPreview: null, changePreview: null,
       message: '活动版本已变化。本地修改尚未保存；请重新载入服务端当前版本并逐项核对。' });
     return true;
   },
@@ -172,6 +178,20 @@ Page({
     }
   },
   retrySafety() { return this.loadSafety(this._loadGeneration, currentIdentity()); },
+  selectInspiration(event) {
+    const choice = this.data.inspirations[Number(event.currentTarget.dataset.index)];
+    if (choice) this.setData({ aiText: choice.text, message: '' });
+  },
+  openForm() { this.setData({ stage: 'FORM' }, () => wx.pageScrollTo?.({ scrollTop: 0, duration: 0 })); },
+  backToIdea() {
+    this.setData({ stage: 'IDEA', publishPreview: null, changePreview: null },
+      () => wx.pageScrollTo?.({ scrollTop: 0, duration: 0 }));
+  },
+  backToForm() {
+    this.setData({ stage: 'FORM', publishPreview: null, changePreview: null },
+      () => wx.pageScrollTo?.({ scrollTop: 0, duration: 0 }));
+  },
+  openDrafts() { wx.switchTab({ url: '/pages/index/index' }); },
   input(event) {
     if (this.data.suggestionLoading) this.cancelSuggestion();
     const field = event.currentTarget.dataset.field;
@@ -239,7 +259,7 @@ Page({
       const result = await Promise.race([request, timeout]);
       if (generation !== this._suggestGeneration) return;
       const fields = result.fields;
-      const updates = { suggestionLoading: false, suggestionSlow: false,
+      const updates = { suggestionLoading: false, suggestionSlow: false, stage: 'FORM',
         message: result.aiStatus === 'GENERATED' && result.aiContentLabel === 'AI_GENERATED_UNVERIFIED'
           ? 'AI 生成建议未经核验；日期、场地、人数和费用请逐项确认。'
           : '当前未连接 AI，已用规则提取部分字段；日期、场地和费用请逐项确认。' };
@@ -326,7 +346,7 @@ Page({
       const draft = this.data.draft
         ? await api.post(`/events/${this.data.draft.id}/draft`, { expectedVersion: this.data.draft.version, patch: payload })
         : await api.post('/events', payload);
-      this.setData({ draft, publishPreview: null, message: '草稿已保存。确认场地、时间、人数和费用后再发布。' });
+      this.setData({ draft, stage: 'FORM', publishPreview: null, message: '草稿已保存。确认场地、时间、人数和费用后再发布。' });
       return draft;
     } catch (error) {
       if (!this.markVersionConflict(error, 'draft', this.data.draft?.id))
@@ -358,7 +378,7 @@ Page({
           registrationDeadline: '报名截止', confirmationDeadline: '成局确认截止', feeMode: '费用模式',
           feeCapFen: '费用上限（分）', cancellationRule: '取消规则', visibility: '可见范围',
           approvalMode: '审批方式', hostParticipates: '主办方参加' };
-        this.setData({ changePreview: { ...preview, changes: preview.changes.map(item => ({ ...item, label: labels[item.field] || item.field })),
+        this.setData({ stage: 'REVIEW', changePreview: { ...preview, changes: preview.changes.map(item => ({ ...item, label: labels[item.field] || item.field })),
           patch, candidate, expectedVersion: event.version },
           message: '请逐项核对变更差异与受影响人数，然后最终确认。' });
       } catch (error) {
@@ -369,7 +389,7 @@ Page({
     }
     const draft = await this.saveDraft();
     if (!draft) return;
-    this.setData({ publishPreview: draft, message: '请逐项核对下方发布预览，然后点击最终确认。' });
+    this.setData({ stage: 'REVIEW', publishPreview: draft, message: '请逐项核对下方发布预览，然后点击最终确认。' });
   },
   async confirmPublish() {
     if (['LOADING', 'ERROR'].includes(this.data.editorLoadState))
@@ -379,7 +399,7 @@ Page({
       if (!preview) return this.setData({ message: '请先生成变更预览' });
       const current = this.buildInput();
       if (Object.keys(current).some(key => current[key] !== preview.candidate[key]))
-        return this.setData({ changePreview: null, message: '字段已变化，请重新生成变更预览' });
+        return this.setData({ stage: 'FORM', changePreview: null, message: '字段已变化，请重新生成变更预览' });
       try {
         const event = await api.post(`/events/${this.data.editingEvent.id}/changes`,
           { expectedVersion: preview.expectedVersion, patch: preview.patch });
@@ -400,11 +420,11 @@ Page({
     if (!preview) return this.setData({ message: '请先生成发布预览' });
     const current = this.buildInput();
     if (Object.keys(current).some(key => current[key] !== preview.payload[key])) {
-      return this.setData({ publishPreview: null, message: '字段已变化，请重新生成发布预览' });
+      return this.setData({ stage: 'FORM', publishPreview: null, message: '字段已变化，请重新生成发布预览' });
     }
     try {
       const event = await api.post(`/events/${preview.id}/publish`, { expectedVersion: preview.version });
-      this.setData({ publishPreview: null });
+      this.setData({ ...emptyEditor() });
       wx.navigateTo({ url: `/pages/event/event?id=${encodeURIComponent(event.id)}` });
     } catch (error) {
       if (!this.markVersionConflict(error, 'draft', preview.id))
