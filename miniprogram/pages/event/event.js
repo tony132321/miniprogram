@@ -241,6 +241,12 @@ Page({
     catch (error) { this.setData({ loadState: 'LOGIN_REQUIRED', message: error.message || '登录失败，请重试' }); }
   },
   goToMyActivities() { wx.switchTab({ url: '/pages/index/index' }); },
+  goToReport() {
+    const actor = currentIdentity();
+    getApp().globalData.reportContext = undefined;
+    if (actor && this.data.id) getApp().globalData.reportContext = { actor, eventId: this.data.id };
+    wx.switchTab({ url: '/pages/me/me' });
+  },
   async action(path, payload, successText) {
     try {
       const result = await api.post(path, { expectedVersion: this.data.event.version, ...payload });

@@ -33,13 +33,19 @@ Page({
     loadState: 'IDLE', message: '', reportDescription: '', reportEventId: '' },
   async onShow() {
     if (this.data.developmentMode) this.setData({ devUser: wx.getStorageSync('devUser') || config.developmentUser });
-    await getApp().globalData.ready;
+    const app = getApp();
+    await app.globalData.ready;
     const hasSession = Boolean(wx.getStorageSync('sessionToken'));
     this.setData({ hasSession });
     if (!hasSession && !this.data.developmentMode) {
+      app.globalData.reportContext = undefined;
       this.clearPrivateData();
       return this.setData({ loadState: 'UNAUTHENTICATED', message: '请先微信登录' });
     }
+    const actor = hasSession ? wx.getStorageSync('userId') : this.data.devUser;
+    const reportContext = app.globalData.reportContext;
+    app.globalData.reportContext = undefined;
+    if (reportContext) this.setData({ reportEventId: reportContext.actor === actor ? reportContext.eventId : '' });
     await this.refresh();
   },
   async refresh() {

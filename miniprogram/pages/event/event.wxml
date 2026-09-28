@@ -11,6 +11,8 @@
   <view wx:if="{{event.visibleContentVersion === null}}">活动文字尚无已审核版本，请联系主办方核对安排。</view>
   <view>时间：{{event.payload.startAt || event.startAt || '待定'}} 至 {{event.payload.endAt || event.endAt || '待定'}}</view>
   <view>地点：{{event.payload.city || event.city || '待定'}} · {{event.payload.venueName || event.venueName || '待定'}}</view>
+  <view id="emergencySafetyNotice" class="muted">如遇人身紧急危险，请先离开风险地点并联系当地应急服务；本平台不是救援机构。</view>
+  <button id="eventReportButton" bindtap="goToReport">举报与求助（关联本活动）</button>
   <view>费用：{{event.payload.feeMode || event.feeMode || '待定'}}，上限 {{event.payload.feeCapFen === 0 ? 0 : event.payload.feeCapFen || event.feeCapFen || '待定'}} 分</view>
   <view>报名方式：{{event.payload.approvalMode === 'MANUAL' ? '主办方逐一审批' : '自动接受或候补'}}</view>
   <view wx:if="{{event.stats}}">已确认 {{event.stats.confirmed}} · 主办预留 {{event.stats.reserved}} · 候补 {{event.stats.waitlisted}} · 待审核 {{event.stats.requested}} · 待重新确认 {{event.stats.reconfirmRequired}}</view>

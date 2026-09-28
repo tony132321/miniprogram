@@ -266,6 +266,60 @@ test('profile re-entry without a session removes private data before any fetch',
   assert.equal(requests, 0);
 });
 
+test('event safety entry carries its event into the signed-in report form only for the same account', async () => {
+  const globalData: Record<string, any> = { ready: Promise.resolve() };
+  const tabs: string[] = [];
+  const storage = new Map<string, string>([['sessionToken', 'token-a'], ['userId', 'member-a']]);
+  const wx = {
+    getStorageSync(key: string) { return storage.get(key) || ''; },
+    switchTab({ url }: { url: string }) { tabs.push(url); }
+  };
+  let submittedReport: Record<string, any> | undefined;
+  let eventPage: Record<string, any> | undefined;
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: {} };
+      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
+      if (path === '../../config.js') return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { eventPage = definition; }, getApp() { return { globalData }; }, wx
+  });
+  assert.ok(eventPage);
+  eventPage.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  eventPage.setData({ id: 'event-123' });
+  eventPage.goToReport();
+  assert.deepEqual(tabs, ['/pages/me/me']);
+  let profile: Record<string, any> | undefined;
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: { post: async (_path: string, body: Record<string, any>) => { submittedReport = body; } } };
+      if (path === '../../config.js') return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { profile = definition; }, getApp() { return { globalData }; }, wx
+  });
+  assert.ok(profile);
+  profile.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  profile.refresh = async () => true;
+  await profile.onShow();
+  assert.equal(profile.data.reportEventId, 'event-123');
+  assert.equal(globalData.reportContext, undefined);
+  profile.setData({ reportDescription: '现场存在安全风险' });
+  await profile.report();
+  assert.equal(submittedReport?.eventId, 'event-123');
+  assert.equal(submittedReport?.kind, 'SAFETY');
+  profile.setData({ reportEventId: '' });
+  await profile.onShow();
+  assert.equal(profile.data.reportEventId, '');
+
+  eventPage.goToReport();
+  storage.set('userId', 'member-b');
+  await profile.onShow();
+  assert.equal(profile.data.reportEventId, '');
+  assert.equal(globalData.reportContext, undefined);
+});
+
 test('profile load failure offers a retry that restores live private data', async () => {
   let page: Record<string, any> | undefined;
   let online = false;
