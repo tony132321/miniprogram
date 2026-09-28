@@ -31,6 +31,28 @@ test('failed logout retains the token and does not claim the operator session en
   assert.match(ui.item('status').textContent, /退出失败/);
 });
 
+test('logout removes every visible operator result and resets private page controls', async () => {
+  const ui = await workbench(async () => ({ ok: true }));
+  const lists = ['reports', 'reportResponseAlerts', 'reportTriage', 'eventReviews', 'holds', 'rateLimits',
+    'registrationAnomalies', 'notificationFollowups', 'notificationHistory', 'failedJobs',
+    'aiDraftAlerts', 'aiDraftAlertReviews', 'aiEventCosts', 'supportMinutesHistory', 'appeals', 'privacy', 'content'];
+  for (const id of lists) ui.item(id).appendChild({ textContent: `private-${id}` });
+  for (const id of ['publicGate', 'emergencyGate', 'coverageResult', 'reportInspection', 'hostReviewResult'])
+    ui.item(id).textContent = `private-${id}`;
+  for (const id of ['devUser', 'reportCaseId', 'reportAssignee', 'holdEventId', 'supportEventId',
+    'coverageId', 'hostReviewUserId']) ui.item(id).value = `private-${id}`;
+  await ui.item('operatorLogout').onclick?.();
+  assert.equal(ui.storage.has('operatorToken'), false);
+  assert.equal(ui.item('token').value, '');
+  for (const id of lists) assert.equal(ui.item(id).children.length, 0, `${id} remains visible`);
+  for (const id of ['publicGate', 'emergencyGate', 'coverageResult', 'reportInspection', 'hostReviewResult'])
+    assert.equal(ui.item(id).textContent, '', `${id} remains visible`);
+  for (const id of ['devUser', 'reportCaseId', 'reportAssignee', 'holdEventId', 'supportEventId',
+    'coverageId', 'hostReviewUserId']) assert.equal(ui.item(id).value, '', `${id} retains private input`);
+  for (const id of ['moreAiDraftAlerts', 'moreAiDraftAlertReviews', 'moreAiEventCosts'])
+    assert.equal(ui.item(id).disabled, true, `${id} still loads private data`);
+});
+
 test('a pending refresh cannot overwrite logged-out state', async () => {
   let resolveReads!: (value: unknown) => void;
   const reads = new Promise(resolve => { resolveReads = resolve; });

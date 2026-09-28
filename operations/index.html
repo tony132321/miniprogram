@@ -1228,42 +1228,35 @@
           if (!response.ok) throw new Error('服务器未确认退出');
         }
         requestGeneration++;
-        nextTriageOffset = null;
-        triageSnapshot = null;
-        $('moreReportTriage').disabled = true;
-        $('reportTriage').replaceChildren();
-        nextResponseAlertOffset = null;
-        responseAlertSnapshot = null;
-        $('moreReportResponseAlerts').disabled = true;
-        $('reportResponseAlerts').replaceChildren();
-        $('reportInspection').textContent = '';
+        nextReportOffset = nextResponseAlertOffset = nextTriageOffset = nextEventReviewOffset = null;
+        nextAnomalyOffset = nextNotificationFollowupOffset = nextFailedJobOffset = null;
+        nextAiDraftAlertOffset = nextAiDraftAlertReviewOffset = null;
+        nextPrivacyOffset = nextAppealOffset = nextContentOffset = null;
+        reportSnapshot = responseAlertSnapshot = triageSnapshot = eventReviewSnapshot = null;
+        anomalySnapshot = notificationFollowupSnapshot = failedJobSnapshot = null;
+        aiDraftAlertSnapshot = aiDraftAlertReviewSnapshot = null;
+        privacySnapshot = appealSnapshot = contentSnapshot = aiEventCostCursor = null;
         reportSeverityById.clear();
-        $('reportCaseId').value = '';
-        $('reportAssignee').value = '';
-        $('reportScopeReason').value = '';
         pendingHostReview = null;
-        $('hostReviewUserId').value = '';
-        $('hostReviewReason').value = '';
-        $('hostReviewResult').textContent = '';
-        nextNotificationFollowupOffset = null;
-        notificationFollowupSnapshot = null;
-        $('moreNotificationFollowups').disabled = true;
-        nextEventReviewOffset = null;
-        eventReviewSnapshot = null;
-        $('moreEventReviews').disabled = true;
-        nextAnomalyOffset = null;
-        anomalySnapshot = null;
-        $('moreRegistrationAnomalies').disabled = true;
-        nextContentOffset = null;
-        contentSnapshot = null;
-        $('moreContent').disabled = true;
-        nextFailedJobOffset = null;
-        failedJobSnapshot = null;
-        $('moreFailedJobs').disabled = true;
+        for (const id of ['reports', 'reportResponseAlerts', 'reportTriage', 'eventReviews', 'holds',
+          'rateLimits', 'registrationAnomalies', 'notificationFollowups', 'notificationHistory',
+          'failedJobs', 'aiDraftAlerts', 'aiDraftAlertReviews', 'aiEventCosts', 'supportMinutesHistory',
+          'appeals', 'privacy', 'content']) $(id).replaceChildren();
+        for (const id of ['moreReports', 'moreReportResponseAlerts', 'moreReportTriage', 'moreEventReviews',
+          'moreRegistrationAnomalies', 'moreNotificationFollowups', 'moreFailedJobs', 'moreAiDraftAlerts',
+          'moreAiDraftAlertReviews', 'moreAiEventCosts', 'moreAppeals', 'morePrivacy', 'moreContent'])
+          $(id).disabled = true;
+        $('moreAiEventCosts').textContent = '加载活动成本';
+        for (const id of ['devUser', 'operatorUser', 'operatorPassword', 'operatorCode', 'reportCaseId',
+          'reportAssignee', 'reportScopeReason', 'holdEventId', 'holdReason', 'supportEventId',
+          'supportMinutes', 'coverageStartsAt', 'coverageEndsAt', 'coverageDrillCompletedAt',
+          'coverageDrillReference', 'coverageId', 'coverageReason', 'hostReviewUserId',
+          'hostReviewReason', 'publicGateReason', 'emergencyReason']) $(id).value = '';
+        for (const id of ['publicGate', 'emergencyGate', 'coverageResult', 'reportInspection',
+          'hostReviewResult']) $(id).textContent = '';
         $('token').value = ''; sessionStorage.removeItem('operatorToken');
         $('status').textContent = '已退出登录';
         $('metrics').textContent = '已退出登录';
-        for (const id of ['reports', 'reportResponseAlerts', 'eventReviews', 'holds', 'rateLimits', 'registrationAnomalies', 'notificationFollowups', 'notificationHistory', 'failedJobs', 'appeals', 'privacy', 'content']) $(id).replaceChildren();
       } catch (error) { $('status').textContent = '退出失败：' + error.message; }
     };
     $('refresh').onclick = refresh;
