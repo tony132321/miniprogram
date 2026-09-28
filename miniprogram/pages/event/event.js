@@ -39,7 +39,7 @@ function sectionAvailable(section, isHost, canApproveRegistration) {
     (section === 'cohostApprovalSection' && !isHost && canApproveRegistration);
 }
 Page({
-  data: { id: '', token: '', source: '', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '',
+  data: { id: '', token: '', source: '', activeSection: 'detailsSection', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '',
     joinConfirmation: null, joinSubmitting: false,
     canJoin: false, canExpressInterest: false, canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
     canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
@@ -56,7 +56,7 @@ Page({
     canRequestManualCheckIn: false, currentUser: '',
     feedbackHeld: null, feedbackWouldRepeat: null, feedbackReason: '', questionText: '', factQuestionText: '', announcementText: '', answerText: '', answerQuestionId: '', removalReason: '' },
   async onLoad(options) {
-    this.setData({ id: options.id || '', token: options.token || '', source: options.source || '', successState: '' });
+    this.setData({ id: options.id || '', token: options.token || '', source: options.source || '', activeSection: 'detailsSection', successState: '' });
     await getApp().globalData.ready;
     const loaded = await this.refresh();
     if (loaded && options.success === 'published' && this.data.isHost &&
@@ -74,7 +74,7 @@ Page({
     if (this.data.currentUser && this.data.currentUser !== actor) {
       this.refreshId = (this.refreshId || 0) + 1;
       this.clearCheckInToken();
-      this.setData({ token: '', source: '', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '',
+      this.setData({ token: '', source: '', activeSection: 'detailsSection', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '',
         joinConfirmation: null, joinSubmitting: false,
         canJoin: false, canExpressInterest: false, canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
         canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
@@ -301,6 +301,7 @@ Page({
       this.scrollToSection(id);
   },
   scrollToSection(id) {
+    this.setData({ activeSection: id });
     const selector = '#' + id;
     if (typeof wx.createSelectorQuery !== 'function') return wx.pageScrollTo({ selector, duration: 260 });
     const query = wx.createSelectorQuery();

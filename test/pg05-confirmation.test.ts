@@ -99,9 +99,11 @@ test('event deep link scrolls only to a loaded and authorized section', async ()
   page.refresh = async function () { this.setData({ loadState: 'READY', isHost: false }); return true; };
   await page.onLoad({ id: 'event-1', section: 'checkinSection' });
   assert.deepEqual(scrolls, ['#checkinSection']);
+  assert.equal(page.data.activeSection, 'checkinSection');
   scrolls.length = 0;
   await page.onLoad({ id: 'event-1', section: 'hostSection' });
   assert.deepEqual(scrolls, []);
+  assert.equal(page.data.activeSection, 'detailsSection');
   page.refresh = async function () { this.setData({ loadState: 'READY', isHost: false, canApproveRegistration: true }); return true; };
   await page.onLoad({ id: 'event-1', section: 'cohostApprovalSection' });
   assert.deepEqual(scrolls, ['#cohostApprovalSection']);
@@ -109,6 +111,7 @@ test('event deep link scrolls only to a loaded and authorized section', async ()
   page.refresh = async function () { this.setData({ loadState: 'READY', isHost: true }); return true; };
   await page.onLoad({ id: 'event-1', section: 'hostSection' });
   assert.deepEqual(scrolls, ['#hostSection']);
+  assert.equal(page.data.activeSection, 'hostSection');
   scrolls.length = 0;
   await page.onLoad({ id: 'event-1', section: 'cohostApprovalSection' });
   assert.deepEqual(scrolls, []);

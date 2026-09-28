@@ -12,4 +12,4 @@ v3.1 `engineering/tasks/T34.md` 的 `AC-SECURITY` 要求凭证扫描及无硬编
 
 `test/credential-scan.test.ts` 在临时真实 Git 仓库中运行扫描脚本，验证：跟踪的 AWS/Google 形状密钥、微信 AppSecret、高熵 `clientSecret` 及 ZIP 内文本令牌使扫描失败；诊断不含密钥值；测试占位和未跟踪的本机输入不触发误报。独立审查发现原实现对两个敏感路径的显式豁免会掩盖误提交，新增强制跟踪测试先失败；随后 ZIP 内令牌测试也先失败，两项修复后 **6/6** 通过。
 
-本机执行：最终定向测试 **6/6** 通过；新增界面、审核文件与模拟器截图加入 Git 索引后 `pnpm exec tsx scripts/scan-credentials.ts` 返回 `Credential scan passed: 510 tracked text files, 1 ZIP archives inspected, 162 binary files skipped.`；`pnpm typecheck` 与 `git diff --cached --check` 退出码 0。最终整合候选 `pnpm test` **661/661** 通过；远端 CI 仍以该候选上传后的独立输出为准。
+本机执行：该次定向测试 **6/6** 通过；新增界面、审核文件与模拟器截图加入 Git 索引后 `pnpm exec tsx scripts/scan-credentials.ts` 返回 `Credential scan passed: 510 tracked text files, 1 ZIP archives inspected, 164 binary files skipped.`；`pnpm typecheck` 与 `git diff --cached --check` 退出码 0。该次整合候选 `pnpm test` **661/661** 通过。此后消息页异步响应回归修复的整套测试 **663/663** 通过，远端 [R1 CI 运行 51](https://github.com/tony132321/miniprogram/actions/runs/36495303832) 已通过。页签复测截图加入后本机全量 **663/663**，扫描再次通过：510 个跟踪文本、1 个 ZIP、165 个跳过的二进制文件；新增候选以对应提交和独立 CI 输出为准。

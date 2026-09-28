@@ -3,7 +3,7 @@ page{padding:0;background:#f5f6fa;color:#1b1e27;font-family:-apple-system,BlinkM
 .poster-title > view { display: block; white-space: nowrap; }
 .event-tabs { display: flex; overflow-x: auto; }
 .event-tabs button { flex: none; display: inline-block; margin: 0 9rpx; padding: 13rpx 19rpx; border-radius: 35rpx; background: #f3f5f9; color: #4f5d73; font-size: 24rpx; font-weight: 600; line-height: normal; }
-.event-tabs button:first-child { background: #eaf1ff; color: #0053d9; }
+.event-tabs button.active { background: #eaf1ff; color: #0053d9; }
 .event-tabs button::after { border: 0; }
 .join-review { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 30; display: flex; flex-direction: column; background: #f8fafc; color: #172033; }
 .join-review-header { height: 88rpx; flex: none; display: flex; align-items: center; justify-content: space-between; background: #fff; border-bottom: 1rpx solid #eef0f4; padding: 0 22rpx; }
