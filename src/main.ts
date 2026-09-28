@@ -95,7 +95,8 @@ if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('PORT m
 server.listen(port, '127.0.0.1', () => { process.stdout.write(`Project IRL API listening on http://127.0.0.1:${port}\n`); });
 const interval = setInterval(() => { void runDueJobs(db).catch(() => { process.stderr.write('Background jobs failed; inspect jobs table\n'); }); }, 30_000);
 const stopPrivacyMaintenance = privacyDeletion ? startPrivacyQuarantineMaintenance(db,
-  () => process.stderr.write('Privacy quarantine expiry failed; inspect operation logs\n')) : undefined;
+  () => process.stderr.write('Privacy expiry failed; inspect operation logs\n'),
+  60 * 60_000, privacyDeletion) : undefined;
 async function shutdown() {
   clearInterval(interval);
   stopPrivacyMaintenance?.();

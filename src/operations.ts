@@ -4,6 +4,7 @@ import { AppError } from './errors.ts';
 import { command } from './registrations.ts';
 import { consentNotice, type NotificationPurpose } from './notifications.ts';
 import { inspectPrivacyFields, historicallyHosted, historicallyReported, sharedPerson, disputePerson } from './privacy-field-inventory.ts';
+import { readOrdinaryProfileDisposition } from './privacy-profile-expiry.ts';
 import { eventAliasNotice } from './event-aliases.ts';
 import { claimIdempotency } from './idempotency.ts';
 import { parseAnnouncementFaq } from './announcement-faq.ts';
@@ -633,9 +634,11 @@ export async function getPrivacyRequestImpact(db: Database, operator: string, re
        (SELECT count(*)::int FROM ai_action_proposals WHERE actor_id=$1) AS ai_action_proposals`, [request.user_id]);
     const count = rows[0]!;
     const fieldInventory = await inspectPrivacyFields(tx, request.user_id);
+    const ordinaryProfileDisposition = await readOrdinaryProfileDisposition(tx, requestId);
     await tx.query('INSERT INTO audit(id,actor_id,action,detail) VALUES($1,$2,$3,$4)',
       [randomUUID(), operator, 'READ_PRIVACY_IMPACT', JSON.stringify({ requestId })]);
-    return { requestId, status: request.status, assessmentStatus: 'POLICY_REVIEW_REQUIRED', fieldInventory,
+    return { requestId, status: request.status, assessmentStatus: 'POLICY_REVIEW_REQUIRED',
+      fieldInventory, ordinaryProfileDisposition,
       inventoryScope: 'SELECTED_CATEGORIES_ONLY', counts: {
       profile: count.profile, sessions: count.sessions, hostedEvents: count.hosted_events,
       hostPublicationStatus: count.host_publication_status,

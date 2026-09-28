@@ -26,3 +26,32 @@ jobs:
         run: pnpm test
       - name: Dependency audit
         run: pnpm audit --audit-level high
+  postgres-privacy-expiry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: irl_ci
+          POSTGRES_PASSWORD: irl_ci_only
+          POSTGRES_DB: irl_r1_test_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U irl_ci -d irl_r1_test_ci"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      IRL_PG_TEST_URL: postgresql://irl_ci:irl_ci_only@127.0.0.1:5432/irl_r1_test_ci
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/setup@v3
+        with:
+          version: 11.19.0
+          runtime: node@24.19.0
+          require-lockfile: true
+          cache: true
+      - name: Verify PostgreSQL privacy expiry migrations and write barriers
+        run: pnpm exec tsx scripts/verify-postgres-privacy-expiry.ts

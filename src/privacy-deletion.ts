@@ -3,13 +3,15 @@ import type { Database, Queryable } from './db.ts';
 import { AppError } from './errors.ts';
 import { validateRetentionPolicy } from './retention-policy.ts';
 import { inspectPrivacyFields } from './privacy-field-inventory.ts';
+import { readOrdinaryProfileDisposition } from './privacy-profile-expiry.ts';
 
 type Count = { count: number };
-type OutcomeState = 'DISABLED' | 'DELETED' | 'PROTECTED' | 'ISOLATED' | 'PARTIALLY_ISOLATED_REVIEW_PENDING' | 'DEIDENTIFIED_REVIEW_PENDING' | 'DEIDENTIFICATION_PENDING' | 'ISOLATION_PENDING';
+type OutcomeState = 'DISABLED' | 'DELETED' | 'PROTECTED' | 'ISOLATED' | 'PARTIALLY_ISOLATED_REVIEW_PENDING' | 'PARTIALLY_PURGED_REVIEW_PENDING' | 'DEIDENTIFIED_REVIEW_PENDING' | 'DEIDENTIFICATION_PENDING' | 'ISOLATION_PENDING';
 type Outcome = { state: OutcomeState; affected: number };
 type PendingReview = { code: string; scope: string; reason: string };
 type SafeguardOutcomes = {
   account: Outcome;
+  ordinaryProfile?: Outcome;
   sessions: Outcome;
   personalExportTickets: Outcome;
   externalDelivery: Outcome;
@@ -41,6 +43,7 @@ export async function dryRunPrivacyDeletion(db: Database, requestId: string) {
     if (request.kind !== 'DELETE') throw new AppError('BAD_REQUEST', '仅注销或删除申请可预览');
     const actor = request.user_id;
     return { requestId, inventoryScope: 'SELECTED_RELATIONAL_FIELDS_ONLY',
+      ordinaryProfileDisposition: await readOrdinaryProfileDisposition(tx, requestId),
       fieldInventory: await inspectPrivacyFields(tx, actor), classifications: {
       ordinaryProfile: {
         account: await count(tx, 'SELECT count(*)::int AS count FROM users WHERE id=$1', actor),

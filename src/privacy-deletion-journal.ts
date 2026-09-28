@@ -8,6 +8,8 @@ import { createPrivacyRequest } from './operations.ts';
 import { executePrivacyDeletionSafeguards } from './privacy-deletion.ts';
 import { deidentifySharedActivity } from './privacy-shared-deidentification.ts';
 import { isolateDisputeRecords, purgeExpiredQuarantine, validateDisputeRetentionRule } from './privacy-quarantine.ts';
+import { aiInputCleanupEligible, purgeExpiredAiInput, scheduleAiInputCleanup } from './privacy-ai-expiry.ts';
+import { expireOrdinaryProfile, ordinaryProfileExpiryEligible } from './privacy-profile-expiry.ts';
 import { validateRetentionPolicy } from './retention-policy.ts';
 import { AppError } from './errors.ts';
 
@@ -77,6 +79,8 @@ export async function executePrivacyDeletionWithMarker(db: Database, markerStore
   operator: string, requestId: string, approvedPolicyJson: string | undefined) {
   const policySha256 = policyHash(approvedPolicyJson);
   validateDisputeRetentionRule(approvedPolicyJson!);
+  const aiExpiryEnabled = aiInputCleanupEligible(approvedPolicyJson!);
+  const profileExpiryEnabled = ordinaryProfileExpiryEligible(approvedPolicyJson!);
   if (!markerStore) throw new Error('Deletion marker store is required');
   if (!operator.startsWith('operator:')) throw new AppError('FORBIDDEN', '需要运营身份', 403);
   // The marker is an irrevocable execution intent. Hold the user/send fence
@@ -107,13 +111,21 @@ export async function executePrivacyDeletionWithMarker(db: Database, markerStore
       await tx.query("UPDATE privacy_requests SET status='EXECUTION_INTENT_RECORDED' WHERE id=$1", [requestId]);
     return { userId, recordedAt };
   });
+  const recordedMarkers = (await markerStore.list()).filter(marker => marker.requestId === requestId)
+    .sort((a, b) => Date.parse(a.recordedAt) - Date.parse(b.recordedAt));
+  const marker = recordedMarkers[0];
+  if (!marker || marker.userId !== intent.userId || marker.policySha256 !== policySha256 ||
+    recordedMarkers.some(entry => entry.userId !== intent.userId || entry.policySha256 !== policySha256))
+    throw new Error('Deletion marker journal conflicts with the applied request');
   const result = await executePrivacyDeletionSafeguards(db, operator, requestId, approvedPolicyJson);
   const { rows: applied } = await db.query<{ user_id: string; policy_sha256: string }>(
     'SELECT user_id,policy_sha256 FROM privacy_deletion_executions WHERE request_id=$1', [requestId]);
   if (applied[0]?.user_id !== intent.userId || applied[0]?.policy_sha256 !== policySha256)
     throw new Error('Deletion marker and applied request identity do not match');
-  const dispute = await isolateDisputeRecords(db, operator, requestId, approvedPolicyJson!, intent.recordedAt);
+  const dispute = await isolateDisputeRecords(db, operator, requestId, approvedPolicyJson!, marker.recordedAt);
   const shared = await deidentifySharedActivity(db, operator, requestId, approvedPolicyJson!);
+  if (aiExpiryEnabled) await scheduleAiInputCleanup(db, operator, requestId, approvedPolicyJson!, marker.recordedAt);
+  if (profileExpiryEnabled) await expireOrdinaryProfile(db, operator, requestId, approvedPolicyJson!, marker);
   const { rows: final } = await db.query<{ outcomes: typeof result.outcomes }>(
     'SELECT outcomes FROM privacy_deletion_executions WHERE request_id=$1', [requestId]);
   if (!final[0]) throw new Error('Deletion execution disappeared after disposition');
@@ -126,6 +138,8 @@ export async function replayPrivacyDeletionMarkers(db: Database, markerStore: De
   const markers = await markerStore.list();
   const approvedHash = policyHash(approvedPolicyJson);
   validateDisputeRetentionRule(approvedPolicyJson!);
+  const aiExpiryEnabled = aiInputCleanupEligible(approvedPolicyJson!);
+  const profileExpiryEnabled = ordinaryProfileExpiryEligible(approvedPolicyJson!);
   const unique = new Map<string, DeletionMarker>();
   for (const marker of markers) {
     const previous = unique.get(marker.requestId);
@@ -162,8 +176,13 @@ export async function replayPrivacyDeletionMarkers(db: Database, markerStore: De
     await executePrivacyDeletionSafeguards(db, 'operator:restore', marker.requestId, approvedPolicyJson);
     await isolateDisputeRecords(db, 'operator:restore', marker.requestId, approvedPolicyJson!, marker.recordedAt);
     await deidentifySharedActivity(db, 'operator:restore', marker.requestId, approvedPolicyJson!);
+    if (aiExpiryEnabled) await scheduleAiInputCleanup(db, 'operator:restore', marker.requestId,
+      approvedPolicyJson!, marker.recordedAt);
+    if (profileExpiryEnabled) await expireOrdinaryProfile(db, 'operator:restore', marker.requestId,
+      approvedPolicyJson!, marker);
   }
   await purgeExpiredQuarantine(db, 'operator:restore');
+  if (aiExpiryEnabled) await purgeExpiredAiInput(db, 'operator:restore');
   return unique.size;
 }
 

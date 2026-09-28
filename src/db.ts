@@ -118,7 +118,9 @@ const migrations = [
   { version: 60, path: fileURLToPath(new URL('./migrations/0060_ai_semantic_alert_reviews.sql', import.meta.url)) },
   { version: 61, path: fileURLToPath(new URL('./migrations/0061_privacy_deletion_intent_and_event_tombstones.sql', import.meta.url)) },
   { version: 62, path: fileURLToPath(new URL('./migrations/0062_notification_deletion_recipient_guard.sql', import.meta.url)) },
-  { version: 63, path: fileURLToPath(new URL('./migrations/0063_privacy_tombstone_write_guard.sql', import.meta.url)) }
+  { version: 63, path: fileURLToPath(new URL('./migrations/0063_privacy_tombstone_write_guard.sql', import.meta.url)) },
+  { version: 64, path: fileURLToPath(new URL('./migrations/0064_privacy_ai_input_expiry.sql', import.meta.url)) },
+  { version: 65, path: fileURLToPath(new URL('./migrations/0065_privacy_ordinary_profile_expiry.sql', import.meta.url)) }
 ];
 export const LATEST_SCHEMA_VERSION = migrations[migrations.length - 1]!.version;
 type MigrationExecutor = Queryable & { exec(sql: string): Promise<unknown> };
