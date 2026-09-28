@@ -247,6 +247,21 @@ Page({
     if (actor && this.data.id) getApp().globalData.reportContext = { actor, eventId: this.data.id };
     wx.switchTab({ url: '/pages/me/me' });
   },
+  copySafetyDetails() {
+    const event = this.data.event;
+    if (!event || this.data.loadState !== 'READY') return this.setData({ message: '活动信息尚未加载完成，请稍后重试。' });
+    const details = [
+      `活动：${event.payload.title || '未命名活动'}`,
+      `时间：${event.payload.startAt || '待定'} 至 ${event.payload.endAt || '待定'}`,
+      `公共集合地点：${event.payload.city || '待定'} · ${event.payload.venueName || '待定'}`,
+      `主办方：${this.data.hostAlias || '未设置活动内昵称'}`,
+      `活动编号：${this.data.id}`,
+      '请以当前活动信息和主办方核实为准；遇到人身紧急危险，请先离开风险地点并联系当地应急服务。'
+    ].join('\n');
+    wx.setClipboardData({ data: details,
+      success: () => this.setData({ message: '活动信息已复制，请自行发给可信任的人。' }),
+      fail: () => this.setData({ message: '复制失败，请稍后重试。' }) });
+  },
   async action(path, payload, successText) {
     try {
       const result = await api.post(path, { expectedVersion: this.data.event.version, ...payload });

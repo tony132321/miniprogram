@@ -320,6 +320,33 @@ test('event safety entry carries its event into the signed-in report form only f
   assert.equal(globalData.reportContext, undefined);
 });
 
+test('member can copy current activity facts for a trusted contact without exposing invite credentials', () => {
+  let copied = '';
+  let page: Record<string, any> | undefined;
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: {} };
+      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
+      if (path === '../../config.js') return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: { setClipboardData({ data, success }: { data: string; success(): void }) { copied = data; success(); } }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.setData({ id: 'event-123', loadState: 'READY', hostAlias: '本场主办方', event: { inviteToken: 'private-invite-token',
+    payload: { title: '周末球局', startAt: '2026-10-03T12:00:00Z', endAt: '2026-10-03T14:00:00Z',
+      city: '上海', venueName: '公共球馆' } } });
+  page.copySafetyDetails();
+  assert.match(copied, /周末球局/);
+  assert.match(copied, /公共球馆/);
+  assert.match(copied, /本场主办方/);
+  assert.match(copied, /2026-10-03T12:00:00Z/);
+  assert.doesNotMatch(copied, /private-invite-token/);
+  assert.match(page.data.message, /已复制/);
+});
+
 test('profile load failure offers a retry that restores live private data', async () => {
   let page: Record<string, any> | undefined;
   let online = false;
