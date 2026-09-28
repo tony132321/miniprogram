@@ -7,7 +7,7 @@ import { createDatabase, LATEST_SCHEMA_VERSION } from '../src/db.ts';
 import { createDraft } from '../src/events.ts';
 import { publishApprovedInvite } from './helpers.ts';
 import { register } from '../src/registrations.ts';
-import { createLocalBackup, restoreLocalBackup } from '../src/local-backup.ts';
+import { createLocalBackup, restoreLocalBackupUnprotectedSynthetic } from '../src/local-backup.ts';
 import { setConsent } from '../src/notifications.ts';
 import { exportPersonalData } from '../src/privacy.ts';
 
@@ -46,7 +46,7 @@ test('local backup restores event, registration, audit, and migration state', as
     const backup = await createLocalBackup(source, archive);
     assert.match(backup.sha256, /^[0-9a-f]{64}$/);
     assert.ok((await readFile(archive)).length > 0);
-    await restoreLocalBackup(archive, restored);
+    await restoreLocalBackupUnprotectedSynthetic(archive, restored);
     const recovered = await createDatabase(restored);
     try {
       assert.deepEqual((await recovered.query('SELECT id,status,version,payload FROM events ORDER BY id')).rows, before.events);
@@ -71,7 +71,7 @@ test('backup refuses to overwrite an existing archive and restore refuses an exi
     await writeFile(archive, 'keep this archive');
     await assert.rejects(() => createLocalBackup(source, archive), /exists|EEXIST/i);
     assert.equal((await readFile(archive, 'utf8')), 'keep this archive');
-    await assert.rejects(() => restoreLocalBackup(archive, source), /exists|EEXIST/i);
+    await assert.rejects(() => restoreLocalBackupUnprotectedSynthetic(archive, source), /exists|EEXIST/i);
     const reopened = await createDatabase(source);
     await reopened.close();
   } finally { await rm(root, { recursive: true, force: true }); }
@@ -83,7 +83,7 @@ test('corrupted archive leaves no accepted restored database', async () => {
     const archive = join(root, 'broken.tgz');
     const target = join(root, 'restored');
     await writeFile(archive, 'not a database archive');
-    await assert.rejects(() => restoreLocalBackup(archive, target));
+    await assert.rejects(() => restoreLocalBackupUnprotectedSynthetic(archive, target));
     await assert.rejects(() => readFile(join(target, 'PG_VERSION')));
   } finally { await rm(root, { recursive: true, force: true }); }
 });

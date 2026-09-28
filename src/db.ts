@@ -110,7 +110,15 @@ const migrations = [
   { version: 52, path: fileURLToPath(new URL('./migrations/0052_ai_event_budget.sql', import.meta.url)) },
   { version: 53, path: fileURLToPath(new URL('./migrations/0053_host_publication_limits.sql', import.meta.url)) },
   { version: 54, path: fileURLToPath(new URL('./migrations/0054_ai_draft_alert_reviews.sql', import.meta.url)) },
-  { version: 55, path: fileURLToPath(new URL('./migrations/0055_content_business_events.sql', import.meta.url)) }
+  { version: 55, path: fileURLToPath(new URL('./migrations/0055_content_business_events.sql', import.meta.url)) },
+  { version: 56, path: fileURLToPath(new URL('./migrations/0056_privacy_deletion_execution.sql', import.meta.url)) },
+  { version: 57, path: fileURLToPath(new URL('./migrations/0057_privacy_quarantine.sql', import.meta.url)) },
+  { version: 58, path: fileURLToPath(new URL('./migrations/0058_ai_semantic_requests.sql', import.meta.url)) },
+  { version: 59, path: fileURLToPath(new URL('./migrations/0059_privacy_shared_deidentification.sql', import.meta.url)) },
+  { version: 60, path: fileURLToPath(new URL('./migrations/0060_ai_semantic_alert_reviews.sql', import.meta.url)) },
+  { version: 61, path: fileURLToPath(new URL('./migrations/0061_privacy_deletion_intent_and_event_tombstones.sql', import.meta.url)) },
+  { version: 62, path: fileURLToPath(new URL('./migrations/0062_notification_deletion_recipient_guard.sql', import.meta.url)) },
+  { version: 63, path: fileURLToPath(new URL('./migrations/0063_privacy_tombstone_write_guard.sql', import.meta.url)) }
 ];
 export const LATEST_SCHEMA_VERSION = migrations[migrations.length - 1]!.version;
 type MigrationExecutor = Queryable & { exec(sql: string): Promise<unknown> };

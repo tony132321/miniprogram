@@ -205,21 +205,24 @@ async function saveReplay(tx: Queryable, actor: string, route: string, key: stri
 }
 
 export async function createDraft(db: Database, actorId: string, input: EventInput, key: string, isTest = true): Promise<EventRecord> {
+  return db.transaction(tx => createDraftInTransaction(tx, actorId, input, key, isTest));
+}
+
+export async function createDraftInTransaction(tx: Queryable, actorId: string, input: EventInput,
+  key: string, isTest = true): Promise<EventRecord> {
   if (!actorId || !key) throw new AppError('BAD_REQUEST', '身份与幂等键必填');
   validateDraftFields(input);
-  return db.transaction(async (tx) => {
-    const old = await replay(tx, actorId, 'create-draft', key);
-    if (old) return old;
-    await assertNewActionsOpen(tx);
-    const id = randomUUID();
-    const { isTest: _ignored, ...payload } = input as EventInput & { isTest?: unknown };
-    const { rows } = await tx.query<EventRow>('INSERT INTO events(id,host_id,status,version,payload,is_test) VALUES($1,$2,$3,1,$4,$5) RETURNING *',
-      [id, actorId, 'DRAFT', JSON.stringify(payload), isTest]);
-    const result = rowToEvent(rows[0]!);
-    await saveReplay(tx, actorId, 'create-draft', key, result);
-    await tx.query('INSERT INTO audit(id,actor_id,event_id,action) VALUES($1,$2,$3,$4)', [randomUUID(), actorId, id, 'CREATE_DRAFT']);
-    return result;
-  });
+  const old = await replay(tx, actorId, 'create-draft', key);
+  if (old) return old;
+  await assertNewActionsOpen(tx);
+  const id = randomUUID();
+  const { isTest: _ignored, ...payload } = input as EventInput & { isTest?: unknown };
+  const { rows } = await tx.query<EventRow>('INSERT INTO events(id,host_id,status,version,payload,is_test) VALUES($1,$2,$3,1,$4,$5) RETURNING *',
+    [id, actorId, 'DRAFT', JSON.stringify(payload), isTest]);
+  const result = rowToEvent(rows[0]!);
+  await saveReplay(tx, actorId, 'create-draft', key, result);
+  await tx.query('INSERT INTO audit(id,actor_id,event_id,action) VALUES($1,$2,$3,$4)', [randomUUID(), actorId, id, 'CREATE_DRAFT']);
+  return result;
 }
 
 export async function updateDraft(db: Database, actorId: string, id: string, expectedVersion: number, patch: EventInput, key: string): Promise<EventRecord> {

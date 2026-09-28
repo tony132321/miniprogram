@@ -3,8 +3,9 @@ import type { Database } from './db.ts';
 import { AppError } from './errors.ts';
 import { localDraftSuggestion } from './ai.ts';
 import { runDraftProvider, type DraftProvider } from './ai-provider-boundary.ts';
-import { createDraft } from './events.ts';
+import { createDraftInTransaction } from './events.ts';
 import { command } from './registrations.ts';
+import { requireAiActorActive, aiActorActive } from './ai-account-fence.ts';
 
 export async function runRecordedDraftProvider(db: Database, actor: string, key: string, text: string,
   at: number, provider: DraftProvider, budgetFen: number, eventId?: string) {
@@ -24,28 +25,32 @@ export async function runRecordedDraftProvider(db: Database, actor: string, key:
       'SELECT request_hash,status,result,event_id FROM ai_draft_requests WHERE actor_id=$1 AND request_key=$2', [actor, key]);
     return rows[0];
   };
+  await db.transaction(tx => requireAiActorActive(tx, actor));
   const existing = await readPrior();
   if (existing) return priorResult(existing);
   // Reject malformed input before creating a draft or reserving an external-call key.
   localDraftSuggestion(text, at);
-  const draft = eventId ? null : await createDraft(db, actor, {}, `ai:${key}`);
-  const targetEventId = eventId ?? draft!.id;
   const reservation = await db.transaction(async tx => {
+    await requireAiActorActive(tx, actor);
+    const draft = eventId ? null : await createDraftInTransaction(tx, actor, {}, `ai:${key}`);
+    const targetEventId = eventId ?? draft!.id;
     let available = budgetFen;
     const { rows: drafts } = await tx.query<{ host_id: string; status: string; version: number }>(
       'SELECT host_id,status,version FROM events WHERE id=$1 FOR UPDATE', [targetEventId]);
     if (!drafts[0]) throw new AppError('NOT_FOUND', '草稿不存在', 404);
     if (drafts[0].host_id !== actor) throw new AppError('FORBIDDEN', '只有主办方可提取草稿建议', 403);
     if (drafts[0].status !== 'DRAFT') throw new AppError('INVALID_EVENT', '只有未发布草稿可提取建议', 409);
-    const { rows: totals } = await tx.query<{ used_fen: number }>(`SELECT COALESCE(SUM(CASE
-      WHEN status='COMPLETED' AND cost_status='KNOWN' THEN known_cost_fen ELSE reserved_fen END),0)::int AS used_fen
-      FROM ai_draft_requests WHERE event_id=$1`, [targetEventId]);
+    const { rows: totals } = await tx.query<{ used_fen: number }>(`SELECT (
+      (SELECT COALESCE(SUM(CASE WHEN status='COMPLETED' AND cost_status='KNOWN' THEN known_cost_fen ELSE reserved_fen END),0)
+       FROM ai_draft_requests WHERE event_id=$1) +
+      (SELECT COALESCE(SUM(CASE WHEN status='COMPLETED' AND cost_status='KNOWN' THEN known_cost_fen ELSE reserved_fen END),0)
+       FROM ai_semantic_requests WHERE event_id=$1))::int AS used_fen`, [targetEventId]);
     available = Math.max(0, budgetFen - totals[0]!.used_fen);
     const { rows } = await tx.query<{ request_key: string }>(`INSERT INTO ai_draft_requests
       (actor_id,request_key,request_hash,status,budget_fen,event_id,reserved_fen)
       VALUES($1,$2,$3,'STARTED',$4,$5,$4) ON CONFLICT DO NOTHING RETURNING request_key`,
     [actor, key, requestHash, available, targetEventId]);
-    return { started: rows.length > 0, available, version: drafts[0].version };
+    return { started: rows.length > 0, available, version: drafts[0].version, targetEventId };
   });
   if (!reservation.started) return priorResult(await readPrior());
   let suggestion: Awaited<ReturnType<typeof runDraftProvider>>;
@@ -55,10 +60,26 @@ export async function runRecordedDraftProvider(db: Database, actor: string, key:
       [actor, key]);
     throw error;
   }
-  const result = { ...suggestion, draft: { id: targetEventId, version: reservation.version } };
-  await db.query(`UPDATE ai_draft_requests SET status='COMPLETED',known_cost_fen=$3,cost_status=$4,result=$5::jsonb,
-    finished_at=clock_timestamp() WHERE actor_id=$1 AND request_key=$2 AND status='STARTED'`,
-  [actor, key, suggestion.providerCostFen, suggestion.providerCostStatus, JSON.stringify(result)]);
+  const result = { ...suggestion, draft: { id: reservation.targetEventId, version: reservation.version } };
+  const allowed = await db.transaction(async tx => {
+    const active = await aiActorActive(tx, actor);
+    if (!active) {
+      await tx.query(`UPDATE ai_draft_requests SET status='UNKNOWN',known_cost_fen=$3,cost_status=$4,
+        finished_at=clock_timestamp() WHERE actor_id=$1 AND request_key=$2 AND status='STARTED'`,
+      [actor, key, suggestion.providerCostFen, suggestion.providerCostStatus]);
+      await tx.query(`INSERT INTO audit(id,actor_id,event_id,action,detail)
+        VALUES($1,$2,$3,'AI_DRAFT_ABORTED_FOR_DELETION',$4::jsonb)`,
+      [randomUUID(), actor, reservation.targetEventId, JSON.stringify({ requestKeyHash: createHash('sha256').update(key).digest('hex'),
+        knownCostFen: suggestion.providerCostFen, costStatus: suggestion.providerCostStatus,
+        providerEvidence: suggestion.providerEvidence })]);
+      return false;
+    }
+    await tx.query(`UPDATE ai_draft_requests SET status='COMPLETED',known_cost_fen=$3,cost_status=$4,result=$5::jsonb,
+      finished_at=clock_timestamp() WHERE actor_id=$1 AND request_key=$2 AND status='STARTED'`,
+    [actor, key, suggestion.providerCostFen, suggestion.providerCostStatus, JSON.stringify(result)]);
+    return true;
+  });
+  if (!allowed) throw new AppError('ACCOUNT_DISABLED', '账号当前不可使用或注销申请处理中', 403);
   return result;
 }
 

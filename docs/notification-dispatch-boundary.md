@@ -1,5 +1,11 @@
 # 外部通知发送的事务边界与撤权顺序
 
+## 不确定发送的提供方查单接口（本地合成验证）
+
+`POST /ops/notifications/:id/reconcile` 仅向具 `NOTIFICATIONS` 权限的运营账号开放，要求幂等键和空 JSON 对象。它只处理已有 `SEND_EXTERNAL` 任务且状态为 `UNKNOWN_REQUIRES_RECONCILIATION` 的通知。应用调用注入的 `NotificationLookupAdapter.lookup`，按提供方给出的确定受理或确定拒绝结果更新状态；缺少查单能力、异常、超时或含糊回执均保留 UNKNOWN。已决结果的同一幂等键重放只返回原收据，不再查单，也从不重新发送。
+
+查单返回 `PROVIDER_ACCEPTED` 只表示提供方受理。API 收据明确 `deliveryConfirmed: false`，不会设置用户打开时间。当前没有真实微信查单适配器，合成测试仅验证服务端保守状态机与权限边界；微信模板、真实回执、提供方取消语义仍需正式资源与目标环境验证。
+
 ## 第 51 版候选：短事务与会话屏障
 
 发送方先持久化随机 `external_dispatch_token` 和 `DISPATCHING`，再用独占 PostgreSQL session advisory lock 覆盖最终复查、合成提供方调用及 token 条件结果回写。复查和回写分别在短事务中完成；网络调用期间没有开放的业务事务。复查后若状态、版本、授权或通知 token 已变化，就不调用适配器。进程中断后仍进入 `UNKNOWN_REQUIRES_RECONCILIATION`，不自动重发。

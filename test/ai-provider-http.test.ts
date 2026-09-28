@@ -7,10 +7,12 @@ import type { DraftProvider } from '../src/ai-provider-boundary.ts';
 import { exportPersonalData } from '../src/privacy.ts';
 import { createDraft } from '../src/events.ts';
 import { listAiEventCosts } from '../src/ai-draft-requests.ts';
+const fixtureEvidence = { modelVersion: 'fixture-model-v1', promptHash: 'b'.repeat(64),
+  usage: { inputTokens: 12, outputTokens: 8 }, receipt: { status: 'ACCEPTED', reference: 'fixture-call' } };
 
 const provider: DraftProvider = {
   estimateUpperBoundFen: () => 10,
-  generate: async () => ({ costFen: 7, fields: { title: '周末球局', venueName: '待主办确认的公共球馆', venueStatus: 'HOST_CONFIRMED' } })
+  generate: async () => ({ evidence: fixtureEvidence, costFen: 7, fields: { title: '周末球局', venueName: '待主办确认的公共球馆', venueStatus: 'HOST_CONFIRMED' } })
 };
 
 test('the injected draft provider uses the authenticated HTTP path and keeps venue unconfirmed', async () => {
@@ -33,6 +35,14 @@ test('the injected draft provider uses the authenticated HTTP path and keeps ven
     assert.equal(body.fields.venueStatus, undefined);
     assert.equal(body.fieldSources.venueName, 'NEEDS_CONFIRMATION');
     assert.equal(body.aiContentLabel, 'AI_GENERATED_UNVERIFIED');
+    assert.equal(body.providerEvidence[0].modelVersion, 'fixture-model-v1');
+    assert.equal(body.providerEvidence[0].promptHash, 'b'.repeat(64));
+    assert.deepEqual(body.providerEvidence[0].usage, { inputTokens: 12, outputTokens: 8 });
+    assert.equal(body.providerEvidence[0].receipt.referenceHash.length, 64);
+    const { rows: evidenceRows } = await db.query<{ result: Record<string, any> }>(
+      "SELECT result FROM ai_draft_requests WHERE actor_id='host' AND request_key='provider-fixture'");
+    assert.deepEqual(evidenceRows[0]?.result.providerEvidence, body.providerEvidence);
+    assert.equal(JSON.stringify(evidenceRows[0]?.result).includes('fixture-call'), false);
     const eventResponse = await fetch(`http://127.0.0.1:${port}/events/${body.draft.id}`,
       { headers: { 'X-Dev-User': 'host' } });
     assert.equal(eventResponse.status, 200);
@@ -70,7 +80,7 @@ test('one event cannot spend its full AI draft budget on every new request', asy
   const draft = await createDraft(db, 'host', {}, 'budget-draft');
   let calls = 0;
   const counted: DraftProvider = { estimateUpperBoundFen: () => 7,
-    generate: async () => { calls++; return { costFen: 6, fields: { title: '活动建议' } }; } };
+    generate: async () => { calls++; return { evidence: fixtureEvidence, costFen: 6, fields: { title: '活动建议' } }; } };
   const server = createApp(db, { environment: 'test', devAuth: true, operationsUsers: ['ops'], checkInSecret: 'test-secret',
     aiDraftProvider: counted, aiDraftBudgetFen: 10 });
   server.listen(0, '127.0.0.1'); await once(server, 'listening');
@@ -110,7 +120,7 @@ test('the first model suggestion creates one reusable server draft', async () =>
   const db = await createDatabase();
   let calls = 0;
   const counted: DraftProvider = { estimateUpperBoundFen: () => 7,
-    generate: async () => { calls++; return { costFen: 6, fields: { title: '活动建议' } }; } };
+    generate: async () => { calls++; return { evidence: fixtureEvidence, costFen: 6, fields: { title: '活动建议' } }; } };
   const server = createApp(db, { environment: 'test', devAuth: true, checkInSecret: 'test-secret',
     aiDraftProvider: counted, aiDraftBudgetFen: 10 });
   server.listen(0, '127.0.0.1'); await once(server, 'listening');
@@ -150,7 +160,7 @@ test('a pending model call reserves the same event budget across different reque
   const started = new Promise<void>(resolve => { signalStarted = resolve; });
   const held = new Promise<void>(resolve => { release = resolve; });
   const provider: DraftProvider = { estimateUpperBoundFen: () => 10,
-    generate: async () => { calls++; signalStarted(); await held; return { costFen: 6, fields: { title: '活动建议' } }; } };
+    generate: async () => { calls++; signalStarted(); await held; return { evidence: fixtureEvidence, costFen: 6, fields: { title: '活动建议' } }; } };
   const server = createApp(db, { environment: 'test', devAuth: true, checkInSecret: 'test-secret',
     aiDraftProvider: provider, aiDraftBudgetFen: 10 });
   server.listen(0, '127.0.0.1'); await once(server, 'listening');
@@ -178,7 +188,7 @@ test('another host cannot spend or inspect a draft AI budget', async () => {
   const draft = await createDraft(db, 'host', {}, 'private-budget-draft');
   let calls = 0;
   const provider: DraftProvider = { estimateUpperBoundFen: () => 1,
-    generate: async () => { calls++; return { costFen: 1, fields: { title: '活动建议' } }; } };
+    generate: async () => { calls++; return { evidence: fixtureEvidence, costFen: 1, fields: { title: '活动建议' } }; } };
   const server = createApp(db, { environment: 'test', devAuth: true, checkInSecret: 'test-secret',
     aiDraftProvider: provider, aiDraftBudgetFen: 10 });
   server.listen(0, '127.0.0.1'); await once(server, 'listening');
@@ -225,7 +235,7 @@ test('invalid draft input never creates an uncertain provider request or consume
   const db = await createDatabase();
   let calls = 0;
   const counted: DraftProvider = { estimateUpperBoundFen: () => 10,
-    generate: async () => { calls++; return { costFen: 7, fields: { title: '建议标题' } }; } };
+    generate: async () => { calls++; return { evidence: fixtureEvidence, costFen: 7, fields: { title: '建议标题' } }; } };
   const server = createApp(db, { environment: 'test', devAuth: true, checkInSecret: 'test-secret',
     aiDraftProvider: counted, aiDraftBudgetFen: 20 });
   server.listen(0, '127.0.0.1'); await once(server, 'listening');
@@ -252,7 +262,7 @@ test('draft provider retries replay one durable result and never bill another ca
   const db = await createDatabase();
   let calls = 0;
   const counted: DraftProvider = { estimateUpperBoundFen: () => 10,
-    generate: async () => { calls++; return { costFen: 7, fields: { title: '建议标题' } }; } };
+    generate: async () => { calls++; return { evidence: fixtureEvidence, costFen: 7, fields: { title: '建议标题' } }; } };
   const server = createApp(db, { environment: 'test', devAuth: true, checkInSecret: 'test-secret',
     aiDraftProvider: counted, aiDraftBudgetFen: 20 });
   server.listen(0, '127.0.0.1'); await once(server, 'listening');
@@ -303,7 +313,7 @@ test('an overlapping retry cannot start a second provider call while the first i
   const started = new Promise<void>(resolve => { signalStarted = resolve; });
   const held = new Promise<void>(resolve => { release = resolve; });
   const slow: DraftProvider = { estimateUpperBoundFen: () => 5,
-    generate: async () => { calls++; signalStarted(); await held; return { costFen: 3, fields: { title: '待确认建议' } }; } };
+    generate: async () => { calls++; signalStarted(); await held; return { evidence: fixtureEvidence, costFen: 3, fields: { title: '待确认建议' } }; } };
   const server = createApp(db, { environment: 'test', devAuth: true, checkInSecret: 'test-secret',
     aiDraftProvider: slow, aiDraftBudgetFen: 10 });
   server.listen(0, '127.0.0.1'); await once(server, 'listening');

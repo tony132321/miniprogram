@@ -4,6 +4,7 @@ import { AppError } from './errors.ts';
 import { publishEventInTransaction, updateDraftInTransaction, validateDraftFields, validatePublish,
   type EventInput } from './events.ts';
 import { command, databaseNow } from './registrations.ts';
+import { requireAiActorActive } from './ai-account-fence.ts';
 
 export type AiActionKind = 'SAVE_DRAFT' | 'PUBLISH_EVENT';
 export type AiActionProposal = { kind: AiActionKind; eventId: string; expectedVersion: number; payload: EventInput };
@@ -70,6 +71,7 @@ async function assertLive(tx: Queryable, row: ProposalRow): Promise<void> {
 export async function prepareAiAction(db: Database, actor: string, input: AiActionProposal, key: string) {
   validProposal(input);
   return command(db, actor, 'ai-action-prepare', key, async tx => {
+    await requireAiActorActive(tx, actor);
     const event = await ownedDraft(tx, actor, input.eventId, input.expectedVersion);
     if (input.kind === 'PUBLISH_EVENT') {
       if (canonical(input.payload) !== canonical(event.payload))
@@ -92,6 +94,7 @@ export async function approveAiAction(db: Database, actor: string, id: string, a
   if (approved !== true || typeof payloadHash !== 'string' || !/^[a-f0-9]{64}$/.test(payloadHash))
     throw new AppError('BAD_REQUEST', '请明确批准当前 AI 动作内容');
   return command(db, actor, `ai-action-approve:${id}`, key, async tx => {
+    await requireAiActorActive(tx, actor);
     const row = await actionRow(tx, id); assertOwner(row, actor);
     if (row.status !== 'PROPOSED') throw new AppError('AI_APPROVAL_INVALID', 'AI 动作提议已失效', 409);
     await assertLive(tx, row);
@@ -110,6 +113,7 @@ export async function approveAiAction(db: Database, actor: string, id: string, a
 
 export async function revokeAiAction(db: Database, actor: string, id: string, key: string) {
   return command(db, actor, `ai-action-revoke:${id}`, key, async tx => {
+    await requireAiActorActive(tx, actor);
     const row = await actionRow(tx, id); assertOwner(row, actor);
     if (!['PROPOSED', 'APPROVED'].includes(row.status))
       throw new AppError('AI_APPROVAL_INVALID', 'AI 动作提议已失效', 409);
@@ -124,6 +128,7 @@ export async function executeAiAction(db: Database, actor: string, id: string, i
   if (typeof input.payloadHash !== 'string' || !/^[a-f0-9]{64}$/.test(input.payloadHash))
     throw new AppError('BAD_REQUEST', 'AI 动作内容哈希无效');
   return command(db, actor, `ai-action-execute:${id}`, key, async tx => {
+    await requireAiActorActive(tx, actor);
     const row = await actionRow(tx, id); assertOwner(row, actor);
     if (row.status !== 'APPROVED') throw new AppError('AI_APPROVAL_INVALID', 'AI 动作尚未获批或已执行', 409);
     await assertLive(tx, row);

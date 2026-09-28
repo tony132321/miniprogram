@@ -33,7 +33,13 @@ export interface NotificationAdapter {
     { status: 'ACCEPTED'; providerRef: string } |
     { status: 'REJECTED'; failureCode: string } |
     { status: 'UNKNOWN'; failureCode: string }>;
+  lookup?(notification: { id: string; eventId: string; userId: string; providerRef: string | null }, signal: AbortSignal): Promise<
+    { status: 'ACCEPTED'; providerRef: string } |
+    { status: 'REJECTED'; failureCode: string } |
+    { status: 'UNKNOWN'; failureCode: string }>;
 }
+
+export type NotificationLookupAdapter = Pick<NotificationAdapter, 'lookup'>;
 
 export async function setConsent(db: Database, actor: string, purpose: NotificationPurpose, granted: boolean, key: string): Promise<{ purpose: NotificationPurpose; granted: boolean }> {
   if (!['EVENT_REMINDER', 'SIMILAR_ACTIVITY_INVITES'].includes(purpose) || typeof granted !== 'boolean' || !actor || !key)
@@ -141,7 +147,15 @@ export async function enqueueNotification(tx: Queryable, eventId: string, userId
   if (!rows.length) {
     const { rows: existing } = await tx.query<{ id: string }>('SELECT id FROM notifications WHERE event_id=$1 AND user_id=$2 AND kind=$3 AND event_version=$4',
       [eventId, userId, kind, eventVersion]);
-    if (!existing[0]) throw new AppError('NOTIFICATION_CONFLICT', '通知写入冲突', 500);
+    if (!existing[0]) {
+      // The database insert guard may suppress a late notice after account
+      // deletion. This also covers direct SQL writers and due jobs.
+      const { rows: ineligible } = await tx.query(`SELECT 1 FROM users WHERE id=$1 AND status<>'ACTIVE'
+        UNION ALL SELECT 1 FROM privacy_requests WHERE user_id=$1 AND kind='DELETE'
+          AND status NOT IN ('FULFILLED','CANCELLED') LIMIT 1`, [userId]);
+      if (ineligible.length) return '';
+      throw new AppError('NOTIFICATION_CONFLICT', '通知写入冲突', 500);
+    }
     return existing[0].id;
   }
   await tx.query(`INSERT INTO jobs(id,kind,event_id,due_at,payload)
@@ -314,4 +328,72 @@ export async function dispatchNotification(db: Database, notificationId: string,
       await persist(tx, await send());
     });
   }
+}
+
+type ReconciliationResult = { notificationId: string; externalStatus: string; deliveryConfirmed: false;
+  resolution: 'ACCEPTED' | 'REJECTED' | 'INCONCLUSIVE' | 'LOOKUP_FAILED' | 'LOOKUP_UNAVAILABLE' };
+
+export async function reconcileUnknownNotification(db: Database, actor: string, notificationId: string, key: string,
+  adapter?: NotificationLookupAdapter): Promise<ReconciliationResult> {
+  if (!actor || !notificationId || !key) throw new AppError('BAD_REQUEST', '核对通知需要身份、通知 ID 和幂等键');
+  const route = `notification-reconciliation:${notificationId}`;
+  const { rows: replay } = await db.query<{ result: ReconciliationResult }>(
+    'SELECT result FROM idempotency WHERE actor_id=$1 AND route=$2 AND key=$3', [actor, route, key]);
+  if (replay[0]?.result?.notificationId === notificationId) return replay[0].result;
+  const { rows } = await db.query<{ id: string; event_id: string; user_id: string; provider_ref: string | null;
+    external_status: string }>('SELECT id,event_id,user_id,provider_ref,external_status FROM notifications WHERE id=$1', [notificationId]);
+  const item = rows[0];
+  if (!item) throw new AppError('NOT_FOUND', '通知不存在', 404);
+  if (item.external_status !== 'UNKNOWN_REQUIRES_RECONCILIATION')
+    throw new AppError('INVALID_STATE', '仅可核对结果不确定的外部通知', 409);
+  const { rows: jobs } = await db.query('SELECT id FROM jobs WHERE kind=$1 AND payload->>\'notificationId\'=$2 LIMIT 1',
+    ['SEND_EXTERNAL', notificationId]);
+  if (!jobs.length) throw new AppError('INVALID_STATE', '该通知没有外部发送任务', 409);
+  let resolution: ReconciliationResult['resolution'] = 'LOOKUP_UNAVAILABLE';
+  let providerRef: string | null = null;
+  let failureCode: string | null = null;
+  if (adapter?.lookup) {
+    const signal = AbortSignal.timeout(10_000);
+    try {
+      const response = await Promise.race([
+        adapter.lookup({ id: item.id, eventId: item.event_id, userId: item.user_id,
+          providerRef: item.provider_ref }, signal),
+        new Promise<never>((_resolve, reject) => signal.addEventListener('abort',
+          () => reject(new Error('lookup timeout')), { once: true }))
+      ]);
+      if (response.status === 'ACCEPTED' && typeof response.providerRef === 'string' &&
+        response.providerRef.trim() && response.providerRef.length <= 200) {
+        resolution = 'ACCEPTED'; providerRef = response.providerRef;
+      } else if (response.status === 'REJECTED' && typeof response.failureCode === 'string' &&
+        /^[A-Z][A-Z0-9_]{0,63}$/.test(response.failureCode)) {
+        resolution = 'REJECTED'; failureCode = response.failureCode;
+      } else resolution = 'INCONCLUSIVE';
+    } catch { resolution = 'LOOKUP_FAILED'; }
+  }
+  return db.transaction(async tx => {
+    const { rows: current } = await tx.query<{ external_status: string; event_id: string; user_id: string }>(
+      'SELECT external_status,event_id,user_id FROM notifications WHERE id=$1 FOR UPDATE', [notificationId]);
+    if (current[0]?.external_status !== 'UNKNOWN_REQUIRES_RECONCILIATION' ||
+      current[0].event_id !== item.event_id || current[0].user_id !== item.user_id)
+      throw new AppError('INVALID_STATE', '通知状态已变化，请刷新后核对', 409);
+    if (!(await claimIdempotency(tx, actor, route, key))) {
+      const { rows: prior } = await tx.query<{ result: ReconciliationResult }>(
+        'SELECT result FROM idempotency WHERE actor_id=$1 AND route=$2 AND key=$3', [actor, route, key]);
+      return prior[0]!.result;
+    }
+    const externalStatus = resolution === 'ACCEPTED' ? 'PROVIDER_ACCEPTED' :
+      resolution === 'REJECTED' ? 'PROVIDER_REJECTED' : 'UNKNOWN_REQUIRES_RECONCILIATION';
+    if (resolution === 'ACCEPTED' || resolution === 'REJECTED') await tx.query(`UPDATE notifications SET
+      external_status=$2,provider_ref=CASE WHEN $2='PROVIDER_ACCEPTED' THEN $3 ELSE provider_ref END,
+      external_failure_code=CASE WHEN $2='PROVIDER_REJECTED' THEN $4 ELSE NULL END,
+      provider_responded_at=clock_timestamp() WHERE id=$1`,
+    [notificationId, externalStatus, providerRef, failureCode]);
+    const result: ReconciliationResult = { notificationId, externalStatus, deliveryConfirmed: false, resolution };
+    await tx.query('INSERT INTO audit(id,actor_id,event_id,action,detail) VALUES($1,$2,$3,$4,$5)',
+      [randomUUID(), actor, item.event_id, 'NOTIFICATION_RECONCILIATION', JSON.stringify({ notificationId,
+        resolution, externalStatus })]);
+    await tx.query('UPDATE idempotency SET result=$4 WHERE actor_id=$1 AND route=$2 AND key=$3',
+      [actor, route, key, JSON.stringify(result)]);
+    return result;
+  });
 }

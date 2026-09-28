@@ -13,16 +13,21 @@ import { register, expressInterest, cancelRegistration, removeRegistration, rese
 import { previewEventChange, getPendingReconfirmation, changeEvent, reconfirm, confirmEvent, cancelEvent, createCheckInToken, checkIn, listCheckIns, requestManualCheckIn, respondManualCheckIn, listManualCheckIns, completeEvent, repeatEvent, listRepeatCandidates, recordExpense, listExpenses, markExpenseShare, recordOutcomeFeedback, getOutcomeEvidence } from './lifecycle.ts';
 import { localDraftSuggestion } from './ai.ts';
 import type { DraftProvider } from './ai-provider-boundary.ts';
+import { askSemanticCurrentFact, listAiSemanticAlerts, listAiSemanticAlertReviews, reviewAiSemanticAlert,
+  type SemanticFactProvider } from './ai-semantic-answer.ts';
 import { listAiDraftAlerts, listAiDraftAlertReviews, listAiEventCosts, reviewAiDraftAlert, runRecordedDraftProvider } from './ai-draft-requests.ts';
 import { approveAiAction, executeAiAction, prepareAiAction, revokeAiAction } from './ai-actions.ts';
 import { createReport, listReports, listReportTriage, listReportResponseAlerts, inspectReportForSafety, assignReport, classifyReportSeverity, listMyReports, changeReportStatus, createAppeal, listAppeals, listMyAppeals, changeAppealStatus, listMyRemovals, createPrivacyRequest, listPrivacyRequests, listPrivacyForOperations, getPrivacyRequestImpact } from './operations.ts';
 import type { ReportResponsePolicy } from './report-response-policy.ts';
 import { actorFromBearer, loginWithWechat, logoutMember, type WechatExchange } from './auth.ts';
-import { setConsent, consentNotice, markNotificationOpened, getAttentionItems, listMemberNotifications } from './notifications.ts';
+import { setConsent, consentNotice, markNotificationOpened, getAttentionItems, listMemberNotifications,
+  reconcileUnknownNotification, type NotificationLookupAdapter } from './notifications.ts';
 import { listNotificationFollowups, listNotificationFollowupHistory, recordNotificationFollowup } from './notification-followups.ts';
 import { askCurrentFact, createContent, listContent, listMyRejectedContent, listFactTodos, listPendingContent, moderateContent } from './collaboration.ts';
 import { recordShareIntent, recordAttributedOpen, getShareMetrics } from './sharing.ts';
 import { createPersonalExportTicket, downloadPersonalExport, exportPersonalData } from './privacy.ts';
+import { executePrivacyDeletionWithMarker, type DeletionMarkerStore } from './privacy-deletion-journal.ts';
+import { getPrivacyDeletionDisposition } from './privacy-deletion.ts';
 import { getPilotMetrics } from './metrics.ts';
 import { listSupportMinutes, recordSupportMinutes } from './support-minutes.ts';
 import { eventAliasConsentStatus, listEventAliases, setEventAlias } from './event-aliases.ts';
@@ -50,7 +55,10 @@ export interface AppOptions {
   trustedProxyIps?: string[];
   pilotUserIds?: string[];
   aiDraftProvider?: DraftProvider;
+  aiSemanticProvider?: SemanticFactProvider;
   aiDraftBudgetFen?: number;
+  notificationLookupAdapter?: NotificationLookupAdapter;
+  privacyDeletion?: { markerStore: DeletionMarkerStore; approvedPolicyJson: string };
   reportResponsePolicy?: ReportResponsePolicy;
 }
 
@@ -135,9 +143,12 @@ async function limitAuthenticatedRequest(db: Database, actor: string, method: st
 export function createApp(db: Database, options: AppOptions) {
   if (options.aiDraftProvider && options.environment === 'production' && !R1_FEATURE_FLAGS.ai_draft)
     throw new Error('AI draft provider disabled in production until release approval');
-  if (options.aiDraftProvider && (!Number.isSafeInteger(options.aiDraftBudgetFen) || Number(options.aiDraftBudgetFen) < 0))
-    throw new Error('AI draft budget must be a nonnegative integer fen');
-  if (options.aiDraftBudgetFen !== undefined && !options.aiDraftProvider)
+  if (options.aiSemanticProvider && options.environment !== 'test')
+    throw new Error('AI semantic provider is limited to isolated test fixtures');
+  if ((options.aiDraftProvider || options.aiSemanticProvider) &&
+    (!Number.isSafeInteger(options.aiDraftBudgetFen) || Number(options.aiDraftBudgetFen) < 0))
+    throw new Error('AI event budget must be a nonnegative integer fen');
+  if (options.aiDraftBudgetFen !== undefined && !options.aiDraftProvider && !options.aiSemanticProvider)
     throw new Error('AI draft budget requires a provider');
   if (options.environment === 'production' && options.devAuth) throw new Error('development identity must be disabled in production');
   if (options.environment === 'production' && options.clock) throw new Error('test clock must be disabled in production');
@@ -460,6 +471,23 @@ export function createApp(db: Database, options: AppOptions) {
         if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', 'AI 草稿异常列表页码无效');
         return send(res, 200, await listAiDraftAlerts(db, Number(offsetText), requestUrl.searchParams.get('snapshot')));
       }
+      if (path === '/ops/ai-semantic-alerts' && method === 'GET') {
+        requireOperator(actor, 'JOBS');
+        const offsetText = requestUrl.searchParams.get('offset') ?? '0';
+        if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', 'AI 语义异常列表页码无效');
+        return send(res, 200, await listAiSemanticAlerts(db, Number(offsetText), requestUrl.searchParams.get('snapshot')));
+      }
+      if (path === '/ops/ai-semantic-alerts/reviews' && method === 'GET') {
+        requireOperator(actor, 'JOBS');
+        const offsetText = requestUrl.searchParams.get('offset') ?? '0';
+        if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', 'AI 语义复核历史页码无效');
+        return send(res, 200, await listAiSemanticAlertReviews(db, Number(offsetText), requestUrl.searchParams.get('snapshot')));
+      }
+      if (path === '/ops/ai-semantic-alerts/review' && method === 'POST') {
+        requireOperator(actor, 'JOBS');
+        const key = keyFrom(req); const body = await readJson(req);
+        return send(res, 200, await reviewAiSemanticAlert(db, actor, body.userId, body.requestKey, body.note, key));
+      }
       if (path === '/ops/ai-draft-alerts/reviews' && method === 'GET') {
         requireOperator(actor, 'JOBS');
         const offsetText = requestUrl.searchParams.get('offset') ?? '0';
@@ -485,6 +513,14 @@ export function createApp(db: Database, options: AppOptions) {
         requireOperator(actor, 'NOTIFICATIONS');
         const key = keyFrom(req); const body = await readJson(req);
         return send(res, 200, await recordNotificationFollowup(db, actor, notificationFollowup[1]!, body.note, key));
+      }
+      const notificationReconciliation = path.match(/^\/ops\/notifications\/([^/]+)\/reconcile$/);
+      if (notificationReconciliation && method === 'POST') {
+        requireOperator(actor, 'NOTIFICATIONS');
+        const key = keyFrom(req); const body = await readJson(req);
+        if (Object.keys(body).length) throw new AppError('BAD_REQUEST', '通知查单不接受请求参数');
+        return send(res, 200, await reconcileUnknownNotification(db, actor, notificationReconciliation[1]!, key,
+          options.notificationLookupAdapter));
       }
       if (path === '/ops/events/reviews' && method === 'GET') {
         requireOperator(actor, 'EVENT_REVIEWS');
@@ -572,6 +608,23 @@ export function createApp(db: Database, options: AppOptions) {
         requireOperator(actor, 'PRIVACY');
         return send(res, 200, await getPrivacyRequestImpact(db, actor, privacyImpact[1]!));
       }
+      const privacyDisposition = path.match(/^\/ops\/privacy\/([a-zA-Z0-9-]+)\/disposition$/);
+      if (privacyDisposition && method === 'GET') {
+        requireOperator(actor, 'PRIVACY');
+        const operatorActor = actor.startsWith('operator:') ? actor : `operator:${actor}`;
+        return send(res, 200, await getPrivacyDeletionDisposition(db, operatorActor, privacyDisposition[1]!));
+      }
+      const privacyExecution = path.match(/^\/ops\/privacy\/([a-zA-Z0-9-]+)\/execute$/);
+      if (privacyExecution && method === 'POST') {
+        requireOperator(actor, 'PRIVACY');
+        keyFrom(req);
+        const body = await readJson(req);
+        if (Object.keys(body).length) throw new AppError('BAD_REQUEST', '注销处置不接受请求参数');
+        if (!options.privacyDeletion) throw new AppError('DELETE_EXECUTION_UNAVAILABLE', '注销执行所需的独立标记存储未配置', 503);
+        const operatorActor = actor.startsWith('operator:') ? actor : `operator:${actor}`;
+        return send(res, 200, await executePrivacyDeletionWithMarker(db, options.privacyDeletion.markerStore,
+          operatorActor, privacyExecution[1]!, options.privacyDeletion.approvedPolicyJson));
+      }
       if (path === '/ops/privacy' && method === 'GET') {
         requireOperator(actor, 'PRIVACY');
         const offsetText = requestUrl.searchParams.get('offset') ?? '0';
@@ -643,7 +696,10 @@ export function createApp(db: Database, options: AppOptions) {
           if (action === 'aliases') return send(res, 200, await setEventAlias(db, actor, id, body.displayName, body.granted, key,
             body.noticeVersion));
           if (action === 'blocks') return send(res, 201, await blockEventMember(db, actor, id, body.memberId, key));
-          if (action === 'facts:ask') return send(res, 200, await askCurrentFact(db, actor, id, body.question, key));
+          if (action === 'facts:ask') return send(res, 200, options.aiSemanticProvider
+            ? await askSemanticCurrentFact(db, actor, id, body.question, key, options.aiSemanticProvider,
+              { budgetFen: options.aiDraftBudgetFen, environment: options.environment })
+            : await askCurrentFact(db, actor, id, body.question, key));
           const version = versionFrom(body.expectedVersion);
           if (action === 'publish') return send(res, 200, await publishEvent(db, actor, id, version, key));
           if (action === 'draft') return send(res, 200, await updateDraft(db, actor, id, version, body.patch ?? {}, key));

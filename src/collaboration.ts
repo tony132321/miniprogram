@@ -5,6 +5,7 @@ import { AppError } from './errors.ts';
 import { audit, command } from './registrations.ts';
 import { parseAnnouncementFaq } from './announcement-faq.ts';
 import { hasCohostCapability } from './cohosts.ts';
+import { requireAiActorActive } from './ai-account-fence.ts';
 
 export type ContentKind = 'ANNOUNCEMENT' | 'QUESTION' | 'ANSWER';
 export type ContentStatus = 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED';
@@ -47,6 +48,7 @@ export type FactAnswer = { answer: string; source: 'CURRENT_EVENT' | 'APPROVED_A
 
 export async function askCurrentFact(db: Database, actor: string, eventId: string, question: string, key: string): Promise<FactAnswer> {
   return command(db, actor, `current-fact:${eventId}`, key, async tx => {
+    await requireAiActorActive(tx, actor);
     if (typeof question !== 'string' || !question.trim() || question.length > 200) throw new AppError('BAD_REQUEST', '问题需为 1 至 200 字');
     const event = await requireMember(tx, actor, eventId);
     const { rows: locked } = await tx.query<{ version: number }>('SELECT version FROM events WHERE id=$1 FOR SHARE', [eventId]);

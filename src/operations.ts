@@ -3,6 +3,7 @@ import type { Database } from './db.ts';
 import { AppError } from './errors.ts';
 import { command } from './registrations.ts';
 import { consentNotice, type NotificationPurpose } from './notifications.ts';
+import { inspectPrivacyFields, historicallyHosted, historicallyReported, sharedPerson, disputePerson } from './privacy-field-inventory.ts';
 import { eventAliasNotice } from './event-aliases.ts';
 import { claimIdempotency } from './idempotency.ts';
 import { parseAnnouncementFaq } from './announcement-faq.ts';
@@ -531,7 +532,9 @@ function privacyRequestWithNotice(request: PrivacyRequestRow): PrivacyRequestRec
   return { ...base, protection: { state: applied ? 'APPLIED' : 'NOT_APPLIED',
     appliedAt: request.protection_applied_at ? new Date(request.protection_applied_at).toISOString() : null,
     consentWithdrawals: request.consents_revoked_count, aliasesRemoved: request.aliases_removed_count },
-  notice: applied
+  notice: request.status === 'SAFEGUARDS_APPLIED_PENDING_REVIEW'
+    ? '账号已停用，会话和短时导出凭据已撤销，外部通知及活动内昵称展示已阻断。共享活动记录尚待逐项去标识，争议及法定保留记录尚待核定依据、隔离权限和到期处理；备份中的副本尚未完成删除标记重放。'
+    : applied
     ? '已收到注销或删除申请；已阻止后续外部通知和再约候选展示，撤回相关授权并移除活动内昵称（如有）。本次申请尚未停用账号、删除资料或去标识；共享活动记录、争议记录、保留依据和备份处理仍待负责人逐项核查。'
     : '已收到注销或删除申请；尚未停用账号、删除资料或去标识。共享活动记录与争议记录将按用途分别核查；隔离保留的依据和期限仍待负责人批准。处理结果会区分已删除、已停用、已去标识和隔离保留，不能承诺全部立即删除。' };
 }
@@ -575,59 +578,64 @@ export async function getPrivacyRequestImpact(db: Database, operator: string, re
       `SELECT
        (SELECT count(*)::int FROM users WHERE id=$1) AS profile,
        (SELECT count(*)::int FROM sessions WHERE user_id=$1) AS sessions,
-       (SELECT count(*)::int FROM events WHERE host_id=$1) AS hosted_events,
+       (SELECT count(*)::int FROM events e WHERE ${historicallyHosted('e')}) AS hosted_events,
        (SELECT count(*)::int FROM host_publication_status WHERE host_id=$1) AS host_publication_status,
-       (SELECT count(*)::int FROM registrations WHERE user_id=$1) AS registrations,
+       (SELECT count(*)::int FROM registrations r WHERE ${sharedPerson('r.user_id','r.event_id')}) AS registrations,
        (SELECT count(*)::int FROM registration_status_history h JOIN registrations r ON r.id=h.registration_id
-         WHERE r.user_id=$1) AS registration_status_history,
-       (SELECT count(*)::int FROM activity_content WHERE author_id=$1) AS authored_content,
-       (SELECT count(*)::int FROM reports WHERE reporter_id=$1) AS reported_disputes,
-       (SELECT count(*)::int FROM appeals WHERE appellant_id=$1) AS appeals,
+         WHERE ${sharedPerson('r.user_id','r.event_id')}) AS registration_status_history,
+       (SELECT count(*)::int FROM activity_content c WHERE ${sharedPerson('c.author_id','c.event_id')}) AS authored_content,
+       (SELECT count(*)::int FROM reports r WHERE ${historicallyReported('r')}) AS reported_disputes,
+       (SELECT count(*)::int FROM appeals a WHERE ${disputePerson('a.appellant_id')}) AS appeals,
        (SELECT count(*)::int FROM notifications WHERE user_id=$1) AS notifications,
        (SELECT count(*)::int FROM notification_consents WHERE user_id=$1) AS notification_consents,
        (SELECT count(*)::int FROM notification_consent_history WHERE user_id=$1) AS notification_consent_history,
        (SELECT count(*)::int FROM event_aliases WHERE user_id=$1) AS event_aliases,
-       (SELECT count(*)::int FROM event_alias_consent_history WHERE user_id=$1) AS event_alias_consent_history,
-       (SELECT count(*)::int FROM share_intents WHERE sender_id=$1) AS share_intents,
+       (SELECT count(*)::int FROM event_alias_consent_history a WHERE ${sharedPerson('a.user_id','a.event_id')}) AS event_alias_consent_history,
+       (SELECT count(*)::int FROM share_intents s WHERE ${sharedPerson('s.sender_id','s.event_id')}) AS share_intents,
        (SELECT count(*)::int FROM personal_export_tickets WHERE user_id=$1) AS personal_export_tickets,
        (SELECT count(*)::int FROM user_blocks WHERE blocker_id=$1) AS blocks_created,
        (SELECT count(*)::int FROM user_blocks WHERE blocked_id=$1) AS blocks_received,
-       (SELECT count(*)::int FROM event_versions v JOIN events e ON e.id=v.event_id WHERE e.host_id=$1) AS hosted_event_versions,
+       (SELECT count(*)::int FROM event_versions v JOIN events e ON e.id=v.event_id WHERE ${historicallyHosted('e')}) AS hosted_event_versions,
        (SELECT count(*)::int FROM event_status_history h JOIN events e ON e.id=h.event_id
-         WHERE e.host_id=$1) AS hosted_event_status_history,
-       (SELECT count(*)::int FROM outcomes o JOIN events e ON e.id=o.event_id WHERE e.host_id=$1) AS hosted_outcomes,
+         WHERE ${historicallyHosted('e')}) AS hosted_event_status_history,
+       (SELECT count(*)::int FROM outcomes o JOIN events e ON e.id=o.event_id WHERE ${historicallyHosted('e')}) AS hosted_outcomes,
        (SELECT count(*)::int FROM outcome_reviews o JOIN events e ON e.id=o.event_id
-         WHERE e.host_id=$1) AS hosted_outcome_reviews,
+         WHERE ${historicallyHosted('e')}) AS hosted_outcome_reviews,
        (SELECT count(*)::int FROM outcome_reviews o JOIN reports r ON r.id=o.report_id
-         WHERE r.reporter_id=$1) AS reported_outcome_reviews,
-       (SELECT count(*)::int FROM venue_evidence v JOIN events e ON e.id=v.event_id WHERE e.host_id=$1) AS hosted_venue_evidence,
-       (SELECT count(*)::int FROM expense_ledgers WHERE created_by=$1) AS created_expense_ledgers,
-       (SELECT count(*)::int FROM share_opens WHERE user_id=$1) AS share_opens,
-       (SELECT count(*)::int FROM invite_unknown_opens WHERE user_id=$1) AS unknown_source_invite_opens,
-       (SELECT count(*)::int FROM reservations WHERE claimed_by=$1) AS claimed_reservations,
-       (SELECT count(*)::int FROM offers o JOIN registrations r ON r.id=o.registration_id WHERE r.user_id=$1) AS waitlist_offers,
+         WHERE ${historicallyReported('r')}) AS reported_outcome_reviews,
+       (SELECT count(*)::int FROM venue_evidence v JOIN events e ON e.id=v.event_id WHERE ${historicallyHosted('e')}) AS hosted_venue_evidence,
+       (SELECT count(*)::int FROM expense_ledgers l WHERE ${sharedPerson('l.created_by','l.event_id')}) AS created_expense_ledgers,
+       (SELECT count(*)::int FROM share_opens s WHERE ${sharedPerson('s.user_id','s.event_id')}) AS share_opens,
+       (SELECT count(*)::int FROM invite_unknown_opens o WHERE ${sharedPerson('o.user_id','o.event_id')}) AS unknown_source_invite_opens,
+       (SELECT count(*)::int FROM reservations r WHERE ${sharedPerson('r.claimed_by','r.event_id')}) AS claimed_reservations,
+       (SELECT count(*)::int FROM offers o JOIN registrations r ON r.id=o.registration_id
+         WHERE ${sharedPerson('r.user_id','r.event_id')}) AS waitlist_offers,
        (SELECT count(*)::int FROM offer_status_history h JOIN offers o ON o.id=h.offer_id
-         JOIN registrations r ON r.id=o.registration_id WHERE r.user_id=$1) AS waitlist_offer_history,
-       (SELECT count(*)::int FROM checkins WHERE user_id=$1) AS check_ins,
-       (SELECT count(*)::int FROM manual_checkins WHERE user_id=$1) AS manual_check_ins,
-       (SELECT count(*)::int FROM manual_checkins WHERE requested_by=$1) AS requested_manual_check_ins,
-       (SELECT count(*)::int FROM outcome_feedback WHERE user_id=$1) AS outcome_feedback,
-       (SELECT count(*)::int FROM expense_shares WHERE user_id=$1) AS expense_shares,
-       (SELECT count(*)::int FROM activity_fact_todos WHERE requester_id=$1) AS fact_questions,
-       (SELECT count(*)::int FROM registration_removals WHERE user_id=$1) AS registration_removals,
+         JOIN registrations r ON r.id=o.registration_id WHERE ${sharedPerson('r.user_id','r.event_id')}) AS waitlist_offer_history,
+       (SELECT count(*)::int FROM checkins c WHERE ${sharedPerson('c.user_id','c.event_id')}) AS check_ins,
+       (SELECT count(*)::int FROM manual_checkins c WHERE ${sharedPerson('c.user_id','c.event_id')}) AS manual_check_ins,
+       (SELECT count(*)::int FROM manual_checkins c WHERE ${sharedPerson('c.requested_by','c.event_id')}) AS requested_manual_check_ins,
+       (SELECT count(*)::int FROM outcome_feedback f WHERE ${sharedPerson('f.user_id','f.event_id')}) AS outcome_feedback,
+       (SELECT count(*)::int FROM expense_shares s JOIN expense_ledgers l ON l.id=s.ledger_id
+         WHERE ${sharedPerson('s.user_id','l.event_id')}) AS expense_shares,
+       (SELECT count(*)::int FROM activity_fact_todos t WHERE ${sharedPerson('t.requester_id','t.event_id')}) AS fact_questions,
+       (SELECT count(*)::int FROM registration_removals r WHERE ${sharedPerson('r.user_id','r.event_id')}) AS registration_removals,
        (SELECT count(*)::int FROM privacy_requests WHERE user_id=$1) AS privacy_requests,
        (SELECT count(*)::int FROM audit WHERE actor_id=$1) AS audit_actions,
        (SELECT count(*)::int FROM business_events b JOIN audit a ON a.id=b.event_uuid WHERE a.actor_id=$1) AS business_events,
-       (SELECT count(*)::int FROM cohost_grants WHERE user_id=$1) AS cohost_grants,
-       (SELECT count(*)::int FROM cohost_grants WHERE granted_by=$1) AS cohost_grants_issued,
+       (SELECT count(*)::int FROM cohost_grants g WHERE ${sharedPerson('g.user_id','g.event_id')}) AS cohost_grants,
+       (SELECT count(*)::int FROM cohost_grants g WHERE ${sharedPerson('g.granted_by','g.event_id')}) AS cohost_grants_issued,
        (SELECT count(*)::int FROM idempotency WHERE actor_id=$1) AS idempotency_records,
        (SELECT count(*)::int FROM ai_draft_requests WHERE actor_id=$1) AS ai_draft_requests,
        (SELECT count(*)::int FROM ai_draft_alert_reviews WHERE actor_id=$1) AS ai_draft_alert_reviews,
+       (SELECT count(*)::int FROM ai_semantic_requests WHERE actor_id=$1) AS ai_semantic_requests,
+       (SELECT count(*)::int FROM ai_semantic_alert_reviews WHERE actor_id=$1) AS ai_semantic_alert_reviews,
        (SELECT count(*)::int FROM ai_action_proposals WHERE actor_id=$1) AS ai_action_proposals`, [request.user_id]);
     const count = rows[0]!;
+    const fieldInventory = await inspectPrivacyFields(tx, request.user_id);
     await tx.query('INSERT INTO audit(id,actor_id,action,detail) VALUES($1,$2,$3,$4)',
       [randomUUID(), operator, 'READ_PRIVACY_IMPACT', JSON.stringify({ requestId })]);
-    return { requestId, status: request.status, assessmentStatus: 'POLICY_REVIEW_REQUIRED',
+    return { requestId, status: request.status, assessmentStatus: 'POLICY_REVIEW_REQUIRED', fieldInventory,
       inventoryScope: 'SELECTED_CATEGORIES_ONLY', counts: {
       profile: count.profile, sessions: count.sessions, hostedEvents: count.hosted_events,
       hostPublicationStatus: count.host_publication_status,
@@ -653,6 +661,8 @@ export async function getPrivacyRequestImpact(db: Database, operator: string, re
       cohostGrants: count.cohost_grants, cohostGrantsIssued: count.cohost_grants_issued,
       idempotencyRecords: count.idempotency_records, aiDraftRequests: count.ai_draft_requests,
       aiDraftAlertReviews: count.ai_draft_alert_reviews,
+      aiSemanticRequests: count.ai_semantic_requests,
+      aiSemanticAlertReviews: count.ai_semantic_alert_reviews,
       aiActionProposals: count.ai_action_proposals
     } };
   });
