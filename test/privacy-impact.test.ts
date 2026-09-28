@@ -17,6 +17,8 @@ test('privacy impact inventory is operator-only, counted by purpose, and audited
   try {
     const event = await createDraft(db, 'p1', { title: '本人的草稿' }, 'impact-event');
     await db.query("INSERT INTO users(id,wechat_openid) VALUES('p1','private-openid')");
+    await db.query(`INSERT INTO host_publication_status(host_id,status,reviewed_by,reviewed_at,reason)
+      VALUES('p1','ESTABLISHED','operator:safety',now(),'本人主办资质复核')`);
     await db.query("INSERT INTO registrations(id,event_id,user_id,status) VALUES('registration-1',$1,'p1','CONFIRMED')", [event.id]);
     await db.query("INSERT INTO offers(id,event_id,registration_id,expires_at,status) VALUES('offer-1',$1,'registration-1',now()+interval '15 minutes','ACTIVE')", [event.id]);
     await db.query("INSERT INTO activity_content(id,event_id,author_id,kind,body) VALUES('content-1',$1,'p1','QUESTION','private question')", [event.id]);
@@ -48,6 +50,7 @@ test('privacy impact inventory is operator-only, counted by purpose, and audited
     assert.equal(body.inventoryScope, 'SELECTED_CATEGORIES_ONLY');
     assert.equal(body.counts.profile, 1);
     assert.equal(body.counts.hostedEvents, 1);
+    assert.equal(body.counts.hostPublicationStatus, 1);
     assert.equal(body.counts.registrations, 1);
     assert.equal(body.counts.registrationStatusHistory, 1);
     assert.equal(body.counts.hostedEventStatusHistory, 1);

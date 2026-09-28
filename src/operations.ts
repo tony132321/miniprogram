@@ -576,6 +576,7 @@ export async function getPrivacyRequestImpact(db: Database, operator: string, re
        (SELECT count(*)::int FROM users WHERE id=$1) AS profile,
        (SELECT count(*)::int FROM sessions WHERE user_id=$1) AS sessions,
        (SELECT count(*)::int FROM events WHERE host_id=$1) AS hosted_events,
+       (SELECT count(*)::int FROM host_publication_status WHERE host_id=$1) AS host_publication_status,
        (SELECT count(*)::int FROM registrations WHERE user_id=$1) AS registrations,
        (SELECT count(*)::int FROM registration_status_history h JOIN registrations r ON r.id=h.registration_id
          WHERE r.user_id=$1) AS registration_status_history,
@@ -628,6 +629,7 @@ export async function getPrivacyRequestImpact(db: Database, operator: string, re
     return { requestId, status: request.status, assessmentStatus: 'POLICY_REVIEW_REQUIRED',
       inventoryScope: 'SELECTED_CATEGORIES_ONLY', counts: {
       profile: count.profile, sessions: count.sessions, hostedEvents: count.hosted_events,
+      hostPublicationStatus: count.host_publication_status,
       registrations: count.registrations, registrationStatusHistory: count.registration_status_history,
       authoredContent: count.authored_content,
       reportedDisputes: count.reported_disputes, appeals: count.appeals, notifications: count.notifications,
