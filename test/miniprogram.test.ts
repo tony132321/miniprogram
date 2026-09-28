@@ -739,6 +739,49 @@ test('activity list clears the previous identity and ignores a late old response
   assert.equal(page.data.items[0].id, 'new-event');
 });
 
+test('profile re-entry clears another identity’s private data before loading and ignores its late response', async () => {
+  let page: Record<string, any> | undefined;
+  let currentUser = 'old-member';
+  let resolveOld!: (value: unknown) => void;
+  let resolveNew!: (value: unknown) => void;
+  let oldStarted!: () => void;
+  let newStarted!: () => void;
+  const oldResponse = new Promise(resolve => { resolveOld = resolve; });
+  const newResponse = new Promise(resolve => { resolveNew = resolve; });
+  const oldRequestStarted = new Promise<void>(resolve => { oldStarted = resolve; });
+  const newRequestStarted = new Promise<void>(resolve => { newStarted = resolve; });
+  const api = { get: () => {
+    if (currentUser === 'old-member') { oldStarted(); return oldResponse; }
+    newStarted(); return newResponse;
+  } };
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api };
+      if (path === '../../config.js') return { developmentUser: 'old-member' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    getApp() { return { globalData: { ready: Promise.resolve() } }; },
+    wx: { getStorageSync(key: string) { return key === 'devUser' ? currentUser : ''; } }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.setData({ notifications: [{ id: 'old-private' }], reports: [{ id: 'old-report' }] });
+  const oldLoad = page.onShow();
+  await oldRequestStarted;
+  currentUser = 'new-member';
+  const newLoad = page.onShow();
+  await newRequestStarted;
+  assert.equal(page.data.notifications.length, 0);
+  assert.equal(page.data.reports.length, 0);
+  resolveNew({ items: [{ id: 'new-private' }], total: 1, nextOffset: null, snapshot: 'a'.repeat(32), eventReminder: false, granted: false });
+  await newLoad;
+  resolveOld({ items: [{ id: 'old-private' }], total: 1, nextOffset: null, snapshot: 'b'.repeat(32) });
+  await oldLoad;
+  assert.equal(page.data.notifications[0].id, 'new-private');
+  assert.equal(page.data.reports[0].id, 'new-private');
+});
+
 test('creation page clears another identity’s draft and ignores its late edit load', async () => {
   let page: Record<string, any> | undefined;
   let currentUser = 'old-host';

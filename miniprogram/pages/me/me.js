@@ -40,9 +40,13 @@ Page({
     if (!hasSession && !this.data.developmentMode) {
       app.globalData.reportContext = undefined;
       this.clearPrivateData();
+      this._privateActor = null;
       return this.setData({ loadState: 'UNAUTHENTICATED', message: '请先微信登录' });
     }
     const actor = hasSession ? wx.getStorageSync('userId') : this.data.devUser;
+    const privateActor = `${hasSession ? 'session' : 'dev'}:${actor}`;
+    if (this._privateActor !== privateActor) this.clearPrivateData();
+    this._privateActor = privateActor;
     const reportContext = app.globalData.reportContext;
     app.globalData.reportContext = undefined;
     if (reportContext) this.setData({ reportEventId: reportContext.actor === actor ? reportContext.eventId : '' });
@@ -104,6 +108,7 @@ Page({
   setDevUser() {
     if (!this.data.developmentMode) return this.setData({ message: '正式版本不支持测试身份' });
     this.clearPrivateData();
+    this._privateActor = `dev:${this.data.devUser}`;
     wx.removeStorageSync('sessionToken'); wx.removeStorageSync('userId');
     wx.setStorageSync('devUser', this.data.devUser);
     this.setData({ hasSession: false, message: '本地测试身份已切换；正式服务不接受开发身份。' });
@@ -116,6 +121,7 @@ Page({
       const session = await api.login();
       if (generation !== (this._refreshGeneration || 0)) return;
       this.clearPrivateData();
+      this._privateActor = `session:${session.userId}`;
       this.setData({ hasSession: true, message: '已登录：' + session.userId });
       await this.refresh();
     } catch (error) { if (generation === (this._refreshGeneration || 0)) this.setData({ message: error.message }); }
@@ -124,6 +130,7 @@ Page({
     try {
       await api.logout();
       this.clearPrivateData();
+      this._privateActor = null;
       this.setData({ hasSession: false, message: '已退出登录' });
       wx.switchTab({ url: '/pages/index/index' });
     } catch (error) { this.setData({ message: '退出未完成：' + (error.message || '请重试') }); }
