@@ -8,7 +8,7 @@ function currentIdentity() {
   return developer ? 'dev:' + developer : '';
 }
 function coverFor(title) {
-  if (/羽毛球/.test(title)) return '/assets/stitch/caper_home_badminton.jpg';
+  if (/羽毛球/.test(title)) return '/assets/stitch/itinerary_badminton.jpg';
   if (/篮球/.test(title)) return '/assets/stitch/caper_discover_basketball.jpg';
   if (/咖啡|聊天|创业/.test(title)) return '/assets/stitch/caper_discover_coffee.jpg';
   if (/展览|艺术|画/.test(title)) return '/assets/stitch/caper_discover_art.jpg';
@@ -26,6 +26,8 @@ function present(item, now) {
     item.feeMode === 'AA' && Number.isSafeInteger(item.feeCapFen)
       ? `AA 制 · 每人上限 ¥${(item.feeCapFen / 100).toFixed(2)}` : '费用以活动详情为准';
   return { ...item, dateLabel, timeLabel, feeLabel, cover: coverFor(item.title || ''),
+    monthLabel: `${String(local.getUTCMonth() + 1).padStart(2, '0')}月`,
+    dayLabel: String(local.getUTCDate()).padStart(2, '0'),
     venueLabel: item.venueName || '具体场地以活动详情为准',
     countdown: item.status === 'IN_PROGRESS' ? '进行中' : days <= 0 ? '今天开始' :
       days === 1 ? '明天开始' : `约 ${days} 天后开始`,
@@ -71,6 +73,10 @@ Page({
   openEvent(event) {
     const id = event.currentTarget.dataset.id;
     if (id) wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) + '&section=detailsSection' });
+  },
+  openRegistration(event) {
+    const id = event.currentTarget.dataset.id;
+    if (id) wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) + '&section=registrationSection' });
   },
   goHome() { wx.switchTab({ url: '/pages/index/index' }); },
   goProfile() { wx.switchTab({ url: '/pages/me/me' }); },

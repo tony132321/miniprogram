@@ -1,22 +1,34 @@
 <view class="itinerary-page" style="padding-top: {{statusBarHeight}}px">
-  <view class="itinerary-header"><button class="back" bindtap="back" aria-label="返回">‹</button><text>我的行程</text><button class="profile-link" bindtap="goProfile" aria-label="我的页面">♙</button></view>
+  <view class="itinerary-header"><view class="header-title"><button class="back" bindtap="back" aria-label="返回">‹</button><text>我的行程</text></view><button class="profile-link" bindtap="goProfile" aria-label="我的页面">♙</button></view>
   <view class="itinerary-content">
-    <view class="intro-pill">●　已参与与我组织的活动</view>
+    <view class="intro-pill"><text class="intro-dot"></text>已参与与我组织的活动</view>
     <view class="intro-title">我的行程安排</view>
-    <view class="intro-copy">按真实活动时间排序，出发前请再次核对场地和规则。</view>
+    <view class="intro-copy">已参与或组织的线下活动，出发前请核对场地与规则。</view>
     <view wx:if="{{loadState === 'LOADING'}}" class="state-card">正在读取本人行程…</view>
     <view wx:if="{{loadState === 'UNAUTHENTICATED'}}" class="state-card"><view>登录后可查看本人行程。</view><button bindtap="goProfile">前往我的页面</button></view>
     <view wx:if="{{loadState === 'ERROR'}}" class="state-card"><view>{{message}}</view><button bindtap="refresh">重新加载</button></view>
     <view wx:if="{{loadState === 'READY' && !featured}}" class="state-card"><view>暂无已确认报名或组织中的近期活动。</view><button bindtap="goHome">返回首页查看活动</button></view>
 
     <view wx:if="{{loadState === 'READY' && featured}}" class="featured-card">
-      <view class="featured-cover"><image src="{{featured.cover}}" mode="aspectFill" /><view class="countdown">◉ {{featured.countdown}}</view></view>
-      <view class="featured-body"><view class="featured-status">{{featured.stateLabel}}</view><view class="featured-title">{{featured.title || '羽毛球活动'}}</view><view class="facts"><view><text class="fact-icon">▣</text><view><view>{{featured.dateLabel}} {{featured.timeLabel}}</view><text>具体时间以活动详情的最新版本为准</text></view></view><view><text class="fact-icon location">⌖</text><view><view>{{featured.venueLabel}}</view><text>{{featured.city || '活动城市以详情为准'}}</text></view></view><view><text class="fact-icon fee">▤</text><view><view>{{featured.feeLabel}}</view><text>费用与状态以活动详情和双方记录为准</text></view></view></view><button class="featured-action" data-id="{{featured.id}}" bindtap="openEvent">查看活动详情　›</button></view>
+      <view class="featured-cover"><image src="{{featured.cover}}" mode="aspectFill" /><view class="cover-shade"></view><view class="countdown">◉ {{featured.countdown}}</view><view class="real-event-badge">✓ 真实行程</view></view>
+      <view class="featured-body">
+        <view class="featured-title">{{featured.title || '活动名称以详情为准'}}</view>
+        <view class="featured-subtitle">线下相聚 · 活动事实与变更以详情为准</view>
+        <view class="facts">
+          <view class="fact-row"><text class="fact-icon">▣</text><view><view>{{featured.dateLabel}} {{featured.timeLabel}}</view><text>具体时间以活动详情的最新版本为准</text></view></view>
+          <view class="fact-row"><text class="fact-icon location">⌖</text><view><view>{{featured.venueLabel}}</view><text>{{featured.city || '活动城市以详情为准'}}</text></view></view>
+          <view class="fact-row"><text class="fact-icon fee">▤</text><view><view>{{featured.feeLabel}}</view><text>费用与状态以活动详情和双方记录为准</text></view></view>
+        </view>
+        <view class="attendance-heading"><text>报名与成局状态</text><text>{{featured.stateLabel}}</text></view>
+        <button class="featured-registration" data-id="{{featured.id}}" bindtap="openRegistration">查看报名与签到　›</button>
+        <view class="venue-note"><text>ⓘ</text><view>活动地点、场地声明与规则可能变化，请在出发前打开详情核对。</view></view>
+        <button class="featured-action" data-id="{{featured.id}}" bindtap="openEvent">查看活动详情　›</button>
+      </view>
     </view>
 
-    <view wx:if="{{later.length > 0}}" class="later-heading"><text>后续行程规划</text><text>时间升序排列</text></view>
-    <button wx:for="{{later}}" wx:key="id" class="later-card" data-id="{{item.id}}" bindtap="openEvent"><view class="later-date"><text>{{item.dateLabel}}</text><text>{{item.timeLabel}}</text></view><view class="later-main"><view>{{item.title || '羽毛球活动'}}</view><text>{{item.stateLabel}} · {{item.venueLabel}}</text></view><text class="later-chevron">›</text></button>
-    <view wx:if="{{loadState === 'READY' && total > 0}}" class="truth-note">活动时间、地点、报名和费用可能变化；以实时活动详情为准。本页未同步系统日历，也不生成永久入场凭证。</view>
-    <view class="foot">✨ 有趣的相聚，在真实世界发生</view>
+    <view wx:if="{{later.length > 0}}" class="later-heading"><text>后续排程规划</text><text>时间升序排列</text></view>
+    <button wx:for="{{later}}" wx:key="id" class="later-card" data-id="{{item.id}}" bindtap="openEvent"><view class="later-date"><text>{{item.monthLabel}}</text><text>{{item.dayLabel}}</text></view><view class="later-main"><view class="later-title"><text>{{item.title || '活动名称以详情为准'}}</text><text class="later-state">{{item.stateLabel}}</text></view><text class="later-detail">{{item.dateLabel}} {{item.timeLabel}} · {{item.venueLabel}}</text></view><text class="later-chevron">›</text></button>
+    <view wx:if="{{loadState === 'READY' && total > 0}}" class="truth-note"><view class="truth-mark">✓</view><view><text>行程来自本人活动</text><view>活动时间、地点、报名和费用可能变化；请以实时活动详情为准。本页未同步系统日历，也不生成永久入场凭证。</view></view></view>
+    <view class="foot">✨ 行程准备好了，期待在真实世界相遇</view>
   </view>
 </view>

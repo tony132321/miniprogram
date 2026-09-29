@@ -37,3 +37,7 @@ page { background: #f5f6f8; color: #172033; }
 .quick-chip { width: 100%; height: 61rpx; box-sizing: border-box; margin: 0; padding: 7rpx 4rpx; border: 1rpx solid #e5eaf2; border-radius: 16rpx; background: #f8faff; color: #48566b; font-size: 19rpx; line-height: 45rpx; text-align: center; white-space: nowrap; }
 .quick-chip.active { border-color: #1d64f2; background: #eaf2ff; color: #1d64f2; font-weight: 800; }
 .quick-picker { display: block; }.quick-grid-time { margin-bottom: 21rpx; }
+
+/* Keep the form and confirmation actions above the app's fixed tab bar. */
+.create-page { padding-bottom: calc(106rpx + env(safe-area-inset-bottom)); }
+.sticky-actions,.form-actions,.review-actions { bottom: calc(106rpx + env(safe-area-inset-bottom)); }
