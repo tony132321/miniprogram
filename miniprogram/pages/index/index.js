@@ -5,6 +5,15 @@ function currentIdentity() {
     ? 'user:' + wx.getStorageSync('userId')
     : 'dev:' + (wx.getStorageSync('devUser') || config.developmentUser || '');
 }
+function headerPaddingRight() {
+  try {
+    const menu = wx.getMenuButtonBoundingClientRect?.();
+    const windowWidth = (wx.getWindowInfo?.() || wx.getSystemInfoSync?.() || {}).windowWidth;
+    if (Number.isFinite(menu?.left) && Number.isFinite(windowWidth) && menu.left >= 0 && menu.left < windowWidth)
+      return `${Math.ceil(windowWidth - menu.left + 8)}px`;
+  } catch (_) { /* The fixed inset below keeps the native menu clear on older clients. */ }
+  return '112px';
+}
 function sectionFor(item) {
   if (['COMPLETED', 'CANCELLED', 'EXPIRED'].includes(item.status)) return 'history';
   if (item.isHost) return 'organized';
@@ -79,6 +88,7 @@ function cardPresentation(item, group) {
 Page({
   data: { items: [], organized: [], cohosting: [], pending: [], attending: [], history: [],
     tabs, categoryIdeas, activeTab: 'attending', visibleItems: [], featuredItem: null,
+    headerPaddingRight: headerPaddingRight(),
     city: '上海', statusBarHeight: typeof wx.getSystemInfoSync === 'function'
       ? wx.getSystemInfoSync().statusBarHeight || 20 : 20,
     loadState: 'IDLE', errorCode: '', tokenInput: '', message: '' },

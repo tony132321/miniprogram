@@ -57,7 +57,8 @@
 
 /* CAPER profile surface, adapted from the supplied caper_1 screen. */
 .profile-page { padding-left: 32rpx; padding-right: 32rpx; padding-bottom: 170rpx; background: #f6f8fb; color: #0f172a; }
-.brand-row { min-height: 78rpx; margin: 0 0 16rpx; justify-content: space-between; padding-right: 150rpx; }
+.profile-status-shield { position: fixed; top: 0; left: 0; right: 0; z-index: 12; background: #f6f8fb; }
+.brand-row { position: sticky; z-index: 11; min-height: 78rpx; margin: 0 -32rpx 16rpx; padding-left: 32rpx; justify-content: space-between; padding-right: 112px; background: #f6f8fb; }
 .brand-lockup, .brand-copy, .brand-actions { display: flex; align-items: center; }
 .brand-lockup { gap: 9rpx; }
 .brand-dot { width: 43rpx; height: 43rpx; line-height: 43rpx; background: #1d64f2; color: #c6ff00; font-size: 22rpx; box-shadow: 0 2rpx 8rpx rgba(29,100,242,.18); }
@@ -114,12 +115,20 @@
 .privacy-link text { color: #94a3b8; font-size: 18rpx; }
 .activity-grid { display: flex; flex-wrap: wrap; gap: 13rpx; }
 .activity-tile { width: calc(50% - 7rpx); box-sizing: border-box; overflow: hidden; margin: 0; padding: 7rpx 7rpx 12rpx; background: #fff; color: #0f172a; text-align: left; line-height: 1.3; }
-.activity-cover { position: relative; height: 138rpx; overflow: hidden; border-radius: 18rpx; background: linear-gradient(130deg,#1d64f2,#66b7ff 55%,#c6ff00); }
-.activity-cover text { position: absolute; top: 12rpx; left: 13rpx; color: white; font-size: 16rpx; font-weight: 900; letter-spacing: 1rpx; }
-.activity-cover view { position: absolute; right: 25rpx; bottom: 12rpx; font-size: 56rpx; }
+.activity-cover { position: relative; height: 188rpx; overflow: hidden; border-radius: 18rpx; background: #1e293b; }
+.activity-photo { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.activity-cover-shade { position: absolute; inset: 0; background: linear-gradient(180deg,rgba(0,0,0,.22),transparent 45%,rgba(0,0,0,.37)); }
+.activity-photo-label,.activity-cover-status { position: absolute; z-index: 1; padding: 5rpx 9rpx; border-radius: 99rpx; background: rgba(255,255,255,.93); color: #374151; font-size: 15rpx; font-weight: 750; }
+.activity-photo-label { left: 10rpx; top: 10rpx; }
+.activity-cover-status { right: 10rpx; bottom: 10rpx; color: #1d64f2; }
 .activity-copy { padding: 11rpx 4rpx 0; }
 .activity-copy view { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 21rpx; font-weight: 800; }
-.activity-copy text { display: block; margin-top: 5rpx; color: #94a3b8; font-size: 16rpx; }
+.activity-copy text { display: block; margin-top: 5rpx; color: #778497; font-size: 16rpx; }
+.advanced-toggle { display: flex; align-items: center; justify-content: space-between; width: 100%; box-sizing: border-box; margin: 22rpx 0 0; padding: 21rpx 23rpx; background: #fff; color: #0f172a; text-align: left; }
+.advanced-toggle::after { border: 0; }
+.advanced-title { font-size: 23rpx; font-weight: 800; }
+.advanced-subtitle { display: block; margin-top: 4rpx; color: #8490a0; font-size: 17rpx; }
+.advanced-chevron { flex: none; margin-left: 12rpx; color: #1d64f2; font-size: 20rpx; font-weight: 750; }
 .tool-grid { display: flex; gap: 12rpx; }
 .tool-grid>button, .tool-grid>view { flex: 1; min-width: 0; margin: 0; padding: 15rpx 3rpx; border: 1rpx solid #eef1f6; border-radius: 19rpx; background: #fff; color: #0f172a; text-align: center; line-height: 1.2; box-shadow: 0 5rpx 15rpx rgba(15,23,42,.04); }
 .tool-grid>button view, .tool-grid>view view { width: 54rpx; height: 54rpx; margin: 0 auto 9rpx; border-radius: 17rpx; background: #e9f1ff; color: #1d64f2; line-height: 54rpx; font-size: 31rpx; font-weight: 800; }

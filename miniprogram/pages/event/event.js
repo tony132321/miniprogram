@@ -346,6 +346,14 @@ Page({
     this.dismissSuccess();
     this.scrollToSection(section);
   },
+  openEventActions() {
+    if (typeof wx.showActionSheet !== 'function') return this.goToReport();
+    wx.showActionSheet({ itemList: ['举报与求助', '复制活动信息给可信任的人'],
+      success: result => {
+        if (result.tapIndex === 0) this.goToReport();
+        if (result.tapIndex === 1) this.copySafetyDetails();
+      } });
+  },
   goToReport() {
     const actor = currentIdentity();
     getApp().globalData.reportContext = undefined;
@@ -696,7 +704,7 @@ Page({
       await api.post(`/events/${this.data.id}/share-intents`, { expectedVersion: event.version, sourceToken });
       if (this.data.event?.id === event.id && this.data.event.version === event.version &&
         this.data.event.inviteToken === event.inviteToken)
-        this.setData({ shareSourceToken: sourceToken, message: '分享卡已准备好，请点下方按钮主动分享。' });
+        this.setData({ shareSourceToken: sourceToken, message: '分享卡已准备好，请点击工作台中的“微信分享”。' });
     } catch (error) { this.setData({ message: error.message || '分享卡准备失败' }); }
     finally { this.setData({ preparingShare: false }); }
   },

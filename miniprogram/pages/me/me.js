@@ -1,9 +1,33 @@
 const { api } = require('../../utils/api.js');
 const config = require('../../config.js');
 const activityStatusLabels = {
-  DRAFT: '草稿', RECRUITING: '招募中', CONFIRMED: '已成局',
+  DRAFT: '草稿', REVIEW_PENDING: '待审核', RECRUITING: '招募中', CONFIRMED: '已成局',
   IN_PROGRESS: '进行中', COMPLETED: '已结束', CANCELLED: '已取消', EXPIRED: '未成局'
 };
+function activityCover(item) {
+  const title = item.title || '';
+  if (item.type === 'badminton' || /羽毛球/.test(title)) return '/assets/stitch/caper_home_badminton.jpg';
+  if (/篮球/.test(title)) return '/assets/stitch/caper_discover_basketball.jpg';
+  if (/咖啡|创业|聊天/.test(title)) return '/assets/stitch/caper_discover_coffee.jpg';
+  if (/桌游|游戏/.test(title)) return '/assets/stitch/caper_discover_boardgame.jpg';
+  if (/徒步|露营|登山/.test(title)) return '/assets/stitch/caper_home_hiking.jpg';
+  if (/展览|艺术|画/.test(title)) return '/assets/stitch/caper_discover_art.jpg';
+  return '/assets/stitch/caper_discover_citywalk.jpg';
+}
+function activityDateLabel(value) {
+  if (!value || Number.isNaN(Date.parse(value))) return '时间待定';
+  const date = new Date(Date.parse(value) + 8 * 60 * 60_000);
+  return `${date.getUTCMonth() + 1} 月 ${date.getUTCDate()} 日 ${String(date.getUTCHours()).padStart(2, '0')}:${String(date.getUTCMinutes()).padStart(2, '0')}`;
+}
+function headerPaddingRight() {
+  try {
+    const menu = wx.getMenuButtonBoundingClientRect?.();
+    const windowWidth = (wx.getWindowInfo?.() || wx.getSystemInfoSync?.() || {}).windowWidth;
+    if (Number.isFinite(menu?.left) && Number.isFinite(windowWidth) && menu.left >= 0 && menu.left < windowWidth)
+      return `${Math.ceil(windowWidth - menu.left + 8)}px`;
+  } catch (_) { /* Reserve a fixed space for the native menu on older clients. */ }
+  return '112px';
+}
 const externalStatusLabels = {
   NOT_REQUESTED: '外部提醒待处理',
   DISPATCHING: '外部提醒请求处理中',
@@ -26,7 +50,8 @@ function withExternalStatusLabels(items) {
       ? externalStatusLabels[item.external_status] : '外部提醒状态待核对' }));
 }
 Page({
-  data: { statusBarHeight: 24, devUser: '', developmentMode: Boolean(config.developmentUser), hasSession: false, notifications: [], notificationsTotal: 0,
+  data: { statusBarHeight: 24, headerPaddingRight: headerPaddingRight(), advancedOpen: false,
+    devUser: '', developmentMode: Boolean(config.developmentUser), hasSession: false, notifications: [], notificationsTotal: 0,
     activityStats: { total: null, hosted: null, confirmed: null }, activityPreview: [], activityLoadState: 'IDLE',
     nextNotificationOffset: null, notificationSnapshot: null, privacy: [], blocks: [], removals: [], reports: [], appeals: [], rejectedContent: [],
     appealDescription: '', reportAppealDescription: '', contentAppealDescription: '', eventReminder: false,
@@ -36,9 +61,11 @@ Page({
     similarInvitesNotice: '允许旧活动主办方在结项后看到自己的活动内身份并将自己列入类似活动邀请候选；不会自动发送邀请。',
     similarInvitesNoticeVersion: '',
     loadState: 'IDLE', message: '', reportDescription: '', reportEventId: '' },
-  onLoad() { this.setData({ statusBarHeight: wx.getSystemInfoSync?.().statusBarHeight || 24 }); },
+  onLoad() { this.setData({ statusBarHeight: wx.getSystemInfoSync?.().statusBarHeight || 24,
+    headerPaddingRight: headerPaddingRight() }); },
   async onShow() {
     const bar = this.getTabBar && this.getTabBar(); if (bar) bar.setData({ selected: 4 });
+    this.setData({ headerPaddingRight: headerPaddingRight() });
     if (this.data.developmentMode) this.setData({ devUser: wx.getStorageSync('devUser') || config.developmentUser });
     const app = getApp();
     await app.globalData.ready;
@@ -56,8 +83,10 @@ Page({
     this._privateActor = privateActor;
     const reportContext = app.globalData.reportContext;
     app.globalData.reportContext = undefined;
-    if (reportContext) this.setData({ reportEventId: reportContext.actor === actor ? reportContext.eventId : '' });
+    if (reportContext) this.setData({ reportEventId: reportContext.actor === actor ? reportContext.eventId : '',
+      advancedOpen: reportContext.actor === actor || this.data.advancedOpen });
     await this.refresh();
+    if (reportContext?.actor === actor) this.revealAdvanced('reportSection');
   },
   async refresh() {
     const generation = this._refreshGeneration = (this._refreshGeneration || 0) + 1;
@@ -84,7 +113,8 @@ Page({
           confirmed: activityItems.filter(item => item.myRegistrationStatus === 'CONFIRMED').length } :
           { total: null, hosted: null, confirmed: null },
         activityPreview: activityItems ? activityItems.slice(0, 4).map(item => ({
-          ...item, statusLabel: activityStatusLabels[item.status] || item.status || '状态待核对'
+          ...item, statusLabel: activityStatusLabels[item.status] || item.status || '状态待核对',
+          dateLabel: activityDateLabel(item.startAt), cover: activityCover(item)
         })) : [],
         activityLoadState: activityItems ? 'READY' : 'ERROR',
         loadState: 'READY', message: '' });
@@ -94,6 +124,16 @@ Page({
   retryRefresh() {
     if (!this.data.hasSession && !this.data.developmentMode) return;
     return this.refresh();
+  },
+  toggleAdvanced() {
+    if (!this.data.hasSession && !this.data.developmentMode) return;
+    this.setData({ advancedOpen: !this.data.advancedOpen });
+  },
+  revealAdvanced(sectionId) {
+    this.setData({ advancedOpen: true });
+    const scroll = () => wx.pageScrollTo?.({ selector: '#' + sectionId, duration: 180 });
+    if (typeof wx.nextTick === 'function') wx.nextTick(scroll);
+    else scroll();
   },
   async loadMoreNotifications() {
     const offset = this.data.nextNotificationOffset;
@@ -119,7 +159,8 @@ Page({
       activityStats: { total: null, hosted: null, confirmed: null }, activityPreview: [], activityLoadState: 'IDLE',
       notificationSnapshot: null, privacy: [], blocks: [], removals: [], reports: [], appeals: [], rejectedContent: [],
       eventReminder: false, similarInvites: false, eventReminderNeedsReconfirmation: false,
-      similarInvitesNeedsReconfirmation: false, reportDescription: '', appealDescription: '',
+      similarInvitesNeedsReconfirmation: false, advancedOpen: false,
+      reportDescription: '', appealDescription: '',
       reportAppealDescription: '', contentAppealDescription: '', reportEventId: '', loadState: 'IDLE', message: '' });
   },
   devInput(event) { this.setData({ devUser: event.detail.value.trim() }); },
@@ -211,18 +252,22 @@ Page({
       await api.post(`/me/notifications/${id}/open`, {});
       if (kind === 'REGISTRATION_REMOVED') {
         await this.refresh();
+        this.revealAdvanced('appealSection');
         return this.setData({ message: '请在下方“报名移除与申诉”查看原因。' });
       }
       if (kind === 'REPORT_IN_REVIEW' || kind === 'REPORT_RESOLVED') {
         await this.refresh();
+        this.revealAdvanced('reportSection');
         return this.setData({ message: '请在下方“举报与求助”查看处理进度与结论。' });
       }
       if (kind === 'APPEAL_IN_REVIEW' || kind === 'APPEAL_RESOLVED') {
         await this.refresh();
+        this.revealAdvanced('appealSection');
         return this.setData({ message: '请在下方“报名移除与申诉”查看复核进度与结论。' });
       }
       if (kind === 'CONTENT_REJECTED') {
         await this.refresh();
+        this.revealAdvanced('contentSection');
         return this.setData({ message: '请在下方“内容审核与复核”查看原因并申请复核。' });
       }
       if (!eventId) {

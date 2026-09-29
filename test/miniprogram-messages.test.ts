@@ -100,6 +100,44 @@ test('message filters update visible items and action rows use native buttons', 
   assert.match(profile, /<button id="aboutButton"[^>]*bindtap="goAbout"/);
 });
 
+test('CAPER inbox groups real notifications without showing their event UUID in a card', async () => {
+  const eventId = '123e4567-e89b-12d3-a456-426614174000';
+  const page = mount({ async get() { return { items: [
+    { id: 'activity', kind: 'EVENT_REMINDER', event_id: eventId, status: 'QUEUED',
+      external_status: 'DISPATCHING', created_at: '2026-09-30T09:30:00Z' },
+    { id: 'interaction', kind: 'REGISTRATION_APPROVED', event_id: eventId, status: 'OPENED' },
+    { id: 'system', kind: 'ACCOUNT_NOTICE', event_id: null, status: 'OPENED' }
+  ], total: 3, nextOffset: null }; } }, {
+    getStorageSync(key: string) { return key === 'sessionToken' ? 'token' : 'member'; }
+  });
+  await page.onShow();
+  const groups = Array.from(page.data.noticeGroups, (group: Record<string, any>) => [
+    group.key, Array.from(group.items, (item: Record<string, string>) => item.id)
+  ]);
+  assert.deepEqual(groups, [['INTERACTION', ['interaction']], ['ACTIVITY', ['activity']], ['SYSTEM', ['system']]]);
+  assert.ok(page.data.items.every((item: Record<string, string>) => !String(item.summary || '').includes(eventId)));
+  assert.equal(page.data.items[0].externalHint, '外部提醒请求处理中');
+  const markup = readFileSync(new URL('../miniprogram/pages/messages/messages.wxml', import.meta.url), 'utf8');
+  assert.match(markup, /wx:for="{{noticeGroups}}"/);
+  assert.match(markup, /class="notice-description">{{notice.summary}}/);
+  assert.doesNotMatch(markup, /class="notice-description">[^<]*event_id/);
+  page.setFilter({ currentTarget: { dataset: { filter: 'SYSTEM' } } });
+  assert.equal(page.data.filteredCount, 1);
+  assert.deepEqual(Array.from(page.data.noticeGroups[2].items, (item: Record<string, string>) => item.id), ['system']);
+});
+
+test('message header reserves the live WeChat menu capsule width', () => {
+  const page = mount({}, {
+    getSystemInfoSync() { return { statusBarHeight: 47, windowWidth: 375 }; },
+    getMenuButtonBoundingClientRect() { return { left: 265 }; }
+  });
+  page.onLoad();
+  assert.equal(page.data.statusBarHeight, 47);
+  assert.equal(page.data.capsuleInset, 118);
+  const markup = readFileSync(new URL('../miniprogram/pages/messages/messages.wxml', import.meta.url), 'utf8');
+  assert.match(markup, /class="messages-brand" style="top: {{statusBarHeight}}px; padding-right: {{capsuleInset}}px"/);
+});
+
 test('a filter with no matching notices exposes its own empty state without hiding later pages', async () => {
   const page = mount({
     async get() {
@@ -248,6 +286,17 @@ test('approval detail and reminder receipt navigate to the matching event sectio
   assert.deepEqual(navigations, ['/pages/event/event?id=event%2F1&section=hostSection',
     '/pages/event/event?id=event%2F2&section=cohostApprovalSection',
     '/pages/event/event?id=event%2F1&section=checkinSection']);
+});
+
+test('an unscoped safety notice opens its real profile record after it is marked read', async () => {
+  const actions: string[] = [];
+  const page = mount({ async post(path: string) { actions.push(path); } }, {
+    switchTab(options: { url: string }) { actions.push(options.url); }
+  });
+  await page.openNotice({ currentTarget: { dataset: {
+    id: 'report-notice', eventId: '', kind: 'REPORT_RESOLVED_UNSCOPED'
+  } } });
+  assert.deepEqual(actions, ['/me/notifications/report-notice/open', '/pages/me/me']);
 });
 
 test('approval pagination restarts after another reviewer changes the queue', async () => {

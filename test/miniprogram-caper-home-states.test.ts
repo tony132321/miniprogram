@@ -3,7 +3,9 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { runInNewContext } from 'node:vm';
 
-const activities = [
+type HomeItem = { id: string; status: string; title: string; isHost: boolean;
+  myRegistrationStatus: string | null; startAt?: string };
+const activities: HomeItem[] = [
   { id: 'requested', status: 'RECRUITING', title: '周五羽毛球', isHost: false, myRegistrationStatus: 'REQUESTED' },
   { id: 'offer', status: 'RECRUITING', title: '周六羽毛球', isHost: false, myRegistrationStatus: 'OFFERED' },
   { id: 'reconfirm', status: 'RECRUITING', title: '周日羽毛球', isHost: false, myRegistrationStatus: 'RECONFIRM_REQUIRED' },
@@ -12,20 +14,22 @@ const activities = [
   { id: 'finished', status: 'COMPLETED', title: '已结束的羽毛球', isHost: true, myRegistrationStatus: null }
 ];
 
-function loadHome() {
+function loadHome(items = activities, capsule?: { left: number; windowWidth: number }) {
   let page: Record<string, any> | undefined;
   const storage = new Map<string, unknown>([['devUser', 'host']]);
   const navigations: string[] = [];
   const switches: string[] = [];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/index/index.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async () => ({ items: activities }) } };
+      if (path === '../../utils/api.js') return { api: { get: async () => ({ items }) } };
       if (path === '../../config.js') return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
     getApp() { return { globalData: { ready: Promise.resolve() } }; },
     wx: {
+      getWindowInfo: capsule ? () => ({ windowWidth: capsule.windowWidth }) : undefined,
+      getMenuButtonBoundingClientRect: capsule ? () => ({ left: capsule.left }) : undefined,
       getStorageSync(key: string) { return storage.get(key) ?? ''; },
       setStorageSync(key: string, value: unknown) { storage.set(key, value); },
       removeStorageSync(key: string) { storage.delete(key); },
@@ -69,4 +73,33 @@ test('home itinerary shortcut opens the registered real itinerary page', () => {
   assert.match(wxml, /bindtap="goItinerary"/);
   assert.match(wxml, /相册未开放/);
   assert.doesNotMatch(wxml, /bindtap="(?:openChat|pay|openAlbum)"/);
+});
+
+test('featured card uses the real list title, start time and state, with a detail route', async () => {
+  const { page, navigations } = loadHome([{
+    id: 'real-event', status: 'RECRUITING', title: '周六晚场羽毛球',
+    startAt: '2027-03-22T11:00:00.000Z', isHost: true, myRegistrationStatus: null
+  }]);
+  await page.onShow();
+  assert.equal(page.data.featuredItem.title, '周六晚场羽毛球');
+  assert.equal(page.data.featuredItem.dateLabel, '3 月 22 日 19:00');
+  assert.equal(page.data.featuredItem.statusLabel, '招募中');
+  page.openEvent({ currentTarget: { dataset: { id: page.data.featuredItem.id } } });
+  assert.deepEqual(navigations, ['/pages/event/event?id=real-event']);
+
+  const wxml = readFileSync(new URL('../miniprogram/pages/index/index.wxml', import.meta.url), 'utf8');
+  assert.match(wxml, /class="feature-detail"[\s\S]*?{{featuredItem\.title}}[\s\S]*?{{featuredItem\.statusLabel}}[\s\S]*?{{featuredItem\.dateLabel}}/);
+  assert.doesNotMatch(wxml, /16人已报名|蓝天体育中心/);
+});
+
+test('empty home keeps a clear create action and reserves room for the WeChat menu capsule', async () => {
+  const { page, switches } = loadHome([], { left: 294, windowWidth: 390 });
+  await page.onShow();
+  assert.equal(page.data.featuredItem, null);
+  assert.equal(page.data.headerPaddingRight, '104px');
+  page.goCreate();
+  assert.deepEqual(switches, ['/pages/create/create']);
+
+  const wxml = readFileSync(new URL('../miniprogram/pages/index/index.wxml', import.meta.url), 'utf8');
+  assert.match(wxml, /wx:else[^>]*bindtap="goCreate"[\s\S]*?发起你的第一场真实活动/);
 });

@@ -1,5 +1,6 @@
 <view class="profile-page" style="padding-top: {{statusBarHeight}}px">
-  <view class="brand-row"><view class="brand-lockup"><view class="brand-dot">▶</view><view class="brand-copy"><text class="brand-name">耍起</text><text class="brand-en">CAPER</text></view></view><view class="brand-actions"><button class="brand-icon" bindtap="goPrivacySafety" aria-label="隐私与设置">⚙</button><view class="brand-icon visual-only" aria-label="扫码未开放">⌗</view></view></view>
+  <view class="profile-status-shield" style="height: {{statusBarHeight}}px"></view>
+  <view class="brand-row" style="top: {{statusBarHeight}}px; padding-right: {{headerPaddingRight}}"><view class="brand-lockup"><view class="brand-dot">▶</view><view class="brand-copy"><text class="brand-name">耍起</text><text class="brand-en">CAPER</text></view></view><view class="brand-actions"><button class="brand-icon" bindtap="goPrivacySafety" aria-label="隐私与设置">⚙</button><view class="brand-icon visual-only" aria-label="扫码未开放">⌗</view></view></view>
   <view class="hero card"><view class="hero-sticker">Good<text>People</text><text>More Plans ☺</text></view><view class="hero-top"><view class="avatar">我<view class="avatar-dot"></view></view><view class="hero-copy"><view class="hero-name">{{developmentMode && devUser ? devUser : '我的空间'}} <text>✨</text></view><view class="hero-handle">{{hasSession ? '微信身份已登录' : developmentMode ? '本地测试身份' : '登录后管理你的活动'}}</view><view class="hero-caption">让有趣的人，在真实世界相聚</view></view></view><view class="hero-stats"><view><text>{{activityStats.total === null ? '—' : activityStats.total}}</text><text>我的活动</text></view><view><text>{{activityStats.hosted === null ? '—' : activityStats.hosted}}</text><text>发起组局</text></view><view><text>{{activityStats.confirmed === null ? '—' : activityStats.confirmed}}</text><text>确认报名</text></view><view><text>{{loadState === 'READY' ? notificationsTotal : '—'}}</text><text>站内通知</text></view></view></view>
   <view class="section-head"><text class="section-mark"></text><text>我的社交印记</text><button class="section-link" bindtap="goBadges">成就勋章馆 ›</button></view>
   <view class="badge-grid"><button class="badge-tile card" bindtap="goBadges"><view>🏸</view><text>运动印记</text><text>暂未开放</text></button><button class="badge-tile card" bindtap="goBadges"><view>👑</view><text>靠谱组织</text><text>暂未开放</text></button><button class="badge-tile card" bindtap="goBadges"><view>⚡</view><text>线下相聚</text><text>暂未开放</text></button><button class="badge-tile card" bindtap="goBadges"><view>✦</view><text>探索生活</text><text>暂未开放</text></button></view>
@@ -17,7 +18,7 @@
   <view class="privacy-card card"><view class="privacy-line"><view class="privacy-icon">◉</view><view class="privacy-copy"><view>活动提醒</view><text>{{eventReminderNotice}}</text></view><switch id="reminderConsentSwitch" checked="{{eventReminder}}" bindchange="toggleReminder" /></view><view wx:if="{{eventReminderNeedsReconfirmation}}" class="hint">授权说明已更新，请阅读后重新开启活动提醒。</view><view class="privacy-line"><view class="privacy-icon green">◎</view><view class="privacy-copy"><view>类似活动邀请候选</view><text>{{similarInvitesNotice}}</text></view><switch id="similarInvitesConsentSwitch" checked="{{similarInvites}}" bindchange="toggleSimilarInvites" /></view><view wx:if="{{similarInvitesNeedsReconfirmation}}" class="hint">授权说明已更新，请阅读后重新允许类似活动候选名单收录。</view><button class="privacy-link" bindtap="goPrivacySafety">屏蔽管理 <text>{{blocks.length}} 人　›</text></button></view>
   <view class="section-head"><text class="section-mark"></text><text>我的活动记录</text><button class="section-link" bindtap="goHome">查看全部 ›</button></view>
   <view wx:if="{{activityLoadState === 'ERROR'}}" class="empty card">活动记录暂不可用，可点击“查看全部”重试。</view><view wx:if="{{activityLoadState === 'READY' && activityPreview.length === 0}}" class="empty card">暂无活动记录，可从邀请进入或发起一场活动。</view>
-  <view class="activity-grid"><button wx:for="{{activityPreview}}" wx:key="id" class="activity-tile card" data-id="{{item.id}}" bindtap="openActivity"><view class="activity-cover"><text>CAPER ✦</text><view>🏸</view></view><view class="activity-copy"><view>{{item.title || '活动'}}</view><text>{{item.statusLabel}} · 点击查看当前活动</text></view></button></view>
+  <view class="activity-grid"><button wx:for="{{activityPreview}}" wx:key="id" class="activity-tile card" data-id="{{item.id}}" bindtap="openActivity" aria-label="查看{{item.title || '活动'}}详情"><view class="activity-cover"><image class="activity-photo" src="{{item.cover}}" mode="aspectFill" /><view class="activity-cover-shade"></view><text class="activity-photo-label">示意配图</text><text class="activity-cover-status">{{item.statusLabel}}</text></view><view class="activity-copy"><view>{{item.title || '活动'}}</view><text>▣　{{item.dateLabel}}</text></view></button></view>
   <view class="section-head"><text class="section-mark"></text><text>主理人工具</text><button class="section-link" bindtap="goHome">进入主理人中心 ›</button></view>
   <view class="tool-grid"><button bindtap="goCreate"><view>＋</view><text>发布活动</text></button><button bindtap="goHome"><view>▣</view><text>活动管理</text></button><button bindtap="goMessages"><view>♧</view><text>报名管理</text></button><view><view>▤</view><text>数据看板待开放</text></view></view>
   <view class="section-head"><text class="section-mark"></text><text>账号与隐私</text></view>
@@ -31,7 +32,10 @@
   <button bindtap="goEditProfile">个人资料与城市选择</button>
   <button bindtap="goMoments">活动相册状态</button>
   <button bindtap="goLegal">隐私与使用说明</button>
+  <button bindtap="goMessages">消息通知设置与站内通知</button>
   </view>
+  <button class="advanced-toggle card" bindtap="toggleAdvanced" aria-label="{{advancedOpen ? '收起' : '展开'}}账号与安全操作"><view><view class="advanced-title">账号与安全操作</view><text class="advanced-subtitle">屏蔽、通知记录、申诉、数据请求与举报</text></view><text class="advanced-chevron">{{advancedOpen ? '收起 ⌃' : '展开 ›'}}</text></button>
+  <block wx:if="{{advancedOpen}}">
   <view class="section-head"><text class="section-mark"></text><text>已屏蔽成员</text></view>
   <view class="section-card card">
   <view wx:if="{{blocks.length === 0}}" class="hint">暂无屏蔽记录</view>
@@ -57,7 +61,7 @@
   </view>
   <button wx:if="{{nextNotificationOffset !== null}}" bindtap="loadMoreNotifications">加载更多通知</button>
   </view>
-  <view class="section-head"><text class="section-mark"></text><text>报名移除与申诉</text></view>
+  <view class="section-head" id="appealSection"><text class="section-mark"></text><text>报名移除与申诉</text></view>
   <view class="section-card card">
   <textarea placeholder="如需申诉，请先填写复核说明" value="{{appealDescription}}" bindinput="appealInput" />
   <view wx:for="{{removals}}" wx:key="id" class="list-row">
@@ -66,7 +70,7 @@
   </view>
   <view wx:for="{{appeals}}" wx:key="id" class="list-row">申诉 {{item.status}} · {{item.description}} · {{item.resolution || '待复核'}}{{item.outcome ? ' · ' + item.outcome : ''}}</view>
   </view>
-  <view class="section-head"><text class="section-mark"></text><text>内容审核与复核</text></view>
+  <view class="section-head" id="contentSection"><text class="section-mark"></text><text>内容审核与复核</text></view>
   <view class="section-card card">
   <textarea wx:if="{{rejectedContent.length > 0}}" placeholder="如需复核，请先填写说明" value="{{contentAppealDescription}}" bindinput="contentAppealInput" />
   <view wx:if="{{rejectedContent.length === 0}}" class="hint">暂无被驳回的本人内容</view>
@@ -85,7 +89,7 @@
   <button data-kind="DELETE" bindtap="privacyRequest">申请注销或删除</button>
   <view wx:for="{{privacy}}" wx:key="id" class="list-row">{{item.kind}} · {{item.status}}<view wx:if="{{item.notice}}" class="hint">{{item.notice}}</view></view>
   </view>
-  <view class="section-head"><text class="section-mark"></text><text>举报与求助</text></view>
+  <view class="section-head" id="reportSection"><text class="section-mark"></text><text>举报与求助</text></view>
   <view class="section-card card">
   <input placeholder="活动 ID（可选）" value="{{reportEventId}}" bindinput="reportEventInput" />
   <textarea placeholder="描述真实情况；紧急人身危险请先联系当地应急服务" value="{{reportDescription}}" bindinput="reportInput" />
@@ -98,6 +102,7 @@
     <button wx:if="{{item.status === 'RESOLVED'}}" data-id="{{item.id}}" bindtap="appealReport">就此结论申请复核</button>
   </view>
   </view>
+  </block>
   </block>
   <view class="section-head"><text class="section-mark"></text><text>帮助与反馈</text></view>
   <view class="quick-menu card"><button bindtap="goSupport"><text class="menu-icon">？</text><view><view class="menu-title">常见问题与安全求助</view><view class="menu-note">安全举报可通过现有工单提交</view></view><text class="menu-arrow">›</text></button><button bindtap="goCache"><text class="menu-icon">▣</text><view><view class="menu-title">本地存储说明</view><view class="menu-note">查看缓存与账号数据边界</view></view><text class="menu-arrow">›</text></button></view>

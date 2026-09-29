@@ -12,33 +12,110 @@ const noticeTitles = {
   PUBLIC_RECRUITMENT_OPEN: '活动招募恢复', REGISTRATION_REMOVED: '报名已移除',
   REPORT_IN_REVIEW: '举报正在处理', REPORT_RESOLVED: '举报已有处理结论',
   APPEAL_IN_REVIEW: '申诉正在复核', APPEAL_RESOLVED: '申诉已有复核结论',
-  CONTENT_REJECTED: '活动内容未通过审核'
+  CONTENT_REJECTED: '活动内容未通过审核',
+  EVENT_REVIEW_APPROVED: '活动内容审核通过', EVENT_REVIEW_REJECTED: '活动内容审核未通过',
+  REPORT_CREATED_UNSCOPED: '举报已提交', REPORT_IN_REVIEW_UNSCOPED: '举报正在处理',
+  REPORT_RESOLVED_UNSCOPED: '举报已有处理结论', APPEAL_CREATED: '申诉已提交',
+  CONTENT_REVIEW_OVERTURN: '活动内容复核已有结论'
+};
+const noticeSummaries = {
+  WAITLIST_OFFER: '收到补位机会，请在有效期内查看并处理。',
+  WAITLIST_WINDOW_CLOSED: '补位期限已结束，请查看活动最新状态。',
+  REGISTRATION_STATUS: '报名状态有变化，请查看活动详情。',
+  REGISTRATION_APPROVED: '报名已通过，请核对活动安排。',
+  MANUAL_CHECKIN_REQUEST: '收到到场补记请求，请核对签到记录。',
+  MATERIAL_CHANGE: '时间、地点或规则有更新，请重新核对。',
+  EVENT_CONFIRMED: '活动已达到成局条件，请查看后续安排。',
+  EVENT_CANCELLED: '活动已取消，请查看详情和后续处理。',
+  EVENT_EXPIRED: '活动未能成局，请查看最终状态。',
+  EVENT_SAFETY_PAUSED: '因安全处理，活动暂时停止招募。',
+  EVENT_SAFETY_RESUMED: '安全处理结束，活动已恢复招募。',
+  EVENT_REMINDER: '活动即将开始，请核对时间地点与入场信息。',
+  EVENT_OUTCOME_DUE: '活动结束后，请按流程记录结项。',
+  EVENT_OUTCOME_REVIEW: '活动结项待反馈，请查看相关记录。',
+  PUBLIC_RECRUITMENT_CLOSED: '活动当前暂停招募，请以详情页为准。',
+  PUBLIC_RECRUITMENT_OPEN: '活动已恢复招募，请以详情页为准。',
+  REGISTRATION_REMOVED: '报名已被移除，请查看处理记录。',
+  REPORT_IN_REVIEW: '举报正在处理，请查看个人中心记录。',
+  REPORT_RESOLVED: '举报处理已有结论，请查看个人中心记录。',
+  APPEAL_IN_REVIEW: '申诉正在复核，请查看个人中心记录。',
+  APPEAL_RESOLVED: '申诉复核已有结论，请查看个人中心记录。',
+  CONTENT_REJECTED: '活动内容未通过审核，请查看原因。',
+  EVENT_REVIEW_APPROVED: '活动内容已通过审核，请核对详情。',
+  EVENT_REVIEW_REJECTED: '活动内容未通过审核，请核对详情。',
+  REPORT_CREATED_UNSCOPED: '举报已收妥，请查看处理进度。',
+  REPORT_IN_REVIEW_UNSCOPED: '举报正在处理，请查看最新状态。',
+  REPORT_RESOLVED_UNSCOPED: '举报处理已有结论，请查看记录。',
+  APPEAL_CREATED: '申诉已收妥，请查看处理进度。',
+  CONTENT_REVIEW_OVERTURN: '活动内容复核已有结论，请查看记录。'
+};
+const externalHints = {
+  DISPATCHING: '外部提醒请求处理中',
+  PROVIDER_ACCEPTED: '外部提醒已受理，未确认送达',
+  UNKNOWN_REQUIRES_RECONCILIATION: '外部提醒结果待核对',
+  UNAVAILABLE: '外部提醒不可用，请以站内通知为准',
+  PURPOSE_NOT_CONFIGURED: '未开通外部提醒，请以站内通知为准',
+  CONSENT_WITHDRAWN: '外部提醒未授权',
+  CONSENT_RECONFIRM_REQUIRED: '外部提醒需重新授权',
+  PROVIDER_REJECTED: '外部提醒发送失败，请以站内通知为准',
+  FAILED: '外部提醒发送失败，请以站内通知为准',
+  STALE_VERSION: '旧版本提醒已取消',
+  STALE_STATE: '过期外部提醒未发送',
+  ACCOUNT_DISABLED: '账号停用，外部提醒未发送',
+  DELETE_REQUEST_PENDING: '删除申请处理中，外部提醒未发送'
 };
 const interactionKinds = new Set(['WAITLIST_OFFER', 'REGISTRATION_STATUS', 'REGISTRATION_APPROVED',
   'REGISTRATION_REMOVED', 'MANUAL_CHECKIN_REQUEST', 'CONTENT_REJECTED', 'REPORT_IN_REVIEW',
-  'REPORT_RESOLVED', 'APPEAL_IN_REVIEW', 'APPEAL_RESOLVED']);
+  'REPORT_RESOLVED', 'APPEAL_IN_REVIEW', 'APPEAL_RESOLVED', 'REPORT_CREATED_UNSCOPED',
+  'REPORT_IN_REVIEW_UNSCOPED', 'REPORT_RESOLVED_UNSCOPED', 'APPEAL_CREATED', 'CONTENT_REVIEW_OVERTURN']);
+const groupSpecs = [
+  { key: 'INTERACTION', title: '互动与审核', icon: '✦', badge: '互', tone: 'violet' },
+  { key: 'ACTIVITY', title: '活动动态', icon: '🔥', badge: '活', tone: 'blue' },
+  { key: 'SYSTEM', title: '系统通知', icon: '📢', badge: '系', tone: 'amber' }
+];
+function groupFor(item) {
+  if (interactionKinds.has(item.kind)) return 'INTERACTION';
+  return item.event_id ? 'ACTIVITY' : 'SYSTEM';
+}
+function timeLabel(value) {
+  if (!value) return '';
+  const date = new Date(value);
+  if (!Number.isFinite(date.getTime())) return '';
+  const two = number => String(number).padStart(2, '0');
+  return `${date.getMonth() + 1}月${date.getDate()}日 ${two(date.getHours())}:${two(date.getMinutes())}`;
+}
 function visible(item, filter, searchQuery = '') {
-  const matchesFilter = filter === 'ALL' || (filter === 'ACTIVITY' && Boolean(item.event_id) && !interactionKinds.has(item.kind)) ||
-    (filter === 'INTERACTION' && interactionKinds.has(item.kind)) ||
-    (filter === 'SYSTEM' && !item.event_id);
+  const matchesFilter = filter === 'ALL' || filter === groupFor(item);
   if (!matchesFilter || !searchQuery) return matchesFilter;
-  return `${item.title || noticeTitles[item.kind] || '站内通知'} ${item.event_id || ''} ${item.kind || ''}`
+  return `${item.title || noticeTitles[item.kind] || '站内通知'} ${item.summary || ''} ${item.event_id || ''} ${item.kind || ''}`
     .toLowerCase().includes(searchQuery.toLowerCase());
 }
-function present(items, filter, searchQuery = '') {
-  return items.map(item => ({ ...item, visible: visible(item, filter, searchQuery), title: noticeTitles[item.kind] || '站内通知',
-    externalHint: item.external_status === 'PROVIDER_ACCEPTED'
-      ? '外部提醒已受理，未确认送达' : item.external_status === 'UNKNOWN_REQUIRES_RECONCILIATION'
-        ? '外部提醒结果待核对' : '请以站内通知为准' }));
+function present(items) {
+  return items.map(item => ({ ...item, title: noticeTitles[item.kind] || '站内通知',
+    summary: noticeSummaries[item.kind] || (item.event_id ? '活动有新进展，请查看详情。' : '站内通知有更新，请查看详情。'),
+    timeLabel: timeLabel(item.created_at),
+    externalHint: externalHints[item.external_status] || '' }));
 }
-function countVisible(items) { return items.filter(item => item.visible).length; }
+function displayed(items, filter, searchQuery = '') {
+  const shown = items.map(item => ({ ...item, visible: visible(item, filter, searchQuery) }));
+  return { items: shown, filteredCount: shown.filter(item => item.visible).length,
+    noticeGroups: groupSpecs.map(spec => ({ ...spec, items: shown.filter(item => item.visible && groupFor(item) === spec.key) })) };
+}
 Page({
-  data: { statusBarHeight: 24, items: [], filteredCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
+  data: { statusBarHeight: 24, capsuleInset: 96, items: [], noticeGroups: [], filteredCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
     loadState: 'IDLE', loadingMore: false, markingAllRead: false, message: '',
     approvals: [], approvalTotal: 0, approvalNextOffset: null, approvalSnapshot: null, approvalLoadState: 'IDLE',
     approvingId: '', loadingMoreApprovals: false,
     filter: 'ALL', searchOpen: false, searchQuery: '', hasSession: false, developmentMode: Boolean(config.developmentUser) },
-  onLoad() { this.setData({ statusBarHeight: wx.getSystemInfoSync?.().statusBarHeight || 24 }); },
+  onLoad() {
+    const system = wx.getSystemInfoSync?.() || {};
+    const capsule = typeof wx.getMenuButtonBoundingClientRect === 'function'
+      ? wx.getMenuButtonBoundingClientRect() : null;
+    const width = system.windowWidth || system.screenWidth;
+    const capsuleInset = capsule?.left > 0 && width
+      ? Math.max(96, Math.ceil(width - capsule.left + 8)) : 96;
+    this.setData({ statusBarHeight: system.statusBarHeight || 24, capsuleInset });
+  },
   async onShow() {
     const bar = this.getTabBar && this.getTabBar();
     if (bar) bar.setData({ selected: 3 });
@@ -47,7 +124,7 @@ Page({
     const actor = hasSession ? wx.getStorageSync('userId') : this.data.developmentMode ? (wx.getStorageSync('devUser') || config.developmentUser) : '';
     if (this._actor !== actor) {
       this._generation = (this._generation || 0) + 1;
-      this.setData({ items: [], filteredCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
+      this.setData({ items: [], noticeGroups: [], filteredCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
         loadingMore: false, markingAllRead: false, approvals: [], approvalTotal: 0,
         approvalNextOffset: null, approvalSnapshot: null, approvalLoadState: 'IDLE',
         approvingId: '', loadingMoreApprovals: false, searchOpen: false, searchQuery: '' });
@@ -63,8 +140,8 @@ Page({
     try {
       const page = await api.get('/me/notifications?offset=0');
       if (generation !== this._generation) return;
-      const items = present(page.items || [], this.data.filter, this.data.searchQuery);
-      this.setData({ items, filteredCount: countVisible(items), total: page.total ?? (page.items || []).length,
+      const inbox = displayed(present(page.items || []), this.data.filter, this.data.searchQuery);
+      this.setData({ ...inbox, total: page.total ?? (page.items || []).length,
         unreadTotal: page.unreadTotal ?? (page.items || []).filter(item => item.status !== 'OPENED').length,
         nextOffset: page.nextOffset ?? null, snapshot: page.snapshot ?? null, loadState: 'READY' });
       if (this.data.filter === 'INTERACTION') await this.loadApprovals();
@@ -76,20 +153,17 @@ Page({
     if (this.data.loadState !== 'READY') return;
     const filter = event.currentTarget.dataset.filter;
     if (!['ALL', 'ACTIVITY', 'INTERACTION', 'SYSTEM'].includes(filter)) return;
-    const items = this.data.items.map(item => ({ ...item, visible: visible(item, filter, this.data.searchQuery) }));
-    this.setData({ filter, items, filteredCount: countVisible(items) });
+    this.setData({ filter, ...displayed(this.data.items, filter, this.data.searchQuery) });
     if (filter === 'INTERACTION' && this.data.approvalLoadState === 'IDLE') return this.loadApprovals();
   },
   toggleSearch() {
     const searchOpen = !this.data.searchOpen;
     const searchQuery = searchOpen ? this.data.searchQuery : '';
-    const items = this.data.items.map(item => ({ ...item, visible: visible(item, this.data.filter, searchQuery) }));
-    this.setData({ searchOpen, searchQuery, items, filteredCount: countVisible(items) });
+    this.setData({ searchOpen, searchQuery, ...displayed(this.data.items, this.data.filter, searchQuery) });
   },
   searchInput(event) {
     const searchQuery = (event.detail.value || '').trim();
-    const items = this.data.items.map(item => ({ ...item, visible: visible(item, this.data.filter, searchQuery) }));
-    this.setData({ searchQuery, items, filteredCount: countVisible(items) });
+    this.setData({ searchQuery, ...displayed(this.data.items, this.data.filter, searchQuery) });
   },
   async loadMore() {
     const offset = this.data.nextOffset;
@@ -99,8 +173,8 @@ Page({
     try {
       const page = await api.get(`/me/notifications?offset=${offset}&snapshot=${encodeURIComponent(this.data.snapshot)}`);
       if (generation !== this._generation) return;
-      const items = this.data.items.concat(present(page.items || [], this.data.filter, this.data.searchQuery));
-      this.setData({ items, filteredCount: countVisible(items), total: page.total,
+      const inbox = displayed(this.data.items.concat(present(page.items || [])), this.data.filter, this.data.searchQuery);
+      this.setData({ ...inbox, total: page.total,
         unreadTotal: page.unreadTotal ?? this.data.unreadTotal, loadingMore: false,
         nextOffset: page.nextOffset ?? null, snapshot: page.snapshot });
     } catch (error) {
@@ -192,7 +266,9 @@ Page({
   async openNotice(event) {
     const { id, eventId, kind, section } = event.currentTarget.dataset;
     const profileKinds = ['REGISTRATION_REMOVED', 'REPORT_IN_REVIEW', 'REPORT_RESOLVED',
-      'APPEAL_IN_REVIEW', 'APPEAL_RESOLVED', 'CONTENT_REJECTED', 'WAITLIST_OFFER'];
+      'REPORT_CREATED_UNSCOPED', 'REPORT_IN_REVIEW_UNSCOPED', 'REPORT_RESOLVED_UNSCOPED',
+      'APPEAL_CREATED', 'APPEAL_IN_REVIEW', 'APPEAL_RESOLVED',
+      'CONTENT_REJECTED', 'CONTENT_REVIEW_OVERTURN', 'WAITLIST_OFFER'];
     const generation = this._generation;
     try {
       if (eventId && !profileKinds.includes(kind)) {

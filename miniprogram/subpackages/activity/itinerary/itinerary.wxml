@@ -10,7 +10,7 @@
     <view wx:if="{{loadState === 'READY' && !featured}}" class="state-card"><view>暂无已确认报名或组织中的近期活动。</view><button bindtap="goHome">返回首页查看活动</button></view>
 
     <view wx:if="{{loadState === 'READY' && featured}}" class="featured-card">
-      <view class="featured-cover"><image src="/assets/stitch/caper_home_badminton.jpg" mode="aspectFill" /><view class="countdown">◉ {{featured.countdown}}</view></view>
+      <view class="featured-cover"><image src="{{featured.cover}}" mode="aspectFill" /><view class="countdown">◉ {{featured.countdown}}</view></view>
       <view class="featured-body"><view class="featured-status">{{featured.stateLabel}}</view><view class="featured-title">{{featured.title || '羽毛球活动'}}</view><view class="facts"><view><text class="fact-icon">▣</text><view><view>{{featured.dateLabel}} {{featured.timeLabel}}</view><text>具体时间以活动详情的最新版本为准</text></view></view><view><text class="fact-icon location">⌖</text><view><view>{{featured.venueLabel}}</view><text>{{featured.city || '活动城市以详情为准'}}</text></view></view><view><text class="fact-icon fee">▤</text><view><view>{{featured.feeLabel}}</view><text>费用与状态以活动详情和双方记录为准</text></view></view></view><button class="featured-action" data-id="{{featured.id}}" bindtap="openEvent">查看活动详情　›</button></view>
     </view>
 

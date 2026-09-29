@@ -7,6 +7,14 @@ function currentIdentity() {
   const developer = wx.getStorageSync('devUser') || config.developmentUser;
   return developer ? 'dev:' + developer : '';
 }
+function coverFor(title) {
+  if (/羽毛球/.test(title)) return '/assets/stitch/caper_home_badminton.jpg';
+  if (/篮球/.test(title)) return '/assets/stitch/caper_discover_basketball.jpg';
+  if (/咖啡|聊天|创业/.test(title)) return '/assets/stitch/caper_discover_coffee.jpg';
+  if (/展览|艺术|画/.test(title)) return '/assets/stitch/caper_discover_art.jpg';
+  if (/桌游|游戏/.test(title)) return '/assets/stitch/caper_discover_boardgame.jpg';
+  return '/assets/stitch/caper_discover_citywalk.jpg';
+}
 function present(item, now) {
   const timestamp = Date.parse(item.startAt);
   const local = new Date(timestamp + 8 * 60 * 60_000);
@@ -17,7 +25,7 @@ function present(item, now) {
   const feeLabel = item.feeMode === 'FREE' ? '免费' :
     item.feeMode === 'AA' && Number.isSafeInteger(item.feeCapFen)
       ? `AA 制 · 每人上限 ¥${(item.feeCapFen / 100).toFixed(2)}` : '费用以活动详情为准';
-  return { ...item, dateLabel, timeLabel, feeLabel,
+  return { ...item, dateLabel, timeLabel, feeLabel, cover: coverFor(item.title || ''),
     venueLabel: item.venueName || '具体场地以活动详情为准',
     countdown: item.status === 'IN_PROGRESS' ? '进行中' : days <= 0 ? '今天开始' :
       days === 1 ? '明天开始' : `约 ${days} 天后开始`,

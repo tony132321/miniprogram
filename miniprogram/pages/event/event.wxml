@@ -1,4 +1,4 @@
-<view class="event-topbar" style="padding-top: {{statusBarHeight}}px"><button class="event-back" bindtap="goBack" aria-label="返回上一页">‹</button><view class="event-nav-copy"><text>活动详情</text><text>耍起 CAPER · 线下见面</text></view><button class="event-nav-safety" bindtap="goToReport" aria-label="举报与求助">···</button><button class="event-nav-person" data-section="registrationSection" bindtap="jumpToSection" aria-label="报名与成员">♙</button></view>
+<view class="event-topbar" style="padding-top: {{statusBarHeight}}px"><button class="event-back" bindtap="goBack" aria-label="返回上一页">‹</button><view class="event-nav-copy"><text>活动详情</text><text>耍起 CAPER · 线下见面</text></view><button class="event-nav-safety" bindtap="openEventActions" aria-label="更多活动操作">···</button><button class="event-nav-person" data-section="registrationSection" bindtap="jumpToSection" aria-label="报名与成员">♙</button></view>
 <view wx:if="{{joinConfirmation}}" class="join-review" aria-label="报名确认">
   <view class="join-review-header" style="padding-top: {{statusBarHeight}}px"><button class="join-review-back" bindtap="cancelJoin" disabled="{{joinSubmitting}}" aria-label="返回活动详情">‹ 返回活动</button><view class="join-review-heading">报名确认</view><view class="join-review-spacer"></view></view>
   <scroll-view scroll-y="true" class="join-review-scroll">
@@ -151,9 +151,9 @@
     <button bindtap="askQuestion">提交问题</button>
   </view>
   </view>
-  <view id="expenseSection" class="event-section expense-section"><view class="section-kicker">SHALL WE SPLIT?</view><view class="section-heading">费用记录</view><view class="section-intro">AA 制，更轻松也更尽兴。金额与双方处理状态以当前账单版本为准。</view>
+  <view id="expenseSection" class="event-section expense-section"><view class="section-kicker">{{event.payload.feeMode === 'AA' ? 'SHALL WE SPLIT?' : 'EVENT COST'}}</view><view class="section-heading">费用记录</view><view wx:if="{{event.payload.feeMode === 'AA'}}" class="section-intro">AA 制，更轻松也更尽兴。金额与双方处理状态以当前账单版本为准。</view><view wx:else class="section-intro">本活动当前为免费；若有旧版费用记录，请以当前活动规则核对。</view>
   <view class="muted">费用由参与者与服务提供者按约定处理；本页为记录，不是平台支付凭证。</view>
-  <view class="muted">总费用按已确认人数分成整数分，尾差逐分分配；请以各人显示金额为准。修订费用后需重新确认新版。</view>
+  <view wx:if="{{event.payload.feeMode === 'AA'}}" class="muted">总费用按已确认人数分成整数分，尾差逐分分配；请以各人显示金额为准。修订费用后需重新确认新版。</view>
   <view wx:if="{{expenseLoadState === 'EMPTY'}}" class="muted">暂无费用记录。</view>
   <view wx:if="{{expenseLoadState === 'FORBIDDEN'}}" class="muted">当前无权查看费用记录。</view>
   <view wx:if="{{expenseLoadState === 'ERROR'}}" class="error">{{expenseError}} <button id="expenseRetryButton" bindtap="refresh">重新加载费用记录</button></view>
@@ -173,7 +173,7 @@
     <view class="host-hero"><view class="host-hero-status">{{display.status}}</view><view class="host-hero-title">{{display.title}}</view><view class="host-hero-detail">▣ {{display.date}} – {{display.end}}</view><view class="host-hero-detail">⌖ {{display.location}}</view><view class="host-hero-sticker"><text>Play More</text><text>Meet Cool People</text></view></view>
     <view wx:if="{{event.stats}}" class="host-overview"><view><text>{{event.stats.confirmed}}</text><text>已确认</text></view><view><text>{{event.stats.reserved}}</text><text>预留名额</text></view><view><text>{{event.stats.waitlisted}}</text><text>候补中</text></view><view><text>{{event.stats.requested}}</text><text>待审核</text></view></view>
     <view wx:if="{{event.stats}}" class="formation-card"><view>成局核对</view><view>人数：至少 {{event.payload.minParticipants}} 人，目前确认 {{event.stats.confirmed}} 人</view><view>场地：{{event.payload.venueStatus === 'HOST_CONFIRMED' ? '主办方已核实' : '尚未核实'}}</view><view class="muted">实际成局仍须使用下方确认操作，系统不代表场馆锁位。</view></view>
-    <view class="host-shortcuts"><button wx:if="{{safetyStatus === 'OPEN' && event.recruiting && !event.riskPaused}}" bindtap="prepareShare" disabled="{{preparingShare}}"><text>↗</text>准备分享</button><button data-section="contentSection" bindtap="jumpToSection"><text>➤</text>活动公告</button><button data-section="checkinSection" bindtap="jumpToSection"><text>▣</text>签到管理</button></view>
+    <view class="host-shortcuts"><button wx:if="{{safetyStatus === 'OPEN' && event.recruiting && event.reviewStatus === 'APPROVED' && event.inviteToken && !event.riskPaused}}" bindtap="prepareShare" disabled="{{preparingShare}}"><text>↗</text>准备分享</button><button wx:if="{{safetyStatus === 'OPEN' && event.recruiting && event.reviewStatus === 'APPROVED' && event.inviteToken && !event.riskPaused && shareSourceToken}}" open-type="share"><text>↗</text>微信分享</button><button data-section="contentSection" bindtap="jumpToSection"><text>➤</text>活动公告</button><button data-section="checkinSection" bindtap="jumpToSection"><text>▣</text>签到管理</button></view>
     <view class="host-ai-note"><text>✦</text><view><view>AI 组局助手尚未开放</view><view>请以服务端人数、场地核实与人工判断确认成局。</view></view></view>
     <view wx:if="{{event.status !== 'DRAFT' && event.status !== 'CANCELLED' && event.status !== 'EXPIRED'}}">
       <view>本场协办权限（仅限下列能力，可随时撤回）</view>
@@ -199,8 +199,6 @@
       <button wx:if="{{event.status === 'RECRUITING' || event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS'}}" bindtap="answerQuestion">提交回答</button>
     </view>
     <view wx:else class="muted">活动当前状态不能提交公告或回答，可回看已审核内容。</view>
-    <button wx:if="{{safetyStatus === 'OPEN' && event.recruiting && !event.riskPaused}}" bindtap="prepareShare" disabled="{{preparingShare}}">准备分享卡并记录来源</button>
-    <button wx:if="{{safetyStatus === 'OPEN' && event.recruiting && !event.riskPaused && shareSourceToken}}" open-type="share">主动分享邀请卡</button>
     <view id="shareMetricsView" wx:if="{{shareMetrics}}">分享意图 {{shareMetrics.shareIntents}} · 带来源的新打开 {{shareMetrics.attributedOpens}} · 来源未知的新打开 {{shareMetrics.unknownSourceOpens}}（均不代表发送或阅读成功）</view>
     <view wx:if="{{attentionItems.length}}">取消／未成局消息仍未由下列成员打开，请主办方人工跟进；提供方状态不代表送达。</view>
     <view wx:for="{{attentionItems}}" wx:key="notificationId" class="item">{{item.userId}} · {{item.kind}} · 外部状态 {{item.externalStatus}}</view>
