@@ -101,3 +101,66 @@ test('AA ledger presentation keeps each integer-cent share exact in yuan', () =>
   assert.equal(format(10001), '¥100.01');
   assert.equal(format(-1), '金额待核对');
 });
+
+test('event header shows the current China-local time range without repeating a same-day date', () => {
+  let display: ((event: Record<string, any>) => Record<string, any>) | undefined;
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8') +
+    '\nglobalThis.__display = eventDisplay;', {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: {} };
+      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
+      if (path === '../../config.js') return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page() {},
+    get __display() { return display; },
+    set __display(value) { display = value; }
+  });
+  assert.ok(display);
+  const sameDay = display({ payload: { title: '周末羽毛球',
+    startAt: '2026-10-04T10:00:00Z', endAt: '2026-10-04T12:00:00Z' } });
+  assert.equal(sameDay.date, '10月4日（周日）18:00');
+  assert.equal(sameDay.end, '20:00');
+  assert.equal(sameDay.isBadminton, true);
+  const nextDay = display({ payload: { title: '城市漫步',
+    startAt: '2026-10-04T15:00:00Z', endAt: '2026-10-04T18:00:00Z' } });
+  assert.equal(nextDay.end, '10月5日（周一）02:00');
+  assert.equal(nextDay.isBadminton, false);
+});
+
+test('PG01 location and share controls use the current event and its real capability boundary', () => {
+  let page: Record<string, any> | undefined;
+  const copied: string[] = [];
+  const routes: string[] = [];
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: {} };
+      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
+      if (path === '../../config.js') return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: {
+      setClipboardData({ data, success }: { data: string; success: () => void }) { copied.push(data); success(); },
+      showToast() {},
+      navigateTo({ url }: { url: string }) { routes.push(url); }
+    }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.data.id = 'event-1';
+  page.data.loadState = 'READY';
+  page.data.event = { id: 'event-1', payload: { title: '周末羽毛球',
+    city: '上海', venueName: '公共球馆', startAt: '2026-10-04T10:00:00Z',
+    endAt: '2026-10-04T12:00:00Z' } };
+  page.copyVenue();
+  assert.equal(copied[0], '上海 · 公共球馆');
+  page.data.isHost = true;
+  page.shareCurrentEvent();
+  assert.deepEqual(routes, ['/subpackages/activity/share/share?id=event-1']);
+  page.data.isHost = false;
+  page.data.hostAlias = '活动主办方';
+  page.shareCurrentEvent();
+  assert.match(copied[1]!, /活动：周末羽毛球/);
+  assert.equal(routes.length, 1);
+});

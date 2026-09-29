@@ -126,3 +126,74 @@ page{padding:0;background:#f5f6fa;color:#1b1e27;font-family:-apple-system,BlinkM
 .event-load-mark { width: 92rpx; height: 92rpx; margin: 0 auto 21rpx; border-radius: 50%; background: #1d64f2; color: #c6ff00; font-size: 51rpx; line-height: 92rpx; }
 .event-load-card button { margin-top: 20rpx; border-radius: 100rpx; background: #eaf1ff; color: #1d64f2; font-size: 23rpx; }
 .event-load-card button::after { border: 0; }
+
+/* PG01: full-bleed reference poster and overlapping information sheet. */
+.event-page { background: #fff; }
+.event-topbar-ready { position: absolute; top: 0; left: 0; right: 0; z-index: 12; background: transparent; border: 0; box-shadow: none; }
+.event-topbar-ready button { color: #fff; background: #10233e91; border: 1rpx solid #ffffff4d; border-radius: 50%; height: 60rpx; line-height: 56rpx; text-align: center; }
+.event-topbar-ready .event-back { width: 60rpx; font-size: 47rpx; }
+.event-topbar-ready .event-nav-copy { opacity: 0; }
+.event-nav-share { width: 60rpx; margin-right: 8rpx !important; font-size: 35rpx; }
+.event-topbar-ready .event-nav-safety { width: 60rpx; font-size: 32rpx; }
+.event-topbar-ready .event-nav-person { display: none; }
+.poster { width: 100%; height: 850rpx; margin: 0; padding: 0; border-radius: 0; background: linear-gradient(160deg,#0843b5 0%,#086bf3 55%,#00aef4 100%); box-shadow: none; }
+.poster:before { width: 100%; height: 100%; right: 0; top: 0; border: 0; border-radius: 0; background: radial-gradient(circle at 75% 27%,#2cf2ff80,transparent 36%); box-shadow: none; }
+.poster:after { width: 110rpx; height: 570rpx; right: 56rpx; top: 105rpx; border-left: 6rpx dashed #ffffff48; transform: rotate(14deg); }
+.poster-athlete { position: absolute; top: 63rpx; right: -40rpx; width: 735rpx; height: 510rpx; opacity: .67; mix-blend-mode: screen; }
+.poster-image-fade { position: absolute; z-index: 1; top: 340rpx; left: 0; right: 0; height: 340rpx; background: linear-gradient(transparent,#087ffa 82%); pointer-events: none; }
+.poster-court { position: absolute; z-index: 1; top: 83rpx; right: 40rpx; width: 280rpx; height: 360rpx; border: 7rpx solid #ffffff25; border-radius: 50% 50% 10% 10%; transform: rotate(-14deg); }
+.poster-crown { position: absolute; z-index: 3; left: 59rpx; top: 164rpx; color: #d2f803; font-size: 54rpx; transform: rotate(-18deg); }
+.poster-headline { position: absolute; z-index: 3; top: 300rpx; left: 46rpx; right: 20rpx; transform: rotate(-3deg); color: #fff; font-weight: 900; font-style: italic; letter-spacing: -5rpx; line-height: .93; text-shadow: 5rpx 6rpx 0 #05326b; }
+.poster-headline text { display: block; font-size: 76rpx; }
+.poster-headline text:last-child { color: #c0f2ff; font-size: 85rpx; }
+.poster-headline-generic { top: 335rpx; line-height: 1.03; letter-spacing: -2rpx; }
+.poster-headline-generic text { font-size: 64rpx; }
+.poster-tagline { position: absolute; z-index: 3; top: 522rpx; left: 50rpx; display: flex; align-items: center; gap: 22rpx; color: #fff; font-size: 25rpx; font-weight: 800; }
+.poster-tagline text:first-child { display: inline-block; padding: 12rpx 20rpx; transform: rotate(-3deg); background: #fff; color: #111827; box-shadow: 5rpx 6rpx 0 #d2f803; }
+.poster-bottom { z-index: 3; left: 48rpx; bottom: 85rpx; font-size: 28rpx; font-weight: 800; letter-spacing: 0; }
+.poster-bottom text { display: block; }
+.poster-bottom text:first-child { font-family: cursive; font-size: 31rpx; font-style: italic; font-weight: 500; }
+.poster-badge { position: absolute; z-index: 3; right: 46rpx; bottom: 65rpx; width: 155rpx; padding: 17rpx 11rpx; border: 5rpx solid #111827; border-radius: 30rpx; transform: rotate(8deg); background: #d2f803; color: #111827; text-align: center; box-shadow: 5rpx 9rpx 16rpx #00356666; }
+.poster-badge text { display: block; font-size: 21rpx; font-weight: 900; line-height: 1.17; }
+.poster-badge text:last-child { margin-top: 3rpx; font-size: 15rpx; }
+.detail-section { position: relative; z-index: 4; margin: -46rpx 0 0; padding: 43rpx 40rpx 40rpx; border: 0; border-radius: 58rpx 58rpx 0 0; box-shadow: 0 -9rpx 25rpx #10305c0d; }
+.detail-heading { margin-bottom: 9rpx; }
+.detail-title { color: #111318; font-size: 40rpx; font-weight: 900; }
+.status-pill { display: inline-flex; align-items: center; gap: 8rpx; border: 1rpx solid #aee5c2; font-size: 22rpx; }
+.status-dot { color: #76dba0; font-size: 23rpx; }
+.detail-tagline { margin: 8rpx 0 21rpx; color: #616875; font-size: 26rpx; line-height: 1.52; }
+.detail-tagline text { display: block; }
+.detail-tag-list { display: flex; flex-wrap: wrap; gap: 11rpx; padding-bottom: 28rpx; margin-bottom: 15rpx; border-bottom: 1rpx solid #edf0f2; }
+.detail-tag-list text { padding: 9rpx 16rpx; border-radius: 28rpx; background: #f3f4f6; color: #394250; font-size: 21rpx; font-weight: 650; }
+.detail-tag-list .highlight { background: #eaf1ff; color: #0757d9; }
+.detail-section > .tag { display: none; }
+.detail-row { padding: 20rpx 0; border-top: 0; }
+.detail-icon { min-width: 73rpx; height: 73rpx; border: 1rpx solid #e9edf3; border-radius: 26rpx; color: #1c293d; background: #fafbfc; line-height: 73rpx; font-size: 36rpx; }
+.detail-value { color: #111318; font-size: 27rpx; }
+.detail-help { color: #969caa; font-size: 21rpx; }
+.detail-row-main { min-width: 0; flex: 1; }
+.venue-copy { flex: none; margin: 8rpx 0 0 !important; padding: 7rpx 13rpx !important; border: 1rpx solid #e5e7eb; border-radius: 50rpx !important; background: #fff !important; color: #303a49 !important; font-size: 20rpx !important; line-height: 1.6 !important; }
+.host-strip { margin: 25rpx 0; padding: 22rpx; border: 1rpx solid #ebedf2; border-radius: 26rpx; background: #f8f9fb; }
+.host-avatar { width: 68rpx; height: 68rpx; line-height: 68rpx; border: 4rpx solid #d2f803; font-size: 26rpx; }
+.host-arrow { margin-left: auto; color: #9ca3af; font-size: 42rpx; }
+.event-tabs { top: 0 !important; margin-top: 0; }
+.bottom-actions { display: flex; gap: 16rpx; padding: 17rpx 40rpx calc(18rpx + env(safe-area-inset-bottom)); background: #fffffff5; }
+.bottom-actions button { flex: 1; margin: 0; padding: 14rpx 11rpx; font-size: 27rpx; white-space: nowrap; }
+.bottom-actions .share-event { flex: none; background: #f2f3f5; color: #15191f; font-size: 22rpx; }
+.bottom-actions .view-registration { background: #11151b; }
+.join-dot { color: #d2f803; }
+
+/* PG05: poster proportions and information hierarchy from the supplied design. */
+.join-review { background: #fff; color: #17191f; }
+.join-review-scroll { padding: 27rpx 30rpx 45rpx; }
+.join-review-poster { height: 560rpx; border-radius: 28rpx; background: linear-gradient(140deg,#006aff,#0053e7 63%,#003fba); }
+.join-poster-kicker text,.join-poster-note text,.join-poster-title text { display: block; }
+.join-poster-kicker { position: absolute; left: 32rpx; top: 35rpx; color: #bcd7ff; font-size: 23rpx; line-height: 1.08; letter-spacing: 2rpx; }
+.join-poster-note { position: absolute; top: 33rpx; right: 29rpx; color: #ffefb8; font-size: 20rpx; font-family: cursive; font-style: italic; text-align: right; transform: rotate(6deg); }
+.join-poster-mark { top: 155rpx; left: 50%; right: auto; width: 180rpx; height: 180rpx; margin-left: -90rpx; border: 4rpx solid #ffffff70; border-radius: 50%; color: #fff; font-size: 86rpx; line-height: 180rpx; text-align: center; transform: none; }
+.join-poster-title { left: 36rpx; right: 36rpx; bottom: 93rpx; max-height: none; color: #ffd83e; font-size: 52rpx; font-weight: 950; font-style: italic; text-align: center; text-shadow: 4rpx 5rpx 0 #0a3caa; transform: rotate(-3deg); }
+.join-poster-ribbon { bottom: 28rpx; left: 37rpx; padding: 11rpx 15rpx; background: #ffd83e; color: #111827; }
+.join-poster-signature { position: absolute; right: 30rpx; bottom: 32rpx; color: #adceff; font-size: 19rpx; }
+.join-review-card { padding: 31rpx; border-radius: 28rpx; }
+.join-review-choice { margin-top: 38rpx; }
+.join-review-footer { padding: 18rpx 30rpx calc(19rpx + env(safe-area-inset-bottom)); }

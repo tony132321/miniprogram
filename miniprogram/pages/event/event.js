@@ -18,18 +18,27 @@ function yuanFromFen(fen) {
 }
 function eventDisplay(event) {
   const payload = event.payload || {};
+  const title = payload.title || event.title || '未命名活动';
   const format = value => {
     const timestamp = Date.parse(value || '');
     if (!Number.isFinite(timestamp)) return '待确认';
     const local = new Date(timestamp + 8 * 60 * 60_000);
     const weekday = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][local.getUTCDay()];
-    return `${local.getUTCMonth() + 1} 月 ${local.getUTCDate()} 日（${weekday}）${local.toISOString().slice(11, 16)}`;
+    return `${local.getUTCMonth() + 1}月${local.getUTCDate()}日（${weekday}）${local.toISOString().slice(11, 16)}`;
   };
   const feeCap = Number(payload.feeCapFen);
+  const startAt = payload.startAt || event.startAt;
+  const endAt = payload.endAt || event.endAt;
+  const startTime = Date.parse(startAt || '');
+  const endTime = Date.parse(endAt || '');
+  const chinaDay = timestamp => new Date(timestamp + 8 * 60 * 60_000).toISOString().slice(0, 10);
+  const compactEnd = Number.isFinite(startTime) && Number.isFinite(endTime) && chinaDay(startTime) === chinaDay(endTime)
+    ? new Date(endTime + 8 * 60 * 60_000).toISOString().slice(11, 16) : format(endAt);
   return {
-    title: payload.title || event.title || '未命名活动',
-    date: format(payload.startAt || event.startAt),
-    end: format(payload.endAt || event.endAt),
+    title,
+    isBadminton: /羽毛球|badminton/i.test(title),
+    date: format(startAt),
+    end: compactEnd,
     location: [payload.city || event.city, payload.venueName || event.venueName].filter(Boolean).join(' · ') || '地点待确认',
     fee: payload.feeMode === 'FREE' ? '免费' : payload.feeMode === 'AA' && Number.isFinite(feeCap)
       ? `AA 制 · 每人上限 ¥${feeCap / 100}` : '费用待确认',
@@ -375,6 +384,19 @@ Page({
       success: () => this.setData({ message: '活动信息已复制，请自行发给可信任的人。' }),
       fail: () => this.setData({ message: '复制失败，请稍后重试。' }) });
   },
+  copyVenue() {
+    const event = this.data.event;
+    if (!event || this.data.loadState !== 'READY') return;
+    const venue = [event.payload?.city, event.payload?.venueName].filter(Boolean).join(' · ');
+    if (!venue) return this.setData({ message: '当前活动尚未确认公共集合地点。' });
+    wx.setClipboardData({ data: venue,
+      success: () => wx.showToast?.({ title: '集合地点已复制', icon: 'none' }),
+      fail: () => this.setData({ message: '复制地点失败，请稍后重试。' }) });
+  },
+  shareCurrentEvent() {
+    if (this.data.isHost) return this.openShareCard();
+    this.copySafetyDetails();
+  },
   async action(path, payload, successText) {
     try {
       const result = await api.post(path, { expectedVersion: this.data.event.version, ...payload });
@@ -391,7 +413,8 @@ Page({
     this.joinConfirmationActor = currentIdentity();
     this.setData({ joinSubmitting: false, joinConfirmation: {
       id: event.id, version: event.version, token: this.data.token,
-      title: display.title, date: display.date, end: display.end, location: display.location, fee: display.fee,
+      title: display.title, isBadminton: display.isBadminton,
+      date: display.date, end: display.end, location: display.location, fee: display.fee,
       confirmed: event.stats?.confirmed ?? null, capacity: payload.maxParticipants || null,
       skillLevel: payload.skillLevel || '', cancellationRule: payload.cancellationRule || '请查看活动规则',
       approval: payload.approvalMode === 'MANUAL' ? '提交后由主办方逐一审批' : '自动接受；满员时可能进入候补'
