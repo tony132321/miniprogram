@@ -300,9 +300,10 @@ export function createApp(db: Database, options: AppOptions) {
           options.environment !== 'production' || !options.pilotUserIds?.includes(actor)));
       }
       if (path === '/me/events' && method === 'GET') {
-        const { rows } = await db.query<{ id: string; status: string; payload: { title?: string; startAt?: string };
+        const { rows } = await db.query<{ id: string; status: string; created_at: Date;
+          payload: { title?: string; startAt?: string; venueName?: string; feeMode?: string; feeCapFen?: number };
           review_status: string; legacy_review_closed: boolean | null; is_host: boolean; is_cohost: boolean;
-          my_status: string | null }>(`SELECT e.id,e.status,e.payload,e.review_status,
+          my_status: string | null }>(`SELECT e.id,e.status,e.created_at,e.payload,e.review_status,
           clock_timestamp()>=CASE WHEN e.status='RECRUITING' THEN
             (e.payload->>'confirmationDeadline')::timestamptz ELSE (e.payload->>'startAt')::timestamptz END
             AS legacy_review_closed,
@@ -311,16 +312,31 @@ export function createApp(db: Database, options: AppOptions) {
           LEFT JOIN cohost_grants c ON c.event_id=e.id AND c.user_id=$1
             AND c.revoked_at IS NULL AND c.expires_at>clock_timestamp()
           WHERE e.host_id=$1 OR c.id IS NOT NULL OR
-            r.status IN ('INTERESTED','REQUESTED','WAITLISTED','OFFERED','CONFIRMED','RECONFIRM_REQUIRED')
-          ORDER BY e.id`, [actor]);
-        return send(res, 200, { items: rows.map(r => {
+            r.status IN ('INTERESTED','REQUESTED','WAITLISTED','OFFERED','CONFIRMED','RECONFIRM_REQUIRED')`, [actor]);
+        const now = await databaseNow(db);
+        const items = rows.map(r => {
           const reviewed = r.is_host || r.review_status === 'APPROVED' ||
             (r.review_status === 'NOT_REQUIRED' &&
               (r.legacy_review_closed === true || ['IN_PROGRESS', 'COMPLETED', 'CANCELLED', 'EXPIRED'].includes(r.status)));
-          return { id: r.id, status: r.status, title: reviewed ? r.payload.title : '活动审核中',
-            startAt: reviewed ? r.payload.startAt : undefined, isHost: r.is_host, isCohost: r.is_cohost,
-            myRegistrationStatus: r.my_status };
-        }) });
+          const startAt = reviewed ? r.payload.startAt : undefined;
+          const startTime = startAt ? Date.parse(startAt) : NaN;
+          const active = ['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(r.status);
+          // An unreviewed start time must not affect list position: ordering by it would reveal private logistics.
+          const priority = active && r.my_status === 'OFFERED' ? 0 :
+            active && (r.status === 'IN_PROGRESS' || startTime >= now) ? 1 :
+              r.status === 'DRAFT' ? 2 : active && !Number.isFinite(startTime) ? 3 : 4;
+          return { item: { id: r.id, status: r.status, title: reviewed ? r.payload.title : '活动审核中',
+            startAt, venueName: reviewed ? r.payload.venueName : undefined,
+            feeMode: reviewed ? r.payload.feeMode : undefined,
+            feeCapFen: reviewed ? r.payload.feeCapFen : undefined,
+            isHost: r.is_host, isCohost: r.is_cohost, myRegistrationStatus: r.my_status },
+          priority, startTime, createdAt: new Date(r.created_at).getTime() };
+        });
+        items.sort((a, b) => a.priority - b.priority ||
+          ((a.priority <= 1 || a.priority === 4) && Number.isFinite(a.startTime) && Number.isFinite(b.startTime)
+            ? (a.priority === 4 ? b.startTime - a.startTime : a.startTime - b.startTime) : 0) ||
+          b.createdAt - a.createdAt || a.item.id.localeCompare(b.item.id));
+        return send(res, 200, { items: items.map(row => row.item) });
       }
       if (path === '/me/registrations' && method === 'GET') {
         const { rows } = await db.query('SELECT id,event_id,status,accepted_version,created_at FROM registrations WHERE user_id=$1 ORDER BY created_at DESC', [actor]);
