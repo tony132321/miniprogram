@@ -7,6 +7,8 @@ function loadPage(now: number) {
   let page: Record<string, any> | undefined;
   const routes: string[] = [];
   const storage = new Map<string, unknown>();
+  const scrolls: Array<Record<string, unknown>> = [];
+  const toasts: Array<Record<string, unknown>> = [];
   class Clock extends Date {
     static now() { return now; }
   }
@@ -23,13 +25,49 @@ function loadPage(now: number) {
       getStorageSync(key: string) { return storage.get(key) ?? ''; },
       setStorageSync(key: string, value: unknown) { storage.set(key, value); },
       removeStorageSync(key: string) { storage.delete(key); },
-      switchTab({ url }: { url: string }) { routes.push(url); }
+      switchTab({ url }: { url: string }) { routes.push(url); },
+      pageScrollTo(options: Record<string, unknown>) { scrolls.push(options); },
+      showToast(options: Record<string, unknown>) { toasts.push(options); }
     }
   });
   assert.ok(page);
-  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
-  return { page, routes, storage };
+  page.setData = function (patch: Record<string, any>, done?: () => void) { Object.assign(this.data, patch); done?.(); };
+  return { page, routes, storage, scrolls, toasts };
 }
+
+test('reference form shortcuts fill supported city and participant range, while unsupported category stays closed', () => {
+  const { page, toasts } = loadPage(Date.now());
+  page.chooseQuickCity({ currentTarget: { dataset: { city: '上海' } } });
+  page.chooseParticipantRange({ currentTarget: { dataset: { range: '5-10' } } });
+  assert.equal(page.data.form.city, '上海');
+  assert.equal(page.data.form.minParticipants, '5');
+  assert.equal(page.data.form.maxParticipants, '10');
+  assert.equal(page.buildInput().maxParticipants, 10);
+  page.showUnavailable({ currentTarget: { dataset: { name: '咖啡聊天' } } });
+  assert.match(page.data.message, /咖啡聊天.*暂未开放/);
+  assert.equal(toasts[0]?.icon, 'none', 'a button deep in the long form must provide immediate visible feedback');
+  assert.equal(page.buildInput().type, 'badminton');
+});
+
+test('fee tiles change the real publish payload between free and AA', () => {
+  const { page } = loadPage(Date.now());
+  page.chooseFeeMode({ currentTarget: { dataset: { mode: 'FREE' } } });
+  assert.equal(page.buildInput().feeMode, 'FREE');
+  assert.equal(page.buildInput().feeCapFen, 0);
+  page.chooseFeeMode({ currentTarget: { dataset: { mode: 'AA' } } });
+  assert.equal(page.buildInput().feeMode, 'AA');
+  assert.equal(page.buildInput().feeCapFen, 5000);
+});
+
+test('review rows return to the corresponding editable section', () => {
+  const { page, scrolls } = loadPage(Date.now());
+  page.setData({ stage: 'REVIEW', publishPreview: { id: 'draft-1' } });
+  page.editReviewSection({ currentTarget: { dataset: { section: 'schedule' } } });
+  assert.equal(page.data.stage, 'FORM');
+  assert.equal(page.data.publishPreview, null);
+  assert.equal(scrolls[0]?.selector, '#form-schedule');
+  assert.equal(scrolls[0]?.duration, 0);
+});
 
 test('quick schedule uses Shanghai day and clears stale venue confirmation', () => {
   // 2026-09-29 16:01 UTC is already Wednesday in Shanghai.

@@ -7,7 +7,7 @@ const tabs = [
 ];
 
 Component({
-  data: { tabs, selected: 0 },
+  data: { tabs, selected: 0, hidden: false },
   attached() { this.syncSelected(); },
   pageLifetimes: { show() { this.syncSelected(); } },
   methods: {
@@ -15,7 +15,13 @@ Component({
       const pages = getCurrentPages();
       const current = pages[pages.length - 1];
       const selected = tabs.findIndex(tab => tab.pagePath === '/' + (current && current.route));
-      if (selected >= 0 && selected !== this.data.selected) this.setData({ selected });
+      const hidden = selected === 2 && current?.data?.stage !== 'FORM';
+      if (selected >= 0 && (selected !== this.data.selected || hidden !== this.data.hidden))
+        this.setData({ selected, hidden });
+    },
+    setCreateStage(stage) {
+      const hidden = stage !== 'FORM';
+      if (this.data.selected !== 2 || this.data.hidden !== hidden) this.setData({ selected: 2, hidden });
     },
     selectTab(event) {
       const index = Number(event.currentTarget.dataset.index);

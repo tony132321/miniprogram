@@ -17,6 +17,18 @@ function endFromDuration(date, time, minutes) {
 }
 const emptyForm = { title: '', city: '', venueName: '', skillLevel: '', minParticipants: '4', maxParticipants: '6',
   feeCapYuan: '50', cancellationRule: '开始前可退出' };
+const inspirationBatches = [
+  [
+    { icon: '🏸', title: '周末羽毛球', subtitle: '运动社交，认识新朋友', text: '周末组织一场羽毛球活动，认识新朋友。' },
+    { icon: '🤝', title: '新手双打局', subtitle: '轻松练习，一起进步', text: '周末组织一场新手友好的羽毛球双打活动。' },
+    { icon: '🌙', title: '下班练球', subtitle: '工作日晚上，动起来', text: '周五下班后组织一场羽毛球活动。' }
+  ],
+  [
+    { icon: '🎯', title: '周六进阶局', subtitle: '搭档轮换，尽情挥拍', text: '周六下午组织一场羽毛球进阶双打活动，大家轮换搭档。' },
+    { icon: '☀️', title: '周日晨间球', subtitle: '早起运动，活力开场', text: '周日上午组织一场新手友好的羽毛球活动。' },
+    { icon: '✨', title: '同城轻松打', subtitle: '不用紧张，一起来练球', text: '在同城组织一场轻松的羽毛球活动，新手也可以参加。' }
+  ]
+];
 function currentIdentity() {
   return wx.getStorageSync('sessionToken')
     ? 'user:' + wx.getStorageSync('userId')
@@ -38,15 +50,20 @@ Page({
   data: {
     ...emptyEditor(), visibilityLabels: ['仅邀请', '受控公开'], approvalLabels: ['自动接受', '逐一审批'],
     statusBarHeight: (wx.getWindowInfo?.() || wx.getSystemInfoSync?.() || {}).statusBarHeight || 0,
-    inspirations: [
-      { icon: '🏸', title: '周末羽毛球', subtitle: '运动社交，认识新朋友', text: '周末组织一场羽毛球活动，认识新朋友。' },
-      { icon: '🤝', title: '新手双打局', subtitle: '轻松练习，一起进步', text: '周末组织一场新手友好的羽毛球双打活动。' },
-      { icon: '🌙', title: '下班练球', subtitle: '工作日晚上，动起来', text: '周五下班后组织一场羽毛球活动。' }
-    ]
+    inspirations: inspirationBatches[0], inspirationBatch: 0
+  },
+  syncCreateTabBar(stage) {
+    const bar = this.getTabBar && this.getTabBar();
+    if (!bar) return;
+    if (typeof bar.setCreateStage === 'function') bar.setCreateStage(stage);
+    else bar.setData({ selected: 2, hidden: stage !== 'FORM' });
+  },
+  setEditorData(patch, callback) {
+    this.setData(patch, callback);
+    if (Object.prototype.hasOwnProperty.call(patch, 'stage')) this.syncCreateTabBar(patch.stage);
   },
   async onShow() {
-    const bar = this.getTabBar && this.getTabBar();
-    if (bar) bar.setData({ selected: 2 });
+    this.syncCreateTabBar(this.data.stage);
     this.stopSuggestion();
     const generation = this._loadGeneration = (this._loadGeneration || 0) + 1;
     let identity = currentIdentity();
@@ -59,7 +76,7 @@ Page({
         wx.removeStorageSync('editTargetOwner');
       }
       this._shownIdentity = identity;
-      this.setData(emptyEditor());
+      this.setEditorData(emptyEditor());
     }
     const draftId = wx.getStorageSync('editDraftId');
     const eventId = wx.getStorageSync('editEventId');
@@ -71,7 +88,7 @@ Page({
       if (identity !== authenticatedIdentity) {
         identity = authenticatedIdentity;
         this._shownIdentity = identity;
-        this.setData(emptyEditor());
+        this.setEditorData(emptyEditor());
       }
       await this.loadSafety(generation, identity);
       return;
@@ -85,7 +102,7 @@ Page({
       if (identity !== authenticatedIdentity) {
         identity = authenticatedIdentity;
         this._shownIdentity = identity;
-        this.setData(emptyEditor());
+        this.setEditorData(emptyEditor());
       }
       if (targetOwner && targetOwner !== authenticatedIdentity) {
         wx.removeStorageSync('editDraftId');
@@ -108,7 +125,7 @@ Page({
       const templateDurationMinutes = Number.isSafeInteger(p.templateDurationMinutes) && p.templateDurationMinutes > 0
         ? p.templateDurationMinutes : null;
       const savedDurationMinutes = p.startAt && p.endAt ? Math.round((Date.parse(p.endAt) - Date.parse(p.startAt)) / 60_000) : null;
-      this.setData({ draft: draftId ? draft : null, editingEvent: eventId ? draft : null, stage: 'FORM',
+      this.setEditorData({ draft: draftId ? draft : null, editingEvent: eventId ? draft : null, stage: 'FORM',
         editorLoadState: 'READY', editorErrorCode: '', conflict: null,
         startDate: start.date, startTime: start.time || '20:00', endDate: end.date, endTime: end.time || '22:00',
         templateDurationMinutes, repeatEndEdited: templateDurationMinutes !== null && savedDurationMinutes !== null &&
@@ -151,7 +168,7 @@ Page({
   },
   cancelSuggestion() {
     this.stopSuggestion();
-    this.setData({ stage: 'FORM', message: '已转为手动填写，原输入与已填字段仍保留。' });
+    this.setEditorData({ stage: 'FORM', message: '已转为手动填写，原输入与已填字段仍保留。' });
   },
   async retryEditorLoad() {
     if (this.data.editorErrorCode === 'UNAUTHENTICATED' && !config.developmentUser) {
@@ -163,7 +180,7 @@ Page({
   returnToMyActivities() { wx.switchTab({ url: '/pages/index/index' }); },
   markVersionConflict(error, type, id) {
     if (error.code !== 'VERSION_CONFLICT' || !id) return false;
-    this.setData({ stage: 'FORM', conflict: { type, id }, publishPreview: null, changePreview: null,
+    this.setEditorData({ stage: 'FORM', conflict: { type, id }, publishPreview: null, changePreview: null,
       message: '活动版本已变化。本地修改尚未保存；请重新载入服务端当前版本并逐项核对。' });
     return true;
   },
@@ -193,13 +210,39 @@ Page({
     const choice = this.data.inspirations[Number(event.currentTarget.dataset.index)];
     if (choice) this.setData({ aiText: choice.text, message: '' });
   },
-  openForm() { this.setData({ stage: 'FORM' }, () => wx.pageScrollTo?.({ scrollTop: 0, duration: 0 })); },
+  rotateInspirations() {
+    const inspirationBatch = (this.data.inspirationBatch + 1) % inspirationBatches.length;
+    this.setData({ inspirationBatch, inspirations: inspirationBatches[inspirationBatch] });
+  },
+  showUnavailable(event) {
+    const name = event.currentTarget.dataset.name || '此功能';
+    this.setData({ message: `${name}暂未开放；当前可创建和发布受控羽毛球活动。` });
+    wx.showToast?.({ title: `${name}暂未开放`, icon: 'none', duration: 2500 });
+  },
+  chooseQuickCity(event) {
+    const city = event.currentTarget.dataset.city;
+    if (!['上海', '北京', '深圳', '杭州', '成都'].includes(city)) return;
+    this.setData({ form: { ...this.data.form, city } });
+  },
+  chooseParticipantRange(event) {
+    const presets = { '4-6': [4, 6], '5-10': [5, 10], '10-12': [10, 12] };
+    const range = presets[event.currentTarget.dataset.range];
+    if (!range) return;
+    this.setData({ form: { ...this.data.form, minParticipants: String(range[0]), maxParticipants: String(range[1]) } });
+  },
+  editReviewSection(event) {
+    const section = event.currentTarget.dataset.section;
+    if (!['activity', 'schedule', 'venue', 'participants', 'fees', 'visibility'].includes(section)) return;
+    this.setEditorData({ stage: 'FORM', publishPreview: null, changePreview: null, reviewSummary: null },
+      () => wx.pageScrollTo?.({ selector: `#form-${section}`, duration: 0 }));
+  },
+  openForm() { this.setEditorData({ stage: 'FORM' }, () => wx.pageScrollTo?.({ scrollTop: 0, duration: 0 })); },
   backToIdea() {
-    this.setData({ stage: 'IDEA', publishPreview: null, changePreview: null, reviewSummary: null },
+    this.setEditorData({ stage: 'IDEA', publishPreview: null, changePreview: null, reviewSummary: null },
       () => wx.pageScrollTo?.({ scrollTop: 0, duration: 0 }));
   },
   backToForm() {
-    this.setData({ stage: 'FORM', publishPreview: null, changePreview: null, reviewSummary: null },
+    this.setEditorData({ stage: 'FORM', publishPreview: null, changePreview: null, reviewSummary: null },
       () => wx.pageScrollTo?.({ scrollTop: 0, duration: 0 }));
   },
   openDrafts() {
@@ -256,6 +299,10 @@ Page({
   setEndTime(event) { if (this.data.suggestionLoading) this.cancelSuggestion(); this.setData({ endTime: event.detail.value,
     venueConfirmed: event.detail.value === this.data.endTime ? this.data.venueConfirmed : false, repeatEndEdited: true }); },
   setFeeMode(event) { if (this.data.suggestionLoading) this.cancelSuggestion(); this.setData({ feeMode: event.detail.value ? 'FREE' : 'AA' }); },
+  chooseFeeMode(event) {
+    const mode = event.currentTarget.dataset.mode;
+    if (mode === 'AA' || mode === 'FREE') this.setData({ feeMode: mode });
+  },
   setHostParticipates(event) { this.setData({ hostParticipates: event.detail.value === 'yes' }); },
   setVenueConfirmed(event) { this.setData({ venueConfirmed: event.detail.value }); },
   setVisibility(event) {
@@ -335,7 +382,7 @@ Page({
       if (fields.skillLevel) updates['form.skillLevel'] = fields.skillLevel;
       if (fields.feeCapFen !== undefined) updates['form.feeCapYuan'] = String(fields.feeCapFen / 100);
       if (fields.feeMode) updates.feeMode = fields.feeMode;
-      this.setData(updates);
+      this.setEditorData(updates);
       api.acknowledgeMutation?.('POST', '/events/drafts:suggest-local', suggestionBody);
     } catch (error) {
       if (generation === this._suggestGeneration)
@@ -380,7 +427,7 @@ Page({
       const draft = this.data.draft
         ? await api.post(`/events/${this.data.draft.id}/draft`, { expectedVersion: this.data.draft.version, patch: payload })
         : await api.post('/events', payload);
-      this.setData({ draft, stage: 'FORM', publishPreview: null, message: '草稿已保存。确认场地、时间、人数和费用后再发布。' });
+      this.setEditorData({ draft, stage: 'FORM', publishPreview: null, message: '草稿已保存。确认场地、时间、人数和费用后再发布。' });
       return draft;
     } catch (error) {
       if (!this.markVersionConflict(error, 'draft', this.data.draft?.id))
@@ -412,7 +459,7 @@ Page({
           registrationDeadline: '报名截止', confirmationDeadline: '成局确认截止', feeMode: '费用模式',
           feeCapFen: '费用上限（分）', cancellationRule: '取消规则', visibility: '可见范围',
           approvalMode: '审批方式', hostParticipates: '主办方参加' };
-        this.setData({ stage: 'REVIEW', changePreview: { ...preview, changes: preview.changes.map(item => ({ ...item, label: labels[item.field] || item.field })),
+        this.setEditorData({ stage: 'REVIEW', changePreview: { ...preview, changes: preview.changes.map(item => ({ ...item, label: labels[item.field] || item.field })),
           patch, candidate, expectedVersion: event.version },
           message: '请逐项核对变更差异与受影响人数，然后最终确认。' });
       } catch (error) {
@@ -423,14 +470,14 @@ Page({
     }
     const draft = await this.saveDraft();
     if (!draft) return;
-    this.setData({ stage: 'REVIEW', publishPreview: draft,
+    this.setEditorData({ stage: 'REVIEW', publishPreview: draft,
       reviewSummary: {
         start: localDateTimeLabel(draft.payload.startAt), end: localDateTimeLabel(draft.payload.endAt),
         registration: localDateTimeLabel(draft.payload.registrationDeadline),
         confirmation: localDateTimeLabel(draft.payload.confirmationDeadline),
         fee: draft.payload.feeMode === 'FREE' ? '免费'
           : Number.isSafeInteger(draft.payload.feeCapFen) ? `AA 制 · 每人上限 ¥${(draft.payload.feeCapFen / 100).toFixed(2)}` : 'AA 制 · 上限待确认'
-      }, message: '请逐项核对下方发布预览，然后点击最终确认。' });
+      }, message: '' });
   },
   async confirmPublish() {
     if (['LOADING', 'ERROR'].includes(this.data.editorLoadState))
@@ -440,11 +487,11 @@ Page({
       if (!preview) return this.setData({ message: '请先生成变更预览' });
       const current = this.buildInput();
       if (Object.keys(current).some(key => current[key] !== preview.candidate[key]))
-        return this.setData({ stage: 'FORM', changePreview: null, message: '字段已变化，请重新生成变更预览' });
+        return this.setEditorData({ stage: 'FORM', changePreview: null, message: '字段已变化，请重新生成变更预览' });
       try {
         const event = await api.post(`/events/${this.data.editingEvent.id}/changes`,
           { expectedVersion: preview.expectedVersion, patch: preview.patch });
-        this.setData({ ...emptyEditor(), message: '新版本已生效。' });
+        this.setEditorData({ ...emptyEditor(), message: '新版本已生效。' });
         wx.navigateTo({ url: `/pages/event/event?id=${encodeURIComponent(event.id)}` });
       } catch (error) {
         if (!this.markVersionConflict(error, 'event', this.data.editingEvent?.id))
@@ -457,11 +504,11 @@ Page({
     if (!preview) return this.setData({ message: '请先生成发布预览' });
     const current = this.buildInput();
     if (Object.keys(current).some(key => current[key] !== preview.payload[key])) {
-      return this.setData({ stage: 'FORM', publishPreview: null, message: '字段已变化，请重新生成发布预览' });
+      return this.setEditorData({ stage: 'FORM', publishPreview: null, message: '字段已变化，请重新生成发布预览' });
     }
     try {
       const event = await api.post(`/events/${preview.id}/publish`, { expectedVersion: preview.version });
-      this.setData({ ...emptyEditor() });
+      this.setEditorData({ ...emptyEditor() });
       wx.navigateTo({ url: `/pages/event/event?id=${encodeURIComponent(event.id)}&success=published` });
     } catch (error) {
       if (!this.markVersionConflict(error, 'draft', preview.id))
