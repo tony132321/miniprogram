@@ -92,6 +92,26 @@ test('organized cards show only authorized real counts and route to the host wor
   assert.deepEqual(navigations, ['/pages/event/event?id=hosted&section=hostSection']);
 });
 
+test('multiple recruiting host cards let the organizer choose the exact invite destination', async () => {
+  const first: ListedEvent = { id: 'first-host', status: 'RECRUITING', title: '周六羽毛球',
+    isHost: true, myRegistrationStatus: null };
+  const second: ListedEvent = { id: 'second-host', status: 'RECRUITING', title: '周日羽毛球',
+    isHost: true, myRegistrationStatus: null };
+  const { page, navigations, storage } = makeHome({ organizer: [first, second] }, {
+    'first-host': detail('first-host'), 'second-host': detail('second-host')
+  });
+  await page.onShow();
+  await page.selectTab({ currentTarget: { dataset: { key: 'organized' } } });
+  page.openHostShare({ currentTarget: { dataset: { id: 'second-host' } } });
+  assert.deepEqual(navigations, ['/subpackages/activity/share/share?id=second-host']);
+  page.openHostShare({ currentTarget: { dataset: { id: 'missing' } } });
+  storage.set('devUser', 'different-actor');
+  page.openHostShare({ currentTarget: { dataset: { id: 'first-host' } } });
+  assert.equal(navigations.length, 1);
+  const wxml = readFileSync(new URL('../miniprogram/pages/index/index.wxml', import.meta.url), 'utf8');
+  assert.match(wxml, /bindtap="openHostShare"/);
+});
+
 test('a detail whose raw host ID differs from the current actor cannot enrich a hosted card', async () => {
   const hosted: ListedEvent = { id: 'hosted', status: 'RECRUITING', title: '周日羽毛球',
     isHost: true, myRegistrationStatus: null };
@@ -195,6 +215,19 @@ test('the featured cover selects an available upcoming event and falls back when
   const onlyPast = makeHome({ organizer: [old, cancelled] }, {});
   await onlyPast.page.onShow();
   assert.equal(onlyPast.page.data.featuredItem, null);
+});
+
+test('the long feed uses only current-account activity cards and clears them on identity switch', async () => {
+  const old: ListedEvent = { id: 'old-personal', status: 'RECRUITING', title: '旧身份羽毛球',
+    startAt: '2099-03-22T11:00:00.000Z', isHost: true, myRegistrationStatus: null };
+  const fresh: ListedEvent = { id: 'fresh-personal', status: 'CONFIRMED', title: '新身份羽毛球',
+    startAt: '2099-03-23T11:00:00.000Z', isHost: false, myRegistrationStatus: 'CONFIRMED' };
+  const { page, storage } = makeHome({ organizer: [old], second: [fresh] }, {});
+  await page.onShow();
+  assert.deepEqual(page.data.homePreviewItems.map((item: ListedEvent) => item.id), ['old-personal']);
+  storage.set('devUser', 'second');
+  await page.onShow();
+  assert.deepEqual(page.data.homePreviewItems.map((item: ListedEvent) => item.id), ['fresh-personal']);
 });
 
 test('history does not promise an AA ledger to a member without expense access', async () => {

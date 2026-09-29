@@ -9,6 +9,7 @@ function loadPage(now: number) {
   const storage = new Map<string, unknown>();
   const scrolls: Array<Record<string, unknown>> = [];
   const toasts: Array<Record<string, unknown>> = [];
+  const actionSheets: Array<{ itemList: string[]; success: (result: { tapIndex: number }) => void }> = [];
   class Clock extends Date {
     static now() { return now; }
   }
@@ -27,13 +28,31 @@ function loadPage(now: number) {
       removeStorageSync(key: string) { storage.delete(key); },
       switchTab({ url }: { url: string }) { routes.push(url); },
       pageScrollTo(options: Record<string, unknown>) { scrolls.push(options); },
+      showActionSheet(options: { itemList: string[]; success: (result: { tapIndex: number }) => void }) { actionSheets.push(options); },
       showToast(options: Record<string, unknown>) { toasts.push(options); }
     }
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>, done?: () => void) { Object.assign(this.data, patch); done?.(); };
-  return { page, routes, storage, scrolls, toasts };
+  return { page, routes, storage, scrolls, toasts, actionSheets };
 }
+
+test('review more menu lets the host edit the draft or open the saved drafts list', () => {
+  const { page, actionSheets, routes, storage } = loadPage(Date.now());
+  page.setData({ stage: 'REVIEW', publishPreview: { id: 'draft-1' } });
+
+  page.openHeaderAction();
+  assert.deepEqual(Array.from(actionSheets[0]?.itemList || []), ['返回编辑', '我的草稿']);
+  actionSheets[0]?.success({ tapIndex: 0 });
+  assert.equal(page.data.stage, 'FORM');
+  assert.equal(page.data.publishPreview, null);
+
+  page.setData({ stage: 'REVIEW', publishPreview: { id: 'draft-1' } });
+  page.openHeaderAction();
+  actionSheets[1]?.success({ tapIndex: 1 });
+  assert.deepEqual(routes, ['/pages/index/index']);
+  assert.equal(storage.get('irlHomeTabIntent'), 'organized');
+});
 
 test('reference form shortcuts fill supported city and participant range, while unsupported category stays closed', () => {
   const { page, toasts } = loadPage(Date.now());
@@ -46,6 +65,15 @@ test('reference form shortcuts fill supported city and participant range, while 
   page.showUnavailable({ currentTarget: { dataset: { name: '咖啡聊天' } } });
   assert.match(page.data.message, /咖啡聊天.*暂未开放/);
   assert.equal(toasts[0]?.icon, 'none', 'a button deep in the long form must provide immediate visible feedback');
+  assert.equal(page.buildInput().type, 'badminton');
+});
+
+test('reference coffee inspiration reports the R1 boundary without changing the badminton draft', () => {
+  const { page, toasts } = loadPage(Date.now());
+  page.selectInspiration({ currentTarget: { dataset: { index: 1 } } });
+  assert.equal(page.data.aiText, '');
+  assert.match(page.data.message, /创业者咖啡.*暂未开放/);
+  assert.equal(toasts[0]?.icon, 'none');
   assert.equal(page.buildInput().type, 'badminton');
 });
 

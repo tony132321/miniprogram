@@ -153,6 +153,7 @@ function cardPresentation(item, group) {
 Page({
   data: { items: [], organized: [], cohosting: [], pending: [], attending: [], history: [],
     tabs, categoryIdeas, activeTab: 'attending', stateView: false, visibleItems: [], featuredItem: null,
+    homePreviewItems: [],
     headerPaddingRight: headerPaddingRight(),
     city: '上海', statusBarHeight: typeof wx.getSystemInfoSync === 'function'
       ? wx.getSystemInfoSync().statusBarHeight || 20 : 20,
@@ -172,7 +173,7 @@ Page({
     let identity = currentIdentity();
     if (this._shownIdentity !== identity) {
       this._shownIdentity = identity;
-      this.setData({ items: [], organized: [], cohosting: [], pending: [], attending: [], history: [], visibleItems: [], featuredItem: null, message: '' });
+      this.setData({ items: [], organized: [], cohosting: [], pending: [], attending: [], history: [], visibleItems: [], featuredItem: null, homePreviewItems: [], message: '' });
     }
     this.setData({ loadState: 'LOADING', errorCode: '', message: '' });
     try {
@@ -182,7 +183,7 @@ Page({
       if (identity !== authenticatedIdentity) {
         identity = authenticatedIdentity;
         this._shownIdentity = identity;
-        this.setData({ items: [], organized: [], cohosting: [], pending: [], attending: [], history: [], visibleItems: [], featuredItem: null, message: '' });
+        this.setData({ items: [], organized: [], cohosting: [], pending: [], attending: [], history: [], visibleItems: [], featuredItem: null, homePreviewItems: [], message: '' });
       }
       const result = await api.get('/me/events');
       if (generation !== this._loadGeneration || identity !== currentIdentity()) return;
@@ -200,7 +201,9 @@ Page({
       });
       for (const item of items) groups[sectionFor(item)].push(item);
       const featuredItem = pickFeaturedItem(items);
-      this.setData({ items, ...groups, featuredItem, visibleItems: groups[this.data.activeTab], loadState: 'READY', errorCode: '', message: '' });
+      const homePreviewItems = items.filter(item => ['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(item.status)).slice(0, 3);
+      this.setData({ items, ...groups, featuredItem, homePreviewItems,
+        visibleItems: groups[this.data.activeTab], loadState: 'READY', errorCode: '', message: '' });
       if (detailedStateTabs.includes(this.data.activeTab))
         await this.enrichStateCards(this.data.activeTab, identity, generation, this._detailRequestId);
     } catch (error) {
@@ -257,6 +260,7 @@ Page({
   goMessages() { wx.switchTab({ url: '/pages/messages/messages' }); },
   goProfile() { wx.switchTab({ url: '/pages/me/me' }); },
   goAbout() { wx.navigateTo({ url: '/pages/about/about' }); },
+  goGuidelines() { wx.navigateTo({ url: '/subpackages/profile/guidelines/guidelines' }); },
   goPrivacy() { wx.navigateTo({ url: '/subpackages/profile/legal/legal' }); },
   goSupport() { wx.navigateTo({ url: '/subpackages/profile/support/support' }); },
   goItinerary() { wx.navigateTo({ url: '/subpackages/activity/itinerary/itinerary' }); },
@@ -292,6 +296,13 @@ Page({
     if (!['detailsSection', 'registrationSection', 'hostSection', 'expenseSection'].includes(action)) return;
     if (action === 'hostSection' && !item.isHost) return;
     wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) + '&section=' + action });
+  },
+  openHostShare(event) {
+    const id = event?.currentTarget?.dataset?.id;
+    if (!id || this._shownIdentity !== currentIdentity()) return;
+    const item = this.data.items.find(candidate => candidate.id === id);
+    if (!item?.isHost || item.status !== 'RECRUITING') return;
+    wx.navigateTo({ url: '/subpackages/activity/share/share?id=' + encodeURIComponent(id) });
   },
   openEvent(event) { wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(event.currentTarget.dataset.id) }); }
 });

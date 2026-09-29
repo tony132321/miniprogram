@@ -3,7 +3,7 @@
     <button class="header-back" bindtap="backFromCreate" aria-label="返回">‹</button>
     <view wx:if="{{stage === 'FORM' && !editingEvent}}" class="header-brand"><text class="brand-mark">耍</text><text>耍起 <text class="brand-en">CAPER</text></text></view>
     <text wx:else class="header-title">{{stage === 'IDEA' ? 'Pg03 Ai 建局' : stage === 'REVIEW' ? '草稿确认' : '编辑活动'}}</text>
-    <button class="header-side" bindtap="openDrafts">{{stage === 'REVIEW' ? '•••' : '▣ 草稿箱'}}</button>
+    <button class="header-side" bindtap="openHeaderAction" aria-label="{{stage === 'REVIEW' ? '草稿确认更多操作' : '打开草稿箱'}}">{{stage === 'REVIEW' ? '•••' : '▣ 草稿箱'}}</button>
   </view>
 
   <view wx:if="{{message}}" class="notice">{{message}}</view>
@@ -19,7 +19,7 @@
         <view class="hero-subtitle">一句话说出你的想法</view>
         <view class="hero-middle">剩下的交给 AI</view>
         <view class="hero-caption">从创意到邀请，轻松搞定 〈</view>
-        <view class="hero-truth">目前采用本地规则提取；所有字段与发布由你确认。</view>
+        <button class="hero-truth" bindtap="openForm">本地规则提取 · 也可手动填写 ›</button>
       </view>
       <view class="orb-wrap"><view class="orb-tag"><view>Your Social</view><view>Copilot ✦</view></view><view class="orb"><view class="eyes">●　●</view><view class="cheeks">•　　•</view></view></view>
     </view>
@@ -30,9 +30,9 @@
     <view wx:if="{{suggestionLoading}}" class="hint">正在提取可用字段，下方表单仍可手动填写。</view>
     <view wx:if="{{suggestionSlow}}" class="hint">提取较慢，可以继续等待。<button id="manualSuggestionButton" class="inline-action" bindtap="cancelSuggestion">继续手动填写</button></view>
     <view class="inspiration-head"><view class="section-head">试试这些灵感 <text class="popular">POPULAR</text></view><button class="rotate-button" bindtap="rotateInspirations">换一批 ↻</button></view>
-    <button wx:for="{{inspirations}}" wx:key="title" class="inspiration" data-index="{{index}}" bindtap="selectInspiration"><view class="inspiration-icon">{{item.icon}}</view><view class="inspiration-copy"><view class="inspiration-title">{{item.title}}</view><view class="inspiration-subtitle">{{item.subtitle}}</view></view><text class="chevron">›</text></button>
+    <button wx:for="{{inspirations}}" wx:key="title" class="inspiration" data-index="{{index}}" bindtap="selectInspiration"><view class="inspiration-icon icon-{{index}}">{{item.icon}}</view><view class="inspiration-copy"><view class="inspiration-title">{{item.title}}<text wx:if="{{item.available === false}}" class="inspiration-unavailable">暂未开放</text></view><view class="inspiration-subtitle">{{item.subtitle}}</view></view><text class="chevron">›</text></button>
     <view class="idea-quote">Good Ideas Create Great People →</view>
-    <view class="sticky-actions"><button class="primary-button" disabled="{{suggestionLoading || !aiText}}" bindtap="suggest">‹　生成活动草稿</button><button class="text-button" bindtap="openForm">不用建议，直接手动填写</button></view>
+    <view class="sticky-actions"><button class="primary-button" disabled="{{suggestionLoading || !aiText}}" bindtap="suggest">‹　生成活动草稿</button></view>
   </view>
 
   <view wx:if="{{stage === 'FORM'}}" class="form-page">
@@ -42,7 +42,7 @@
     </view>
     <view class="form-prompt">
       <textarea class="form-prompt-input" placeholder="例如：周六晚上想约 6 个人打羽毛球，新手也可以，打完一起吃宵夜…" value="{{aiText}}" maxlength="300" bindinput="aiInput"/>
-      <view class="form-prompt-bottom"><text class="count">● {{aiText.length}} /300</text><button class="extract-button" disabled="{{suggestionLoading || !aiText}}" bindtap="suggest">{{suggestionLoading ? '提取中…' : '➜ 规则生成草稿'}}</button></view>
+      <view class="form-prompt-bottom"><text class="count">● {{aiText.length}} /300</text><view class="form-prompt-actions"><button class="voice-button" data-name="语音描述" bindtap="showUnavailable" aria-label="语音描述暂未开放">🎙</button><button class="extract-button" disabled="{{suggestionLoading || !aiText}}" bindtap="suggest">{{suggestionLoading ? '提取中…' : '➜ 规则生成草稿'}}</button></view></view>
     </view>
     <view class="form-inspiration-head"><text>🔥 试试这些灵感</text><button bindtap="rotateInspirations">换一批 ↻</button></view>
     <scroll-view class="form-inspirations" scroll-x="true" enhanced="true" show-scrollbar="false"><view class="form-inspiration-inner"><button wx:for="{{inspirations}}" wx:key="title" class="form-inspiration" data-index="{{index}}" bindtap="selectInspiration"><text>{{item.icon}}</text><view><view>{{item.title}}</view><text class="small">{{item.subtitle}}</text></view></button></view></scroll-view>
@@ -65,8 +65,7 @@
         <button class="activity-type" data-name="美食" bindtap="showUnavailable"><view class="activity-icon">🍜</view><text>美食</text></button>
         <button class="activity-type" data-name="自定义活动类型" bindtap="showUnavailable"><view class="activity-icon">＋</view><text>自定义</text></button>
       </view>
-      <view class="form-field-block"><text class="field-label">活动标题</text><input class="field-input" placeholder="给这场羽毛球活动起个名字" data-field="title" value="{{form.title}}" bindinput="input"/></view>
-      <view class="form-field-block"><text class="field-label">水平要求 <text class="optional">可选</text></text><input id="skillLevelInput" class="field-input" placeholder="例如：新手友好" data-field="skillLevel" value="{{form.skillLevel}}" bindinput="input"/></view>
+      <view class="activity-details"><view class="activity-detail-row"><text class="field-label">活动标题</text><input class="field-input" placeholder="给这场羽毛球活动起个名字" data-field="title" value="{{form.title}}" bindinput="input"/></view><view class="activity-detail-row"><text class="field-label">水平要求 <text class="optional">可选</text></text><input id="skillLevelInput" class="field-input" placeholder="例如：新手友好" data-field="skillLevel" value="{{form.skillLevel}}" bindinput="input"/></view></view>
     </view>
 
     <view id="form-schedule" class="field-card">
@@ -135,7 +134,7 @@
       <button class="review-row tall" data-section="schedule" bindtap="editReviewSection"><text class="review-label"><text class="review-icon">▣</text> 活动时间</text><view class="review-value multi"><view>{{reviewSummary.start}}</view><view>{{reviewSummary.end}} ›</view></view></button>
       <button class="review-row" data-section="venue" bindtap="editReviewSection"><text class="review-label"><text class="review-icon">⌖</text> 活动城市</text><text class="review-value">{{publishPreview.payload.city}} ›</text></button>
       <button class="review-row" data-section="venue" bindtap="editReviewSection"><text class="review-label"><text class="review-icon">⌖</text> 具体场地</text><text class="review-value">{{publishPreview.payload.venueName}} ›</text></button>
-      <button class="review-row" data-section="venue" bindtap="editReviewSection"><text class="review-label"><text class="review-icon">◷</text> 场地状态</text><text class="review-value"><text class="review-pill green">{{publishPreview.payload.venueStatus === 'HOST_CONFIRMED' ? '主办方已核实' : '未确认'}}</text></text></button>
+      <button class="review-row" data-section="venue" bindtap="editReviewSection"><text class="review-label"><text class="review-icon">◷</text> 场地状态</text><text class="review-value"><text class="review-pill {{publishPreview.payload.venueStatus === 'HOST_CONFIRMED' ? 'green' : 'neutral'}}">{{publishPreview.payload.venueStatus === 'HOST_CONFIRMED' ? '主办方已核实' : '未确认'}}</text></text></button>
       <button class="review-row" data-section="participants" bindtap="editReviewSection"><text class="review-label"><text class="review-icon">♧</text> 人数范围</text><text class="review-value">{{publishPreview.payload.minParticipants}}–{{publishPreview.payload.maxParticipants}} 人 ›</text></button>
       <button class="review-row" data-section="participants" bindtap="editReviewSection"><text class="review-label"><text class="review-icon crown">★</text> 主办人参与</text><text class="review-value">{{publishPreview.payload.hostParticipates ? '我也参加' : '不参加'}} ›</text></button>
       <button class="review-row" data-section="fees" bindtap="editReviewSection"><text class="review-label"><text class="review-icon">◷</text> 报名截止</text><text class="review-value">{{reviewSummary.registration}} ›</text></button>

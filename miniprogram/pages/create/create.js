@@ -19,9 +19,9 @@ const emptyForm = { title: '', city: '', venueName: '', skillLevel: '', minParti
   feeCapYuan: '50', cancellationRule: '开始前可退出' };
 const inspirationBatches = [
   [
-    { icon: '🏸', title: '周末羽毛球', subtitle: '运动社交，认识新朋友', text: '周末组织一场羽毛球活动，认识新朋友。' },
-    { icon: '🤝', title: '新手双打局', subtitle: '轻松练习，一起进步', text: '周末组织一场新手友好的羽毛球双打活动。' },
-    { icon: '🌙', title: '下班练球', subtitle: '工作日晚上，动起来', text: '周五下班后组织一场羽毛球活动。' }
+    { icon: '🏸', title: '周末羽毛球', subtitle: '运动社交，认识新朋友，新手友好', text: '周末组织一场羽毛球活动，认识新朋友。' },
+    { icon: '☕', title: '创业者咖啡', subtitle: '好想法，从一杯香浓咖啡开始', available: false },
+    { icon: '🥂', title: '周五小酒局', subtitle: '下班后微醺，喝一杯畅快聊聊', available: false }
   ],
   [
     { icon: '🎯', title: '周六进阶局', subtitle: '搭档轮换，尽情挥拍', text: '周六下午组织一场羽毛球进阶双打活动，大家轮换搭档。' },
@@ -208,6 +208,7 @@ Page({
   retrySafety() { return this.loadSafety(this._loadGeneration, currentIdentity()); },
   selectInspiration(event) {
     const choice = this.data.inspirations[Number(event.currentTarget.dataset.index)];
+    if (choice?.available === false) return this.showUnavailable({ currentTarget: { dataset: { name: choice.title } } });
     if (choice) this.setData({ aiText: choice.text, message: '' });
   },
   rotateInspirations() {
@@ -248,6 +249,13 @@ Page({
   openDrafts() {
     wx.setStorageSync('irlHomeTabIntent', 'organized');
     wx.switchTab({ url: '/pages/index/index' });
+  },
+  openHeaderAction() {
+    if (this.data.stage !== 'REVIEW') return this.openDrafts();
+    wx.showActionSheet({ itemList: ['返回编辑', '我的草稿'], success: ({ tapIndex }) => {
+      if (tapIndex === 0) this.backToForm();
+      else if (tapIndex === 1) this.openDrafts();
+    } });
   },
   input(event) {
     if (this.data.suggestionLoading) this.cancelSuggestion();

@@ -39,6 +39,35 @@
     </view>
 
     <view class="brand-ribbon"><image class="ribbon-image" src="/assets/stitch/caper_home_shanghai.jpg" mode="aspectFill" /><view class="ribbon-shade"></view><view class="ribbon-content"><view class="ribbon-kicker">TURN PLANS INTO REAL MEETUPS</view><view class="ribbon-title">让有趣的事，<text>真的发生</text></view><view class="ribbon-copy">把想见的人，聚在同一个真实时刻。</view></view></view>
+
+    <view class="home-long-section"><view class="home-long-head"><text>同城热门灵感</text><button bindtap="goDiscover">查看更多　›</button></view><view class="home-long-note">场景照片仅供构思，不代表附近有公开招募的活动。</view><view class="home-hot-grid">
+      <button data-title="网球新手局" bindtap="openInspiration"><image src="/assets/stitch/caper_discover_basketball.jpg" mode="aspectFill"/><text>运动新手局</text><text>发起灵感</text></button>
+      <button data-title="咖啡探店" bindtap="openInspiration"><image src="/assets/stitch/caper_discover_coffee.jpg" mode="aspectFill"/><text>咖啡探店</text><text>发起灵感</text></button>
+      <button data-title="户外轻运动" bindtap="openInspiration"><image src="/assets/stitch/caper_home_hiking.jpg" mode="aspectFill"/><text>户外轻运动</text><text>发起灵感</text></button>
+      <button data-title="桌游之夜" bindtap="openInspiration"><image src="/assets/stitch/caper_discover_boardgame.jpg" mode="aspectFill"/><text>桌游之夜</text><text>发起灵感</text></button>
+    </view></view>
+
+    <view class="home-long-section home-theme-section"><view class="home-long-head"><text>主题精选</text></view><view class="home-theme-grid">
+      <button class="home-theme-amber" data-title="下班快乐局" bindtap="openInspiration"><text>🍹</text><view>下班快乐局<text>轻松认识新朋友 →</text></view></button>
+      <button class="home-theme-sky" data-title="周末出逃" bindtap="openInspiration"><text>🏔️</text><view>周末出逃<text>城市周边轻走 →</text></view></button>
+      <button class="home-theme-pink" data-title="女生友好" bindtap="openInspiration"><text>♡</text><view>女生友好<text>舒适社交氛围 →</text></view></button>
+      <button class="home-theme-green" data-title="新手友好" bindtap="openInspiration"><text>🌱</text><view>新手友好<text>从一场活动开始 →</text></view></button>
+    </view></view>
+
+    <view class="home-long-section"><view class="home-long-head"><text>我的活动近况</text><button bindtap="goItinerary">查看行程　›</button></view><view class="home-long-note">只显示与你当前账号有关的活动；附近公开找局暂未开放。</view><scroll-view wx:if="{{homePreviewItems.length > 0}}" scroll-x="true" class="home-personal-scroll" show-scrollbar="false"><view class="home-personal-row"><button wx:for="{{homePreviewItems}}" wx:key="id" data-id="{{item.id}}" bindtap="openEvent" class="home-personal-card"><image src="{{item.cover}}" mode="aspectFill"/><view><text>{{item.title}}</text><text>{{item.dateLabel}}</text><text>{{item.statusLabel}}</text></view></button></view></scroll-view><view wx:else class="home-personal-empty"><text>还没有近期本人活动</text><button bindtap="goCreate">从一场羽毛球活动开始　→</button></view></view>
+
+    <view class="home-long-section"><view class="home-long-head"><text>构思灵感</text><button bindtap="goCreate">去构思　›</button></view><view class="home-long-note">提供本地规则建议；不会按位置或兴趣自动匹配他人的活动。</view><button class="home-idea-banner" bindtap="goCreate"><text>✦</text><text>一句话整理你的羽毛球活动草稿</text><text>›</text></button><view class="home-idea-list">
+      <button bindtap="goCreate"><image src="/assets/stitch/caper_home_badminton.jpg" mode="aspectFill"/><view><text>周末羽毛球 · 新手友好</text><text>写想法 → 核对草稿 → 由你发布</text></view></button>
+      <button data-title="周末咖啡局" bindtap="openInspiration"><image src="/assets/stitch/caper_discover_coffee.jpg" mode="aspectFill"/><view><text>周末咖啡局 · 聊聊最近</text><text>主题示意 · 暂未开放发起</text></view></button>
+      <button data-title="城市漫步" bindtap="openInspiration"><image src="/assets/stitch/caper_discover_citywalk.jpg" mode="aspectFill"/><view><text>城市漫步 · 遇见更多可能</text><text>主题示意 · 暂未开放发起</text></view></button>
+    </view></view>
+
+    <view class="home-long-section"><view class="home-long-head"><text>好日子灵感</text><button bindtap="goDiscover">查看更多　›</button></view><view class="home-long-note home-blue-tag"># 耍起现场 · 视觉示意</view><view class="home-photo-collage"><button class="home-photo-main" data-title="朋友相聚" bindtap="openInspiration"><image src="/assets/stitch/caper_home_dinner.jpg" mode="aspectFill"/><text>Same People Real Vibes</text></button><view><button data-title="朋友聚餐" bindtap="openInspiration"><image src="/assets/stitch/caper_discover_coffee.jpg" mode="aspectFill"/></button><button data-title="户外相聚" bindtap="openInspiration"><image src="/assets/stitch/caper_home_hiking.jpg" mode="aspectFill"/></button></view><text class="home-photo-sticker">Nice!<text>More People Brighter Days ☺</text></text></view></view>
+
+    <view class="home-long-section"><view class="home-long-head"><text>活动如何运转</text><button bindtap="goAbout">了解更多　›</button></view><view class="home-long-note">以下是当前功能说明，非用户评价或真实活动照片。</view><scroll-view scroll-x="true" class="home-trust-scroll" show-scrollbar="false"><view class="home-trust-row"><button bindtap="goAbout"><text>“</text><text>从朋友邀请进入，或自己发起一场活动；报名和状态以服务端当前记录为准。</text><view>✦　了解当前功能</view></button><button bindtap="goGuidelines"><text>“</text><text>线下见面前核对时间、地点和活动规则；需要帮助时可通过安全入口举报。</text><view>✦　阅读安全守则</view></button></view></scroll-view></view>
+
+    <view class="home-city-banner"><image src="/assets/stitch/caper_home_shanghai.jpg" mode="aspectFill"/><view><text>这座城市<br/>更好玩了</text><text>选好城市偏好，发起真实的线下相聚。</text><button bindtap="goCity">选择城市　→</button><text>Good People Make Better Cities ☺</text></view></view>
+    <view class="home-final-cta"><view>💡</view><text>有想法？那就耍起！</text><text>让本地构思助手整理羽毛球草稿，由你确认发布。</text><button bindtap="goCreate">＋　发起一个活动</button><text>GOOD PEOPLE · REAL MEETUPS · BRIGHTER DAYS</text></view>
     </view>
 
     <button wx:if="{{stateView}}" class="state-ai-banner state-ai-{{activeTab}}" bindtap="goCreate" aria-label="打开活动构思"><view class="state-ai-orb">✦</view><view class="state-ai-copy"><view>{{activeTab === 'history' ? '让好活动继续发生' : '想组什么局？一句话开始'}}</view><text>{{activeTab === 'history' ? '发起新局，或在已结束活动中生成相似草稿' : '构思助手整理草稿，发布前由你确认'}}</text></view><view class="state-ai-arrow">→</view></button>
@@ -63,7 +92,7 @@
           <view wx:elif="{{item.cardKind === 'organized'}}" class="card-state organized-state"><text class="state-icon">✦</text><text>{{item.cardNote}}</text></view>
           <view wx:elif="{{item.cardKind === 'history'}}" class="card-state history-state"><text class="state-icon">✓</text><text>{{item.cardNote}}</text></view>
           <view wx:else class="card-note">{{item.isCohost ? '你是协办方 · 点开查看本场权限与安排' : item.cardNote}}</view>
-          <view class="card-actions"><button class="card-primary" data-id="{{item.id}}" data-action="{{item.primaryAction}}" bindtap="openCardAction">{{item.primaryLabel}}　→</button><button wx:if="{{item.secondaryAction}}" class="card-secondary" data-id="{{item.id}}" data-action="{{item.secondaryAction}}" bindtap="openCardAction">{{item.secondaryLabel}}</button><view wx:elif="{{item.cardKind === 'history'}}" class="card-disabled">相册未开放</view></view>
+          <view class="card-actions"><button class="card-primary" data-id="{{item.id}}" data-action="{{item.primaryAction}}" bindtap="openCardAction">{{item.primaryLabel}}　→</button><button wx:if="{{item.secondaryAction}}" class="card-secondary" data-id="{{item.id}}" data-action="{{item.secondaryAction}}" bindtap="openCardAction">{{item.secondaryLabel}}</button><view wx:elif="{{item.cardKind === 'history'}}" class="card-disabled">相册未开放</view><button wx:if="{{item.cardKind === 'organized' && item.status === 'RECRUITING'}}" class="card-share" data-id="{{item.id}}" bindtap="openHostShare" aria-label="分享{{item.title}}的邀请">↗</button></view>
         </view>
       </view>
     </view>

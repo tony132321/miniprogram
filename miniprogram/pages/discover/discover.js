@@ -2,12 +2,12 @@ const { api } = require('../../utils/api.js');
 const config = require('../../config.js');
 
 const inspirationCards = [
-  { title: '城市漫步', subtitle: '把周末还给真实风景', image: '/assets/stitch/caper_discover_citywalk.jpg', tag: '城市 · 户外' },
-  { title: '周末篮球', subtitle: '约上球友，痛快打一场', image: '/assets/stitch/caper_discover_basketball.jpg', tag: '运动 · 球局' },
-  { title: '咖啡聊天', subtitle: '从一杯咖啡开始认识彼此', image: '/assets/stitch/caper_discover_coffee.jpg', tag: '美食 · 社交' },
-  { title: '桌游之夜', subtitle: '一起开局，一起笑出声', image: '/assets/stitch/caper_discover_boardgame.jpg', tag: '兴趣 · 桌游' }
+  { title: '城市漫步', subtitle: '把周末还给真实风景', image: '/assets/stitch/caper_discover_citywalk.jpg', tag: '城市 · 户外', sticker: 'CITY WALK', stickerNote: 'TOGETHER ☺', tags: ['城市', '户外'] },
+  { title: '周末篮球', subtitle: '约上球友，痛快打一场', image: '/assets/stitch/caper_discover_basketball.jpg', tag: '运动 · 球局', sticker: 'BASKETBALL', stickerNote: 'NEVER ALONE!', tags: ['运动', '社交'] },
+  { title: '咖啡聊天', subtitle: '从一杯咖啡开始认识彼此', image: '/assets/stitch/caper_discover_coffee.jpg', tag: '美食 · 社交', sticker: 'GOOD COFFEE', stickerNote: 'BETTER PEOPLE', tags: ['美食', '社交'] },
+  { title: '桌游之夜', subtitle: '一起开局，一起笑出声', image: '/assets/stitch/caper_discover_boardgame.jpg', tag: '兴趣 · 桌游', sticker: 'BOARD GAME', stickerNote: 'GOOD TIMES ☺', tags: ['桌游', '社交'] }
 ];
-const categories = ['全部', '附近', '本周', '运动', '文艺', '美食', '职场', '兴趣', '生活', '公益'];
+const categories = ['全部', '附近', '本周', '活动', '文艺', '美食', '职场', '兴趣', '生活', '公益'];
 function currentIdentity() {
   return wx.getStorageSync('sessionToken')
     ? 'user:' + wx.getStorageSync('userId')
@@ -70,9 +70,11 @@ Page({
   openCity() { wx.navigateTo({ url: '/pages/city/city' }); },
   goHome() { wx.switchTab({ url: '/pages/index/index' }); },
   goMessages() { wx.switchTab({ url: '/pages/messages/messages' }); },
-  showUnavailable() {
-    this.setData({ availabilityMessage: '公开找局暂未开放；收到邀请可用口令进入，或发起自己的活动。' });
-    if (typeof wx.showToast === 'function') wx.showToast({ title: '公开找局暂未开放', icon: 'none' });
+  showUnavailable(event) {
+    const name = event?.currentTarget?.dataset?.name;
+    const title = name ? `${name}暂未开放` : '公开找局暂未开放';
+    this.setData({ availabilityMessage: `${title}；收到邀请可用口令进入，或发起自己的活动。` });
+    if (typeof wx.showToast === 'function') wx.showToast({ title, icon: 'none' });
   },
   tokenChanged(event) { this.setData({ tokenInput: event.detail.value.trim(), message: '' }); },
   openInvite() {
@@ -84,6 +86,7 @@ Page({
     if (!id || !this.data.personalEvents.some(item => item.id === id)) return;
     wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) });
   },
+  goPersonalAll() { wx.navigateTo({ url: '/subpackages/profile/moments/moments?filter=all' }); },
   openInspiration(event) {
     const title = String(event?.currentTarget?.dataset?.title || '这类活动');
     const notice = `${title}目前仅供灵感参考。当前只能发起羽毛球活动，是否前往发起？`;

@@ -9,7 +9,7 @@ page{background:#f5f6f8;color:#182131;font-family:-apple-system,BlinkMacSystemFo
 .header-brand{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8rpx;font-size:23rpx;font-weight:800;white-space:nowrap}
 .brand-mark{width:42rpx;height:42rpx;border-radius:14rpx;background:#1267fb;color:#fff;text-align:center;line-height:42rpx;font-size:24rpx}
 .brand-en{color:#156cf9;font-size:16rpx;font-weight:700;font-style:italic;letter-spacing:1rpx}
-.header-side{z-index:1;position:absolute;right:160rpx;max-width:155rpx;margin:0;padding:9rpx 12rpx;border-radius:40rpx;background:#f1f3f7;color:#1d4f9d;font-size:20rpx;font-weight:700;line-height:34rpx;white-space:nowrap}
+.header-side{z-index:1;position:absolute;right:183rpx;max-width:155rpx;margin:0;padding:9rpx 12rpx;border-radius:40rpx;background:#f1f3f7;color:#1d4f9d;font-size:20rpx;font-weight:700;line-height:34rpx;white-space:nowrap}
 .notice{margin:14rpx 28rpx;padding:17rpx 20rpx;border-radius:18rpx;background:#ebf2fe;color:#2857a5;font-size:21rpx;line-height:1.5}
 .notice.warning{background:#fff5df;color:#80541b}
 .inline-action{display:inline-block;margin:0 0 0 12rpx;padding:0;background:transparent;color:#0053d9;font-size:21rpx;line-height:1.5}
@@ -18,7 +18,7 @@ page{background:#f5f6f8;color:#182131;font-family:-apple-system,BlinkMacSystemFo
 .hero-copy{flex:1;min-width:0}.hero-title{font-size:42rpx;font-weight:900;line-height:1.22;letter-spacing:-1rpx;white-space:nowrap}
 .hero-subtitle{margin-top:23rpx;color:#2a3442;font-size:26rpx}.hero-middle{margin-top:12rpx;color:#445062;font-size:25rpx}
 .hero-caption{margin-top:9rpx;color:#156df1;font-size:24rpx;font-weight:800;white-space:nowrap}
-.hero-truth{max-width:420rpx;margin-top:14rpx;color:#7a8594;font-size:19rpx;line-height:1.4}
+.hero-truth{display:inline-block;max-width:100%;margin:12rpx 0 0;padding:0;background:transparent;color:#697a94;font-size:18rpx;font-weight:650;line-height:1.4;text-align:left;white-space:nowrap}
 .orb-wrap{width:170rpx;height:205rpx;flex:none;position:relative;display:flex;align-items:end;justify-content:center}
 .orb{width:149rpx;height:149rpx;border-radius:50%;background:radial-gradient(circle at 50% 27%,#544fb0,#1b1b54 72%);box-shadow:0 17rpx 36rpx rgba(45,40,110,.29);display:flex;flex-direction:column;align-items:center;justify-content:center}
 .eyes{margin-top:17rpx;color:#79ebff;font-size:26rpx;text-shadow:0 0 12rpx #65e4f3}.cheeks{color:#ff2d55;font-size:29rpx}
@@ -34,13 +34,14 @@ page{background:#f5f6f8;color:#182131;font-family:-apple-system,BlinkMacSystemFo
 .rotate-button{margin:0;padding:0;background:transparent;color:#1268f7;font-size:23rpx;font-weight:700;line-height:1.5}
 .inspiration{width:calc(100% - 58rpx);min-height:130rpx;margin:0 29rpx 15rpx;padding:17rpx 23rpx;display:flex;align-items:center;text-align:left;border-radius:30rpx;background:#fff;box-shadow:0 5rpx 19rpx rgba(28,38,65,.045);font-size:inherit;line-height:1.3}
 .inspiration-icon{width:77rpx;height:77rpx;margin-right:24rpx;display:flex;align-items:center;justify-content:center;flex:none;border-radius:22rpx;background:#edf1ff;font-size:38rpx}
-.inspiration-copy{flex:1;min-width:0}.inspiration-title{color:#1a2633;font-size:27rpx;font-weight:800}.inspiration-subtitle{margin-top:7rpx;color:#606b7a;font-size:21rpx}
+.inspiration-icon.icon-1{background:#eefbe8}.inspiration-icon.icon-2{background:#fff0f4}
+.inspiration-copy{flex:1;min-width:0}.inspiration-title{color:#1a2633;font-size:27rpx;font-weight:800}.inspiration-unavailable{margin-left:10rpx;color:#8794a4;font-size:16rpx;font-weight:600}.inspiration-subtitle{margin-top:7rpx;color:#606b7a;font-size:21rpx}
 .chevron{color:#c3cbd8;font-size:47rpx;font-weight:300}
 .idea-quote{margin:30rpx 0 20rpx;text-align:center;color:#929aa8;font-size:22rpx;font-weight:650;font-style:italic}
-.sticky-actions{position:sticky;bottom:calc(106rpx + env(safe-area-inset-bottom));z-index:4;padding:20rpx 29rpx 17rpx;background:rgba(255,255,255,.97);box-shadow:0 -5rpx 22rpx rgba(16,25,45,.06)}
+.sticky-actions{position:sticky;bottom:calc(106rpx + env(safe-area-inset-bottom));z-index:4;padding:17rpx 29rpx 18rpx;background:rgba(255,255,255,.97);box-shadow:0 -5rpx 22rpx rgba(16,25,45,.06)}
 .stage-IDEA .sticky-actions{bottom:env(safe-area-inset-bottom)}
 .primary-button{min-height:83rpx;margin:0;padding:16rpx 22rpx;border-radius:70rpx;background:linear-gradient(100deg,#0053d9,#1d64f2 62%,#5a58d9);color:#fff;font-size:26rpx;font-weight:800;line-height:50rpx;box-shadow:0 9rpx 22rpx rgba(29,100,242,.2)}
-.sticky-actions .primary-button{width:100%}.text-button{margin:10rpx auto 0;padding:0;background:transparent;color:#1d64f2;font-size:21rpx}
+.sticky-actions .primary-button{width:100%}
 .form-page{padding:0 20rpx 20rpx;background:#f5f6f8}
 .form-intro{min-height:140rpx;display:flex;justify-content:space-between;align-items:center;padding:20rpx 8rpx 12rpx}
 .form-intro-title{font-size:30rpx;line-height:1.1;font-weight:900}.form-intro-subtitle{margin-top:10rpx;color:#5a6675;font-size:19rpx}
@@ -50,6 +51,7 @@ page{background:#f5f6f8;color:#182131;font-family:-apple-system,BlinkMacSystemFo
 .form-prompt{padding:18rpx;border-radius:20rpx;background:#fff;border:1rpx solid #e7ebf2;box-shadow:0 3rpx 13rpx rgba(25,36,66,.04)}
 .form-prompt-input{height:126rpx;width:100%;color:#1e293b;font-size:21rpx;line-height:1.45}
 .form-prompt-bottom{display:flex;align-items:center;justify-content:space-between}
+.form-prompt-actions{display:flex;align-items:center;gap:8rpx}.voice-button{width:48rpx;height:48rpx;margin:0;padding:0;border-radius:50%;background:#f1f4f8;color:#607085;font-size:27rpx;line-height:48rpx;text-align:center}
 .form-prompt-bottom .count{font-size:18rpx;color:#32bd70}
 .extract-button{min-width:130rpx;margin:0;padding:8rpx 14rpx;border-radius:30rpx;background:#1a65f2;color:#fff;font-size:18rpx;font-weight:800;line-height:32rpx}
 .form-inspiration-head{margin:17rpx 4rpx 10rpx;display:flex;align-items:center;justify-content:space-between;font-size:20rpx;font-weight:800}
@@ -67,7 +69,7 @@ page{background:#f5f6f8;color:#182131;font-family:-apple-system,BlinkMacSystemFo
 .activity-type>text{max-width:100%;overflow:hidden;text-overflow:ellipsis}.activity-type.selected{color:#1165ee;font-weight:800}
 .activity-icon{position:relative;width:88rpx;height:88rpx;display:flex;align-items:center;justify-content:center;border:1rpx solid #dfe6ee;border-radius:16rpx;background:#fff;font-size:37rpx}
 .selected .activity-icon{border:3rpx solid #146afa;background:#edf4ff}.selected-check{position:absolute;top:-8rpx;right:-8rpx;width:24rpx;height:24rpx;border-radius:50%;background:#1d64f2;color:#fff;text-align:center;line-height:24rpx;font-size:16rpx}
-.category-section .form-field-block{margin-top:13rpx;padding:13rpx 17rpx;background:#fff;border:1rpx solid #e7ebf1;border-radius:17rpx}
+.activity-details{margin-top:14rpx;padding:0 17rpx;border:1rpx solid #e7ebf1;border-radius:17rpx;background:#fff}.activity-detail-row{min-height:68rpx;display:flex;align-items:center;gap:12rpx}.activity-detail-row+.activity-detail-row{border-top:1rpx solid #eef0f4}.activity-detail-row .field-label{flex:none;width:145rpx;font-size:19rpx}.activity-detail-row .field-input{flex:1;min-width:0;height:58rpx;margin:0;padding:0;border:0;background:transparent;text-align:right;font-size:19rpx}
 .form-field-block{margin-top:15rpx}.field-label{display:block;color:#354253;font-size:21rpx;font-weight:700}.optional{font-size:16rpx;color:#98a3b1;font-weight:500}
 .field-input{width:100%;height:65rpx;margin-top:9rpx;padding:0 15rpx;border:1rpx solid #e4e9f0;border-radius:14rpx;box-sizing:border-box;background:#f8f9fb;color:#1b2839;font-size:21rpx}
 .card-heading{display:flex;align-items:center;gap:7rpx;margin-bottom:11rpx;color:#182638;font-size:23rpx;font-weight:850}.card-heading>.small{margin-left:2rpx;color:#9aa3af;font-size:15rpx;font-weight:450}
@@ -107,7 +109,7 @@ page{background:#f5f6f8;color:#182131;font-family:-apple-system,BlinkMacSystemFo
 .review-row{width:100%;min-height:83rpx;display:flex;align-items:center;justify-content:space-between;gap:10rpx;margin:0;padding:11rpx 0;border:0;border-bottom:1rpx solid #edf0f4;border-radius:0;background:#fff;text-align:left;font-size:22rpx;line-height:1.45}
 .review-row.tall{min-height:112rpx}.review-label{width:180rpx;flex:none;color:#354253;font-weight:500}.review-icon{display:inline-block;width:35rpx;color:#445063;font-size:27rpx}.review-icon.crown{color:#eaa400}
 .review-value{flex:1;min-width:0;color:#152235;text-align:right;font-size:22rpx;font-weight:700;word-break:break-all}.review-value.multi{display:flex;flex-direction:column}.review-value.multi>view{color:#6d7888;font-size:18rpx;font-weight:500}
-.review-pill{padding:5rpx 11rpx;border-radius:40rpx;font-size:18rpx;font-weight:700}.review-pill.green{background:#eaf9f1;color:#16a759}
+.review-pill{padding:5rpx 11rpx;border-radius:40rpx;font-size:18rpx;font-weight:700}.review-pill.green{background:#eaf9f1;color:#16a759}.review-pill.neutral{background:#f0f2f5;color:#64748b}
 .review-extra{padding:18rpx 0;display:flex;flex-direction:column;gap:9rpx;color:#758192;font-size:18rpx}
 .review-note{margin:10rpx 0;color:#1567eb;font-size:21rpx}.change-card .primary-button{margin-top:19rpx;width:100%}
 .review-actions{position:sticky;bottom:calc(106rpx + env(safe-area-inset-bottom));z-index:4;display:flex;gap:17rpx;margin:22rpx -42rpx 0;padding:19rpx 42rpx;background:rgba(255,255,255,.97);box-shadow:0 -5rpx 18rpx rgba(20,29,47,.045)}
