@@ -14,7 +14,7 @@ function sectionFor(item) {
   return 'attending';
 }
 const statusLabels = { DRAFT: '草稿', REVIEW_PENDING: '待审核', RECRUITING: '招募中', CONFIRMED: '已成局',
-  COMPLETED: '已结束', CANCELLED: '已取消', EXPIRED: '已过期' };
+  IN_PROGRESS: '进行中', COMPLETED: '已结束', CANCELLED: '已取消', EXPIRED: '已过期' };
 const registrationLabels = { INTERESTED: '待决定', REQUESTED: '待主办审批', WAITLISTED: '候补中',
   OFFERED: '待接受补位', CONFIRMED: '已报名', RECONFIRM_REQUIRED: '待重新确认' };
 const tabs = [
@@ -38,6 +38,43 @@ function coverFor(title) {
   if (/展览|艺术|画/.test(title)) return '/assets/stitch/caper_discover_art.jpg';
   if (/桌游|游戏/.test(title)) return '/assets/stitch/caper_discover_boardgame.jpg';
   return '/assets/stitch/caper_discover_citywalk.jpg';
+}
+function cardPresentation(item, group) {
+  if (group === 'pending') {
+    const notes = {
+      INTERESTED: '你已表达兴趣，尚未报名或占用席位。',
+      REQUESTED: '报名申请已提交，等待主办方审核。',
+      WAITLISTED: '目前仍在候补，尚未获得确认席位。',
+      OFFERED: '有补位邀请待处理；请到详情查看截止时间。',
+      RECONFIRM_REQUIRED: '活动规则已变化，请先核对新版本。'
+    };
+    return { cardKind: 'pending', cardNote: notes[item.myRegistrationStatus] || '请到活动详情核对当前报名状态。',
+      primaryLabel: item.myRegistrationStatus === 'RECONFIRM_REQUIRED' ? '核对变更' : '查看报名状态',
+      primaryAction: 'registrationSection', secondaryLabel: '查看活动规则', secondaryAction: 'detailsSection' };
+  }
+  if (group === 'organized') {
+    const notes = {
+      DRAFT: '草稿尚未发布，时间、场地、人数和费用仍需由你确认。',
+      REVIEW_PENDING: '活动内容正在审核，通过前不会开放招募。',
+      RECRUITING: '正在招募；人数和审批状态请以活动详情为准。',
+      CONFIRMED: '活动已成局；请在工作台核对现场安排。',
+      IN_PROGRESS: '活动进行中；可在工作台处理现场事项。'
+    };
+    return { cardKind: 'organized', cardNote: notes[item.status] || '主办信息以活动当前版本为准。',
+      primaryLabel: item.status === 'DRAFT' ? '继续编辑草稿' : '主办工作台',
+      primaryAction: item.status === 'DRAFT' ? 'editDraft' : 'hostSection',
+      secondaryLabel: '查看活动', secondaryAction: 'detailsSection' };
+  }
+  if (group === 'history') {
+    const notes = { COMPLETED: '活动已结束；结项与独立反馈请到详情页查看。',
+      CANCELLED: '活动已取消；历史记录仍可查看。', EXPIRED: '活动已过期；历史记录仍可查看。' };
+    return { cardKind: 'history', cardNote: notes[item.status] || '查看活动历史与当前记录。',
+      primaryLabel: item.status === 'COMPLETED' ? '查看结项与反馈' : '查看活动记录',
+      primaryAction: 'detailsSection', secondaryLabel: '', secondaryAction: '' };
+  }
+  return { cardKind: group, cardNote: group === 'cohosting' ? '你是本场协办；权限与任务以活动详情为准。' :
+    '查看活动详情与最新安排。', primaryLabel: '查看活动', primaryAction: 'detailsSection',
+    secondaryLabel: '', secondaryAction: '' };
 }
 Page({
   data: { items: [], organized: [], cohosting: [], pending: [], attending: [], history: [],
@@ -75,11 +112,14 @@ Page({
       if (generation !== this._loadGeneration || identity !== currentIdentity()) return;
       if (!Array.isArray(result.items)) throw new Error('活动列表无效，请重试');
       const groups = { organized: [], cohosting: [], pending: [], attending: [], history: [] };
-      const items = result.items.map(item => ({ ...item, statusLabel: statusLabels[item.status] || item.status || '状态待确认',
-        registrationLabel: registrationLabels[item.myRegistrationStatus] || '',
-        cardLabel: registrationLabels[item.myRegistrationStatus] ||
-          (sectionFor(item) === 'cohosting' ? '协办中' : statusLabels[item.status] || item.status || '状态待确认'),
-        dateLabel: dateLabel(item.startAt), cover: coverFor(item.title || '') }));
+      const items = result.items.map(item => {
+        const group = sectionFor(item);
+        return { ...item, ...cardPresentation(item, group), statusLabel: statusLabels[item.status] || item.status || '状态待确认',
+          registrationLabel: registrationLabels[item.myRegistrationStatus] || '',
+          cardLabel: registrationLabels[item.myRegistrationStatus] ||
+            (group === 'cohosting' ? '协办中' : statusLabels[item.status] || item.status || '状态待确认'),
+          dateLabel: dateLabel(item.startAt), cover: coverFor(item.title || '') };
+      });
       for (const item of items) groups[sectionFor(item)].push(item);
       const featuredItem = items.find(item => !['DRAFT', 'REVIEW_PENDING'].includes(item.status)) || null;
       this.setData({ items, ...groups, featuredItem, visibleItems: groups[this.data.activeTab], loadState: 'READY', errorCode: '', message: '' });
@@ -98,6 +138,7 @@ Page({
   goDiscover() { wx.switchTab({ url: '/pages/discover/discover' }); },
   goMessages() { wx.switchTab({ url: '/pages/messages/messages' }); },
   goProfile() { wx.switchTab({ url: '/pages/me/me' }); },
+  goItinerary() { wx.navigateTo({ url: '/subpackages/activity/itinerary/itinerary' }); },
   async retry() {
     if (this.data.errorCode === 'UNAUTHENTICATED' && !config.developmentUser) {
       try { await api.login(); }
@@ -109,6 +150,21 @@ Page({
   openInvite() {
     if (!this.data.tokenInput) return this.setData({ message: '请输入邀请口令' });
     wx.navigateTo({ url: '/pages/event/event?token=' + encodeURIComponent(this.data.tokenInput) });
+  },
+  openCardAction(event) {
+    const { id, action } = event.currentTarget.dataset;
+    const item = this.data.items.find(candidate => candidate.id === id);
+    if (!item || this._shownIdentity !== currentIdentity()) return;
+    if (action === 'editDraft') {
+      if (!item.isHost || item.status !== 'DRAFT') return;
+      wx.removeStorageSync('editEventId');
+      wx.setStorageSync('editDraftId', id);
+      wx.setStorageSync('editTargetOwner', currentIdentity());
+      return wx.switchTab({ url: '/pages/create/create' });
+    }
+    if (!['detailsSection', 'registrationSection', 'hostSection'].includes(action)) return;
+    if (action === 'hostSection' && !item.isHost) return;
+    wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) + '&section=' + action });
   },
   openEvent(event) { wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(event.currentTarget.dataset.id) }); }
 });

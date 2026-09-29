@@ -1,0 +1,22 @@
+<view class="itinerary-page" style="padding-top: {{statusBarHeight}}px">
+  <view class="itinerary-header"><button class="back" bindtap="back" aria-label="返回">‹</button><text>我的行程</text><button class="profile-link" bindtap="goProfile" aria-label="我的页面">♙</button></view>
+  <view class="itinerary-content">
+    <view class="intro-pill">●　已参与与我组织的活动</view>
+    <view class="intro-title">我的行程安排</view>
+    <view class="intro-copy">按真实活动时间排序，出发前请再次核对场地和规则。</view>
+    <view wx:if="{{loadState === 'LOADING'}}" class="state-card">正在读取本人行程…</view>
+    <view wx:if="{{loadState === 'UNAUTHENTICATED'}}" class="state-card"><view>登录后可查看本人行程。</view><button bindtap="goProfile">前往我的页面</button></view>
+    <view wx:if="{{loadState === 'ERROR'}}" class="state-card"><view>{{message}}</view><button bindtap="refresh">重新加载</button></view>
+    <view wx:if="{{loadState === 'READY' && !featured}}" class="state-card"><view>暂无已确认报名或组织中的近期活动。</view><button bindtap="goHome">返回首页查看活动</button></view>
+
+    <view wx:if="{{loadState === 'READY' && featured}}" class="featured-card">
+      <view class="featured-cover"><image src="/assets/stitch/caper_home_badminton.jpg" mode="aspectFill" /><view class="countdown">◉ {{featured.countdown}}</view></view>
+      <view class="featured-body"><view class="featured-status">{{featured.stateLabel}}</view><view class="featured-title">{{featured.title || '羽毛球活动'}}</view><view class="facts"><view><text class="fact-icon">▣</text><view><view>{{featured.dateLabel}} {{featured.timeLabel}}</view><text>具体时间以活动详情的最新版本为准</text></view></view><view><text class="fact-icon location">⌖</text><view><view>{{featured.venueLabel}}</view><text>{{featured.city || '活动城市以详情为准'}}</text></view></view><view><text class="fact-icon fee">▤</text><view><view>{{featured.feeLabel}}</view><text>费用与状态以活动详情和双方记录为准</text></view></view></view><button class="featured-action" data-id="{{featured.id}}" bindtap="openEvent">查看活动详情　›</button></view>
+    </view>
+
+    <view wx:if="{{later.length > 0}}" class="later-heading"><text>后续行程规划</text><text>时间升序排列</text></view>
+    <button wx:for="{{later}}" wx:key="id" class="later-card" data-id="{{item.id}}" bindtap="openEvent"><view class="later-date"><text>{{item.dateLabel}}</text><text>{{item.timeLabel}}</text></view><view class="later-main"><view>{{item.title || '羽毛球活动'}}</view><text>{{item.stateLabel}} · {{item.venueLabel}}</text></view><text class="later-chevron">›</text></button>
+    <view wx:if="{{loadState === 'READY' && total > 0}}" class="truth-note">活动时间、地点、报名和费用可能变化；以实时活动详情为准。本页未同步系统日历，也不生成永久入场凭证。</view>
+    <view class="foot">✨ 有趣的相聚，在真实世界发生</view>
+  </view>
+</view>

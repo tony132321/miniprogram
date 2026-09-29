@@ -30,7 +30,7 @@
 
     <view class="brand-ribbon"><image class="ribbon-image" src="/assets/stitch/caper_home_shanghai.jpg" mode="aspectFill" /><view class="ribbon-shade"></view><view class="ribbon-content"><view class="ribbon-kicker">TURN PLANS INTO REAL MEETUPS</view><view class="ribbon-title">让有趣的事，<text>真的发生</text></view><view class="ribbon-copy">把想见的人，聚在同一个真实时刻。</view></view></view>
 
-    <view class="section-heading dashboard-heading"><view><text class="section-mark">✦</text><text>我的活动</text></view><button class="section-link" bindtap="goMessages">消息　›</button></view>
+    <view class="section-heading dashboard-heading"><view><text class="section-mark">✦</text><text>我的活动</text></view><view class="dashboard-links"><button class="section-link" bindtap="goItinerary">我的行程　›</button><button class="section-link" bindtap="goMessages">消息　›</button></view></view>
     <scroll-view scroll-x="true" class="tabs" show-scrollbar="false"><view class="tab-row">
       <button class="tab {{activeTab === 'attending' ? 'selected' : ''}}" data-key="attending" bindtap="selectTab">即将参加 <text>{{attending.length}}</text></button>
       <button class="tab {{activeTab === 'pending' ? 'selected' : ''}}" data-key="pending" bindtap="selectTab">待确认 <text>{{pending.length}}</text></button>
@@ -43,7 +43,16 @@
     <view wx:if="{{loadState === 'READY' && items.length === 0}}" class="state-card muted"><view class="empty-icon">✹</view><view class="empty-title">下一场相聚，从这里开始</view><view class="empty-copy">暂无活动。可从邀请进入或发起真实活动。</view><button class="empty-action" bindtap="goCreate">发起一个活动　→</button></view>
     <view wx:if="{{loadState === 'READY' && visibleItems.length === 0 && items.length > 0}}" class="state-card muted">这个分类里暂时没有活动。</view>
     <view wx:if="{{loadState === 'READY'}}" class="cards">
-      <button wx:for="{{visibleItems}}" wx:key="id" class="event-card" data-id="{{item.id}}" bindtap="openEvent"><view class="cover-wrap"><image class="cover" src="{{item.cover}}" mode="aspectFill" /><view class="cover-tint"></view><view class="cover-status">{{item.statusLabel}}</view><view class="cover-title">{{item.title || '未命名草稿'}}</view></view><view class="card-body"><view class="card-heading"><text class="card-title">{{item.title || '未命名草稿'}}</text><text class="pill">{{item.cardLabel}}</text></view><view class="card-meta">▣　{{item.dateLabel}}</view><view class="card-note">{{item.isHost ? '你是主办方 · 点开查看活动详情' : item.isCohost ? '你是协办方 · 点开查看本场权限与安排' : '点开查看活动详情与最新安排'}}</view><view class="card-action">查看活动 <text>→</text></view></view></button>
+      <view wx:for="{{visibleItems}}" wx:key="id" class="event-card card-{{item.cardKind}}">
+        <button class="cover-wrap" data-id="{{item.id}}" bindtap="openEvent" aria-label="查看{{item.title || '活动'}}详情"><image class="cover" src="{{item.cover}}" mode="aspectFill" /><view class="cover-tint"></view><view class="cover-status">{{item.cardLabel}}</view><view class="cover-title">{{item.title || '未命名草稿'}}</view></button>
+        <view class="card-body"><view class="card-heading"><text class="card-title">{{item.title || '未命名草稿'}}</text><text class="pill">{{item.statusLabel}}</text></view><view class="card-meta">▣　{{item.dateLabel}}</view>
+          <view wx:if="{{item.cardKind === 'pending'}}" class="card-state pending-state"><text class="state-icon">!</text><text>{{item.cardNote}}</text></view>
+          <view wx:elif="{{item.cardKind === 'organized'}}" class="card-state organized-state"><text class="state-icon">✦</text><text>{{item.cardNote}}</text></view>
+          <view wx:elif="{{item.cardKind === 'history'}}" class="card-state history-state"><text class="state-icon">✓</text><text>{{item.cardNote}}</text></view>
+          <view wx:else class="card-note">{{item.isCohost ? '你是协办方 · 点开查看本场权限与安排' : item.cardNote}}</view>
+          <view class="card-actions"><button class="card-primary" data-id="{{item.id}}" data-action="{{item.primaryAction}}" bindtap="openCardAction">{{item.primaryLabel}}　→</button><button wx:if="{{item.secondaryAction}}" class="card-secondary" data-id="{{item.id}}" data-action="{{item.secondaryAction}}" bindtap="openCardAction">{{item.secondaryLabel}}</button><view wx:elif="{{item.cardKind === 'history'}}" class="card-disabled">相册未开放</view></view>
+        </view>
+      </view>
     </view>
 
     <view class="section-heading discover-heading"><view><text class="section-mark">⌖</text><text>看看更多可能</text></view><button class="section-link" bindtap="goDiscover">去发现　›</button></view>

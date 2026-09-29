@@ -7,6 +7,9 @@
       "legal/legal", "cache/cache", "support/support", "release-notes/release-notes",
       "guidelines/guidelines", "open-source/open-source"
     ]
+  }, {
+    "root": "subpackages/activity",
+    "pages": ["itinerary/itinerary"]
   }],
   "window": { "navigationBarTitleText": "Project IRL", "navigationBarBackgroundColor": "#faf8fe", "navigationBarTextStyle": "black", "backgroundColor": "#faf8fe" },
   "tabBar": {

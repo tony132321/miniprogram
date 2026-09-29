@@ -12,6 +12,10 @@ function editorIdentity() {
 function newSourceToken() {
   return Array.from({ length: 4 }, () => Math.floor(Math.random() * 0x100000000).toString(16).padStart(8, '0')).join('');
 }
+function yuanFromFen(fen) {
+  if (!Number.isSafeInteger(fen) || fen < 0) return '金额待核对';
+  return `¥${Math.floor(fen / 100)}.${String(fen % 100).padStart(2, '0')}`;
+}
 function eventDisplay(event) {
   const payload = event.payload || {};
   const format = value => {
@@ -41,7 +45,7 @@ function sectionAvailable(section, isHost, canApproveRegistration, canManageAnno
     (section === 'cohostCheckinSection' && !isHost && canManageCheckins);
 }
 Page({
-  data: { id: '', token: '', source: '', activeSection: 'detailsSection', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '',
+  data: { statusBarHeight: 24, id: '', token: '', source: '', activeSection: 'detailsSection', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '',
     joinConfirmation: null, joinSubmitting: false,
     canJoin: false, canExpressInterest: false, canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
     canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
@@ -58,7 +62,8 @@ Page({
     canRequestManualCheckIn: false, currentUser: '',
     feedbackHeld: null, feedbackWouldRepeat: null, feedbackReason: '', questionText: '', factQuestionText: '', announcementText: '', answerText: '', answerQuestionId: '', removalReason: '' },
   async onLoad(options) {
-    this.setData({ id: options.id || '', token: options.token || '', source: options.source || '', activeSection: 'detailsSection', successState: '' });
+    this.setData({ statusBarHeight: wx.getSystemInfoSync?.().statusBarHeight || 24,
+      id: options.id || '', token: options.token || '', source: options.source || '', activeSection: 'detailsSection', successState: '' });
     await getApp().globalData.ready;
     const loaded = await this.refresh();
     if (loaded && options.success === 'published' && this.data.isHost &&
@@ -213,7 +218,8 @@ Page({
       if (canReadExpenses) try {
         const response = await api.get(`/events/${encodeURIComponent(id)}/expenses`);
         if (!Array.isArray(response.items)) throw new Error('费用记录无效，请重试');
-        expenses = response.items;
+        expenses = response.items.map(ledger => ({ ...ledger, totalYuan: yuanFromFen(ledger.totalFen),
+          shares: (ledger.shares || []).map(share => ({ ...share, amountYuan: yuanFromFen(share.amountFen) })) }));
         expenseLoadState = expenses.length ? 'READY' : 'EMPTY';
       } catch (error) {
         expenseLoadState = error.code === 'FORBIDDEN' ? 'FORBIDDEN' : 'ERROR';
@@ -301,6 +307,10 @@ Page({
     catch (error) { this.setData({ loadState: 'LOGIN_REQUIRED', message: error.message || '登录失败，请重试' }); }
   },
   goToMyActivities() { wx.switchTab({ url: '/pages/index/index' }); },
+  goBack() {
+    if (typeof wx.navigateBack !== 'function') return wx.switchTab({ url: '/pages/index/index' });
+    wx.navigateBack({ delta: 1, fail: () => wx.switchTab({ url: '/pages/index/index' }) });
+  },
   jumpToSection(event) {
     const id = event.currentTarget.dataset.section;
     if (sectionAvailable(id, this.data.isHost, this.data.canApproveRegistration,
@@ -313,11 +323,14 @@ Page({
     if (typeof wx.createSelectorQuery !== 'function') return wx.pageScrollTo({ selector, duration: 260 });
     const query = wx.createSelectorQuery();
     query.select(selector).boundingClientRect();
+    query.select('.event-topbar').boundingClientRect();
+    query.select('.event-tabs').boundingClientRect();
     query.selectViewport().scrollOffset();
-    query.exec(([rect, viewport]) => {
+    query.exec(([rect, header, tabs, viewport]) => {
       if (!rect || !viewport || !Number.isFinite(rect.top) || !Number.isFinite(viewport.scrollTop))
         return wx.pageScrollTo({ selector, duration: 260 });
-      wx.pageScrollTo({ scrollTop: Math.max(0, viewport.scrollTop + rect.top - 64), duration: 260 });
+      const stickyHeight = (header?.height || 0) + (tabs?.height || 0);
+      wx.pageScrollTo({ scrollTop: Math.max(0, viewport.scrollTop + rect.top - stickyHeight - 72), duration: 260 });
     });
   },
   dismissSuccess() { this.setData({ successState: '' }); },
