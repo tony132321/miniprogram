@@ -71,11 +71,12 @@ test('state tabs place verified card facts first without fetching every event on
   await page.selectTab({ currentTarget: { dataset: { key: 'pending' } } });
   assert.equal(page.data.stateView, true);
   assert.deepEqual(scrolls, [0]);
-  assert.deepEqual(requests, ['/me/events', '/events/p1', '/events/p2', '/events/p3']);
+  assert.deepEqual(requests, ['/me/events', '/events/p1', '/events/p2', '/events/p3', '/events/p4']);
   assert.equal(page.data.visibleItems[0].dateRangeLabel, '3 月 22 日 19:00 – 21:00');
   assert.equal(page.data.visibleItems[0].venueLabel, '上海 · 蓝天体育中心');
   assert.equal(page.data.visibleItems[0].capacityLabel, '已确认 2 / 上限 8 人');
-  assert.equal(page.data.visibleItems[3].venueLabel, '地点请到活动详情查看');
+  assert.equal(page.data.visibleItems[3].venueLabel, '上海 · 蓝天体育中心');
+  assert.equal(page.data.visibleItems[3].capacityLabel, '已确认 2 / 上限 8 人');
 });
 
 test('organized cards show only authorized real counts and route to the host workspace', async () => {

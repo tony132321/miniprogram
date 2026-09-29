@@ -31,7 +31,7 @@ const tabs = [
   { key: 'organized', label: '我组织的' }, { key: 'cohosting', label: '协办' }, { key: 'history', label: '历史' }
 ];
 const detailedStateTabs = ['pending', 'organized', 'history'];
-const stateDetailLimit = 3;
+const stateDetailBatchSize = 3;
 const categoryIdeas = [
   { icon: '🏸', label: '运动', tone: 'mint' }, { icon: '🥘', label: '美食', tone: 'peach' },
   { icon: '☕', label: '喝一杯', tone: 'cream' }, { icon: '🏙️', label: 'City Walk', tone: 'sky' },
@@ -222,20 +222,23 @@ Page({
   },
   async enrichStateCards(key, identity, loadGeneration, requestId) {
     const selected = Array.isArray(this.data[key]) ? this.data[key] : [];
-    const targets = selected.filter(item => !item.detailLoaded).slice(0, stateDetailLimit);
+    const targets = selected.filter(item => !item.detailLoaded);
     if (!targets.length) return;
-    const results = await Promise.all(targets.map(item => api.get('/events/' + encodeURIComponent(item.id))
-      .then(value => ({ value }), () => ({ value: null }))));
-    if (currentIdentity() !== identity || this._loadGeneration !== loadGeneration ||
-      this._detailRequestId !== requestId || this.data.activeTab !== key) return;
-    const enriched = new Map();
-    results.forEach((result, index) => {
-      if (result.value) enriched.set(targets[index].id, withRealDetail(targets[index], result.value, identity));
-    });
-    if (!enriched.size) return;
-    const updatedGroup = selected.map(item => enriched.get(item.id) || item);
-    this.setData({ [key]: updatedGroup, visibleItems: updatedGroup,
-      items: this.data.items.map(item => enriched.get(item.id) || item) });
+    for (let offset = 0; offset < targets.length; offset += stateDetailBatchSize) {
+      const batch = targets.slice(offset, offset + stateDetailBatchSize);
+      const results = await Promise.all(batch.map(item => api.get('/events/' + encodeURIComponent(item.id))
+        .then(value => ({ value }), () => ({ value: null }))));
+      if (currentIdentity() !== identity || this._loadGeneration !== loadGeneration ||
+        this._detailRequestId !== requestId || this.data.activeTab !== key) return;
+      const enriched = new Map();
+      results.forEach((result, index) => {
+        if (result.value) enriched.set(batch[index].id, withRealDetail(batch[index], result.value, identity));
+      });
+      if (!enriched.size) continue;
+      const updatedGroup = this.data[key].map(item => enriched.get(item.id) || item);
+      this.setData({ [key]: updatedGroup, visibleItems: updatedGroup,
+        items: this.data.items.map(item => enriched.get(item.id) || item) });
+    }
   },
   goCreate() { wx.switchTab({ url: '/pages/create/create' }); },
   goCity() { wx.navigateTo({ url: '/pages/city/city' }); },
