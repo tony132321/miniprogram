@@ -81,8 +81,49 @@ function createApi(platform, config) {
       });
     });
   }
+  async function listMyEvents() {
+    const identity = currentIdentity();
+    const changedIdentity = () => Object.assign(new Error('账号已切换，请刷新活动列表'), { code: 'IDENTITY_CHANGED' });
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const items = [];
+      let offset = 0;
+      let snapshot = '';
+      try {
+        while (true) {
+          if (currentIdentity() !== identity) throw changedIdentity();
+          const path = `/me/events?limit=100&offset=${offset}` +
+            (offset ? `&snapshot=${encodeURIComponent(snapshot)}` : '');
+          const page = await call('GET', path);
+          if (currentIdentity() !== identity) throw changedIdentity();
+          if (!Array.isArray(page?.items)) throw new Error('活动列表无效，请重试');
+          // An older server may ignore the new query and return its complete legacy list.
+          if (page.nextOffset === undefined && page.snapshot === undefined && offset === 0)
+            return { items: page.items };
+          if (!Number.isSafeInteger(page.total) || page.total < 0 ||
+            !/^[a-f0-9]{32}$/.test(page.snapshot) ||
+            (offset > 0 && page.snapshot !== snapshot) ||
+            page.items.length > 100 || offset + page.items.length > page.total ||
+            (page.nextOffset !== null && page.items.length === 0) ||
+            (page.nextOffset !== null &&
+              (!Number.isSafeInteger(page.nextOffset) || page.nextOffset !== offset + page.items.length ||
+                page.nextOffset >= page.total)))
+            throw new Error('活动列表分页无效，请重试');
+          if (!snapshot) snapshot = page.snapshot;
+          items.push(...page.items);
+          if (page.nextOffset === null) {
+            if (items.length !== page.total) throw new Error('活动列表分页不完整，请重试');
+            return { items };
+          }
+          offset = page.nextOffset;
+        }
+      } catch (error) {
+        if (currentIdentity() !== identity) throw changedIdentity();
+        if (error.code !== 'QUEUE_CHANGED' || attempt === 2) throw error;
+      }
+    }
+  }
   return {
-    get: path => call('GET', path),
+    get: path => path === '/me/events' ? listMyEvents() : call('GET', path),
     post: (path, data, key, requestOptions) => call('POST', path, data, key, requestOptions),
     acknowledgeMutation(method, path, data) {
       const fingerprint = mutationFingerprint(currentIdentity(), method, path, data);

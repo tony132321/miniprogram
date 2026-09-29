@@ -300,43 +300,69 @@ export function createApp(db: Database, options: AppOptions) {
           options.environment !== 'production' || !options.pilotUserIds?.includes(actor)));
       }
       if (path === '/me/events' && method === 'GET') {
-        const { rows } = await db.query<{ id: string; status: string; created_at: Date;
-          payload: { title?: string; startAt?: string; venueName?: string; feeMode?: string; feeCapFen?: number };
-          review_status: string; legacy_review_closed: boolean | null; is_host: boolean; is_cohost: boolean;
-          my_status: string | null }>(`SELECT e.id,e.status,e.created_at,e.payload,e.review_status,
-          clock_timestamp()>=CASE WHEN e.status='RECRUITING' THEN
-            (e.payload->>'confirmationDeadline')::timestamptz ELSE (e.payload->>'startAt')::timestamptz END
-            AS legacy_review_closed,
-          (e.host_id=$1) AS is_host,(c.id IS NOT NULL) AS is_cohost,r.status AS my_status FROM events e
-          LEFT JOIN registrations r ON r.event_id=e.id AND r.user_id=$1
-          LEFT JOIN cohost_grants c ON c.event_id=e.id AND c.user_id=$1
-            AND c.revoked_at IS NULL AND c.expires_at>clock_timestamp()
-          WHERE e.host_id=$1 OR c.id IS NOT NULL OR
-            r.status IN ('INTERESTED','REQUESTED','WAITLISTED','OFFERED','CONFIRMED','RECONFIRM_REQUIRED')`, [actor]);
-        const now = await databaseNow(db);
-        const items = rows.map(r => {
-          const reviewed = r.is_host || r.review_status === 'APPROVED' ||
-            (r.review_status === 'NOT_REQUIRED' &&
-              (r.legacy_review_closed === true || ['IN_PROGRESS', 'COMPLETED', 'CANCELLED', 'EXPIRED'].includes(r.status)));
-          const startAt = reviewed ? r.payload.startAt : undefined;
-          const startTime = startAt ? Date.parse(startAt) : NaN;
-          const active = ['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(r.status);
-          // An unreviewed start time must not affect list position: ordering by it would reveal private logistics.
-          const priority = active && r.my_status === 'OFFERED' ? 0 :
-            active && (r.status === 'IN_PROGRESS' || startTime >= now) ? 1 :
-              r.status === 'DRAFT' ? 2 : active && !Number.isFinite(startTime) ? 3 : 4;
-          return { item: { id: r.id, status: r.status, title: reviewed ? r.payload.title : '活动审核中',
-            startAt, venueName: reviewed ? r.payload.venueName : undefined,
-            feeMode: reviewed ? r.payload.feeMode : undefined,
-            feeCapFen: reviewed ? r.payload.feeCapFen : undefined,
-            isHost: r.is_host, isCohost: r.is_cohost, myRegistrationStatus: r.my_status },
-          priority, startTime, createdAt: new Date(r.created_at).getTime() };
+        const paged = ['limit', 'offset', 'snapshot'].some(key => requestUrl.searchParams.has(key));
+        const limitText = requestUrl.searchParams.get('limit') ?? '100';
+        const offsetText = requestUrl.searchParams.get('offset') ?? '0';
+        const requestedSnapshot = requestUrl.searchParams.get('snapshot');
+        if (paged && (!/^[1-9]\d*$/.test(limitText) || Number(limitText) > 100 ||
+          !/^(0|[1-9]\d*)$/.test(offsetText) || Number(offsetText) > 2_147_483_647 ||
+          (requestedSnapshot !== null && !/^[a-f0-9]{32}$/.test(requestedSnapshot))))
+          throw new AppError('BAD_REQUEST', '活动列表页码无效');
+        const limit = Number(limitText);
+        const offset = Number(offsetText);
+        if (paged && offset > 0 && !requestedSnapshot)
+          throw new AppError('BAD_REQUEST', '继续读取活动需要有效快照');
+        const result = await db.transaction(async tx => {
+          await tx.query('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY');
+          const now = await databaseNow(tx);
+          const { rows } = await tx.query<{ id: string; status: string; created_at: Date;
+            payload: { title?: string; startAt?: string; venueName?: string; feeMode?: string; feeCapFen?: number };
+            review_status: string; legacy_review_closed: boolean | null; is_host: boolean; is_cohost: boolean;
+            my_status: string | null }>(`SELECT e.id,e.status,e.created_at,e.payload,e.review_status,
+            $2::timestamptz>=CASE WHEN e.status='RECRUITING' THEN
+              (e.payload->>'confirmationDeadline')::timestamptz ELSE (e.payload->>'startAt')::timestamptz END
+              AS legacy_review_closed,
+            (e.host_id=$1) AS is_host,(c.id IS NOT NULL) AS is_cohost,r.status AS my_status FROM events e
+            LEFT JOIN registrations r ON r.event_id=e.id AND r.user_id=$1
+            LEFT JOIN cohost_grants c ON c.event_id=e.id AND c.user_id=$1
+              AND c.revoked_at IS NULL AND c.expires_at>$2::timestamptz
+            WHERE e.host_id=$1 OR c.id IS NOT NULL OR
+              r.status IN ('INTERESTED','REQUESTED','WAITLISTED','OFFERED','CONFIRMED','RECONFIRM_REQUIRED')`,
+            [actor, new Date(now).toISOString()]);
+          const items = rows.map(r => {
+            const reviewed = r.is_host || r.review_status === 'APPROVED' ||
+              (r.review_status === 'NOT_REQUIRED' &&
+                (r.legacy_review_closed === true || ['IN_PROGRESS', 'COMPLETED', 'CANCELLED', 'EXPIRED'].includes(r.status)));
+            const startAt = reviewed ? r.payload.startAt : undefined;
+            const startTime = startAt ? Date.parse(startAt) : NaN;
+            const active = ['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(r.status);
+            // An unreviewed start time must not affect list position: ordering by it would reveal private logistics.
+            const priority = active && r.my_status === 'OFFERED' ? 0 :
+              active && (r.status === 'IN_PROGRESS' || startTime >= now) ? 1 :
+                r.status === 'DRAFT' ? 2 : active && !Number.isFinite(startTime) ? 3 : 4;
+            return { item: { id: r.id, status: r.status, title: reviewed ? r.payload.title : '活动审核中',
+              startAt, venueName: reviewed ? r.payload.venueName : undefined,
+              feeMode: reviewed ? r.payload.feeMode : undefined,
+              feeCapFen: reviewed ? r.payload.feeCapFen : undefined,
+              isHost: r.is_host, isCohost: r.is_cohost, myRegistrationStatus: r.my_status },
+            priority, startTime, createdAt: new Date(r.created_at).getTime() };
+          });
+          items.sort((a, b) => a.priority - b.priority ||
+            ((a.priority <= 1 || a.priority === 4) && Number.isFinite(a.startTime) && Number.isFinite(b.startTime)
+              ? (a.priority === 4 ? b.startTime - a.startTime : a.startTime - b.startTime) : 0) ||
+            b.createdAt - a.createdAt || a.item.id.localeCompare(b.item.id));
+          const ordered = items.map(row => row.item);
+          if (!paged) return { items: ordered };
+          // Only the actor's visible projection enters the token; changes that could shift a page reject continuation.
+          const snapshot = createHash('sha256').update(JSON.stringify([actor, ordered])).digest('hex').slice(0, 32);
+          if (offset > 0 && requestedSnapshot !== snapshot)
+            throw new AppError('QUEUE_CHANGED', '活动列表已变化，请从第一页刷新', 409);
+          const pageItems = ordered.slice(offset, offset + limit);
+          return { items: pageItems, total: ordered.length,
+            nextOffset: offset + pageItems.length < ordered.length ? offset + pageItems.length : null,
+            snapshot };
         });
-        items.sort((a, b) => a.priority - b.priority ||
-          ((a.priority <= 1 || a.priority === 4) && Number.isFinite(a.startTime) && Number.isFinite(b.startTime)
-            ? (a.priority === 4 ? b.startTime - a.startTime : a.startTime - b.startTime) : 0) ||
-          b.createdAt - a.createdAt || a.item.id.localeCompare(b.item.id));
-        return send(res, 200, { items: items.map(row => row.item) });
+        return send(res, 200, result);
       }
       if (path === '/me/registrations' && method === 'GET') {
         const { rows } = await db.query('SELECT id,event_id,status,accepted_version,created_at FROM registrations WHERE user_id=$1 ORDER BY created_at DESC', [actor]);

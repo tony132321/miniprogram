@@ -25,11 +25,15 @@ const input = { title: '我的活动', type: 'badminton', ...schedule(30), timeZ
 test('my events puts an offer first, then reviewed upcoming events by time rather than UUID', async () => {
   const db = await createDatabase();
   const databaseTime = Date.now();
+  const queryWithFixedClock = <T extends Record<string, unknown> = Record<string, unknown>>(
+    query: Database['query'], sql: string, params: unknown[] = []) =>
+    sql === 'SELECT clock_timestamp() AS current_time'
+      ? Promise.resolve({ rows: [{ current_time: new Date(databaseTime) } as unknown as T] })
+      : query<T>(sql, params);
   const clockDb: Database = { ...db,
-    query: <T extends Record<string, unknown> = Record<string, unknown>>(sql: string, params: unknown[] = []) =>
-      sql === 'SELECT clock_timestamp() AS current_time'
-        ? Promise.resolve({ rows: [{ current_time: new Date(databaseTime) } as unknown as T] })
-        : db.query<T>(sql, params) };
+    query: (sql, params = []) => queryWithFixedClock(db.query, sql, params),
+    transaction: fn => db.transaction(tx => fn({ query: (sql, params = []) =>
+      queryWithFixedClock(tx.query, sql, params) })) };
   const server = createApp(clockDb, { environment: 'test', devAuth: true, checkInSecret: 'summary-test' });
   server.listen(0, '127.0.0.1'); await once(server, 'listening');
   const base = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
@@ -130,5 +134,49 @@ test('my event logistics follow host, member and cohost review visibility withou
       assert.doesNotMatch(JSON.stringify(items), /秘密|4200/);
     }
     assert.deepEqual(await read('stranger'), []);
+  } finally { await new Promise<void>(resolve => server.close(() => resolve())); await db.close(); }
+});
+
+test('my events pages are bounded, complete, actor-bound and reject a changed list', async () => {
+  const db = await createDatabase();
+  const server = createApp(db, { environment: 'test', devAuth: true, checkInSecret: 'summary-pages-test' });
+  server.listen(0, '127.0.0.1'); await once(server, 'listening');
+  const base = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
+  const read = async (path: string, actor = 'host') => {
+    const response = await fetch(base + path, { headers: { 'X-Dev-User': actor } });
+    return { status: response.status, body: await response.json() as Record<string, any> };
+  };
+  try {
+    await db.query(`INSERT INTO events(id,host_id,status,version,payload)
+      SELECT 'page-' || n,'host','DRAFT',1,$1::jsonb FROM generate_series(1,101) AS n`, [JSON.stringify(input)]);
+    const legacy = await read('/me/events');
+    assert.equal(legacy.status, 200);
+    assert.equal(legacy.body.items.length, 101);
+    const first = await read('/me/events?limit=100&offset=0');
+    assert.equal(first.status, 200);
+    assert.equal(first.body.items.length, 100);
+    assert.equal(first.body.total, 101);
+    assert.equal(first.body.nextOffset, 100);
+    assert.match(first.body.snapshot, /^[a-f0-9]{32}$/);
+    const next = await read(`/me/events?limit=100&offset=${first.body.nextOffset}&snapshot=${first.body.snapshot}`);
+    assert.equal(next.status, 200);
+    assert.equal(next.body.nextOffset, null);
+    assert.equal(next.body.snapshot, first.body.snapshot);
+    assert.deepEqual([...first.body.items, ...next.body.items].map(item => item.id),
+      legacy.body.items.map((item: any) => item.id));
+    assert.equal((await read(`/me/events?limit=100&offset=100&snapshot=${first.body.snapshot}`, 'other')).status, 409);
+
+    await db.query(`INSERT INTO events(id,host_id,status,version,payload)
+      VALUES('new-page-row','host','DRAFT',1,$1::jsonb)`, [JSON.stringify(input)]);
+    const changed = await read(`/me/events?limit=100&offset=100&snapshot=${first.body.snapshot}`);
+    assert.equal(changed.status, 409);
+    assert.equal(changed.body.code, 'QUEUE_CHANGED');
+    const refreshed = await read('/me/events?limit=100&offset=0');
+    await db.query("UPDATE events SET status='COMPLETED' WHERE id='page-1'");
+    assert.equal((await read(`/me/events?limit=100&offset=100&snapshot=${refreshed.body.snapshot}`)).status, 409);
+    assert.equal((await read('/me/events?limit=101&offset=0')).status, 400);
+    assert.equal((await read('/me/events?limit=0&offset=0')).status, 400);
+    assert.equal((await read('/me/events?limit=2&offset=1')).status, 400);
+    assert.equal((await read('/me/events?limit=2&offset=-1')).status, 400);
   } finally { await new Promise<void>(resolve => server.close(() => resolve())); await db.close(); }
 });

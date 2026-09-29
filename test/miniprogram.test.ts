@@ -501,7 +501,7 @@ test('profile shows honest external reminder states on initial and later notific
 test('production-style mini-program config ignores a stale development identity', async () => {
   let captured: Record<string, any> | undefined;
   const api = createApi({
-    request(options: Record<string, any>) { captured = options; options.success({ statusCode: 200, data: {} }); },
+    request(options: Record<string, any>) { captured = options; options.success({ statusCode: 200, data: { items: [] } }); },
     getStorageSync(key: string) { return key === 'devUser' ? 'old-local-user' : ''; }
   }, { apiBase: 'https://api.example.test', developmentUser: '' });
   await api.get('/me/events');
