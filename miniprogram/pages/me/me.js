@@ -44,9 +44,32 @@ const externalStatusLabels = {
   PROVIDER_REJECTED: '外部提醒发送失败，请查看站内通知',
   FAILED: '外部提醒发送失败，请查看站内通知'
 };
-function withExternalStatusLabels(items) {
-  return items.map(item => ({ ...item, externalStatusLabel:
-    Object.prototype.hasOwnProperty.call(externalStatusLabels, item.external_status)
+const noticeKindLabels = {
+  WAITLIST_OFFER: '收到补位邀请', WAITLIST_WINDOW_CLOSED: '补位时间窗口已结束',
+  REGISTRATION_STATUS: '报名状态已更新', REGISTRATION_APPROVED: '报名已通过',
+  REGISTRATION_REMOVED: '报名已移除', MANUAL_CHECKIN_REQUEST: '请核对到场补记',
+  MATERIAL_CHANGE: '活动规则已更新', EVENT_CONFIRMED: '活动已成局',
+  EVENT_CANCELLED: '活动已取消', EVENT_EXPIRED: '活动未成局',
+  EVENT_SAFETY_PAUSED: '活动暂时停止招募', EVENT_SAFETY_RESUMED: '活动恢复招募',
+  EVENT_SAFETY_REVIEW_CLOSED: '活动安全复核已结束', EVENT_REMINDER: '活动即将开始',
+  EVENT_OUTCOME_DUE: '请记录活动结项', EVENT_OUTCOME_REVIEW: '请反馈活动结项',
+  PUBLIC_RECRUITMENT_CLOSED: '活动招募暂停', PUBLIC_RECRUITMENT_OPEN: '活动招募恢复',
+  REPORT_CREATED_UNSCOPED: '举报已提交', REPORT_IN_REVIEW: '举报正在处理',
+  REPORT_IN_REVIEW_UNSCOPED: '举报正在处理', REPORT_RESOLVED: '举报已有处理结论',
+  REPORT_RESOLVED_UNSCOPED: '举报已有处理结论', APPEAL_CREATED: '申诉已提交',
+  APPEAL_IN_REVIEW: '申诉正在复核', APPEAL_RESOLVED: '申诉已有复核结论',
+  CONTENT_REJECTED: '活动内容未通过审核', CONTENT_REVIEW_OVERTURN: '活动内容复核已有结论',
+  EVENT_REVIEW_APPROVED: '活动内容审核通过', EVENT_REVIEW_REJECTED: '活动内容审核未通过'
+};
+function presentNotifications(items, activities = []) {
+  const eventTitles = new Map(activities.filter(item => item.id && item.title)
+    .map(item => [item.id, item.title]));
+  return items.map(item => ({ ...item,
+    kindLabel: noticeKindLabels[item.kind] || '站内通知',
+    statusLabel: item.status === 'OPENED' ? '已读' : '未读',
+    isOpened: item.status === 'OPENED',
+    eventLabel: item.event_id ? (eventTitles.get(item.event_id) || '相关活动') : '',
+    externalStatusLabel: Object.prototype.hasOwnProperty.call(externalStatusLabels, item.external_status)
       ? externalStatusLabels[item.external_status] : '外部提醒状态待核对' }));
 }
 function filteredActivityItems(items, filter) {
@@ -124,7 +147,7 @@ Page({
         dateLabel: activityDateLabel(item.startAt), cover: activityCover(item)
       })) : [];
       const activityFilter = this.data.activityFilter;
-      this.setData({ notifications: withExternalStatusLabels(notifications.items), notificationsTotal: notifications.total ?? notifications.items.length,
+      this.setData({ notifications: presentNotifications(notifications.items, activityItems || []), notificationsTotal: notifications.total ?? notifications.items.length,
         nextNotificationOffset: notifications.nextOffset ?? null, notificationSnapshot: notifications.snapshot ?? null,
         privacy: privacy.items, blocks: blocks.items, removals: removals.items, reports: reports.items,
         appeals: appeals.items, rejectedContent: rejectedContent.items,
@@ -184,7 +207,7 @@ Page({
     try {
       const page = await api.get(`/me/notifications?offset=${offset}&snapshot=${encodeURIComponent(snapshot)}`);
       if (generation !== this._refreshGeneration) return;
-      this.setData({ notifications: this.data.notifications.concat(withExternalStatusLabels(page.items)), notificationsTotal: page.total,
+      this.setData({ notifications: this.data.notifications.concat(presentNotifications(page.items, this.data.activityItems)), notificationsTotal: page.total,
         nextNotificationOffset: page.nextOffset ?? null, notificationSnapshot: page.snapshot });
     } catch (error) {
       if (generation !== this._refreshGeneration) return;

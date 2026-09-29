@@ -47,11 +47,11 @@
   <view class="section-card card">
   <view wx:if="{{notifications.length === 0}}" class="empty">暂无站内通知</view>
   <view wx:if="{{notificationsTotal > 0}}" class="hint">已显示 {{notifications.length}} / {{notificationsTotal}} 条；未打开的通知优先显示。</view>
-  <view wx:for="{{notifications}}" wx:key="id" class="list-row">
-    <view>{{item.kind === 'EVENT_OUTCOME_DUE' ? '活动已结束，请主办方记录是否举办' : item.kind === 'EVENT_OUTCOME_REVIEW' ? '主办方已结项，请独立反馈' : item.kind === 'PUBLIC_RECRUITMENT_CLOSED' ? '公开活动招募已暂停' : item.kind === 'PUBLIC_RECRUITMENT_OPEN' ? '公开活动招募已恢复' : item.kind === 'WAITLIST_WINDOW_CLOSED' ? '补位时间不足五分钟，请主办方处理空位' : item.kind === 'REPORT_IN_REVIEW' ? '举报正在处理' : item.kind === 'REPORT_RESOLVED' ? '举报已有处理结论' : item.kind === 'APPEAL_IN_REVIEW' ? '申诉正在复核' : item.kind === 'APPEAL_RESOLVED' ? '申诉已有复核结论' : item.kind === 'CONTENT_REJECTED' ? '活动内容未通过审核' : item.kind}} · {{item.status}}</view>
-    <view wx:if="{{item.event_id}}">活动 {{item.event_id}} · 版本 {{item.event_version}}</view>
-    <view class="hint">{{item.externalStatusLabel}}</view>
-    <button data-id="{{item.id}}" data-event="{{item.event_id}}" data-kind="{{item.kind}}" bindtap="openNotice">查看通知并标记已打开</button>
+  <view wx:for="{{notifications}}" wx:key="id" class="list-row notice-item">
+    <view class="notice-head"><text class="notice-title">{{item.kindLabel}}</text><text class="notice-read {{item.isOpened ? 'is-opened' : ''}}">{{item.statusLabel}}</text></view>
+    <view wx:if="{{item.eventLabel}}" class="notice-context">关联活动 · {{item.eventLabel}}</view>
+    <view class="notice-external">{{item.externalStatusLabel}}</view>
+    <button class="notice-action" data-id="{{item.id}}" data-event="{{item.event_id}}" data-kind="{{item.kind}}" bindtap="openNotice">查看通知并标记已打开 ›</button>
     <block wx:if="{{item.kind === 'WAITLIST_OFFER'}}">
       <view wx:if="{{item.declinable}}" class="hint">补位确认截止：{{item.detail.expiresAt}}</view>
       <button wx:if="{{item.actionable}}" data-id="{{item.detail.offerId}}" data-version="{{item.event_version}}" bindtap="acceptOffer">主动确认补位</button>

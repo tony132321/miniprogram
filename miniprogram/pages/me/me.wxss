@@ -181,3 +181,11 @@
 .dev-box input { box-sizing: border-box; width: 100%; margin: 10rpx 0; padding: 14rpx; border-radius: 13rpx; background: #f1f5f9; font-size: 22rpx; }
 .dev-box button { margin: 9rpx 0; border-radius: 13rpx; background: #eaf1ff; color: #1d64f2; font-size: 21rpx; }
 .dev-box button::after { border: 0; }
+.notice-item { padding: 21rpx 0; }
+.notice-head { display: flex; align-items: center; gap: 12rpx; }
+.notice-title { flex: 1; min-width: 0; color: #0f172a; font-size: 23rpx; font-weight: 800; }
+.notice-read { flex: none; padding: 5rpx 11rpx; border-radius: 30rpx; background: #e8f1ff; color: #1d64f2; font-size: 17rpx; font-weight: 700; }
+.notice-read.is-opened { background: #f1f5f9; color: #94a3b8; }
+.notice-context { overflow: hidden; margin-top: 8rpx; color: #475569; font-size: 19rpx; text-overflow: ellipsis; white-space: nowrap; }
+.notice-external { margin-top: 7rpx; color: #94a3b8; font-size: 17rpx; }
+.section-card .notice-action { width: 100%; margin: 13rpx 0 0; padding: 11rpx 15rpx; border-radius: 12rpx; background: #edf3ff; color: #1d64f2; font-size: 19rpx; font-weight: 700; line-height: 1.45; text-align: left; }
