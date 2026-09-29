@@ -47,6 +47,7 @@
 - **E27**：[首页多卡详情补全](evidence/caper-home-multi-card-detail-2026-09-30.md)：第 4 张及以后状态卡继续取得授权详情，含旧响应隔离；目前仅合成定向验证。
 - **E28**：[个人页站内通知中文化与深链](evidence/caper-profile-notice-labels-2026-09-30.md)：隔离 7 条通知可读卡片、首条打开后状态回读、活动详情深链。
 - **E29**：[本人活动安全摘要与排序](evidence/me-events-safe-summary-order-2026-09-30.md)：HTTP 授权回归覆盖场地／费用、待审遮盖、候补和时间排序；行程页绑定定向验证。
+- **E30**：[合并候选全量回归与首页打开](evidence/caper-integrated-regression-2026-09-30.md)：本地 784 项完整结束、CLI 编译、当前 API 与主开发者工具首页 `READY` 截图。
 
 ## 当前真实数据／接口索引
 
