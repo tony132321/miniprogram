@@ -67,18 +67,23 @@ export async function previewEventChange(db: Database, actor: string, eventId: s
 export async function getPendingReconfirmation(db: Database, actor: string, eventId: string): Promise<{
   fromVersion: number; toVersion: number; deadline: string; changes: ReturnType<typeof eventChanges>
 } | null> {
-  const event = await getEvent(db, actor, eventId);
-  if (event.reviewStatus !== 'APPROVED') return null;
-  const { rows: registrations } = await db.query<{ accepted_version: number | null; status: string }>(
-    'SELECT accepted_version,status FROM registrations WHERE event_id=$1 AND user_id=$2', [eventId, actor]);
-  const registration = registrations[0];
-  if (registration?.status !== 'RECONFIRM_REQUIRED') return null;
-  if (!registration.accepted_version) throw new AppError('VERSION_NOT_FOUND', '旧活动版本不存在', 500);
-  const { rows: versions } = await db.query<{ payload: EventInput }>('SELECT payload FROM event_versions WHERE event_id=$1 AND version=$2',
-    [eventId, registration.accepted_version]);
-  if (!versions[0]) throw new AppError('VERSION_NOT_FOUND', '旧活动版本不存在', 500);
-  return { fromVersion: registration.accepted_version, toVersion: event.version,
-    deadline: event.payload.confirmationDeadline!, changes: eventChanges(versions[0].payload, event.payload) };
+  return db.transaction(async tx => {
+    // Shared-activity deidentification keeps the event version unchanged. Lock
+    // the event through both the current and prior-version reads.
+    await tx.query('SELECT id FROM events WHERE id=$1 FOR SHARE', [eventId]);
+    const event = await getEvent(tx, actor, eventId);
+    if (event.reviewStatus !== 'APPROVED') return null;
+    const { rows: registrations } = await tx.query<{ accepted_version: number | null; status: string }>(
+      'SELECT accepted_version,status FROM registrations WHERE event_id=$1 AND user_id=$2', [eventId, actor]);
+    const registration = registrations[0];
+    if (registration?.status !== 'RECONFIRM_REQUIRED') return null;
+    if (!registration.accepted_version) throw new AppError('VERSION_NOT_FOUND', '旧活动版本不存在', 500);
+    const { rows: versions } = await tx.query<{ payload: EventInput }>('SELECT payload FROM event_versions WHERE event_id=$1 AND version=$2',
+      [eventId, registration.accepted_version]);
+    if (!versions[0]) throw new AppError('VERSION_NOT_FOUND', '旧活动版本不存在', 500);
+    return { fromVersion: registration.accepted_version, toVersion: event.version,
+      deadline: event.payload.confirmationDeadline!, changes: eventChanges(versions[0].payload, event.payload) };
+  });
 }
 
 export async function changeEvent(db: Database, actor: string, eventId: string, expectedVersion: number, patch: Partial<EventInput>, key: string): Promise<EventRecord> {

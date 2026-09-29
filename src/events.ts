@@ -124,6 +124,14 @@ export function validatePublish(input: EventInput): void {
 }
 
 export async function getEvent(db: Queryable, actorId: string, id: string): Promise<EventRecord> {
+  if ('transaction' in db) {
+    return (db as Database).transaction(async tx => {
+      // Privacy deidentification rewrites payload without bumping version. Keep the
+      // event row locked until every member-facing field has been assembled.
+      await tx.query('SELECT id FROM events WHERE id=$1 FOR SHARE', [id]);
+      return getEvent(tx, actorId, id);
+    });
+  }
   const { rows } = await db.query<EventRow>('SELECT * FROM events WHERE id=$1', [id]);
   const row = rows[0];
   if (!row) throw new AppError('NOT_FOUND', '活动不存在', 404);

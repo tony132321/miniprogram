@@ -1,12 +1,18 @@
 import assert from 'node:assert/strict';
+import { mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { test } from 'node:test';
-import { createDatabase } from '../src/db.ts';
+import { createDatabase, type Database } from '../src/db.ts';
 import { createDraft } from '../src/events.ts';
 import { changeApprovedInvite, publishApprovedInvite, register } from './helpers.ts';
 import { askCurrentFact, createContent, moderateContent } from '../src/collaboration.ts';
 import { askSemanticCurrentFact, listAiSemanticAlerts, type SemanticFactProvider } from '../src/ai-semantic-answer.ts';
 import { runRecordedDraftProvider } from '../src/ai-draft-requests.ts';
 import type { DraftProvider } from '../src/ai-provider-boundary.ts';
+import { changeEvent } from '../src/lifecycle.ts';
+import { createPrivacyRequest } from '../src/operations.ts';
+import { FileDeletionMarkerStore, executePrivacyDeletionWithMarker } from '../src/privacy-deletion-journal.ts';
 
 const input = { title: '语义问答测试', type: 'badminton', startAt: '2027-01-02T12:00:00.000Z', endAt: '2027-01-02T14:00:00.000Z',
   timeZone: 'Asia/Shanghai', city: '深圳', venueName: '公共场馆', venueStatus: 'HOST_CONFIRMED', minParticipants: 4, maxParticipants: 4,
@@ -15,6 +21,194 @@ const input = { title: '语义问答测试', type: 'badminton', startAt: '2027-0
 const fixtureEvidence = { modelVersion: 'fixture-v1', promptHash: 'c'.repeat(64),
   usage: { inputTokens: 10, outputTokens: 3 }, receipt: { status: 'ACCEPTED', reference: 'fixture-ref' } };
 const withFixture = <T extends object>(candidate: T) => ({ ...candidate, costFen: 5, evidence: fixtureEvidence });
+const deletionPolicy = JSON.stringify({
+  schema: 'project-irl/retention-policy-v1', status: 'OWNER_APPROVED_FOR_REAL_DATA',
+  approved_by: 'synthetic-test-owner', approved_at: '2026-09-27T00:00:00.000Z',
+  records: [...['unneeded_draft_input', 'ordinary_profile', 'dispute_or_required_logs', 'backup']
+    .map(name => ({ class: name, status: 'APPROVED', approved_days: 30,
+      ...(name === 'dispute_or_required_logs' ? { approved_trigger: 'DELETE_EXECUTION' } : {}),
+      legal_basis: 'Synthetic test basis only', deletion_action: 'Synthetic test action', access_roles: ['PRIVACY'] })),
+    ...['voice_raw', 'photo'].map(name => ({ class: name, status: 'NOT_ENABLED' }))]
+});
+
+async function deleteSyntheticHost(db: Database, key: string): Promise<void> {
+  const root = await mkdtemp(join(tmpdir(), 'irl-semantic-host-delete-'));
+  try {
+    const request = await createPrivacyRequest(db, 'host', { kind: 'DELETE' }, key);
+    await executePrivacyDeletionWithMarker(db, new FileDeletionMarkerStore(join(root, 'markers.jsonl')),
+      'operator:privacy', request.id, deletionPolicy);
+  } finally { await rm(root, { recursive: true, force: true }); }
+}
+
+async function venueOwnedBySyntheticHost(db: Database, key: string) {
+  await db.query("INSERT INTO users(id,wechat_openid) VALUES('host','semantic-private-host'),('p1','semantic-member')");
+  const draft = await createDraft(db, 'host', { ...input, venueName: '旧私密球馆' }, `${key}-draft`);
+  const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, `${key}-publish`);
+  await register(db, 'p1', event.id, event.version, `${key}-join`);
+  return event;
+}
+
+test('direct current fact rejects an old venue after its host is deleted and a new key sees the scrubbed venue', async () => {
+  const db = await createDatabase();
+  try {
+    const event = await venueOwnedBySyntheticHost(db, 'direct-venue');
+    const first = await askCurrentFact(db, 'p1', event.id, '活动场地在哪里？', 'direct-venue-old-key');
+    assert.equal(first.source, 'CURRENT_EVENT');
+    assert.match(first.answer, /旧私密球馆/);
+    await deleteSyntheticHost(db, 'direct-venue-delete');
+    await assert.rejects(() => askCurrentFact(db, 'p1', event.id, '活动场地在哪里？', 'direct-venue-old-key'),
+      { code: 'VERSION_CONFLICT' });
+    const fresh = await askCurrentFact(db, 'p1', event.id, '活动场地在哪里？', 'direct-venue-new-key');
+    assert.equal(fresh.source, 'CURRENT_EVENT');
+    assert.match(fresh.answer, /已隐藏集合地点/);
+    assert.doesNotMatch(fresh.answer, /旧私密球馆/);
+  } finally { await db.close(); }
+});
+
+test('direct current fact cannot return a venue scrubbed after its first transaction reads the rule', async () => {
+  const db = await createDatabase();
+  try {
+    const event = await venueOwnedBySyntheticHost(db, 'direct-venue-race');
+    let deletedBeforeReturn = false;
+    const raceDb: Database = {
+      query: (sql, params) => db.query(sql, params), close: () => db.close(),
+      transaction: async fn => {
+        const result = await db.transaction(fn);
+        if (!deletedBeforeReturn && result && typeof result === 'object' &&
+          'source' in result && result.source === 'CURRENT_EVENT') {
+          deletedBeforeReturn = true;
+          await deleteSyntheticHost(db, 'direct-venue-race-delete');
+        }
+        return result;
+      }
+    };
+    await assert.rejects(() => askCurrentFact(raceDb, 'p1', event.id, '活动场地在哪里？',
+      'direct-venue-race-key'), { code: 'VERSION_CONFLICT' });
+    assert.equal(deletedBeforeReturn, true);
+    const fresh = await askCurrentFact(db, 'p1', event.id, '活动场地在哪里？', 'direct-venue-race-fresh');
+    assert.match(fresh.answer, /已隐藏集合地点/);
+    assert.doesNotMatch(fresh.answer, /旧私密球馆/);
+  } finally { await db.close(); }
+});
+
+test('direct fact old key cannot replay a revoked approved announcement', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'direct-announcement-draft');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'direct-announcement-publish');
+    await register(db, 'p1', event.id, event.version, 'direct-announcement-join');
+    const content = await createContent(db, 'host', event.id, 'ANNOUNCEMENT',
+      '问：需要自带球拍吗？\n答：请自带私密球拍。', null, 'direct-announcement-content');
+    await moderateContent(db, 'ops', content.id, 'APPROVED', 'direct-announcement-approve');
+    const first = await askCurrentFact(db, 'p1', event.id, '需要自带球拍吗？', 'direct-announcement-old-key');
+    assert.equal(first.source, 'APPROVED_ANNOUNCEMENT');
+    assert.match(first.answer, /私密球拍/);
+    await db.query("UPDATE activity_content SET status='REJECTED' WHERE id=$1", [content.id]);
+    await assert.rejects(() => askCurrentFact(db, 'p1', event.id, '需要自带球拍吗？',
+      'direct-announcement-old-key'), { code: 'VERSION_CONFLICT' });
+  } finally { await db.close(); }
+});
+
+test('direct fact old key cannot replay an approved answer after its body is scrubbed', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'direct-answer-draft');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'direct-answer-publish');
+    await register(db, 'p1', event.id, event.version, 'direct-answer-join');
+    const unknown = await askCurrentFact(db, 'p1', event.id, '有停车场吗？', 'direct-answer-question');
+    const { rows: todos } = await db.query<{ question_content_id: string }>(
+      'SELECT question_content_id FROM activity_fact_todos WHERE id=$1', [unknown.todoId]);
+    await moderateContent(db, 'ops', todos[0]!.question_content_id, 'APPROVED', 'direct-answer-question-approve');
+    const content = await createContent(db, 'host', event.id, 'ANSWER',
+      '私密停车场在东门。', todos[0]!.question_content_id, 'direct-answer-content');
+    await moderateContent(db, 'ops', content.id, 'APPROVED', 'direct-answer-approve');
+    const first = await askCurrentFact(db, 'p1', event.id, '有停车场吗？', 'direct-answer-old-key');
+    assert.equal(first.source, 'APPROVED_ANSWER');
+    assert.match(first.answer, /私密停车场/);
+    await db.query("UPDATE activity_content SET body='[已移除的个人内容]' WHERE id=$1", [content.id]);
+    await assert.rejects(() => askCurrentFact(db, 'p1', event.id, '有停车场吗？',
+      'direct-answer-old-key'), { code: 'VERSION_CONFLICT' });
+  } finally { await db.close(); }
+});
+
+test('direct unknown fact old key still checks current event membership', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'direct-unknown-access-draft');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'direct-unknown-access-publish');
+    await register(db, 'p1', event.id, event.version, 'direct-unknown-access-join');
+    const first = await askCurrentFact(db, 'p1', event.id, '有停车场吗？', 'direct-unknown-access-old-key');
+    assert.equal(first.source, 'UNKNOWN');
+    assert.ok(first.todoId);
+    await db.query("UPDATE registrations SET status='CANCELLED' WHERE event_id=$1 AND user_id='p1'", [event.id]);
+    await assert.rejects(() => askCurrentFact(db, 'p1', event.id, '有停车场吗？',
+      'direct-unknown-access-old-key'), { code: 'FORBIDDEN' });
+  } finally { await db.close(); }
+});
+
+test('direct fact replay validates a malformed question before reading the cached result', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'direct-bad-replay-draft');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'direct-bad-replay-publish');
+    await register(db, 'p1', event.id, event.version, 'direct-bad-replay-join');
+    await askCurrentFact(db, 'p1', event.id, '活动几点开始？', 'direct-bad-replay-key');
+    await assert.rejects(() => askCurrentFact(db, 'p1', event.id, null as unknown as string,
+      'direct-bad-replay-key'), { code: 'BAD_REQUEST' });
+  } finally { await db.close(); }
+});
+
+test('semantic current fact rejects a stale venue on old-key replay after its host is deleted', async () => {
+  const db = await createDatabase();
+  try {
+    const event = await venueOwnedBySyntheticHost(db, 'semantic-venue-replay');
+    const first = await askSemanticCurrentFact(db, 'p1', event.id, '活动场地在哪里？', 'semantic-venue-old-key');
+    assert.equal(first.source, 'CURRENT_EVENT');
+    assert.match(first.answer, /旧私密球馆/);
+    await deleteSyntheticHost(db, 'semantic-venue-replay-delete');
+    await assert.rejects(() => askSemanticCurrentFact(db, 'p1', event.id, '活动场地在哪里？', 'semantic-venue-old-key'),
+      { code: 'VERSION_CONFLICT' });
+    const fresh = await askSemanticCurrentFact(db, 'p1', event.id, '活动场地在哪里？', 'semantic-venue-new-key');
+    assert.match(fresh.answer, /已隐藏集合地点/);
+    assert.doesNotMatch(fresh.answer, /旧私密球馆/);
+  } finally { await db.close(); }
+});
+
+test('semantic final write revalidates a venue scrubbed after the direct rule answer returned', async () => {
+  const db = await createDatabase();
+  try {
+    const event = await venueOwnedBySyntheticHost(db, 'semantic-venue-race');
+    let currentFactTransactions = 0;
+    let deletedBeforeSemanticWrite = false;
+    const raceDb: Database = {
+      query: (sql, params) => db.query(sql, params), close: () => db.close(),
+      transaction: async fn => {
+        const result = await db.transaction(fn);
+        if (result && typeof result === 'object' && 'source' in result && result.source === 'CURRENT_EVENT') {
+          currentFactTransactions++;
+          if (!deletedBeforeSemanticWrite && currentFactTransactions === 2) {
+            deletedBeforeSemanticWrite = true;
+            await deleteSyntheticHost(db, 'semantic-venue-race-delete');
+          }
+        }
+        return result;
+      }
+    };
+    const answer = await askSemanticCurrentFact(raceDb, 'p1', event.id, '活动场地在哪里？',
+      'semantic-venue-race-key');
+    assert.equal(deletedBeforeSemanticWrite, true);
+    assert.equal(currentFactTransactions >= 2, true);
+    assert.equal(answer.source, 'CURRENT_EVENT');
+    assert.match(answer.answer, /已隐藏集合地点/);
+    assert.doesNotMatch(answer.answer, /旧私密球馆/);
+    const { rows } = await db.query<{ status: string; result: unknown }>(
+      "SELECT status,result FROM ai_semantic_requests WHERE request_key='semantic-venue-race-key'");
+    assert.equal(rows[0]?.status, 'COMPLETED');
+    assert.doesNotMatch(JSON.stringify(rows), /旧私密球馆/);
+    const fresh = await askSemanticCurrentFact(db, 'p1', event.id, '活动场地在哪里？', 'semantic-venue-race-fresh');
+    assert.match(fresh.answer, /已隐藏集合地点/);
+  } finally { await db.close(); }
+});
 
 test('semantic candidate only selects an approved current FAQ and returns its exact reviewed answer', async () => {
   const db = await createDatabase();
@@ -77,6 +271,173 @@ test('an approved source becoming stale during the model call cannot be returned
   } finally { await db.close(); }
 });
 
+test('semantic answer does not return an announcement revoked after source validation but before persistence', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'final-check-draft');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'final-check-publish');
+    await register(db, 'p1', event.id, event.version, 'final-check-join');
+    const approved = await createContent(db, 'host', event.id, 'ANNOUNCEMENT',
+      '问：需要自带球拍吗？\n答：请自带球拍。', null, 'final-check-faq');
+    await moderateContent(db, 'ops', approved.id, 'APPROVED', 'final-check-approve');
+    const provider: SemanticFactProvider = { estimateUpperBoundFen: () => 5,
+      suggest: async () => withFixture({ sourceContentId: approved.id, eventVersion: event.version, confidence: 0.99 }) };
+    let revokedBetweenTransactions = false;
+    const raceDb: Database = {
+      query: (sql, params) => db.query(sql, params), close: () => db.close(),
+      transaction: async fn => {
+        const result = await db.transaction(fn);
+        if (!revokedBetweenTransactions && result && typeof result === 'object' &&
+          'source' in result && result.source === 'APPROVED_ANNOUNCEMENT') {
+          revokedBetweenTransactions = true;
+          await db.query("UPDATE activity_content SET status='REJECTED' WHERE id=$1", [approved.id]);
+        }
+        return result;
+      }
+    };
+    const answer = await askSemanticCurrentFact(raceDb, 'p1', event.id, '要自带球拍吗？',
+      'final-check-question', provider, { budgetFen: 10, environment: 'test' });
+    assert.equal(revokedBetweenTransactions, true);
+    assert.equal(answer.source, 'UNKNOWN');
+    assert.match(answer.answer, /尚未确认/);
+    assert.ok(answer.todoId);
+    const { rows } = await db.query<{ status: string; known_cost_fen: number; cost_status: string }>(
+      "SELECT status,known_cost_fen,cost_status FROM ai_semantic_requests WHERE request_key='final-check-question'");
+    assert.deepEqual(rows, [{ status: 'COMPLETED', known_cost_fen: 5, cost_status: 'KNOWN' }]);
+  } finally { await db.close(); }
+});
+
+test('semantic answer does not return an old event version after source validation but before persistence', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'final-version-draft');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'final-version-publish');
+    await register(db, 'p1', event.id, event.version, 'final-version-join');
+    const approved = await createContent(db, 'host', event.id, 'ANNOUNCEMENT',
+      '问：需要自带球拍吗？\n答：请自带球拍。', null, 'final-version-faq');
+    await moderateContent(db, 'ops', approved.id, 'APPROVED', 'final-version-approve');
+    const provider: SemanticFactProvider = { estimateUpperBoundFen: () => 5,
+      suggest: async () => withFixture({ sourceContentId: approved.id, eventVersion: event.version, confidence: 0.99 }) };
+    let changedBetweenTransactions = false;
+    const raceDb: Database = {
+      query: (sql, params) => db.query(sql, params), close: () => db.close(),
+      transaction: async fn => {
+        const result = await db.transaction(fn);
+        if (!changedBetweenTransactions && result && typeof result === 'object' &&
+          'source' in result && result.source === 'APPROVED_ANNOUNCEMENT') {
+          changedBetweenTransactions = true;
+          await changeApprovedInvite(db, 'host', event.id, event.version,
+            { title: '新版活动规则' }, 'final-version-change');
+        }
+        return result;
+      }
+    };
+    const answer = await askSemanticCurrentFact(raceDb, 'p1', event.id, '要自带球拍吗？',
+      'final-version-question', provider, { budgetFen: 10, environment: 'test' });
+    assert.equal(changedBetweenTransactions, true);
+    assert.equal(answer.source, 'UNKNOWN');
+    assert.match(answer.answer, /尚未确认/);
+    assert.ok(answer.todoId);
+    assert.equal(answer.eventVersion, event.version + 1);
+  } finally { await db.close(); }
+});
+
+test('replaying a semantic approved answer after its body is scrubbed does not reveal the old body', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'answer-replay-draft');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'answer-replay-publish');
+    await register(db, 'p1', event.id, event.version, 'answer-replay-join');
+    const unknown = await askCurrentFact(db, 'p1', event.id, '有停车场吗？', 'answer-replay-ask');
+    const { rows: todos } = await db.query<{ question_content_id: string }>(
+      'SELECT question_content_id FROM activity_fact_todos WHERE id=$1', [unknown.todoId]);
+    await moderateContent(db, 'ops', todos[0]!.question_content_id, 'APPROVED', 'answer-replay-question-approve');
+    const answerContent = await createContent(db, 'host', event.id, 'ANSWER',
+      '停车场入口在东门。', todos[0]!.question_content_id, 'answer-replay-content');
+    await moderateContent(db, 'ops', answerContent.id, 'APPROVED', 'answer-replay-content-approve');
+    const first = await askSemanticCurrentFact(db, 'p1', event.id, '有停车场吗？', 'answer-replay-key');
+    assert.equal(first.source, 'APPROVED_ANSWER');
+    assert.match(first.answer, /停车场入口在东门/);
+    await db.query("UPDATE activity_content SET body='[已移除的个人内容]' WHERE id=$1", [answerContent.id]);
+    await assert.rejects(() => askSemanticCurrentFact(db, 'p1', event.id, '有停车场吗？', 'answer-replay-key'),
+      { code: 'VERSION_CONFLICT' });
+  } finally { await db.close(); }
+});
+
+test('semantic fallback does not persist an approved answer scrubbed just before the result write', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'answer-final-draft');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'answer-final-publish');
+    await register(db, 'p1', event.id, event.version, 'answer-final-join');
+    const unknown = await askCurrentFact(db, 'p1', event.id, '有停车场吗？', 'answer-final-ask');
+    const { rows: todos } = await db.query<{ question_content_id: string }>(
+      'SELECT question_content_id FROM activity_fact_todos WHERE id=$1', [unknown.todoId]);
+    await moderateContent(db, 'ops', todos[0]!.question_content_id, 'APPROVED', 'answer-final-question-approve');
+    const answerContent = await createContent(db, 'host', event.id, 'ANSWER',
+      '停车场入口在东门。', todos[0]!.question_content_id, 'answer-final-content');
+    await moderateContent(db, 'ops', answerContent.id, 'APPROVED', 'answer-final-content-approve');
+    let scrubbedBetweenTransactions = false;
+    const raceDb: Database = {
+      query: (sql, params) => db.query(sql, params), close: () => db.close(),
+      transaction: async fn => {
+        const result = await db.transaction(fn);
+        if (!scrubbedBetweenTransactions && result && typeof result === 'object' &&
+          'source' in result && result.source === 'APPROVED_ANSWER') {
+          scrubbedBetweenTransactions = true;
+          await db.query("UPDATE activity_content SET body='[已移除的个人内容]' WHERE id=$1", [answerContent.id]);
+        }
+        return result;
+      }
+    };
+    await assert.rejects(() => askSemanticCurrentFact(raceDb, 'p1', event.id, '有停车场吗？', 'answer-final-key'),
+      { code: 'VERSION_CONFLICT' });
+    assert.equal(scrubbedBetweenTransactions, true);
+    const { rows } = await db.query<{ status: string; result: unknown }>(
+      "SELECT status,result FROM ai_semantic_requests WHERE request_key='answer-final-key'");
+    assert.equal(rows[0]?.status, 'UNKNOWN');
+    assert.doesNotMatch(JSON.stringify(rows), /停车场入口在东门/);
+  } finally { await db.close(); }
+});
+
+test('a second source race leaves semantic cost recorded for operator reconciliation', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'double-race-draft');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'double-race-publish');
+    await register(db, 'p1', event.id, event.version, 'double-race-join');
+    const approved = await createContent(db, 'host', event.id, 'ANNOUNCEMENT',
+      '问：需要自带球拍吗？\n答：请自带球拍。', null, 'double-race-faq');
+    await moderateContent(db, 'ops', approved.id, 'APPROVED', 'double-race-approve');
+    const provider: SemanticFactProvider = { estimateUpperBoundFen: () => 5,
+      suggest: async () => withFixture({ sourceContentId: approved.id, eventVersion: event.version, confidence: 0.99 }) };
+    let races = 0;
+    const raceDb: Database = {
+      query: (sql, params) => db.query(sql, params), close: () => db.close(),
+      transaction: async fn => {
+        const result = await db.transaction(fn);
+        if (result && typeof result === 'object' && 'source' in result && races === 0 &&
+          result.source === 'APPROVED_ANNOUNCEMENT') {
+          races++;
+          await db.query("UPDATE activity_content SET status='REJECTED' WHERE id=$1", [approved.id]);
+        } else if (result && typeof result === 'object' && 'source' in result && races === 1 &&
+          result.source === 'UNKNOWN') {
+          races++;
+          await changeApprovedInvite(db, 'host', event.id, event.version,
+            { title: '再次更新活动规则' }, 'double-race-change');
+        }
+        return result;
+      }
+    };
+    await assert.rejects(() => askSemanticCurrentFact(raceDb, 'p1', event.id, '要自带球拍吗？',
+      'double-race-key', provider, { budgetFen: 10, environment: 'test' }), { code: 'VERSION_CONFLICT' });
+    assert.equal(races, 2);
+    const { rows } = await db.query<{ status: string; known_cost_fen: number; cost_status: string; fallback_reason: string }>(
+      "SELECT status,known_cost_fen,cost_status,fallback_reason FROM ai_semantic_requests WHERE request_key='double-race-key'");
+    assert.deepEqual(rows, [{ status: 'UNKNOWN', known_cost_fen: 5, cost_status: 'KNOWN', fallback_reason: 'UNEXPECTED_ERROR' }]);
+  } finally { await db.close(); }
+});
+
 test('semantic answer replays the same durable result without another model call and rejects a changed question', async () => {
   const db = await createDatabase();
   try {
@@ -106,6 +467,28 @@ test('semantic answer replays the same durable result without another model call
   } finally { await db.close(); }
 });
 
+test('semantic old key rejects an announcement whose question changed while its answer stayed the same', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'replay-faq-question-draft');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'replay-faq-question-publish');
+    await register(db, 'p1', event.id, event.version, 'replay-faq-question-join');
+    const approved = await createContent(db, 'host', event.id, 'ANNOUNCEMENT',
+      '问：需要自带球拍吗？\n答：请自带球拍。', null, 'replay-faq-question-content');
+    await moderateContent(db, 'ops', approved.id, 'APPROVED', 'replay-faq-question-approve');
+    const provider: SemanticFactProvider = { estimateUpperBoundFen: () => 5,
+      suggest: async () => withFixture({ sourceContentId: approved.id,
+        eventVersion: event.version, confidence: 0.99 }) };
+    const first = await askSemanticCurrentFact(db, 'p1', event.id, '要自带球拍吗？',
+      'replay-faq-question-key', provider, { budgetFen: 10, environment: 'test' });
+    assert.equal(first.source, 'APPROVED_ANNOUNCEMENT');
+    await db.query('UPDATE activity_content SET body=$2 WHERE id=$1',
+      [approved.id, '问：活动是否收费？\n答：请自带球拍。']);
+    await assert.rejects(() => askSemanticCurrentFact(db, 'p1', event.id, '要自带球拍吗？',
+      'replay-faq-question-key'), { code: 'VERSION_CONFLICT' });
+  } finally { await db.close(); }
+});
+
 test('fallback result is durable under the same semantic key without a later model call', async () => {
   const db = await createDatabase();
   try {
@@ -120,6 +503,22 @@ test('fallback result is durable under the same semantic key without a later mod
     assert.equal(calls, 0);
     await assert.rejects(() => askSemanticCurrentFact(db, 'p1', event.id, '要自带球拍吗？', 'fallback-replay-key', provider, { budgetFen: 10, environment: 'test' }),
       { code: 'IDEMPOTENCY_MISMATCH' });
+  } finally { await db.close(); }
+});
+
+test('an unknown answer replays during review of a newer event version', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'pending-unknown-draft');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'pending-unknown-publish');
+    await register(db, 'p1', event.id, event.version, 'pending-unknown-join');
+    const changed = await changeEvent(db, 'host', event.id, event.version,
+      { title: '待审的新标题' }, 'pending-unknown-change');
+    assert.equal(changed.reviewStatus, 'PENDING');
+    const first = await askSemanticCurrentFact(db, 'p1', event.id, '有停车场吗？', 'pending-unknown-key');
+    assert.equal(first.source, 'UNKNOWN');
+    assert.equal(first.eventVersion, changed.version);
+    assert.deepEqual(await askSemanticCurrentFact(db, 'p1', event.id, '有停车场吗？', 'pending-unknown-key'), first);
   } finally { await db.close(); }
 });
 

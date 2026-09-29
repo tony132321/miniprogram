@@ -5,12 +5,16 @@ import { request as httpRequest } from 'node:http';
 import { createDatabase } from '../src/db.ts';
 import type { Database } from '../src/db.ts';
 import { createApp } from '../src/server.ts';
-import { createDraft } from '../src/events.ts';
+import { createDraft, getEvent } from '../src/events.ts';
+import { createPrivacyRequest } from '../src/operations.ts';
+import { executePrivacyDeletionSafeguards } from '../src/privacy-deletion.ts';
+import { deidentifySharedActivity } from '../src/privacy-shared-deidentification.ts';
 import { approveInviteById, publishApprovedInvite } from './helpers.ts';
 import { confirmEvent, createCheckInToken } from '../src/lifecycle.ts';
 import { cancelRegistration } from '../src/registrations.ts';
 import { register } from './helpers.ts';
 import { runDueJobs } from '../src/jobs.ts';
+import { recordShareIntent } from '../src/sharing.ts';
 
 const input = {
   title: '周六羽毛球', type: 'badminton', startAt: '2027-01-02T12:00:00.000Z',
@@ -431,6 +435,116 @@ test('private event requires invite token, and mutations require idempotency', a
     assert.equal((await f.request(`/events/${draft.body.id}/registrations`, 'other')).status, 403);
     assert.equal((await f.request(`/events/${draft.body.id}/registrations`, 'host')).body.items.length, 3);
   } finally { await f.close(); }
+});
+
+test('invite card rejects an invitation revoked after its first lookup', async () => {
+  let invalidated = false;
+  const f = await fixture(db => ({
+    ...db,
+    query: async <T extends Record<string, unknown> = Record<string, unknown>>(
+      sql: string, params: unknown[] = []): Promise<{ rows: T[] }> => {
+      const result = await db.query<T>(sql, params);
+      if (!invalidated && sql.includes('FROM events WHERE invite_token=$1') && result.rows.length) {
+        const eventId = result.rows[0]?.id;
+        if (typeof eventId !== 'string') throw new Error('invite lookup did not return an event ID');
+        invalidated = true;
+        await db.query('UPDATE events SET invite_token=NULL,invite_expires_at=NULL WHERE id=$1',
+          [eventId]);
+      }
+      return result;
+    }
+  }));
+  try {
+    const draft = await createDraft(f.db, 'host', { ...input, title: 'private revoked card' }, 'late-card-draft');
+    const event = await publishApprovedInvite(f.db, 'host', draft.id, draft.version, 'late-card-publish');
+    const opened = await f.request(`/i/${event.inviteToken}`, 'visitor');
+    assert.equal(opened.status, 404);
+    assert.doesNotMatch(JSON.stringify(opened.body), /private revoked card/);
+  } finally { await f.close(); }
+});
+
+test('invite attribution is recorded only with a valid card in the same opening transaction', async () => {
+  let foundInvite = false;
+  let revoked = false;
+  const f = await fixture(db => ({
+    ...db,
+    query: async <T extends Record<string, unknown> = Record<string, unknown>>(
+      sql: string, params: unknown[] = []): Promise<{ rows: T[] }> => {
+        const result = await db.query<T>(sql, params);
+        if (sql.startsWith('SELECT id FROM events WHERE invite_token=$1') && result.rows.length) foundInvite = true;
+        return result;
+      },
+    transaction: async fn => {
+      const result = await db.transaction(fn);
+      if (foundInvite && !revoked) {
+        revoked = true;
+        await db.query('UPDATE events SET invite_token=NULL,invite_expires_at=NULL WHERE id=$1', [eventId]);
+      }
+      return result;
+    }
+  }));
+  let eventId = '';
+  try {
+    const draft = await createDraft(f.db, 'host', { ...input, title: 'attributed card' }, 'atomic-card-draft');
+    const event = await publishApprovedInvite(f.db, 'host', draft.id, draft.version, 'atomic-card-publish');
+    eventId = event.id;
+    const source = 'a'.repeat(32);
+    await recordShareIntent(f.db, 'host', event.id, event.version, source, 'atomic-card-source');
+    const opened = await f.request(`/i/${event.inviteToken}?source=${source}`, 'visitor');
+    const { rows } = await f.db.query<{ n: number }>(
+      'SELECT count(*)::int AS n FROM share_opens WHERE event_id=$1', [event.id]);
+    assert.equal(revoked, true);
+    assert.ok((opened.status === 200 && rows[0]?.n === 1) ||
+      (opened.status === 404 && rows[0]?.n === 0),
+    `card status ${opened.status} must agree with attributed opens ${rows[0]?.n}`);
+  } finally { await f.close(); }
+});
+
+test('member event detail uses a fresh locked read after same-version privacy scrub', async () => {
+  const db = await createDatabase();
+  try {
+    await db.query("INSERT INTO users(id,wechat_openid) VALUES('privacy-host','privacy-host-openid'),('privacy-member','privacy-member-openid')");
+    const draft = await createDraft(db, 'privacy-host', {
+      ...input, title: 'private race title', venueName: 'private race venue', cancellationRule: 'private race rule'
+    }, 'privacy-detail-draft');
+    const event = await publishApprovedInvite(db, 'privacy-host', draft.id, draft.version, 'privacy-detail-publish');
+    await db.query(`INSERT INTO registrations(id,event_id,user_id,status)
+      VALUES('privacy-detail-member',$1,'privacy-member','CONFIRMED')`, [event.id]);
+    const request = await createPrivacyRequest(db, 'privacy-host', { kind: 'DELETE' }, 'privacy-detail-delete');
+    const policy = JSON.stringify({
+      schema: 'project-irl/retention-policy-v1', status: 'OWNER_APPROVED_FOR_REAL_DATA',
+      approved_by: 'synthetic-test-owner', approved_at: '2026-09-27T00:00:00.000Z',
+      records: [...['unneeded_draft_input', 'ordinary_profile', 'dispute_or_required_logs', 'backup']
+        .map(name => ({ class: name, status: 'APPROVED', approved_days: 30,
+          ...(name === 'dispute_or_required_logs' ? { approved_trigger: 'DELETE_EXECUTION' } : {}),
+          legal_basis: 'Synthetic test basis only', deletion_action: 'Synthetic test action', access_roles: ['PRIVACY'] })),
+        ...['voice_raw', 'photo'].map(name => ({ class: name, status: 'NOT_ENABLED' }))]
+    });
+    await executePrivacyDeletionSafeguards(db, 'operator:privacy', request.id, policy);
+    let scrubbed = false;
+    const scrub = async () => {
+      await deidentifySharedActivity(db, 'operator:privacy', request.id, policy);
+      scrubbed = true;
+    };
+    const interleaved: Database = {
+      ...db,
+      query: async <T extends Record<string, unknown> = Record<string, unknown>>(
+        sql: string, params: unknown[] = []): Promise<{ rows: T[] }> => {
+        const result = await db.query<T>(sql, params);
+        if (!scrubbed && sql === 'SELECT * FROM events WHERE id=$1' && params[0] === event.id) await scrub();
+        return result;
+      },
+      transaction: async fn => {
+        if (!scrubbed) await scrub();
+        return db.transaction(fn);
+      }
+    };
+    const visible = await getEvent(interleaved, 'privacy-member', event.id);
+    assert.equal(scrubbed, true);
+    assert.equal(visible.version, event.version);
+    assert.equal(visible.payload.title, '已注销账号的活动');
+    assert.doesNotMatch(JSON.stringify(visible), /private race title|private race venue|private race rule/);
+  } finally { await db.close(); }
 });
 
 test('offer decline HTTP route advances the next waiting member and is owner-only', async () => {

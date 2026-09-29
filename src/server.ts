@@ -24,7 +24,7 @@ import { setConsent, consentNotice, markNotificationOpened, markAllNotifications
   reconcileUnknownNotification, type NotificationLookupAdapter } from './notifications.ts';
 import { listNotificationFollowups, listNotificationFollowupHistory, recordNotificationFollowup } from './notification-followups.ts';
 import { askCurrentFact, createContent, listContent, listMyRejectedContent, listFactTodos, listPendingContent, moderateContent } from './collaboration.ts';
-import { recordShareIntent, recordAttributedOpen, getShareMetrics } from './sharing.ts';
+import { recordShareIntent, recordAttributedOpenInTransaction, getShareMetrics } from './sharing.ts';
 import { createPersonalExportTicket, downloadPersonalExport, exportPersonalData } from './privacy.ts';
 import { executePrivacyDeletionWithMarker, type DeletionMarkerStore } from './privacy-deletion-journal.ts';
 import { getPrivacyDeletionDisposition } from './privacy-deletion.ts';
@@ -224,26 +224,33 @@ export function createApp(db: Database, options: AppOptions) {
       if (path.startsWith('/i/') && method === 'GET') {
         await consumeRateLimit(db, `invite-ip:${peerScope(req, trustedProxyIps)}`, 60, 60_000);
         const token = path.slice(3);
-        const { rows } = await db.query<{ id: string; status: string; payload: Record<string, unknown>; version: number;
-          recruiting: boolean; review_status: string }>("SELECT id,status,payload,version,recruiting,review_status FROM events WHERE invite_token=$1 AND invite_expires_at>now() AND status<>'DRAFT' AND review_status='APPROVED'", [token]);
-        const row = rows[0];
-        if (!row) throw new AppError('NOT_FOUND', '邀请已失效', 404);
-        if (row.payload.visibility === 'PUBLIC' && !(await publicRecruitmentOpen(db, false, row.payload)))
-          throw new AppError('NOT_FOUND', '邀请已失效', 404);
+        const { rows: candidates } = await db.query<{ id: string }>("SELECT id FROM events WHERE invite_token=$1 AND invite_expires_at>now() AND status<>'DRAFT' AND review_status='APPROVED'", [token]);
+        if (!candidates[0]) throw new AppError('NOT_FOUND', '邀请已失效', 404);
         const visitor = await actorFrom(req, db, options).catch(() => null);
-        await recordAttributedOpen(db, visitor, row.id, token, requestUrl.searchParams.get('source'));
-        const payload = { title: row.payload.title, startAt: row.payload.startAt, endAt: row.payload.endAt,
-          timeZone: row.payload.timeZone, city: row.payload.city, venueName: row.payload.venueName,
-          venueStatus: row.payload.venueStatus, feeMode: row.payload.feeMode, feeCapFen: row.payload.feeCapFen,
-          cancellationRule: row.payload.cancellationRule, approvalMode: row.payload.approvalMode,
-          visibility: row.payload.visibility,
-          skillLevel: row.payload.skillLevel };
-        return send(res, 200, { id: row.id, status: row.status, version: row.version, recruiting: row.recruiting,
-          aiSuggestionGenerated: await hasGeneratedAiSuggestion(db, row.id),
-          reviewStatus: row.review_status, riskPaused: Boolean(await getActiveEventHold(db, row.id)), payload,
-          title: row.payload.title,
-          startAt: row.payload.startAt, endAt: row.payload.endAt, city: row.payload.city, venueName: row.payload.venueName,
-          feeMode: row.payload.feeMode, feeCapFen: row.payload.feeCapFen, cancellationRule: row.payload.cancellationRule });
+        const card = await db.transaction(async tx => {
+          // Privacy deletion and invitation revocation update this event row.
+          // Keep it locked through every asynchronous card field read.
+          const { rows } = await tx.query<{ id: string; status: string; payload: Record<string, unknown>; version: number;
+            recruiting: boolean; review_status: string }>("SELECT id,status,payload,version,recruiting,review_status FROM events WHERE invite_token=$1 AND invite_expires_at>now() AND status<>'DRAFT' AND review_status='APPROVED' FOR SHARE", [token]);
+          const row = rows[0];
+          if (!row) throw new AppError('NOT_FOUND', '邀请已失效', 404);
+          if (row.payload.visibility === 'PUBLIC' && !(await publicRecruitmentOpen(tx, false, row.payload)))
+            throw new AppError('NOT_FOUND', '邀请已失效', 404);
+          await recordAttributedOpenInTransaction(tx, visitor, row.id, token, requestUrl.searchParams.get('source'));
+          const payload = { title: row.payload.title, startAt: row.payload.startAt, endAt: row.payload.endAt,
+            timeZone: row.payload.timeZone, city: row.payload.city, venueName: row.payload.venueName,
+            venueStatus: row.payload.venueStatus, feeMode: row.payload.feeMode, feeCapFen: row.payload.feeCapFen,
+            cancellationRule: row.payload.cancellationRule, approvalMode: row.payload.approvalMode,
+            visibility: row.payload.visibility,
+            skillLevel: row.payload.skillLevel };
+          return { id: row.id, status: row.status, version: row.version, recruiting: row.recruiting,
+            aiSuggestionGenerated: await hasGeneratedAiSuggestion(tx, row.id),
+            reviewStatus: row.review_status, riskPaused: Boolean(await getActiveEventHold(tx, row.id)), payload,
+            title: row.payload.title,
+            startAt: row.payload.startAt, endAt: row.payload.endAt, city: row.payload.city, venueName: row.payload.venueName,
+            feeMode: row.payload.feeMode, feeCapFen: row.payload.feeCapFen, cancellationRule: row.payload.cancellationRule };
+        });
+        return send(res, 200, card);
       }
       let actor: string;
       if (path.startsWith('/ops/') && (options.environment === 'production' || req.headers.authorization?.startsWith('Bearer '))) {

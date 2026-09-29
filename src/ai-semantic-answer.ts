@@ -1,7 +1,8 @@
 import type { Database } from './db.ts';
 import { AppError } from './errors.ts';
 import { buildAiEventContext, type AiEventContext } from './ai-context.ts';
-import { askCurrentFact, requireMember, type FactAnswer } from './collaboration.ts';
+import { answerFromCurrentEvent, askCurrentFact, currentApprovedAnswerBody,
+  requireMember, type FactAnswer } from './collaboration.ts';
 import { parseAnnouncementFaq } from './announcement-faq.ts';
 import { redactAiContactText } from './ai-data-minimization.ts';
 import { createHash, randomUUID } from 'node:crypto';
@@ -88,52 +89,90 @@ export async function askSemanticCurrentFact(db: Database, actor: string, eventI
       const { rows: locked } = await tx.query<{ version: number }>('SELECT version FROM events WHERE id=$1 FOR SHARE', [eventId]);
       const event = await requireMember(tx, actor, eventId);
       const sourceVersion = event.visibleContentVersion ?? event.version;
-      if (locked[0]?.version !== event.version || prior.result!.eventVersion !== sourceVersion ||
+      const replayVersion = prior.result!.source === 'UNKNOWN' ? event.version : sourceVersion;
+      if (locked[0]?.version !== event.version || prior.result!.eventVersion !== replayVersion ||
         !['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(event.status)) return false;
+      if (prior.result!.source === 'APPROVED_ANSWER') {
+        const body = await currentApprovedAnswerBody(tx, eventId, sourceVersion, question, prior.result!.todoId);
+        const label = sourceVersion === event.version ? `当前版本 ${event.version}` : `已审核版本 ${sourceVersion}`;
+        return body !== undefined && prior.result!.answer === `${label}，主办方已审核回答：${body}`;
+      }
+      if (prior.result!.source === 'CURRENT_EVENT')
+        return answerFromCurrentEvent(question.trim(), event) === prior.result!.answer;
       if (prior.result!.source !== 'APPROVED_ANNOUNCEMENT') return true;
       const { rows } = await tx.query<{ body: string }>(`SELECT body FROM activity_content WHERE id=$1 AND event_id=$2
         AND event_version=$3 AND kind='ANNOUNCEMENT' AND status='APPROVED'`,
       [prior.result!.sourceContentId, eventId, sourceVersion]);
       const faq = rows[0] && parseAnnouncementFaq(rows[0].body);
       const label = sourceVersion === event.version ? `当前版本 ${event.version}` : `已审核版本 ${sourceVersion}`;
-      return !!faq && prior.result!.answer === `${label}，已审核公告：${faq.answer}`;
+      return !!faq && similarQuestion(question, faq.question) &&
+        prior.result!.answer === `${label}，已审核公告：${faq.answer}`;
     });
     if (!stillCurrent) throw new AppError('VERSION_CONFLICT', '事实来源已更新，请使用新请求键重新提问', 409);
     return prior.result;
   }
   const complete = async (answer: FactAnswer, costFen = 0, costStatus: CostStatus = 'KNOWN',
-    evidence: ProviderEvidence[] = [], fallbackReason?: string): Promise<FactAnswer> => {
+    evidence: ProviderEvidence[] = [], fallbackReason?: string, retriedAfterStaleSource = false): Promise<FactAnswer> => {
     const persisted = await db.transaction(async tx => {
       if (!(await aiActorActive(tx, actor))) {
         await tx.query(`UPDATE ai_semantic_requests SET status='UNKNOWN',known_cost_fen=$4,cost_status=$5,
           provider_evidence=$6::jsonb,fallback_reason='ACCOUNT_DELETION',finished_at=clock_timestamp()
           WHERE actor_id=$1 AND event_id=$2 AND request_key=$3 AND status='STARTED'`,
         [actor, eventId, key, costFen, costStatus, JSON.stringify(evidence)]);
-        return false;
+        return 'ACCOUNT_DISABLED' as const;
       }
+      // Content can be revoked or deidentified between the provider validation
+      // and this write. Lock it before the event to match content writers.
+      const { rows: source } = answer.source === 'APPROVED_ANNOUNCEMENT'
+        ? await tx.query<{ body: string }>(`SELECT body FROM activity_content WHERE id=$1 AND event_id=$2
+          AND event_version=$3 AND kind='ANNOUNCEMENT' AND status='APPROVED' FOR SHARE`,
+        [answer.sourceContentId, eventId, answer.eventVersion]) : { rows: [] as Array<{ body: string }> };
+      const approvedAnswerBody = answer.source === 'APPROVED_ANSWER'
+        ? await currentApprovedAnswerBody(tx, eventId, answer.eventVersion, question, answer.todoId, true) : undefined;
+      const { rows: locked } = await tx.query<{ version: number }>('SELECT version FROM events WHERE id=$1 FOR SHARE NOWAIT', [eventId]);
+      const current = await requireMember(tx, actor, eventId);
+      const sourceVersion = current.visibleContentVersion ?? current.version;
+      const faq = source[0] && parseAnnouncementFaq(source[0].body);
+      const label = sourceVersion === current.version ? `当前版本 ${current.version}` : `已审核版本 ${sourceVersion}`;
+      const stale = locked[0]?.version !== current.version ||
+        !['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(current.status) ||
+        answer.eventVersion !== (answer.source === 'UNKNOWN' ? current.version : sourceVersion) ||
+        (answer.source === 'CURRENT_EVENT' && answerFromCurrentEvent(question.trim(), current) !== answer.answer) ||
+        (answer.source === 'APPROVED_ANNOUNCEMENT' && (
+          (!retriedAfterStaleSource && current.version !== context.event.version) ||
+          !faq || !similarQuestion(question, faq.question) ||
+          answer.answer !== `${label}，已审核公告：${faq.answer}`)) ||
+        (answer.source === 'APPROVED_ANSWER' && (
+          approvedAnswerBody === undefined || answer.answer !== `${label}，主办方已审核回答：${approvedAnswerBody}`));
+      if (stale) return 'STALE_SOURCE' as const;
       const { rows } = await tx.query(`UPDATE ai_semantic_requests SET status='COMPLETED',result=$4::jsonb,
       known_cost_fen=$5,cost_status=$6,provider_evidence=$7::jsonb,fallback_reason=$8,finished_at=clock_timestamp()
       WHERE actor_id=$1 AND event_id=$2 AND request_key=$3 AND request_hash=$9 AND status='STARTED' RETURNING request_key`,
     [actor, eventId, key, JSON.stringify(answer), costFen, costStatus, JSON.stringify(evidence), fallbackReason ?? null, requestHash]);
       if (!rows.length) throw new AppError('AI_REQUEST_UNCERTAIN', '事实建议结果未能持久化，请人工核查', 409);
-      return true;
+      return 'COMPLETED' as const;
     });
-    if (!persisted) throw new AppError('ACCOUNT_DISABLED', '账号当前不可使用或注销申请处理中', 403);
+    if (persisted === 'ACCOUNT_DISABLED') throw new AppError('ACCOUNT_DISABLED', '账号当前不可使用或注销申请处理中', 403);
+    if (persisted === 'STALE_SOURCE') {
+      if (retriedAfterStaleSource) throw new AppError('VERSION_CONFLICT', '事实来源已更新，请使用新请求键重新提问', 409);
+      return complete(await fallback(true), costFen, costStatus, evidence, fallbackReason ?? 'UNVERIFIED_SOURCE', true);
+    }
     return answer;
   };
-  const fallback = () => askCurrentFact(db, actor, eventId, question, reservation.fallbackKey!);
+  const fallback = (freshKey = false) => askCurrentFact(db, actor, eventId, question,
+    freshKey ? randomUUID() : reservation.fallbackKey!);
   let observedCostFen = 0;
   let observedCostStatus: CostStatus = 'UNKNOWN';
   let observedEvidence: ProviderEvidence[] = [];
   try {
-    if (!provider || !context.announcements.length) return complete(await fallback(), 0, 'KNOWN', [], 'UNAVAILABLE');
-    if (reservation.available === 0) return complete(await fallback(), 0, 'KNOWN', [], 'BUDGET');
+    if (!provider || !context.announcements.length) return await complete(await fallback(), 0, 'KNOWN', [], 'UNAVAILABLE');
+    if (reservation.available === 0) return await complete(await fallback(), 0, 'KNOWN', [], 'BUDGET');
     const providerQuestion = redactAiContactText(question.trim());
     let bound: number;
     try { bound = provider.estimateUpperBoundFen(providerQuestion, context); }
-    catch { return complete(await fallback(), 0, 'KNOWN', [], 'BUDGET'); }
+    catch { return await complete(await fallback(), 0, 'KNOWN', [], 'BUDGET'); }
     if (!Number.isSafeInteger(bound) || bound < 0 || bound > reservation.available)
-      return complete(await fallback(), 0, 'KNOWN', [], 'BUDGET');
+      return await complete(await fallback(), 0, 'KNOWN', [], 'BUDGET');
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), deadlineMs);
     let raw: unknown;
@@ -143,27 +182,27 @@ export async function askSemanticCurrentFact(db: Database, actor: string, eventI
         new Promise<never>((_resolve, reject) => controller.signal.addEventListener('abort', () => {
           timedOut = true; reject(new Error('semantic deadline'));
         }, { once: true }))]);
-    } catch { return complete(await fallback(), 0, 'UNKNOWN', [], timedOut ? 'TIMEOUT' : 'PROVIDER_ERROR'); }
+    } catch { return await complete(await fallback(), 0, 'UNKNOWN', [], timedOut ? 'TIMEOUT' : 'PROVIDER_ERROR'); }
     finally { clearTimeout(timer); }
     if (!raw || typeof raw !== 'object' || Array.isArray(raw))
-      return complete(await fallback(), 0, 'UNKNOWN', [], 'INVALID_RESPONSE');
+      return await complete(await fallback(), 0, 'UNKNOWN', [], 'INVALID_RESPONSE');
     const candidate = raw as Record<string, unknown>;
     if (!Number.isSafeInteger(candidate.costFen) || Number(candidate.costFen) < 0 || Number(candidate.costFen) > bound)
-      return complete(await fallback(), 0, 'UNKNOWN', [], 'COST_BOUND_VIOLATION');
+      return await complete(await fallback(), 0, 'UNKNOWN', [], 'COST_BOUND_VIOLATION');
     const costFen = Number(candidate.costFen);
     observedCostFen = costFen;
     const evidence = validatedEvidence(candidate.evidence, 1, costFen);
-    if (!evidence) return complete(await fallback(), 0, 'UNKNOWN', [], 'INVALID_RESPONSE');
+    if (!evidence) return await complete(await fallback(), 0, 'UNKNOWN', [], 'INVALID_RESPONSE');
     observedEvidence = [evidence];
     if (evidence.receipt.status !== 'ACCEPTED')
-      return complete(await fallback(), costFen, costFen > 0 ? 'LOWER_BOUND' : 'UNKNOWN', [evidence], 'PROVIDER_ERROR');
+      return await complete(await fallback(), costFen, costFen > 0 ? 'LOWER_BOUND' : 'UNKNOWN', [evidence], 'PROVIDER_ERROR');
     observedCostStatus = 'KNOWN';
     if (typeof candidate.sourceContentId !== 'string' || !candidate.sourceContentId ||
       candidate.eventVersion !== (context.event.visibleContentVersion ?? context.event.version) ||
       typeof candidate.confidence !== 'number' || !Number.isFinite(candidate.confidence) ||
       candidate.confidence < 0.9 || candidate.confidence > 1 ||
       !context.announcements.some(item => item.sourceContentId === candidate.sourceContentId))
-      return complete(await fallback(), costFen, 'KNOWN', [evidence], 'UNVERIFIED_SOURCE');
+      return await complete(await fallback(), costFen, 'KNOWN', [evidence], 'UNVERIFIED_SOURCE');
     const sourceContentId = candidate.sourceContentId;
     // Re-read authoritative membership, version and moderation state after the provider call.
     const answer = await db.transaction(async tx => {
@@ -184,13 +223,15 @@ export async function askSemanticCurrentFact(db: Database, actor: string, eventI
     return { answer: `${label}，已审核公告：${faq.answer}`, source: 'APPROVED_ANNOUNCEMENT' as const,
       eventVersion: sourceVersion, sourceContentId };
     });
-    return complete(answer ?? await fallback(), costFen, 'KNOWN', [evidence], answer ? undefined : 'UNVERIFIED_SOURCE');
+    return await complete(answer ?? await fallback(), costFen, 'KNOWN', [evidence], answer ? undefined : 'UNVERIFIED_SOURCE');
   } catch (error) {
     await db.query(`UPDATE ai_semantic_requests SET status='UNKNOWN',known_cost_fen=$3,cost_status=$4,
       provider_evidence=$5::jsonb,fallback_reason=$6,finished_at=clock_timestamp()
       WHERE actor_id=$1 AND request_key=$2 AND status='STARTED'`,
     [actor, key, observedCostFen, observedCostStatus, JSON.stringify(observedEvidence),
       error instanceof AppError && error.code === 'ACCOUNT_DISABLED' ? 'ACCOUNT_DELETION' : 'UNEXPECTED_ERROR']);
+    if (error && typeof error === 'object' && 'code' in error && error.code === '55P03')
+      throw new AppError('VERSION_CONFLICT', '事实来源正在更新，请使用新请求键重新提问', 409);
     throw error;
   }
 }

@@ -488,6 +488,49 @@ test('material change preserves old version and requires personal reconfirmation
   } finally { await db.close(); }
 });
 
+test('reconfirmation does not mix event versions across a same-version privacy scrub', async () => {
+  const db = await createDatabase();
+  try {
+    const event = await published(db, { venueName: 'private original venue' });
+    await register(db, 'p1', event.id, event.version, 'reconfirmation-privacy-member');
+    await changeApprovedInvite(db, 'host', event.id, event.version,
+      { venueName: 'private updated venue', venueStatus: 'HOST_CONFIRMED' }, 'reconfirmation-privacy-change');
+    let scrubbed = false;
+    const scrub = async () => {
+      await db.transaction(async tx => {
+        await tx.query("UPDATE events SET payload=jsonb_set(payload,'{venueName}',to_jsonb($2::text),true) WHERE id=$1",
+          [event.id, '已隐藏集合地点']);
+        await tx.query("UPDATE event_versions SET payload=jsonb_set(payload,'{venueName}',to_jsonb($2::text),true) WHERE event_id=$1",
+          [event.id, '已隐藏集合地点']);
+      });
+      scrubbed = true;
+    };
+    const racingDb: Database = {
+      ...db,
+      query: async <T extends Record<string, unknown> = Record<string, unknown>>(
+        sql: string, params: unknown[] = []): Promise<{ rows: T[] }> => {
+        // The old implementation returned from getEvent before this next read.
+        // The fixed implementation reads registrations inside the locked tx.
+        if (!scrubbed && sql.startsWith('SELECT accepted_version,status FROM registrations')) await scrub();
+        return db.query<T>(sql, params);
+      }
+    };
+    const pending = await getPendingReconfirmation(racingDb, 'p1', event.id);
+    if (scrubbed) {
+      assert.doesNotMatch(JSON.stringify(pending), /private original venue|private updated venue/);
+    } else {
+      // This response was read before cleanup; now commit the cleanup and
+      // check a subsequent read. Do not treat old text after commit as safe.
+      assert.deepEqual(pending?.changes, [
+        { field: 'venueName', before: 'private original venue', after: 'private updated venue' }
+      ]);
+      await scrub();
+    }
+    const after = await getPendingReconfirmation(db, 'p1', event.id);
+    assert.doesNotMatch(JSON.stringify(after), /private original venue|private updated venue/);
+  } finally { await db.close(); }
+});
+
 test('changing a stated activity level requires participants to accept the new version', async () => {
   const db = await createDatabase();
   try {

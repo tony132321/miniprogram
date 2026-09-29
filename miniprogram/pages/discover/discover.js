@@ -1,6 +1,6 @@
 Page({
   data: {
-    city: '上海', keyword: '', category: '全部',
+    city: '上海',
     categories: ['全部', '运动', '桌游', '咖啡', '艺术', '城市漫步'],
     tokenInput: '', message: ''
   },
@@ -8,8 +8,6 @@ Page({
     const city = wx.getStorageSync('irlSelectedCity');
     this.setData({ city: typeof city === 'string' && city ? city : '上海' });
   },
-  keywordChanged(event) { this.setData({ keyword: event.detail.value }); },
-  chooseCategory(event) { this.setData({ category: event.currentTarget.dataset.category }); },
   openCity() { wx.navigateTo({ url: '/pages/city/city' }); },
   tokenChanged(event) { this.setData({ tokenInput: event.detail.value.trim(), message: '' }); },
   openInvite() {

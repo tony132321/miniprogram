@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import type { Database } from './db.ts';
+import type { Database, Queryable } from './db.ts';
 import { AppError } from './errors.ts';
 import { getEvent } from './events.ts';
 import { audit, command, lockEvent } from './registrations.ts';
@@ -28,25 +28,29 @@ export async function recordShareIntent(db: Database, actor: string, eventId: st
 export async function recordAttributedOpen(db: Database, actor: string | null, eventId: string, inviteToken: string,
   sourceToken: string | null): Promise<void> {
   if (!actor) return;
-  await db.transaction(async tx => {
-    const { rows: events } = await tx.query<{ host_id: string }>(`SELECT host_id FROM events
-      WHERE id=$1 AND invite_token=$2 AND invite_expires_at>clock_timestamp() AND status<>'DRAFT' FOR SHARE`,
-      [eventId, inviteToken]);
-    if (!events[0] || events[0].host_id === actor) return;
-    const inviteHash = hashInvite(inviteToken);
-    const validSource = sourceToken && /^[a-f0-9]{32}$/.test(sourceToken) &&
-      (await tx.query(`SELECT 1 FROM share_intents WHERE source_token=$1 AND event_id=$2
-        AND invite_token_hash=$3 AND sender_id<>$4`, [sourceToken, eventId, inviteHash, actor])).rows.length > 0;
-    if (validSource) {
-      const { rows } = await tx.query(`INSERT INTO share_opens(source_token,event_id,invite_token_hash,user_id)
-        VALUES($1,$2,$3,$4) ON CONFLICT DO NOTHING RETURNING source_token`, [sourceToken, eventId, inviteHash, actor]);
-      if (rows.length) await audit(tx, actor, eventId, 'SHARE_OPEN_ATTRIBUTED');
-    } else {
-      const { rows } = await tx.query(`INSERT INTO invite_unknown_opens(event_id,invite_token_hash,user_id)
-        VALUES($1,$2,$3) ON CONFLICT DO NOTHING RETURNING user_id`, [eventId, inviteHash, actor]);
-      if (rows.length) await audit(tx, actor, eventId, 'SHARE_OPEN_UNKNOWN');
-    }
-  });
+  await db.transaction(tx => recordAttributedOpenInTransaction(tx, actor, eventId, inviteToken, sourceToken));
+}
+
+export async function recordAttributedOpenInTransaction(tx: Queryable, actor: string | null,
+  eventId: string, inviteToken: string, sourceToken: string | null): Promise<void> {
+  if (!actor) return;
+  const { rows: events } = await tx.query<{ host_id: string }>(`SELECT host_id FROM events
+    WHERE id=$1 AND invite_token=$2 AND invite_expires_at>clock_timestamp()
+      AND status<>'DRAFT' AND review_status='APPROVED' FOR SHARE`, [eventId, inviteToken]);
+  if (!events[0] || events[0].host_id === actor) return;
+  const inviteHash = hashInvite(inviteToken);
+  const validSource = sourceToken && /^[a-f0-9]{32}$/.test(sourceToken) &&
+    (await tx.query(`SELECT 1 FROM share_intents WHERE source_token=$1 AND event_id=$2
+      AND invite_token_hash=$3 AND sender_id<>$4`, [sourceToken, eventId, inviteHash, actor])).rows.length > 0;
+  if (validSource) {
+    const { rows } = await tx.query(`INSERT INTO share_opens(source_token,event_id,invite_token_hash,user_id)
+      VALUES($1,$2,$3,$4) ON CONFLICT DO NOTHING RETURNING source_token`, [sourceToken, eventId, inviteHash, actor]);
+    if (rows.length) await audit(tx, actor, eventId, 'SHARE_OPEN_ATTRIBUTED');
+  } else {
+    const { rows } = await tx.query(`INSERT INTO invite_unknown_opens(event_id,invite_token_hash,user_id)
+      VALUES($1,$2,$3) ON CONFLICT DO NOTHING RETURNING user_id`, [eventId, inviteHash, actor]);
+    if (rows.length) await audit(tx, actor, eventId, 'SHARE_OPEN_UNKNOWN');
+  }
 }
 
 export async function getShareMetrics(db: Database, actor: string, eventId: string): Promise<{ shareIntents: number; attributedOpens: number; unknownSourceOpens: number }> {

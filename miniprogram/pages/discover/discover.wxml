@@ -1,9 +1,9 @@
 <view class="discover-page">
   <view class="brand-row"><view class="brand-spacer"></view><button class="brand-city" bindtap="openCity">⌖ {{city}}　⌄</button></view>
   <view class="heading-row"><view><view class="eyebrow">GO OUTSIDE · FIND YOUR PEOPLE</view><view class="page-title">找局，找同频</view></view><view class="sparkle">✦</view></view>
-  <view class="search-box"><text>⌕</text><input placeholder="搜索活动或地点" value="{{keyword}}" bindinput="keywordChanged" /></view>
-  <view class="category-scroll"><button wx:for="{{categories}}" wx:key="*this" class="category {{category === item ? 'active' : ''}}" data-category="{{item}}" bindtap="chooseCategory">{{item}}</button></view>
-  <view class="section-title"><text>✦　发现新活动</text><text class="section-note">{{city}} · {{category}}</text></view>
+  <view class="search-box inactive"><text>⌕</text><text class="search-placeholder">公开找局未开放，暂不可搜索</text></view>
+  <view class="category-scroll"><view wx:for="{{categories}}" wx:key="*this" class="category inactive">{{item}}</view></view>
+  <view class="section-title"><text>✦　发现新活动</text><text class="section-note">{{city}} · 分类暂不可筛选</text></view>
   <view class="availability"><view class="availability-icon">⌖</view><view class="availability-title">公开找局暂未开放</view><view class="availability-copy">目前活动通过邀请参与。你可以打开收到的邀请，或自己发起一场活动。</view></view>
   <view class="invite-card"><view class="invite-heading">收到朋友的邀请？</view><view class="invite-row"><input placeholder="输入邀请口令" value="{{tokenInput}}" bindinput="tokenChanged" /><button bindtap="openInvite">打开</button></view><view wx:if="{{message}}" class="message">{{message}}</view></view>
   <button class="create-card" bindtap="goCreate"><view class="create-icon">＋</view><view><view class="create-title">发起自己的活动</view><view class="create-copy">填写真实时间与规则，确认后再发布</view></view><text class="create-arrow">→</text></button>

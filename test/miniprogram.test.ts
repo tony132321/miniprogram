@@ -16,6 +16,31 @@ test('mini-program fingerprint hashing matches SHA-256 for plain and Unicode tex
     assert.equal(sha256(value), createHash('sha256').update(value).digest('hex'));
 });
 
+test('R1 discovery has no active public-search controls while invitation and creation remain usable', () => {
+  const markup = readFileSync(new URL('../miniprogram/pages/discover/discover.wxml', import.meta.url), 'utf8');
+  assert.match(markup, /公开找局暂未开放/);
+  assert.match(markup, /暂不可搜索/);
+  assert.doesNotMatch(markup, /bindinput="keywordChanged"|bindtap="chooseCategory"/);
+  let page: Record<string, any> | undefined;
+  const navigations: string[] = [];
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/discover/discover.js', import.meta.url), 'utf8'), {
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: {
+      getStorageSync() { return ''; },
+      navigateTo(options: Record<string, any>) { navigations.push(options.url); },
+      switchTab(options: Record<string, any>) { navigations.push(options.url); }
+    }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  assert.equal(page.keywordChanged, undefined);
+  assert.equal(page.chooseCategory, undefined);
+  page.tokenChanged({ detail: { value: ' abc123 ' } });
+  page.openInvite();
+  page.goCreate();
+  assert.deepEqual(navigations, ['/pages/event/event?token=abc123', '/pages/create/create']);
+});
+
 test('event success state appears only after the server confirms the published event or registration', async () => {
   let page: Record<string, any> | undefined;
   runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
