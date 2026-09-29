@@ -1,8 +1,35 @@
 @import "../common.wxss";
-.block-row { display: flex; align-items: center; gap: 16rpx; padding: 20rpx 0; border-top: 1rpx solid #edf0f5; }
-.block-avatar { width: 72rpx; height: 72rpx; min-width: 72rpx; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #edf2ff; color: #215feb; font-size: 36rpx; }
-.block-copy { flex: 1; }
-.block-action { flex: none; margin: 0; border-radius: 32rpx; background: #f0f1f6; color: #252b38; font-size: 22rpx; line-height: 2.3; padding: 0 22rpx; }
+.privacy-page { padding: 0 40rpx 110rpx; background: #f8f7fc; }
+.privacy-header { margin: 0 -40rpx 26rpx; padding: 0 40rpx; background: #faf9fd; }
+.privacy-intro { padding: 31rpx 29rpx 33rpx; border: 1rpx solid #f0f2fa; background: linear-gradient(135deg,#fff,#fafcff); }
+.intro-head { display: flex; align-items: center; gap: 20rpx; }
+.intro-symbol { width: 80rpx; height: 80rpx; flex: none; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #eaf1ff; color: #1d64f2; font-size: 42rpx; }
+.intro-title { color: #171a24; font-size: 34rpx; line-height: 1.25; font-weight: 850; }
+.intro-subtitle { margin-top: 4rpx; color: #596273; font-size: 23rpx; font-weight: 600; }
+.privacy-points { margin-top: 27rpx; }
+.privacy-points>view { display: flex; gap: 17rpx; margin-top: 17rpx; color: #50586a; font-size: 24rpx; line-height: 1.5; }
+.point-dot { flex: none; color: #1d64f2; font-size: 17rpx; line-height: 2.1; }
+.block-section-heading { display: flex; align-items: center; justify-content: space-between; gap: 12rpx; margin: 42rpx 9rpx 17rpx; }
+.block-section-heading>view { display: flex; align-items: center; gap: 12rpx; font-size: 31rpx; font-weight: 850; }
+.block-section-heading>text { color: #838b9a; font-size: 20rpx; white-space: nowrap; }
+.block-count { min-width: 35rpx; padding: 3rpx 11rpx; border-radius: 99rpx; background: #e9eaf0; color: #464d5e; text-align: center; font-size: 21rpx; font-weight: 700; }
+.block-state { padding: 54rpx 28rpx; color: #747b8b; font-size: 24rpx; line-height: 1.5; text-align: center; }
+.state-symbol { margin-bottom: 15rpx; color: #1d64f2; font-size: 47rpx; }
+.state-copy { margin-top: 7rpx; color: #9aa2b0; font-size: 20rpx; }
+.block-state .pg10-primary { max-width: 350rpx; margin: 20rpx auto 0; font-size: 22rpx; }
+.block-card { display: flex; align-items: center; gap: 17rpx; padding: 22rpx 19rpx; margin-bottom: 14rpx; }
+.block-avatar { width: 75rpx; height: 75rpx; flex: none; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #edf2ff; color: #1d64f2; font-size: 39rpx; }
+.block-copy { flex: 1; min-width: 0; }
+.block-title { color: #171a24; font-size: 25rpx; font-weight: 800; }
+.block-chip { display: inline-block; margin-top: 5rpx; padding: 3rpx 10rpx; border-radius: 99rpx; background: #fff0f3; color: #ed3157; font-size: 17rpx; }
+.block-meta { margin-top: 6rpx; overflow: hidden; color: #858d9b; font-size: 19rpx; text-overflow: ellipsis; white-space: nowrap; }
+.block-action { flex: none; margin: 0; padding: 10rpx 18rpx; border-radius: 99rpx; background: #f0f1f6; color: #252b38; font-size: 20rpx; font-weight: 750; line-height: 1.5; }
+.block-action[disabled] { color: #9098a6; }
 .block-action::after { border: 0; }
-.warn { background: #fff0f2; color: #f13b5d; }
-.support-link { color: #1760ef; font-size: 25rpx; font-weight: 700; padding-top: 20rpx; }
+.privacy-message { margin: 12rpx 0 20rpx; padding: 15rpx 18rpx; border-radius: 17rpx; background: #eaf1ff; color: #1d64f2; font-size: 22rpx; }
+.help-card { display: flex; align-items: center; width: 100%; box-sizing: border-box; gap: 17rpx; margin: 55rpx 0 0; padding: 25rpx; color: #171a24; text-align: left; line-height: 1.4; }
+.help-card::after { border: 0; }
+.help-icon { width: 66rpx; height: 66rpx; flex: none; border-radius: 50%; background: #fff0f2; color: #f13b5d; text-align: center; font-size: 35rpx; font-weight: 800; line-height: 66rpx; }
+.help-copy { flex: 1; min-width: 0; font-size: 22rpx; }
+.help-copy text { display: block; margin-top: 3rpx; color: #1760ef; font-size: 22rpx; font-weight: 750; }
+.privacy-foot { margin: 28rpx 5rpx 0; color: #9aa2b0; font-size: 19rpx; line-height: 1.5; text-align: center; }

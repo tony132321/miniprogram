@@ -1,0 +1,44 @@
+<view class="share-page" style="padding-top: {{statusBarHeight}}px">
+  <view class="share-header" style="padding-right: {{headerPaddingRight}}"><button class="header-back" bindtap="back" aria-label="返回活动详情">‹</button><text class="header-title">活动分享卡片</text><button class="header-profile" bindtap="goProfile" aria-label="打开我的页面">♙</button></view>
+
+  <view wx:if="{{loadState === 'LOADING'}}" class="state-panel">正在核对活动与分享资格…</view>
+  <view wx:if="{{loadState === 'ERROR' || loadState === 'FORBIDDEN' || loadState === 'UNAUTHENTICATED'}}" class="state-panel"><view>{{message}}</view><button wx:if="{{loadState === 'ERROR'}}" bindtap="refresh">重新加载</button><button wx:else bindtap="back">返回活动详情</button></view>
+
+  <view wx:if="{{loadState === 'READY'}}" class="share-content">
+    <view class="intro"><text class="intro-pill">{{canShare ? 'INVITE READY · 邀请已就绪' : 'INVITE STATUS · 邀请状态'}}</text><view class="intro-title">活动专属邀请卡</view><view class="intro-copy">{{canShare ? '邀请朋友查看活动，报名以当前规则和名额为准' : shareReason}}</view></view>
+
+    <view class="ticket"><view class="ticket-topline"></view><view class="ticket-kicker"><text>✦　PROJECT IRL · EVENT INVITATION</text><text class="ticket-dot"></text></view>
+      <view class="ticket-body"><view class="ticket-title-row"><text class="ticket-title">{{display.title}}</text><text class="ticket-status">{{display.status}}</text></view>
+        <view class="ticket-facts"><view><text class="fact-icon">▣</text><view><text class="fact-label">活动时间</text><text class="fact-value">{{display.date}} – {{display.end}}</text></view></view><view><text class="fact-icon location">⌖</text><view><text class="fact-label">场地地址</text><text class="fact-value">{{display.location}}</text></view></view></view>
+        <view wx:if="{{display.confirmed !== null || display.minimum !== null}}" class="ticket-count"><text wx:if="{{display.confirmed !== null}}">已确认 {{display.confirmed}} 人</text><text wx:if="{{display.minimum !== null}}">最低成局 {{display.minimum}} 人</text></view>
+      </view>
+      <view class="ticket-divider"></view>
+      <view wx:if="{{canShare}}" class="ticket-invite"><view class="invite-symbol">⌁</view><view class="invite-label">真实邀请码</view><view class="invite-code">{{display.inviteToken}}</view><view class="invite-hint">好友可在耍起 CAPER 首页输入此码查看活动</view><button bindtap="copyInvite" class="invite-copy">复制邀请码　→</button></view>
+      <view wx:else class="ticket-invite unavailable"><view class="invite-symbol">⌁</view><view class="invite-label">当前邀请码不可分享</view><view class="invite-hint">请返回活动详情核对审核、招募和安全状态。</view></view>
+    </view>
+
+    <view class="info-heading">邀请前请核对</view>
+    <view class="info-card"><text class="info-icon">✓</text><view><view>以活动当前状态为准</view><text>分享资格及邀请码由服务端实时核对。</text></view></view>
+    <view class="info-card"><text class="info-icon blue">♙</text><view><view>报名按规则处理</view><text>收到邀请不保证席位，具体审批与候补见活动详情。</text></view></view>
+    <view class="info-card"><text class="info-icon violet">▤</text><view><view>场地与费用请再确认</view><text>场地由主办方说明，费用和取消规则以活动详情为准。</text></view></view>
+
+    <button wx:if="{{canShare}}" class="share-main" bindtap="openShareSheet">分享活动邀请　↗</button>
+    <button wx:else class="share-main disabled" bindtap="refresh">重新核对分享状态　↻</button>
+    <view wx:if="{{message}}" class="share-message">{{message}}</view>
+    <view class="share-foot">GOOD PEOPLE · REAL MEETUPS · BRIGHTER DAYS</view>
+  </view>
+
+  <view wx:if="{{shareSheetOpen && canShare}}" class="sheet-layer"><view class="sheet-mask" bindtap="closeShareSheet"></view><view class="sheet"><view class="sheet-handle"></view><view class="sheet-head"><view><view class="sheet-title">分享活动邀请 ✨</view><text>邀请更多朋友查看这场真实活动</text></view><button bindtap="closeShareSheet" aria-label="关闭分享选项">×</button></view>
+    <view class="sheet-preview"><image src="{{display.cover}}" mode="aspectFill" /><view><view class="sheet-preview-title">{{display.title}}</view><text>{{display.date}} · {{display.status}}</text><text wx:if="{{display.confirmed !== null}}">已确认 {{display.confirmed}} 人</text></view></view>
+    <view class="sheet-actions">
+      <button wx:if="{{sourceToken}}" class="sheet-action" open-type="share" aria-label="通过微信分享给好友"><text class="action-icon green">▣</text><text>微信好友</text></button><button wx:else class="sheet-action" bindtap="prepareShare" disabled="{{preparingShare}}"><text class="action-icon green">▣</text><text>{{preparingShare ? '准备中' : '准备微信分享'}}</text></button>
+      <view class="sheet-action inactive"><text class="action-icon orange">▧</text><text>海报待开放</text></view>
+      <button wx:if="{{sourceToken}}" class="sheet-action" open-type="share" aria-label="在微信中选择群聊分享"><text class="action-icon blue">♙</text><text>选择群聊</text></button><view wx:else class="sheet-action inactive"><text class="action-icon blue">♙</text><text>先准备分享</text></view>
+      <button class="sheet-action" bindtap="copyInvite"><text class="action-icon gray">▢</text><text>复制邀请码</text></button>
+    </view>
+    <view class="sheet-code"><view><text>专属邀请码</text><text>{{display.inviteToken}}</text></view><button bindtap="copyInvite">复制文案</button></view>
+    <view wx:if="{{message}}" class="sheet-feedback">{{message}}</view>
+    <view class="sheet-note">微信好友与群聊会打开同一个微信分享选择器；当前没有可复制的 HTTPS 链接或可保存海报。</view>
+    <button class="sheet-cancel" bindtap="closeShareSheet">取消</button>
+  </view></view>
+</view>

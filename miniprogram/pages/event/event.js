@@ -708,6 +708,10 @@ Page({
     } catch (error) { this.setData({ message: error.message || '分享卡准备失败' }); }
     finally { this.setData({ preparingShare: false }); }
   },
+  openShareCard() {
+    if (!this.data.isHost || !this.data.id) return;
+    wx.navigateTo({ url: '/subpackages/activity/share/share?id=' + encodeURIComponent(this.data.id) });
+  },
   onShareAppMessage() {
     if (!this.data.isHost || !this.data.event?.inviteToken || this.data.event.reviewStatus !== 'APPROVED' ||
       !this.data.event.recruiting || this.data.event.riskPaused)

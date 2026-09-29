@@ -56,6 +56,31 @@ test('event more button offers a safety action before navigating to the report f
     /event-nav-safety" bindtap="openEventActions"/);
 });
 
+test('host workbench opens the registered share card for the current event', () => {
+  let page: Record<string, any> | undefined;
+  const routes: string[] = [];
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: {} };
+      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
+      if (path === '../../config.js') return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: { navigateTo(options: { url: string }) { routes.push(options.url); } }
+  });
+  assert.ok(page);
+  page.data.id = 'event-1';
+  page.data.isHost = false;
+  page.openShareCard();
+  assert.deepEqual(routes, []);
+  page.data.isHost = true;
+  page.openShareCard();
+  assert.deepEqual(routes, ['/subpackages/activity/share/share?id=event-1']);
+  assert.match(readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8'),
+    /bindtap="openShareCard"/);
+});
+
 test('AA ledger presentation keeps each integer-cent share exact in yuan', () => {
   let format: ((fen: number) => string) | undefined;
   runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8') +

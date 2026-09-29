@@ -10,12 +10,12 @@ function identity() {
 }
 
 Page({
-  data: { statusBarHeight: 24, blocks: [], loadState: 'IDLE', message: '' },
+  data: { statusBarHeight: 24, blocks: [], loadState: 'IDLE', message: '', revokingId: '' },
   onLoad() { this.setData({ statusBarHeight: statusBarHeight() }); },
   async onShow() {
     const actor = identity();
     const generation = this._generation = (this._generation || 0) + 1;
-    this.setData({ blocks: [], message: '', loadState: actor ? 'LOADING' : 'UNAUTHENTICATED' });
+    this.setData({ blocks: [], message: '', revokingId: '', loadState: actor ? 'LOADING' : 'UNAUTHENTICATED' });
     if (!actor) return;
     try {
       const result = await api.get('/me/blocks');
@@ -28,12 +28,19 @@ Page({
   },
   async revokeBlock(event) {
     const id = event.currentTarget.dataset.id;
-    if (!id || this.data.loadState !== 'READY') return;
+    if (!id || this.data.loadState !== 'READY' || this.data.revokingId) return;
+    const actor = identity();
+    this.setData({ revokingId: id, message: '' });
     try {
       await api.post(`/me/blocks/${encodeURIComponent(id)}/revoke`, {});
+      if (identity() !== actor) return;
       await this.onShow();
-      this.setData({ message: '已解除屏蔽。' });
-    } catch (error) { this.setData({ message: error.message || '操作失败，请重试。' }); }
+      if (identity() === actor && this.data.loadState === 'READY') this.setData({ message: '已解除屏蔽。' });
+    } catch (error) {
+      if (identity() === actor) this.setData({ message: error.message || '操作失败，请重试。' });
+    } finally {
+      if (identity() === actor) this.setData({ revokingId: '' });
+    }
   },
   retry() { return this.onShow(); },
   back: backToProfile,

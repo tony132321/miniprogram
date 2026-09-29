@@ -76,6 +76,53 @@ test('privacy page clears another account blocks and never fetches when signed o
   assert.equal(page.data.loadState, 'UNAUTHENTICATED');
 });
 
+test('privacy page shows only service-backed block details and ignores duplicate or stale revoke taps', async () => {
+  const markup = readFileSync(new URL('../miniprogram/subpackages/profile/privacy-safety/privacy-safety.wxml', import.meta.url), 'utf8');
+  assert.match(markup, /关于黑名单机制/);
+  assert.match(markup, /来自：{{item.eventTitle \|\| '活动'}}/);
+  assert.match(markup, /disabled="{{revokingId !== ''}}"/);
+  assert.doesNotMatch(markup, /item\.(?:userName|avatar|reason|createdAt)/);
+
+  let actor = 'old';
+  let releasePost!: () => void;
+  const postGate = new Promise<void>(resolve => { releasePost = resolve; });
+  const posts: string[] = [];
+  let newRemoved = false;
+  let page: Record<string, any> | undefined;
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/profile/privacy-safety/privacy-safety.js', import.meta.url), 'utf8'), {
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: { getStorageSync(key: string) { return key === 'sessionToken' ? actor : ''; } },
+    require(module: string) {
+      if (module === '../../../utils/api.js') return { api: {
+        async get() { return { items: actor === 'new' && newRemoved ? [] :
+          [{ id: actor === 'old' ? 'old-block' : 'new-block', eventTitle: actor + '活动' }] }; },
+        async post(path: string) { posts.push(path); await postGate; if (path.includes('/new-block/')) newRemoved = true; }
+      } };
+      if (module === '../../../config.js') return { developmentUser: '' };
+      if (module === '../navigation.js') return { backToProfile() {} };
+      throw new Error(`unexpected require ${module}`);
+    }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, unknown>) { Object.assign(this.data, patch); };
+  await page.onShow();
+  const event = { currentTarget: { dataset: { id: 'old-block' } } };
+  const pending = page.revokeBlock(event);
+  await page.revokeBlock(event);
+  assert.deepEqual(posts, ['/me/blocks/old-block/revoke']);
+  assert.equal(page.data.revokingId, 'old-block');
+  actor = 'new';
+  await page.onShow();
+  releasePost();
+  await pending;
+  assert.equal(page.data.blocks[0].id, 'new-block');
+  assert.equal(page.data.message, '');
+  await page.revokeBlock({ currentTarget: { dataset: { id: 'new-block' } } });
+  assert.deepEqual(posts, ['/me/blocks/old-block/revoke', '/me/blocks/new-block/revoke']);
+  assert.deepEqual(Array.from(page.data.blocks), []);
+  assert.equal(page.data.message, '已解除屏蔽。');
+});
+
 test('each PG10 subpage wires every visible interaction and has a return action', () => {
   const names = ['profile-edit', 'badges', 'moments', 'privacy-safety', 'legal', 'cache',
     'support', 'release-notes', 'guidelines', 'open-source'];
