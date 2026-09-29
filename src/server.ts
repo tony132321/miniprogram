@@ -798,7 +798,10 @@ export function createApp(db: Database, options: AppOptions) {
       const claimMatch = path.match(/^\/reservations\/([^/]+)\/claim$/);
       if (claimMatch && method === 'POST') {
         const key = keyFrom(req); const body = await readJson(req);
-        return send(res, 200, await claimReservation(db, actor, claimMatch[1]!, versionFrom(body.expectedVersion), key));
+        if (body.expectedEventId !== undefined && (typeof body.expectedEventId !== 'string' || !body.expectedEventId))
+          throw new AppError('BAD_REQUEST', 'expectedEventId 必须为活动 ID');
+        return send(res, 200, await claimReservation(db, actor, claimMatch[1]!, versionFrom(body.expectedVersion), key,
+          body.expectedEventId));
       }
       const offerMatch = path.match(/^\/offers\/([^/]+)\/(accept|decline)$/);
       if (offerMatch && method === 'POST') {

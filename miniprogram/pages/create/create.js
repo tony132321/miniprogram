@@ -403,11 +403,7 @@ Page({
       try {
         const event = await api.post(`/events/${this.data.editingEvent.id}/changes`,
           { expectedVersion: preview.expectedVersion, patch: preview.patch });
-        this.setData({ editingEvent: null, changePreview: null, draft: null, aiText: '', suggestionNotes: [], suggestionUnknown: '',
-          form: { ...emptyForm }, startDate: '', endDate: '', startTime: '20:00', endTime: '22:00',
-          feeMode: 'AA', hostParticipates: null, venueConfirmed: false, visibility: 'INVITE', visibilityIndex: 0,
-          approvalMode: 'AUTO', approvalIndex: 0, customDeadlines: false, registrationDate: '', confirmationDate: '',
-          registrationTime: '19:30', confirmationTime: '18:30', message: '新版本已生效。' });
+        this.setData({ ...emptyEditor(), message: '新版本已生效。' });
         wx.navigateTo({ url: `/pages/event/event?id=${encodeURIComponent(event.id)}` });
       } catch (error) {
         if (!this.markVersionConflict(error, 'event', this.data.editingEvent?.id))

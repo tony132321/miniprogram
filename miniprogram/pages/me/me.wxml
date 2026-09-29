@@ -4,6 +4,11 @@
   <view wx:if="{{message}}" class="notice-banner">{{message}}</view>
   <button id="profileRetryButton" wx:if="{{loadState === 'ERROR'}}" bindtap="retryRefresh">重新加载</button>
   <view class="section-head"><text class="section-mark"></text><text>账号与隐私</text></view>
+  <view wx:if="{{!hasSession && !developmentMode}}" class="section-card card">
+    <button bindtap="login">微信登录</button>
+    <view class="hint">登录后可管理活动提醒、隐私请求与举报记录。</view>
+  </view>
+  <block wx:if="{{hasSession || developmentMode}}">
   <view class="section-card card">
   <button wx:if="{{!hasSession}}" bindtap="login">微信登录</button>
   <view wx:if="{{developmentMode}}" class="dev-box">
@@ -86,6 +91,7 @@
     <button wx:if="{{item.status === 'RESOLVED'}}" data-id="{{item.id}}" bindtap="appealReport">就此结论申请复核</button>
   </view>
   </view>
+  </block>
   <button id="aboutButton" class="about-row card" bindtap="goAbout"><text>关于 Project IRL</text><text>›</text></button>
   <block wx:if="{{hasSession}}"><button id="logoutButton" wx:if="{{!developmentMode}}" bindtap="logout" class="logout-button">退出登录</button></block>
   <view class="page-foot">REAL PEOPLE · REAL MEETUPS</view>

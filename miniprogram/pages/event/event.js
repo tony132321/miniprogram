@@ -502,7 +502,8 @@ Page({
     if (result) this.setData({ reservationTokens: result });
   },
   reservationInput(event) { this.setData({ reservationToken: event.detail.value.trim() }); },
-  claim() { this.action(`/reservations/${encodeURIComponent(this.data.reservationToken)}/claim`, {}, '已认领预留名额'); },
+  claim() { this.action(`/reservations/${encodeURIComponent(this.data.reservationToken)}/claim`,
+    { expectedEventId: this.data.id }, '已认领预留名额'); },
   async showCheckInToken() {
     if (this.checkInPageHidden || !this.data.event || (!this.data.isHost && !this.data.canManageCheckins) ||
       !['CONFIRMED', 'IN_PROGRESS'].includes(this.data.event.status)) return;

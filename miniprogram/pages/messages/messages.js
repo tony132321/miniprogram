@@ -67,6 +67,7 @@ Page({
     }
   },
   setFilter(event) {
+    if (this.data.loadState !== 'READY') return;
     const filter = event.currentTarget.dataset.filter;
     if (!['ALL', 'ACTIVITY', 'INTERACTION', 'SYSTEM'].includes(filter)) return;
     const items = this.data.items.map(item => ({ ...item, visible: visible(item, filter) }));
