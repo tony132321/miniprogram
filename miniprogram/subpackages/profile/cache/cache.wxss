@@ -1,0 +1,5 @@
+@import "../common.wxss";
+.storage-hero { padding: 45rpx 30rpx; }
+.storage-size { color: #1253d8; font-size: 60rpx; font-weight: 800; margin: 20rpx 0; }
+.storage-bar { height: 15rpx; border-radius: 10rpx; background: #eef1f7; margin: 26rpx 0 0; }
+.storage-bar view { height: 15rpx; border-radius: 10rpx; background: linear-gradient(90deg,#2465ef,#6158d8); }

@@ -1,0 +1,8 @@
+<view class="pg10-page" style="padding-top: {{statusBarHeight}}px">
+  <view class="pg10-header"><button class="pg10-back" bindtap="back" aria-label="返回">‹</button><view class="pg10-header-title">成就勋章</view><view class="pg10-header-spacer"></view></view>
+  <view class="pg10-card pg10-hero"><view class="badge-emblem">✧</view><view class="pg10-kicker">SOCIAL BADGES</view><view class="pg10-title">你的真实经历，值得记录</view><view class="pg10-subtitle">勋章与经验等级的核算尚未接入，当前不会展示虚构的获奖数量或排名。</view></view>
+  <view class="pg10-section-label">设计中的勋章方向</view>
+  <view class="badge-grid"><view class="badge-cell"><view class="badge-circle">🏸</view><view>运动常客</view><text>未开放</text></view><view class="badge-cell"><view class="badge-circle">♧</view><view>靠谱组织者</view><text>未开放</text></view><view class="badge-cell"><view class="badge-circle">✦</view><view>社交探索</view><text>未开放</text></view><view class="badge-cell"><view class="badge-circle">↗</view><view>持续参与</view><text>未开放</text></view></view>
+  <view class="pg10-card pg10-empty"><view class="pg10-empty-icon">◌</view>真实活动记录仍可在“我的活动”查看；勋章推出前不根据未核验数据授予称号。</view>
+  <button class="pg10-primary" bindtap="goActivities">查看我的活动记录</button>
+</view>

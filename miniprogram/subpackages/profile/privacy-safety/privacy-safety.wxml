@@ -1,0 +1,13 @@
+<view class="pg10-page" style="padding-top: {{statusBarHeight}}px">
+  <view class="pg10-header"><button class="pg10-back" bindtap="back" aria-label="返回">‹</button><view class="pg10-header-title">隐私与安全</view><view class="pg10-header-spacer"></view></view>
+  <view class="pg10-card pg10-hero"><view class="pg10-kicker">PRIVACY &amp; SAFETY</view><view class="pg10-title">保护你的活动边界</view><view class="pg10-subtitle">屏蔽由你主动管理。具体效果以当前服务端规则为准；如遇危险或违规行为，请及时举报。</view></view>
+  <view class="pg10-card"><view class="pg10-row"><view class="pg10-icon">◈</view><view class="pg10-row-body"><view class="pg10-row-title">已屏蔽成员</view><view class="pg10-row-note">你可在这里撤回本人发起的屏蔽</view></view><view class="pg10-chevron">{{blocks.length}}</view></view>
+    <view wx:if="{{loadState === 'LOADING'}}" class="pg10-empty">正在加载屏蔽记录…</view>
+    <view wx:if="{{loadState === 'UNAUTHENTICATED'}}" class="pg10-empty"><view class="pg10-empty-icon">◈</view>登录后可查看本人屏蔽记录<button class="pg10-primary" bindtap="goProfile">前往登录</button></view>
+    <view wx:if="{{loadState === 'ERROR'}}" class="pg10-empty"><view class="pg10-error">{{message}}</view><button class="pg10-primary" bindtap="retry">重新加载</button></view>
+    <view wx:if="{{loadState === 'READY' && blocks.length === 0}}" class="pg10-empty">暂无屏蔽记录</view>
+    <view wx:for="{{blocks}}" wx:key="id" class="block-row"><view class="block-avatar">⊘</view><view class="block-copy"><view class="pg10-row-title">活动内成员</view><view class="pg10-row-note">来自：{{item.eventTitle || '活动'}}。仅显示服务端允许公开的信息。</view></view><button class="block-action" data-id="{{item.id}}" bindtap="revokeBlock">解除屏蔽</button></view>
+  </view>
+  <view class="pg10-card"><view class="pg10-row"><view class="pg10-icon warn">!</view><view class="pg10-row-body"><view class="pg10-row-title">遇到违规或安全问题？</view><view class="pg10-row-note">请在举报与求助中提交情况，紧急人身危险先联系当地应急服务。</view></view></view><button class="pg10-link support-link" bindtap="goSupport">前往举报与求助 →</button></view>
+  <view wx:if="{{loadState === 'READY' && message}}" class="pg10-note">{{message}}</view>
+</view>

@@ -1,4 +1,9 @@
-.about-page { box-sizing:border-box; min-height:100vh; padding:60rpx 30rpx; background:#f7f8fc; color:#1a1b1f; text-align:center; }
+.about-page { box-sizing:border-box; min-height:100vh; padding:0 30rpx 90rpx; background:#f7f8fc; color:#1a1b1f; text-align:center; }
+.about-header { height:92rpx; display:flex; align-items:center; margin:0 -30rpx 26rpx; padding:0 30rpx; background:#faf9fd; font-size:29rpx; font-weight:700; }
+.about-header button { width:74rpx; margin:0; padding:0; background:transparent; color:#1a1b1f; font-size:48rpx; text-align:left; line-height:1.4; }
+.about-header button::after { border:0; }
+.about-header view:not(.header-spacer) { flex:1; text-align:center; }
+.about-header .header-spacer { width:74rpx; }
 .logo { width:122rpx; height:122rpx; border:4rpx solid #1d64f2; border-radius:35rpx; margin:0 auto 26rpx; line-height:115rpx; background:#fff; color:#1d64f2; font-size:80rpx; font-weight:800; box-shadow:0 16rpx 45rpx rgba(29,100,242,.12); }
 .title { font-size:46rpx; font-weight:800; }
 .slogan { color:#1d64f2; font-size:25rpx; font-weight:700; margin:8rpx 0 48rpx; }
@@ -12,3 +17,6 @@
 .action-list button:last-child { border-bottom:0; }
 .action-list text { color:#1d64f2; font-size:32rpx; }
 .foot { color:#a8adba; font-size:19rpx; letter-spacing:3rpx; margin-top:60rpx; }
+.version-note { display:inline-block; border-radius:24rpx; background:#eff3fb; color:#5a6578; padding:8rpx 20rpx; font-size:20rpx; margin:-25rpx 0 28rpx; }
+.manifesto-card { background:linear-gradient(135deg,#eaf2ff,#fff 75%); }
+.section-label { color:#717b8e; font-size:22rpx; font-weight:700; text-align:left; margin:18rpx 6rpx 12rpx; }

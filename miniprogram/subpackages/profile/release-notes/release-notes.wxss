@@ -1,0 +1,7 @@
+@import "../common.wxss";
+.feature-icon { width: 66rpx; height: 66rpx; margin-bottom: 16rpx; border-radius: 19rpx; background: #e7f0ff; color: #205dea; font-size: 38rpx; line-height: 66rpx; text-align: center; }
+.feature-icon.violet { background: #eeedff; color: #6554d6; }
+.feature-icon.green { background: #e9f8e9; color: #23aa5c; }
+.feature-icon.red { background: #fff0f3; color: #eb4766; }
+.secondary-action { width: 100%; margin: 0; border-radius: 40rpx; background: #fff; color: #245fe7; font-size: 24rpx; line-height: 2.5; }
+.secondary-action::after { border: 0; }

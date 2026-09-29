@@ -1,0 +1,8 @@
+<view class="pg10-page" style="padding-top: {{statusBarHeight}}px">
+  <view class="pg10-header"><button class="pg10-back" bindtap="back" aria-label="返回">‹</button><view class="pg10-header-title">帮助与反馈</view><view class="pg10-header-spacer"></view></view>
+  <view class="pg10-card pg10-hero"><view class="pg10-kicker">WE'RE HERE TO HELP</view><view class="pg10-title">遇到问题，我们一起处理</view><view class="pg10-subtitle">常见问题可先查看下方说明。安全相关情况请通过现有举报工单提交，处理状态在“我的”页面回读。</view></view>
+  <view class="pg10-section-label">常见互助解答</view>
+  <view class="pg10-card faq-card"><view wx:for="{{questions}}" wx:key="title" class="faq-item"><button data-index="{{index}}" bindtap="toggleFaq"><text>{{item.title}}</text><text>{{openIndex === index ? '⌃' : '⌄'}}</text></button><view wx:if="{{openIndex === index}}" class="faq-answer">{{item.answer}}</view></view></view>
+  <view class="pg10-card"><view class="pg10-row"><view class="pg10-icon danger">!</view><view class="pg10-row-body"><view class="pg10-row-title">违规举报与安全求助</view><view class="pg10-row-note">现有工单支持提交情况和查看进度；紧急人身危险请先联系当地应急服务。</view></view></view><button class="pg10-primary" bindtap="goReport">前往我的页面提交举报</button></view>
+  <view class="pg10-card"><view class="pg10-row-title">功能建议与人工客服</view><view class="pg10-note">设计稿中的 AI 客服、人工客服账号、图片上传与普通产品建议表单尚未接入；这里不展示虚构的响应时间或客服联系方式。</view></view>
+</view>

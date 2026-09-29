@@ -447,7 +447,7 @@ test('profile load failure offers a retry that restores live private data', asyn
   await page.retryRefresh();
   assert.equal(page.data.loadState, 'READY');
   assert.equal(page.data.message, '');
-  assert.equal(requests, 18);
+  assert.equal(requests, 20);
 });
 
 test('profile shows honest external reminder states on initial and later notification pages', async () => {

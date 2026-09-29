@@ -316,3 +316,30 @@ test('old approval continuation cannot append after the list restarts', async ()
   assert.deepEqual(Array.from(page.data.approvals, (item: Record<string, unknown>) => item.registrationId), ['current']);
   assert.equal(page.data.loadingMoreApprovals, false);
 });
+
+test('CAPER inbox search filters only loaded real notices and settings opens profile controls', async () => {
+  const navigations: string[] = [];
+  const page = mount({ async get() { return { items: [
+    { id: 'n1', kind: 'EVENT_REMINDER', status: 'QUEUED', event_id: 'badminton-1' },
+    { id: 'n2', kind: 'REPORT_RESOLVED', status: 'OPENED', event_id: null }
+  ], total: 2, nextOffset: null }; } }, {
+    getStorageSync(key: string) { return key === 'sessionToken' ? 'token' : 'member'; },
+    switchTab(options: { url: string }) { navigations.push(options.url); }
+  });
+  await page.onShow();
+  page.toggleSearch();
+  assert.equal(page.data.searchOpen, true);
+  page.searchInput({ detail: { value: 'badminton-1' } });
+  assert.equal(page.data.filteredCount, 1);
+  assert.deepEqual(Array.from(page.data.items, (item: Record<string, unknown>) => item.visible), [true, false]);
+  page.toggleSearch();
+  assert.equal(page.data.filteredCount, 2);
+  page.goNotificationSettings();
+  assert.deepEqual(navigations, ['/pages/me/me']);
+  const wxml = readFileSync(new URL('../miniprogram/pages/messages/messages.wxml', import.meta.url), 'utf8');
+  assert.match(wxml, /bindtap="toggleSearch"/);
+  assert.match(wxml, /bindinput="searchInput"/);
+  assert.match(wxml, /bindtap="goNotificationSettings"/);
+  assert.match(wxml, /私聊功能尚未开放/);
+  assert.match(wxml, /AI 助手.*尚未开放/);
+});

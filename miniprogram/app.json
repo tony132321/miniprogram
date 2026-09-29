@@ -1,5 +1,13 @@
 {
   "pages": ["pages/index/index", "pages/discover/discover", "pages/create/create", "pages/messages/messages", "pages/me/me", "pages/event/event", "pages/city/city", "pages/about/about"],
+  "subPackages": [{
+    "root": "subpackages/profile",
+    "pages": [
+      "profile-edit/profile-edit", "badges/badges", "moments/moments", "privacy-safety/privacy-safety",
+      "legal/legal", "cache/cache", "support/support", "release-notes/release-notes",
+      "guidelines/guidelines", "open-source/open-source"
+    ]
+  }],
   "window": { "navigationBarTitleText": "Project IRL", "navigationBarBackgroundColor": "#faf8fe", "navigationBarTextStyle": "black", "backgroundColor": "#faf8fe" },
   "tabBar": {
     "custom": true,

@@ -1,0 +1,4 @@
+@import "../common.wxss";
+.photo-placeholder { min-height: 390rpx; display: flex; flex-direction: column; justify-content: center; align-items: center; box-sizing: border-box; padding: 40rpx; border-radius: 30rpx; background: linear-gradient(135deg,#e9effe,#f7f1ff); color: #4e5a76; text-align: center; font-size: 26rpx; font-weight: 700; line-height: 1.6; margin-bottom: 22rpx; }
+.photo-icon { color: #2064ef; font-size: 94rpx; line-height: 1.2; margin-bottom: 18rpx; }
+.photo-placeholder text { font-size: 21rpx; color: #747d92; font-weight: 400; margin-top: 9rpx; }

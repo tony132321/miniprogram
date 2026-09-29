@@ -17,24 +17,28 @@ const noticeTitles = {
 const interactionKinds = new Set(['WAITLIST_OFFER', 'REGISTRATION_STATUS', 'REGISTRATION_APPROVED',
   'REGISTRATION_REMOVED', 'MANUAL_CHECKIN_REQUEST', 'CONTENT_REJECTED', 'REPORT_IN_REVIEW',
   'REPORT_RESOLVED', 'APPEAL_IN_REVIEW', 'APPEAL_RESOLVED']);
-function visible(item, filter) {
-  return filter === 'ALL' || (filter === 'ACTIVITY' && Boolean(item.event_id) && !interactionKinds.has(item.kind)) ||
+function visible(item, filter, searchQuery = '') {
+  const matchesFilter = filter === 'ALL' || (filter === 'ACTIVITY' && Boolean(item.event_id) && !interactionKinds.has(item.kind)) ||
     (filter === 'INTERACTION' && interactionKinds.has(item.kind)) ||
     (filter === 'SYSTEM' && !item.event_id);
+  if (!matchesFilter || !searchQuery) return matchesFilter;
+  return `${item.title || noticeTitles[item.kind] || '站内通知'} ${item.event_id || ''} ${item.kind || ''}`
+    .toLowerCase().includes(searchQuery.toLowerCase());
 }
-function present(items, filter) {
-  return items.map(item => ({ ...item, visible: visible(item, filter), title: noticeTitles[item.kind] || '站内通知',
+function present(items, filter, searchQuery = '') {
+  return items.map(item => ({ ...item, visible: visible(item, filter, searchQuery), title: noticeTitles[item.kind] || '站内通知',
     externalHint: item.external_status === 'PROVIDER_ACCEPTED'
       ? '外部提醒已受理，未确认送达' : item.external_status === 'UNKNOWN_REQUIRES_RECONCILIATION'
         ? '外部提醒结果待核对' : '请以站内通知为准' }));
 }
 function countVisible(items) { return items.filter(item => item.visible).length; }
 Page({
-  data: { items: [], filteredCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
+  data: { statusBarHeight: 24, items: [], filteredCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
     loadState: 'IDLE', loadingMore: false, markingAllRead: false, message: '',
     approvals: [], approvalTotal: 0, approvalNextOffset: null, approvalSnapshot: null, approvalLoadState: 'IDLE',
     approvingId: '', loadingMoreApprovals: false,
-    filter: 'ALL', hasSession: false, developmentMode: Boolean(config.developmentUser) },
+    filter: 'ALL', searchOpen: false, searchQuery: '', hasSession: false, developmentMode: Boolean(config.developmentUser) },
+  onLoad() { this.setData({ statusBarHeight: wx.getSystemInfoSync?.().statusBarHeight || 24 }); },
   async onShow() {
     const bar = this.getTabBar && this.getTabBar();
     if (bar) bar.setData({ selected: 3 });
@@ -46,7 +50,7 @@ Page({
       this.setData({ items: [], filteredCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
         loadingMore: false, markingAllRead: false, approvals: [], approvalTotal: 0,
         approvalNextOffset: null, approvalSnapshot: null, approvalLoadState: 'IDLE',
-        approvingId: '', loadingMoreApprovals: false });
+        approvingId: '', loadingMoreApprovals: false, searchOpen: false, searchQuery: '' });
     }
     this._actor = actor;
     this.setData({ hasSession });
@@ -59,7 +63,7 @@ Page({
     try {
       const page = await api.get('/me/notifications?offset=0');
       if (generation !== this._generation) return;
-      const items = present(page.items || [], this.data.filter);
+      const items = present(page.items || [], this.data.filter, this.data.searchQuery);
       this.setData({ items, filteredCount: countVisible(items), total: page.total ?? (page.items || []).length,
         unreadTotal: page.unreadTotal ?? (page.items || []).filter(item => item.status !== 'OPENED').length,
         nextOffset: page.nextOffset ?? null, snapshot: page.snapshot ?? null, loadState: 'READY' });
@@ -72,9 +76,20 @@ Page({
     if (this.data.loadState !== 'READY') return;
     const filter = event.currentTarget.dataset.filter;
     if (!['ALL', 'ACTIVITY', 'INTERACTION', 'SYSTEM'].includes(filter)) return;
-    const items = this.data.items.map(item => ({ ...item, visible: visible(item, filter) }));
+    const items = this.data.items.map(item => ({ ...item, visible: visible(item, filter, this.data.searchQuery) }));
     this.setData({ filter, items, filteredCount: countVisible(items) });
     if (filter === 'INTERACTION' && this.data.approvalLoadState === 'IDLE') return this.loadApprovals();
+  },
+  toggleSearch() {
+    const searchOpen = !this.data.searchOpen;
+    const searchQuery = searchOpen ? this.data.searchQuery : '';
+    const items = this.data.items.map(item => ({ ...item, visible: visible(item, this.data.filter, searchQuery) }));
+    this.setData({ searchOpen, searchQuery, items, filteredCount: countVisible(items) });
+  },
+  searchInput(event) {
+    const searchQuery = (event.detail.value || '').trim();
+    const items = this.data.items.map(item => ({ ...item, visible: visible(item, this.data.filter, searchQuery) }));
+    this.setData({ searchQuery, items, filteredCount: countVisible(items) });
   },
   async loadMore() {
     const offset = this.data.nextOffset;
@@ -84,7 +99,7 @@ Page({
     try {
       const page = await api.get(`/me/notifications?offset=${offset}&snapshot=${encodeURIComponent(this.data.snapshot)}`);
       if (generation !== this._generation) return;
-      const items = this.data.items.concat(present(page.items || [], this.data.filter));
+      const items = this.data.items.concat(present(page.items || [], this.data.filter, this.data.searchQuery));
       this.setData({ items, filteredCount: countVisible(items), total: page.total,
         unreadTotal: page.unreadTotal ?? this.data.unreadTotal, loadingMore: false,
         nextOffset: page.nextOffset ?? null, snapshot: page.snapshot });
@@ -196,5 +211,7 @@ Page({
       }
     } catch (error) { if (generation === this._generation) this.setData({ message: error.message || '打开通知失败' }); }
   },
-  goProfile() { wx.switchTab({ url: '/pages/me/me' }); }
+  goProfile() { wx.switchTab({ url: '/pages/me/me' }); },
+  goNotificationSettings() { wx.switchTab({ url: '/pages/me/me' }); },
+  goDiscover() { wx.switchTab({ url: '/pages/discover/discover' }); }
 });

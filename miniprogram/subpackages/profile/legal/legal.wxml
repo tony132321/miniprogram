@@ -1,0 +1,9 @@
+<view class="pg10-page" style="padding-top: {{statusBarHeight}}px">
+  <view class="pg10-header"><button class="pg10-back" bindtap="back" aria-label="返回">‹</button><view class="pg10-header-title">隐私与使用说明</view><view class="pg10-header-spacer"></view></view>
+  <view class="pg10-card pg10-hero"><view class="pg10-kicker">PRIVACY &amp; TERMS</view><view class="pg10-title">真实相聚，从清楚的边界开始</view><view class="pg10-subtitle">本页说明当前小程序已实现的数据入口。正式法律条款、第三方清单和下载版协议仍需主体核定后发布。</view></view>
+  <view class="pg10-section-label">当前可用的数据操作</view>
+  <view class="pg10-card"><view class="legal-item"><view class="legal-number">1</view><view><view class="pg10-row-title">本人数据导出</view><view class="pg10-note">“我的”页面可复制当前可导出的本人数据 JSON，也可提交人工导出申请。</view></view></view><view class="legal-item"><view class="legal-number">2</view><view><view class="pg10-row-title">注销与删除申请</view><view class="pg10-note">请求先进入核查流程；提交不代表账号已停用或数据已全部删除。</view></view></view><view class="legal-item"><view class="legal-number">3</view><view><view class="pg10-row-title">通知与类似活动同意</view><view class="pg10-note">活动提醒和类似活动候选名单分别同意，可在“我的”页面撤回。</view></view></view><view class="legal-item"><view class="legal-number">4</view><view><view class="pg10-row-title">安全与成员边界</view><view class="pg10-note">本人可管理活动内昵称和屏蔽记录，并通过举报工单提交安全问题。</view></view></view></view>
+  <view class="pg10-card"><view class="pg10-row-title">正式协议状态</view><view class="pg10-note">设计稿中的服务协议版本号、公司名称、备案号、DPO 邮箱和“已知悉并确认”状态均不是当前项目已核定的事实，因此此处不伪造法律同意或 PDF 下载。</view></view>
+  <button class="pg10-primary" bindtap="goPrivacy">管理账号与隐私请求</button>
+  <button class="secondary-action" bindtap="goGuidelines">查看社区公约与安全指南</button>
+</view>

@@ -1,0 +1,8 @@
+<view class="pg10-page" style="padding-top: {{statusBarHeight}}px">
+  <view class="pg10-header"><button class="pg10-back" bindtap="back" aria-label="返回">‹</button><view class="pg10-header-title">开源与致谢</view><view class="pg10-header-spacer"></view></view>
+  <view class="pg10-card pg10-hero"><view class="pg10-kicker">OPEN SOURCE SOFTWARE</view><view class="pg10-title">感谢开放生态的建设者</view><view class="pg10-subtitle">以下列出当前工程直接使用的部分依赖。完整许可义务以发布时依赖清单与各项目原许可文件为准。</view></view>
+  <view class="pg10-section-label">工程依赖示例</view>
+  <view class="pg10-card dependency-card"><view class="dependency-row"><view><view class="pg10-row-title">PostgreSQL 客户端 pg</view><view class="pg10-row-note">服务端数据库连接</view></view><text>MIT</text></view><view class="dependency-row"><view><view class="pg10-row-title">PGlite</view><view class="pg10-row-note">本地测试与开发数据库</view></view><text>Apache-2.0</text></view><view class="dependency-row"><view><view class="pg10-row-title">TypeScript</view><view class="pg10-row-note">工程类型检查与构建</view></view><text>Apache-2.0</text></view><view class="dependency-row"><view><view class="pg10-row-title">tsx</view><view class="pg10-row-note">开发与测试脚本运行</view></view><text>MIT</text></view><view class="dependency-row"><view><view class="pg10-row-title">qrcode-generator</view><view class="pg10-row-note">二维码生成依赖</view></view><text>MIT</text></view></view>
+  <view class="pg10-card"><view class="pg10-row-title">项目仓库</view><view class="pg10-note">可以复制仓库地址查看当前公开可访问的工程信息；仓库权限与正式发布状态以 GitHub 实际页面为准。</view><button class="pg10-primary" bindtap="copyRepository">复制 GitHub 仓库地址</button><view wx:if="{{message}}" class="pg10-note">{{message}}</view></view>
+  <view class="pg10-foot">不沿用设计稿中未经核实的公司、贡献者或许可声明</view>
+</view>

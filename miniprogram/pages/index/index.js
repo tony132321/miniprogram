@@ -50,6 +50,11 @@ Page({
     if (bar) bar.setData({ selected: 0 });
     const savedCity = wx.getStorageSync('irlSelectedCity');
     this.setData({ city: typeof savedCity === 'string' && savedCity ? savedCity : '上海' });
+    const requestedTab = wx.getStorageSync('irlHomeTabIntent');
+    if (tabs.some(tab => tab.key === requestedTab)) {
+      wx.removeStorageSync('irlHomeTabIntent');
+      this.setData({ activeTab: requestedTab, visibleItems: this.data[requestedTab] });
+    }
     const generation = this._loadGeneration = (this._loadGeneration || 0) + 1;
     let identity = currentIdentity();
     if (this._shownIdentity !== identity) {

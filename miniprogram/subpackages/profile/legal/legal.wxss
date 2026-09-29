@@ -1,0 +1,6 @@
+@import "../common.wxss";
+.legal-item { display: flex; gap: 17rpx; padding: 22rpx 0; border-bottom: 1rpx solid #edf0f5; }
+.legal-item:last-child { border-bottom: 0; }
+.legal-number { width: 48rpx; height: 48rpx; min-width: 48rpx; background: #eaf2ff; color: #175feb; border-radius: 50%; text-align: center; line-height: 48rpx; font-size: 25rpx; font-weight: 800; }
+.secondary-action { width: 100%; border-radius: 40rpx; background: #fff; color: #1e5ee8; font-size: 25rpx; line-height: 2.5; }
+.secondary-action::after { border: 0; }

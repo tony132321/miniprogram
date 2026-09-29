@@ -1,5 +1,9 @@
 const { api } = require('../../utils/api.js');
 const config = require('../../config.js');
+const activityStatusLabels = {
+  DRAFT: '草稿', RECRUITING: '招募中', CONFIRMED: '已成局',
+  IN_PROGRESS: '进行中', COMPLETED: '已结束', CANCELLED: '已取消', EXPIRED: '未成局'
+};
 const externalStatusLabels = {
   NOT_REQUESTED: '外部提醒待处理',
   DISPATCHING: '外部提醒请求处理中',
@@ -22,7 +26,8 @@ function withExternalStatusLabels(items) {
       ? externalStatusLabels[item.external_status] : '外部提醒状态待核对' }));
 }
 Page({
-  data: { devUser: '', developmentMode: Boolean(config.developmentUser), hasSession: false, notifications: [], notificationsTotal: 0,
+  data: { statusBarHeight: 24, devUser: '', developmentMode: Boolean(config.developmentUser), hasSession: false, notifications: [], notificationsTotal: 0,
+    activityStats: { total: null, hosted: null, confirmed: null }, activityPreview: [], activityLoadState: 'IDLE',
     nextNotificationOffset: null, notificationSnapshot: null, privacy: [], blocks: [], removals: [], reports: [], appeals: [], rejectedContent: [],
     appealDescription: '', reportAppealDescription: '', contentAppealDescription: '', eventReminder: false,
     similarInvites: false, eventReminderNeedsReconfirmation: false, similarInvitesNeedsReconfirmation: false,
@@ -31,6 +36,7 @@ Page({
     similarInvitesNotice: '允许旧活动主办方在结项后看到自己的活动内身份并将自己列入类似活动邀请候选；不会自动发送邀请。',
     similarInvitesNoticeVersion: '',
     loadState: 'IDLE', message: '', reportDescription: '', reportEventId: '' },
+  onLoad() { this.setData({ statusBarHeight: wx.getSystemInfoSync?.().statusBarHeight || 24 }); },
   async onShow() {
     const bar = this.getTabBar && this.getTabBar(); if (bar) bar.setData({ selected: 4 });
     if (this.data.developmentMode) this.setData({ devUser: wx.getStorageSync('devUser') || config.developmentUser });
@@ -57,9 +63,11 @@ Page({
     const generation = this._refreshGeneration = (this._refreshGeneration || 0) + 1;
     this.setData({ nextNotificationOffset: null, loadState: 'LOADING' });
     try {
-      const [notifications, privacy, blocks, removals, reports, appeals, rejectedContent, consents, similar] = await Promise.all([api.get('/me/notifications?offset=0'), api.get('/privacy/requests'), api.get('/me/blocks'),
-        api.get('/me/removals'), api.get('/me/reports'), api.get('/me/appeals'), api.get('/me/content'), api.get('/me/consents'), api.get('/me/similar-invites')]);
+      const [notifications, privacy, blocks, removals, reports, appeals, rejectedContent, consents, similar, activityResult] = await Promise.all([api.get('/me/notifications?offset=0'), api.get('/privacy/requests'), api.get('/me/blocks'),
+        api.get('/me/removals'), api.get('/me/reports'), api.get('/me/appeals'), api.get('/me/content'), api.get('/me/consents'), api.get('/me/similar-invites'),
+        api.get('/me/events').catch(() => null)]);
       if (generation !== this._refreshGeneration) return false;
+      const activityItems = Array.isArray(activityResult?.items) ? activityResult.items : null;
       this.setData({ notifications: withExternalStatusLabels(notifications.items), notificationsTotal: notifications.total ?? notifications.items.length,
         nextNotificationOffset: notifications.nextOffset ?? null, notificationSnapshot: notifications.snapshot ?? null,
         privacy: privacy.items, blocks: blocks.items, removals: removals.items, reports: reports.items,
@@ -71,6 +79,14 @@ Page({
         eventReminderNoticeVersion: consents.eventReminderNotice?.version || '',
         similarInvitesNotice: similar.notice?.text || this.data.similarInvitesNotice,
         similarInvitesNoticeVersion: similar.notice?.version || '',
+        activityStats: activityItems ? { total: activityItems.length,
+          hosted: activityItems.filter(item => item.isHost).length,
+          confirmed: activityItems.filter(item => item.myRegistrationStatus === 'CONFIRMED').length } :
+          { total: null, hosted: null, confirmed: null },
+        activityPreview: activityItems ? activityItems.slice(0, 4).map(item => ({
+          ...item, statusLabel: activityStatusLabels[item.status] || item.status || '状态待核对'
+        })) : [],
+        activityLoadState: activityItems ? 'READY' : 'ERROR',
         loadState: 'READY', message: '' });
       return true;
     } catch (error) { if (generation === this._refreshGeneration) this.setData({ loadState: 'ERROR', message: error.message }); return false; }
@@ -100,6 +116,7 @@ Page({
   clearPrivateData() {
     this._refreshGeneration = (this._refreshGeneration || 0) + 1;
     this.setData({ notifications: [], notificationsTotal: 0, nextNotificationOffset: null,
+      activityStats: { total: null, hosted: null, confirmed: null }, activityPreview: [], activityLoadState: 'IDLE',
       notificationSnapshot: null, privacy: [], blocks: [], removals: [], reports: [], appeals: [], rejectedContent: [],
       eventReminder: false, similarInvites: false, eventReminderNeedsReconfirmation: false,
       similarInvitesNeedsReconfirmation: false, reportDescription: '', appealDescription: '',
@@ -271,6 +288,18 @@ Page({
   },
   goMessages() { wx.switchTab({ url: '/pages/messages/messages' }); },
   goAbout() { wx.navigateTo({ url: '/pages/about/about' }); },
+  goEditProfile() { wx.navigateTo({ url: '/subpackages/profile/profile-edit/profile-edit' }); },
+  goBadges() { wx.navigateTo({ url: '/subpackages/profile/badges/badges' }); },
+  goMoments() { wx.navigateTo({ url: '/subpackages/profile/moments/moments' }); },
+  goPrivacySafety() { wx.navigateTo({ url: '/subpackages/profile/privacy-safety/privacy-safety' }); },
+  goLegal() { wx.navigateTo({ url: '/subpackages/profile/legal/legal' }); },
+  goCache() { wx.navigateTo({ url: '/subpackages/profile/cache/cache' }); },
+  goSupport() { wx.navigateTo({ url: '/subpackages/profile/support/support' }); },
+  goHome() { wx.switchTab({ url: '/pages/index/index' }); },
+  openActivity(event) {
+    const id = event.currentTarget.dataset.id;
+    if (id) wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) });
+  },
   goDiscover() { wx.switchTab({ url: '/pages/discover/discover' }); },
   goCreate() { wx.switchTab({ url: '/pages/create/create' }); }
 });

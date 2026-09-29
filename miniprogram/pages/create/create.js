@@ -7,6 +7,7 @@ function localParts(value) {
   return { date: local.slice(0, 10), time: local.slice(11, 16) };
 }
 function localDateTimeLabel(value) {
+  if (!value || Number.isNaN(Date.parse(value))) return '待确认';
   const { date, time } = localParts(value);
   const weekday = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][new Date(`${date}T00:00:00Z`).getUTCDay()];
   return `${date} ${weekday} ${time}`;
@@ -23,13 +24,15 @@ function currentIdentity() {
 }
 function emptyEditor() {
   return { stage: 'IDEA', aiText: '', message: '', draft: null, editingEvent: null, publishPreview: null, changePreview: null,
+    reviewSummary: null,
     editorLoadState: 'IDLE', editorErrorCode: '', conflict: null,
     safetyStatus: 'UNKNOWN', safetyMessage: '',
     suggestionNotes: [], suggestionUnknown: '', suggestionLoading: false, suggestionSlow: false, form: { ...emptyForm },
     startDate: '', startTime: '20:00', endDate: '', endTime: '22:00', templateDurationMinutes: null,
     repeatEndEdited: false, feeMode: 'AA', hostParticipates: null,
     venueConfirmed: false, visibility: 'INVITE', visibilityIndex: 0, approvalMode: 'AUTO', approvalIndex: 0,
-    customDeadlines: false, registrationDate: '', registrationTime: '19:30', confirmationDate: '', confirmationTime: '18:30' };
+    customDeadlines: false, registrationDate: '', registrationTime: '19:30', confirmationDate: '', confirmationTime: '18:30',
+    quickDateSelected: '', quickTimeSelected: '' };
 }
 Page({
   data: {
@@ -130,6 +133,12 @@ Page({
         this.setData({ editorLoadState: 'ERROR', editorErrorCode: error.code || '', message: error.message || '活动读取失败' });
     }
   },
+  backFromCreate() {
+    if (this.data.stage === 'REVIEW') return this.backToForm();
+    if (this.data.editingEvent && this.data.stage === 'FORM') return this.returnToMyActivities();
+    if (this.data.stage === 'FORM') return this.backToIdea();
+    return this.returnToMyActivities();
+  },
   onHide() { this.stopSuggestion(); },
   onUnload() { this.stopSuggestion(); },
   stopSuggestion() {
@@ -186,14 +195,17 @@ Page({
   },
   openForm() { this.setData({ stage: 'FORM' }, () => wx.pageScrollTo?.({ scrollTop: 0, duration: 0 })); },
   backToIdea() {
-    this.setData({ stage: 'IDEA', publishPreview: null, changePreview: null },
+    this.setData({ stage: 'IDEA', publishPreview: null, changePreview: null, reviewSummary: null },
       () => wx.pageScrollTo?.({ scrollTop: 0, duration: 0 }));
   },
   backToForm() {
-    this.setData({ stage: 'FORM', publishPreview: null, changePreview: null },
+    this.setData({ stage: 'FORM', publishPreview: null, changePreview: null, reviewSummary: null },
       () => wx.pageScrollTo?.({ scrollTop: 0, duration: 0 }));
   },
-  openDrafts() { wx.switchTab({ url: '/pages/index/index' }); },
+  openDrafts() {
+    wx.setStorageSync('irlHomeTabIntent', 'organized');
+    wx.switchTab({ url: '/pages/index/index' });
+  },
   input(event) {
     if (this.data.suggestionLoading) this.cancelSuggestion();
     const field = event.currentTarget.dataset.field;
@@ -207,17 +219,37 @@ Page({
     const startDate = event.detail.value;
     if (this.data.templateDurationMinutes && !this.data.repeatEndEdited) {
       const end = endFromDuration(startDate, this.data.startTime, this.data.templateDurationMinutes);
-      this.setData({ startDate, endDate: end.date, endTime: end.time, venueConfirmed: false });
+      this.setData({ startDate, endDate: end.date, endTime: end.time, venueConfirmed: false, quickDateSelected: '' });
     } else this.setData({ startDate, endDate: this.data.endDate || startDate,
-      venueConfirmed: startDate === this.data.startDate ? this.data.venueConfirmed : false });
+      venueConfirmed: startDate === this.data.startDate ? this.data.venueConfirmed : false, quickDateSelected: '' });
+  },
+  chooseQuickDate(event) {
+    const choice = event.currentTarget.dataset.choice;
+    const today = new Date(Date.now() + 8 * 60 * 60_000);
+    const weekday = today.getUTCDay();
+    let offset = (6 - weekday + 7) % 7;
+    if (choice === 'sunday') offset = (7 - weekday) % 7;
+    if (choice === 'nextWeekend') offset += 7;
+    const target = new Date(today.getTime() + offset * 24 * 60 * 60_000).toISOString().slice(0, 10);
+    this.setStartDate({ detail: { value: target } });
+    this.setData({ quickDateSelected: choice });
+  },
+  chooseQuickTime(event) {
+    const slots = { morning: ['09:00', '12:00'], afternoon: ['14:00', '17:00'], evening: ['18:00', '21:00'] };
+    const choice = event.currentTarget.dataset.choice;
+    const slot = slots[choice];
+    if (!slot) return;
+    this.setData({ startTime: slot[0], endDate: this.data.startDate || this.data.endDate,
+      endTime: slot[1], venueConfirmed: false, repeatEndEdited: true, quickTimeSelected: choice });
   },
   setStartTime(event) {
     if (this.data.suggestionLoading) this.cancelSuggestion();
     const startTime = event.detail.value;
     if (this.data.startDate && this.data.templateDurationMinutes && !this.data.repeatEndEdited) {
       const end = endFromDuration(this.data.startDate, startTime, this.data.templateDurationMinutes);
-      this.setData({ startTime, endDate: end.date, endTime: end.time, venueConfirmed: false });
-    } else this.setData({ startTime, venueConfirmed: startTime === this.data.startTime ? this.data.venueConfirmed : false });
+      this.setData({ startTime, endDate: end.date, endTime: end.time, venueConfirmed: false, quickTimeSelected: '' });
+    } else this.setData({ startTime, venueConfirmed: startTime === this.data.startTime ? this.data.venueConfirmed : false,
+      quickTimeSelected: '' });
   },
   setEndDate(event) { if (this.data.suggestionLoading) this.cancelSuggestion(); this.setData({ endDate: event.detail.value,
     venueConfirmed: event.detail.value === this.data.endDate ? this.data.venueConfirmed : false, repeatEndEdited: true }); },
@@ -391,7 +423,14 @@ Page({
     }
     const draft = await this.saveDraft();
     if (!draft) return;
-    this.setData({ stage: 'REVIEW', publishPreview: draft, message: '请逐项核对下方发布预览，然后点击最终确认。' });
+    this.setData({ stage: 'REVIEW', publishPreview: draft,
+      reviewSummary: {
+        start: localDateTimeLabel(draft.payload.startAt), end: localDateTimeLabel(draft.payload.endAt),
+        registration: localDateTimeLabel(draft.payload.registrationDeadline),
+        confirmation: localDateTimeLabel(draft.payload.confirmationDeadline),
+        fee: draft.payload.feeMode === 'FREE' ? '免费'
+          : Number.isSafeInteger(draft.payload.feeCapFen) ? `AA 制 · 每人上限 ¥${(draft.payload.feeCapFen / 100).toFixed(2)}` : 'AA 制 · 上限待确认'
+      }, message: '请逐项核对下方发布预览，然后点击最终确认。' });
   },
   async confirmPublish() {
     if (['LOADING', 'ERROR'].includes(this.data.editorLoadState))

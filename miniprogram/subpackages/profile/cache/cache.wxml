@@ -1,0 +1,7 @@
+<view class="pg10-page" style="padding-top: {{statusBarHeight}}px">
+  <view class="pg10-header"><button class="pg10-back" bindtap="back" aria-label="返回">‹</button><view class="pg10-header-title">本地存储</view><view class="pg10-header-spacer"></view></view>
+  <view class="pg10-card storage-hero"><view class="pg10-kicker">APP LOCAL DATA</view><view class="pg10-title">设备存储使用</view><view class="storage-size">{{storageState === 'READY' ? storageSize : '暂不可读取'}}</view><view class="pg10-note">数值来自当前设备的小程序存储统计，不代表服务器保存的数据总量。</view><view class="storage-bar"><view style="width: {{usagePercent}}%"></view></view></view>
+  <view class="pg10-card"><view class="pg10-row"><view class="pg10-icon">▣</view><view class="pg10-row-body"><view class="pg10-row-title">当前版本的本地数据</view><view class="pg10-row-note">可能包含登录会话、浏览城市和表单中的暂存状态。</view></view></view><view class="pg10-note">设计稿中的海报缓存、聊天语音缓存大小与“一键清理”数据均无当前服务支撑。为防止误删登录与待处理状态，此处不提供清空全部存储的按钮。</view></view>
+  <button class="pg10-primary" bindtap="refreshStorage">重新读取设备存储</button>
+  <view class="pg10-foot">本人服务端数据可在“我的 → 账号与隐私”中申请导出或删除核查</view>
+</view>

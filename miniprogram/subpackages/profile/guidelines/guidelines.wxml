@@ -1,0 +1,10 @@
+<view class="pg10-page" style="padding-top: {{statusBarHeight}}px">
+  <view class="pg10-header"><button class="pg10-back" bindtap="back" aria-label="返回">‹</button><view class="pg10-header-title">社区公约</view><view class="pg10-header-spacer"></view></view>
+  <view class="pg10-card charter-hero"><view class="charter-mark">♡</view><view class="pg10-kicker">IRL CHARTER · 共建真实相聚</view><view class="pg10-title">在真实世界，纯粹相遇</view><view class="pg10-subtitle">尊重每个人的时间、边界和安全感，让组局规则清楚可核对。</view></view>
+  <view class="pg10-card"><view class="guideline-head"><view class="pg10-icon">◷</view><view class="pg10-row-title">守时与契约精神</view></view><view class="guideline-body">主办方应在发布前核实场地和时间，参与者应按当前版本确认规则。不能参加时，按活动取消规则及时处理。</view></view>
+  <view class="pg10-card"><view class="guideline-head"><view class="pg10-icon violet">♧</view><view class="pg10-row-title">友善、包容与边界感</view></view><view class="guideline-body">尊重不同经验和背景；未经同意不要索取或传播他人的联系方式、照片与私密信息。</view></view>
+  <view class="pg10-card"><view class="guideline-head"><view class="pg10-icon green">◉</view><view class="pg10-row-title">透明、合理的费用 AA</view></view><view class="guideline-body">报名时应清楚展示费用模式和每人上限。活动费用页的双方标记用于记录，不是平台支付或收款凭证。</view></view>
+  <view class="pg10-card"><view class="guideline-head"><view class="pg10-icon orange">▧</view><view class="pg10-row-title">肖像与记录边界</view></view><view class="guideline-body">活动相册尚未开放。在任何场景拍摄、传播他人影像前，应先取得当事人同意。</view></view>
+  <view class="pg10-card"><view class="pg10-row-title">需要帮助时</view><view class="pg10-note">活动内可使用举报与求助入口。紧急人身危险应先离开风险地点并联系当地应急服务。</view><button class="pg10-primary" bindtap="goReport">前往我的页面查看举报入口</button></view>
+  <view class="pg10-foot">以上为当前使用引导；正式社区协议需另行审核和发布</view>
+</view>

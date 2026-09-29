@@ -3,12 +3,17 @@ import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { runInNewContext } from 'node:vm';
 
-const app = JSON.parse(readFileSync(new URL('../miniprogram/app.json', import.meta.url), 'utf8')) as { pages: string[] };
+const app = JSON.parse(readFileSync(new URL('../miniprogram/app.json', import.meta.url), 'utf8')) as {
+  pages: string[];
+  subPackages?: Array<{ root: string; pages: string[] }>;
+};
+const registeredRoutes = app.pages.concat((app.subPackages || []).flatMap(group =>
+  group.pages.map(page => `${group.root}/${page}`)));
 
 test('every WXML event binding has a page handler and every literal page navigation has a registered route', t => {
   let bindings = 0;
   let navigations = 0;
-  for (const route of app.pages) {
+  for (const route of registeredRoutes) {
     const markup = readFileSync(new URL(`../miniprogram/${route}.wxml`, import.meta.url), 'utf8');
     const source = readFileSync(new URL(`../miniprogram/${route}.js`, import.meta.url), 'utf8');
     let page: Record<string, unknown> | undefined;
@@ -31,9 +36,9 @@ test('every WXML event binding has a page handler and every literal page navigat
     for (const match of source.matchAll(/\bwx\.(?:navigateTo|switchTab|reLaunch|redirectTo)\s*\(\s*\{\s*url:\s*['"`]([^'"`?]+)(?:\?[^'"`]*)?['"`]/g)) {
       navigations++;
       const target = match[1]!.replace(/^\//, '');
-      assert.ok(app.pages.includes(target), `${route} navigates to unregistered page ${target}`);
+      assert.ok(registeredRoutes.includes(target), `${route} navigates to unregistered page ${target}`);
     }
   }
   assert.ok(bindings > 0 && navigations > 0);
-  t.diagnostic(`${app.pages.length} pages, ${bindings} event bindings, ${navigations} literal routes checked`);
+  t.diagnostic(`${registeredRoutes.length} pages, ${bindings} event bindings, ${navigations} literal routes checked`);
 });

@@ -1,0 +1,8 @@
+@import "../common.wxss";
+.charter-hero { text-align: center; padding: 42rpx 28rpx; }
+.charter-mark { width: 95rpx; height: 95rpx; margin: 0 auto 18rpx; border-radius: 50%; background: linear-gradient(135deg,#2c64eb,#6856d9); color: #fff; font-size: 56rpx; line-height: 95rpx; }
+.guideline-head { display: flex; align-items: center; gap: 15rpx; margin-bottom: 18rpx; }
+.guideline-body { padding: 22rpx; border-radius: 20rpx; background: #f4f5f9; color: #4f586b; font-size: 23rpx; line-height: 1.7; }
+.pg10-icon.violet { background: #f0eeff; color: #6555d9; }
+.pg10-icon.green { background: #eaf8eb; color: #2aab5e; }
+.pg10-icon.orange { background: #fff3e8; color: #df8139; }

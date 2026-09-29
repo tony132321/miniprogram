@@ -1,0 +1,6 @@
+@import "../common.wxss";
+.dependency-card { padding-top: 5rpx; padding-bottom: 5rpx; }
+.dependency-row { display: flex; justify-content: space-between; align-items: center; gap: 15rpx; padding: 23rpx 0; border-bottom: 1rpx solid #edf0f5; }
+.dependency-row:last-child { border-bottom: 0; }
+.dependency-row view { flex: 1; }
+.dependency-row text { flex: none; border-radius: 25rpx; background: #e9f7eb; color: #228f4c; font-size: 19rpx; padding: 6rpx 14rpx; }

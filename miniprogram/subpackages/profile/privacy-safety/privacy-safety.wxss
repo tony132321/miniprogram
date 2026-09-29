@@ -1,0 +1,8 @@
+@import "../common.wxss";
+.block-row { display: flex; align-items: center; gap: 16rpx; padding: 20rpx 0; border-top: 1rpx solid #edf0f5; }
+.block-avatar { width: 72rpx; height: 72rpx; min-width: 72rpx; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #edf2ff; color: #215feb; font-size: 36rpx; }
+.block-copy { flex: 1; }
+.block-action { flex: none; margin: 0; border-radius: 32rpx; background: #f0f1f6; color: #252b38; font-size: 22rpx; line-height: 2.3; padding: 0 22rpx; }
+.block-action::after { border: 0; }
+.warn { background: #fff0f2; color: #f13b5d; }
+.support-link { color: #1760ef; font-size: 25rpx; font-weight: 700; padding-top: 20rpx; }

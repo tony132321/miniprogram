@@ -1,14 +1,26 @@
-<view class="profile-page">
-  <view class="brand-row"><view class="brand-dot">✦</view><text class="brand-name">Project IRL</text><text class="brand-sub">让有趣的事，真的发生</text></view>
-  <view class="hero card"><view class="hero-top"><view class="avatar">我</view><view class="hero-copy"><view class="hero-name">我的空间</view><view class="hero-caption">{{hasSession ? '已通过微信登录' : developmentMode ? '本地测试身份' : '登录后管理活动与通知'}}</view></view><view class="hero-spark">✦</view></view><view class="hero-quick"><button bindtap="goDiscover">找活动 ›</button><button bindtap="goCreate">发起活动 ›</button><button bindtap="goMessages">站内消息 ›</button></view></view>
+<view class="profile-page" style="padding-top: {{statusBarHeight}}px">
+  <view class="brand-row"><view class="brand-lockup"><view class="brand-dot">▶</view><view class="brand-copy"><text class="brand-name">耍起</text><text class="brand-en">CAPER</text></view></view><view class="brand-actions"><button class="brand-icon" bindtap="goPrivacySafety" aria-label="隐私与设置">⚙</button><view class="brand-icon visual-only" aria-label="扫码未开放">⌗</view></view></view>
+  <view class="hero card"><view class="hero-sticker">Good<text>People</text><text>More Plans ☺</text></view><view class="hero-top"><view class="avatar">我<view class="avatar-dot"></view></view><view class="hero-copy"><view class="hero-name">{{developmentMode && devUser ? devUser : '我的空间'}} <text>✨</text></view><view class="hero-handle">{{hasSession ? '微信身份已登录' : developmentMode ? '本地测试身份' : '登录后管理你的活动'}}</view><view class="hero-caption">让有趣的人，在真实世界相聚</view></view></view><view class="hero-stats"><view><text>{{activityStats.total === null ? '—' : activityStats.total}}</text><text>我的活动</text></view><view><text>{{activityStats.hosted === null ? '—' : activityStats.hosted}}</text><text>发起组局</text></view><view><text>{{activityStats.confirmed === null ? '—' : activityStats.confirmed}}</text><text>确认报名</text></view><view><text>{{loadState === 'READY' ? notificationsTotal : '—'}}</text><text>站内通知</text></view></view></view>
+  <view class="section-head"><text class="section-mark"></text><text>我的社交印记</text><button class="section-link" bindtap="goBadges">成就勋章馆 ›</button></view>
+  <view class="badge-grid"><button class="badge-tile card" bindtap="goBadges"><view>🏸</view><text>运动印记</text><text>暂未开放</text></button><button class="badge-tile card" bindtap="goBadges"><view>👑</view><text>靠谱组织</text><text>暂未开放</text></button><button class="badge-tile card" bindtap="goBadges"><view>⚡</view><text>线下相聚</text><text>暂未开放</text></button><button class="badge-tile card" bindtap="goBadges"><view>✦</view><text>探索生活</text><text>暂未开放</text></button></view>
+  <view class="section-head"><text class="section-mark"></text><text>兴趣偏好</text><button class="section-link" bindtap="goEditProfile">编辑兴趣 ›</button></view>
+  <view class="interest-chips"><view class="interest-chip active">羽毛球</view><view class="interest-chip">咖啡</view><view class="interest-chip">运动</view><view class="interest-chip">城市漫步</view><view class="interest-chip">桌游</view><view class="interest-chip">摄影</view></view><view class="interest-note">设计分类示意，当前没有个人兴趣保存接口。</view>
   <view wx:if="{{message}}" class="notice-banner">{{message}}</view>
   <button id="profileRetryButton" wx:if="{{loadState === 'ERROR'}}" bindtap="retryRefresh">重新加载</button>
-  <view class="section-head"><text class="section-mark"></text><text>账号与隐私</text></view>
   <view wx:if="{{!hasSession && !developmentMode}}" class="section-card card">
     <button bindtap="login">微信登录</button>
+    <button bindtap="goDiscover">前往发现</button>
     <view class="hint">登录后可管理活动提醒、隐私请求与举报记录。</view>
   </view>
   <block wx:if="{{hasSession || developmentMode}}">
+  <view class="section-head"><text class="section-mark"></text><text>隐私与社交可见性</text></view>
+  <view class="privacy-card card"><view class="privacy-line"><view class="privacy-icon">◉</view><view class="privacy-copy"><view>活动提醒</view><text>{{eventReminderNotice}}</text></view><switch id="reminderConsentSwitch" checked="{{eventReminder}}" bindchange="toggleReminder" /></view><view wx:if="{{eventReminderNeedsReconfirmation}}" class="hint">授权说明已更新，请阅读后重新开启活动提醒。</view><view class="privacy-line"><view class="privacy-icon green">◎</view><view class="privacy-copy"><view>类似活动邀请候选</view><text>{{similarInvitesNotice}}</text></view><switch id="similarInvitesConsentSwitch" checked="{{similarInvites}}" bindchange="toggleSimilarInvites" /></view><view wx:if="{{similarInvitesNeedsReconfirmation}}" class="hint">授权说明已更新，请阅读后重新允许类似活动候选名单收录。</view><button class="privacy-link" bindtap="goPrivacySafety">屏蔽管理 <text>{{blocks.length}} 人　›</text></button></view>
+  <view class="section-head"><text class="section-mark"></text><text>我的活动记录</text><button class="section-link" bindtap="goHome">查看全部 ›</button></view>
+  <view wx:if="{{activityLoadState === 'ERROR'}}" class="empty card">活动记录暂不可用，可点击“查看全部”重试。</view><view wx:if="{{activityLoadState === 'READY' && activityPreview.length === 0}}" class="empty card">暂无活动记录，可从邀请进入或发起一场活动。</view>
+  <view class="activity-grid"><button wx:for="{{activityPreview}}" wx:key="id" class="activity-tile card" data-id="{{item.id}}" bindtap="openActivity"><view class="activity-cover"><text>CAPER ✦</text><view>🏸</view></view><view class="activity-copy"><view>{{item.title || '活动'}}</view><text>{{item.statusLabel}} · 点击查看当前活动</text></view></button></view>
+  <view class="section-head"><text class="section-mark"></text><text>主理人工具</text><button class="section-link" bindtap="goHome">进入主理人中心 ›</button></view>
+  <view class="tool-grid"><button bindtap="goCreate"><view>＋</view><text>发布活动</text></button><button bindtap="goHome"><view>▣</view><text>活动管理</text></button><button bindtap="goMessages"><view>♧</view><text>报名管理</text></button><view><view>▤</view><text>数据看板待开放</text></view></view>
+  <view class="section-head"><text class="section-mark"></text><text>账号与隐私</text></view>
   <view class="section-card card">
   <button wx:if="{{!hasSession}}" bindtap="login">微信登录</button>
   <view wx:if="{{developmentMode}}" class="dev-box">
@@ -16,14 +28,9 @@
     <input placeholder="本地测试账号" value="{{devUser}}" bindinput="devInput" />
     <button id="switchDevUserButton" bindtap="setDevUser">切换本地测试账号</button>
   </view>
-  <view class="setting-title">活动提醒同意</view>
-  <switch id="reminderConsentSwitch" checked="{{eventReminder}}" bindchange="toggleReminder" />
-  <view class="hint">{{eventReminderNotice}}</view>
-  <view wx:if="{{eventReminderNeedsReconfirmation}}" class="hint">授权说明已更新，请阅读后重新开启活动提醒。</view>
-  <view class="setting-title">允许类似活动邀请候选名单收录</view>
-  <switch id="similarInvitesConsentSwitch" checked="{{similarInvites}}" bindchange="toggleSimilarInvites" />
-  <view class="hint">{{similarInvitesNotice}}</view>
-  <view wx:if="{{similarInvitesNeedsReconfirmation}}" class="hint">授权说明已更新，请阅读后重新允许类似活动候选名单收录。</view>
+  <button bindtap="goEditProfile">个人资料与城市选择</button>
+  <button bindtap="goMoments">活动相册状态</button>
+  <button bindtap="goLegal">隐私与使用说明</button>
   </view>
   <view class="section-head"><text class="section-mark"></text><text>已屏蔽成员</text></view>
   <view class="section-card card">
@@ -92,6 +99,8 @@
   </view>
   </view>
   </block>
+  <view class="section-head"><text class="section-mark"></text><text>帮助与反馈</text></view>
+  <view class="quick-menu card"><button bindtap="goSupport"><text class="menu-icon">？</text><view><view class="menu-title">常见问题与安全求助</view><view class="menu-note">安全举报可通过现有工单提交</view></view><text class="menu-arrow">›</text></button><button bindtap="goCache"><text class="menu-icon">▣</text><view><view class="menu-title">本地存储说明</view><view class="menu-note">查看缓存与账号数据边界</view></view><text class="menu-arrow">›</text></button></view>
   <button id="aboutButton" class="about-row card" bindtap="goAbout"><text>关于 Project IRL</text><text>›</text></button>
   <block wx:if="{{hasSession}}"><button id="logoutButton" wx:if="{{!developmentMode}}" bindtap="logout" class="logout-button">退出登录</button></block>
   <view class="page-foot">REAL PEOPLE · REAL MEETUPS</view>

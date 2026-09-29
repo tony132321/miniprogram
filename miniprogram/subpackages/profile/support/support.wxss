@@ -1,0 +1,10 @@
+@import "../common.wxss";
+.faq-card { padding-top: 5rpx; padding-bottom: 5rpx; }
+.faq-item { border-bottom: 1rpx solid #edf0f5; }
+.faq-item:last-child { border-bottom: 0; }
+.faq-item button { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 25rpx 0; margin: 0; background: transparent; color: #2a2f3a; text-align: left; font-size: 24rpx; line-height: 1.45; }
+.faq-item button::after { border: 0; }
+.faq-item button text:first-child { flex: 1; }
+.faq-item button text:last-child { color: #7d8798; font-size: 32rpx; margin-left: 12rpx; }
+.faq-answer { padding: 0 4rpx 24rpx; color: #677185; font-size: 22rpx; line-height: 1.65; }
+.danger { background: #fff0f3; color: #ec3854; }

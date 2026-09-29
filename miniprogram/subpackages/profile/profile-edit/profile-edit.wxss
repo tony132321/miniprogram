@@ -1,0 +1,5 @@
+@import "../common.wxss";
+.identity-hero { text-align: center; padding: 30rpx 14rpx 34rpx; }
+.identity-avatar { width: 146rpx; height: 146rpx; margin: 4rpx auto 22rpx; border: 8rpx solid #fff; border-radius: 50%; background: #e4edff; color: #1b62ed; line-height: 146rpx; font-size: 66rpx; box-shadow: 0 9rpx 26rpx rgba(30,70,170,.12); }
+.pending-tag { color: #657087; background: #f0f1f6; padding: 7rpx 16rpx; border-radius: 22rpx; font-size: 20rpx; }
+.tag-row { margin-top: 14rpx; }

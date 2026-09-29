@@ -1,8 +1,13 @@
-<view class="about-page">
+<view class="about-page" style="padding-top: {{statusBarHeight}}px">
+  <view class="about-header"><button bindtap="back" aria-label="返回">‹</button><view>关于 Project IRL</view><view class="header-spacer"></view></view>
   <view class="logo">∞</view>
   <view class="title">Project IRL</view>
   <view class="slogan">把有趣的人聚在真实世界</view>
-  <view class="card"><view class="eyebrow">关于我们</view><view class="manifesto">在屏幕之外，找到真实相聚的心跳与温度。</view><view class="body">Project IRL 帮助人们发起和发现线下活动。活动报名、候补、站内提醒与安全处理以应用中的实时记录为准。</view></view>
-  <view class="card action-list"><button bindtap="goDiscover">发现活动 <text>›</text></button><button bindtap="goHome">返回首页 <text>›</text></button><button bindtap="goProfile">账号、隐私与安全 <text>›</text></button></view>
+  <view class="version-note">R1 本地测试候选 · 功能状态以当前应用为准</view>
+  <view class="card manifesto-card"><view class="eyebrow">MANIFESTO</view><view class="manifesto">「在屏幕之外，找回真实相聚的心跳与温度。」</view><view class="body">Project IRL 帮助人们发起受控线下活动。报名、候补、通知和安全处理以应用中的实时记录为准。</view></view>
+  <view class="section-label">探索与规范</view>
+  <view class="card action-list"><button bindtap="goReleaseNotes"><text>✧　当前功能与版本说明</text><text>›</text></button><button bindtap="goGuidelines"><text>♧　社区公约与真实社交</text><text>›</text></button><button bindtap="goOpenSource"><text>⌘　开源组件与致谢</text><text>›</text></button></view>
+  <view class="section-label">继续探索</view>
+  <view class="card action-list"><button bindtap="goDiscover"><text>发现活动</text><text>›</text></button><button bindtap="goHome"><text>返回首页</text><text>›</text></button><button bindtap="goProfile"><text>账号、隐私与安全</text><text>›</text></button></view>
   <view class="foot">REAL PEOPLE · REAL MEETUPS</view>
 </view>

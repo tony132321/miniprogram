@@ -1,0 +1,7 @@
+<view class="pg10-page" style="padding-top: {{statusBarHeight}}px">
+  <view class="pg10-header"><button class="pg10-back" bindtap="back" aria-label="返回">‹</button><view class="pg10-header-title">活动回忆</view><view class="pg10-header-spacer"></view></view>
+  <view class="pg10-card pg10-hero"><view class="pg10-kicker">REAL MOMENTS</view><view class="pg10-title">每一次相聚，都是故事</view><view class="pg10-subtitle">设计稿里的现场照片、点赞、打包和 AI 找图需要照片授权与专门服务。R1 尚未开放活动相册。</view></view>
+  <view class="photo-placeholder"><view class="photo-icon">▧</view><view>这里将展示经本人同意的活动照片</view><text>当前没有相册服务，不会使用示例图片冒充真实活动</text></view>
+  <view class="pg10-card"><view class="pg10-row-title">照片与隐私边界</view><view class="pg10-note">照片上传、同场可见、下载、删除与人脸检索均需另行定义权限、保留期限和撤回流程。在能力上线前，本页只提供说明。</view></view>
+  <button class="pg10-primary" bindtap="goActivities">查看我的真实活动</button>
+</view>
