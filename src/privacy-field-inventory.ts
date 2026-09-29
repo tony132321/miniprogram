@@ -25,6 +25,10 @@ export const historicallyReported = (reportAlias: string): string =>
   `(${disputePerson(`${reportAlias}.reporter_id`)} OR EXISTS (SELECT 1 FROM privacy_quarantine q
     JOIN privacy_requests p ON p.id=q.request_id WHERE q.source_table='reports'
       AND q.source_id=${reportAlias}.id AND p.user_id=$1))`;
+const notificationRecipient = (identityColumn: string): string =>
+  `(${identityColumn}=$1 OR EXISTS (SELECT 1 FROM privacy_ordinary_profile_expiries e
+    JOIN privacy_requests p ON p.id=e.request_id AND p.user_id=e.user_id
+    WHERE e.user_id=$1 AND e.recipient_tombstone=${identityColumn}))`;
 
 // Static, reviewed SQL identifiers and ownership predicates only. A count is
 // a non-null column in a row linked by the stated predicate, never a search of
@@ -41,6 +45,9 @@ const groups: Group[] = [
   { table: 'event_versions', from: 'event_versions t',
     where: `EXISTS (SELECT 1 FROM events e WHERE e.id=t.event_id AND ${historicallyHosted('e')})`, ownerLink: 'hosted_event',
     fields: [...fields('JSON', 'payload')] },
+  { table: 'event_status_history', from: 'event_status_history t JOIN events e ON e.id=t.event_id',
+    where: historicallyHosted('e'), ownerLink: 'hosted_event',
+    fields: [...fields('DIRECT_IDENTIFIER', 'event_id')] },
   { table: 'event_review_decisions', from: 'event_review_decisions t',
     where: `EXISTS (SELECT 1 FROM events e WHERE e.id=t.event_id AND ${historicallyHosted('e')})`, ownerLink: 'hosted_event',
     fields: [...fields('FREE_TEXT', 'reason')] },
@@ -53,6 +60,16 @@ const groups: Group[] = [
     fields: [...fields('DIRECT_IDENTIFIER', 'requester_id'), ...fields('FREE_TEXT', 'question_text')] },
   { table: 'registrations', from: 'registrations t', where: sharedPerson('t.user_id','t.event_id'), ownerLink: 'user_id_or_deletion_tombstone',
     fields: [...fields('DIRECT_IDENTIFIER', 'user_id')] },
+  { table: 'registration_status_history', from: 'registration_status_history t JOIN registrations r ON r.id=t.registration_id',
+    where: sharedPerson('r.user_id','r.event_id'), ownerLink: 'registration_user_id_or_deletion_tombstone',
+    fields: [...fields('DIRECT_IDENTIFIER', 'registration_id')] },
+  { table: 'offers', from: 'offers t JOIN registrations r ON r.id=t.registration_id',
+    where: sharedPerson('r.user_id','r.event_id'), ownerLink: 'registration_user_id_or_deletion_tombstone',
+    fields: [...fields('DIRECT_IDENTIFIER', 'registration_id')] },
+  { table: 'offer_status_history', from: `offer_status_history t JOIN offers o ON o.id=t.offer_id
+    JOIN registrations r ON r.id=o.registration_id`,
+    where: sharedPerson('r.user_id','r.event_id'), ownerLink: 'offer_registration_user_id_or_deletion_tombstone',
+    fields: [...fields('DIRECT_IDENTIFIER', 'offer_id')] },
   { table: 'reservations', from: 'reservations t', where: sharedPerson('t.claimed_by','t.event_id'), ownerLink: 'claimed_by_or_deletion_tombstone',
     fields: [...fields('DIRECT_IDENTIFIER', 'claimed_by', 'token')] },
   { table: 'share_intents', from: 'share_intents t', where: sharedPerson('t.sender_id','t.event_id'), ownerLink: 'sender_id_or_deletion_tombstone',
@@ -93,13 +110,15 @@ const groups: Group[] = [
     where: `${sharedPerson('t.user_id','t.event_id')} OR ${sharedPerson('t.requested_by','t.event_id')}`,
     ownerLink: 'user_id_or_requested_by_or_deletion_tombstone',
     fields: [...fields('DIRECT_IDENTIFIER', 'user_id', 'requested_by')] },
-  { table: 'notifications', from: 'notifications t', where: 't.user_id=$1', ownerLink: 'user_id',
+  { table: 'notifications', from: 'notifications t', where: notificationRecipient('t.user_id'),
+    ownerLink: 'user_id_or_expiry_tombstone',
     fields: [...fields('DIRECT_IDENTIFIER', 'user_id'), ...fields('JSON', 'detail'),
       ...fields('EXTERNAL_DELIVERY', 'provider_ref', 'external_failure_code', 'external_dispatch_token',
         'external_status', 'external_purpose', 'external_channel', 'template_slot', 'external_scheduled_at',
         'external_dispatch_started_at', 'provider_responded_at')] },
   { table: 'notification_followups', from: 'notification_followups t',
-    where: 'EXISTS (SELECT 1 FROM notifications n WHERE n.id=t.notification_id AND n.user_id=$1)', ownerLink: 'recipient_notification',
+    where: `EXISTS (SELECT 1 FROM notifications n WHERE n.id=t.notification_id
+      AND ${notificationRecipient('n.user_id')})`, ownerLink: 'recipient_notification_or_expiry_tombstone',
     fields: [...fields('FREE_TEXT', 'note')] },
   { table: 'notification_consents', from: 'notification_consents t', where: 't.user_id=$1', ownerLink: 'user_id',
     fields: [...fields('DIRECT_IDENTIFIER', 'user_id'), ...fields('CONSENT', 'purpose', 'scope', 'notice_version')] },

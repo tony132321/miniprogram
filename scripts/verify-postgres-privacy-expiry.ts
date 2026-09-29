@@ -1,6 +1,9 @@
 import assert from 'node:assert/strict';
 import pg from 'pg';
 import { createProductionDatabase, LATEST_SCHEMA_VERSION } from '../src/db.ts';
+import { createPrivacyRequest } from '../src/operations.ts';
+import { executePrivacyDeletionSafeguards } from '../src/privacy-deletion.ts';
+import { deidentifySharedActivity } from '../src/privacy-shared-deidentification.ts';
 import { assertEmptyPostgresTestDatabase, validatePostgresTestUrl } from './verify-postgres-guard.ts';
 
 const url = process.env.IRL_PG_TEST_URL;
@@ -28,6 +31,17 @@ async function waitForLock(pid: number, label: string): Promise<void> {
     await new Promise(resolve => setTimeout(resolve, 10));
   }
   throw new Error(`${label} did not reach a PostgreSQL row-lock wait`);
+}
+
+async function waitForDeletionLock(label: string): Promise<void> {
+  for (let attempt = 0; attempt < 200; attempt++) {
+    const { rows } = await pool.query<{ count: number }>(`SELECT count(*)::int AS count
+      FROM pg_stat_activity WHERE datname=current_database() AND wait_event_type='Lock'
+      AND query LIKE 'SELECT id FROM users WHERE id=$1 FOR UPDATE%'`);
+    if ((rows[0]?.count ?? 0) > 0) return;
+    await new Promise(resolve => setTimeout(resolve, 10));
+  }
+  throw new Error(`${label} did not reach the user row lock`);
 }
 
 async function race(label: string, userId: string, cleanupSql: string, cleanupParams: unknown[],
@@ -58,6 +72,15 @@ async function race(label: string, userId: string, cleanupSql: string, cleanupPa
 }
 
 const policyHash = 'a'.repeat(64);
+const deletionPolicy = JSON.stringify({
+  schema: 'project-irl/retention-policy-v1', status: 'OWNER_APPROVED_FOR_REAL_DATA',
+  approved_by: 'synthetic-postgres-test-owner', approved_at: '2026-09-29T00:00:00.000Z',
+  records: [...['unneeded_draft_input', 'ordinary_profile', 'dispute_or_required_logs', 'backup']
+    .map(name => ({ class: name, status: 'APPROVED', approved_days: 30,
+      ...(name === 'dispute_or_required_logs' ? { approved_trigger: 'DELETE_EXECUTION' } : {}),
+      legal_basis: 'Synthetic test basis only', deletion_action: 'Synthetic test action', access_roles: ['PRIVACY'] })),
+  ...['voice_raw', 'photo'].map(name => ({ class: name, status: 'NOT_ENABLED' }))]
+});
 const executedAt = '2026-01-01T00:00:00.000Z';
 const expiresAt = '2026-01-02T00:00:00.000Z';
 const cases = [
@@ -127,6 +150,71 @@ try {
     "SELECT detail FROM notifications WHERE id='pg_privacy_notice_row'");
   assert.deepEqual(noticeRows[0]?.detail, {});
 
+  // A normal writer first holds the person's SHARE lock through its insert.
+  // The real safeguard transaction must wait, then see and scrub that row.
+  await pool.query("INSERT INTO users(id,wechat_openid) VALUES('pg_privacy_race','synthetic-pg-privacy-race')");
+  const deletionDb = await createProductionDatabase(url);
+  try {
+    const request = await createPrivacyRequest(deletionDb, 'pg_privacy_race',
+      { kind: 'DELETE' }, 'pg-privacy-race-request');
+    const writer = await pool.connect();
+    let writerOpen = false;
+    try {
+      await writer.query('BEGIN');
+      writerOpen = true;
+      await writer.query(`INSERT INTO activity_content(id,event_id,author_id,kind,body)
+        VALUES('pg_privacy_race_content','pg_privacy_notice_event','pg_privacy_race','QUESTION','synthetic private question')`);
+      const deleting = executePrivacyDeletionSafeguards(deletionDb, 'operator:pg-verification',
+        request.id, deletionPolicy);
+      await waitForDeletionLock('ordinary writer before deletion');
+      await writer.query('COMMIT');
+      writerOpen = false;
+      await deleting;
+      await deidentifySharedActivity(deletionDb, 'operator:pg-verification', request.id, deletionPolicy);
+      const { rows } = await pool.query<{ author_id: string; body: string }>(
+        "SELECT author_id,body FROM activity_content WHERE id='pg_privacy_race_content'");
+      assert.notEqual(rows[0]?.author_id, 'pg_privacy_race');
+      assert.equal(rows[0]?.body, '[已移除的个人内容]');
+      await assert.rejects(pool.query(`INSERT INTO activity_content(id,event_id,author_id,kind,body)
+        VALUES('pg_privacy_race_resurrection','pg_privacy_notice_event','pg_privacy_race','QUESTION','resurrected text')`),
+      /deleted account identity/);
+    } finally {
+      if (writerOpen) await writer.query('ROLLBACK');
+      writer.release();
+    }
+  } finally { await deletionDb.close(); }
+
+  // When deletion already owns the person's row, the ordinary insert must
+  // fail immediately instead of deadlocking behind a shared activity row.
+  await pool.query("INSERT INTO users(id,wechat_openid) VALUES('pg_privacy_race_late','synthetic-pg-privacy-race-late')");
+  const deletionOwner = await pool.connect();
+  const lateWriter = await pool.connect();
+  let deletionOpen = false;
+  try {
+    await deletionOwner.query('BEGIN');
+    deletionOpen = true;
+    await deletionOwner.query("SELECT id FROM users WHERE id='pg_privacy_race_late' FOR UPDATE");
+    const { rows: latePid } = await lateWriter.query<{ pid: number }>('SELECT pg_backend_pid() AS pid');
+    const attempt = lateWriter.query(`INSERT INTO activity_content(id,event_id,author_id,kind,body)
+      VALUES('pg_privacy_race_late_content','pg_privacy_notice_event','pg_privacy_race_late','QUESTION','late private question')`)
+      .then(() => ({ accepted: true, message: '' }),
+        (error: unknown) => ({ accepted: false, message: String(error) }));
+    const outcome = await Promise.race([attempt, new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('ordinary insert waited behind deletion row lock')), 2000))]);
+    assert.equal(outcome.accepted, false);
+    assert.match(outcome.message, /could not obtain lock on row/);
+    const { rows: lateWait } = await pool.query<{ waiting: boolean }>(
+      "SELECT wait_event_type='Lock' AS waiting FROM pg_stat_activity WHERE pid=$1", [latePid[0]!.pid]);
+    assert.equal(lateWait[0]?.waiting, false);
+    await deletionOwner.query('COMMIT');
+    deletionOpen = false;
+  } finally {
+    if (deletionOpen) await deletionOwner.query('ROLLBACK');
+    deletionOwner.release();
+    lateWriter.release();
+  }
+  assert.equal((await pool.query("SELECT 1 FROM activity_content WHERE id='pg_privacy_race_late_content'")).rows.length, 0);
+
   // Exercise migration 0066 on PostgreSQL itself. The PGlite unit tests cover
   // more transitions; this checks trigger semantics, rollback, and the exact
   // aggregate-only row shape on the database used by CI.
@@ -151,7 +239,7 @@ try {
     'EXTERNAL_RECONCILED_ACCEPTED', 'REPORT_CREATED_UNSCOPED',
     'REPORT_IN_REVIEW_UNSCOPED', 'REPORT_RESOLVED_UNSCOPED', 'APPEAL_CREATED'])
     assert.equal(businessNames.filter(item => item === name).length, 1, name);
-  assert.equal(businessNames.filter(name => name === 'PRIVACY_DELETE_REQUESTED').length, cases.length);
+  assert.equal(businessNames.filter(name => name === 'PRIVACY_DELETE_REQUESTED').length, cases.length + 1);
   assert.deepEqual(Object.keys(businessRows[0]!).sort(), ['event_name', 'is_test', 'occurred_at']);
   const serializedBusinessRows = JSON.stringify(businessRows);
   for (const secret of ['pg_business_actor', 'pg_business_notice', 'pg_business_report',
@@ -170,5 +258,6 @@ try {
     independentConnections: 2, lockWaitObserved: true,
     rejectedAfterCommit: ['AI content update', 'AI content insert',
       'ordinary consent insert', 'ordinary notification detail update'],
+    privacySharedWriteRace: { writerBeforeDeletion: 'scrubbed', deletionBeforeWriter: 'rejected_without_wait' },
     systemBusinessEvents: businessRows.length, systemEventRollbackVerified: true }) + '\n');
 } finally { await pool.end(); }
