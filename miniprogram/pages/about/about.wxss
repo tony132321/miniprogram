@@ -1,22 +1,56 @@
-.about-page { box-sizing:border-box; min-height:100vh; padding:0 30rpx 90rpx; background:#f7f8fc; color:#1a1b1f; text-align:center; }
-.about-header { height:92rpx; display:flex; align-items:center; margin:0 -30rpx 26rpx; padding:0 30rpx; background:#faf9fd; font-size:29rpx; font-weight:700; }
-.about-header button { width:74rpx; margin:0; padding:0; background:transparent; color:#1a1b1f; font-size:48rpx; text-align:left; line-height:1.4; }
-.about-header button::after { border:0; }
-.about-header view:not(.header-spacer) { flex:1; text-align:center; }
-.about-header .header-spacer { width:74rpx; }
-.logo { width:122rpx; height:122rpx; border:4rpx solid #1d64f2; border-radius:35rpx; margin:0 auto 26rpx; line-height:115rpx; background:#fff; color:#1d64f2; font-size:80rpx; font-weight:800; box-shadow:0 16rpx 45rpx rgba(29,100,242,.12); }
-.title { font-size:46rpx; font-weight:800; }
-.slogan { color:#1d64f2; font-size:25rpx; font-weight:700; margin:8rpx 0 48rpx; }
-.card { background:#fff; border-radius:28rpx; padding:30rpx; margin-bottom:24rpx; text-align:left; box-shadow:0 5rpx 25rpx rgba(25,46,97,.045); }
-.eyebrow { color:#1d64f2; font-size:22rpx; font-weight:800; }
-.manifesto { font-size:31rpx; font-weight:800; line-height:1.4; margin:12rpx 0 22rpx; }
-.body { color:#626979; font-size:24rpx; line-height:1.7; }
-.action-list { padding:0 26rpx; }
-.action-list button { display:flex; width:100%; box-sizing:border-box; justify-content:space-between; padding:28rpx 0; margin:0; color:inherit; background:transparent; text-align:left; line-height:1.5; border-radius:0; border-bottom:1rpx solid #edf0f4; font-size:25rpx; font-weight:650; }
-.action-list button::after { border:0; }
+.about-page { box-sizing:border-box; min-height:100vh; padding:0 26rpx 80rpx; background:#faf8fe; color:#1a1b1f; }
+.about-header { height:92rpx; display:flex; align-items:center; margin:0 -26rpx; padding:0 28rpx; background:#faf9fd; }
+.about-header button { width:74rpx; min-width:74rpx; margin:0; padding:0; background:transparent; color:#1a1b1f; font-size:48rpx; text-align:left; line-height:1.4; }
+.about-header button::after,.action-list button::after,.repository-link::after,.about-actions button::after { border:0; }
+.about-header-title { flex:1; text-align:center; font-size:30rpx; font-weight:600; }
+.about-header .header-spacer { width:74rpx; min-width:74rpx; }
+.about-header .more { width:49rpx; text-align:center; font-size:25rpx; }
+.about-header .header-avatar { width:58rpx; height:58rpx; border-radius:50%; background:#064dca; color:white; text-align:center; line-height:58rpx; font-size:31rpx; }
+.brand-hero { text-align:center; padding:42rpx 0 32rpx; }
+.logo { position:relative; width:148rpx; height:148rpx; margin:0 auto 24rpx; border:4rpx solid #1d64f2; border-radius:42rpx; background:white; color:#225ee8; font-size:93rpx; font-weight:800; line-height:145rpx; box-shadow:0 15rpx 44rpx rgba(34,91,200,.12); }
+.logo-crown { position:absolute; left:47rpx; top:5rpx; width:50rpx; line-height:45rpx; color:#2466f1; font-size:25rpx; }
+.logo-dot { position:absolute; width:15rpx; height:15rpx; right:14rpx; top:10rpx; border-radius:50%; background:#2bc466; }
+.title { font-size:44rpx; font-weight:800; letter-spacing:-1rpx; }
+.slogan { color:#1556d7; font-size:22rpx; font-weight:700; margin:7rpx 0 21rpx; }
+.slogan text { font-weight:500; }
+.version-line { display:flex; justify-content:center; align-items:center; gap:9rpx; }
+.version-line text { border-radius:28rpx; padding:8rpx 14rpx; background:#f0eff5; color:#4d5567; font-size:18rpx; }
+.version-line .candidate-pill { background:#e8faee; color:#30a25c; }
+.card { background:#fff; border-radius:28rpx; margin-bottom:22rpx; box-shadow:0 5rpx 20rpx rgba(38,50,104,.04); }
+.manifesto-card { display:flex; gap:16rpx; padding:28rpx 24rpx; background:linear-gradient(120deg,#eaf1ff,#fff 60%,#f5f1ff); }
+.manifesto-icon { width:50rpx; height:50rpx; min-width:50rpx; border-radius:16rpx; background:#1d64f2; color:white; font-size:33rpx; line-height:50rpx; text-align:center; box-shadow:0 8rpx 18rpx rgba(29,100,242,.18); }
+.manifesto-copy { flex:1; }
+.eyebrow { color:#1d64f2; font-size:19rpx; font-weight:800; letter-spacing:1rpx; }
+.manifesto { margin:6rpx 0 13rpx; color:#1d2028; font-size:27rpx; font-weight:800; line-height:1.45; }
+.body { color:#4f586d; font-size:20rpx; line-height:1.55; }
+.section-label { color:#7a8192; font-size:20rpx; font-weight:700; margin:32rpx 8rpx 11rpx; }
+.action-list { overflow:hidden; padding:0 22rpx; }
+.action-list button { display:flex; align-items:center; gap:15rpx; width:100%; box-sizing:border-box; padding:22rpx 0; margin:0; background:transparent; color:inherit; text-align:left; border-radius:0; border-bottom:1rpx solid #eceef4; line-height:1.4; }
 .action-list button:last-child { border-bottom:0; }
-.action-list text { color:#1d64f2; font-size:32rpx; }
-.foot { color:#a8adba; font-size:19rpx; letter-spacing:3rpx; margin-top:60rpx; }
-.version-note { display:inline-block; border-radius:24rpx; background:#eff3fb; color:#5a6578; padding:8rpx 20rpx; font-size:20rpx; margin:-25rpx 0 28rpx; }
-.manifesto-card { background:linear-gradient(135deg,#eaf2ff,#fff 75%); }
-.section-label { color:#717b8e; font-size:22rpx; font-weight:700; text-align:left; margin:18rpx 6rpx 12rpx; }
+.list-icon { width:52rpx; height:52rpx; flex:none; border-radius:17rpx; text-align:center; line-height:52rpx; font-size:29rpx; }
+.list-icon.lime { background:#eefbe5; color:#5c7c00; }
+.list-icon.blue { background:#e8f1ff; color:#1d64f2; }
+.list-icon.violet { background:#f1efff; color:#6257d7; }
+.list-copy { flex:1; min-width:0; color:#20252f; font-size:23rpx; font-weight:700; }
+.list-copy text { margin-left:5rpx; border-radius:11rpx; padding:2rpx 6rpx; background:#fff1f4; color:#fa315e; font-size:16rpx; }
+.list-note { color:#687287; font-size:18rpx; font-weight:400; margin-top:4rpx; }
+.list-arrow { color:#798292; font-size:40rpx; }
+.network-card { padding:23rpx; }
+.network-head { display:flex; align-items:center; gap:11rpx; color:#242935; font-size:24rpx; font-weight:700; }
+.network-dot { width:15rpx; height:15rpx; border-radius:50%; background:#b0b7c5; }
+.network-head text:last-child { margin-left:auto; color:#175bec; font-size:18rpx; font-weight:500; }
+.network-grid { display:flex; gap:9rpx; margin:20rpx 0 13rpx; }
+.network-grid > view { flex:1; min-width:0; border-radius:21rpx; padding:14rpx 4rpx; background:#f4f3f8; text-align:center; }
+.network-icon { width:48rpx; height:48rpx; margin:0 auto 7rpx; border-radius:50%; line-height:48rpx; font-size:26rpx; }
+.network-icon.green { background:#e0f7e8; color:#20b651; }
+.network-icon.pink { background:#ffecf1; color:#f4305f; }
+.network-icon.lime { background:#eef8dc; color:#6d8505; }
+.network-grid text { display:block; color:#283044; font-size:18rpx; font-weight:700; }
+.network-grid .network-sub { color:#8d95a5; font-size:16rpx; font-weight:400; }
+.repository-link { display:flex; align-items:center; justify-content:space-between; width:100%; padding:14rpx 0 0; margin:0; border-top:1rpx solid #edf0f5; border-radius:0; background:transparent; color:#394456; text-align:left; font-size:19rpx; line-height:1.5; }
+.repository-link text:last-child { color:#1d64f2; }
+.about-actions { display:flex; gap:14rpx; margin-top:25rpx; }
+.about-actions button { flex:1; min-width:0; padding:8rpx 4rpx; margin:0; border-radius:21rpx; background:#eceaf1; color:#4f586b; font-size:20rpx; font-weight:700; line-height:2.1; }
+.about-actions button:last-child { background:#1d64f2; color:#fff; box-shadow:0 9rpx 20rpx rgba(29,100,242,.17); }
+.foot { margin-top:46rpx; color:#a0a5b4; text-align:center; font-size:18rpx; line-height:1.65; }
+.foot view { letter-spacing:2rpx; margin-top:8rpx; }

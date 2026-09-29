@@ -1,6 +1,48 @@
 @import "../common.wxss";
-.badge-emblem { width: 104rpx; height: 104rpx; margin-bottom: 22rpx; border-radius: 28rpx; background: linear-gradient(135deg,#2a65e8,#7362db); color: #fff; line-height: 104rpx; text-align: center; font-size: 68rpx; }
-.badge-grid { display: flex; flex-wrap: wrap; justify-content: space-between; }
-.badge-cell { box-sizing: border-box; width: 47.5%; margin-bottom: 20rpx; padding: 30rpx 10rpx; border-radius: 26rpx; background: #fff; text-align: center; color: #303545; font-size: 24rpx; font-weight: 700; }
-.badge-circle { width: 78rpx; height: 78rpx; margin: 0 auto 14rpx; border-radius: 24rpx; background: #edf2ff; color: #2862e9; font-size: 42rpx; line-height: 78rpx; }
-.badge-cell text { display: block; margin-top: 6rpx; color: #949aac; font-size: 19rpx; font-weight: 400; }
+.badge-page { padding-left: 30rpx; padding-right: 30rpx; }
+.badge-page .pg10-header { margin-left: -30rpx; margin-right: -30rpx; padding: 0 28rpx; }
+.badge-page .pg10-header-title { font-weight: 600; }
+.header-more { width: 50rpx; font-size: 25rpx; text-align: center; }
+.header-avatar { width: 58rpx; height: 58rpx; border-radius: 50%; background: #064dca; color: white; line-height: 58rpx; text-align: center; font-size: 31rpx; }
+.badge-status { display: flex; align-items: center; justify-content: space-between; margin: 17rpx 0 16rpx; font-size: 21rpx; color: #424a5a; font-weight: 650; }
+.muted-dot { display: inline-block; width: 13rpx; height: 13rpx; border-radius: 50%; background: #a5b0c2; margin-right: 8rpx; }
+.status-pill { color: #607049; background: #f2fbe6; border-radius: 30rpx; padding: 7rpx 16rpx; font-size: 19rpx; }
+.badge-summary { padding: 26rpx; margin-bottom: 28rpx; border-radius: 31rpx; background: linear-gradient(145deg,#f2effe,#fafdff 60%,#eaf1fe); box-shadow: 0 6rpx 18rpx rgba(39,58,116,.05); }
+.summary-top { display: flex; align-items: center; gap: 22rpx; }
+.badge-orb { width: 150rpx; height: 150rpx; flex: none; border-radius: 31rpx; background: linear-gradient(135deg,#3e78ed,#6660cd); color: white; text-align: center; box-shadow: 0 10rpx 20rpx rgba(64,69,174,.16); }
+.badge-orb view { line-height: 103rpx; font-size: 79rpx; }
+.badge-orb text { display: block; font-size: 22rpx; font-weight: 800; }
+.summary-copy { flex: 1; min-width: 0; }
+.summary-title { color: #171a23; font-size: 29rpx; font-weight: 800; }
+.summary-title text { display: inline-block; padding: 4rpx 10rpx; border-radius: 20rpx; background: #eaf1ff; color: #2165ec; font-size: 18rpx; }
+.summary-description { color: #5d6678; font-size: 21rpx; margin-top: 9rpx; }
+.summary-next { color: #235fe3; font-size: 20rpx; font-weight: 700; margin-top: 9rpx; }
+.xp-card { padding: 17rpx 20rpx; margin-top: 19rpx; border-radius: 24rpx; background: rgba(255,255,255,.91); }
+.xp-row { display: flex; justify-content: space-between; color: #3d4658; font-size: 21rpx; font-weight: 700; }
+.xp-track { height: 12rpx; border-radius: 12rpx; margin: 16rpx 0 8rpx; background: #e8e8f0; }
+.xp-note { color: #81889a; text-align: right; font-size: 19rpx; }
+.showcase { padding: 23rpx; border-radius: 31rpx; background: #fff; margin-bottom: 30rpx; }
+.showcase-head { display: flex; align-items: center; justify-content: space-between; font-size: 27rpx; font-weight: 750; }
+.showcase-head text { color: #7d8495; border-radius: 26rpx; padding: 4rpx 12rpx; background: #eeeeF2; font-size: 18rpx; font-weight: 500; }
+.showcase-slots { display: flex; gap: 9rpx; margin-top: 17rpx; }
+.showcase-slot { flex: 1; min-width: 0; padding: 10rpx 4rpx; border-radius: 17rpx; background: #f4f3f8; text-align: center; color: #7f8797; font-size: 18rpx; }
+.slot-icon { width: 52rpx; height: 52rpx; line-height: 52rpx; margin: 0 auto 8rpx; border-radius: 50%; background: #e5e5ed; font-size: 32rpx; }
+.badge-tabs { white-space: nowrap; margin-bottom: 20rpx; }
+.badge-tab { display: inline-block; width: auto; padding: 12rpx 25rpx; margin: 0 9rpx 0 0; border-radius: 36rpx; background: #fff; color: #3e4656; font-size: 21rpx; line-height: 1.4; }
+.badge-tab::after,.badge-cell::after { border: 0; }
+.badge-tab.selected { background: #054cc9; color: white; }
+.badge-grid { display: flex; flex-wrap: wrap; gap: 15rpx; }
+.badge-cell { box-sizing: border-box; width: calc((100% - 30rpx) / 3); margin: 0; padding: 16rpx 5rpx 14rpx; border-radius: 25rpx; background: #fff; text-align: center; color: #171a23; line-height: 1.35; }
+.badge-circle { width: 86rpx; height: 86rpx; margin: 0 auto 13rpx; border-radius: 27rpx; background: #e9f1ff; color: #225ee8; font-size: 45rpx; line-height: 86rpx; box-shadow: 0 9rpx 20rpx rgba(64,82,118,.10); }
+.badge-circle.amber { background: linear-gradient(135deg,#ffd148,#ffaf14); color: white; }
+.badge-circle.violet { background: linear-gradient(135deg,#7069df,#433bc8); color: white; }
+.badge-circle.lime { background: linear-gradient(135deg,#d2f803,#94c700); color: #253000; }
+.badge-circle.pink { background: linear-gradient(135deg,#ff7693,#ff2856); color: white; }
+.badge-circle.orange { background: linear-gradient(135deg,#ffc45e,#fc7b66); color: white; }
+.badge-circle.coffee { background: linear-gradient(135deg,#d69c0a,#a76504); color: white; }
+.badge-circle.blue { background: linear-gradient(135deg,#24b7fa,#205ff0); color: white; }
+.badge-circle.muted { background: #e6e5ed; color: #a2a8b7; box-shadow: none; }
+.badge-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 22rpx; font-weight: 700; }
+.badge-cell text { display: block; color: #838a9b; font-size: 17rpx; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.badge-message { margin-top: 18rpx; border-radius: 17rpx; padding: 17rpx; background: #eef2ff; color: #2754b2; font-size: 21rpx; }
+.badge-action { margin-top: 70rpx; }

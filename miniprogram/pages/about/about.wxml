@@ -1,13 +1,11 @@
 <view class="about-page" style="padding-top: {{statusBarHeight}}px">
-  <view class="about-header"><button bindtap="back" aria-label="返回">‹</button><view>关于 Project IRL</view><view class="header-spacer"></view></view>
-  <view class="logo">∞</view>
-  <view class="title">Project IRL</view>
-  <view class="slogan">把有趣的人聚在真实世界</view>
-  <view class="version-note">R1 本地测试候选 · 功能状态以当前应用为准</view>
-  <view class="card manifesto-card"><view class="eyebrow">MANIFESTO</view><view class="manifesto">「在屏幕之外，找回真实相聚的心跳与温度。」</view><view class="body">Project IRL 帮助人们发起受控线下活动。报名、候补、通知和安全处理以应用中的实时记录为准。</view></view>
+  <view class="about-header"><button bindtap="back" aria-label="返回">‹</button><view class="about-header-title">Edit Profile</view><view class="header-spacer"></view></view>
+  <view class="brand-hero"><view class="logo"><view class="logo-crown">♢</view>∞<view class="logo-dot"></view></view><view class="title">Project IRL</view><view class="slogan">把有趣的人聚在真实世界 <text>MORE REAL CONNECTIONS</text></view><view class="version-line"><text>R1 本地测试候选</text><text class="candidate-pill">◉ 功能状态见下方</text></view></view>
+  <view class="card manifesto-card"><view class="manifesto-icon">♡</view><view class="manifesto-copy"><view class="eyebrow">MANIFESTO</view><view class="manifesto">「在屏幕之外，找回真实相聚的心跳与温度。」</view><view class="body">Project IRL 用技术支持受控线下相聚。报名、通知和安全处理以应用中的真实记录为准。</view></view></view>
   <view class="section-label">探索与规范</view>
-  <view class="card action-list"><button bindtap="goReleaseNotes"><text>✧　当前功能与版本说明</text><text>›</text></button><button bindtap="goGuidelines"><text>♧　社区公约与真实社交</text><text>›</text></button><button bindtap="goOpenSource"><text>⌘　开源组件与致谢</text><text>›</text></button></view>
-  <view class="section-label">继续探索</view>
-  <view class="card action-list"><button bindtap="goDiscover"><text>发现活动</text><text>›</text></button><button bindtap="goHome"><text>返回首页</text><text>›</text></button><button bindtap="goProfile"><text>账号、隐私与安全</text><text>›</text></button></view>
-  <view class="foot">REAL PEOPLE · REAL MEETUPS</view>
+  <view class="card action-list"><button bindtap="goReleaseNotes"><view class="list-icon lime">✧</view><view class="list-copy"><view>当前功能与版本说明 <text>R1</text></view><view class="list-note">了解已接通的能力与待开放方向</view></view><view class="list-arrow">›</view></button><button bindtap="goGuidelines"><view class="list-icon blue">♧</view><view class="list-copy"><view>社区公约与真实社交价值观</view><view class="list-note">友善包容、守时守约、共建纯净氛围</view></view><view class="list-arrow">›</view></button><button bindtap="goOpenSource"><view class="list-icon violet">⌘</view><view class="list-copy"><view>开源许可与致谢</view><view class="list-note">Open Source Software & Frameworks</view></view><view class="list-arrow">›</view></button></view>
+  <view class="section-label">项目与官方渠道</view>
+  <view class="card network-card"><view class="network-head"><text class="network-dot"></text>官方账号尚未公布 <text>Project IRL</text></view><view class="network-grid"><view><view class="network-icon green">▤</view><text>微信公众号</text><text class="network-sub">待公布</text></view><view><view class="network-icon pink">▧</view><text>小红书</text><text class="network-sub">待公布</text></view><view><view class="network-icon lime">▣</view><text>即刻</text><text class="network-sub">待公布</text></view></view><button class="repository-link" bindtap="goOpenSource"><text>⌘　公开工程与依赖说明</text><text>查看　↗</text></button></view>
+  <view class="about-actions"><button bindtap="goDiscover">✧　浏览活动灵感</button><button bindtap="goCreate">♧　发起受控活动</button></view>
+  <view class="foot">当前为本地测试候选；正式主体与发布信息待核实。<view>REAL PEOPLE · REAL MEETUPS</view></view>
 </view>

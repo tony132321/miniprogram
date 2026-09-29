@@ -1,8 +1,14 @@
-<view class="pg10-page" style="padding-top: {{statusBarHeight}}px">
-  <view class="pg10-header"><button class="pg10-back" bindtap="back" aria-label="返回">‹</button><view class="pg10-header-title">开源与致谢</view><view class="pg10-header-spacer"></view></view>
-  <view class="pg10-card pg10-hero"><view class="pg10-kicker">OPEN SOURCE SOFTWARE</view><view class="pg10-title">感谢开放生态的建设者</view><view class="pg10-subtitle">以下列出当前工程直接使用的部分依赖。完整许可义务以发布时依赖清单与各项目原许可文件为准。</view></view>
-  <view class="pg10-section-label">工程依赖示例</view>
-  <view class="pg10-card dependency-card"><view class="dependency-row"><view><view class="pg10-row-title">PostgreSQL 客户端 pg</view><view class="pg10-row-note">服务端数据库连接</view></view><text>MIT</text></view><view class="dependency-row"><view><view class="pg10-row-title">PGlite</view><view class="pg10-row-note">本地测试与开发数据库</view></view><text>Apache-2.0</text></view><view class="dependency-row"><view><view class="pg10-row-title">TypeScript</view><view class="pg10-row-note">工程类型检查与构建</view></view><text>Apache-2.0</text></view><view class="dependency-row"><view><view class="pg10-row-title">tsx</view><view class="pg10-row-note">开发与测试脚本运行</view></view><text>MIT</text></view><view class="dependency-row"><view><view class="pg10-row-title">qrcode-generator</view><view class="pg10-row-note">二维码生成依赖</view></view><text>MIT</text></view></view>
-  <view class="pg10-card"><view class="pg10-row-title">项目仓库</view><view class="pg10-note">可以复制仓库地址查看当前公开可访问的工程信息；仓库权限与正式发布状态以 GitHub 实际页面为准。</view><button class="pg10-primary" bindtap="copyRepository">复制 GitHub 仓库地址</button><view wx:if="{{message}}" class="pg10-note">{{message}}</view></view>
-  <view class="pg10-foot">不沿用设计稿中未经核实的公司、贡献者或许可声明</view>
+<view class="pg10-page source-page" style="padding-top: {{statusBarHeight}}px">
+  <view class="pg10-header"><button class="pg10-back" bindtap="back" aria-label="返回">‹</button><view class="pg10-header-title">Expense Breakdown</view><view class="pg10-header-spacer"></view></view>
+  <view class="source-intro pg10-card"><view class="intro-head"><view class="source-icon">⌘</view><view><view class="intro-title">开源许可与致谢</view><text>OPEN SOURCE SOFTWARE & SPECIAL THANKS</text></view></view><view class="intro-copy">Project IRL 的构建离不开开源社区。以下列出当前工程直接使用的部分依赖；完整许可义务以发布时依赖清单及原许可文件为准。</view></view>
+  <view class="source-section">▣　引入的开源组件 <text>5 项当前依赖</text></view>
+  <view class="dependency-card pg10-card"><view class="dependency-head"><view>PostgreSQL 客户端 pg</view><text>MIT</text></view><view class="dependency-maker">The PostgreSQL Global Development Group</view><view class="dependency-copy">支持服务端数据库连接与活动记录读取。</view></view>
+  <view class="dependency-card pg10-card"><view class="dependency-head"><view>PGlite</view><text class="apache">Apache-2.0</text></view><view class="dependency-maker">ElectricSQL</view><view class="dependency-copy">用于本地开发和测试环境中的数据库。</view></view>
+  <view class="dependency-card pg10-card"><view class="dependency-head"><view>TypeScript</view><text class="apache">Apache-2.0</text></view><view class="dependency-maker">Microsoft</view><view class="dependency-copy">为工程提供类型检查与构建支持。</view></view>
+  <view class="dependency-card pg10-card"><view class="dependency-head"><view>tsx</view><text>MIT</text></view><view class="dependency-maker">开发与测试工具</view><view class="dependency-copy">运行 TypeScript 开发脚本和测试。</view></view>
+  <view class="dependency-card pg10-card"><view class="dependency-head"><view>qrcode-generator</view><text>MIT</text></view><view class="dependency-maker">二维码生成依赖</view><view class="dependency-copy">为当前工程中的二维码功能提供生成能力。</view></view>
+  <view class="source-section">♡　项目与特别致谢</view><view class="thanks-card pg10-card"><view class="thanks-row">感谢参与本地受控活动测试与反馈的协作者。</view><view class="thanks-row">设计参考来自 Project IRL 当前提供的 Stitch 开发包。</view><view class="thanks-row">可在仓库核对代码、依赖和最新状态；正式贡献者名单待发布。</view></view>
+  <view class="source-section">⌁　许可说明</view><view class="license-note">上列是依赖许可标识摘要，不构成完整许可正文。各组件的版权与许可条款，以仓库中实际安装包及其原许可文件为准。</view>
+  <view class="repository-card pg10-card"><view>项目仓库</view><text>github.com/tony132321/miniprogram</text><button bindtap="copyRepository">复制仓库地址　↗</button><view wx:if="{{message}}" class="copy-message">{{message}}</view></view>
+  <view class="source-foot">Built with care for real-world connections.</view>
 </view>

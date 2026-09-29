@@ -1,4 +1,41 @@
 @import "../common.wxss";
-.photo-placeholder { min-height: 390rpx; display: flex; flex-direction: column; justify-content: center; align-items: center; box-sizing: border-box; padding: 40rpx; border-radius: 30rpx; background: linear-gradient(135deg,#e9effe,#f7f1ff); color: #4e5a76; text-align: center; font-size: 26rpx; font-weight: 700; line-height: 1.6; margin-bottom: 22rpx; }
-.photo-icon { color: #2064ef; font-size: 94rpx; line-height: 1.2; margin-bottom: 18rpx; }
-.photo-placeholder text { font-size: 21rpx; color: #747d92; font-weight: 400; margin-top: 9rpx; }
+.moments-page { padding-left: 24rpx; padding-right: 24rpx; }
+.moments-page .pg10-header { margin-left: -24rpx; margin-right: -24rpx; padding: 0 25rpx; }
+.moments-page .pg10-header-title { font-weight: 600; }
+.header-more { width: 50rpx; font-size: 25rpx; text-align: center; }
+.header-avatar { width: 58rpx; height: 58rpx; border-radius: 50%; background: #064dca; color: white; line-height: 58rpx; text-align: center; font-size: 31rpx; }
+.moments-filters { white-space: nowrap; padding-bottom: 14rpx; }
+.moments-filter { display: inline-block; width: auto; margin: 0 8rpx 0 0; padding: 10rpx 21rpx; border-radius: 35rpx; background: #eeeef5; color: #3d4657; font-size: 21rpx; font-weight: 650; line-height: 1.5; }
+.moments-filter::after,.moment-footer button::after,.privacy-banner button::after,.moments-state button::after { border: 0; }
+.moments-filter.active { background: #2164f0; color: white; }
+.moments-filter.disabled-filter { color: #959aaa; }
+.moments-summary { display: flex; align-items: center; gap: 15rpx; padding: 17rpx; margin-bottom: 21rpx; border-radius: 24rpx; background: linear-gradient(115deg,#eaf2ff,#f7f0ff 68%,#fbf5d8); }
+.summary-icon { flex: none; width: 55rpx; height: 55rpx; border-radius: 50%; background: #fff; color: #1f63ec; line-height: 55rpx; text-align: center; font-size: 27rpx; }
+.moments-summary > view:nth-child(2) { flex: 1; min-width: 0; }
+.summary-title { font-size: 25rpx; font-weight: 750; }
+.summary-note { color: #596579; font-size: 19rpx; line-height: 1.35; }
+.summary-state { flex: none; border-radius: 24rpx; padding: 6rpx 12rpx; background: #fff; color: #586080; font-size: 18rpx; }
+.moments-state { padding: 80rpx 20rpx; margin-bottom: 20rpx; border-radius: 28rpx; background: #fff; color: #7a8496; text-align: center; font-size: 23rpx; }
+.moments-state button { display: inline-block; width: auto; margin: 15rpx 0 0; padding: 0; background: transparent; color: #1d64f2; font-size: 22rpx; }
+.moment-card { margin-bottom: 23rpx; padding: 20rpx; border-radius: 28rpx; background: #fff; box-shadow: 0 5rpx 16rpx rgba(48,55,104,.04); }
+.moment-card-head { display: flex; align-items: center; gap: 13rpx; margin-bottom: 18rpx; }
+.moment-symbol { width: 52rpx; height: 52rpx; border-radius: 50%; flex: none; background: #eaf1ff; color: #2066eb; line-height: 52rpx; text-align: center; font-size: 26rpx; }
+.moment-title-wrap { flex: 1; min-width: 0; }
+.moment-title { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #141922; font-size: 26rpx; font-weight: 750; }
+.moment-meta { color: #626d80; font-size: 19rpx; }
+.moment-status { border-radius: 20rpx; padding: 4rpx 11rpx; background: #eaf2ff; color: #1b64ed; font-size: 18rpx; }
+.moment-photo-layout { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 110rpx 110rpx; gap: 7rpx; }
+.photo-large,.photo-small { display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 16rpx; background: linear-gradient(135deg,#dce8fc,#e9edff); color: #566a98; text-align: center; }
+.photo-large { grid-row: 1 / span 2; }
+.photo-large view { font-size: 53rpx; line-height: 1.1; }
+.photo-large text { font-size: 18rpx; }
+.photo-small { background: #f0eff7; font-size: 19rpx; line-height: 1.5; }
+.photo-small.second { background: #eaf1f8; }
+.moment-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 16rpx; color: #939baa; font-size: 18rpx; }
+.moment-footer button { width: auto; padding: 0; margin: 0; background: transparent; color: #1c62e7; font-size: 19rpx; line-height: 1.6; }
+.privacy-banner { display: flex; align-items: center; gap: 12rpx; border-radius: 25rpx; padding: 20rpx; background: #f0f3ff; }
+.privacy-icon { flex: none; width: 53rpx; height: 53rpx; border-radius: 50%; background: #fff; color: #5b59d5; line-height: 53rpx; text-align: center; font-size: 32rpx; }
+.privacy-banner > view:nth-child(2) { flex: 1; min-width: 0; color: #242b3b; font-size: 22rpx; font-weight: 700; }
+.privacy-banner text { display: block; color: #6c7486; font-size: 18rpx; font-weight: 400; line-height: 1.35; }
+.privacy-banner button { width: auto; min-width: 0; padding: 0; margin: 0; background: transparent; color: #5854d3; font-size: 18rpx; }
+.moments-action { margin-top: 37rpx; }

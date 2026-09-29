@@ -1,7 +1,40 @@
 @import "../common.wxss";
-.feature-icon { width: 66rpx; height: 66rpx; margin-bottom: 16rpx; border-radius: 19rpx; background: #e7f0ff; color: #205dea; font-size: 38rpx; line-height: 66rpx; text-align: center; }
-.feature-icon.violet { background: #eeedff; color: #6554d6; }
-.feature-icon.green { background: #e9f8e9; color: #23aa5c; }
-.feature-icon.red { background: #fff0f3; color: #eb4766; }
-.secondary-action { width: 100%; margin: 0; border-radius: 40rpx; background: #fff; color: #245fe7; font-size: 24rpx; line-height: 2.5; }
-.secondary-action::after { border: 0; }
+.release-page { padding: 0 18rpx 90rpx; background: #f4f5f8; }
+.release-page .pg10-header { margin: 0 -18rpx 17rpx; padding: 0 22rpx; }
+.release-page .pg10-header-title { font-size: 25rpx; font-weight: 600; }
+.header-more { width: 46rpx; font-size: 22rpx; text-align: center; }
+.header-avatar { width: 42rpx; height: 42rpx; border-radius: 50%; background: #064dca; color: white; line-height: 42rpx; text-align: center; font-size: 24rpx; }
+.release-page .pg10-card { padding: 20rpx; margin-bottom: 13rpx; border-radius: 23rpx; box-shadow: none; }
+.release-intro { background: linear-gradient(145deg,#fff,#fcfcff); }
+.release-status { display: flex; align-items: center; justify-content: space-between; color: #1c64e5; font-size: 16rpx; }
+.release-status text { border-radius: 19rpx; padding: 5rpx 9rpx; background: #eaf1ff; }
+.release-status text:last-child { color: #20a663; background: #e9faed; }
+.whats-new { display: inline-block; margin-top: 19rpx; border-radius: 17rpx; padding: 4rpx 9rpx; color: #f52656; background: #fff0f3; font-size: 16rpx; font-weight: 800; }
+.release-title { margin: 7rpx 0; font-size: 32rpx; font-weight: 800; line-height: 1.24; }
+.release-intro-note { color: #596276; font-size: 18rpx; line-height: 1.5; }
+.intro-highlight { margin-top: 16rpx; border-radius: 17rpx; padding: 13rpx; background: #f0f1f8; color: #37425a; font-size: 17rpx; }
+.feature-heading { display: flex; align-items: center; gap: 12rpx; margin-bottom: 12rpx; }
+.feature-icon { width: 44rpx; height: 44rpx; flex: none; border-radius: 14rpx; line-height: 44rpx; text-align: center; font-size: 26rpx; }
+.feature-icon.blue { background: #e8f0ff; color: #1d64f2; }
+.feature-icon.violet { background: #f0eeff; color: #5856d6; }
+.feature-icon.pink { background: #ffeef1; color: #f52e5f; }
+.feature-heading > view:nth-child(2) { flex:1; }
+.feature-kicker { color: #1d64f2; font-size: 16rpx; font-weight: 700; }
+.feature-title { color: #141921; font-size: 24rpx; font-weight: 750; line-height: 1.3; }
+.ability-pill { border-radius: 17rpx; padding: 4rpx 8rpx; background: #eef9e7; color: #567c18; font-size: 15rpx; }
+.feature-image { position: relative; overflow: hidden; height: 165rpx; border-radius: 14rpx; margin-bottom: 12rpx; background: #e7ecf5; }
+.feature-image image { width: 100%; height: 100%; }
+.feature-image text { position: absolute; right: 9rpx; bottom: 8rpx; border-radius: 10rpx; padding: 3rpx 7rpx; background: rgba(0,0,0,.58); color: white; font-size: 15rpx; }
+.feature-point { margin-top: 10rpx; padding: 12rpx; border-radius: 15rpx; background: #f3f4f8; color: #243752; font-size: 18rpx; font-weight: 700; line-height: 1.5; }
+.feature-point text { display: block; color: #626b7a; font-size: 17rpx; font-weight: 400; }
+.feature-triplet { display: flex; gap: 8rpx; }
+.feature-triplet view { flex: 1; border-radius: 16rpx; padding: 13rpx 5rpx; background: #f3f4f8; color: #20a759; text-align: center; font-size: 27rpx; }
+.feature-triplet view:nth-child(2) { color: #1d64f2; }
+.feature-triplet view:nth-child(3) { color: #f33462; }
+.feature-triplet text { display: block; color: #505969; font-size: 16rpx; line-height: 1.3; }
+.unavailable-card { background: #f9f9fc; }
+.release-actions { display: flex; gap: 10rpx; margin-top: 16rpx; }
+.release-actions button { flex:1; margin:0; padding: 3rpx; border-radius: 22rpx; background:#1d64f2; color:#fff; font-size:19rpx; line-height:2.1; }
+.release-actions button:last-child { background:#fff; color:#1d64f2; }
+.release-actions button::after { border:0; }
+.release-foot { margin-top: 38rpx; color: #8f98a8; text-align: center; font-size: 18rpx; }

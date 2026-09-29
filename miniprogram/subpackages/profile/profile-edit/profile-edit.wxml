@@ -1,9 +1,14 @@
-<view class="pg10-page" style="padding-top: {{statusBarHeight}}px">
-  <view class="pg10-header"><button class="pg10-back" bindtap="back" aria-label="返回">‹</button><view class="pg10-header-title">个人资料</view><view class="pg10-header-spacer"></view></view>
-  <view class="identity-hero"><view class="identity-avatar">我</view><view class="pg10-kicker">YOUR REAL LIFE IDENTITY</view><view class="pg10-title">认识真实的你</view><view class="pg10-subtitle">当前 R1 以微信身份登录，头像与全局资料编辑尚未开放。</view></view>
-  <view class="pg10-card"><view class="pg10-row"><view class="pg10-row-body"><view class="pg10-row-title">全局昵称、性别与个性签名</view><view class="pg10-row-note">暂无服务端资料保存接口，不会假装“保存修改”成功。</view></view><view class="pending-tag">待开放</view></view>
-    <button class="pg10-link" bindtap="goCity"><view class="pg10-row"><view class="pg10-icon">⌖</view><view class="pg10-row-body"><view class="pg10-row-title">浏览城市</view><view class="pg10-row-note">{{city}} · 仅保存在当前设备，用于界面选择</view></view><view class="pg10-chevron">›</view></view></button></view>
-  <view class="pg10-card"><view class="pg10-row-title">兴趣标签</view><view class="pg10-note">设计稿中的兴趣标签、等级与认证尚未接入。活动详情可依据本场规则展示水平要求。</view><view class="tag-row"><view class="pg10-chip">运动</view><view class="pg10-chip">桌游</view><view class="pg10-chip">咖啡</view><view class="pg10-chip">摄影</view></view><view class="pg10-note">以上仅为设计分类示意，不代表已选择或保存。</view></view>
-  <view class="pg10-card"><view class="pg10-row-title">社交名片与可见性</view><view class="pg10-note">你可以在已参与的活动详情中，按当场授权说明设置或撤回活动内昵称；类似活动邀请候选同意可在“我的”页面管理。</view><button class="pg10-primary" bindtap="goProfile">前往账号与隐私设置</button></view>
-  <view class="pg10-foot">头像上传、全局资料编辑与水平认证待正式能力接入</view>
+<view class="pg10-page edit-page" style="padding-top: {{statusBarHeight}}px">
+  <view class="pg10-header"><button class="pg10-back" bindtap="back" aria-label="返回">‹</button><view class="pg10-header-title">Edit Profile</view><view class="pg10-header-spacer"></view></view>
+  <view class="sync-bar"><view class="sync-copy"><text class="sync-dot"></text>资料保存暂未开放</view><view class="save-unavailable">✓ 保存待开放</view></view>
+  <view class="edit-identity"><view class="identity-avatar">人<view class="camera-chip">⌕</view></view><view class="handle">@ 全局 ID 尚未设置</view></view>
+  <view class="pg10-card edit-card">
+    <view class="field-heading">昵称 <text>活动内昵称可单独设置</text></view><view class="disabled-field">尚未设置全局昵称 <text>✎</text></view>
+    <view class="field-heading gender-heading">性别</view><view class="gender-options"><view>女 ♀</view><view>男 ♂</view><view>保密 ◉</view></view>
+    <view class="field-heading bio-heading">个性签名 / 组局宣言 <text>暂不可编辑</text></view><view class="bio-field">把相遇带回真实世界<view class="field-hint">示意文案 · 未保存为个人资料</view></view>
+    <button class="city-row" bindtap="goCity"><view class="city-icon">⌖</view><view class="city-copy"><view>我的常驻城市</view><text>{{city}} · 仅在本机用于浏览</text></view><view class="city-arrow">›</view></button>
+  </view>
+  <view class="pg10-card edit-card"><view class="section-heading">兴趣标签 <text class="soft-tag">设计示意</text></view><view class="interest-list"><view class="interest-chip blue">羽毛球</view><view class="interest-chip">精品咖啡</view><view class="interest-chip violet">胶片摄影</view><view class="interest-chip">骑行</view><view class="interest-chip">周末桌游</view><view class="interest-chip">徒步</view></view><view class="field-hint">标签还不能选择或保存；活动中的真实要求请查看详情。</view></view>
+  <view class="pg10-card edit-card"><view class="section-heading">社交名片 & 水平认证 <text class="green-note">真实互联</text></view><view class="visibility-row"><view><view>微信可见性</view><text>按活动内授权单独决定</text></view><view class="unavailable-switch">待开放</view></view><view class="muted-label">已认证常玩水平</view><view class="certificate-row"><view>⌕　羽毛球水平</view><view>⚄　桌游经验</view></view><view class="field-hint">平台没有全局水平认证或社交名片保存能力。</view><button class="settings-link" bindtap="goProfile">前往账号、活动内身份与隐私设置　›</button></view>
+  <view class="deletion-note">注销账号可在“我的”页面提交申请</view>
 </view>

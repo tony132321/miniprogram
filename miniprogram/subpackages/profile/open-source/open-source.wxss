@@ -1,6 +1,30 @@
 @import "../common.wxss";
-.dependency-card { padding-top: 5rpx; padding-bottom: 5rpx; }
-.dependency-row { display: flex; justify-content: space-between; align-items: center; gap: 15rpx; padding: 23rpx 0; border-bottom: 1rpx solid #edf0f5; }
-.dependency-row:last-child { border-bottom: 0; }
-.dependency-row view { flex: 1; }
-.dependency-row text { flex: none; border-radius: 25rpx; background: #e9f7eb; color: #228f4c; font-size: 19rpx; padding: 6rpx 14rpx; }
+.source-page { padding: 0 18rpx 80rpx; background: #f4f5f8; }
+.source-page .pg10-header { margin: 0 -18rpx 16rpx; padding: 0 22rpx; }
+.source-page .pg10-header-title { font-size: 25rpx; font-weight: 600; }
+.header-more { width: 46rpx; font-size: 22rpx; text-align: center; }
+.header-avatar { width: 42rpx; height: 42rpx; border-radius: 50%; background: #064dca; color: white; line-height: 42rpx; text-align: center; font-size: 24rpx; }
+.source-page .pg10-card { padding: 17rpx; margin-bottom: 9rpx; border-radius: 20rpx; box-shadow: none; }
+.intro-head { display:flex; align-items:center; gap:12rpx; }
+.source-icon { width:48rpx; height:48rpx; border-radius:14rpx; background:#eaf1ff; color:#1d64f2; text-align:center; line-height:48rpx; font-size:30rpx; }
+.intro-title { font-size:23rpx; font-weight:750; }
+.intro-head text { display:block; font-size:15rpx; line-height:1.3; color:#414b5e; font-weight:600; }
+.intro-copy { margin-top:14rpx; color:#4c5667; font-size:18rpx; line-height:1.55; }
+.source-section { display:flex; justify-content:space-between; margin:21rpx 4rpx 12rpx; color:#202b41; font-size:19rpx; font-weight:700; }
+.source-section text { border-radius:18rpx; padding:3rpx 10rpx; background:#e8e8ee; color:#535e70; font-size:16rpx; font-weight:500; }
+.dependency-head { display:flex; justify-content:space-between; gap:12rpx; align-items:center; color:#171b23; font-size:22rpx; font-weight:750; }
+.dependency-head view { flex:1; }
+.dependency-head text { flex:none; border-radius:22rpx; padding:5rpx 11rpx; background:#e7f7eb; color:#279759; font-size:16rpx; font-weight:600; }
+.dependency-head text.apache { background:#e9ecff; color:#544dd0; }
+.dependency-maker { color:#666f80; font-size:17rpx; margin:2rpx 0 13rpx; }
+.dependency-copy { color:#4b5568; font-size:18rpx; line-height:1.5; }
+.thanks-card { padding:16rpx; }
+.thanks-row { border-radius:15rpx; padding:14rpx; margin-bottom:9rpx; background:#f3f3f8; color:#4f5869; font-size:18rpx; line-height:1.45; }
+.thanks-row:last-child { margin-bottom:0; }
+.license-note { border-radius:19rpx; padding:18rpx; background:#e8e8ed; color:#4f596c; font-size:18rpx; line-height:1.55; }
+.repository-card { margin-top:18rpx; color:#1d2230; font-size:21rpx; font-weight:700; }
+.repository-card text { display:block; margin:8rpx 0; color:#5a6474; font-size:17rpx; font-weight:400; }
+.repository-card button { width:100%; margin:15rpx 0 0; border-radius:17rpx; background:#eaf1ff; color:#1d64f2; font-size:18rpx; line-height:2.1; }
+.repository-card button::after { border:0; }
+.copy-message { color:#258f55; font-size:17rpx; margin-top:9rpx; }
+.source-foot { margin:37rpx 0 0; color:#8790a2; font-size:18rpx; text-align:center; }
