@@ -36,6 +36,8 @@ Page({
     approvingId: '', loadingMoreApprovals: false,
     filter: 'ALL', hasSession: false, developmentMode: Boolean(config.developmentUser) },
   async onShow() {
+    const bar = this.getTabBar && this.getTabBar();
+    if (bar) bar.setData({ selected: 3 });
     await getApp().globalData.ready;
     const hasSession = Boolean(wx.getStorageSync('sessionToken'));
     const actor = hasSession ? wx.getStorageSync('userId') : this.data.developmentMode ? (wx.getStorageSync('devUser') || config.developmentUser) : '';

@@ -1,4 +1,4 @@
-page { box-sizing: border-box; font-size: 16px; background: #faf8fe; color: #171923; }
+page { box-sizing: border-box; font-size: 16px; background: #f2f4f8; color: #1c1c1e; }
 button { margin: 0; }
 input, textarea { box-sizing: border-box; }
 .item { border-bottom: 1px solid #ddd; padding: 12px 0; }

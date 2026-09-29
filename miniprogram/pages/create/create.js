@@ -42,6 +42,8 @@ Page({
     ]
   },
   async onShow() {
+    const bar = this.getTabBar && this.getTabBar();
+    if (bar) bar.setData({ selected: 2 });
     this.stopSuggestion();
     const generation = this._loadGeneration = (this._loadGeneration || 0) + 1;
     let identity = currentIdentity();

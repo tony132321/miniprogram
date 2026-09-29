@@ -2,6 +2,7 @@
   "pages": ["pages/index/index", "pages/discover/discover", "pages/create/create", "pages/messages/messages", "pages/me/me", "pages/event/event", "pages/city/city", "pages/about/about"],
   "window": { "navigationBarTitleText": "Project IRL", "navigationBarBackgroundColor": "#faf8fe", "navigationBarTextStyle": "black", "backgroundColor": "#faf8fe" },
   "tabBar": {
+    "custom": true,
     "color": "#6e6e73",
     "selectedColor": "#1d64f2",
     "backgroundColor": "#ffffff",

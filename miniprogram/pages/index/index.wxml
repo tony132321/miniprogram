@@ -1,21 +1,55 @@
 <view class="home-page">
-  <button class="hero" bindtap="goCreate"><view class="hero-icon">✧</view><view class="hero-copy"><view class="hero-title">想组什么局？一句话开始 <text>→</text></view><view class="hero-subtitle">AI 帮你梳理活动想法，内容由你确认发布</view></view></button>
-  <scroll-view scroll-x="true" class="tabs"><view class="tab-row">
-    <button class="tab {{activeTab === 'attending' ? 'selected' : ''}}" data-key="attending" bindtap="selectTab">即将参加 <text>{{attending.length}}</text></button>
-    <button class="tab {{activeTab === 'pending' ? 'selected' : ''}}" data-key="pending" bindtap="selectTab">待确认 <text>{{pending.length}}</text></button>
-    <button class="tab {{activeTab === 'organized' ? 'selected' : ''}}" data-key="organized" bindtap="selectTab">我组织的 <text>{{organized.length}}</text></button>
-    <button class="tab {{activeTab === 'cohosting' ? 'selected' : ''}}" data-key="cohosting" bindtap="selectTab">协办 <text>{{cohosting.length}}</text></button>
-    <button class="tab {{activeTab === 'history' ? 'selected' : ''}}" data-key="history" bindtap="selectTab">历史 <text>{{history.length}}</text></button>
-  </view></scroll-view>
-  <view wx:if="{{loadState === 'LOADING'}}" class="state-card">正在加载我的活动…</view>
-  <view wx:if="{{loadState === 'ERROR'}}" class="state-card error">{{message}} <button class="retry" bindtap="retry">{{errorCode === 'UNAUTHENTICATED' ? '微信登录' : '重试'}}</button></view>
-  <view wx:if="{{loadState === 'READY' && items.length === 0}}" class="state-card muted">暂无活动。可从邀请进入或发起真实活动。</view>
-  <view wx:if="{{loadState === 'READY' && visibleItems.length === 0 && items.length > 0}}" class="state-card muted">这个分类里暂时没有活动。</view>
-  <view wx:if="{{loadState === 'READY'}}" class="cards">
-    <button wx:for="{{visibleItems}}" wx:key="id" class="event-card" data-id="{{item.id}}" bindtap="openEvent">
-      <view class="cover-wrap"><image class="cover" src="{{item.cover}}" mode="aspectFill" /><view class="cover-tint"></view><view class="cover-status">{{item.statusLabel}}</view><view class="cover-title">{{item.title || '未命名草稿'}}</view></view>
-      <view class="card-body"><view class="card-heading"><text class="card-title">{{item.title || '未命名草稿'}}</text><text class="pill">{{item.cardLabel}}</text></view><view class="card-meta">▣　{{item.dateLabel}}</view><view class="card-note">{{item.isHost ? '你是主办方 · 点开查看活动详情' : item.isCohost ? '你是协办方 · 点开查看本场权限与安排' : '点开查看活动详情与最新安排'}}</view><view class="card-action">查看活动 <text>→</text></view></view>
-    </button>
+  <view class="safe-area" style="height: {{statusBarHeight}}px"></view>
+  <view class="home-header">
+    <view class="brand"><view class="brand-mark">✹</view><view class="brand-word"><text class="brand-cn">耍起</text><text class="brand-en">CAPER</text></view></view>
+    <button class="city-chip" bindtap="goCity" aria-label="选择城市">📍 {{city}}⌄</button>
+    <view class="header-space"></view>
+    <button class="header-round" bindtap="goMessages" aria-label="查看消息">♧</button>
+    <button class="header-avatar" bindtap="goProfile" aria-label="进入我的页面">我</button>
   </view>
-  <view class="invite-panel"><view class="invite-title">收到邀请？</view><view class="invite-row"><input placeholder="输入邀请口令" value="{{tokenInput}}" bindinput="tokenChanged" /><button bindtap="openInvite">打开邀请</button></view><view wx:if="{{message}}" class="invite-message">{{message}}</view></view>
+
+  <view class="home-main">
+    <view class="hero">
+      <view class="hero-sticker">Good People More Plans ☺</view>
+      <view class="hero-kicker">More People, Brighter Days ☺</view>
+      <view class="hero-title">今晚想要什么？</view>
+      <view class="hero-subtitle">一句话发起，AI 帮你组局</view>
+      <button class="hero-search" bindtap="goCreate" aria-label="打开 AI 建局"><text class="hero-search-icon">✦</text><text class="hero-search-hint">比如：周六和朋友打场羽毛球...</text><text class="hero-arrow">➜</text></button>
+    </view>
+
+    <scroll-view class="category-strip" scroll-x="true" show-scrollbar="false"><view class="category-row"><button wx:for="{{categoryIdeas}}" wx:key="label" class="category-card" bindtap="goCreate" aria-label="发起{{item.label}}活动"><view class="category-bubble {{item.tone}}">{{item.icon}}</view><text class="category-name">{{item.label}}</text></button></view></scroll-view>
+
+    <button wx:if="{{featuredItem}}" class="feature-cover" data-id="{{featuredItem.id}}" bindtap="openEvent" aria-label="查看{{featuredItem.title}}活动"><image class="feature-image" src="{{featuredItem.cover}}" mode="aspectFill" /><view class="feature-shade"></view><view class="feature-top"><text class="feature-badge">{{featuredItem.statusLabel}}</text><text class="feature-top-arrow">↗</text></view><view class="feature-bottom"><text class="feature-display">LET'S MEET IN REAL LIFE</text><text class="feature-name">{{featuredItem.title}}</text><text class="feature-meta">{{featuredItem.dateLabel}} · 查看活动详情</text></view></button>
+    <button wx:else class="feature-cover" bindtap="goCreate" aria-label="发起一场真实活动"><image class="feature-image" src="/assets/stitch/caper_home_badminton.jpg" mode="aspectFill" /><view class="feature-shade"></view><view class="feature-top"><text class="feature-badge">从一个想法开始</text><text class="feature-top-arrow">↗</text></view><view class="feature-bottom"><text class="feature-display">GOOD PEOPLE · GREAT PLANS</text><text class="feature-name">让有趣的事，真的发生</text><text class="feature-meta">发起你的第一场真实活动</text></view></button>
+
+    <view class="section-heading"><view><text class="section-mark">✦</text><text>活动灵感</text></view><button class="section-link" bindtap="goCreate">去发起　›</button></view>
+    <view class="inspiration-grid">
+      <button class="inspiration-card" bindtap="goCreate" aria-label="发起美食聚会"><view class="inspiration-cover"><image src="/assets/stitch/caper_home_dinner.jpg" mode="aspectFill" /><text class="inspiration-label">发起灵感</text></view><view class="inspiration-copy"><view class="inspiration-title">周末聚餐 · 好友小聚</view><view class="inspiration-sub">一场好玩的局，从邀请开始</view></view></button>
+      <button class="inspiration-card" bindtap="goCreate" aria-label="发起徒步活动"><view class="inspiration-cover"><image src="/assets/stitch/caper_home_hiking.jpg" mode="aspectFill" /><text class="inspiration-label">发起灵感</text></view><view class="inspiration-copy"><view class="inspiration-title">走出去，遇见新朋友</view><view class="inspiration-sub">时间、地点与规则由你决定</view></view></button>
+    </view>
+
+    <view class="brand-ribbon"><image class="ribbon-image" src="/assets/stitch/caper_home_shanghai.jpg" mode="aspectFill" /><view class="ribbon-shade"></view><view class="ribbon-content"><view class="ribbon-kicker">TURN PLANS INTO REAL MEETUPS</view><view class="ribbon-title">让有趣的事，<text>真的发生</text></view><view class="ribbon-copy">把想见的人，聚在同一个真实时刻。</view></view></view>
+
+    <view class="section-heading dashboard-heading"><view><text class="section-mark">✦</text><text>我的活动</text></view><button class="section-link" bindtap="goMessages">消息　›</button></view>
+    <scroll-view scroll-x="true" class="tabs" show-scrollbar="false"><view class="tab-row">
+      <button class="tab {{activeTab === 'attending' ? 'selected' : ''}}" data-key="attending" bindtap="selectTab">即将参加 <text>{{attending.length}}</text></button>
+      <button class="tab {{activeTab === 'pending' ? 'selected' : ''}}" data-key="pending" bindtap="selectTab">待确认 <text>{{pending.length}}</text></button>
+      <button class="tab {{activeTab === 'organized' ? 'selected' : ''}}" data-key="organized" bindtap="selectTab">我组织的 <text>{{organized.length}}</text></button>
+      <button class="tab {{activeTab === 'cohosting' ? 'selected' : ''}}" data-key="cohosting" bindtap="selectTab">协办 <text>{{cohosting.length}}</text></button>
+      <button class="tab {{activeTab === 'history' ? 'selected' : ''}}" data-key="history" bindtap="selectTab">历史 <text>{{history.length}}</text></button>
+    </view></scroll-view>
+    <view wx:if="{{loadState === 'LOADING'}}" class="state-card">正在加载我的活动…</view>
+    <view wx:if="{{loadState === 'ERROR'}}" class="state-card error">{{message}} <button class="retry" bindtap="retry">{{errorCode === 'UNAUTHENTICATED' ? '微信登录' : '重试'}}</button></view>
+    <view wx:if="{{loadState === 'READY' && items.length === 0}}" class="state-card muted"><view class="empty-icon">✹</view><view class="empty-title">下一场相聚，从这里开始</view><view class="empty-copy">暂无活动。可从邀请进入或发起真实活动。</view><button class="empty-action" bindtap="goCreate">发起一个活动　→</button></view>
+    <view wx:if="{{loadState === 'READY' && visibleItems.length === 0 && items.length > 0}}" class="state-card muted">这个分类里暂时没有活动。</view>
+    <view wx:if="{{loadState === 'READY'}}" class="cards">
+      <button wx:for="{{visibleItems}}" wx:key="id" class="event-card" data-id="{{item.id}}" bindtap="openEvent"><view class="cover-wrap"><image class="cover" src="{{item.cover}}" mode="aspectFill" /><view class="cover-tint"></view><view class="cover-status">{{item.statusLabel}}</view><view class="cover-title">{{item.title || '未命名草稿'}}</view></view><view class="card-body"><view class="card-heading"><text class="card-title">{{item.title || '未命名草稿'}}</text><text class="pill">{{item.cardLabel}}</text></view><view class="card-meta">▣　{{item.dateLabel}}</view><view class="card-note">{{item.isHost ? '你是主办方 · 点开查看活动详情' : item.isCohost ? '你是协办方 · 点开查看本场权限与安排' : '点开查看活动详情与最新安排'}}</view><view class="card-action">查看活动 <text>→</text></view></view></button>
+    </view>
+
+    <view class="section-heading discover-heading"><view><text class="section-mark">⌖</text><text>看看更多可能</text></view><button class="section-link" bindtap="goDiscover">去发现　›</button></view>
+    <view class="discovery-preview"><view class="preview-cover"><image src="/assets/stitch/caper_discover_coffee.jpg" mode="aspectFill" /><view class="preview-shade"></view><text class="preview-poster">Good People Better Days</text></view><view class="preview-body"><view class="preview-title">公开找局暂未开放</view><view class="preview-copy">目前通过朋友邀请加入活动；也可以自己发起一场。</view><button bindtap="goDiscover" class="preview-action">了解当前状态　→</button></view></view>
+
+    <view class="invite-panel"><view class="invite-title">收到朋友的邀请？</view><view class="invite-copy">输入邀请口令，打开对应的真实活动。</view><view class="invite-row"><input placeholder="输入邀请口令" value="{{tokenInput}}" bindinput="tokenChanged" /><button bindtap="openInvite">打开邀请</button></view><view wx:if="{{message}}" class="invite-message">{{message}}</view></view>
+    <view class="home-foot"><view>GOOD PEOPLE · REAL MEETUPS · BRIGHTER DAYS</view><view>耍起 CAPER · 让有趣的事，真的发生</view></view>
+  </view>
 </view>

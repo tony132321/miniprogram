@@ -21,28 +21,40 @@ const tabs = [
   { key: 'attending', label: '即将参加' }, { key: 'pending', label: '待确认' },
   { key: 'organized', label: '我组织的' }, { key: 'cohosting', label: '协办' }, { key: 'history', label: '历史' }
 ];
+const categoryIdeas = [
+  { icon: '🏸', label: '运动', tone: 'mint' }, { icon: '🥘', label: '美食', tone: 'peach' },
+  { icon: '☕', label: '喝一杯', tone: 'cream' }, { icon: '🏙️', label: 'City Walk', tone: 'sky' },
+  { icon: '🎲', label: '桌游', tone: 'pink' }, { icon: '•••', label: '更多', tone: 'gray' }
+];
 function dateLabel(value) {
   if (!value || Number.isNaN(Date.parse(value))) return '时间待定';
   const date = new Date(Date.parse(value) + 8 * 60 * 60_000);
   return `${date.getUTCMonth() + 1} 月 ${date.getUTCDate()} 日 ${String(date.getUTCHours()).padStart(2, '0')}:${String(date.getUTCMinutes()).padStart(2, '0')}`;
 }
 function coverFor(title) {
-  if (/篮球/.test(title)) return '/assets/stitch/exciting_indoor_basketball_game.jpg';
-  if (/咖啡|聊天|创业/.test(title)) return '/assets/stitch/warm_cozy_coffee_shop.jpg';
-  if (/展览|艺术|画/.test(title)) return '/assets/stitch/aesthetic_art_museum_exhibition.jpg';
-  if (/桌游|游戏/.test(title)) return '/assets/stitch/fun_lively_board_game.jpg';
-  return '/assets/stitch/high_quality_lifestyle_photo.jpg';
+  if (/羽毛球/.test(title)) return '/assets/stitch/caper_home_badminton.jpg';
+  if (/篮球/.test(title)) return '/assets/stitch/caper_discover_basketball.jpg';
+  if (/咖啡|聊天|创业/.test(title)) return '/assets/stitch/caper_discover_coffee.jpg';
+  if (/展览|艺术|画/.test(title)) return '/assets/stitch/caper_discover_art.jpg';
+  if (/桌游|游戏/.test(title)) return '/assets/stitch/caper_discover_boardgame.jpg';
+  return '/assets/stitch/caper_discover_citywalk.jpg';
 }
 Page({
   data: { items: [], organized: [], cohosting: [], pending: [], attending: [], history: [],
-    tabs, activeTab: 'attending', visibleItems: [],
+    tabs, categoryIdeas, activeTab: 'attending', visibleItems: [], featuredItem: null,
+    city: '上海', statusBarHeight: typeof wx.getSystemInfoSync === 'function'
+      ? wx.getSystemInfoSync().statusBarHeight || 20 : 20,
     loadState: 'IDLE', errorCode: '', tokenInput: '', message: '' },
   async onShow() {
+    const bar = this.getTabBar && this.getTabBar();
+    if (bar) bar.setData({ selected: 0 });
+    const savedCity = wx.getStorageSync('irlSelectedCity');
+    this.setData({ city: typeof savedCity === 'string' && savedCity ? savedCity : '上海' });
     const generation = this._loadGeneration = (this._loadGeneration || 0) + 1;
     let identity = currentIdentity();
     if (this._shownIdentity !== identity) {
       this._shownIdentity = identity;
-      this.setData({ items: [], organized: [], cohosting: [], pending: [], attending: [], history: [], visibleItems: [], message: '' });
+      this.setData({ items: [], organized: [], cohosting: [], pending: [], attending: [], history: [], visibleItems: [], featuredItem: null, message: '' });
     }
     this.setData({ loadState: 'LOADING', errorCode: '', message: '' });
     try {
@@ -52,7 +64,7 @@ Page({
       if (identity !== authenticatedIdentity) {
         identity = authenticatedIdentity;
         this._shownIdentity = identity;
-        this.setData({ items: [], organized: [], cohosting: [], pending: [], attending: [], history: [], visibleItems: [], message: '' });
+        this.setData({ items: [], organized: [], cohosting: [], pending: [], attending: [], history: [], visibleItems: [], featuredItem: null, message: '' });
       }
       const result = await api.get('/me/events');
       if (generation !== this._loadGeneration || identity !== currentIdentity()) return;
@@ -64,7 +76,8 @@ Page({
           (sectionFor(item) === 'cohosting' ? '协办中' : statusLabels[item.status] || item.status || '状态待确认'),
         dateLabel: dateLabel(item.startAt), cover: coverFor(item.title || '') }));
       for (const item of items) groups[sectionFor(item)].push(item);
-      this.setData({ items, ...groups, visibleItems: groups[this.data.activeTab], loadState: 'READY', errorCode: '', message: '' });
+      const featuredItem = items.find(item => !['DRAFT', 'REVIEW_PENDING'].includes(item.status)) || null;
+      this.setData({ items, ...groups, featuredItem, visibleItems: groups[this.data.activeTab], loadState: 'READY', errorCode: '', message: '' });
     } catch (error) {
       if (generation === this._loadGeneration && identity === currentIdentity())
         this.setData({ loadState: 'ERROR', errorCode: error.code || '', message: error.message || '活动列表加载失败' });
@@ -76,6 +89,7 @@ Page({
     this.setData({ activeTab: key, visibleItems: this.data[key] });
   },
   goCreate() { wx.switchTab({ url: '/pages/create/create' }); },
+  goCity() { wx.navigateTo({ url: '/pages/city/city' }); },
   goDiscover() { wx.switchTab({ url: '/pages/discover/discover' }); },
   goMessages() { wx.switchTab({ url: '/pages/messages/messages' }); },
   goProfile() { wx.switchTab({ url: '/pages/me/me' }); },

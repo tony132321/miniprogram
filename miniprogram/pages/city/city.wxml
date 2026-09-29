@@ -1,8 +1,20 @@
 <view class="city-page">
-  <view class="search"><text>⌕</text><input placeholder="搜索城市名称" value="{{query}}" bindinput="search" /></view>
-  <view class="current-card"><view class="overline">当前选择的城市</view><view class="current-name">{{currentCity}} <text>✓</text></view><view class="hint">城市仅作为浏览偏好；公开找局目前尚未开放。</view></view>
-  <view class="section-heading">热门城市</view>
-  <view class="popular-grid"><button wx:for="{{popularCities}}" wx:key="*this" class="popular {{currentCity === item ? 'active' : ''}}" data-city="{{item}}" bindtap="selectCity">{{item}}</button></view>
-  <view class="section-heading">城市列表</view>
-  <view class="city-list"><button wx:for="{{visibleCities}}" wx:key="name" class="city-row" data-city="{{item.name}}" bindtap="selectCity"><text>{{item.name}}</text><text class="province">{{item.province}}　{{currentCity === item.name ? '✓' : '›'}}</text></button><view wx:if="{{visibleCities.length === 0}}" class="empty">没有找到匹配的城市</view></view>
+  <view class="safe-area" style="height: {{statusBarHeight}}px"></view>
+  <view class="city-nav"><button class="nav-back" bindtap="back" aria-label="返回">‹</button><text class="nav-title">选择城市</text></view>
+  <view class="city-content">
+    <view class="search-wrap"><text class="search-icon">⌕</text><input class="search-input" placeholder="搜索城市名称 / 拼音 (如: beijing, 成都)" value="{{query}}" bindinput="search" /><button wx:if="{{query}}" class="search-clear" bindtap="clearSearch" aria-label="清空搜索">×</button></view>
+    <block wx:if="{{!query}}">
+      <view class="current-card">
+        <view class="current-heading"><text class="location-mark">⌖</text><text>当前浏览城市</text></view>
+        <view class="current-main"><text class="current-name">{{currentCity}}</text><text class="selected-tag">已选择</text><text class="current-pin">⌖</text></view>
+        <view class="current-help"><text class="green-dot"></text>手动选择城市；尚未使用设备定位</view>
+      </view>
+      <view class="city-tip"><view class="tip-orb">✧</view><view class="tip-copy"><view class="tip-title">城市浏览偏好</view><view class="tip-caption">公开找局暂未开放；活动地点以活动详情为准</view></view></view>
+      <view class="section-heading"><text>热门活动枢纽</text><text class="section-hint">选择常用城市</text></view>
+      <view class="popular-grid"><button wx:for="{{popularCities}}" wx:key="*this" class="popular {{currentCity === item ? 'active' : ''}}" data-city="{{item}}" bindtap="selectCity">{{item}}<text wx:if="{{currentCity === item}}" class="selected-corner"></text></button></view>
+    </block>
+    <view class="section-heading list-heading"><text>{{query ? '搜索结果' : '全部城市列表'}}</text><text class="section-hint">{{query ? visibleCities.length + ' 个城市' : '按拼音排序'}}</text></view>
+    <view wx:if="{{visibleCities.length === 0}}" class="empty">没有找到匹配的城市，试试中文名称或拼音。</view>
+    <view wx:for="{{cityGroups}}" wx:for-item="group" wx:key="letter" class="city-group"><view class="group-letter">{{group.letter}}</view><button wx:for="{{group.items}}" wx:for-item="city" wx:key="name" class="city-row" data-city="{{city.name}}" bindtap="selectCity"><text class="city-name">{{city.name}}</text><text class="province">{{city.province}}　{{currentCity === city.name ? '✓' : '›'}}</text></button></view>
+  </view>
 </view>

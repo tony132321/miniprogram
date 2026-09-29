@@ -32,6 +32,7 @@ Page({
     similarInvitesNoticeVersion: '',
     loadState: 'IDLE', message: '', reportDescription: '', reportEventId: '' },
   async onShow() {
+    const bar = this.getTabBar && this.getTabBar(); if (bar) bar.setData({ selected: 4 });
     if (this.data.developmentMode) this.setData({ devUser: wx.getStorageSync('devUser') || config.developmentUser });
     const app = getApp();
     await app.globalData.ready;
