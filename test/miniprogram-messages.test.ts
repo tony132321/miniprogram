@@ -392,3 +392,33 @@ test('CAPER inbox search filters only loaded real notices and settings opens pro
   assert.match(wxml, /私聊功能尚未开放/);
   assert.match(wxml, /AI 助手.*尚未开放/);
 });
+
+test('notification center opens the current organizer approval queue and returns to the inbox', async () => {
+  const reads: string[] = [];
+  const page = mount({
+    async get(path: string) {
+      reads.push(path);
+      if (path === '/me/notifications?offset=0') return { items: [{
+        id: 'reminder-1', event_id: 'event-1', kind: 'EVENT_REMINDER', status: 'IN_APP',
+        external_status: 'UNAVAILABLE', detail: {}, created_at: '2026-09-30T09:30:00Z'
+      }], total: 1, unreadTotal: 1, nextOffset: null, snapshot: 'a'.repeat(32) };
+      if (path === '/me/approval-requests?offset=0') return { items: [{
+        registrationId: 'registration-1', eventId: 'event-1', eventTitle: '周五桌游局',
+        expectedVersion: 2, isHost: true, canApprove: true, createdAt: '2026-09-30T09:30:00Z'
+      }], total: 1, nextOffset: null, snapshot: 'b'.repeat(32) };
+      throw new Error(`unexpected GET ${path}`);
+    }
+  }, { getStorageSync(key: string) { return key === 'sessionToken' ? 'token' : 'host'; } });
+  await page.onShow();
+  assert.equal(page.data.viewMode, 'INBOX');
+  await page.openNotificationCenter();
+  assert.equal(page.data.viewMode, 'CENTER');
+  assert.equal(page.data.approvalTotal, 1);
+  assert.match(page.data.approvals[0].timeLabel, /^\d{1,2}月\d{1,2}日 \d{2}:\d{2}$/);
+  assert.deepEqual(reads, ['/me/notifications?offset=0', '/me/approval-requests?offset=0']);
+  page.setFilter({ currentTarget: { dataset: { filter: 'ACTIVITY' } } });
+  assert.equal(page.data.filteredCount, 1);
+  page.backToInbox();
+  assert.equal(page.data.viewMode, 'INBOX');
+  assert.equal(page.data.filter, 'ALL');
+});

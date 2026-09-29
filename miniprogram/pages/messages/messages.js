@@ -91,10 +91,20 @@ function visible(item, filter, searchQuery = '') {
     .toLowerCase().includes(searchQuery.toLowerCase());
 }
 function present(items) {
-  return items.map(item => ({ ...item, title: noticeTitles[item.kind] || '站内通知',
-    summary: noticeSummaries[item.kind] || (item.event_id ? '活动有新进展，请查看详情。' : '站内通知有更新，请查看详情。'),
-    timeLabel: timeLabel(item.created_at),
-    externalHint: externalHints[item.external_status] || '' }));
+  return items.map(item => {
+    const isCheckin = ['EVENT_REMINDER', 'MANUAL_CHECKIN_REQUEST'].includes(item.kind);
+    const isProfileRecord = ['WAITLIST_OFFER', 'REGISTRATION_REMOVED', 'REPORT_IN_REVIEW',
+      'REPORT_RESOLVED', 'REPORT_CREATED_UNSCOPED', 'REPORT_IN_REVIEW_UNSCOPED',
+      'REPORT_RESOLVED_UNSCOPED', 'APPEAL_CREATED', 'APPEAL_IN_REVIEW',
+      'APPEAL_RESOLVED', 'CONTENT_REJECTED', 'CONTENT_REVIEW_OVERTURN'].includes(item.kind);
+    return { ...item, title: noticeTitles[item.kind] || '站内通知',
+      summary: noticeSummaries[item.kind] || (item.event_id ? '活动有新进展，请查看详情。' : '站内通知有更新，请查看详情。'),
+      timeLabel: timeLabel(item.created_at),
+      externalHint: externalHints[item.external_status] || '',
+      actionLabel: isCheckin ? '查看入场凭证' : isProfileRecord ? '查看处理记录' : item.event_id ? '查看活动详情' : '标为已读',
+      actionSection: isCheckin ? 'checkinSection' : '',
+      tone: isCheckin ? 'blue' : groupFor(item) === 'INTERACTION' ? 'violet' : item.event_id ? 'green' : 'gray' };
+  });
 }
 function displayed(items, filter, searchQuery = '') {
   const shown = items.map(item => ({ ...item, visible: visible(item, filter, searchQuery) }));
@@ -106,7 +116,7 @@ Page({
     loadState: 'IDLE', loadingMore: false, markingAllRead: false, message: '',
     approvals: [], approvalTotal: 0, approvalNextOffset: null, approvalSnapshot: null, approvalLoadState: 'IDLE',
     approvingId: '', loadingMoreApprovals: false,
-    filter: 'ALL', searchOpen: false, searchQuery: '', hasSession: false, developmentMode: Boolean(config.developmentUser) },
+    filter: 'ALL', viewMode: 'INBOX', searchOpen: false, searchQuery: '', hasSession: false, developmentMode: Boolean(config.developmentUser) },
   onLoad() {
     const system = wx.getSystemInfoSync?.() || {};
     const capsule = typeof wx.getMenuButtonBoundingClientRect === 'function'
@@ -127,7 +137,8 @@ Page({
       this.setData({ items: [], noticeGroups: [], filteredCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
         loadingMore: false, markingAllRead: false, approvals: [], approvalTotal: 0,
         approvalNextOffset: null, approvalSnapshot: null, approvalLoadState: 'IDLE',
-        approvingId: '', loadingMoreApprovals: false, searchOpen: false, searchQuery: '' });
+        approvingId: '', loadingMoreApprovals: false, viewMode: 'INBOX', filter: 'ALL',
+        searchOpen: false, searchQuery: '' });
     }
     this._actor = actor;
     this.setData({ hasSession });
@@ -155,6 +166,18 @@ Page({
     if (!['ALL', 'ACTIVITY', 'INTERACTION', 'SYSTEM'].includes(filter)) return;
     this.setData({ filter, ...displayed(this.data.items, filter, this.data.searchQuery) });
     if (filter === 'INTERACTION' && this.data.approvalLoadState === 'IDLE') return this.loadApprovals();
+  },
+  async openNotificationCenter() {
+    const filter = 'ALL';
+    this.setData({ viewMode: 'CENTER', filter,
+      ...displayed(this.data.items, filter, this.data.searchQuery) });
+    if (this.data.loadState === 'READY' && this.data.approvalLoadState === 'IDLE')
+      await this.loadApprovals();
+  },
+  backToInbox() {
+    const filter = 'ALL';
+    this.setData({ viewMode: 'INBOX', filter,
+      ...displayed(this.data.items, filter, this.data.searchQuery) });
   },
   toggleSearch() {
     const searchOpen = !this.data.searchOpen;
@@ -210,7 +233,8 @@ Page({
     try {
       const page = await api.get('/me/approval-requests?offset=0');
       if (generation !== this._generation || approvalLoadId !== this._approvalLoadId) return;
-      this.setData({ approvals: page.items || [], approvalTotal: page.total || 0,
+      this.setData({ approvals: (page.items || []).map(item => ({ ...item, timeLabel: timeLabel(item.createdAt) })),
+        approvalTotal: page.total || 0,
         approvalNextOffset: page.nextOffset ?? null, approvalSnapshot: page.snapshot ?? null,
         approvalLoadState: 'READY' });
     } catch (error) {
@@ -227,7 +251,8 @@ Page({
     try {
       const page = await api.get(`/me/approval-requests?offset=${offset}&snapshot=${encodeURIComponent(this.data.approvalSnapshot)}`);
       if (generation !== this._generation || approvalLoadId !== this._approvalLoadId) return;
-      this.setData({ approvals: this.data.approvals.concat(page.items || []), approvalTotal: page.total,
+      this.setData({ approvals: this.data.approvals.concat((page.items || []).map(item => ({
+        ...item, timeLabel: timeLabel(item.createdAt) }))), approvalTotal: page.total,
         approvalNextOffset: page.nextOffset ?? null, approvalSnapshot: page.snapshot ?? null,
         loadingMoreApprovals: false });
     } catch (error) {
