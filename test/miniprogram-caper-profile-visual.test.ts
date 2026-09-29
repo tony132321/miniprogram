@@ -234,6 +234,39 @@ test('a home waitlist notification deep link opens the current member notice con
   assert.match(markup, /id="noticeSection"/);
 });
 
+test('stored notice intent may reveal only the matching real record sections', async () => {
+  for (const section of ['reportSection', 'appealSection', 'contentSection']) {
+    const { page, selectorQueries, storageRemovals } = loadProfile([], undefined, section);
+    await page.onShow();
+    assert.equal(page.data.advancedOpen, true);
+    assert.equal(selectorQueries.at(-1), '#' + section);
+    assert.deepEqual(storageRemovals, ['irlProfileFocusIntent']);
+  }
+  const unrelated = loadProfile([], undefined, 'missingSection');
+  await unrelated.page.onShow();
+  assert.equal(unrelated.page.data.advancedOpen, false);
+  assert.equal(unrelated.selectorQueries.length, 0);
+});
+
+test('notification settings intent focuses the real consent switches without unfolding records', async () => {
+  const { page, selectorQueries } = loadProfile([], undefined, 'notificationSettingsSection');
+  await page.onShow();
+  assert.equal(page.data.advancedOpen, false);
+  assert.equal(selectorQueries.at(-1), '#notificationSettingsSection');
+  const markup = readFileSync(new URL('../miniprogram/pages/me/me.wxml', import.meta.url), 'utf8');
+  assert.match(markup, /id="notificationSettingsSection"[\s\S]*?id="reminderConsentSwitch"/);
+  assert.match(markup, /id="notificationSettingsSection"[\s\S]*?id="similarInvitesConsentSwitch"/);
+});
+
+test('profile registration management shortcut targets the approval queue', () => {
+  const { page, navigations, storageWrites } = loadProfile([]);
+  page.goApprovalManagement();
+  assert.deepEqual(storageWrites.at(-1), ['irlMessagesFocusIntent', 'approvals']);
+  assert.equal(navigations.at(-1), '/pages/messages/messages');
+  const markup = readFileSync(new URL('../miniprogram/pages/me/me.wxml', import.meta.url), 'utf8');
+  assert.match(markup, /bindtap="goApprovalManagement"[^>]*>[\s\S]*?报名管理/);
+});
+
 test('legal page account privacy link opens the actual profile request form', async () => {
   let legalPage: Record<string, any> | undefined;
   const { page: profilePage, globalData } = loadProfile([]);

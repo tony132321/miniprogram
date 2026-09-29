@@ -80,14 +80,14 @@ test('notification center reloads live approvals when returning and restores the
   assert.equal(bar.at(-1), 'show');
 });
 
-test('notification settings action opens the real profile notice section', () => {
+test('notification settings action opens the real profile consent controls', () => {
   const actions: string[] = [];
   const page = mount({}, {
     setStorageSync(key: string, value: string) { actions.push(key + '=' + value); },
     switchTab(options: { url: string }) { actions.push(options.url); }
   });
   page.goNotificationSettings();
-  assert.deepEqual(actions, ['irlProfileFocusIntent=noticeSection', '/pages/me/me']);
+  assert.deepEqual(actions, ['irlProfileFocusIntent=notificationSettingsSection', '/pages/me/me']);
 });
 
 test('offer notice opens the profile action queue after marking the notice read', async () => {
@@ -106,4 +106,47 @@ test('offer notice opens the profile action queue after marking the notice read'
     'irlProfileFocusIntent=noticeSection',
     '/pages/me/me'
   ]);
+});
+
+test('safety and appeal notice actions open the matching profile record section', async () => {
+  for (const [kind, focus] of [
+    ['REPORT_RESOLVED_UNSCOPED', 'reportSection'],
+    ['APPEAL_RESOLVED', 'appealSection'],
+    ['CONTENT_REJECTED', 'contentSection'],
+    ['REGISTRATION_REMOVED', 'appealSection']
+  ]) {
+    const actions: string[] = [];
+    const page = mount({ async post(path: string) { actions.push(path); } }, {
+      setStorageSync(key: string, value: string) { actions.push(key + '=' + value); },
+      switchTab(options: { url: string }) { actions.push(options.url); }
+    });
+    await page.openNotice({ currentTarget: { dataset: { id: 'notice-' + kind, eventId: 'event-1', kind } } });
+    assert.deepEqual(actions, [
+      `/me/notifications/notice-${kind}/open`,
+      `irlProfileFocusIntent=${focus}`,
+      '/pages/me/me'
+    ]);
+  }
+});
+
+test('approval management intent opens the live interaction queue', async () => {
+  let intent = 'approvals';
+  const reads: string[] = [];
+  const removed: string[] = [];
+  const page = mount({ async get(path: string) {
+    reads.push(path);
+    return path.startsWith('/me/approval-requests')
+      ? { items: [], total: 0, nextOffset: null }
+      : { items: [], total: 0, unreadTotal: 0, nextOffset: null };
+  } }, {
+    getStorageSync(key: string) {
+      return key === 'sessionToken' ? 'token' : key === 'userId' ? 'host'
+        : key === 'irlMessagesFocusIntent' ? intent : '';
+    },
+    removeStorageSync(key: string) { removed.push(key); intent = ''; }
+  });
+  await page.onShow();
+  assert.equal(page.data.filter, 'INTERACTION');
+  assert.ok(reads.some(path => path.startsWith('/me/approval-requests')));
+  assert.deepEqual(removed, ['irlMessagesFocusIntent']);
 });

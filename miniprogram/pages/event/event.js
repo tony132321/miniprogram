@@ -750,7 +750,10 @@ Page({
     } catch (error) { this.setData({ message: error.message || '提交失败' }); }
   },
   askQuestion() { this.submitContent('QUESTION', this.data.questionText, null); },
-  goToContentAppeal() { wx.switchTab({ url: '/pages/me/me' }); },
+  goToContentAppeal() {
+    wx.setStorageSync('irlProfileFocusIntent', 'contentSection');
+    wx.switchTab({ url: '/pages/me/me' });
+  },
   postAnnouncement() { this.submitContent('ANNOUNCEMENT', this.data.announcementText, null); },
   answerQuestion() { this.submitContent('ANSWER', this.data.answerText, this.data.answerQuestionId); },
   setFeedbackHeld(event) { this.setData({ feedbackHeld: event.detail.value === 'yes' ? true : event.detail.value === 'no' ? false : null }); },

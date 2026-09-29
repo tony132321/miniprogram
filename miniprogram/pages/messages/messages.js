@@ -64,6 +64,14 @@ const externalHints = {
   ACCOUNT_DISABLED: '账号停用，外部提醒未发送',
   DELETE_REQUEST_PENDING: '删除申请处理中，外部提醒未发送'
 };
+const profileFocusByKind = {
+  WAITLIST_OFFER: 'noticeSection', REGISTRATION_REMOVED: 'appealSection',
+  REPORT_IN_REVIEW: 'reportSection', REPORT_RESOLVED: 'reportSection',
+  REPORT_CREATED_UNSCOPED: 'reportSection', REPORT_IN_REVIEW_UNSCOPED: 'reportSection',
+  REPORT_RESOLVED_UNSCOPED: 'reportSection', APPEAL_CREATED: 'appealSection',
+  APPEAL_IN_REVIEW: 'appealSection', APPEAL_RESOLVED: 'appealSection',
+  CONTENT_REJECTED: 'contentSection', CONTENT_REVIEW_OVERTURN: 'contentSection'
+};
 const interactionKinds = new Set(['WAITLIST_OFFER', 'REGISTRATION_STATUS', 'REGISTRATION_APPROVED',
   'REGISTRATION_REMOVED', 'MANUAL_CHECKIN_REQUEST', 'CONTENT_REJECTED', 'REPORT_IN_REVIEW',
   'REPORT_RESOLVED', 'APPEAL_IN_REVIEW', 'APPEAL_RESOLVED', 'REPORT_CREATED_UNSCOPED',
@@ -137,6 +145,8 @@ Page({
     const bar = this.getTabBar && this.getTabBar();
     if (bar) bar.setData({ selected: 3 });
     await getApp().globalData.ready;
+    const focusIntent = wx.getStorageSync?.('irlMessagesFocusIntent');
+    if (focusIntent) wx.removeStorageSync?.('irlMessagesFocusIntent');
     const hasSession = Boolean(wx.getStorageSync('sessionToken'));
     const actor = hasSession ? wx.getStorageSync('userId') : this.data.developmentMode ? (wx.getStorageSync('devUser') || config.developmentUser) : '';
     if (this._actor !== actor) {
@@ -148,6 +158,7 @@ Page({
         searchOpen: false, searchQuery: '' });
     }
     this._actor = actor;
+    if (focusIntent === 'approvals') this.setData({ viewMode: 'INBOX', filter: 'INTERACTION' });
     this.setData({ hasSession });
     this.setTabBarHidden(this.data.viewMode === 'CENTER');
     if (!actor) return this.setData({ loadState: 'UNAUTHENTICATED', message: '请先微信登录后查看本人消息。' });
@@ -307,13 +318,10 @@ Page({
   },
   async openNotice(event) {
     const { id, eventId, kind, section } = event.currentTarget.dataset;
-    const profileKinds = ['REGISTRATION_REMOVED', 'REPORT_IN_REVIEW', 'REPORT_RESOLVED',
-      'REPORT_CREATED_UNSCOPED', 'REPORT_IN_REVIEW_UNSCOPED', 'REPORT_RESOLVED_UNSCOPED',
-      'APPEAL_CREATED', 'APPEAL_IN_REVIEW', 'APPEAL_RESOLVED',
-      'CONTENT_REJECTED', 'CONTENT_REVIEW_OVERTURN', 'WAITLIST_OFFER'];
+    const profileFocus = profileFocusByKind[kind];
     const generation = this._generation;
     try {
-      if (eventId && !profileKinds.includes(kind)) {
+      if (eventId && !profileFocus) {
         await new Promise((resolve, reject) => wx.navigateTo({
           url: '/pages/event/event?id=' + encodeURIComponent(eventId) +
             (['checkinSection', 'expenseSection', 'detailsSection'].includes(section) ? '&section=' + section : ''),
@@ -322,8 +330,8 @@ Page({
       }
       await api.post(`/me/notifications/${encodeURIComponent(id)}/open`, {});
       if (generation !== this._generation) return;
-      if (profileKinds.includes(kind)) {
-        if (kind === 'WAITLIST_OFFER') wx.setStorageSync?.('irlProfileFocusIntent', 'noticeSection');
+      if (profileFocus) {
+        wx.setStorageSync?.('irlProfileFocusIntent', profileFocus);
         return wx.switchTab({ url: '/pages/me/me' });
       }
       if (!eventId) {
@@ -334,7 +342,7 @@ Page({
   },
   goProfile() { wx.switchTab({ url: '/pages/me/me' }); },
   goNotificationSettings() {
-    wx.setStorageSync?.('irlProfileFocusIntent', 'noticeSection');
+    wx.setStorageSync?.('irlProfileFocusIntent', 'notificationSettingsSection');
     wx.switchTab({ url: '/pages/me/me' });
   },
   goDiscover() { wx.switchTab({ url: '/pages/discover/discover' }); }

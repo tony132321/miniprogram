@@ -108,7 +108,9 @@ Page({
     app.globalData.profileFocus = undefined;
     const storedFocus = wx.getStorageSync('irlProfileFocusIntent');
     if (storedFocus) wx.removeStorageSync('irlProfileFocusIntent');
-    const requestedFocus = profileFocus || (storedFocus === 'noticeSection' ? 'noticeSection' : '');
+    const allowedNoticeSections = ['noticeSection', 'reportSection', 'appealSection', 'contentSection',
+      'notificationSettingsSection'];
+    const requestedFocus = profileFocus || (allowedNoticeSections.includes(storedFocus) ? storedFocus : '');
     const hasSession = Boolean(wx.getStorageSync('sessionToken'));
     this.setData({ hasSession });
     if (!hasSession && !this.data.developmentMode) {
@@ -129,7 +131,7 @@ Page({
       advancedOpen: reportContext.actor === actor || this.data.advancedOpen });
     await this.refresh();
     if (reportContext?.actor === actor) this.revealAdvanced('reportSection');
-    else if (requestedFocus) this.revealAdvanced(requestedFocus);
+    else if (requestedFocus) this.revealAdvanced(requestedFocus, requestedFocus !== 'notificationSettingsSection');
   },
   onHide() { this._pendingFocus = ''; },
   onUnload() { this._pendingFocus = ''; },
@@ -180,8 +182,8 @@ Page({
     if (!this.data.hasSession && !this.data.developmentMode) return;
     this.setData({ advancedOpen: !this.data.advancedOpen });
   },
-  revealAdvanced(sectionId) {
-    this.setData({ advancedOpen: true });
+  revealAdvanced(sectionId, unfold = true) {
+    if (unfold) this.setData({ advancedOpen: true });
     const scroll = () => {
       const selector = '#' + sectionId;
       const fallback = () => wx.pageScrollTo?.({ selector, duration: 180 });
@@ -253,7 +255,7 @@ Page({
       this.setData({ hasSession: true, message: '已登录：' + session.userId });
       await this.refresh();
       this._pendingFocus = '';
-      if (requestedFocus) this.revealAdvanced(requestedFocus);
+      if (requestedFocus) this.revealAdvanced(requestedFocus, requestedFocus !== 'notificationSettingsSection');
     } catch (error) {
       this._pendingFocus = '';
       if (generation === (this._refreshGeneration || 0)) this.setData({ message: error.message });
@@ -406,6 +408,10 @@ Page({
     } catch (error) { if (isCurrent()) this.setData({ message: error.message }); }
   },
   goMessages() { wx.switchTab({ url: '/pages/messages/messages' }); },
+  goApprovalManagement() {
+    wx.setStorageSync('irlMessagesFocusIntent', 'approvals');
+    wx.switchTab({ url: '/pages/messages/messages' });
+  },
   selectActivityFilter(event) {
     const filter = event?.currentTarget?.dataset?.filter;
     if (!Object.prototype.hasOwnProperty.call(activityEmptyLabels, filter)) return;

@@ -24,6 +24,27 @@ test('a direct-linked event back button returns to a real app route when there i
   assert.deepEqual(navigations, ['/pages/index/index']);
 });
 
+test('rejected activity content shortcut opens the real profile review form', () => {
+  let page: Record<string, any> | undefined;
+  const actions: string[] = [];
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: {} };
+      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
+      if (path === '../../config.js') return { developmentUser: '' };
+      throw new Error(path);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: {
+      setStorageSync(key: string, value: string) { actions.push(key + '=' + value); },
+      switchTab({ url }: { url: string }) { actions.push(url); }
+    }
+  });
+  assert.ok(page);
+  page.goToContentAppeal();
+  assert.deepEqual(actions, ['irlProfileFocusIntent=contentSection', '/pages/me/me']);
+});
+
 test('event more button offers a safety action before navigating to the report form', () => {
   let page: Record<string, any> | undefined;
   let actionSheet: Record<string, any> | undefined;
