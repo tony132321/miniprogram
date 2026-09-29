@@ -11,7 +11,8 @@ const url = process.env.IRL_PG_TEST_URL;
 if (!url) throw new Error('IRL_PG_TEST_URL is required');
 const databaseName = validatePostgresTestUrl(url);
 const probe = new pg.Pool({ connectionString: url, max: 1 });
-try { await assertEmptyPostgresTestDatabase(probe, databaseName); }
+try { await assertEmptyPostgresTestDatabase(probe, databaseName,
+  { allowContainerServiceAddress: process.env.GITHUB_ACTIONS === 'true' && databaseName === 'irl_r1_test_ci' }); }
 finally { await probe.end(); }
 
 const db = await createProductionDatabase(url);
