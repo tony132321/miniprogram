@@ -7,7 +7,7 @@ const noticeTitles = {
   MANUAL_CHECKIN_REQUEST: '请核对到场补记', MATERIAL_CHANGE: '活动规则已更新',
   EVENT_CONFIRMED: '活动已成局', EVENT_CANCELLED: '活动已取消', EVENT_EXPIRED: '活动未成局',
   EVENT_SAFETY_PAUSED: '活动暂时停止招募', EVENT_SAFETY_RESUMED: '活动恢复招募',
-  EVENT_REMINDER: '活动提醒', EVENT_OUTCOME_DUE: '请记录活动结项',
+  EVENT_REMINDER: '活动即将开始', EVENT_OUTCOME_DUE: '请记录活动结项',
   EVENT_OUTCOME_REVIEW: '请反馈活动结项', PUBLIC_RECRUITMENT_CLOSED: '活动招募暂停',
   PUBLIC_RECRUITMENT_OPEN: '活动招募恢复', REGISTRATION_REMOVED: '报名已移除',
   REPORT_IN_REVIEW: '举报正在处理', REPORT_RESOLVED: '举报已有处理结论',
@@ -97,13 +97,20 @@ function present(items) {
       'REPORT_RESOLVED', 'REPORT_CREATED_UNSCOPED', 'REPORT_IN_REVIEW_UNSCOPED',
       'REPORT_RESOLVED_UNSCOPED', 'APPEAL_CREATED', 'APPEAL_IN_REVIEW',
       'APPEAL_RESOLVED', 'CONTENT_REJECTED', 'CONTENT_REVIEW_OVERTURN'].includes(item.kind);
+    const group = groupFor(item);
+    const caution = ['EVENT_CANCELLED', 'EVENT_EXPIRED', 'EVENT_SAFETY_PAUSED',
+      'EVENT_REVIEW_REJECTED', 'CONTENT_REJECTED'].includes(item.kind);
     return { ...item, title: noticeTitles[item.kind] || '站内通知',
       summary: noticeSummaries[item.kind] || (item.event_id ? '活动有新进展，请查看详情。' : '站内通知有更新，请查看详情。'),
       timeLabel: timeLabel(item.created_at),
       externalHint: externalHints[item.external_status] || '',
       actionLabel: isCheckin ? '查看入场凭证' : isProfileRecord ? '查看处理记录' : item.event_id ? '查看活动详情' : '标为已读',
       actionSection: isCheckin ? 'checkinSection' : '',
-      tone: isCheckin ? 'blue' : groupFor(item) === 'INTERACTION' ? 'violet' : item.event_id ? 'green' : 'gray' };
+      categoryLabel: group === 'INTERACTION' ? '互动消息' : group === 'ACTIVITY' ? '活动提醒' : '系统通知',
+      icon: caution ? '!' : item.kind === 'EVENT_REMINDER' ? '◷' : item.kind === 'MATERIAL_CHANGE' ? '⌖'
+        : item.kind === 'EVENT_CONFIRMED' ? '✓' : group === 'INTERACTION' ? '✦' : '✉',
+      tone: caution ? 'pink' : isCheckin ? 'blue' : group === 'INTERACTION' ? 'violet'
+        : item.kind === 'EVENT_CONFIRMED' ? 'green' : item.event_id ? 'blue' : 'gray' };
   });
 }
 function displayed(items, filter, searchQuery = '') {
@@ -142,8 +149,16 @@ Page({
     }
     this._actor = actor;
     this.setData({ hasSession });
+    this.setTabBarHidden(this.data.viewMode === 'CENTER');
     if (!actor) return this.setData({ loadState: 'UNAUTHENTICATED', message: '请先微信登录后查看本人消息。' });
     return this.refresh();
+  },
+  onHide() { this.setTabBarHidden(false); },
+  setTabBarHidden(hidden) {
+    const bar = this.getTabBar && this.getTabBar();
+    if (bar) bar.setData({ hidden });
+    if (hidden) wx.hideTabBar?.({ animation: false });
+    else wx.showTabBar?.({ animation: false });
   },
   async refresh() {
     const generation = this._generation = (this._generation || 0) + 1;
@@ -155,7 +170,7 @@ Page({
       this.setData({ ...inbox, total: page.total ?? (page.items || []).length,
         unreadTotal: page.unreadTotal ?? (page.items || []).filter(item => item.status !== 'OPENED').length,
         nextOffset: page.nextOffset ?? null, snapshot: page.snapshot ?? null, loadState: 'READY' });
-      if (this.data.filter === 'INTERACTION') await this.loadApprovals();
+      if (this.data.filter === 'INTERACTION' || this.data.viewMode === 'CENTER') await this.loadApprovals();
     } catch (error) {
       if (generation === this._generation) this.setData({ loadState: 'ERROR', message: error.message || '消息加载失败' });
     }
@@ -171,6 +186,7 @@ Page({
     const filter = 'ALL';
     this.setData({ viewMode: 'CENTER', filter,
       ...displayed(this.data.items, filter, this.data.searchQuery) });
+    this.setTabBarHidden(true);
     if (this.data.loadState === 'READY' && this.data.approvalLoadState === 'IDLE')
       await this.loadApprovals();
   },
@@ -178,6 +194,7 @@ Page({
     const filter = 'ALL';
     this.setData({ viewMode: 'INBOX', filter,
       ...displayed(this.data.items, filter, this.data.searchQuery) });
+    this.setTabBarHidden(false);
   },
   toggleSearch() {
     const searchOpen = !this.data.searchOpen;
@@ -305,7 +322,10 @@ Page({
       }
       await api.post(`/me/notifications/${encodeURIComponent(id)}/open`, {});
       if (generation !== this._generation) return;
-      if (profileKinds.includes(kind)) return wx.switchTab({ url: '/pages/me/me' });
+      if (profileKinds.includes(kind)) {
+        if (kind === 'WAITLIST_OFFER') wx.setStorageSync?.('irlProfileFocusIntent', 'noticeSection');
+        return wx.switchTab({ url: '/pages/me/me' });
+      }
       if (!eventId) {
         await this.refresh();
         this.setData({ message: '通知已打开。' });
@@ -313,6 +333,9 @@ Page({
     } catch (error) { if (generation === this._generation) this.setData({ message: error.message || '打开通知失败' }); }
   },
   goProfile() { wx.switchTab({ url: '/pages/me/me' }); },
-  goNotificationSettings() { wx.switchTab({ url: '/pages/me/me' }); },
+  goNotificationSettings() {
+    wx.setStorageSync?.('irlProfileFocusIntent', 'noticeSection');
+    wx.switchTab({ url: '/pages/me/me' });
+  },
   goDiscover() { wx.switchTab({ url: '/pages/discover/discover' }); }
 });
