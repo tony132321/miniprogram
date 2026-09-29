@@ -1,9 +1,22 @@
-<view class="pg10-page" style="padding-top: {{statusBarHeight}}px">
-  <view class="pg10-header"><button class="pg10-back" bindtap="back" aria-label="返回">‹</button><view class="pg10-header-title">隐私与使用说明</view><view class="pg10-header-spacer"></view></view>
-  <view class="pg10-card pg10-hero"><view class="pg10-kicker">PRIVACY &amp; TERMS</view><view class="pg10-title">真实相聚，从清楚的边界开始</view><view class="pg10-subtitle">本页说明当前小程序已实现的数据入口。正式法律条款、第三方清单和下载版协议仍需主体核定后发布。</view></view>
-  <view class="pg10-section-label">当前可用的数据操作</view>
-  <view class="pg10-card"><view class="legal-item"><view class="legal-number">1</view><view><view class="pg10-row-title">本人数据导出</view><view class="pg10-note">“我的”页面可复制当前可导出的本人数据 JSON，也可提交人工导出申请。</view></view></view><view class="legal-item"><view class="legal-number">2</view><view><view class="pg10-row-title">注销与删除申请</view><view class="pg10-note">请求先进入核查流程；提交不代表账号已停用或数据已全部删除。</view></view></view><view class="legal-item"><view class="legal-number">3</view><view><view class="pg10-row-title">通知与类似活动同意</view><view class="pg10-note">活动提醒和类似活动候选名单分别同意，可在“我的”页面撤回。</view></view></view><view class="legal-item"><view class="legal-number">4</view><view><view class="pg10-row-title">安全与成员边界</view><view class="pg10-note">本人可管理活动内昵称和屏蔽记录，并通过举报工单提交安全问题。</view></view></view></view>
-  <view class="pg10-card"><view class="pg10-row-title">正式协议状态</view><view class="pg10-note">设计稿中的服务协议版本号、公司名称、备案号、DPO 邮箱和“已知悉并确认”状态均不是当前项目已核定的事实，因此此处不伪造法律同意或 PDF 下载。</view></view>
-  <button class="pg10-primary" bindtap="goPrivacy">管理账号与隐私请求</button>
-  <button class="secondary-action" bindtap="goGuidelines">查看社区公约与安全指南</button>
+<view class="pg10-page legal-page" style="padding-top: {{statusBarHeight}}px">
+  <view class="pg10-header legal-header"><button class="pg10-back legal-back" bindtap="back" aria-label="返回">‹</button><view class="pg10-header-title">隐私与使用说明</view><view class="legal-header-space"></view></view>
+
+  <view class="legal-meta"><text class="legal-meta-chip">当前服务说明</text><text class="legal-meta-pending">正式协议待核定</text></view>
+  <view class="pg10-card legal-summary"><view class="legal-summary-head"><view class="legal-shield">✦</view><view><view class="legal-summary-kicker">PRIVACY · TERMS</view><view class="legal-summary-title">隐私与使用摘要</view></view></view><view class="legal-summary-copy">以下归纳当前小程序已实现的规则和本人数据入口。正式协议版本、运营主体和第三方清单待核定后发布。</view></view>
+
+  <view class="legal-tabs"><view class="legal-tab selected">当前服务说明</view><button class="legal-tab" bindtap="goGuidelines">社区公约</button><button class="legal-tab unavailable" disabled="{{true}}">第三方清单未发布</button></view>
+
+  <view class="pg10-card legal-section"><view class="legal-section-head"><text class="legal-number blue">1</text><text class="legal-section-title">真实社交与组局边界</text><text class="legal-label blue-label">当前规则</text></view><view class="legal-section-copy">活动以邀请和权限校验为基础。请以活动页当前状态为准；遇到违规或安全问题，可在“我的”提交举报工单并查看进度。</view><view class="legal-info-box"><text class="legal-info-icon">◎</text><text>屏蔽记录由本人管理；活动内成员昵称仅在当前授权范围内展示。</text></view></view>
+
+  <view class="pg10-card legal-section"><view class="legal-section-head"><text class="legal-number violet">2</text><text class="legal-section-title">地点与联系渠道</text><text class="legal-label violet-label">权限说明</text></view><view class="legal-section-copy">活动时间和地点以有权限查看的活动页面为准。当前不提供私聊，也不提供电话或微信号交换入口。</view><view class="legal-info-box"><text class="legal-info-icon">⌖</text><text>与本场活动有关的问题，可使用活动公告问答区。</text></view></view>
+
+  <view class="pg10-card legal-section"><view class="legal-section-head"><text class="legal-number green">3</text><text class="legal-section-title">AA 账本与费用记录</text><text class="legal-label neutral-label">账本说明</text></view><view class="legal-section-copy">当前费用页记录分摊明细和双方标记，不处理真实付款，也不代收、托管或自动退款。</view><view class="legal-info-box"><text class="legal-info-icon">⊙</text><text>若有费用争议，请保留真实交易凭证，并查看活动页的当前账本版本。</text></view></view>
+
+  <view class="pg10-card legal-section"><view class="legal-section-head"><text class="legal-number pink">4</text><text class="legal-section-title">活动照片与影像</text><text class="legal-label pink-label">未开放</text></view><view class="legal-section-copy">当前版本没有活动相册和照片上传服务；原稿中的肖像授权、照片管理与删除操作尚未接入。</view></view>
+
+  <view class="pg10-card legal-section"><view class="legal-section-head"><text class="legal-number slate">5</text><text class="legal-section-title">本人数据与账号请求</text><text class="legal-label green-label">可办理</text></view><view class="legal-section-copy">“我的”可复制当前可导出的本人数据，提交导出或注销删除申请，并分别管理活动提醒、类似活动候选名单同意。</view><view class="legal-info-box"><text class="legal-info-icon">✓</text><text>注销或删除请求先进入人工核查；提交申请不代表账号立即停用或数据已经删除。</text></view></view>
+
+  <view class="pg10-card legal-request"><view class="legal-request-icon">◇</view><view><view class="legal-request-title">隐私请求处理</view><view class="legal-request-copy">本人请求和办理状态可在“我的”页面查看。正式联系方式与响应时限尚未公布。</view></view></view>
+  <view class="legal-actions"><button class="legal-pdf" disabled="{{true}}">PDF 协议未发布</button><button class="legal-privacy" bindtap="goPrivacy">管理账号与隐私请求</button></view>
+  <view class="legal-foot">当前页面不记录正式协议的确认或同意状态。</view>
 </view>

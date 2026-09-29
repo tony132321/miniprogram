@@ -1,15 +1,17 @@
-<view class="home-page">
+<view class="home-page {{stateView ? 'state-view' : ''}}">
   <view class="home-status-shield" style="height: {{statusBarHeight}}px"></view>
   <view class="safe-area" style="height: {{statusBarHeight}}px"></view>
   <view class="home-header" style="top: {{statusBarHeight}}px; padding-right: {{headerPaddingRight}}">
-    <view class="brand"><view class="brand-mark">✹</view><view class="brand-word"><text class="brand-cn">耍起</text><text class="brand-en">CAPER</text></view></view>
-    <button class="city-chip" bindtap="goCity" aria-label="选择城市">📍 {{city}}⌄</button>
+    <view wx:if="{{!stateView}}" class="brand"><view class="brand-mark">✹</view><view class="brand-word"><text class="brand-cn">耍起</text><text class="brand-en">CAPER</text></view></view>
+    <view wx:else class="state-brand"><view class="state-brand-mark">✦</view><text>Home Feed</text></view>
+    <button wx:if="{{!stateView}}" class="city-chip" bindtap="goCity" aria-label="选择城市">📍 {{city}}⌄</button>
     <view class="header-space"></view>
     <button class="header-round" bindtap="goMessages" aria-label="查看消息">♧</button>
     <button class="header-avatar" bindtap="goProfile" aria-label="进入我的页面">我</button>
   </view>
 
-  <view class="home-main">
+  <view class="home-main {{stateView ? 'state-main' : ''}}">
+    <view wx:if="{{!stateView}}" class="caper-top">
     <view class="hero">
       <view class="hero-sticker">Good People More Plans ☺</view>
       <view class="hero-kicker">More People, Brighter Days ☺</view>
@@ -36,8 +38,10 @@
     </view>
 
     <view class="brand-ribbon"><image class="ribbon-image" src="/assets/stitch/caper_home_shanghai.jpg" mode="aspectFill" /><view class="ribbon-shade"></view><view class="ribbon-content"><view class="ribbon-kicker">TURN PLANS INTO REAL MEETUPS</view><view class="ribbon-title">让有趣的事，<text>真的发生</text></view><view class="ribbon-copy">把想见的人，聚在同一个真实时刻。</view></view></view>
+    </view>
 
-    <view class="section-heading dashboard-heading"><view><text class="section-mark">✦</text><text>我的活动</text></view><view class="dashboard-links"><button class="section-link" bindtap="goItinerary">我的行程　›</button><button class="section-link" bindtap="goMessages">消息　›</button></view></view>
+    <button wx:if="{{stateView}}" class="state-ai-banner state-ai-{{activeTab}}" bindtap="goCreate" aria-label="打开活动构思"><view class="state-ai-orb">✦</view><view class="state-ai-copy"><view>{{activeTab === 'history' ? '让好活动继续发生' : '想组什么局？一句话开始'}}</view><text>{{activeTab === 'history' ? '发起新局，或在已结束活动中生成相似草稿' : '构思助手整理草稿，发布前由你确认'}}</text></view><view class="state-ai-arrow">→</view></button>
+    <view wx:if="{{!stateView}}" class="section-heading dashboard-heading"><view><text class="section-mark">✦</text><text>我的活动</text></view><view class="dashboard-links"><button class="section-link" bindtap="goItinerary">我的行程　›</button><button class="section-link" bindtap="goMessages">消息　›</button></view></view>
     <scroll-view scroll-x="true" class="tabs" show-scrollbar="false"><view class="tab-row">
       <button class="tab {{activeTab === 'attending' ? 'selected' : ''}}" data-key="attending" bindtap="selectTab">即将参加 <text>{{attending.length}}</text></button>
       <button class="tab {{activeTab === 'pending' ? 'selected' : ''}}" data-key="pending" bindtap="selectTab">待确认 <text>{{pending.length}}</text></button>
@@ -51,8 +55,9 @@
     <view wx:if="{{loadState === 'READY' && visibleItems.length === 0 && items.length > 0}}" class="state-card muted">这个分类里暂时没有活动。</view>
     <view wx:if="{{loadState === 'READY'}}" class="cards">
       <view wx:for="{{visibleItems}}" wx:key="id" class="event-card card-{{item.cardKind}}">
-        <button class="cover-wrap" data-id="{{item.id}}" bindtap="openEvent" aria-label="查看{{item.title || '活动'}}详情"><image class="cover" src="{{item.cover}}" mode="aspectFill" /><view class="cover-tint"></view><view class="cover-status">{{item.cardLabel}}</view><view class="cover-title">{{item.title || '未命名草稿'}}</view></button>
-        <view class="card-body"><view class="card-heading"><text class="card-title">{{item.title || '未命名草稿'}}</text><text class="pill">{{item.statusLabel}}</text></view><view class="card-meta">▣　{{item.dateLabel}}</view>
+        <button class="cover-wrap" data-id="{{item.id}}" bindtap="openEvent" aria-label="查看{{item.title || '活动'}}详情"><image class="cover" src="{{item.cover}}" mode="aspectFill" /><view class="cover-tint"></view><view wx:if="{{stateView && item.cardKind === 'history'}}" class="cover-sticker">MEMORIES ✦ GOOD TIMES</view><view class="cover-status">{{item.cardLabel}}</view><view wx:if="{{stateView}}" class="cover-poster"><text class="cover-poster-word">{{item.posterWord}}</text><text class="cover-poster-line">GOOD PEOPLE · REAL PLANS</text></view><view wx:else class="cover-title">{{item.title || '未命名草稿'}}</view><view wx:if="{{stateView}}" class="cover-credit">配图为活动类型示意</view></button>
+        <view class="card-body"><view class="card-heading"><text class="card-title">{{item.title || '未命名草稿'}}</text><text class="pill pill-{{item.cardKind}}">{{item.cardKind === 'pending' ? item.registrationLabel : item.statusLabel}}</text></view><view class="card-meta">▣　{{item.dateRangeLabel}}</view><view wx:if="{{stateView}}" class="card-meta">⌖　{{item.venueLabel}}</view><view wx:if="{{stateView && item.capacityLabel && item.cardKind === 'pending'}}" class="capacity-row">{{item.capacityLabel}}</view>
+          <view wx:if="{{stateView && item.cardKind === 'organized' && item.hostCounts}}" class="host-counts"><view><text>{{item.hostCounts.confirmed}}</text><text>已确认</text></view><view><text>{{item.hostCounts.reserved}}</text><text>预留名额</text></view><view><text>{{item.hostCounts.requested}}</text><text>待审核</text></view><view><text>{{item.hostCounts.gap}}</text><text>成局缺口</text></view></view>
           <view wx:if="{{item.cardKind === 'pending'}}" class="card-state pending-state"><text class="state-icon">!</text><text>{{item.cardNote}}</text></view>
           <view wx:elif="{{item.cardKind === 'organized'}}" class="card-state organized-state"><text class="state-icon">✦</text><text>{{item.cardNote}}</text></view>
           <view wx:elif="{{item.cardKind === 'history'}}" class="card-state history-state"><text class="state-icon">✓</text><text>{{item.cardNote}}</text></view>
@@ -62,10 +67,13 @@
       </view>
     </view>
 
+    <view wx:if="{{stateView}}" class="state-feed-foot"><view>✦</view><text>{{activeTab === 'pending' ? '以上是当前需要你关注的活动' : activeTab === 'organized' ? '好的活动，让普通的日子发光' : activeTab === 'history' ? '把真实的相聚，变成下一次出发' : '协办事项以每场活动当前授权为准'}}</text></view>
+    <view wx:if="{{!stateView}}">
     <view class="section-heading discover-heading"><view><text class="section-mark">⌖</text><text>看看更多可能</text></view><button class="section-link" bindtap="goDiscover">去发现　›</button></view>
     <view class="discovery-preview"><view class="preview-cover"><image src="/assets/stitch/caper_discover_coffee.jpg" mode="aspectFill" /><view class="preview-shade"></view><text class="preview-poster">Good People Better Days</text></view><view class="preview-body"><view class="preview-title">公开找局暂未开放</view><view class="preview-copy">目前通过朋友邀请加入活动；也可以自己发起一场。</view><button bindtap="goDiscover" class="preview-action">了解当前状态　→</button></view></view>
 
     <view class="invite-panel"><view class="invite-title">收到朋友的邀请？</view><view class="invite-copy">输入邀请口令，打开对应的真实活动。</view><view class="invite-row"><input placeholder="输入邀请口令" value="{{tokenInput}}" bindinput="tokenChanged" /><button bindtap="openInvite">打开邀请</button></view><view wx:if="{{message}}" class="invite-message">{{message}}</view></view>
     <view class="home-foot"><view>GOOD PEOPLE · REAL MEETUPS · BRIGHTER DAYS</view><view>耍起 CAPER · 让有趣的事，真的发生</view></view>
+    </view>
   </view>
 </view>

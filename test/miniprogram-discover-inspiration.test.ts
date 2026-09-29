@@ -8,6 +8,11 @@ test('an unsupported discovery inspiration never jumps straight into a badminton
   let modal: Record<string, any> | undefined;
   const routes: string[] = [];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/discover/discover.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: {} };
+      if (path === '../../config.js') return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
     Page(definition: Record<string, any>) { page = definition; },
     wx: {
       showModal(options: Record<string, any>) { modal = options; },

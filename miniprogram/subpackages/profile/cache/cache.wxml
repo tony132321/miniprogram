@@ -1,7 +1,19 @@
-<view class="pg10-page" style="padding-top: {{statusBarHeight}}px">
-  <view class="pg10-header"><button class="pg10-back" bindtap="back" aria-label="返回">‹</button><view class="pg10-header-title">本地存储</view><view class="pg10-header-spacer"></view></view>
-  <view class="pg10-card storage-hero"><view class="pg10-kicker">APP LOCAL DATA</view><view class="pg10-title">设备存储使用</view><view class="storage-size">{{storageState === 'READY' ? storageSize : '暂不可读取'}}</view><view class="pg10-note">数值来自当前设备的小程序存储统计，不代表服务器保存的数据总量。</view><view class="storage-bar"><view style="width: {{usagePercent}}%"></view></view></view>
-  <view class="pg10-card"><view class="pg10-row"><view class="pg10-icon">▣</view><view class="pg10-row-body"><view class="pg10-row-title">当前版本的本地数据</view><view class="pg10-row-note">可能包含登录会话、浏览城市和表单中的暂存状态。</view></view></view><view class="pg10-note">设计稿中的海报缓存、聊天语音缓存大小与“一键清理”数据均无当前服务支撑。为防止误删登录与待处理状态，此处不提供清空全部存储的按钮。</view></view>
-  <button class="pg10-primary" bindtap="refreshStorage">重新读取设备存储</button>
-  <view class="pg10-foot">本人服务端数据可在“我的 → 账号与隐私”中申请导出或删除核查</view>
+<view class="pg10-page storage-page" style="padding-top: {{statusBarHeight}}px">
+  <view class="pg10-header storage-header"><button class="pg10-back storage-back" bindtap="back" aria-label="返回">‹</button><view class="pg10-header-title">本地存储</view><view class="storage-header-space"></view></view>
+
+  <view class="pg10-card storage-summary">
+    <view class="storage-summary-head"><view class="storage-symbol">▤</view><view class="storage-summary-title"><view class="storage-kicker">APP LOCAL DATA</view><view class="storage-heading">本机小程序存储</view></view><view class="storage-size">{{storageState === 'READY' ? storageSize : '--'}}</view></view>
+    <view class="storage-bar"><view style="width: {{usagePercent}}%"></view></view>
+    <view class="storage-stat-row"><view class="storage-stat"><view class="storage-stat-label"><text class="storage-dot blue"></text>已用空间</view><view class="storage-stat-value">{{storageState === 'READY' ? storageSize : '--'}}</view></view><view class="storage-stat"><view class="storage-stat-label"><text class="storage-dot violet"></text>存储上限</view><view class="storage-stat-value">{{storageState === 'READY' ? storageLimit : '--'}}</view></view><view class="storage-stat"><view class="storage-stat-label"><text class="storage-dot green"></text>使用占比</view><view class="storage-stat-value">{{storageState === 'READY' ? usagePercent + '%' : '--'}}</view></view></view>
+  </view>
+
+  <view class="storage-diagnosis"><view class="storage-diagnosis-icon">▣</view><view class="storage-diagnosis-copy"><view class="storage-diagnosis-title">设备存储状态</view><view class="storage-diagnosis-note">{{storageState === 'READY' ? '已读取当前设备的小程序存储统计' : '暂无法读取本机存储统计，请稍后重试'}}</view></view><text class="storage-diagnosis-tag">本机数据</text></view>
+
+  <view class="storage-list-heading"><text>本地数据说明</text><text>暂无安全清理分类</text></view>
+  <view class="pg10-card storage-info-card"><view class="storage-info-icon blue-icon">▣</view><view class="storage-info-copy"><view class="storage-info-title">登录会话与个人偏好</view><view class="storage-info-note">本机存储可能包含登录状态、浏览城市和未提交的表单暂存。</view><view class="storage-info-pill">保留当前状态</view></view></view>
+  <view class="pg10-card storage-info-card"><view class="storage-info-icon violet-icon">▤</view><view class="storage-info-copy"><view class="storage-info-title">活动与账号资料</view><view class="storage-info-note">本人活动和隐私请求由服务端管理；本机读数无法拆分它们的大小。</view><view class="storage-info-pill">可在“我的”申请数据处理</view></view></view>
+
+  <view class="storage-protection"><text class="storage-protection-icon">◇</text><text>当前没有经过验证的可清理分类。清空全部存储可能移除登录会话或草稿，因此此页不提供一键清理。</text></view>
+  <button class="storage-refresh" bindtap="refreshStorage">重新读取设备存储</button>
+  <view class="storage-footer">数值来自微信原生接口，不代表可清理容量，也不等于服务端保存的数据。</view>
 </view>

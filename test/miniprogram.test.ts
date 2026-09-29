@@ -24,6 +24,11 @@ test('R1 discovery has no active public-search controls while invitation and cre
   let page: Record<string, any> | undefined;
   const navigations: string[] = [];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/discover/discover.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: {} };
+      if (path === '../../config.js') return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
     Page(definition: Record<string, any>) { page = definition; },
     wx: {
       getStorageSync() { return ''; },

@@ -30,6 +30,8 @@ const tabs = [
   { key: 'attending', label: '即将参加' }, { key: 'pending', label: '待确认' },
   { key: 'organized', label: '我组织的' }, { key: 'cohosting', label: '协办' }, { key: 'history', label: '历史' }
 ];
+const detailedStateTabs = ['pending', 'organized', 'history'];
+const stateDetailLimit = 3;
 const categoryIdeas = [
   { icon: '🏸', label: '运动', tone: 'mint' }, { icon: '🥘', label: '美食', tone: 'peach' },
   { icon: '☕', label: '喝一杯', tone: 'cream' }, { icon: '🏙️', label: 'City Walk', tone: 'sky' },
@@ -39,6 +41,66 @@ function dateLabel(value) {
   if (!value || Number.isNaN(Date.parse(value))) return '时间待定';
   const date = new Date(Date.parse(value) + 8 * 60 * 60_000);
   return `${date.getUTCMonth() + 1} 月 ${date.getUTCDate()} 日 ${String(date.getUTCHours()).padStart(2, '0')}:${String(date.getUTCMinutes()).padStart(2, '0')}`;
+}
+function dateRangeLabel(startAt, endAt) {
+  const start = dateLabel(startAt);
+  if (!endAt || Number.isNaN(Date.parse(endAt))) return start;
+  const end = new Date(Date.parse(endAt) + 8 * 60 * 60_000);
+  const endTime = `${String(end.getUTCHours()).padStart(2, '0')}:${String(end.getUTCMinutes()).padStart(2, '0')}`;
+  const startDate = new Date(Date.parse(startAt) + 8 * 60 * 60_000);
+  return startDate.getUTCFullYear() === end.getUTCFullYear() &&
+    startDate.getUTCMonth() === end.getUTCMonth() && startDate.getUTCDate() === end.getUTCDate()
+    ? `${start} – ${endTime}` : `${start} – ${dateLabel(endAt)}`;
+}
+function pickFeaturedItem(items) {
+  const now = Date.now();
+  const available = items.filter(item => item.status === 'IN_PROGRESS' ||
+    (['RECRUITING', 'CONFIRMED'].includes(item.status) && Number.isFinite(Date.parse(item.startAt)) &&
+      Date.parse(item.startAt) >= now));
+  available.sort((a, b) => {
+    if (a.status === 'IN_PROGRESS' && b.status !== 'IN_PROGRESS') return -1;
+    if (b.status === 'IN_PROGRESS' && a.status !== 'IN_PROGRESS') return 1;
+    return Date.parse(a.startAt) - Date.parse(b.startAt);
+  });
+  return available[0] || null;
+}
+function posterWord(title) {
+  if (/羽毛球/.test(title)) return 'BADMINTON TOGETHER';
+  if (/篮球/.test(title)) return 'BASKETBALL TOGETHER';
+  if (/咖啡|创业/.test(title)) return 'COFFEE TALK';
+  if (/桌游/.test(title)) return 'BOARD GAME';
+  if (/骑行/.test(title)) return 'RIDE TOGETHER';
+  if (/徒步/.test(title)) return 'GO OUTSIDE';
+  if (/漫步|City Walk|city walk/i.test(title)) return 'CITY WALK';
+  return 'GOOD PEOPLE · REAL PLANS';
+}
+function withRealDetail(item, event, actor) {
+  if (!event || event.id !== item.id || !event.payload) return item;
+  if (item.isHost && event.hostId !== actor) return item;
+  const payload = event.payload;
+  const confirmed = Number(event.stats?.confirmed);
+  const capacity = Number(payload.maxParticipants);
+  const minParticipants = Number(payload.minParticipants);
+  const canReadExpenses = item.isHost || ['CONFIRMED', 'RECONFIRM_REQUIRED'].includes(item.myRegistrationStatus);
+  const hasAARecordRoute = item.cardKind === 'history' && payload.feeMode === 'AA' && canReadExpenses;
+  const hostCounts = item.isHost && event.stats && Number.isFinite(confirmed) &&
+    Number.isFinite(minParticipants) ? {
+      confirmed, reserved: Number(event.stats.reserved) || 0,
+      requested: Number(event.stats.requested) || 0,
+      gap: Math.max(0, minParticipants - confirmed)
+    } : null;
+  return {
+    ...item,
+    dateRangeLabel: dateRangeLabel(payload.startAt || item.startAt, payload.endAt),
+    venueLabel: [payload.city, payload.venueName].filter(Boolean).join(' · ') || '地点请到活动详情查看',
+    capacityLabel: Number.isFinite(confirmed) && Number.isFinite(capacity) && capacity > 0
+      ? `已确认 ${confirmed} / 上限 ${capacity} 人` : '',
+    hostCounts,
+    feeMode: payload.feeMode || '',
+    secondaryLabel: hasAARecordRoute ? '查看 AA 记录' : item.secondaryLabel,
+    secondaryAction: hasAARecordRoute ? 'expenseSection' : item.secondaryAction,
+    detailLoaded: true
+  };
 }
 function coverFor(title) {
   if (/羽毛球/.test(title)) return '/assets/stitch/caper_home_badminton.jpg';
@@ -54,12 +116,14 @@ function cardPresentation(item, group) {
       INTERESTED: '你已表达兴趣，尚未报名或占用席位。',
       REQUESTED: '报名申请已提交，等待主办方审核。',
       WAITLISTED: '目前仍在候补，尚未获得确认席位。',
-      OFFERED: '有补位邀请待处理；请到详情查看截止时间。',
+      OFFERED: '席位尚未确认；到“我的 > 账号与安全操作 > 站内通知”核对补位有效期。',
       RECONFIRM_REQUIRED: '活动规则已变化，请先核对新版本。'
     };
     return { cardKind: 'pending', cardNote: notes[item.myRegistrationStatus] || '请到活动详情核对当前报名状态。',
-      primaryLabel: item.myRegistrationStatus === 'RECONFIRM_REQUIRED' ? '核对变更' : '查看报名状态',
-      primaryAction: 'registrationSection', secondaryLabel: '查看活动规则', secondaryAction: 'detailsSection' };
+      primaryLabel: item.myRegistrationStatus === 'RECONFIRM_REQUIRED' ? '核对变更' :
+        item.myRegistrationStatus === 'OFFERED' ? '到我的通知处理' : '查看报名状态',
+      primaryAction: item.myRegistrationStatus === 'OFFERED' ? 'offerNotifications' : 'registrationSection',
+      secondaryLabel: '查看活动规则', secondaryAction: 'detailsSection' };
   }
   if (group === 'organized') {
     const notes = {
@@ -78,7 +142,7 @@ function cardPresentation(item, group) {
     const notes = { COMPLETED: '活动已结束；结项与独立反馈请到详情页查看。',
       CANCELLED: '活动已取消；历史记录仍可查看。', EXPIRED: '活动已过期；历史记录仍可查看。' };
     return { cardKind: 'history', cardNote: notes[item.status] || '查看活动历史与当前记录。',
-      primaryLabel: item.status === 'COMPLETED' ? '查看结项与反馈' : '查看活动记录',
+      primaryLabel: item.status === 'COMPLETED' ? (item.isHost ? '查看结项与再约' : '查看结项与反馈') : '查看活动记录',
       primaryAction: 'detailsSection', secondaryLabel: '', secondaryAction: '' };
   }
   return { cardKind: group, cardNote: group === 'cohosting' ? '你是本场协办；权限与任务以活动详情为准。' :
@@ -87,12 +151,13 @@ function cardPresentation(item, group) {
 }
 Page({
   data: { items: [], organized: [], cohosting: [], pending: [], attending: [], history: [],
-    tabs, categoryIdeas, activeTab: 'attending', visibleItems: [], featuredItem: null,
+    tabs, categoryIdeas, activeTab: 'attending', stateView: false, visibleItems: [], featuredItem: null,
     headerPaddingRight: headerPaddingRight(),
     city: '上海', statusBarHeight: typeof wx.getSystemInfoSync === 'function'
       ? wx.getSystemInfoSync().statusBarHeight || 20 : 20,
     loadState: 'IDLE', errorCode: '', tokenInput: '', message: '' },
   async onShow() {
+    this._detailRequestId = (this._detailRequestId || 0) + 1;
     const bar = this.getTabBar && this.getTabBar();
     if (bar) bar.setData({ selected: 0 });
     const savedCity = wx.getStorageSync('irlSelectedCity');
@@ -100,7 +165,7 @@ Page({
     const requestedTab = wx.getStorageSync('irlHomeTabIntent');
     if (tabs.some(tab => tab.key === requestedTab)) {
       wx.removeStorageSync('irlHomeTabIntent');
-      this.setData({ activeTab: requestedTab, visibleItems: this.data[requestedTab] });
+      this.setData({ activeTab: requestedTab, stateView: requestedTab !== 'attending', visibleItems: this.data[requestedTab] });
     }
     const generation = this._loadGeneration = (this._loadGeneration || 0) + 1;
     let identity = currentIdentity();
@@ -128,20 +193,45 @@ Page({
           registrationLabel: registrationLabels[item.myRegistrationStatus] || '',
           cardLabel: registrationLabels[item.myRegistrationStatus] ||
             (group === 'cohosting' ? '协办中' : statusLabels[item.status] || item.status || '状态待确认'),
-          dateLabel: dateLabel(item.startAt), cover: coverFor(item.title || '') };
+          dateLabel: dateLabel(item.startAt), dateRangeLabel: dateLabel(item.startAt),
+          venueLabel: '地点请到活动详情查看', capacityLabel: '', hostCounts: null,
+          posterWord: posterWord(item.title || ''), cover: coverFor(item.title || '') };
       });
       for (const item of items) groups[sectionFor(item)].push(item);
-      const featuredItem = items.find(item => !['DRAFT', 'REVIEW_PENDING'].includes(item.status)) || null;
+      const featuredItem = pickFeaturedItem(items);
       this.setData({ items, ...groups, featuredItem, visibleItems: groups[this.data.activeTab], loadState: 'READY', errorCode: '', message: '' });
+      if (detailedStateTabs.includes(this.data.activeTab))
+        await this.enrichStateCards(this.data.activeTab, identity, generation, this._detailRequestId);
     } catch (error) {
       if (generation === this._loadGeneration && identity === currentIdentity())
         this.setData({ loadState: 'ERROR', errorCode: error.code || '', message: error.message || '活动列表加载失败' });
     }
   },
-  selectTab(event) {
+  async selectTab(event) {
     const key = event.currentTarget.dataset.key;
     if (!tabs.some(tab => tab.key === key)) return;
-    this.setData({ activeTab: key, visibleItems: this.data[key] });
+    const requestId = this._detailRequestId = (this._detailRequestId || 0) + 1;
+    this.setData({ activeTab: key, stateView: key !== 'attending', visibleItems: this.data[key] });
+    if (typeof wx.pageScrollTo === 'function') wx.pageScrollTo({ scrollTop: 0, duration: 0 });
+    if (this.data.loadState === 'READY' && detailedStateTabs.includes(key))
+      await this.enrichStateCards(key, currentIdentity(), this._loadGeneration, requestId);
+  },
+  async enrichStateCards(key, identity, loadGeneration, requestId) {
+    const selected = Array.isArray(this.data[key]) ? this.data[key] : [];
+    const targets = selected.filter(item => !item.detailLoaded).slice(0, stateDetailLimit);
+    if (!targets.length) return;
+    const results = await Promise.all(targets.map(item => api.get('/events/' + encodeURIComponent(item.id))
+      .then(value => ({ value }), () => ({ value: null }))));
+    if (currentIdentity() !== identity || this._loadGeneration !== loadGeneration ||
+      this._detailRequestId !== requestId || this.data.activeTab !== key) return;
+    const enriched = new Map();
+    results.forEach((result, index) => {
+      if (result.value) enriched.set(targets[index].id, withRealDetail(targets[index], result.value, identity));
+    });
+    if (!enriched.size) return;
+    const updatedGroup = selected.map(item => enriched.get(item.id) || item);
+    this.setData({ [key]: updatedGroup, visibleItems: updatedGroup,
+      items: this.data.items.map(item => enriched.get(item.id) || item) });
   },
   goCreate() { wx.switchTab({ url: '/pages/create/create' }); },
   goCity() { wx.navigateTo({ url: '/pages/city/city' }); },
@@ -165,6 +255,11 @@ Page({
     const { id, action } = event.currentTarget.dataset;
     const item = this.data.items.find(candidate => candidate.id === id);
     if (!item || this._shownIdentity !== currentIdentity()) return;
+    if (![item.primaryAction, item.secondaryAction].includes(action)) return;
+    if (action === 'offerNotifications') {
+      if (item.myRegistrationStatus !== 'OFFERED') return;
+      return wx.switchTab({ url: '/pages/me/me' });
+    }
     if (action === 'editDraft') {
       if (!item.isHost || item.status !== 'DRAFT') return;
       wx.removeStorageSync('editEventId');
@@ -172,7 +267,7 @@ Page({
       wx.setStorageSync('editTargetOwner', currentIdentity());
       return wx.switchTab({ url: '/pages/create/create' });
     }
-    if (!['detailsSection', 'registrationSection', 'hostSection'].includes(action)) return;
+    if (!['detailsSection', 'registrationSection', 'hostSection', 'expenseSection'].includes(action)) return;
     if (action === 'hostSection' && !item.isHost) return;
     wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) + '&section=' + action });
   },

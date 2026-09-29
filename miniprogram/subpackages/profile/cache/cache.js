@@ -1,6 +1,6 @@
 const { backToProfile, statusBarHeight } = require('../navigation.js');
 Page({
-  data: { statusBarHeight: 24, storageSize: '', usagePercent: 0, storageState: 'IDLE' },
+  data: { statusBarHeight: 24, storageSize: '', storageLimit: '', usagePercent: 0, storageState: 'IDLE' },
   onLoad() { this.setData({ statusBarHeight: statusBarHeight() }); },
   onShow() { this.refreshStorage(); },
   refreshStorage() {
@@ -8,10 +8,10 @@ Page({
       const info = wx.getStorageInfoSync();
       const size = Number(info.currentSize);
       const limit = Number(info.limitSize);
-      this.setData({ storageSize: Number.isFinite(size) ? (size / 1024).toFixed(2) + ' MB' : '',
-        usagePercent: Number.isFinite(size) && Number.isFinite(limit) && limit > 0
-          ? Math.min(100, Math.max(0, Math.round(size / limit * 100))) : 0, storageState: 'READY' });
-    } catch { this.setData({ storageSize: '', usagePercent: 0, storageState: 'UNAVAILABLE' }); }
+      if (!Number.isFinite(size) || size < 0 || !Number.isFinite(limit) || limit <= 0) throw new Error('invalid storage statistics');
+      this.setData({ storageSize: (size / 1024).toFixed(2) + ' MB', storageLimit: (limit / 1024).toFixed(2) + ' MB',
+        usagePercent: Math.min(100, Math.max(0, Math.round(size / limit * 100))), storageState: 'READY' });
+    } catch { this.setData({ storageSize: '', storageLimit: '', usagePercent: 0, storageState: 'UNAVAILABLE' }); }
   },
   back: backToProfile
 });
