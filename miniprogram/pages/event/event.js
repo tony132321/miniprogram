@@ -132,6 +132,8 @@ Page({
           if (!this.data.id) throw error;
         }
       }
+      if (summary && this.data.id && summary.id !== this.data.id)
+        throw new Error('邀请口令与活动不匹配，请打开对应活动');
       const id = this.data.id || summary?.id;
       if (!id) {
         if (refreshId === this.refreshId) this.setData({ loadState: 'ERROR', message: '邀请或活动不存在' });
@@ -150,6 +152,7 @@ Page({
         try { event = await api.get('/events/' + encodeURIComponent(id)); }
         catch (error) { if (!summary) throw error; }
       }
+      if (!event || event.id !== id) throw new Error('活动信息不匹配，请刷新页面');
       const isHost = event.hostId === actor;
       const cohostCapabilities = Array.isArray(event.cohostCapabilities) ? event.cohostCapabilities : [];
       const canApproveRegistration = isHost || cohostCapabilities.includes('APPROVE_REGISTRATION');
@@ -503,7 +506,7 @@ Page({
   },
   reservationInput(event) { this.setData({ reservationToken: event.detail.value.trim() }); },
   claim() { this.action(`/reservations/${encodeURIComponent(this.data.reservationToken)}/claim`,
-    { expectedEventId: this.data.id }, '已认领预留名额'); },
+    { expectedEventId: this.data.event.id }, '已认领预留名额'); },
   async showCheckInToken() {
     if (this.checkInPageHidden || !this.data.event || (!this.data.isHost && !this.data.canManageCheckins) ||
       !['CONFIRMED', 'IN_PROGRESS'].includes(this.data.event.status)) return;

@@ -516,9 +516,9 @@ test('host reservation occupies capacity but is not a confirmed person before cl
     assert.equal(waiting.status, 'WAITLISTED');
     const before = await db.query<{ n: string }>("SELECT count(*)::text AS n FROM registrations WHERE event_id=$1 AND status='CONFIRMED'", [e.id]);
     assert.equal(before.rows[0]?.n, '3');
-    const claimed = await claimReservation(db, 'friend', reservations[0]!.token, e.version, 'claim');
+    const claimed = await claimReservation(db, 'friend', reservations[0]!.token, e.version, 'claim', e.id);
     assert.equal(claimed.status, 'CONFIRMED');
-    await assert.rejects(() => claimReservation(db, 'other', reservations[0]!.token, e.version, 'claim-other'), { code: 'RESERVATION_UNAVAILABLE' });
+    await assert.rejects(() => claimReservation(db, 'other', reservations[0]!.token, e.version, 'claim-other', e.id), { code: 'RESERVATION_UNAVAILABLE' });
   } finally { await db.close(); }
 });
 
@@ -553,7 +553,7 @@ test('a reservation expiring after validation cannot be claimed at the token upd
         }
       }))
     };
-    await assert.rejects(() => claimReservation(racingDb, 'friend', reservation!.token, e.version, 'reservation-race-claim'),
+    await assert.rejects(() => claimReservation(racingDb, 'friend', reservation!.token, e.version, 'reservation-race-claim', e.id),
       { code: 'RESERVATION_UNAVAILABLE' });
     assert.equal(crossed, true);
     const { rows: held } = await db.query<{ claimed_by: string | null }>('SELECT claimed_by FROM reservations WHERE id=$1', [reservation!.id]);

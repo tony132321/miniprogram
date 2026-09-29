@@ -48,8 +48,9 @@ async function worker(mode: string, args: string[] = [], pauseAt?: string): Prom
   let resolveMarker!: (value: Marker) => void;
   let rejectMarker!: (error: Error) => void;
   const found = new Promise<Marker>((resolve, reject) => { resolveMarker = resolve; rejectMarker = reject; });
-  const exit = new Promise<{ code: number | null; signal: NodeJS.Signals | null }>(resolve => {
-    child.once('exit', (code, signal) => resolve({ code, signal }));
+  // 'exit' can precede the final stdout data event; 'close' waits for the pipes to drain.
+  const closed = new Promise<{ code: number | null; signal: NodeJS.Signals | null }>(resolve => {
+    child.once('close', (code, signal) => resolve({ code, signal }));
   });
   child.once('error', error => rejectMarker(error));
   child.stderr.on('data', chunk => { stderr += String(chunk); });
@@ -70,16 +71,16 @@ async function worker(mode: string, args: string[] = [], pauseAt?: string): Prom
     rejectMarker(new Error(`${mode} worker timed out; stderr=${stderr}`));
   }, 30_000);
   try {
-    const result = await Promise.race([found, exit.then(state => {
+    const result = await Promise.race([found, closed.then(state => {
       if (marker) return marker;
-      throw new Error(`${mode} worker exited before ${pauseAt ?? 'DONE'}: ${JSON.stringify(state)}; stderr=${stderr}; stdout=${stdout}`);
+      throw new Error(`${mode} worker closed before ${pauseAt ?? 'DONE'}: ${JSON.stringify(state)}; stderr=${stderr}; stdout=${stdout}`);
     })]);
     if (pauseAt) {
       assert.equal(child.kill('SIGKILL'), true, 'only the spawned child should be killed');
-      const state = await exit;
+      const state = await closed;
       assert.equal(state.signal, 'SIGKILL');
     } else {
-      const state = await exit;
+      const state = await closed;
       assert.equal(state.code, 0, `${mode} worker failed: ${stderr}`);
     }
     return result;

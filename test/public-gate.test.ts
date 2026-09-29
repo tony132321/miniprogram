@@ -110,7 +110,7 @@ test('closed gate blocks new public recruitment while keeping members and privat
     assert.equal((await getEvent(db, 'member', published.id)).id, published.id);
     await assert.rejects(() => register(db, 'newcomer', published.id, published.version, 'new-join', null), { code: 'PUBLIC_RECRUITMENT_PAUSED' });
     await assert.rejects(() => reserveSeats(db, 'host', published.id, published.version, 1, 'public-reserve'), { code: 'PUBLIC_RECRUITMENT_PAUSED' });
-    await assert.rejects(() => claimReservation(db, 'reserved-person', reserved[0]!.token, published.version, 'claim-closed'),
+    await assert.rejects(() => claimReservation(db, 'reserved-person', reserved[0]!.token, published.version, 'claim-closed', published.id),
       { code: 'PUBLIC_RECRUITMENT_PAUSED' });
     await assert.rejects(() => approveRegistration(db, 'host', member.id, published.version, 'approve-closed'),
       { code: 'PUBLIC_RECRUITMENT_PAUSED' });

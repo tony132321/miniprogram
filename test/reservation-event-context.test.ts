@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
+import { once } from 'node:events';
 import { test } from 'node:test';
 import { createDatabase } from '../src/db.ts';
 import { createDraft } from '../src/events.ts';
 import { claimReservation, reserveSeats } from '../src/registrations.ts';
+import { createApp } from '../src/server.ts';
 import { publishApprovedInvite } from './helpers.ts';
 
 const input = {
@@ -25,6 +27,24 @@ test('a reservation token from another event cannot be claimed through the curre
     assert.equal(first.version, second.version);
     const [reservation] = await reserveSeats(db, 'host', second.id, second.version, 1, 'reservation-context-reserve-b');
     assert.ok(reservation);
+
+    const app = createApp(db, { environment: 'development', devAuth: true, checkInSecret: 'test-secret' });
+    app.listen(0, '127.0.0.1');
+    await once(app, 'listening');
+    try {
+      const address = app.address();
+      if (!address || typeof address === 'string') throw new Error('No server address');
+      const response = await fetch(`http://127.0.0.1:${address.port}/reservations/${reservation.token}/claim`, {
+        method: 'POST',
+        headers: { 'X-Dev-User': 'friend', 'Content-Type': 'application/json',
+          'Idempotency-Key': 'reservation-context-missing-event' },
+        body: JSON.stringify({ expectedVersion: first.version })
+      });
+      assert.equal(response.status, 400);
+      assert.equal((await response.json() as { code: string }).code, 'BAD_REQUEST');
+    } finally { await new Promise<void>(resolve => app.close(() => resolve())); }
+    const missingContext = await db.query<{ claimed_by: string | null }>('SELECT claimed_by FROM reservations WHERE token=$1', [reservation.token]);
+    assert.equal(missingContext.rows[0]?.claimed_by, null);
 
     await assert.rejects(
       () => claimReservation(db, 'friend', reservation.token, first.version, 'reservation-context-wrong-page', first.id),

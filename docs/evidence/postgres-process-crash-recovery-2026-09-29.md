@@ -26,3 +26,5 @@ pnpm typecheck
 ```
 
 `.github/workflows/r1-ci.yml` 新增独立 `postgres-process-crash` 作业，提交后需以远端 CI 结果确认。这个演练使用合成适配器和人为拨动**测试库**租约，不证明真实微信消息送达，也不证明生产部署故障恢复时间、多实例网络分区或目标环境的恢复操作；这些仍需真实资源和运行环境验收。
+
+独立审查发现测试子进程可能先发出 `exit`，随后 stdout 管道才交付最后一行阶段标记。脚本已改为在 `close`（管道排空）后判断标记缺失，并等待同一事件核验退出状态。本机 PostgreSQL 18.6 崩溃恢复脚本、类型检查及差异检查在该修复后通过；[远端 run 58](https://github.com/tony132321/miniprogram/actions/runs/36552979442) 的五个作业（含 `postgres-process-crash`）在修复前候选全部通过，当前修复仍需以新提交的 CI 为准。

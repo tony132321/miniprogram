@@ -8,11 +8,12 @@ const require = createRequire(import.meta.url);
 const source = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
 const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
 
-function pageWithApi(post: (path: string, body: Record<string, unknown>) => Promise<unknown>) {
+function pageWithApi(post: (path: string, body: Record<string, unknown>) => Promise<unknown>,
+  get?: (path: string) => Promise<unknown>) {
   let page: Record<string, any> | undefined;
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { post } };
+      if (path === '../../utils/api.js') return { api: { post, get } };
       if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
       if (path === '../../config.js') return { developmentUser: 'friend' };
       throw new Error(`unexpected require ${path}`);
@@ -38,12 +39,27 @@ test('reservation claim submits the event displayed on the page', async () => {
   const calls: Array<{ path: string; body: Record<string, unknown> }> = [];
   const page = pageWithApi(async (path, body) => { calls.push({ path, body }); return { eventId: 'event-a', status: 'CONFIRMED' }; });
   page.refresh = async () => true;
-  page.setData({ id: 'event-a', reservationToken: 'token-b', event: { id: 'event-a', version: 4 } });
+  page.setData({ id: 'event-b', reservationToken: 'token-b', event: { id: 'event-a', version: 4 } });
   await page.claim();
   assert.equal(calls.length, 1);
   assert.equal(calls[0]?.path, '/reservations/token-b/claim');
   assert.equal(calls[0]?.body.expectedVersion, 4);
   assert.equal(calls[0]?.body.expectedEventId, 'event-a');
+});
+
+test('an invite token cannot display another event under the URL event ID', async () => {
+  const paths: string[] = [];
+  const page = pageWithApi(async () => { throw new Error('unexpected mutation'); }, async path => {
+    paths.push(path);
+    if (path === '/i/invite-b') return { id: 'event-b', version: 4, payload: { visibility: 'INVITE_ONLY' } };
+    throw new Error(`unexpected GET ${path}`);
+  });
+  page.setData({ id: 'event-a', token: 'invite-b' });
+  assert.equal(await page.refresh(), false);
+  assert.deepEqual(paths, ['/i/invite-b']);
+  assert.equal(page.data.loadState, 'ERROR');
+  assert.equal(page.data.event, null);
+  assert.match(page.data.message, /邀请口令.*活动不匹配/);
 });
 
 test('terminal event and free activity controls cannot invite an action the server rejects', () => {

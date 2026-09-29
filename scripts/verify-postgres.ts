@@ -595,7 +595,7 @@ try {
   assert.equal(reservationWaiting.status, 'WAITLISTED');
   await first.query("UPDATE reservations SET expires_at=clock_timestamp()-interval '1 second' WHERE id=$1", [reservation.id]);
   const [lateClaim, reservationExpiry] = await Promise.allSettled([
-    claimReservation(first, 'pg_reservation_friend', reservation.token, reservationEvent.version, 'pg-reservation-race-claim'),
+    claimReservation(first, 'pg_reservation_friend', reservation.token, reservationEvent.version, 'pg-reservation-race-claim', reservationEvent.id),
     expireReservations(second)]);
   assert.equal(lateClaim.status, 'rejected');
   assert.equal((lateClaim as PromiseRejectedResult).reason?.code, 'RESERVATION_UNAVAILABLE');
@@ -625,7 +625,7 @@ try {
     } }))
   };
   await assert.rejects(() => claimReservation(crossingReservationDb, 'pg_write_reservation_friend',
-    writeReservation.token, writeReservationEvent.version, 'pg-write-reservation-claim'),
+    writeReservation.token, writeReservationEvent.version, 'pg-write-reservation-claim', writeReservationEvent.id),
   { code: 'RESERVATION_UNAVAILABLE' });
   assert.equal(reservationCrossedAtWrite, true);
   assert.equal((await first.query<{ claimed_by: string | null }>('SELECT claimed_by FROM reservations WHERE id=$1',

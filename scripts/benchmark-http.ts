@@ -6,6 +6,7 @@ import { createProductionDatabase } from '../src/db.ts';
 import { loginWithWechat } from '../src/auth.ts';
 import { createDraft, publishEvent } from '../src/events.ts';
 import { reviewEvent } from '../src/event-review.ts';
+import { confirmPublicCoverage, createPublicCoverage, setPublicGate } from '../src/public-gate.ts';
 import { createApp } from '../src/server.ts';
 import { assertEmptyPostgresTestDatabase, validatePostgresTestUrl } from './verify-postgres-guard.ts';
 
@@ -19,7 +20,8 @@ finally { await probe.end(); }
 const db = await createProductionDatabase(url);
 let app: ReturnType<typeof createApp> | undefined;
 try {
-  const start = Date.now() + 7 * 24 * 60 * 60_000;
+  const now = Date.now();
+  const start = now + 4 * 60 * 60_000;
   const input = {
     title: '本机负载测试活动', type: 'badminton', startAt: new Date(start).toISOString(),
     endAt: new Date(start + 2 * 60 * 60_000).toISOString(), timeZone: 'Asia/Shanghai', city: '深圳',
@@ -30,6 +32,13 @@ try {
   };
   const identities = await Promise.all(Array.from({ length: 20 }, (_, i) =>
     loginWithWechat(db, async () => ({ openid: `benchmark-user-${i}` }), `benchmark-code-${i}`)));
+  const duty = await createPublicCoverage(db, 'operator:benchmark-duty',
+    new Date(now - 5 * 60_000).toISOString(), new Date(start + 3 * 60 * 60_000).toISOString(),
+    'local-benchmark-emergency-drill', new Date(now - 60_000).toISOString(), 'benchmark-coverage');
+  await confirmPublicCoverage(db, 'operator:benchmark-review', duty.id,
+    '本机压测合成值守复核', 'benchmark-coverage-confirm');
+  await setPublicGate(db, 'operator:benchmark-gate', 'OPEN', '仅本机隔离压测开放',
+    'benchmark-open', duty.id);
   const draft = await createDraft(db, identities[0]!.userId, input, 'benchmark-event');
   const published = await publishEvent(db, identities[0]!.userId, draft.id, draft.version, 'benchmark-publish');
   await reviewEvent(db, 'operator:benchmark', published.id, published.version,

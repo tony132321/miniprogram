@@ -108,7 +108,7 @@ test('missing reservation token returns 404 with a redacted denial audit', async
     const response = await fetch(f.base + '/reservations/nonexistent-private-token/claim', {
       method: 'POST', headers: { 'X-Dev-User': 'outsider', 'Content-Type': 'application/json',
         'Idempotency-Key': 'missing-reservation-audit' },
-      body: JSON.stringify({ expectedVersion: 1 })
+      body: JSON.stringify({ expectedVersion: 1, expectedEventId: 'nonexistent-event' })
     });
     assert.equal(response.status, 404);
     const rows = (await f.db.query<{ detail: Record<string, unknown> }>(

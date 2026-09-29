@@ -254,12 +254,14 @@ export async function reserveSeats(db: Database, actor: string, eventId: string,
 }
 
 export async function claimReservation(db: Database, actor: string, token: string, expectedVersion: number, key: string,
-  expectedEventId?: string): Promise<Registration> {
+  expectedEventId: string): Promise<Registration> {
+  if (typeof expectedEventId !== 'string' || !expectedEventId.trim())
+    throw new AppError('BAD_REQUEST', 'expectedEventId 必须为活动 ID');
   const result = await command(db, actor, `claim-reservation:${token}`, key, async tx => {
     const { rows: found } = await tx.query<Reservation>('SELECT * FROM reservations WHERE token=$1', [token]);
     const initial = found[0];
     if (!initial) throw new AppError('RESERVATION_UNAVAILABLE', '预留不存在或不可用', 404);
-    if (expectedEventId !== undefined && initial.event_id !== expectedEventId)
+    if (initial.event_id !== expectedEventId)
       throw new AppError('RESERVATION_EVENT_MISMATCH', '此认领口令属于另一场活动，请在对应活动中打开', 409);
     const event = await lockEvent(tx, initial.event_id, expectedVersion);
     await assertEventNotHeld(tx, event.id);
@@ -282,7 +284,7 @@ export async function claimReservation(db: Database, actor: string, token: strin
     await audit(tx, actor, event.id, 'CLAIM_RESERVATION');
     return convert(result.rows[0]!);
   });
-  if (expectedEventId !== undefined && result.eventId !== expectedEventId)
+  if (result.eventId !== expectedEventId)
     throw new AppError('RESERVATION_EVENT_MISMATCH', '此认领口令属于另一场活动，请在对应活动中打开', 409);
   return result;
 }
