@@ -33,10 +33,12 @@ function eventDisplay(event) {
       COMPLETED: '已结束', CANCELLED: '已取消', EXPIRED: '未成局' }[event.status] || event.status || '状态待确认'
   };
 }
-function sectionAvailable(section, isHost, canApproveRegistration) {
+function sectionAvailable(section, isHost, canApproveRegistration, canManageAnnouncements, canManageCheckins) {
   return ['detailsSection', 'registrationSection', 'contentSection', 'checkinSection', 'expenseSection'].includes(section) ||
     (section === 'hostSection' && isHost) ||
-    (section === 'cohostApprovalSection' && !isHost && canApproveRegistration);
+    (section === 'cohostApprovalSection' && !isHost && canApproveRegistration) ||
+    (section === 'cohostContentSection' && !isHost && canManageAnnouncements) ||
+    (section === 'cohostCheckinSection' && !isHost && canManageCheckins);
 }
 Page({
   data: { id: '', token: '', source: '', activeSection: 'detailsSection', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '',
@@ -63,7 +65,8 @@ Page({
       this.data.event?.id === options.id && this.data.event.status === 'RECRUITING')
       this.setData({ successState: 'PUBLISHED' });
     if (loaded && this.data.loadState === 'READY' &&
-      sectionAvailable(options.section, this.data.isHost, this.data.canApproveRegistration)) {
+      sectionAvailable(options.section, this.data.isHost, this.data.canApproveRegistration,
+        this.data.canManageAnnouncements, this.data.canManageCheckins)) {
       if (typeof wx.nextTick === 'function') await new Promise(resolve => wx.nextTick(resolve));
       this.scrollToSection(options.section);
     }
@@ -297,7 +300,8 @@ Page({
   goToMyActivities() { wx.switchTab({ url: '/pages/index/index' }); },
   jumpToSection(event) {
     const id = event.currentTarget.dataset.section;
-    if (sectionAvailable(id, this.data.isHost, this.data.canApproveRegistration))
+    if (sectionAvailable(id, this.data.isHost, this.data.canApproveRegistration,
+      this.data.canManageAnnouncements, this.data.canManageCheckins))
       this.scrollToSection(id);
   },
   scrollToSection(id) {

@@ -1102,6 +1102,9 @@ test('activity list distinguishes load failure from empty results and retries in
     { id: 'host', status: 'RECRUITING', title: '我组织', isHost: true },
     { id: 'pending', status: 'RECRUITING', title: '待确认', isHost: false, myRegistrationStatus: 'OFFERED' },
     { id: 'joined', status: 'CONFIRMED', title: '即将参加', isHost: false, myRegistrationStatus: 'CONFIRMED' },
+    { id: 'cohost-only', status: 'RECRUITING', title: '仅协办', isHost: false, isCohost: true, myRegistrationStatus: null },
+    { id: 'cohost-joined', status: 'CONFIRMED', title: '协办且参加', isHost: false, isCohost: true, myRegistrationStatus: 'CONFIRMED' },
+    { id: 'cohost-pending', status: 'RECRUITING', title: '协办待确认', isHost: false, isCohost: true, myRegistrationStatus: 'OFFERED' },
     { id: 'past', status: 'COMPLETED', title: '历史', isHost: false, myRegistrationStatus: 'CONFIRMED' }
   ];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/index/index.js', import.meta.url), 'utf8'), {
@@ -1126,11 +1129,18 @@ test('activity list distinguishes load failure from empty results and retries in
   await page.retry();
   assert.equal(page.data.loadState, 'READY');
   assert.equal(page.data.organized.map((item: { id: string }) => item.id).join(','), 'host');
-  assert.equal(page.data.pending.map((item: { id: string }) => item.id).join(','), 'pending');
+  assert.equal(page.data.pending.map((item: { id: string }) => item.id).join(','), 'pending,cohost-pending');
   assert.equal(page.data.pending[0].registrationLabel, '待接受补位');
-  assert.equal(page.data.attending.map((item: { id: string }) => item.id).join(','), 'joined');
+  assert.equal(page.data.attending.map((item: { id: string }) => item.id).join(','), 'joined,cohost-joined');
+  assert.equal(page.data.cohosting.map((item: { id: string }) => item.id).join(','), 'cohost-only');
+  assert.equal(page.data.cohosting[0].cardLabel, '协办中');
+  assert.equal(page.data.attending[1].cardLabel, '已报名');
+  page.selectTab({ currentTarget: { dataset: { key: 'cohosting' } } });
+  assert.equal(page.data.visibleItems[0]?.id, 'cohost-only');
   assert.equal(page.data.history.map((item: { id: string }) => item.id).join(','), 'past');
   const wxml = readFileSync(new URL('../miniprogram/pages/index/index.wxml', import.meta.url), 'utf8');
+  assert.match(wxml, /data-key="cohosting"[^>]*>协办/);
+  assert.match(wxml, /item\.isCohost\s*\?\s*'你是协办方/);
   assert.match(wxml, /loadState === 'ERROR'.*重试/s);
   assert.match(wxml, /loadState === 'READY' && items.length === 0/);
 });

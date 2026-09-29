@@ -1,0 +1,14 @@
+# Stitch R1 安全入口、内容申诉与协办撤权点击回归（2026-09-29）
+
+本轮只使用独立合成环境：当前工作树的 `miniprogram/` 拷贝在 `/private/tmp/irl-r1-gap-20260929`，`diff -qr --exclude=config.js` 退出码 0；副本 `config.js` 仅把 API 指向 `127.0.0.1:3031`。独立 PGlite 位于该临时目录的 `db`，微信开发者工具 36.6.0 CLI `auto` 使用端口 `9451` 和测试 AppID `wxbbcab69099026d3f`。`DEV_AUTH=1`、合成运营身份 `gap_ops`，没有使用正式微信资源。活动 `084f63ed-5fab-4db2-83da-84465c142e2e` 通过业务 API 建草稿、发布、运营审核和成员报名，未直接写数据库。除明确注明的运营审核与弹窗确认模拟外，下述业务按钮均由 `miniprogram-automator` 在小程序模拟器实际点击，随后按身份调用 API 回读。
+
+| 场景 | 小程序操作与服务端结果 | 可见截图 |
+| --- | --- | --- |
+| 活动安全入口和手动复制 | 已确认成员在活动详情点击“复制活动信息给可信任的人”，模拟器真实剪贴板回读含活动标题、合成场馆、活动 ID；不含邀请口令和该成员身份。随后点击“举报与求助”，进入 `pages/me/me`，举报表单自动带入本活动 ID。复制只代表本人取得文本，并无对外发送。 | [活动页两个入口](screenshots/stitch-r1-2026-09-29/safety-entry-clickpath.png)、[复制成功提示](screenshots/stitch-r1-2026-09-29/safety-copy-confirmed.png) |
+| 举报提交与跨身份隔离 | 成员在“我的”页输入合成说明并点击“提交举报工单”；`GET /me/reports` 回读工单 `389b3d2e-8b62-407b-b3ab-6b453166a15f`，`status=OPEN`、`event_id` 等于本活动。保持同一小程序运行，切换到另一个合成开发身份再返回“我的”页，`reportEventId` 清空，页面举报列表与该身份的 `/me/reports` 均为空。 | [成员工单](screenshots/stitch-r1-2026-09-29/safety-report-created.png)、[另一身份空态](screenshots/stitch-r1-2026-09-29/safety-report-cross-identity.png) |
+| PG07 被驳回内容申诉 | 成员实际点击“提交问题”，作者的 `/events/:id/content` 回读问题 `4a4ffa68-3d26-47b2-a4b6-ef77dc031894` 为 `PENDING_REVIEW`。合成运营身份通过审核 API 填理由驳回后，作者页显示 `REJECTED` 和原因；作者点击“到我的页面申请复核”，输入说明再点击“就此内容申请复核”。`GET /me/appeals` 回读申诉 `1c596e99-8c7b-4878-9fa6-917ee9374aab`，关联该问题、`status=OPEN`。 | [作者看到原因和入口](screenshots/stitch-r1-2026-09-29/content-rejected-appeal-entry.png)、[申诉已打开](screenshots/stitch-r1-2026-09-29/content-appeal-open.png) |
+| PG06 当前 UI 授予与撤回协办 | 主办在 Stitch“主办工作台”输入未报名合成身份 `gap_cohost_20260929`，实际点击“授予本场协办权限”；主办 `/events/:id/cohosts` 回读授权 `e294cce9-1aac-4aff-8bd7-f74e75eb8237` 为 `ACTIVE`，能力仅 `CHECKIN_MANAGE`。协办打开活动，可见“协办签到”页签，完整活动接口回读同一能力。主办再实际点击“撤回此授权”，隔离自动化只在该次弹窗注入确认回调；授权回读 `REVOKED`。原协办身份重新打开活动后，`canManageCheckins=false`、协办页签消失、完整活动 GET 返回 403，`/me/events` 不再将其列为协办；邀请摘要仍可见。 | [授予后的工作台](screenshots/stitch-r1-2026-09-29/cohost-granted-current-ui.png)、[授权前协办签到区](screenshots/stitch-r1-2026-09-29/cohost-before-revoke.png)、[主办撤回后状态](screenshots/stitch-r1-2026-09-29/cohost-revoked-current-ui.png)、[协办失权后页签](screenshots/stitch-r1-2026-09-29/cohost-access-lost.png) |
+
+执行记录：独立端口 `3031`、`9451` 启动前均无监听；`cli auto --project /private/tmp/irl-r1-gap-20260929 --auto-port 9451 --trust-project` 退出码 0。`seed.cjs` 首次用不符合现有规则的 `minParticipants=2` 被 API `INVALID_EVENT` 拒绝，退出码 1；改为 4 后退出码 0。`safety-e2e.cjs`、`appeal-e2e.cjs`、`cohost-e2e.cjs` 退出码均为 0。三组截图已目视检查目标内容可见；一次额外的截图重拍一行命令因 shell 对 `$` 的展开而退出 1，没有调用业务动作，已采用成功的原截图和另一次退出码 0 的滚动截图。验收后关闭本轮 API 和 DevTools 隔离副本，并核对端口。
+
+本轮未发现产品功能缺陷。限制：举报是合成工单，不代表真人运营响应或安全救援；剪贴板未实际发给联系人。内容驳回由合成运营 API 执行，未点运营网页或验证独立人员最终裁决。协办撤权按钮本身已点击，但 DevTools 自动化以回调模拟原生确认弹窗，未验证真机手指确认。正式 AppID、HTTPS 合法域名、真机、订阅消息与三场受控真人活动仍待独立验收。

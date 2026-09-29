@@ -9,6 +9,8 @@ function sectionFor(item) {
   if (['COMPLETED', 'CANCELLED', 'EXPIRED'].includes(item.status)) return 'history';
   if (item.isHost) return 'organized';
   if (['INTERESTED', 'REQUESTED', 'WAITLISTED', 'OFFERED', 'RECONFIRM_REQUIRED'].includes(item.myRegistrationStatus)) return 'pending';
+  if (item.myRegistrationStatus === 'CONFIRMED') return 'attending';
+  if (item.isCohost) return 'cohosting';
   return 'attending';
 }
 const statusLabels = { DRAFT: '草稿', REVIEW_PENDING: '待审核', RECRUITING: '招募中', CONFIRMED: '已成局',
@@ -17,7 +19,7 @@ const registrationLabels = { INTERESTED: '待决定', REQUESTED: '待主办审�
   OFFERED: '待接受补位', CONFIRMED: '已报名', RECONFIRM_REQUIRED: '待重新确认' };
 const tabs = [
   { key: 'attending', label: '即将参加' }, { key: 'pending', label: '待确认' },
-  { key: 'organized', label: '我组织的' }, { key: 'history', label: '历史' }
+  { key: 'organized', label: '我组织的' }, { key: 'cohosting', label: '协办' }, { key: 'history', label: '历史' }
 ];
 function dateLabel(value) {
   if (!value || Number.isNaN(Date.parse(value))) return '时间待定';
@@ -32,7 +34,7 @@ function coverFor(title) {
   return '/assets/stitch/high_quality_lifestyle_photo.jpg';
 }
 Page({
-  data: { items: [], organized: [], pending: [], attending: [], history: [],
+  data: { items: [], organized: [], cohosting: [], pending: [], attending: [], history: [],
     tabs, activeTab: 'attending', visibleItems: [],
     loadState: 'IDLE', errorCode: '', tokenInput: '', message: '' },
   async onShow() {
@@ -40,7 +42,7 @@ Page({
     let identity = currentIdentity();
     if (this._shownIdentity !== identity) {
       this._shownIdentity = identity;
-      this.setData({ items: [], organized: [], pending: [], attending: [], history: [], visibleItems: [], message: '' });
+      this.setData({ items: [], organized: [], cohosting: [], pending: [], attending: [], history: [], visibleItems: [], message: '' });
     }
     this.setData({ loadState: 'LOADING', errorCode: '', message: '' });
     try {
@@ -50,14 +52,16 @@ Page({
       if (identity !== authenticatedIdentity) {
         identity = authenticatedIdentity;
         this._shownIdentity = identity;
-        this.setData({ items: [], organized: [], pending: [], attending: [], history: [], visibleItems: [], message: '' });
+        this.setData({ items: [], organized: [], cohosting: [], pending: [], attending: [], history: [], visibleItems: [], message: '' });
       }
       const result = await api.get('/me/events');
       if (generation !== this._loadGeneration || identity !== currentIdentity()) return;
       if (!Array.isArray(result.items)) throw new Error('活动列表无效，请重试');
-      const groups = { organized: [], pending: [], attending: [], history: [] };
+      const groups = { organized: [], cohosting: [], pending: [], attending: [], history: [] };
       const items = result.items.map(item => ({ ...item, statusLabel: statusLabels[item.status] || item.status || '状态待确认',
         registrationLabel: registrationLabels[item.myRegistrationStatus] || '',
+        cardLabel: registrationLabels[item.myRegistrationStatus] ||
+          (sectionFor(item) === 'cohosting' ? '协办中' : statusLabels[item.status] || item.status || '状态待确认'),
         dateLabel: dateLabel(item.startAt), cover: coverFor(item.title || '') }));
       for (const item of items) groups[sectionFor(item)].push(item);
       this.setData({ items, ...groups, visibleItems: groups[this.data.activeTab], loadState: 'READY', errorCode: '', message: '' });

@@ -7,7 +7,8 @@ page { background: #faf8fe; color: #171923; }
 .hero-title { font-size: 31rpx; font-weight: 800; }
 .hero-title text { color: #d3ff08; }
 .hero-subtitle { font-size: 23rpx; opacity: .9; margin-top: 5rpx; }
-.tabs { display: flex; white-space: nowrap; overflow-x: auto; margin: 34rpx -32rpx 30rpx; width: calc(100% + 64rpx); padding-left: 32rpx; box-sizing: border-box; }
+.tabs { white-space: nowrap; margin: 34rpx -32rpx 30rpx; width: calc(100% + 64rpx); box-sizing: border-box; }
+.tab-row { display: flex; width: max-content; padding: 0 32rpx; box-sizing: border-box; }
 .tab { display: inline-flex; align-items: center; gap: 10rpx; background: #efedf2; border-radius: 48rpx; padding: 17rpx 27rpx; margin-right: 12rpx; color: #454654; font-size: 26rpx; font-weight: 650; }
 .tab::after { border: 0; }
 .tab text { border-radius: 30rpx; background: rgba(0,0,0,.05); padding: 0 11rpx; font-size: 21rpx; }

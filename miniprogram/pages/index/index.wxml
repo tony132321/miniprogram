@@ -1,11 +1,12 @@
 <view class="home-page">
   <button class="hero" bindtap="goCreate"><view class="hero-icon">✧</view><view class="hero-copy"><view class="hero-title">想组什么局？一句话开始 <text>→</text></view><view class="hero-subtitle">AI 帮你梳理活动想法，内容由你确认发布</view></view></button>
-  <view class="tabs">
+  <scroll-view scroll-x="true" class="tabs"><view class="tab-row">
     <button class="tab {{activeTab === 'attending' ? 'selected' : ''}}" data-key="attending" bindtap="selectTab">即将参加 <text>{{attending.length}}</text></button>
     <button class="tab {{activeTab === 'pending' ? 'selected' : ''}}" data-key="pending" bindtap="selectTab">待确认 <text>{{pending.length}}</text></button>
     <button class="tab {{activeTab === 'organized' ? 'selected' : ''}}" data-key="organized" bindtap="selectTab">我组织的 <text>{{organized.length}}</text></button>
+    <button class="tab {{activeTab === 'cohosting' ? 'selected' : ''}}" data-key="cohosting" bindtap="selectTab">协办 <text>{{cohosting.length}}</text></button>
     <button class="tab {{activeTab === 'history' ? 'selected' : ''}}" data-key="history" bindtap="selectTab">历史 <text>{{history.length}}</text></button>
-  </view>
+  </view></scroll-view>
   <view wx:if="{{loadState === 'LOADING'}}" class="state-card">正在加载我的活动…</view>
   <view wx:if="{{loadState === 'ERROR'}}" class="state-card error">{{message}} <button class="retry" bindtap="retry">{{errorCode === 'UNAUTHENTICATED' ? '微信登录' : '重试'}}</button></view>
   <view wx:if="{{loadState === 'READY' && items.length === 0}}" class="state-card muted">暂无活动。可从邀请进入或发起真实活动。</view>
@@ -13,7 +14,7 @@
   <view wx:if="{{loadState === 'READY'}}" class="cards">
     <button wx:for="{{visibleItems}}" wx:key="id" class="event-card" data-id="{{item.id}}" bindtap="openEvent">
       <view class="cover-wrap"><image class="cover" src="{{item.cover}}" mode="aspectFill" /><view class="cover-tint"></view><view class="cover-status">{{item.statusLabel}}</view><view class="cover-title">{{item.title || '未命名草稿'}}</view></view>
-      <view class="card-body"><view class="card-heading"><text class="card-title">{{item.title || '未命名草稿'}}</text><text class="pill">{{item.registrationLabel || item.statusLabel}}</text></view><view class="card-meta">▣　{{item.dateLabel}}</view><view class="card-note">{{item.isHost ? '你是主办方 · 点开查看活动详情' : '点开查看活动详情与最新安排'}}</view><view class="card-action">查看活动 <text>→</text></view></view>
+      <view class="card-body"><view class="card-heading"><text class="card-title">{{item.title || '未命名草稿'}}</text><text class="pill">{{item.cardLabel}}</text></view><view class="card-meta">▣　{{item.dateLabel}}</view><view class="card-note">{{item.isHost ? '你是主办方 · 点开查看活动详情' : item.isCohost ? '你是协办方 · 点开查看本场权限与安排' : '点开查看活动详情与最新安排'}}</view><view class="card-action">查看活动 <text>→</text></view></view>
     </button>
   </view>
   <view class="invite-panel"><view class="invite-title">收到邀请？</view><view class="invite-row"><input placeholder="输入邀请口令" value="{{tokenInput}}" bindinput="tokenChanged" /><button bindtap="openInvite">打开邀请</button></view><view wx:if="{{message}}" class="invite-message">{{message}}</view></view>

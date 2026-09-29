@@ -107,6 +107,19 @@ test('event deep link scrolls only to a loaded and authorized section', async ()
   page.refresh = async function () { this.setData({ loadState: 'READY', isHost: false, canApproveRegistration: true }); return true; };
   await page.onLoad({ id: 'event-1', section: 'cohostApprovalSection' });
   assert.deepEqual(scrolls, ['#cohostApprovalSection']);
+  assert.equal(page.data.activeSection, 'cohostApprovalSection');
+  scrolls.length = 0;
+  page.refresh = async function () { this.setData({ loadState: 'READY', isHost: false,
+    canApproveRegistration: false, canManageAnnouncements: true }); return true; };
+  await page.onLoad({ id: 'event-1', section: 'cohostContentSection' });
+  assert.deepEqual(scrolls, ['#cohostContentSection']);
+  assert.equal(page.data.activeSection, 'cohostContentSection');
+  scrolls.length = 0;
+  page.refresh = async function () { this.setData({ loadState: 'READY', isHost: false,
+    canManageAnnouncements: false, canManageCheckins: true }); return true; };
+  await page.onLoad({ id: 'event-1', section: 'cohostCheckinSection' });
+  assert.deepEqual(scrolls, ['#cohostCheckinSection']);
+  assert.equal(page.data.activeSection, 'cohostCheckinSection');
   scrolls.length = 0;
   page.refresh = async function () { this.setData({ loadState: 'READY', isHost: true }); return true; };
   await page.onLoad({ id: 'event-1', section: 'hostSection' });
@@ -117,4 +130,11 @@ test('event deep link scrolls only to a loaded and authorized section', async ()
   assert.deepEqual(scrolls, []);
   await page.onLoad({ id: 'event-1', section: 'nonexistent' });
   assert.deepEqual(scrolls, []);
+});
+
+test('cohost workbench sections have guarded top navigation and card layout', () => {
+  for (const section of ['cohostApprovalSection', 'cohostContentSection', 'cohostCheckinSection']) {
+    assert.match(eventMarkup, new RegExp(`data-section="${section}"[^>]*bindtap="jumpToSection"`));
+    assert.match(eventMarkup, new RegExp(`id="${section}"[^>]*class="event-section`));
+  }
 });
