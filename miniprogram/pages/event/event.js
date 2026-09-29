@@ -16,6 +16,22 @@ function yuanFromFen(fen) {
   if (!Number.isSafeInteger(fen) || fen < 0) return '金额待核对';
   return `¥${Math.floor(fen / 100)}.${String(fen % 100).padStart(2, '0')}`;
 }
+function visibleExpenseShares(ledger) {
+  const shares = ledger.sortByAmount
+    ? ledger.shares.map((share, index) => ({ share, index }))
+      .sort((a, b) => b.share.amountFen - a.share.amountFen || a.index - b.index)
+      .map(item => item.share)
+    : ledger.shares;
+  return ledger.membersExpanded ? shares : shares.slice(0, 4);
+}
+function changeExpenseLedger(page, ledgerId, changes) {
+  if (page.data.expenseLoadState !== 'READY' || typeof ledgerId !== 'string') return;
+  const index = page.data.expenses.findIndex(item => item.id === ledgerId);
+  if (index < 0) return;
+  const updated = { ...page.data.expenses[index], ...changes };
+  updated.visibleShares = visibleExpenseShares(updated);
+  page.setData({ expenses: page.data.expenses.map((item, position) => position === index ? updated : item) });
+}
 function eventDisplay(event) {
   const payload = event.payload || {};
   const title = payload.title || event.title || '未命名活动';
@@ -238,8 +254,11 @@ Page({
       if (canReadExpenses) try {
         const response = await api.get(`/events/${encodeURIComponent(id)}/expenses`);
         if (!Array.isArray(response.items)) throw new Error('费用记录无效，请重试');
-        expenses = response.items.map(ledger => ({ ...ledger, totalYuan: yuanFromFen(ledger.totalFen),
-          shares: (ledger.shares || []).map(share => ({ ...share, amountYuan: yuanFromFen(share.amountFen) })) }));
+        expenses = response.items.map(ledger => {
+          const shares = (ledger.shares || []).map(share => ({ ...share, amountYuan: yuanFromFen(share.amountFen) }));
+          return { ...ledger, totalYuan: yuanFromFen(ledger.totalFen), shares,
+            visibleShares: shares.slice(0, 4), membersExpanded: false, detailsOpen: false, sortByAmount: false };
+        });
         expenseLoadState = expenses.length ? 'READY' : 'EMPTY';
       } catch (error) {
         expenseLoadState = error.code === 'FORBIDDEN' ? 'FORBIDDEN' : 'ERROR';
@@ -656,6 +675,21 @@ Page({
     wx.switchTab({ url: '/pages/create/create' });
   },
   yuanInput(event) { this.setData({ totalYuan: event.detail.value }); },
+  toggleExpenseDetails(event) {
+    const ledgerId = event?.currentTarget?.dataset?.ledger;
+    const ledger = this.data.expenses.find(item => item.id === ledgerId);
+    if (ledger) changeExpenseLedger(this, ledgerId, { detailsOpen: !ledger.detailsOpen });
+  },
+  toggleExpenseMembers(event) {
+    const ledgerId = event?.currentTarget?.dataset?.ledger;
+    const ledger = this.data.expenses.find(item => item.id === ledgerId);
+    if (ledger) changeExpenseLedger(this, ledgerId, { membersExpanded: !ledger.membersExpanded });
+  },
+  toggleExpenseSort(event) {
+    const ledgerId = event?.currentTarget?.dataset?.ledger;
+    const ledger = this.data.expenses.find(item => item.id === ledgerId);
+    if (ledger) changeExpenseLedger(this, ledgerId, { sortByAmount: !ledger.sortByAmount });
+  },
   expense() {
     if (!['READY', 'EMPTY'].includes(this.data.expenseLoadState))
       return this.setData({ message: '费用记录尚未加载，请先重新加载后再记录' });

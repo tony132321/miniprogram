@@ -6,5 +6,9 @@ Page({
   onShow() { this.setData({ city: wx.getStorageSync('irlSelectedCity') || '上海' }); },
   back: backToProfile,
   goCity() { wx.navigateTo({ url: '/pages/city/city' }); },
-  goProfile() { wx.switchTab({ url: '/pages/me/me' }); }
+  goProfile() { wx.switchTab({ url: '/pages/me/me' }); },
+  goPrivacyRequests() {
+    getApp().globalData.profileFocus = 'privacySection';
+    this.goProfile();
+  }
 });

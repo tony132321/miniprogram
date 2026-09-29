@@ -5,8 +5,10 @@ import { runInNewContext } from 'node:vm';
 
 function loadProfilePage(name: 'legal' | 'cache', wx: Record<string, unknown>) {
   let page: Record<string, any> | undefined;
+  const app = { globalData: { profileFocus: '' } };
   runInNewContext(readFileSync(new URL(`../miniprogram/subpackages/profile/${name}/${name}.js`, import.meta.url), 'utf8'), {
     Page(definition: Record<string, any>) { page = definition; }, wx,
+    getApp() { return app; },
     require(module: string) {
       assert.equal(module, '../navigation.js');
       return { backToProfile() {}, statusBarHeight() { return 24; } };
@@ -14,6 +16,7 @@ function loadProfilePage(name: 'legal' | 'cache', wx: Record<string, unknown>) {
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, unknown>) { Object.assign(this.data, patch); };
+  page._testApp = app;
   return page;
 }
 
@@ -25,6 +28,7 @@ test('legal page keeps real privacy and guidelines routes while formal documents
     navigateTo({ url }: { url: string }) { routes.push(url); }
   });
   page.goPrivacy();
+  assert.equal(page._testApp.globalData.profileFocus, 'privacySection');
   page.goGuidelines();
   assert.deepEqual(routes, ['/pages/me/me', '/subpackages/profile/guidelines/guidelines']);
   assert.match(markup, /正式协议待核定/);

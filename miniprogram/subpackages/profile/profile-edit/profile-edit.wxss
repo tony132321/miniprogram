@@ -45,4 +45,5 @@
 .certificate-row { display: flex; gap: 8rpx; margin-top: 14rpx; }
 .certificate-row view { flex: 1; padding: 14rpx 8rpx; border-radius: 17rpx; background: #f2f1f7; color: #596174; font-size: 20rpx; }
 .settings-link { margin: 22rpx 0 0; padding: 0; background: transparent; color: #1c62e8; text-align: left; font-size: 21rpx; line-height: 2; }
-.deletion-note { padding: 30rpx 0 4rpx; color: #8992a2; text-align: center; font-size: 20rpx; }
+.deletion-note { width: auto; padding: 30rpx 0 4rpx; margin: 0 auto; border: 0; background: transparent; color: #8992a2; text-align: center; font-size: 20rpx; line-height: 1.5; }
+.deletion-note::after { border: 0; }

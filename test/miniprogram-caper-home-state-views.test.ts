@@ -10,7 +10,7 @@ type Detail = { id: string; hostId: string; status: string; reviewStatus: string
     minParticipants: number; maxParticipants: number; feeMode: string };
   stats: { confirmed: number; reserved: number; requested: number; waitlisted: number } };
 
-function detail(id: string, hostId = 'dev:organizer', overrides: Partial<Detail> = {}): Detail {
+function detail(id: string, hostId = 'organizer', overrides: Partial<Detail> = {}): Detail {
   return {
     id, hostId, status: 'RECRUITING', reviewStatus: 'APPROVED',
     payload: { title: '真实活动', startAt: '2027-03-22T11:00:00.000Z',
@@ -28,6 +28,7 @@ function makeHome(lists: Record<string, ListedEvent[]>,
   const navigations: string[] = [];
   const switches: string[] = [];
   const scrolls: number[] = [];
+  const modals: Array<Record<string, any>> = [];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/index/index.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if (path === '../../utils/api.js') return { api: { get: async (route: string) => {
@@ -47,13 +48,14 @@ function makeHome(lists: Record<string, ListedEvent[]>,
       setStorageSync(key: string, value: unknown) { storage.set(key, value); },
       removeStorageSync(key: string) { storage.delete(key); },
       navigateTo({ url }: { url: string }) { navigations.push(url); },
+      showModal(options: Record<string, any>) { modals.push(options); },
       pageScrollTo({ scrollTop }: { scrollTop: number }) { scrolls.push(scrollTop); },
       switchTab({ url }: { url: string }) { switches.push(url); }
     }
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
-  return { page, storage, requests, navigations, switches, scrolls };
+  return { page, storage, requests, navigations, switches, scrolls, modals };
 }
 
 test('state tabs place verified card facts first without fetching every event on default home', async () => {
@@ -88,6 +90,16 @@ test('organized cards show only authorized real counts and route to the host wor
   assert.equal(page.data.visibleItems[0].hostCounts.gap, 2);
   page.openCardAction({ currentTarget: { dataset: { id: 'hosted', action: 'hostSection' } } });
   assert.deepEqual(navigations, ['/pages/event/event?id=hosted&section=hostSection']);
+});
+
+test('a detail whose raw host ID differs from the current actor cannot enrich a hosted card', async () => {
+  const hosted: ListedEvent = { id: 'hosted', status: 'RECRUITING', title: '周日羽毛球',
+    isHost: true, myRegistrationStatus: null };
+  const { page } = makeHome({ organizer: [hosted] }, { hosted: detail('hosted', 'different-owner') });
+  await page.onShow();
+  await page.selectTab({ currentTarget: { dataset: { key: 'organized' } } });
+  assert.equal(page.data.visibleItems[0].hostCounts, null);
+  assert.equal(page.data.visibleItems[0].detailLoaded, undefined);
 });
 
 test('history AA action appears only from reviewed detail and opens the real expense section', async () => {
@@ -128,12 +140,44 @@ test('a delayed detail from the previous identity cannot replace the new actor c
 test('an offered seat opens the existing profile decision controls instead of claiming acceptance', async () => {
   const offered: ListedEvent = { id: 'offer', status: 'RECRUITING', title: '周五桌游',
     isHost: false, myRegistrationStatus: 'OFFERED' };
-  const { page, switches } = makeHome({ organizer: [offered] }, { offer: detail('offer') });
+  const { page, switches, storage } = makeHome({ organizer: [offered] }, { offer: detail('offer') });
   await page.onShow();
   const item = page.data.pending[0];
   assert.equal(item.primaryAction, 'offerNotifications');
   page.openCardAction({ currentTarget: { dataset: { id: item.id, action: item.primaryAction } } });
   assert.deepEqual(switches, ['/pages/me/me']);
+  assert.equal(storage.get('irlProfileFocusIntent'), 'noticeSection');
+});
+
+test('non-badminton home inspiration requires an honest confirmation before opening create', async () => {
+  const { page, switches, modals, navigations } = makeHome({ organizer: [] }, {});
+  page.openCategory({ currentTarget: { dataset: { label: '美食' } } });
+  assert.equal(switches.length, 0);
+  assert.equal(modals.length, 1);
+  assert.match(modals[0]!.content, /当前只能发起羽毛球活动/);
+  modals[0]!.success({ confirm: false });
+  assert.equal(switches.length, 0);
+  page.openInspiration({ currentTarget: { dataset: { title: '周末聚餐' } } });
+  assert.equal(modals.length, 2);
+  modals[1]!.success({ confirm: true });
+  assert.deepEqual(switches, ['/pages/create/create']);
+  page.openCategory({ currentTarget: { dataset: { label: '运动' } } });
+  assert.deepEqual(switches, ['/pages/create/create', '/pages/create/create']);
+  page.openCategory({ currentTarget: { dataset: { label: '更多' } } });
+  assert.deepEqual(switches, ['/pages/create/create', '/pages/create/create', '/pages/discover/discover']);
+  assert.deepEqual(navigations, []);
+});
+
+test('home footer has real about, privacy and support destinations', () => {
+  const { page, navigations } = makeHome({}, {});
+  page.goAbout();
+  page.goPrivacy();
+  page.goSupport();
+  assert.deepEqual(navigations, ['/pages/about/about', '/subpackages/profile/legal/legal',
+    '/subpackages/profile/support/support']);
+  const wxml = readFileSync(new URL('../miniprogram/pages/index/index.wxml', import.meta.url), 'utf8');
+  for (const handler of ['goAbout', 'goPrivacy', 'goSupport'])
+    assert.match(wxml, new RegExp(`bindtap="${handler}"`));
 });
 
 test('the featured cover selects an available upcoming event and falls back when all events ended', async () => {

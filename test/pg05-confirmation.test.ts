@@ -9,7 +9,7 @@ const eventMarkup = readFileSync(new URL('../miniprogram/pages/event/event.wxml'
 function makePage() {
   let page: Record<string, any> | undefined;
   let actor = 'guest';
-  const scrolls: string[] = [];
+  const scrolls: number[] = [];
   runInNewContext(eventSource, {
     require(path: string) {
       if (path === '../../utils/api.js') return { api: {} };
@@ -21,12 +21,15 @@ function makePage() {
     getApp() { return { globalData: { ready: Promise.resolve() } }; },
     wx: {
       getStorageSync(key: string) { return key === 'devUser' ? actor : ''; },
-      pageScrollTo({ selector }: { selector: string }) { scrolls.push(selector); }
+      pageScrollTo({ scrollTop }: { scrollTop: number }) { scrolls.push(scrollTop); }
     },
     setTimeout, clearTimeout
   });
   assert.ok(page);
-  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.setData = function (patch: Record<string, any>, callback?: () => void) {
+    Object.assign(this.data, patch);
+    callback?.();
+  };
   page.setData({ loadState: 'READY', canJoin: true, token: 'invite-token',
     event: { id: 'event-1', version: 2, status: 'RECRUITING', recruiting: true,
       payload: { title: '周六羽毛球', startAt: '2026-10-10T06:00:00Z',
@@ -98,7 +101,7 @@ test('event deep link scrolls only to a loaded and authorized section', async ()
   const { page, scrolls } = makePage();
   page.refresh = async function () { this.setData({ loadState: 'READY', isHost: false }); return true; };
   await page.onLoad({ id: 'event-1', section: 'checkinSection' });
-  assert.deepEqual(scrolls, ['#checkinSection']);
+  assert.deepEqual(scrolls, [0]);
   assert.equal(page.data.activeSection, 'checkinSection');
   scrolls.length = 0;
   await page.onLoad({ id: 'event-1', section: 'hostSection' });
@@ -106,24 +109,24 @@ test('event deep link scrolls only to a loaded and authorized section', async ()
   assert.equal(page.data.activeSection, 'detailsSection');
   page.refresh = async function () { this.setData({ loadState: 'READY', isHost: false, canApproveRegistration: true }); return true; };
   await page.onLoad({ id: 'event-1', section: 'cohostApprovalSection' });
-  assert.deepEqual(scrolls, ['#cohostApprovalSection']);
+  assert.deepEqual(scrolls, [0]);
   assert.equal(page.data.activeSection, 'cohostApprovalSection');
   scrolls.length = 0;
   page.refresh = async function () { this.setData({ loadState: 'READY', isHost: false,
     canApproveRegistration: false, canManageAnnouncements: true }); return true; };
   await page.onLoad({ id: 'event-1', section: 'cohostContentSection' });
-  assert.deepEqual(scrolls, ['#cohostContentSection']);
+  assert.deepEqual(scrolls, [0]);
   assert.equal(page.data.activeSection, 'cohostContentSection');
   scrolls.length = 0;
   page.refresh = async function () { this.setData({ loadState: 'READY', isHost: false,
     canManageAnnouncements: false, canManageCheckins: true }); return true; };
   await page.onLoad({ id: 'event-1', section: 'cohostCheckinSection' });
-  assert.deepEqual(scrolls, ['#cohostCheckinSection']);
+  assert.deepEqual(scrolls, [0]);
   assert.equal(page.data.activeSection, 'cohostCheckinSection');
   scrolls.length = 0;
   page.refresh = async function () { this.setData({ loadState: 'READY', isHost: true }); return true; };
   await page.onLoad({ id: 'event-1', section: 'hostSection' });
-  assert.deepEqual(scrolls, ['#hostSection']);
+  assert.deepEqual(scrolls, [0]);
   assert.equal(page.data.activeSection, 'hostSection');
   scrolls.length = 0;
   await page.onLoad({ id: 'event-1', section: 'cohostApprovalSection' });

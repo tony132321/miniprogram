@@ -266,6 +266,19 @@ page{padding:0;background:#f5f6fa;color:#1b1e27;font-family:-apple-system,BlinkM
 .expense-total-caption { margin-top: 27rpx; color: #e1e4eb; font-size: 19rpx; }
 .expense-hero .expense-total { padding: 5rpx 0; font-size: 62rpx; font-weight: 900; }
 .expense-hero-caption { color: #d2f803; font-size: 21rpx; }
+.expense-hero-bottom { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 10rpx; margin-top: 15rpx; }
+.expense-detail-toggle { flex: none; margin: 0; padding: 5rpx 0 5rpx 10rpx; border: 0; background: transparent; color: #fff; font-size: 19rpx; line-height: 1.5; }
+.expense-detail-toggle::after, .expense-members-heading button::after, .expense-members-toggle::after { border: 0; }
+.expense-breakdown { margin: 16rpx 22rpx; padding: 21rpx; border-radius: 18rpx; background: #f2f1fd; color: #24263a; }
+.expense-breakdown-heading { margin-bottom: 12rpx; font-size: 23rpx; font-weight: 850; }
+.expense-breakdown-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12rpx; padding: 7rpx 0; font-size: 20rpx; }
+.expense-breakdown-row text:first-child { color: #667085; }
+.expense-breakdown-row text:last-child { font-weight: 700; text-align: right; }
+.expense-breakdown-note { margin-top: 12rpx; padding-top: 13rpx; border-top: 1rpx solid #dcdaee; color: #626579; font-size: 18rpx; line-height: 1.5; }
+.expense-members-heading { display: flex; align-items: center; justify-content: space-between; gap: 10rpx; margin: 14rpx 22rpx 3rpx; color: #1a1b1f; font-size: 25rpx; font-weight: 800; }
+.expense-members-heading text { padding: 3rpx 7rpx; border-radius: 11rpx; background: #e9e7ed; color: #5c6370; font-size: 18rpx; }
+.expense-members-heading button { flex: none; margin: 0; padding: 5rpx 12rpx; border-radius: 100rpx; background: #f4f3f8; color: #626678; font-size: 18rpx; line-height: 1.5; }
+.expense-members-toggle { margin: 11rpx 22rpx 21rpx; padding: 10rpx; border: 0; background: transparent; color: #5856d6; font-size: 21rpx; line-height: 1.5; }
 .expense-share { align-items: center; gap: 13rpx; padding: 18rpx 0 !important; }
 .expense-person-icon { width: 60rpx; height: 60rpx; flex: none; border-radius: 50%; background: #eaf1ff; color: #1d64f2; text-align: center; line-height: 60rpx; font-size: 22rpx; font-weight: 800; }
 .expense-share > view { flex: 1; min-width: 0; }

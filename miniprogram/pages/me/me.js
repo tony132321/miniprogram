@@ -49,10 +49,22 @@ function withExternalStatusLabels(items) {
     Object.prototype.hasOwnProperty.call(externalStatusLabels, item.external_status)
       ? externalStatusLabels[item.external_status] : '外部提醒状态待核对' }));
 }
+function filteredActivityItems(items, filter) {
+  if (filter === 'attended') return items.filter(item => item.myRegistrationStatus === 'CONFIRMED');
+  if (filter === 'hosted') return items.filter(item => item.isHost);
+  return items;
+}
+const activityEmptyLabels = {
+  all: '暂无本人活动记录，可从邀请进入或发起一场活动。',
+  attended: '暂无已确认报名的活动。',
+  hosted: '暂无你发起的活动，可先发布一场受控活动。'
+};
 Page({
   data: { statusBarHeight: 24, headerPaddingRight: headerPaddingRight(), advancedOpen: false,
     devUser: '', developmentMode: Boolean(config.developmentUser), hasSession: false, notifications: [], notificationsTotal: 0,
-    activityStats: { total: null, hosted: null, confirmed: null }, activityPreview: [], activityLoadState: 'IDLE',
+    activityStats: { total: null, hosted: null, confirmed: null }, activityItems: [], activityFilter: 'all',
+    activityEmptyLabel: activityEmptyLabels.all, activityPreview: [], hostedPreview: null,
+    inviteReady: false, inviteCandidateCount: 0, activityLoadState: 'IDLE',
     nextNotificationOffset: null, notificationSnapshot: null, privacy: [], blocks: [], removals: [], reports: [], appeals: [], rejectedContent: [],
     appealDescription: '', reportAppealDescription: '', contentAppealDescription: '', eventReminder: false,
     similarInvites: false, eventReminderNeedsReconfirmation: false, similarInvitesNeedsReconfirmation: false,
@@ -69,14 +81,21 @@ Page({
     if (this.data.developmentMode) this.setData({ devUser: wx.getStorageSync('devUser') || config.developmentUser });
     const app = getApp();
     await app.globalData.ready;
+    const profileFocus = app.globalData.profileFocus === 'privacySection' ? 'privacySection' : '';
+    app.globalData.profileFocus = undefined;
+    const storedFocus = wx.getStorageSync('irlProfileFocusIntent');
+    if (storedFocus) wx.removeStorageSync('irlProfileFocusIntent');
+    const requestedFocus = profileFocus || (storedFocus === 'noticeSection' ? 'noticeSection' : '');
     const hasSession = Boolean(wx.getStorageSync('sessionToken'));
     this.setData({ hasSession });
     if (!hasSession && !this.data.developmentMode) {
       app.globalData.reportContext = undefined;
       this.clearPrivateData();
       this._privateActor = null;
+      this._pendingFocus = requestedFocus;
       return this.setData({ loadState: 'UNAUTHENTICATED', message: '请先微信登录' });
     }
+    this._pendingFocus = '';
     const actor = hasSession ? wx.getStorageSync('userId') : this.data.devUser;
     const privateActor = `${hasSession ? 'session' : 'dev'}:${actor}`;
     if (this._privateActor !== privateActor) this.clearPrivateData();
@@ -87,7 +106,10 @@ Page({
       advancedOpen: reportContext.actor === actor || this.data.advancedOpen });
     await this.refresh();
     if (reportContext?.actor === actor) this.revealAdvanced('reportSection');
+    else if (requestedFocus) this.revealAdvanced(requestedFocus);
   },
+  onHide() { this._pendingFocus = ''; },
+  onUnload() { this._pendingFocus = ''; },
   async refresh() {
     const generation = this._refreshGeneration = (this._refreshGeneration || 0) + 1;
     this.setData({ nextNotificationOffset: null, loadState: 'LOADING' });
@@ -97,6 +119,11 @@ Page({
         api.get('/me/events').catch(() => null)]);
       if (generation !== this._refreshGeneration) return false;
       const activityItems = Array.isArray(activityResult?.items) ? activityResult.items : null;
+      const mappedActivityItems = activityItems ? activityItems.map(item => ({
+        ...item, statusLabel: activityStatusLabels[item.status] || item.status || '状态待核对',
+        dateLabel: activityDateLabel(item.startAt), cover: activityCover(item)
+      })) : [];
+      const activityFilter = this.data.activityFilter;
       this.setData({ notifications: withExternalStatusLabels(notifications.items), notificationsTotal: notifications.total ?? notifications.items.length,
         nextNotificationOffset: notifications.nextOffset ?? null, notificationSnapshot: notifications.snapshot ?? null,
         privacy: privacy.items, blocks: blocks.items, removals: removals.items, reports: reports.items,
@@ -112,10 +139,11 @@ Page({
           hosted: activityItems.filter(item => item.isHost).length,
           confirmed: activityItems.filter(item => item.myRegistrationStatus === 'CONFIRMED').length } :
           { total: null, hosted: null, confirmed: null },
-        activityPreview: activityItems ? activityItems.slice(0, 4).map(item => ({
-          ...item, statusLabel: activityStatusLabels[item.status] || item.status || '状态待核对',
-          dateLabel: activityDateLabel(item.startAt), cover: activityCover(item)
-        })) : [],
+        activityItems: mappedActivityItems,
+        activityPreview: filteredActivityItems(mappedActivityItems, activityFilter).slice(0, 4),
+        hostedPreview: mappedActivityItems.find(item => item.isHost) || null,
+        inviteReady: mappedActivityItems.some(item => item.isHost && item.status === 'RECRUITING'),
+        inviteCandidateCount: mappedActivityItems.filter(item => item.isHost && item.status === 'RECRUITING').length,
         activityLoadState: activityItems ? 'READY' : 'ERROR',
         loadState: 'READY', message: '' });
       return true;
@@ -131,7 +159,19 @@ Page({
   },
   revealAdvanced(sectionId) {
     this.setData({ advancedOpen: true });
-    const scroll = () => wx.pageScrollTo?.({ selector: '#' + sectionId, duration: 180 });
+    const scroll = () => {
+      const selector = '#' + sectionId;
+      const fallback = () => wx.pageScrollTo?.({ selector, duration: 180 });
+      const query = wx.createSelectorQuery?.();
+      if (!query) return fallback();
+      query.select(selector).boundingClientRect();
+      query.selectViewport().scrollOffset();
+      query.exec(([rect, viewport]) => {
+        if (!Number.isFinite(rect?.top) || !Number.isFinite(viewport?.scrollTop)) return fallback();
+        const stickyInset = (Number(this.data.statusBarHeight) || 24) + 76;
+        wx.pageScrollTo?.({ scrollTop: Math.max(0, Math.round(viewport.scrollTop + rect.top - stickyInset)), duration: 180 });
+      });
+    };
     if (typeof wx.nextTick === 'function') wx.nextTick(scroll);
     else scroll();
   },
@@ -156,7 +196,9 @@ Page({
   clearPrivateData() {
     this._refreshGeneration = (this._refreshGeneration || 0) + 1;
     this.setData({ notifications: [], notificationsTotal: 0, nextNotificationOffset: null,
-      activityStats: { total: null, hosted: null, confirmed: null }, activityPreview: [], activityLoadState: 'IDLE',
+      activityStats: { total: null, hosted: null, confirmed: null }, activityItems: [], activityFilter: 'all',
+      activityEmptyLabel: activityEmptyLabels.all, activityPreview: [], hostedPreview: null,
+      inviteReady: false, inviteCandidateCount: 0, activityLoadState: 'IDLE',
       notificationSnapshot: null, privacy: [], blocks: [], removals: [], reports: [], appeals: [], rejectedContent: [],
       eventReminder: false, similarInvites: false, eventReminderNeedsReconfirmation: false,
       similarInvitesNeedsReconfirmation: false, advancedOpen: false,
@@ -175,15 +217,24 @@ Page({
   },
   async login() {
     const generation = this._refreshGeneration || 0;
+    const requestedFocus = this._pendingFocus;
     try {
       wx.removeStorageSync('devUser');
       const session = await api.login();
-      if (generation !== (this._refreshGeneration || 0)) return;
+      if (generation !== (this._refreshGeneration || 0)) {
+        this._pendingFocus = '';
+        return;
+      }
       this.clearPrivateData();
       this._privateActor = `session:${session.userId}`;
       this.setData({ hasSession: true, message: '已登录：' + session.userId });
       await this.refresh();
-    } catch (error) { if (generation === (this._refreshGeneration || 0)) this.setData({ message: error.message }); }
+      this._pendingFocus = '';
+      if (requestedFocus) this.revealAdvanced(requestedFocus);
+    } catch (error) {
+      this._pendingFocus = '';
+      if (generation === (this._refreshGeneration || 0)) this.setData({ message: error.message });
+    }
   },
   async logout() {
     try {
@@ -332,6 +383,26 @@ Page({
     } catch (error) { if (isCurrent()) this.setData({ message: error.message }); }
   },
   goMessages() { wx.switchTab({ url: '/pages/messages/messages' }); },
+  selectActivityFilter(event) {
+    const filter = event?.currentTarget?.dataset?.filter;
+    if (!Object.prototype.hasOwnProperty.call(activityEmptyLabels, filter)) return;
+    this.setData({ activityFilter: filter, activityEmptyLabel: activityEmptyLabels[filter],
+      activityPreview: filteredActivityItems(this.data.activityItems, filter).slice(0, 4) });
+  },
+  goAllActivities() { this.goMoments(); },
+  showPrivacyRequests() { this.revealAdvanced('privacySection'); },
+  goHostedActivities() { wx.navigateTo({ url: '/subpackages/profile/moments/moments?filter=hosted' }); },
+  goHostCenter() {
+    wx.setStorageSync('irlHomeTabIntent', 'organized');
+    this.goHome();
+  },
+  inviteFriends() {
+    const shareable = this.data.activityItems.filter(item => item.isHost && item.status === 'RECRUITING');
+    if (shareable.length === 1)
+      return wx.navigateTo({ url: '/subpackages/activity/share/share?id=' + encodeURIComponent(shareable[0].id) });
+    if (shareable.length > 1) return this.goHostCenter();
+    this.goCreate();
+  },
   goAbout() { wx.navigateTo({ url: '/pages/about/about' }); },
   goEditProfile() { wx.navigateTo({ url: '/subpackages/profile/profile-edit/profile-edit' }); },
   goBadges() { wx.navigateTo({ url: '/subpackages/profile/badges/badges' }); },
@@ -340,6 +411,7 @@ Page({
   goLegal() { wx.navigateTo({ url: '/subpackages/profile/legal/legal' }); },
   goCache() { wx.navigateTo({ url: '/subpackages/profile/cache/cache' }); },
   goSupport() { wx.navigateTo({ url: '/subpackages/profile/support/support' }); },
+  goGuidelines() { wx.navigateTo({ url: '/subpackages/profile/guidelines/guidelines' }); },
   goHome() { wx.switchTab({ url: '/pages/index/index' }); },
   openActivity(event) {
     const id = event.currentTarget.dataset.id;

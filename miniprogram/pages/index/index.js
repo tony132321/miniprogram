@@ -76,7 +76,8 @@ function posterWord(title) {
 }
 function withRealDetail(item, event, actor) {
   if (!event || event.id !== item.id || !event.payload) return item;
-  if (item.isHost && event.hostId !== actor) return item;
+  const actorId = actor.startsWith('dev:') ? actor.slice(4) : actor.startsWith('user:') ? actor.slice(5) : actor;
+  if (item.isHost && event.hostId !== actorId) return item;
   const payload = event.payload;
   const confirmed = Number(event.stats?.confirmed);
   const capacity = Number(payload.maxParticipants);
@@ -155,7 +156,7 @@ Page({
     headerPaddingRight: headerPaddingRight(),
     city: '上海', statusBarHeight: typeof wx.getSystemInfoSync === 'function'
       ? wx.getSystemInfoSync().statusBarHeight || 20 : 20,
-    loadState: 'IDLE', errorCode: '', tokenInput: '', message: '' },
+    loadState: 'IDLE', errorCode: '', tokenInput: '', message: '', availabilityMessage: '' },
   async onShow() {
     this._detailRequestId = (this._detailRequestId || 0) + 1;
     const bar = this.getTabBar && this.getTabBar();
@@ -236,8 +237,28 @@ Page({
   goCreate() { wx.switchTab({ url: '/pages/create/create' }); },
   goCity() { wx.navigateTo({ url: '/pages/city/city' }); },
   goDiscover() { wx.switchTab({ url: '/pages/discover/discover' }); },
+  openCategory(event) {
+    const label = String(event?.currentTarget?.dataset?.label || '');
+    if (!categoryIdeas.some(item => item.label === label)) return;
+    if (label === '运动') return this.goCreate();
+    if (label === '更多') return this.goDiscover();
+    return this.showInspirationAvailability(label);
+  },
+  openInspiration(event) {
+    const title = String(event?.currentTarget?.dataset?.title || '这类活动');
+    this.showInspirationAvailability(title);
+  },
+  showInspirationAvailability(title) {
+    const notice = `${title}目前仅供灵感参考。当前只能发起羽毛球活动，是否前往发起？`;
+    if (typeof wx.showModal !== 'function') return this.setData({ availabilityMessage: notice });
+    wx.showModal({ title: '活动灵感', content: notice, confirmText: '发起羽毛球', cancelText: '继续浏览',
+      success: result => { if (result.confirm) this.goCreate(); } });
+  },
   goMessages() { wx.switchTab({ url: '/pages/messages/messages' }); },
   goProfile() { wx.switchTab({ url: '/pages/me/me' }); },
+  goAbout() { wx.navigateTo({ url: '/pages/about/about' }); },
+  goPrivacy() { wx.navigateTo({ url: '/subpackages/profile/legal/legal' }); },
+  goSupport() { wx.navigateTo({ url: '/subpackages/profile/support/support' }); },
   goItinerary() { wx.navigateTo({ url: '/subpackages/activity/itinerary/itinerary' }); },
   async retry() {
     if (this.data.errorCode === 'UNAUTHENTICATED' && !config.developmentUser) {
@@ -258,6 +279,7 @@ Page({
     if (![item.primaryAction, item.secondaryAction].includes(action)) return;
     if (action === 'offerNotifications') {
       if (item.myRegistrationStatus !== 'OFFERED') return;
+      wx.setStorageSync('irlProfileFocusIntent', 'noticeSection');
       return wx.switchTab({ url: '/pages/me/me' });
     }
     if (action === 'editDraft') {

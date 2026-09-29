@@ -28,7 +28,11 @@ function visibleEvents(events, filter) {
 Page({
   data: { statusBarHeight: 24, filters, activeFilter: 'all', events: [],
     visibleEvents: [], loadState: 'IDLE', message: '' },
-  onLoad() { this.setData({ statusBarHeight: statusBarHeight() }); },
+  onLoad(options) {
+    const requestedFilter = options?.filter;
+    this.setData({ statusBarHeight: statusBarHeight(),
+      activeFilter: filters.some(item => item.id === requestedFilter) ? requestedFilter : 'all' });
+  },
   async onShow() {
     const generation = this._generation = (this._generation || 0) + 1;
     const identity = currentIdentity();

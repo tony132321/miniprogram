@@ -1,5 +1,5 @@
 page { background: #f5f7fa; color: #172033; }
-.home-page { min-height: 100vh; padding-bottom: 100rpx; box-sizing: border-box; background: #fff; }
+.home-page { min-height: 100vh; padding-bottom: 250rpx; box-sizing: border-box; background: #fff; }
 .safe-area { width: 100%; background: #fff; }
 .home-status-shield { position: fixed; top: 0; left: 0; right: 0; z-index: 12; background: #fff; }
 .home-page button { margin: 0; line-height: normal; }
@@ -32,6 +32,7 @@ page { background: #f5f7fa; color: #172033; }
 .category-bubble { width: 69rpx; height: 69rpx; line-height: 69rpx; border-radius: 25rpx; text-align: center; font-size: 34rpx; }
 .category-bubble.mint { background: #e4f8f2; }.category-bubble.peach { background: #fff0db; }.category-bubble.cream { background: #fff3db; }.category-bubble.sky { background: #e7f1fa; }.category-bubble.pink { background: #faeafa; }.category-bubble.gray { background: #f1f2f5; color: #5b6372; font-size: 21rpx; }
 .category-name { margin-top: 6rpx; color: #283343; font-size: 18rpx; white-space: nowrap; }
+.availability-message { margin: -6rpx 0 16rpx; padding: 12rpx 15rpx; border-radius: 13rpx; background: #fff7e7; color: #805b18; font-size: 19rpx; line-height: 1.4; }
 .feature-card { display: block; width: 100%; overflow: hidden; padding: 0; border-radius: 27rpx; background: #fff; color: #172033; text-align: left; box-shadow: 0 8rpx 24rpx rgba(25,36,51,.08); }
 .feature-cover { position: relative; display: block; width: 100%; height: 430rpx; overflow: hidden; background: #172033; color: #fff; }
 .feature-image,.cover,.inspiration-cover image,.preview-cover image { width: 100%; height: 100%; }
@@ -96,6 +97,8 @@ page { background: #f5f7fa; color: #172033; }
 .invite-panel { margin-top: 30rpx; padding: 21rpx; border-radius: 24rpx; background: #eff3fb; }.invite-title { font-size: 26rpx; font-weight: 800; }.invite-copy { margin-top: 5rpx; color: #6d7788; font-size: 20rpx; }
 .invite-row { display: flex; align-items: center; gap: 10rpx; margin-top: 13rpx; }.invite-row input { flex: 1; width: 0; height: 70rpx; padding: 0 13rpx; border-radius: 15rpx; background: #fff; font-size: 21rpx; }.invite-row button { flex: none; height: 70rpx; padding: 0 17rpx; border-radius: 15rpx; background: #1d64f2; color: #fff; font-size: 20rpx; line-height: 70rpx; }
 .invite-message { margin-top: 10rpx; color: #b62442; font-size: 20rpx; }.home-foot { margin: 36rpx 0 13rpx; color: #a2a9b4; text-align: center; font-size: 17rpx; line-height: 1.7; }
+.home-foot-links { display: flex; justify-content: center; align-items: center; gap: 12rpx; margin-top: 8rpx; }
+.home-foot-links button { padding: 0; background: transparent; color: #8d96a4; font-size: 17rpx; line-height: 1.7; }
 
 /* PG02-B/C/D: actual membership, host and history cards from /me/events. */
 .event-card { display: block; }
