@@ -53,8 +53,19 @@ function sectionAvailable(section, isHost, canApproveRegistration, canManageAnno
     (section === 'cohostContentSection' && !isHost && canManageAnnouncements) ||
     (section === 'cohostCheckinSection' && !isHost && canManageCheckins);
 }
+const sectionHeadings = {
+  detailsSection: ['活动详情', '耍起 CAPER · 线下见面'],
+  registrationSection: ['报名与成员', '席位与活动内昵称'],
+  contentSection: ['活动公告', '一起把这场活动变得更好'],
+  checkinSection: ['签到与反馈', '见面 · 参与 · 留下回忆'],
+  expenseSection: ['费用记录', 'AA 制，更轻松也更尽兴'],
+  hostSection: ['主办方工作台', '报名、成局与现场管理'],
+  cohostApprovalSection: ['协办报名审批', '仅限本场授权'],
+  cohostContentSection: ['协办公告与回答', '仅限本场授权'],
+  cohostCheckinSection: ['协办签到管理', '仅限本场授权']
+};
 Page({
-  data: { statusBarHeight: 24, id: '', token: '', source: '', activeSection: 'detailsSection', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '',
+  data: { statusBarHeight: 24, id: '', token: '', source: '', activeSection: 'detailsSection', sectionTitle: '活动详情', sectionSubtitle: '耍起 CAPER · 线下见面', checkInMode: 'participant', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '',
     joinConfirmation: null, joinSubmitting: false,
     canJoin: false, canExpressInterest: false, canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
     canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
@@ -72,7 +83,7 @@ Page({
     feedbackHeld: null, feedbackWouldRepeat: null, feedbackReason: '', questionText: '', factQuestionText: '', announcementText: '', answerText: '', answerQuestionId: '', removalReason: '' },
   async onLoad(options) {
     this.setData({ statusBarHeight: wx.getSystemInfoSync?.().statusBarHeight || 24,
-      id: options.id || '', token: options.token || '', source: options.source || '', activeSection: 'detailsSection', successState: '' });
+      id: options.id || '', token: options.token || '', source: options.source || '', activeSection: 'detailsSection', sectionTitle: '活动详情', sectionSubtitle: '耍起 CAPER · 线下见面', checkInMode: 'participant', successState: '' });
     await getApp().globalData.ready;
     const loaded = await this.refresh();
     if (loaded && options.success === 'published' && this.data.isHost &&
@@ -91,7 +102,7 @@ Page({
     if (this.data.currentUser && this.data.currentUser !== actor) {
       this.refreshId = (this.refreshId || 0) + 1;
       this.clearCheckInToken();
-      this.setData({ token: '', source: '', activeSection: 'detailsSection', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '',
+      this.setData({ token: '', source: '', activeSection: 'detailsSection', sectionTitle: '活动详情', sectionSubtitle: '耍起 CAPER · 线下见面', checkInMode: 'participant', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '',
         joinConfirmation: null, joinSubmitting: false,
         canJoin: false, canExpressInterest: false, canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
         canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
@@ -316,31 +327,36 @@ Page({
     catch (error) { this.setData({ loadState: 'LOGIN_REQUIRED', message: error.message || '登录失败，请重试' }); }
   },
   goToMyActivities() { wx.switchTab({ url: '/pages/index/index' }); },
+  goToItinerary() { wx.navigateTo({ url: '/subpackages/activity/itinerary/itinerary' }); },
   goBack() {
+    if (this.data.joinConfirmation) return this.cancelJoin();
+    if (this.data.successState) return this.dismissSuccess();
+    if (this.data.activeSection !== 'detailsSection') return this.scrollToSection('detailsSection');
     if (typeof wx.navigateBack !== 'function') return wx.switchTab({ url: '/pages/index/index' });
     wx.navigateBack({ delta: 1, fail: () => wx.switchTab({ url: '/pages/index/index' }) });
   },
   jumpToSection(event) {
     const id = event.currentTarget.dataset.section;
     if (sectionAvailable(id, this.data.isHost, this.data.canApproveRegistration,
-      this.data.canManageAnnouncements, this.data.canManageCheckins))
+      this.data.canManageAnnouncements, this.data.canManageCheckins)) {
+      if (this.data.successState) this.dismissSuccess();
       this.scrollToSection(id);
+    }
   },
   scrollToSection(id) {
-    this.setData({ activeSection: id });
-    const selector = '#' + id;
-    if (typeof wx.createSelectorQuery !== 'function') return wx.pageScrollTo({ selector, duration: 260 });
-    const query = wx.createSelectorQuery();
-    query.select(selector).boundingClientRect();
-    query.select('.event-topbar').boundingClientRect();
-    query.select('.event-tabs').boundingClientRect();
-    query.selectViewport().scrollOffset();
-    query.exec(([rect, header, tabs, viewport]) => {
-      if (!rect || !viewport || !Number.isFinite(rect.top) || !Number.isFinite(viewport.scrollTop))
-        return wx.pageScrollTo({ selector, duration: 260 });
-      const stickyHeight = (header?.height || 0) + (tabs?.height || 0);
-      wx.pageScrollTo({ scrollTop: Math.max(0, viewport.scrollTop + rect.top - stickyHeight - 72), duration: 260 });
+    if (!sectionHeadings[id]) return;
+    if (id !== this.data.activeSection) this.clearCheckInToken();
+    const [sectionTitle, sectionSubtitle] = sectionHeadings[id];
+    this.setData({ activeSection: id, sectionTitle, sectionSubtitle }, () => {
+      if (typeof wx.pageScrollTo === 'function') wx.pageScrollTo({ scrollTop: 0, duration: 0 });
     });
+  },
+  selectCheckInMode(event) {
+    const mode = event.currentTarget.dataset.mode;
+    if (mode !== 'participant' && mode !== 'host') return;
+    if (mode === 'host' && !this.data.isHost && !this.data.canManageCheckins) return;
+    if (mode !== this.data.checkInMode) this.clearCheckInToken();
+    this.setData({ checkInMode: mode });
   },
   dismissSuccess() { this.setData({ successState: '' }); },
   reconcileSuccessState() {
@@ -351,9 +367,8 @@ Page({
     if (successState && !publishedStillCurrent && !joinedStillCurrent) this.dismissSuccess();
   },
   viewSuccessDetails() {
-    const section = this.data.successState === 'JOINED' ? 'registrationSection' : 'detailsSection';
     this.dismissSuccess();
-    this.scrollToSection(section);
+    this.scrollToSection('detailsSection');
   },
   openEventActions() {
     if (typeof wx.showActionSheet !== 'function') return this.goToReport();
@@ -576,7 +591,8 @@ Page({
       }
       this.setData({ displayedCheckInToken: result.token, checkInExpiresIn: Math.ceil(remainingMs / 1000),
         message: '现场二维码将在过期时自动更新。' }, () => {
-        if (stillCurrent()) drawCheckInQr(result.token, wx.createCanvasContext('checkinQr', this));
+        if (stillCurrent()) drawCheckInQr(result.token, wx.createCanvasContext(
+          this.data.activeSection === 'checkinSection' && this.data.checkInMode === 'host' ? 'checkinQrScreen' : 'checkinQr', this));
       });
       this.checkInRefreshTimer = setTimeout(() => {
         if (stillCurrent()) this.showCheckInToken();
