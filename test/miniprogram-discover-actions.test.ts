@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
+import { cityModule } from './miniprogram-city-module.js';
 import test from 'node:test';
 
 test('discovery all-activity and unavailable favorite actions reach honest destinations', () => {
@@ -11,6 +12,7 @@ test('discovery all-activity and unavailable favorite actions reach honest desti
     require(path: string) {
       if (path === '../../utils/api.js') return { api: {} };
       if (path === '../../config.js') return { developmentUser: '' };
+      if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -39,6 +41,7 @@ test('a closed public-search entry leads to the real invitation field and keeps 
     require(path: string) {
       if (path === '../../utils/api.js') return { api: {} };
       if (path === '../../config.js') return { developmentUser: '' };
+      if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -71,6 +74,7 @@ test('discovery scans only a plain invitation token and ignores a result after a
     require(path: string) {
       if (path === '../../utils/api.js') return { api: {} };
       if (path === '../../config.js') return { developmentUser: '' };
+      if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -110,6 +114,7 @@ test('an invitation entered by one account cannot remain visible or open after a
     require(path: string) {
       if (path === '../../utils/api.js') return { api: { get: async () => ({ items: [] }) } };
       if (path === '../../config.js') return { developmentUser: 'one' };
+      if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },

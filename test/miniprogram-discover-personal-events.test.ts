@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
+import { cityModule } from './miniprogram-city-module.js';
 import test from 'node:test';
 
 test('discovery shows only current-account activities and routes their real IDs', async () => {
@@ -15,6 +16,7 @@ test('discovery shows only current-account activities and routes their real IDs'
         return new Promise(resolve => requests.push(resolve));
       } } };
       if (path === '../../config.js') return { developmentUser: 'one' };
+      if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
     getApp() { return { globalData: { ready: Promise.resolve() } }; },
@@ -72,6 +74,7 @@ test('invitation preview shows only a current token response and opens that invi
         return new Promise(resolve => replies.push(resolve));
       } } };
       if (path === '../../config.js') return { developmentUser: 'one' };
+      if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -112,6 +115,7 @@ test('invitation preview reflects safety hold and paused recruitment instead of 
     require(path: string) {
       if (path === '../../utils/api.js') return { api: { get: () => new Promise(resolve => replies.push(resolve)) } };
       if (path === '../../config.js') return { developmentUser: 'one' };
+      if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },

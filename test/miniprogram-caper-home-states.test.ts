@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { runInNewContext } from 'node:vm';
+import { cityModule } from './miniprogram-city-module.js';
 
 type HomeItem = { id: string; status: string; title: string; isHost: boolean;
   myRegistrationStatus: string | null; startAt?: string };
@@ -23,6 +24,7 @@ function loadHome(items = activities, capsule?: { left: number; windowWidth: num
     require(path: string) {
       if (path === '../../utils/api.js') return { api: { get: async () => ({ items }) } };
       if (path === '../../config.js') return { developmentUser: 'host' };
+      if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },

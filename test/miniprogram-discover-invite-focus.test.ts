@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
+import { cityModule } from './miniprogram-city-module.js';
 import test from 'node:test';
 
 test('profile invitation entry lands on discovery input once and rejects an old account intent', async () => {
@@ -20,6 +21,7 @@ test('profile invitation entry lands on discovery input once and rejects an old 
   const requireSource = (path: string) => {
     if (path === '../../utils/api.js') return { api: { get: async () => ({ items: [] }) } };
     if (path === '../../config.js') return { developmentUser: 'one' };
+    if (path === '../../utils/city.js') return cityModule;
     throw new Error(`unexpected require ${path}`);
   };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {

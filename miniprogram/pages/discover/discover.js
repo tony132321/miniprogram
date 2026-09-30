@@ -1,5 +1,6 @@
 const { api } = require('../../utils/api.js');
 const config = require('../../config.js');
+const { defaultCity, selectedCity } = require('../../utils/city.js');
 
 const inspirationCards = [
   { title: '城市漫步 · 滨江日落', subtitle: '把周末还给真实风景', image: '/assets/stitch/caper_discover_citywalk.jpg', tag: '城市 · 户外', sticker: 'CITY WALK', stickerNote: 'TOGETHER ☺', tags: ['城市', '户外'] },
@@ -61,7 +62,7 @@ Page({
   data: {
     statusBarHeight: typeof wx.getSystemInfoSync === 'function'
       ? wx.getSystemInfoSync().statusBarHeight || 20 : 20,
-    city: '上海', categories, inspirationCards, recommendationCards: recommendationSets[0],
+    city: defaultCity, categories, inspirationCards, recommendationCards: recommendationSets[0],
     recommendationSetIndex: 0, headerPaddingRight: headerPaddingRight(),
     discoveryEnabled: false, publicItems: [],
     tokenInput: '', message: '', availabilityMessage: '', personalEvents: [], personalState: 'IDLE',
@@ -70,8 +71,7 @@ Page({
   async onShow() {
     const bar = this.getTabBar && this.getTabBar();
     if (bar) bar.setData({ selected: 1 });
-    const city = wx.getStorageSync('irlSelectedCity');
-    this.setData({ city: typeof city === 'string' && city ? city : '上海' });
+    this.setData({ city: selectedCity(wx) });
     const generation = this._personalGeneration = (this._personalGeneration || 0) + 1;
     const identity = currentIdentity();
     const staleInvite = Boolean(this.data.tokenInput && this._tokenIdentity !== identity) ||

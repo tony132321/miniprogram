@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { runInNewContext } from 'node:vm';
+import { cityModule } from './miniprogram-city-module.js';
 
 function createCityPage(backStackAvailable = true) {
   let page: Record<string, any> | undefined;
@@ -10,6 +11,10 @@ function createCityPage(backStackAvailable = true) {
   const routes: string[] = [];
   const savedCities: string[] = [];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/city/city.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/city.js') return cityModule;
+      throw new Error(`unexpected require ${path}`);
+    },
     Page(definition: Record<string, any>) { page = definition; },
     wx: {
       getStorageSync() { return '上海'; },

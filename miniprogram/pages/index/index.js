@@ -1,5 +1,6 @@
 const { api } = require('../../utils/api.js');
 const config = require('../../config.js');
+const { defaultCity, selectedCity } = require('../../utils/city.js');
 function currentIdentity() {
   return wx.getStorageSync('sessionToken')
     ? 'user:' + wx.getStorageSync('userId')
@@ -174,15 +175,14 @@ Page({
     visibleItems: [], featuredItem: null, heroIdeaText: '', unreadTotal: 0,
     homePreviewItems: [],
     headerPaddingRight: headerPaddingRight(),
-    city: '上海', statusBarHeight: typeof wx.getSystemInfoSync === 'function'
+    city: defaultCity, statusBarHeight: typeof wx.getSystemInfoSync === 'function'
       ? wx.getSystemInfoSync().statusBarHeight || 20 : 20,
     loadState: 'IDLE', errorCode: '', tokenInput: '', message: '', availabilityMessage: '' },
   async onShow() {
     this._detailRequestId = (this._detailRequestId || 0) + 1;
     const bar = this.getTabBar && this.getTabBar();
     if (bar) bar.setData({ selected: 0 });
-    const savedCity = wx.getStorageSync('irlSelectedCity');
-    this.setData({ city: typeof savedCity === 'string' && savedCity ? savedCity : '上海' });
+    this.setData({ city: selectedCity(wx) });
     const requestedTab = wx.getStorageSync('irlHomeTabIntent');
     if (requestedTab === 'drafts') {
       wx.removeStorageSync('irlHomeTabIntent');

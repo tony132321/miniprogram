@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
+import { cityModule } from './miniprogram-city-module.js';
 import test from 'node:test';
 
 test('an unsupported discovery inspiration never jumps straight into a badminton form', () => {
@@ -11,6 +12,7 @@ test('an unsupported discovery inspiration never jumps straight into a badminton
     require(path: string) {
       if (path === '../../utils/api.js') return { api: {} };
       if (path === '../../config.js') return { developmentUser: '' };
+      if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -39,6 +41,7 @@ test('discovery rotates local inspiration without presenting the cards as public
     require(path: string) {
       if (path === '../../utils/api.js') return { api: {} };
       if (path === '../../config.js') return { developmentUser: '' };
+      if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },

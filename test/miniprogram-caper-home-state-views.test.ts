@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { runInNewContext } from 'node:vm';
+import { cityModule } from './miniprogram-city-module.js';
 
 type ListedEvent = { id: string; status: string; title: string; startAt?: string; endAt?: string;
   city?: string; venueName?: string;
@@ -42,6 +43,7 @@ function makeHome(lists: Record<string, ListedEvent[]>,
         return result;
       } } };
       if (path === '../../config.js') return { developmentUser: 'organizer' };
+      if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },

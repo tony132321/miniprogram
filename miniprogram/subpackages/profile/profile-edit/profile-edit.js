@@ -1,4 +1,5 @@
 const { backToProfile, statusBarHeight } = require('../navigation.js');
+const { defaultCity, selectedCity } = require('../../../utils/city.js');
 
 function headerPaddingRight() {
   try {
@@ -11,7 +12,7 @@ function headerPaddingRight() {
 }
 
 Page({
-  data: { statusBarHeight: 24, headerPaddingRight: '112px', moreOpen: false, city: '上海' },
+  data: { statusBarHeight: 24, headerPaddingRight: '112px', moreOpen: false, city: defaultCity },
   onLoad(options) {
     this._focusInterests = options?.focus === 'interests';
     this.setData({ statusBarHeight: statusBarHeight(), headerPaddingRight: headerPaddingRight() });
@@ -19,7 +20,7 @@ Page({
   onReady() {
     if (this._focusInterests) wx.pageScrollTo?.({ selector: '#interestInfoSection', duration: 180 });
   },
-  onShow() { this.setData({ city: wx.getStorageSync('irlSelectedCity') || '上海',
+  onShow() { this.setData({ city: selectedCity(wx),
     headerPaddingRight: headerPaddingRight() }); },
   onHide() { this.setData({ moreOpen: false }); },
   toggleMore() { this.setData({ moreOpen: !this.data.moreOpen }); },

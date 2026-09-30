@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { runInNewContext } from 'node:vm';
+import { cityModule } from './miniprogram-city-module.js';
 
 function loadPage(now: number, apiOverrides: Record<string, any> = {}) {
   let page: Record<string, any> | undefined;
@@ -227,6 +228,7 @@ test('drafts shortcut opens only owned drafts and returns to edit the selected o
         throw new Error('detail unavailable');
       } } };
       if (path === '../../config.js') return { developmentUser: 'host' };
+      if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { home = definition; },

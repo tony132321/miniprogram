@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { runInNewContext } from 'node:vm';
+import { cityModule } from './miniprogram-city-module.js';
 
 type Activity = { id: string; title: string; status: string; startAt?: string;
   venueName?: string; isHost: boolean; myRegistrationStatus: string | null };
@@ -212,6 +213,7 @@ test('profile edit account deletion entry reveals the real privacy request form'
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/profile/profile-edit/profile-edit.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if (path === '../navigation.js') return { backToProfile() {}, statusBarHeight() { return 24; } };
+      if (path === '../../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { editPage = definition; },

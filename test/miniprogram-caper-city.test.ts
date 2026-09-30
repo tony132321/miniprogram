@@ -2,12 +2,17 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { runInNewContext } from 'node:vm';
+import { cityModule } from './miniprogram-city-module.js';
 
 function cityPage(savedCity = '上海') {
   let page: Record<string, any> | undefined;
   const storage = new Map<string, unknown>([['irlSelectedCity', savedCity]]);
   const navigation: string[] = [];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/city/city.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/city.js') return cityModule;
+      throw new Error(`unexpected require ${path}`);
+    },
     Page(definition: Record<string, any>) { page = definition; },
     wx: {
       getStorageSync(key: string) { return storage.get(key) || ''; },

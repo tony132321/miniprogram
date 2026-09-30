@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { runInNewContext } from 'node:vm';
+import { cityModule } from './miniprogram-city-module.js';
 
 type Storage = Map<string, unknown>;
 type Api = { get(route: string): Promise<any>; post?(route: string, body: unknown): Promise<any> };
@@ -13,6 +14,7 @@ function loadPage(path: string, storage: Storage, api: Api, switches: string[] =
     require(module: string) {
       if (module === '../../utils/api.js') return { api };
       if (module === '../../config.js') return { developmentUser: options.developmentUser ?? 'alice' };
+      if (module === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${module}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
