@@ -52,7 +52,7 @@ function eventDisplay(event) {
     ? new Date(endTime + 8 * 60 * 60_000).toISOString().slice(11, 16) : format(endAt);
   return {
     title,
-    isBadminton: /羽毛球|badminton/i.test(title),
+    isBadminton: payload.type === 'badminton' || /羽毛球|badminton/i.test(title),
     date: format(startAt),
     end: compactEnd,
     location: [payload.city || event.city, payload.venueName || event.venueName].filter(Boolean).join(' · ') || '地点待确认',
@@ -313,8 +313,14 @@ Page({
       if (canReadExpenses) try {
         const response = await api.get(`/events/${encodeURIComponent(id)}/expenses`);
         if (!Array.isArray(response.items)) throw new Error('费用记录无效，请重试');
+        const consentedNames = new Map(aliases.filter(item => /^[a-f0-9]{16}$/.test(item.id || '') &&
+          typeof item.displayName === 'string').map(item => [item.id, item.displayName]));
+        const hashAlias = consentedNames.size ? require('../../utils/sha256.js').sha256 : null;
         expenses = response.items.map(ledger => {
-          const shares = (ledger.shares || []).map(share => ({ ...share, amountYuan: yuanFromFen(share.amountFen) }));
+          const shares = (ledger.shares || []).map((share, index) => ({ ...share,
+            displayName: share.userId === actor ? '我的份额' :
+              (hashAlias && consentedNames.get(hashAlias(`${id}:${share.userId}`).slice(0, 16))) || `参与者 ${index + 1}`,
+            amountYuan: yuanFromFen(share.amountFen) }));
           return { ...ledger, totalYuan: yuanFromFen(ledger.totalFen), shares,
             visibleShares: shares.slice(0, 4), membersExpanded: false, detailsOpen: false, sortByAmount: false };
         });

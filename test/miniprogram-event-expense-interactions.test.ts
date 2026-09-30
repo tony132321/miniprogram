@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { runInNewContext } from 'node:vm';
@@ -6,7 +7,7 @@ import { runInNewContext } from 'node:vm';
 type Share = { userId: string; amountFen: number; participantHandled: boolean; hostReceived: boolean };
 type Ledger = { id: string; revision: number; current: boolean; status: string; totalFen: number; shares: Share[] };
 
-function expensePage(ledgers: Ledger[]) {
+function expensePage(ledgers: Ledger[], aliases: Array<{ id: string; displayName: string }> = []) {
   let page: Record<string, any> | undefined;
   let actor = 'host';
   let expenseReads = 0;
@@ -18,11 +19,14 @@ function expensePage(ledgers: Ledger[]) {
           payload: { title: '周末羽毛球', visibility: 'INVITE', feeMode: 'AA', feeCapFen: 2500,
             startAt: '2027-03-22T11:00:00Z', endAt: '2027-03-22T13:00:00Z' } };
         if (route === '/system/safety') return { status: 'OPEN' };
-        if (route === '/events/e1/aliases') return { items: [], notice: { version: 'v1', text: '活动内昵称说明' } };
+        if (route === '/events/e1/aliases') return { items: aliases, notice: { version: 'v1', text: '活动内昵称说明' } };
         if (route === '/events/e1/expenses') { expenseReads++; return { items: ledgers }; }
         return { items: [] };
       } } };
       if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
+      if (path === '../../utils/sha256.js') return { sha256(value: string) {
+        return createHash('sha256').update(value).digest('hex');
+      } };
       if (path === '../../config.js') return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -59,6 +63,16 @@ test('PG09 member expansion reveals only shares returned by the authorized expen
   assert.deepEqual(context.page.data.expenses[0].visibleShares.map((share: Share) => share.userId),
     ['host', 'member-b', 'member-c', 'member-d']);
   assert.equal(context.expenseReads, 1, 'local expansion must not create another API request');
+});
+
+test('PG09 uses only consented event nicknames and keeps raw member IDs out of visible share labels', async () => {
+  const consentedId = createHash('sha256').update('e1:member-b').digest('hex').slice(0, 16);
+  const context = expensePage([ledger], [{ id: consentedId, displayName: '阿北' }]);
+  assert.equal(await context.page.refresh(), true);
+  assert.deepEqual(context.page.data.expenses[0].shares.map((share: Share & { displayName: string }) => share.displayName),
+    ['我的份额', '阿北', '参与者 3', '参与者 4', '参与者 5']);
+  context.page.toggleExpenseSort({ currentTarget: { dataset: { ledger: 'ledger-v2' } } });
+  assert.equal(context.page.data.expenses[0].visibleShares[0].displayName, '阿北');
 });
 
 test('PG09 amount sorting uses actual cents and restores API order without changing the ledger', async () => {

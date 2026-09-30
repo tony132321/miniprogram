@@ -430,8 +430,6 @@ page{padding:0;background:#f5f6fa;color:#1b1e27;font-family:-apple-system,BlinkM
 .expense-empty > view:nth-child(2) { margin-top: 7rpx; color: #1a1b1f; font-size: 27rpx; font-weight: 850; }
 .expense-empty > view:nth-child(3) { margin-top: 5rpx; color: #71798a; font-size: 20rpx; }
 .expense-empty button { margin: 19rpx auto 0; background: #edf2ff; color: #1d64f2; }
-.poster-headline-generic.poster-headline-long { top: 298rpx; max-height: 179rpx; overflow: hidden; }
-.poster-headline-generic.poster-headline-long text { max-height: 179rpx; overflow: hidden; font-size: 46rpx; line-height: 1.08; word-break: break-all; }
 
 /* _2 / _4: confirmed and organizing badminton views use the supplied photo-card rhythm. */
 .event-live-detail { background: #faf8fe; }
