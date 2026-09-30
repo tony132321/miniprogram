@@ -198,7 +198,7 @@ Page({
     this.setData({ unreadTotal: 0 });
     if (this._shownIdentity !== identity) {
       this._shownIdentity = identity;
-      this.setData({ items: [], organized: [], cohosting: [], pending: [], attending: [], history: [], visibleItems: [], featuredItem: null, homePreviewItems: [], heroIdeaText: '', message: '' });
+      this.setData({ items: [], organized: [], cohosting: [], pending: [], attending: [], history: [], visibleItems: [], featuredItem: null, homePreviewItems: [], heroIdeaText: '', tokenInput: '', availabilityMessage: '', message: '' });
     }
     this.setData({ loadState: 'LOADING', errorCode: '', message: '' });
     try {
@@ -208,7 +208,7 @@ Page({
       if (identity !== authenticatedIdentity) {
         identity = authenticatedIdentity;
         this._shownIdentity = identity;
-        this.setData({ items: [], organized: [], cohosting: [], pending: [], attending: [], history: [], visibleItems: [], featuredItem: null, homePreviewItems: [], heroIdeaText: '', message: '' });
+        this.setData({ items: [], organized: [], cohosting: [], pending: [], attending: [], history: [], visibleItems: [], featuredItem: null, homePreviewItems: [], heroIdeaText: '', tokenInput: '', availabilityMessage: '', message: '' });
       }
       this.refreshUnread(identity, generation);
       const result = await api.get('/me/events');
@@ -347,6 +347,10 @@ Page({
   },
   tokenChanged(event) { this.setData({ tokenInput: event.detail.value.trim() }); },
   openInvite() {
+    if (this._shownIdentity && this._shownIdentity !== currentIdentity()) {
+      this.setData({ tokenInput: '', message: '账号已切换，请重新输入邀请口令。' });
+      return;
+    }
     if (!this.data.tokenInput) return this.setData({ message: '请输入邀请口令' });
     wx.navigateTo({ url: '/pages/event/event?token=' + encodeURIComponent(this.data.tokenInput) });
   },

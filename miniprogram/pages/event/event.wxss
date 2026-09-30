@@ -398,6 +398,8 @@ page{padding:0;background:#f5f6fa;color:#1b1e27;font-family:-apple-system,BlinkM
 .joined-success-card > view:nth-child(2) { margin-top: 7rpx; color: #64748b; font-size: 20rpx; line-height: 1.5; }
 .joined-success-card button { width: auto; margin: 13rpx 0 0; padding: 8rpx 15rpx; background: #eaf1ff; color: #1d64f2; font-size: 20rpx; }
 .joined-roster-card .joined-card-heading { display: flex; justify-content: space-between; gap: 12rpx; }
+.joined-roster-count { margin-top: 10rpx; color: #64748b; font-size: 19rpx; line-height: 1.5; }
+.joined-roster-empty { margin-top: 14rpx; color: #64748b; font-size: 20rpx; line-height: 1.5; }
 .joined-roster-card .joined-roster-link { align-self: center; flex: none; width: auto; margin: 0; padding: 0; border: 0; background: transparent; color: #1d64f2; font-size: 18rpx; font-weight: 600; line-height: 1.4; }
 .joined-roster-card .joined-roster-link::after { border: 0; }
 .joined-roster-preview { display: flex; gap: 14rpx; margin-top: 16rpx; }

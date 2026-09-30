@@ -3,9 +3,9 @@ import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { runInNewContext } from 'node:vm';
 
-function cityPage() {
+function cityPage(savedCity = '上海') {
   let page: Record<string, any> | undefined;
-  const storage = new Map<string, unknown>([['irlSelectedCity', '上海']]);
+  const storage = new Map<string, unknown>([['irlSelectedCity', savedCity]]);
   const navigation: string[] = [];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/city/city.js', import.meta.url), 'utf8'), {
     Page(definition: Record<string, any>) { page = definition; },
@@ -43,4 +43,11 @@ test('CAPER city selection rejects unknown values and does not claim GPS evidenc
   assert.deepEqual(navigation, []);
   const markup = readFileSync(new URL('../miniprogram/pages/city/city.wxml', import.meta.url), 'utf8');
   assert.doesNotMatch(markup, /GPS已就绪|已根据您的实时位置/);
+});
+
+test('city page ignores an unsupported saved city while preserving an existing searchable city', () => {
+  const unsupported = cityPage('旧版测试城市');
+  assert.equal(unsupported.page.data.currentCity, '上海');
+  const supported = cityPage('厦门');
+  assert.equal(supported.page.data.currentCity, '厦门');
 });

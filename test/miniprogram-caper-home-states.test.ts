@@ -115,3 +115,19 @@ test('empty home keeps a clear create action and reserves room for the WeChat me
   const wxml = readFileSync(new URL('../miniprogram/pages/index/index.wxml', import.meta.url), 'utf8');
   assert.match(wxml, /wx:else[^>]*bindtap="goCreate"[\s\S]*?发起你的第一场真实活动/);
 });
+
+test('home invite token from a previous account cannot be opened after an identity switch', async () => {
+  const { page, storage, navigations } = loadHome();
+  await page.onShow();
+  page.tokenChanged({ detail: { value: 'old-account-invite' } });
+  assert.equal(page.data.tokenInput, 'old-account-invite');
+
+  storage.set('devUser', 'another-member');
+  page.openInvite();
+  assert.deepEqual(navigations, []);
+  assert.equal(page.data.tokenInput, '');
+
+  page.tokenChanged({ detail: { value: 'new-account-invite' } });
+  await page.onShow();
+  assert.equal(page.data.tokenInput, '', 'account transition clears any token entered while the old page was still visible');
+});

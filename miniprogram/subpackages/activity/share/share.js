@@ -139,12 +139,23 @@ Page({
         message: error.message || '邀请卡读取失败，请重试。' });
     }
   },
+  clearIfAccountChanged() {
+    if (this._loadedActor === currentActor()) return false;
+    this._loadGeneration = (this._loadGeneration || 0) + 1;
+    this._loadedActor = null;
+    this.setData({ loadState: 'ERROR', event: null, display: null, canShare: false,
+      sourceToken: '', shareSheetOpen: false, preparingShare: false,
+      message: '账号已切换，请重新核对分享资格。' });
+    return true;
+  },
   openShareSheet() {
+    if (this.clearIfAccountChanged()) return;
     if (!this.data.canShare) return this.setData({ message: this.data.shareReason || '当前无法分享邀请。' });
     this.setData({ shareSheetOpen: true });
   },
   closeShareSheet() { this.setData({ shareSheetOpen: false }); },
   async prepareShare() {
+    if (this.clearIfAccountChanged()) return;
     const event = this.data.event;
     const actor = currentActor();
     if (this.data.preparingShare) return;
@@ -159,9 +170,13 @@ Page({
         this.data.event.inviteToken === event.inviteToken)
         this.setData({ sourceToken, message: '分享邀请已准备好，请点击微信好友或群聊。' });
     } catch (error) { if (actor === currentActor()) this.setData({ message: error.message || '准备分享失败，请重试。' }); }
-    finally { if (actor === currentActor()) this.setData({ preparingShare: false }); }
+    finally {
+      if (actor !== currentActor()) this.clearIfAccountChanged();
+      else this.setData({ preparingShare: false });
+    }
   },
   copyInvite() {
+    if (this.clearIfAccountChanged()) return;
     const event = this.data.event;
     const actor = currentActor();
     if (!this.data.canShare || !event?.inviteToken || actor !== this._loadedActor)
@@ -169,14 +184,17 @@ Page({
     const title = this.data.display?.title || '活动';
     const data = `耍起 CAPER 活动邀请：${title}\n邀请码：${event.inviteToken}\n请打开耍起 CAPER 小程序，在首页输入邀请码查看活动并按规则报名。`;
     wx.setClipboardData({ data,
-      success: () => { if (actor === currentActor()) this.setData({ message: '真实邀请码与使用说明已复制。' }); },
-      fail: () => { if (actor === currentActor()) this.setData({ message: '复制失败，请重试。' }); } });
+      success: () => { if (actor !== currentActor()) this.clearIfAccountChanged();
+        else this.setData({ message: '真实邀请码与使用说明已复制。' }); },
+      fail: () => { if (actor !== currentActor()) this.clearIfAccountChanged();
+        else this.setData({ message: '复制失败，请重试。' }); } });
   },
   back() {
     wx.navigateBack({ delta: 1, fail: () => wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(this.data.id) }) });
   },
   goProfile() { wx.switchTab({ url: '/pages/me/me' }); },
   onShareAppMessage() {
+    if (this.clearIfAccountChanged()) return { title: '活动详情', path: '/pages/index/index' };
     const event = this.data.event;
     if (!this.data.canShare || !this.data.sourceToken || !event?.inviteToken ||
       this._loadedActor !== currentActor()) return { title: '活动详情', path: '/pages/index/index' };

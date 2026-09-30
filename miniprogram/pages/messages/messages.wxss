@@ -233,6 +233,7 @@
 .center-lime { background:#f2fae7; color:#628400; }
 .center-card-title-row { display:flex; align-items:flex-start; justify-content:space-between; gap:9rpx; }
 .center-card-title { flex:1; min-width:0; margin:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:27rpx; line-height:1.4; }
+.center-approval-card .center-card-title { white-space:normal; word-break:break-word; }
 .center-card-time { flex:none; padding-top:4rpx; color:#858a9a; font-size:17rpx; white-space:nowrap; }
 .center-card-summary { margin-top:5rpx; color:#354052; font-size:21rpx; line-height:1.48; }
 .center-card-kind { margin-top:10rpx; color:#808797; font-size:17rpx; }

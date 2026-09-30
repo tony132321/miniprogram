@@ -5,12 +5,17 @@ page{background:#f5f6f8;color:#182131;font-family:-apple-system,BlinkMacSystemFo
 .stage-REVIEW{background:#fff}
 .page-header{height:96rpx;padding-left:28rpx;padding-right:28rpx;display:flex;align-items:center;justify-content:space-between;position:relative;background:#fff;box-sizing:content-box}
 .header-back{z-index:1;flex:none;width:65rpx;height:72rpx;margin:0;padding:0;color:#202b3a;background:transparent;font-size:57rpx;line-height:68rpx;text-align:left}
-.header-profile{z-index:1;position:absolute;left:102rpx;width:52rpx;height:52rpx;margin:0;padding:0;border-radius:50%;background:#1d64f2;color:#fff;font-size:27rpx;line-height:52rpx;text-align:center}
+.header-profile{z-index:1;position:absolute;width:52rpx;height:52rpx;margin:0;padding:0;border-radius:50%;background:#1d64f2;color:#fff;font-size:27rpx;line-height:52rpx;text-align:center}
+.header-profile-glyph{position:relative;display:block;width:27rpx;height:30rpx;margin:11rpx auto 0;color:#fff}
+.header-profile-glyph::before{content:'';position:absolute;top:1rpx;left:8rpx;width:11rpx;height:11rpx;border:2rpx solid currentColor;border-radius:50%;box-sizing:border-box}
+.header-profile-glyph::after{content:'';position:absolute;left:3rpx;bottom:1rpx;width:21rpx;height:11rpx;border:2rpx solid currentColor;border-radius:11rpx 11rpx 4rpx 4rpx;box-sizing:border-box}
 .header-title{position:absolute;left:42%;transform:translateX(-50%);width:220rpx;text-align:center;font-size:26rpx;font-weight:800;white-space:nowrap;pointer-events:none}
+.stage-REVIEW .header-title{left:50%}
 .header-brand{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8rpx;font-size:23rpx;font-weight:800;white-space:nowrap}
+.stage-FORM .header-brand{left:36%}
 .brand-mark{width:42rpx;height:42rpx;border-radius:14rpx;background:#1267fb;color:#fff;text-align:center;line-height:42rpx;font-size:24rpx}
 .brand-en{color:#156cf9;font-size:16rpx;font-weight:700;font-style:italic;letter-spacing:1rpx}
-.header-side{z-index:1;position:absolute;right:183rpx;max-width:155rpx;margin:0;padding:9rpx 12rpx;border-radius:40rpx;background:#f1f3f7;color:#1d4f9d;font-size:20rpx;font-weight:700;line-height:34rpx;white-space:nowrap}
+.header-side{z-index:1;position:absolute;max-width:155rpx;margin:0;padding:9rpx 12rpx;border-radius:40rpx;background:#f1f3f7;color:#1d4f9d;font-size:20rpx;font-weight:700;line-height:34rpx;white-space:nowrap}
 .notice{margin:14rpx 28rpx;padding:17rpx 20rpx;border-radius:18rpx;background:#ebf2fe;color:#2857a5;font-size:21rpx;line-height:1.5}
 .notice.warning{background:#fff5df;color:#80541b}
 .inline-action{display:inline-block;margin:0 0 0 12rpx;padding:0;background:transparent;color:#0053d9;font-size:21rpx;line-height:1.5}

@@ -4,6 +4,14 @@
 .pg10-back::after, .pg10-link::after, .pg10-primary::after, .pg10-chip::after { border: 0; }
 .pg10-header-title { flex: 1; text-align: center; font-size: 32rpx; font-weight: 700; }
 .pg10-header-spacer { width: 74rpx; }
+.profile-header-actions { display: flex; flex: none; align-items: center; gap: 6rpx; }
+.profile-header-more, .profile-header-avatar { display: block; flex: none; min-width: 0; margin: 0; padding: 0; border: 0; text-align: center; }
+.profile-header-more { width: 48rpx; height: 54rpx; background: transparent; color: #171a24; line-height: 54rpx; font-size: 32rpx; font-weight: 800; }
+.profile-header-avatar { width: 54rpx; height: 54rpx; border-radius: 50%; background: #064dca; color: #fff; line-height: 54rpx; font-size: 28rpx; font-weight: 800; }
+.profile-header-more::after, .profile-header-avatar::after, .profile-header-menu button::after { border: 0; }
+.profile-header-menu { position: absolute; top: 86rpx; z-index: 12; width: 280rpx; padding: 8rpx; border: 1rpx solid #edf0f5; border-radius: 20rpx; background: #fff; box-shadow: 0 12rpx 30rpx rgba(15,23,42,.14); }
+.profile-header-menu button { display: block; box-sizing: border-box; width: 100%; min-width: 0; margin: 0; padding: 13rpx 10rpx; border-bottom: 1rpx solid #edf0f5; border-radius: 0; background: transparent; color: #334155; text-align: left; line-height: 1.4; font-size: 20rpx; }
+.profile-header-menu button:last-child { border-bottom: 0; }
 .pg10-card { background: #fff; border-radius: 28rpx; padding: 28rpx; margin-bottom: 22rpx; box-shadow: 0 6rpx 24rpx rgba(40,48,85,.035); }
 .pg10-hero { padding: 38rpx 30rpx; background: linear-gradient(135deg,#edf4ff,#f5f4ff 55%,#f5ffe8); }
 .pg10-kicker { color: #175beb; font-size: 22rpx; font-weight: 700; letter-spacing: 1rpx; }

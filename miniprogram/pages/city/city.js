@@ -51,7 +51,7 @@ Page({
     searchFocused: false, popularCities },
   onShow() {
     const city = wx.getStorageSync('irlSelectedCity');
-    this.setData({ currentCity: typeof city === 'string' && city ? city : '上海' });
+    this.setData({ currentCity: searchableCities.some(item => item.name === city) ? city : '上海' });
   },
   search(event) {
     const query = String(event.detail.value || '').trim().toLowerCase();

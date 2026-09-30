@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { runInNewContext } from 'node:vm';
 
-function loadPage(now: number) {
+function loadPage(now: number, apiOverrides: Record<string, any> = {}) {
   let page: Record<string, any> | undefined;
   const routes: string[] = [];
   const storage = new Map<string, unknown>();
@@ -15,12 +15,14 @@ function loadPage(now: number) {
   }
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
+      if (path === '../../utils/api.js') return { api: apiOverrides };
       if (path === '../../config.js') return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
     Date: Clock,
+    setTimeout,
+    clearTimeout,
     wx: {
       getWindowInfo() { return { statusBarHeight: 0 }; },
       getStorageSync(key: string) { return storage.get(key) ?? ''; },
@@ -125,6 +127,82 @@ test('cohost shortcut reaches the published activity workbench', () => {
   page.setData({ stage: 'FORM', editingEvent: { id: 'event-host', version: 2 } });
   page.openCohostSetup();
   assert.deepEqual(routes, ['/pages/event/event?id=event-host&section=hostSection']);
+});
+
+test('a late activity suggestion from an old account cannot fill the next account editor', async () => {
+  let releaseSuggestion!: (value: unknown) => void;
+  const response = new Promise(resolve => { releaseSuggestion = resolve; });
+  const { page, storage } = loadPage(Date.now(), {
+    post: async (route: string) => {
+      assert.equal(route, '/events/drafts:suggest-local');
+      return response;
+    }
+  });
+  page.setData({ aiText: '周末羽毛球' });
+  const inFlight = page.suggest();
+  storage.set('devUser', 'another-member');
+  releaseSuggestion({ fields: { title: '旧账号的活动草稿' }, fieldSources: { title: 'USER_EXPLICIT' },
+    draft: { id: 'old-draft' }, unknown: [] });
+  await inFlight;
+
+  assert.equal(page.data.stage, 'IDEA');
+  assert.equal(page.data.form.title, '');
+  assert.equal(page.data.draft, null);
+  assert.equal(page.data.aiText, '');
+});
+
+test('a delayed draft save from an old account cannot install that draft in the next account editor', async () => {
+  let releaseSave!: (value: unknown) => void;
+  const response = new Promise(resolve => { releaseSave = resolve; });
+  const { page, storage } = loadPage(Date.now(), { post: async (route: string) => {
+    assert.equal(route, '/events');
+    return response;
+  } });
+  page.setData({ stage: 'FORM', safetyStatus: 'OPEN', form: { ...page.data.form, title: '原账号周末羽毛球' } });
+  const inFlight = page.saveDraft();
+  storage.set('devUser', 'another-member');
+  releaseSave({ id: 'old-draft', version: 1, payload: { title: '原账号周末羽毛球' } });
+  assert.equal(await inFlight, null);
+  assert.equal(page.data.draft, null);
+  assert.equal(page.data.form.title, '');
+  assert.equal(page.data.stage, 'IDEA');
+});
+
+test('a delayed published-event change preview cannot show another account its activity details', async () => {
+  let releasePreview!: (value: unknown) => void;
+  const response = new Promise(resolve => { releasePreview = resolve; });
+  const { page, storage } = loadPage(Date.now(), { post: async (route: string) => {
+    assert.equal(route, '/events/event-1/changes:preview');
+    return response;
+  } });
+  page.setData({ hostParticipates: true, venueConfirmed: true });
+  page.setData({ editingEvent: { id: 'event-1', version: 2, payload: page.buildInput() }, stage: 'FORM' });
+  const inFlight = page.publish();
+  storage.set('devUser', 'another-member');
+  releasePreview({ changes: [], affectedCount: 0, material: false });
+  await inFlight;
+  assert.equal(page.data.changePreview, null);
+  assert.equal(page.data.editingEvent, null);
+  assert.equal(page.data.stage, 'IDEA');
+});
+
+test('a delayed publish response cannot navigate the next account to the old account event', async () => {
+  let releasePublish!: (value: unknown) => void;
+  const response = new Promise(resolve => { releasePublish = resolve; });
+  const { page, storage, routes } = loadPage(Date.now(), { post: async (route: string) => {
+    assert.equal(route, '/events/old-draft/publish');
+    return response;
+  } });
+  page.setData({ safetyStatus: 'OPEN', stage: 'REVIEW', publishPreview: {
+    id: 'old-draft', version: 1, payload: page.buildInput()
+  } });
+  const inFlight = page.confirmPublish();
+  storage.set('devUser', 'another-member');
+  releasePublish({ id: 'old-event' });
+  await inFlight;
+  assert.deepEqual(routes, []);
+  assert.equal(page.data.publishPreview, null);
+  assert.equal(page.data.stage, 'IDEA');
 });
 
 test('drafts shortcut opens only owned drafts and returns to edit the selected one', async () => {

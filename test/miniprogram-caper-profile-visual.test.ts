@@ -347,6 +347,7 @@ test('legal page account privacy link opens the actual profile request form', as
     wx: { switchTab({ url }: { url: string }) { navigations.push(url); } }
   });
   assert.ok(legalPage);
+  legalPage.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
   legalPage.goPrivacy();
   assert.equal(globalData.profileFocus, 'privacySection');
   assert.deepEqual(navigations, ['/pages/me/me']);

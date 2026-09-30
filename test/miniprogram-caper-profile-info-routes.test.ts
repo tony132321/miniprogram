@@ -84,3 +84,43 @@ test('support and Project IRL information headers expose real about and profile 
     assert.match(markup, /bindtap="goProfile"/, script);
   }
 });
+
+test('legal and local storage headers expose working profile destinations clear of the native capsule', () => {
+  const legal = loadPage('../miniprogram/subpackages/profile/legal/legal.js');
+  legal.page.onLoad();
+  assert.equal(legal.page.data.headerPaddingRight, '104px');
+  legal.page.toggleMore();
+  assert.equal(legal.page.data.moreOpen, true);
+  legal.page.goGuidelines();
+  assert.equal(legal.page.data.moreOpen, false);
+  legal.page.goCache();
+  legal.page.goProfile();
+  assert.deepEqual(legal.navigations, [
+    '/subpackages/profile/guidelines/guidelines',
+    '/subpackages/profile/cache/cache',
+    '/pages/me/me'
+  ]);
+
+  const storage = loadPage('../miniprogram/subpackages/profile/cache/cache.js');
+  storage.page.onLoad();
+  assert.equal(storage.page.data.headerPaddingRight, '104px');
+  storage.page.toggleMore();
+  assert.equal(storage.page.data.moreOpen, true);
+  storage.page.goLegal();
+  assert.equal(storage.page.data.moreOpen, false);
+  storage.page.goPrivacy();
+  storage.page.goProfile();
+  assert.equal(storage.globalData.profileFocus, 'privacySection');
+  assert.deepEqual(storage.navigations, [
+    '/subpackages/profile/legal/legal',
+    '/pages/me/me',
+    '/pages/me/me'
+  ]);
+
+  for (const page of ['legal/legal', 'cache/cache']) {
+    const markup = readFileSync(new URL(`../miniprogram/subpackages/profile/${page}.wxml`, import.meta.url), 'utf8');
+    assert.match(markup, /class="pg10-header [^"]+"[^>]*padding-right: {{headerPaddingRight}}/, page);
+    assert.match(markup, /bindtap="toggleMore"/, page);
+    assert.match(markup, /bindtap="goProfile"/, page);
+  }
+});

@@ -8,6 +8,7 @@ const rotatedInviteToken = 'B'.repeat(32);
 
 function loadShare(overrides: Record<string, any> = {}) {
   let page: Record<string, any> | undefined;
+  let actor = 'host';
   let event = { id: 'event-1', hostId: 'host', version: 4, status: 'RECRUITING',
     reviewStatus: 'APPROVED', recruiting: true, riskPaused: false, inviteToken,
     payload: { title: '周六一起打羽毛球', startAt: '2027-03-22T06:00:00.000Z',
@@ -19,6 +20,8 @@ function loadShare(overrides: Record<string, any> = {}) {
   const qrPayloads: string[] = [];
   const qrCanvasIds: string[] = [];
   const qrFills: Array<[number, number, number, number]> = [];
+  let postGate: Promise<void> | null = null;
+  let releasePost: (() => void) | null = null;
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/share/share.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if (path === '../../../vendor/qrcode.js') return () => ({
@@ -35,6 +38,7 @@ function loadShare(overrides: Record<string, any> = {}) {
         },
         async post(path: string, body: Record<string, any>) {
           posts.push({ path, body });
+          if (postGate) await postGate;
           return { sourceToken: body.sourceToken };
         }
       } };
@@ -44,7 +48,7 @@ function loadShare(overrides: Record<string, any> = {}) {
     Page(definition: Record<string, any>) { page = definition; },
     getApp() { return { globalData: { ready: Promise.resolve() } }; },
     wx: {
-      getStorageSync(key: string) { return key === 'sessionToken' ? 'session' : key === 'userId' ? 'host' : ''; },
+      getStorageSync(key: string) { return key === 'sessionToken' ? 'session' : key === 'userId' ? actor : ''; },
       getSystemInfoSync() { return { statusBarHeight: 24, windowWidth: 390 }; },
       getWindowInfo() { return { windowWidth: 390 }; },
       getMenuButtonBoundingClientRect() { return { left: 294 }; },
@@ -65,8 +69,41 @@ function loadShare(overrides: Record<string, any> = {}) {
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
   return { page, posts, copied, routes, qrPayloads, qrCanvasIds, qrFills,
+    setActor(next: string) { actor = next; },
+    holdPosts() {
+      postGate = new Promise<void>(resolve => { releasePost = resolve; });
+      return () => { releasePost?.(); postGate = null; releasePost = null; };
+    },
     setEvent(next: Record<string, any>) { event = { ...event, ...next }; } };
 }
+
+test('share card hides the old private invitation immediately when the active account changes', async () => {
+  const { page, setActor, copied } = loadShare();
+  await page.onLoad({ id: 'event-1' });
+  assert.equal(page.data.display.inviteToken, inviteToken);
+  setActor('different-account');
+  page.openShareSheet();
+  assert.equal(page.data.canShare, false);
+  assert.equal(page.data.display, null);
+  assert.equal(page.data.shareSheetOpen, false);
+  assert.equal(page.onShareAppMessage().path, '/pages/index/index');
+  page.copyInvite();
+  assert.equal(copied.length, 0);
+});
+
+test('account switch during share-intent request removes the previous invitation', async () => {
+  const { page, setActor, holdPosts } = loadShare();
+  await page.onLoad({ id: 'event-1' });
+  const releasePost = holdPosts();
+  const pending = page.prepareShare();
+  assert.equal(page.data.preparingShare, true);
+  setActor('different-account');
+  releasePost();
+  await pending;
+  assert.equal(page.data.display, null);
+  assert.equal(page.data.canShare, false);
+  assert.equal(page.data.sourceToken, '');
+});
 
 test('approved invitation card draws a QR containing only the current private invite token', async () => {
   const { page, qrPayloads, qrCanvasIds, qrFills, setEvent } = loadShare();

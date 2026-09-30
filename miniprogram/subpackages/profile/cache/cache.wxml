@@ -1,5 +1,5 @@
 <view class="pg10-page storage-page" style="padding-top: {{statusBarHeight}}px">
-  <view class="pg10-header storage-header"><button class="pg10-back storage-back" bindtap="back" aria-label="返回">‹</button><view class="pg10-header-title">本地存储</view><view class="storage-header-space"></view></view>
+  <view class="pg10-header storage-header" style="padding-right: {{headerPaddingRight}}; top: {{statusBarHeight}}px"><button class="pg10-back storage-back" bindtap="back" aria-label="返回">‹</button><view class="pg10-header-title">本地存储</view><view class="profile-header-actions"><button class="profile-header-more" bindtap="toggleMore" aria-label="更多页面入口" aria-expanded="{{moreOpen}}">···</button><button class="profile-header-avatar" bindtap="goProfile" aria-label="返回我的页面">人</button></view><view wx:if="{{moreOpen}}" class="profile-header-menu" style="right: {{headerPaddingRight}}"><button bindtap="goLegal">隐私与使用说明　›</button><button bindtap="goPrivacy">本人数据与注销申请　›</button><button bindtap="goProfile">我的页面　›</button></view></view>
 
   <view class="pg10-card storage-summary">
     <view class="storage-summary-head"><view class="storage-symbol">▤</view><view class="storage-summary-title"><view class="storage-kicker">APP LOCAL DATA</view><view class="storage-heading">本机小程序存储</view></view><view class="storage-size">{{storageState === 'READY' ? storageSize : '--'}}</view></view>

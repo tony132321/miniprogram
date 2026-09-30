@@ -1,10 +1,9 @@
 @import "../common.wxss";
 
 .legal-page { background: #faf8fe; padding-left: 28rpx; padding-right: 28rpx; padding-bottom: 55rpx; }
-.legal-header { background: #faf8fe; margin-bottom: 20rpx; }
-.legal-back, .legal-header-space { width: 150rpx; min-width: 150rpx; }
-.legal-header-space { height: 1rpx; }
-.legal-header .pg10-header-title { white-space: nowrap; font-size: 29rpx; }
+.legal-header { position: sticky; z-index: 11; box-sizing: border-box; background: #faf8fe; margin-bottom: 20rpx; }
+.legal-back { width: 74rpx; min-width: 74rpx; }
+.legal-header .pg10-header-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 29rpx; }
 .legal-page .pg10-card { border-radius: 22rpx; margin-bottom: 15rpx; box-shadow: 0 5rpx 20rpx rgba(35, 39, 76, .035); }
 .legal-meta { display: flex; align-items: center; gap: 10rpx; margin-bottom: 15rpx; }
 .legal-meta-chip, .legal-meta-pending { padding: 6rpx 12rpx; border-radius: 15rpx; font-size: 18rpx; font-weight: 700; }

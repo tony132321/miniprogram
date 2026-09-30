@@ -28,7 +28,7 @@
     <view class="moment-note">灵感影像展示 · 活动照片与好友动态尚未开放</view>
     <view class="moment-grid"><view class="moment-cell"><image src="/assets/stitch/caper_discover_basketball.jpg" mode="aspectFill" /><text>GOOD PEOPLE</text></view><view class="moment-cell"><image src="/assets/stitch/caper_discover_citywalk.jpg" mode="aspectFill" /><text>城市漫步</text></view><view class="moment-cell"><image src="/assets/stitch/caper_discover_coffee.jpg" mode="aspectFill" /><text>BETTER TOGETHER</text></view><view class="moment-cell"><image src="/assets/stitch/caper_discover_camping.jpg" mode="aspectFill" /><text>星空灵感</text></view><view class="moment-cell"><image src="/assets/stitch/caper_discover_boardgame.jpg" mode="aspectFill" /><text>桌游时光</text></view><view class="moment-cell"><image src="/assets/stitch/caper_discover_art.jpg" mode="aspectFill" /><text>SAME VIBES</text></view></view>
 
-    <view class="section-heading"><view><text class="section-mark">✦</text><text>大家都在说</text></view><button bindtap="goHome" class="section-link">我的活动　›</button></view>
+    <view class="section-heading"><view><text class="section-mark">✦</text><text>大家都在说</text></view><button bindtap="goPersonalAll" class="section-link">我的活动　›</button></view>
     <view class="voices-card"><view class="voices-orb">☺</view><view><view class="voices-title">下一段真实故事，从见面开始</view><view class="voices-copy">当前没有可公开展示的成员评价。参加活动后的反馈以本人活动详情为准。</view></view></view>
 
     <view class="section-heading"><view><text class="section-mark">🔥</text><text>本周精选灵感</text></view><button bindtap="goCreate" class="section-link">去发起　›</button></view>

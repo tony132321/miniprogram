@@ -3,7 +3,7 @@ const config = require('../../../config.js');
 
 function currentIdentity() {
   const token = wx.getStorageSync('sessionToken');
-  if (token) return 'user:' + wx.getStorageSync('userId');
+  if (token) return JSON.stringify(['user', token, wx.getStorageSync('userId')]);
   const developer = wx.getStorageSync('devUser') || config.developmentUser;
   return developer ? 'dev:' + developer : '';
 }

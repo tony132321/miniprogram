@@ -6,7 +6,7 @@ import test from 'node:test';
 const pagePath = new URL('../miniprogram/subpackages/activity/itinerary/itinerary.js', import.meta.url);
 const markupPath = new URL('../miniprogram/subpackages/activity/itinerary/itinerary.wxml', import.meta.url);
 
-function createPage(get: (route: string) => Promise<unknown>, identity = { userId: 'one' }) {
+function createPage(get: (route: string) => Promise<unknown>, identity: { userId: string; token?: string } = { userId: 'one' }) {
   let page: Record<string, any> | undefined;
   const navigations: string[] = [];
   runInNewContext(readFileSync(pagePath, 'utf8'), {
@@ -18,7 +18,7 @@ function createPage(get: (route: string) => Promise<unknown>, identity = { userI
     Page(definition: Record<string, any>) { page = definition; },
     getApp() { return { globalData: { ready: Promise.resolve() } }; },
     wx: {
-      getStorageSync(key: string) { return key === 'sessionToken' ? 'session' : key === 'userId' ? identity.userId : ''; },
+      getStorageSync(key: string) { return key === 'sessionToken' ? identity.token || 'session' : key === 'userId' ? identity.userId : ''; },
       getSystemInfoSync() { return { statusBarHeight: 24 }; },
       navigateTo(options: { url: string }) { navigations.push(options.url); },
       navigateBack() {}, switchTab() {}
@@ -99,6 +99,20 @@ test('itinerary buttons reject stale identity and event ids before opening a det
   page.openCheckin(tapped('mine'));
   assert.deepEqual(navigations, []);
   assert.equal(page.data.featured, null, 'old account details are cleared after identity switch');
+});
+
+test('itinerary invalidates a visible card when the session changes under the same user ID', async () => {
+  const identity = { userId: 'same-user', token: 'session-one' };
+  const { page, navigations } = createPage(async () => ({ items: [{ id: 'private-event', title: '本人行程',
+    status: 'CONFIRMED', myRegistrationStatus: 'CONFIRMED',
+    startAt: new Date(Date.now() + 3 * 86_400_000).toISOString() }] }), identity);
+  await page.onShow();
+  assert.equal(page.data.featured.id, 'private-event');
+  identity.token = 'session-two';
+  page.openEvent({ currentTarget: { dataset: { id: 'private-event' } } });
+  assert.deepEqual(navigations, []);
+  assert.equal(page.data.featured, null);
+  assert.match(page.data.message, /账号已切换/);
 });
 
 test('itinerary keeps a long running confirmed activity in the current schedule', async () => {

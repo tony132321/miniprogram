@@ -1,9 +1,9 @@
 @import "../common.wxss";
 
 .storage-page { background: #faf8fe; padding-left: 30rpx; padding-right: 30rpx; padding-bottom: 55rpx; }
-.storage-header { margin-left: -30rpx; margin-right: -30rpx; padding-left: 30rpx; padding-right: 30rpx; background: #faf8fe; margin-bottom: 22rpx; }
-.storage-back, .storage-header-space { width: 150rpx; min-width: 150rpx; }
-.storage-header-space { height: 1rpx; }
+.storage-header { position: sticky; z-index: 11; box-sizing: border-box; margin-left: -30rpx; margin-right: -30rpx; padding-left: 30rpx; background: #faf8fe; margin-bottom: 22rpx; }
+.storage-back { width: 74rpx; min-width: 74rpx; }
+.storage-header .pg10-header-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .storage-page .pg10-card { border-radius: 25rpx; margin-bottom: 19rpx; box-shadow: 0 5rpx 20rpx rgba(35, 39, 76, .035); }
 .storage-summary { padding: 29rpx 28rpx; }
 .storage-summary-head { display: flex; align-items: center; gap: 13rpx; }

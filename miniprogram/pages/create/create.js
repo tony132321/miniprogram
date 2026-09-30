@@ -1,5 +1,16 @@
 const { api } = require('../../utils/api.js');
 const config = require('../../config.js');
+function headerActionInsets() {
+  try {
+    const menu = wx.getMenuButtonBoundingClientRect?.();
+    const width = (wx.getWindowInfo?.() || wx.getSystemInfoSync?.() || {}).windowWidth;
+    if (Number.isFinite(menu?.left) && Number.isFinite(width) && menu.left >= 0 && menu.left < width) {
+      const inset = Math.ceil(width - menu.left + 8);
+      return { profile: `${inset}px`, draft: `${inset + 34}px` };
+    }
+  } catch (_) { /* Keep native menu controls clear on older clients. */ }
+  return { profile: '112px', draft: '146px' };
+}
 function iso(date, time) { return new Date(`${date}T${time}:00+08:00`).toISOString(); }
 function localParts(value) {
   if (!value) return { date: '', time: '' };
@@ -57,6 +68,7 @@ Page({
   data: {
     ...emptyEditor(), visibilityLabels: ['仅邀请', '受控公开'], approvalLabels: ['自动接受', '逐一审批'],
     statusBarHeight: (wx.getWindowInfo?.() || wx.getSystemInfoSync?.() || {}).statusBarHeight || 0,
+    headerActionInsets: headerActionInsets(),
     inspirations: inspirationBatches[0], inspirationBatch: 0
   },
   syncCreateTabBar(stage) {
@@ -68,6 +80,12 @@ Page({
   setEditorData(patch, callback) {
     this.setData(patch, callback);
     if (Object.prototype.hasOwnProperty.call(patch, 'stage')) this.syncCreateTabBar(patch.stage);
+  },
+  discardOldEditorResponse(identity, loadGeneration) {
+    if (identity === currentIdentity() && loadGeneration === this._loadGeneration) return false;
+    if (identity !== currentIdentity() && loadGeneration === this._loadGeneration)
+      this.setEditorData({ ...emptyEditor(), message: '账号已切换，请重新输入活动信息。' });
+    return true;
   },
   async onShow() {
     this.syncCreateTabBar(this.data.stage);
@@ -357,6 +375,11 @@ Page({
   setConfirmationTime(event) { this.setData({ confirmationTime: event.detail.value }); },
   async suggest() {
     if (this.data.suggestionLoading) return;
+    if (this._shownIdentity && this._shownIdentity !== currentIdentity()) {
+      this.setEditorData({ ...emptyEditor(), message: '账号已切换，请重新输入活动想法。' });
+      return;
+    }
+    const identity = currentIdentity();
     const generation = this._suggestGeneration = (this._suggestGeneration || 0) + 1;
     const text = this.data.aiText;
     this.setData({ suggestionLoading: true, suggestionSlow: false });
@@ -373,6 +396,11 @@ Page({
       });
       const result = await Promise.race([request, timeout]);
       if (generation !== this._suggestGeneration) return;
+      if (identity !== currentIdentity()) {
+        this.stopSuggestion();
+        this.setEditorData({ ...emptyEditor(), message: '账号已切换，请重新输入活动想法。' });
+        return;
+      }
       const fields = result.fields;
       const updates = { suggestionLoading: false, suggestionSlow: false, stage: 'FORM',
         message: result.aiStatus === 'GENERATED' && result.aiContentLabel === 'AI_GENERATED_UNVERIFIED'
@@ -419,8 +447,12 @@ Page({
       this.setEditorData(updates);
       api.acknowledgeMutation?.('POST', '/events/drafts:suggest-local', suggestionBody);
     } catch (error) {
-      if (generation === this._suggestGeneration)
-        this.setData({ suggestionLoading: false, suggestionSlow: false, message: error.message });
+      if (generation === this._suggestGeneration) {
+        if (identity !== currentIdentity()) {
+          this.stopSuggestion();
+          this.setEditorData({ ...emptyEditor(), message: '账号已切换，请重新输入活动想法。' });
+        } else this.setData({ suggestionLoading: false, suggestionSlow: false, message: error.message });
+      }
     } finally {
       if (generation === this._suggestGeneration) {
         clearTimeout(this._suggestSlowTimer);
@@ -451,6 +483,12 @@ Page({
       hostParticipates: typeof this.data.hostParticipates === 'boolean' ? this.data.hostParticipates : undefined };
   },
   async saveDraft() {
+    const identity = currentIdentity();
+    const loadGeneration = this._loadGeneration;
+    if (this._shownIdentity && this._shownIdentity !== identity) {
+      this.setEditorData({ ...emptyEditor(), message: '账号已切换，请重新输入活动信息。' });
+      return null;
+    }
     if (['LOADING', 'ERROR'].includes(this.data.editorLoadState))
       return this.setData({ message: '请先重新载入活动，再保存草稿。' });
     if (this.data.editingEvent) return this.setData({ message: '正在编辑已发布活动，请使用变更预览。' });
@@ -461,15 +499,23 @@ Page({
       const draft = this.data.draft
         ? await api.post(`/events/${this.data.draft.id}/draft`, { expectedVersion: this.data.draft.version, patch: payload })
         : await api.post('/events', payload);
+      if (this.discardOldEditorResponse(identity, loadGeneration)) return null;
       this.setEditorData({ draft, stage: 'FORM', publishPreview: null, message: '草稿已保存。确认场地、时间、人数和费用后再发布。' });
       return draft;
     } catch (error) {
+      if (this.discardOldEditorResponse(identity, loadGeneration)) return null;
       if (!this.markVersionConflict(error, 'draft', this.data.draft?.id))
         this.setData({ message: error.message || '草稿未保存' });
       return null;
     }
   },
   async publish() {
+    const identity = currentIdentity();
+    const loadGeneration = this._loadGeneration;
+    if (this._shownIdentity && this._shownIdentity !== identity) {
+      this.setEditorData({ ...emptyEditor(), message: '账号已切换，请重新输入活动信息。' });
+      return;
+    }
     if (typeof this.data.hostParticipates !== 'boolean')
       return this.setData({ message: '请先明确选择主办方本人是否参加；参加会占用一个名额。' });
     if (this.data.suggestionLoading) this.stopSuggestion();
@@ -487,6 +533,7 @@ Page({
         });
         if (venueFactsChanged) patch.venueStatus = candidate.venueStatus;
         const preview = await api.post(`/events/${event.id}/changes:preview`, { expectedVersion: event.version, patch });
+        if (this.discardOldEditorResponse(identity, loadGeneration)) return;
         const labels = { title: '标题', startAt: '开始时间', endAt: '结束时间', city: '城市', venueName: '公共场馆',
           skillLevel: '水平要求',
           venueStatus: '场地状态', minParticipants: '最少人数', maxParticipants: '最多人数',
@@ -497,6 +544,7 @@ Page({
           patch, candidate, expectedVersion: event.version },
           message: '请逐项核对变更差异与受影响人数，然后最终确认。' });
       } catch (error) {
+        if (this.discardOldEditorResponse(identity, loadGeneration)) return;
         if (!this.markVersionConflict(error, 'event', this.data.editingEvent?.id))
           this.setData({ changePreview: null, message: error.message || '变更预览失败' });
       }
@@ -504,6 +552,7 @@ Page({
     }
     const draft = await this.saveDraft();
     if (!draft) return;
+    if (this.discardOldEditorResponse(identity, loadGeneration)) return;
     this.setEditorData({ stage: 'REVIEW', publishPreview: draft,
       reviewSummary: {
         start: localDateTimeLabel(draft.payload.startAt), end: localDateTimeLabel(draft.payload.endAt),
@@ -514,6 +563,12 @@ Page({
       }, message: '' });
   },
   async confirmPublish() {
+    const identity = currentIdentity();
+    const loadGeneration = this._loadGeneration;
+    if (this._shownIdentity && this._shownIdentity !== identity) {
+      this.setEditorData({ ...emptyEditor(), message: '账号已切换，请重新输入活动信息。' });
+      return;
+    }
     if (['LOADING', 'ERROR'].includes(this.data.editorLoadState))
       return this.setData({ message: '请先重新载入活动，再确认发布。' });
     if (this.data.editingEvent) {
@@ -525,9 +580,11 @@ Page({
       try {
         const event = await api.post(`/events/${this.data.editingEvent.id}/changes`,
           { expectedVersion: preview.expectedVersion, patch: preview.patch });
+        if (this.discardOldEditorResponse(identity, loadGeneration)) return;
         this.setEditorData({ ...emptyEditor(), message: '新版本已生效。' });
         wx.navigateTo({ url: `/pages/event/event?id=${encodeURIComponent(event.id)}` });
       } catch (error) {
+        if (this.discardOldEditorResponse(identity, loadGeneration)) return;
         if (!this.markVersionConflict(error, 'event', this.data.editingEvent?.id))
           this.setData({ message: error.message || '变更未提交' });
       }
@@ -542,9 +599,11 @@ Page({
     }
     try {
       const event = await api.post(`/events/${preview.id}/publish`, { expectedVersion: preview.version });
+      if (this.discardOldEditorResponse(identity, loadGeneration)) return;
       this.setEditorData({ ...emptyEditor() });
       wx.navigateTo({ url: `/pages/event/event?id=${encodeURIComponent(event.id)}&success=published` });
     } catch (error) {
+      if (this.discardOldEditorResponse(identity, loadGeneration)) return;
       if (!this.markVersionConflict(error, 'draft', preview.id))
         this.setData({ message: error.message || '发布未完成' });
     }

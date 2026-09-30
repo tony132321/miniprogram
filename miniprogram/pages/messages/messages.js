@@ -115,7 +115,9 @@ function present(items) {
       summary: noticeSummaries[item.kind] || (item.event_id ? '活动有新进展，请查看详情。' : '站内通知有更新，请查看详情。'),
       timeLabel: timeLabel(item.created_at),
       externalHint: externalHints[item.external_status] || '',
-      actionLabel: isCheckin ? '查看入场凭证' : item.kind === 'MATERIAL_CHANGE' ? '查看最新安排' :
+      actionLabel: item.kind === 'EVENT_REMINDER' ? '查看现场签到' :
+        item.kind === 'MANUAL_CHECKIN_REQUEST' ? '核对到场补记' :
+          item.kind === 'MATERIAL_CHANGE' ? '查看最新安排' :
         item.kind === 'EVENT_CONFIRMED' ? '查看活动安排' : item.kind === 'EVENT_OUTCOME_DUE' ? '记录活动结项' :
           item.kind === 'EVENT_OUTCOME_REVIEW' ? '反馈活动结项' :
           isProfileRecord ? '查看处理记录' : item.event_id ? '查看活动详情' : '标为已读',

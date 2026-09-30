@@ -1,10 +1,10 @@
 <view class="create-page stage-{{stage}}">
   <view class="page-header" style="padding-top: {{statusBarHeight}}px">
     <button class="header-back" bindtap="backFromCreate" aria-label="返回">‹</button>
-    <button class="header-profile" bindtap="goProfile" aria-label="进入我的页面">♙</button>
+    <button wx:if="{{stage !== 'REVIEW'}}" class="header-profile" style="right: {{headerActionInsets.profile}}" bindtap="goProfile" aria-label="进入我的页面"><view class="header-profile-glyph"></view></button>
     <view wx:if="{{stage === 'FORM' && !editingEvent}}" class="header-brand"><text class="brand-mark">耍</text><text>耍起 <text class="brand-en">CAPER</text></text></view>
     <text wx:else class="header-title">{{stage === 'IDEA' ? '活动构思' : stage === 'REVIEW' ? '草稿确认' : '编辑活动'}}</text>
-    <button class="header-side" bindtap="openHeaderAction" aria-label="{{stage === 'REVIEW' ? '草稿确认更多操作' : '打开草稿箱'}}">{{stage === 'REVIEW' ? '•••' : '▣ 草稿箱'}}</button>
+    <button class="header-side" style="right: {{stage === 'REVIEW' ? headerActionInsets.profile : headerActionInsets.draft}}" bindtap="openHeaderAction" aria-label="{{stage === 'REVIEW' ? '草稿确认更多操作' : '打开草稿箱'}}">{{stage === 'REVIEW' ? '•••' : '▣ 草稿箱'}}</button>
   </view>
 
   <view wx:if="{{message}}" class="notice">{{message}}</view>

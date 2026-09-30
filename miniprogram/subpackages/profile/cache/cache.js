@@ -1,8 +1,22 @@
 const { backToProfile, statusBarHeight } = require('../navigation.js');
+function headerPaddingRight() {
+  try {
+    const menu = wx.getMenuButtonBoundingClientRect?.();
+    const width = (wx.getWindowInfo?.() || wx.getSystemInfoSync?.() || {}).windowWidth;
+    if (Number.isFinite(menu?.left) && Number.isFinite(width) && menu.left >= 0 && menu.left < width)
+      return `${Math.ceil(width - menu.left + 8)}px`;
+  } catch (_) { /* Keep space for the native menu on older clients. */ }
+  return '112px';
+}
 Page({
-  data: { statusBarHeight: 24, storageSize: '', storageLimit: '', usagePercent: 0, storageState: 'IDLE' },
-  onLoad() { this.setData({ statusBarHeight: statusBarHeight() }); },
-  onShow() { this.refreshStorage(); },
+  data: { statusBarHeight: 24, headerPaddingRight: '112px', moreOpen: false,
+    storageSize: '', storageLimit: '', usagePercent: 0, storageState: 'IDLE' },
+  onLoad() { this.setData({ statusBarHeight: statusBarHeight(), headerPaddingRight: headerPaddingRight() }); },
+  onShow() { this.setData({ headerPaddingRight: headerPaddingRight() }); this.refreshStorage(); },
+  onHide() { this.setData({ moreOpen: false }); },
+  toggleMore() { this.setData({ moreOpen: !this.data.moreOpen }); },
+  goProfile() { this.setData({ moreOpen: false }); wx.switchTab({ url: '/pages/me/me' }); },
+  goLegal() { this.setData({ moreOpen: false }); wx.navigateTo({ url: '/subpackages/profile/legal/legal' }); },
   refreshStorage() {
     try {
       const info = wx.getStorageInfoSync();
@@ -14,6 +28,7 @@ Page({
     } catch { this.setData({ storageSize: '', storageLimit: '', usagePercent: 0, storageState: 'UNAVAILABLE' }); }
   },
   goPrivacy() {
+    this.setData({ moreOpen: false });
     getApp().globalData.profileFocus = 'privacySection';
     wx.switchTab({ url: '/pages/me/me' });
   },
