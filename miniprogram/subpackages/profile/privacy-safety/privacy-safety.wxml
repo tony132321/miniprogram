@@ -19,6 +19,6 @@
   <view wx:for="{{blocks}}" wx:key="id" class="pg10-card block-card"><view class="block-avatar" aria-hidden="true">⊘</view><view class="block-copy"><view class="block-title">活动内成员</view><view class="block-chip">已屏蔽</view><view class="block-meta">来自：{{item.eventTitle || '活动'}}</view></view><button class="block-action" data-id="{{item.id}}" bindtap="revokeBlock" disabled="{{revokingId !== ''}}">{{revokingId === item.id ? '处理中…' : '解除屏蔽'}}</button></view>
   <view wx:if="{{loadState === 'READY' && message}}" class="privacy-message">{{message}}</view>
 
-  <button class="pg10-card help-card" bindtap="goSupport"><view class="help-icon">!</view><view class="help-copy"><view>遇到违规、诈骗或不文明行为？</view><text>前往举报与求助　→</text></view></button>
+  <button class="pg10-card help-card" bindtap="goReport"><view class="help-icon">!</view><view class="help-copy"><view>遇到违规、诈骗或不文明行为？</view><text>前往举报与求助　→</text></view></button>
   <view class="privacy-foot">屏蔽仅按当前服务规则生效；紧急人身危险请联系当地应急服务。</view>
 </view>

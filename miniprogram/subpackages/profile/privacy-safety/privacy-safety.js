@@ -64,5 +64,18 @@ Page({
   back: backToProfile,
   goProfile() { this.setData({ moreOpen: false }); wx.switchTab({ url: '/pages/me/me' }); },
   goSupport() { this.setData({ moreOpen: false }); wx.navigateTo({ url: '/subpackages/profile/support/support' }); },
+  goReport() {
+    this.setData({ moreOpen: false });
+    wx.setStorageSync('irlProfileFocusIntent', 'reportSection');
+    const token = wx.getStorageSync('sessionToken');
+    const actor = token ? wx.getStorageSync('userId')
+      : wx.getStorageSync('devUser') || config.developmentUser || '';
+    const globalData = getApp().globalData;
+    globalData.profileFocus = undefined;
+    globalData.reportContext = actor
+      ? { actor, owner: token ? `session:${actor}:${token}` : `dev:${actor}`, eventId: '' }
+      : undefined;
+    wx.switchTab({ url: '/pages/me/me' });
+  },
   goLegal() { this.setData({ moreOpen: false }); wx.navigateTo({ url: '/subpackages/profile/legal/legal' }); }
 });
