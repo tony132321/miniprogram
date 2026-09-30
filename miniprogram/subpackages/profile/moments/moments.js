@@ -122,7 +122,13 @@ Page({
     wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) });
   },
   refresh() { return this.onShow(); },
+  showAllActivities() {
+    if (this.data.loadState !== 'READY' || !this.data.events.length ||
+      this._identity !== currentIdentity()) return;
+    this.setData({ activeFilter: 'all', visibleEvents: this.data.events });
+  },
   goActivities() { wx.switchTab({ url: '/pages/index/index' }); },
+  goCreate() { wx.switchTab({ url: '/pages/create/create' }); },
   goGuidelines() {
     this.setData({ moreOpen: false });
     wx.navigateTo({ url: '/subpackages/profile/guidelines/guidelines' });

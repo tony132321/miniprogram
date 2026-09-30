@@ -447,7 +447,7 @@ Page({
   goProfile() { wx.switchTab({ url: '/pages/me/me' }); },
   goMyActivities() {
     this.backToInbox();
-    wx.switchTab({ url: '/pages/index/index' });
+    wx.navigateTo({ url: '/subpackages/profile/moments/moments?filter=all' });
   },
   goNotificationSettings() {
     wx.setStorageSync?.('irlProfileFocusIntent', 'notificationSettingsSection');

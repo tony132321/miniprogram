@@ -89,6 +89,7 @@ test('recent conversations opens an honest private-chat preview with real exit p
   } }, {
     getStorageSync(key: string) { return key === 'sessionToken' ? 'token' : 'member'; },
     switchTab({ url }: { url: string }) { destinations.push(url); },
+    navigateTo({ url }: { url: string }) { destinations.push(url); },
     hideTabBar() {}, showTabBar() {}
   });
   const bar = { data: { hidden: false }, setData(patch: Record<string, boolean>) { Object.assign(this.data, patch); } };
@@ -99,7 +100,7 @@ test('recent conversations opens an honest private-chat preview with real exit p
   assert.equal(bar.data.hidden, true);
   assert.deepEqual(reads, ['/me/notifications?offset=0'], 'preview does not fabricate or fetch conversation data');
   page.goMyActivities();
-  assert.deepEqual(destinations, ['/pages/index/index']);
+  assert.deepEqual(destinations, ['/subpackages/profile/moments/moments?filter=all']);
   page.backToInbox();
   assert.equal(page.data.viewMode, 'INBOX');
   assert.equal(bar.data.hidden, false);

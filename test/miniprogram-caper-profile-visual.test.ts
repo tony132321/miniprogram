@@ -257,18 +257,19 @@ test('support report shortcut preserves the profile report destination through s
   assert.deepEqual(navigations, ['/pages/me/me']);
 });
 
-test('moments header keeps profile actions clear of the native capsule and routes through R1 pages', () => {
+test('moments header and empty-state actions use real R1 destinations', () => {
   let moments: Record<string, any> | undefined;
   const navigations: string[] = [];
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/profile/moments/moments.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if (path === '../../../utils/api.js') return { api: {} };
-      if (path === '../../../config.js') return { developmentUser: '' };
+      if (path === '../../../config.js') return { developmentUser: 'host' };
       if (path === '../navigation.js') return { backToProfile() {}, statusBarHeight() { return 24; } };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { moments = definition; },
     wx: {
+      getStorageSync(key: string) { return key === 'devUser' ? 'host' : ''; },
       getWindowInfo() { return { windowWidth: 390 }; },
       getMenuButtonBoundingClientRect() { return { left: 294 }; },
       navigateTo({ url }: { url: string }) { navigations.push(url); },
@@ -285,11 +286,23 @@ test('moments header keeps profile actions clear of the native capsule and route
   assert.equal(moments.data.moreOpen, false);
   moments.goProfile();
   assert.deepEqual(navigations, ['/subpackages/profile/privacy-safety/privacy-safety', '/pages/me/me']);
+  moments.goCreate();
+  assert.equal(navigations.at(-1), '/pages/create/create');
+  moments.setData({ events: [{ id: 'hosted-only' }], visibleEvents: [],
+    activeFilter: 'participated', loadState: 'READY' });
+  moments._identity = 'dev:host';
+  moments.showAllActivities();
+  assert.equal(moments.data.activeFilter, 'all');
+  assert.equal(moments.data.visibleEvents[0].id, 'hosted-only');
   const markup = readFileSync(new URL('../miniprogram/subpackages/profile/moments/moments.wxml', import.meta.url), 'utf8');
   assert.match(markup, /class="pg10-header moments-header"[^>]*padding-right: {{headerPaddingRight}}/);
   assert.match(markup, /class="moments-header-more"[^>]*bindtap="toggleMore"/);
   assert.match(markup, /class="moments-header-avatar"[^>]*bindtap="goProfile"/);
   assert.match(markup, /wx:if="{{moreOpen}}"[^>]*class="moments-more-menu"/);
+  assert.match(markup, /class="pg10-primary moments-action" bindtap="goCreate"/);
+  assert.match(markup, /发起新活动/);
+  assert.match(markup, /activeFilter !== 'all' && events\.length > 0[\s\S]*?bindtap="showAllActivities"/);
+  assert.match(markup, /bindtap="goCreate">发起新活动/);
 });
 
 test('a home waitlist notification deep link opens the current member notice controls', async () => {
