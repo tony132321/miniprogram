@@ -365,7 +365,15 @@ export function createApp(db: Database, options: AppOptions) {
         return send(res, 200, result);
       }
       if (path === '/me/registrations' && method === 'GET') {
-        const { rows } = await db.query('SELECT id,event_id,status,accepted_version,created_at FROM registrations WHERE user_id=$1 ORDER BY created_at DESC', [actor]);
+        const eventId = requestUrl.searchParams.get('eventId');
+        if (requestUrl.searchParams.has('eventId') &&
+          (eventId === null || !/^[a-zA-Z0-9_-]{1,128}$/.test(eventId)))
+          throw new AppError('BAD_REQUEST', '活动 ID 无效');
+        const { rows } = eventId
+          ? await db.query(`SELECT id,event_id,status,accepted_version,created_at FROM registrations
+            WHERE user_id=$1 AND event_id=$2 LIMIT 1`, [actor, eventId])
+          : await db.query(`SELECT id,event_id,status,accepted_version,created_at FROM registrations
+            WHERE user_id=$1 ORDER BY created_at DESC`, [actor]);
         return send(res, 200, { items: rows });
       }
       if (path === '/me/removals' && method === 'GET') return send(res, 200, { items: await listMyRemovals(db, actor) });
