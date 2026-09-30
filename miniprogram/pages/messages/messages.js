@@ -185,7 +185,7 @@ Page({
     }
     this._identity = key;
     this._actor = actor;
-    if (focusIntent === 'approvals') this.setData({ viewMode: 'INBOX', filter: 'INTERACTION' });
+    if (focusIntent === 'approvals') this.setData({ viewMode: 'CENTER', filter: 'INTERACTION' });
     this.setData({ hasSession });
     this.setTabBarHidden(this.data.viewMode !== 'INBOX');
     if (!actor) return this.setData({ loadState: 'UNAUTHENTICATED', message: '请先微信登录后查看本人消息。' });

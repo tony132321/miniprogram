@@ -238,11 +238,14 @@ test('approval management intent opens the live interaction queue', async () => 
   let intent = 'approvals';
   const reads: string[] = [];
   const removed: string[] = [];
+  const tabBar = { data: { hidden: false }, setData(patch: Record<string, boolean>) { Object.assign(this.data, patch); } };
   const page = mount({ async get(path: string) {
     reads.push(path);
     return path.startsWith('/me/approval-requests')
-      ? { items: [], total: 0, nextOffset: null }
-      : { items: [], total: 0, unreadTotal: 0, nextOffset: null };
+      ? { items: [{ registrationId: 'request-1', eventId: 'event-1', eventTitle: '周末羽毛球',
+        expectedVersion: 2, canApprove: true }], total: 1, nextOffset: null }
+      : { items: [{ id: 'notice-1', kind: 'REGISTRATION_APPROVED', event_id: 'event-1', status: 'IN_APP' }],
+        total: 1, unreadTotal: 1, nextOffset: null };
   } }, {
     getStorageSync(key: string) {
       return key === 'sessionToken' ? 'token' : key === 'userId' ? 'host'
@@ -250,8 +253,19 @@ test('approval management intent opens the live interaction queue', async () => 
     },
     removeStorageSync(key: string) { removed.push(key); intent = ''; }
   });
+  page.getTabBar = () => tabBar;
   await page.onShow();
+  assert.equal(page.data.viewMode, 'CENTER');
   assert.equal(page.data.filter, 'INTERACTION');
+  assert.equal(tabBar.data.hidden, true);
+  assert.equal(page.data.approvals[0].registrationId, 'request-1');
+  assert.deepEqual(Array.from(page.data.centerItems, (item: { id: string }) => item.id), ['notice-1']);
+  assert.equal(page.data.unreadTotal, 1);
   assert.ok(reads.some(path => path.startsWith('/me/approval-requests')));
   assert.deepEqual(removed, ['irlMessagesFocusIntent']);
+  page.backToInbox();
+  assert.equal(page.data.viewMode, 'INBOX');
+  assert.equal(page.data.filter, 'ALL');
+  assert.equal(tabBar.data.hidden, false);
+  assert.equal(page.data.unreadTotal, 1);
 });
