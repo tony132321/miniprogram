@@ -92,6 +92,18 @@ test('featured card uses the real list title, start time and state, with a detai
   assert.doesNotMatch(wxml, /16人已报名|蓝天体育中心/);
 });
 
+test('a generic R1 activity title keeps real facts while using the badminton poster fallback', async () => {
+  const { page } = loadHome([{
+    id: 'synthetic-check', status: 'CONFIRMED', title: '周末合成验收',
+    startAt: '2027-03-22T11:00:00.000Z', isHost: true, myRegistrationStatus: null
+  }]);
+  await page.onShow();
+  assert.equal(page.data.featuredItem.title, '周末合成验收');
+  assert.equal(page.data.featuredItem.statusLabel, '已成局');
+  assert.equal(page.data.featuredItem.cover, '/assets/stitch/caper_home_badminton.jpg');
+  assert.equal(page.data.featuredItem.posterWord, 'BADMINTON TOGETHER');
+});
+
 test('empty home keeps a clear create action and reserves room for the WeChat menu capsule', async () => {
   const { page, switches } = loadHome([], { left: 294, windowWidth: 390 });
   await page.onShow();

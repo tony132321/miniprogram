@@ -77,7 +77,7 @@ function posterWord(title) {
   if (/骑行/.test(title)) return 'RIDE TOGETHER';
   if (/徒步/.test(title)) return 'GO OUTSIDE';
   if (/漫步|City Walk|city walk/i.test(title)) return 'CITY WALK';
-  return 'GOOD PEOPLE · REAL PLANS';
+  return 'BADMINTON TOGETHER';
 }
 function withRealDetail(item, event, actor) {
   if (!event || event.id !== item.id || !event.payload) return item;
@@ -114,7 +114,7 @@ function coverFor(title) {
   if (/咖啡|聊天|创业/.test(title)) return '/assets/stitch/caper_discover_coffee.jpg';
   if (/展览|艺术|画/.test(title)) return '/assets/stitch/caper_discover_art.jpg';
   if (/桌游|游戏/.test(title)) return '/assets/stitch/caper_discover_boardgame.jpg';
-  return '/assets/stitch/caper_discover_citywalk.jpg';
+  return '/assets/stitch/caper_home_badminton.jpg';
 }
 function cardPresentation(item, group) {
   if (group === 'pending') {

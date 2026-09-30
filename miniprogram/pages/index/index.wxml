@@ -2,7 +2,7 @@
   <view class="home-status-shield" style="height: {{statusBarHeight}}px"></view>
   <view class="safe-area" style="height: {{statusBarHeight}}px"></view>
   <view class="home-header" style="top: {{statusBarHeight}}px; padding-right: {{headerPaddingRight}}">
-    <view wx:if="{{!stateView}}" class="brand"><view class="brand-mark">耍</view><view class="brand-word"><text class="brand-cn">耍起</text><text class="brand-en">CAPER</text></view></view>
+    <view wx:if="{{!stateView}}" class="brand"><view class="brand-mark">⁂</view><view class="brand-word"><text class="brand-cn">耍起</text><text class="brand-en">CAPER</text></view></view>
     <view wx:else class="state-brand"><view class="state-brand-mark">✦</view><text>Home Feed</text></view>
     <button wx:if="{{!stateView}}" class="city-chip" bindtap="goCity" aria-label="选择城市">📍 {{city}}⌄</button>
     <view class="header-space"></view>
@@ -25,7 +25,7 @@
 
     <button wx:if="{{featuredItem}}" class="feature-card" data-id="{{featuredItem.id}}" bindtap="openEvent" aria-label="查看{{featuredItem.title}}活动详情">
       <view class="feature-cover"><image class="feature-image" src="{{featuredItem.cover}}" mode="aspectFill" /><view class="feature-shade"></view><view class="feature-top"><text class="feature-badge">🏸 运动</text><text class="feature-top-arrow">›</text></view><view class="feature-poster"><text class="feature-display">{{featuredItem.posterWord}}</text><text class="feature-tagline">Same Game & New Friends</text></view></view>
-      <view class="feature-detail"><view class="feature-detail-head"><text class="feature-detail-title">{{featuredItem.title}}</text><text class="feature-status feature-status-{{featuredItem.status}}">{{featuredItem.statusLabel}}</text></view><view class="feature-detail-meta">▣　{{featuredItem.dateLabel}}</view><view class="feature-detail-meta">⌖　{{featuredItem.venueName || '场地信息请到活动详情查看'}}</view><view class="feature-detail-foot"><text>以活动详情中的当前状态为准</text><text class="feature-detail-action">查看详情　→</text></view></view>
+      <view class="feature-detail"><view class="feature-detail-head"><text class="feature-detail-title">{{featuredItem.title}}</text><text class="feature-status feature-status-{{featuredItem.status}}">{{featuredItem.statusLabel}}</text></view><view class="feature-detail-meta">▣　{{featuredItem.dateLabel}}</view><view class="feature-detail-meta">⌖　{{featuredItem.venueName || '场地信息请到活动详情查看'}}</view><view class="feature-detail-foot"><text>配图仅作示意 · 以详情为准</text><text class="feature-detail-action">查看详情　→</text></view></view>
     </button>
     <button wx:else class="feature-card" bindtap="goCreate" aria-label="发起一场真实活动">
       <view class="feature-cover"><image class="feature-image" src="/assets/stitch/caper_home_badminton.jpg" mode="aspectFill" /><view class="feature-shade"></view><view class="feature-top"><text class="feature-badge">🏸 发起灵感</text><text class="feature-top-arrow">›</text></view><view class="feature-poster"><text class="feature-display">BADMINTON TOGETHER</text><text class="feature-tagline">Same Game & New Friends</text></view></view>
@@ -38,7 +38,7 @@
       <button class="inspiration-card" data-title="户外徒步" bindtap="openInspiration" aria-label="查看徒步活动灵感"><view class="inspiration-cover"><image src="/assets/stitch/caper_home_hiking.jpg" mode="aspectFill" /><text class="inspiration-label">发起灵感</text></view><view class="inspiration-copy"><view class="inspiration-title">走出去，遇见新朋友</view><view class="inspiration-sub">时间、地点与规则由你决定</view></view></button>
     </view>
 
-    <view class="brand-ribbon"><image class="ribbon-image" src="/assets/stitch/caper_home_shanghai.jpg" mode="aspectFill" /><view class="ribbon-shade"></view><view class="ribbon-content"><view class="ribbon-kicker">TURN PLANS INTO REAL MEETUPS</view><view class="ribbon-title">让有趣的事，<text>真的发生</text></view><view class="ribbon-copy">把想见的人，聚在同一个真实时刻。</view></view></view>
+    <view class="brand-ribbon"><image class="ribbon-image" src="/assets/stitch/pg08_checkin_rooftop.jpg" mode="aspectFill" /><view class="ribbon-shade"></view><view class="ribbon-content"><view class="ribbon-title">让有趣的事，<text>真的发生</text></view><view class="ribbon-kicker">TURN PLANS INTO REAL MEETUPS</view><view class="ribbon-bottom"><text class="ribbon-smile">☺</text><text>Good People Better Days</text></view></view></view>
 
     <view class="home-long-section"><view class="home-long-head"><text>同城热门灵感</text><button bindtap="goDiscover">查看更多　›</button></view><view class="home-long-note">场景照片仅供构思，不代表附近有公开招募的活动。</view><view class="home-hot-grid">
       <button data-title="网球新手局" bindtap="openInspiration"><image src="/assets/stitch/caper_discover_basketball.jpg" mode="aspectFill"/><text>运动新手局</text><text>发起灵感</text></button>

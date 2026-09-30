@@ -7,6 +7,18 @@ const inspirationCards = [
   { title: '咖啡聊天会', subtitle: '从一杯咖啡开始认识彼此', image: '/assets/stitch/caper_discover_coffee.jpg', tag: '美食 · 社交', sticker: 'GOOD COFFEE', stickerNote: 'BETTER PEOPLE', tags: ['美食', '社交'] },
   { title: '周五桌游局', subtitle: '一起开局，一起笑出声', image: '/assets/stitch/caper_discover_boardgame.jpg', tag: '兴趣 · 桌游', sticker: 'BOARD GAME', stickerNote: 'GOOD TIMES ☺', tags: ['桌游', '社交'] }
 ];
+const recommendationSets = [
+  [
+    { title: '冲浪体验课', category: '户外运动', image: '/assets/stitch/caper_discover_surf.jpg' },
+    { title: '周末一起看展', category: '文艺生活', image: '/assets/stitch/caper_discover_art.jpg' },
+    { title: '咖啡馆里聊一聊', category: '美食社交', image: '/assets/stitch/caper_discover_coffee.jpg' }
+  ],
+  [
+    { title: '春日露营', category: '户外生活', image: '/assets/stitch/caper_discover_camping.jpg' },
+    { title: '城市漫步', category: '城市探索', image: '/assets/stitch/caper_discover_citywalk.jpg' },
+    { title: '周五桌游局', category: '兴趣社交', image: '/assets/stitch/caper_discover_boardgame.jpg' }
+  ]
+];
 const categories = ['全部', '附近', '本周', '活动', '文艺', '美食', '职场', '兴趣', '生活', '公益'];
 function currentIdentity() {
   return wx.getStorageSync('sessionToken')
@@ -38,7 +50,8 @@ Page({
   data: {
     statusBarHeight: typeof wx.getSystemInfoSync === 'function'
       ? wx.getSystemInfoSync().statusBarHeight || 20 : 20,
-    city: '上海', categories, inspirationCards, headerPaddingRight: headerPaddingRight(),
+    city: '上海', categories, inspirationCards, recommendationCards: recommendationSets[0],
+    recommendationSetIndex: 0, headerPaddingRight: headerPaddingRight(),
     discoveryEnabled: false, publicItems: [],
     tokenInput: '', message: '', availabilityMessage: '', personalEvents: [], personalState: 'IDLE'
   },
@@ -75,6 +88,10 @@ Page({
     const title = name ? `${name}暂未开放` : '公开找局暂未开放';
     this.setData({ availabilityMessage: `${title}；收到邀请可用口令进入，或发起自己的活动。` });
     if (typeof wx.showToast === 'function') wx.showToast({ title, icon: 'none' });
+  },
+  rotateRecommendations() {
+    const recommendationSetIndex = (this.data.recommendationSetIndex + 1) % recommendationSets.length;
+    this.setData({ recommendationSetIndex, recommendationCards: recommendationSets[recommendationSetIndex] });
   },
   jumpToInvite() { wx.pageScrollTo?.({ selector: '#inviteEntry', duration: 300 }); },
   tokenChanged(event) { this.setData({ tokenInput: event.detail.value.trim(), message: '' }); },
