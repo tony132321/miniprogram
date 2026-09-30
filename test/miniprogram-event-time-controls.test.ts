@@ -23,7 +23,7 @@ function eventPage(actor: 'host' | 'member' | 'helper', clock: { now: number }) 
       if (path === '../../utils/api.js') return { api: {
         async get(pathname: string) {
           if (pathname === '/events/event-1') return event;
-          if (pathname === '/me/registrations') return { items: actor === 'member'
+          if (pathname === '/me/registrations?eventId=event-1') return { items: actor === 'member'
             ? [{ id: 'registration-1', event_id: 'event-1', status: 'CONFIRMED' }] : [] };
           if (pathname === '/system/safety') return { status: 'OPEN' };
           if (pathname === '/events/event-1/aliases') return { items: [], reconfirmationRequired: false,

@@ -16,6 +16,55 @@ function yuanFromFen(fen) {
   if (!Number.isSafeInteger(fen) || fen < 0) return '金额待核对';
   return `¥${Math.floor(fen / 100)}.${String(fen % 100).padStart(2, '0')}`;
 }
+function readOptional(path) {
+  return api.get(path).then(value => ({ value }), error => ({ error }));
+}
+function optionalItems(result, enabled, label, itemType = 'object') {
+  if (!enabled) return { items: [], state: 'FORBIDDEN', error: '' };
+  if (result?.error || !Array.isArray(result?.value?.items) ||
+    !result.value.items.every(item => item !== null && typeof item === itemType)) {
+    const error = result?.error;
+    return { items: [], state: error?.code === 'FORBIDDEN' ? 'FORBIDDEN' : 'ERROR',
+      error: error?.message || `${label}无效，请重试` };
+  }
+  return { items: result.value.items, state: result.value.items.length ? 'READY' : 'EMPTY', error: '' };
+}
+function statusText(status, context) {
+  const labels = {
+    registration: { INTERESTED: '暂不确定', REQUESTED: '待审核', WAITLISTED: '候补中', OFFERED: '待确认补位',
+      CONFIRMED: '已确认', RECONFIRM_REQUIRED: '待重新确认', CANCELLED: '已退出', EXPIRED: '已过期',
+      REJECTED: '未通过', REMOVED: '已移除' },
+    manual: { PENDING: '待本人确认', CONFIRMED: '本人已确认', REJECTED: '本人已拒绝', SUPERSEDED: '已有其他到场记录' },
+    fact: { OPEN: '待回答', RESOLVED: '已回答', REJECTED: '未通过' },
+    attention: { EVENT_CANCELLED: '活动取消提醒', EVENT_EXPIRED: '活动未成局提醒',
+      UNAVAILABLE: '外部通道不可用', PURPOSE_NOT_CONFIGURED: '外部用途未配置',
+      UNKNOWN_REQUIRES_RECONCILIATION: '外部状态待核查', PROVIDER_REJECTED: '外部提供方拒绝',
+      SENT: '提供方已接收', DELIVERED: '已确认送达' },
+    expense: { RECORD_ONLY: '仅作记录', OPEN: '待处理', SETTLED: '已核对', CLOSED: '已关闭' },
+    outcome: { NOT_HELD: '未举办', HOST_ONLY: '仅主办方结项', MEMBER_CORROBORATED: '成员独立确认',
+      DISPUTED: '存在争议' },
+    evidence: { SCAN: '扫码', MANUAL_CONFIRMED: '本人确认的人工补记' }
+  };
+  return labels[context]?.[status] || '状态待核对';
+}
+function eventPersonNames(eventId, actor, hostId, aliases) {
+  const names = new Map(aliases.filter(item => /^[a-f0-9]{16}$/.test(item.id || '') &&
+    typeof item.displayName === 'string').map(item => [item.id, item.displayName]));
+  const hashAlias = names.size ? require('../../utils/sha256.js').sha256 : null;
+  const anonymous = new Map();
+  return userId => {
+    if (userId === actor) return '我';
+    const consented = userId && hashAlias && names.get(hashAlias(`${eventId}:${userId}`).slice(0, 16));
+    if (consented) return consented;
+    if (userId === hostId) return '主办方';
+    if (!anonymous.has(userId)) anonymous.set(userId, anonymous.size + 1);
+    return `参与者 ${anonymous.get(userId)}`;
+  };
+}
+function chinaMomentOrUnknown(value) {
+  const timestamp = Date.parse(value || '');
+  return Number.isFinite(timestamp) ? chinaMoment(timestamp) : '时间待确认';
+}
 function visibleExpenseShares(ledger) {
   const shares = ledger.sortByAmount
     ? ledger.shares.map((share, index) => ({ share, index }))
@@ -119,18 +168,25 @@ Page({
     canJoin: false, canExpressInterest: false, canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
     canGenerateCheckInToken: false, canCompleteEvent: false, checkInWindowNotice: '', checkInAvailability: '', completionAvailability: '',
     canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
-    myRegistration: null, registrations: [], cohostGrants: [], cohostUserId: '', selectedCohostCapabilities: ['CHECKIN_MANAGE'], aliases: [],
+    myRegistration: null, registrations: [], registrationsLoadState: 'IDLE', registrationsError: '',
+    cohostGrants: [], cohostGrantsLoadState: 'IDLE', cohostGrantsError: '', cohostUserId: '', cohostSelectedName: '',
+    selectedCohostCapabilities: ['CHECKIN_MANAGE'], aliases: [],
     safetyStatus: 'UNKNOWN',
     hostAlias: '', aliasInput: '', canSetAlias: false, aliasNoticeVersion: '', aliasNoticeText: '',
     aliasReconfirmationRequired: false, aliasLoadState: 'IDLE', aliasError: '',
-    shareMetrics: null, shareSourceToken: '', preparingShare: false,
-    repeatCandidates: [], repeatCandidateNames: '暂无', attentionItems: [], factTodos: [], message: '',
+    shareMetrics: null, shareMetricsLoadState: 'IDLE', shareMetricsError: '', shareSourceToken: '', preparingShare: false,
+    repeatCandidates: [], repeatCandidatesLoadState: 'IDLE', repeatCandidatesError: '', repeatCandidateNames: '暂无',
+    attentionItems: [], attentionLoadState: 'IDLE', attentionError: '',
+    factTodos: [], factTodosLoadState: 'IDLE', factTodosError: '', message: '',
     reservationToken: '', reservationTokens: [], checkInToken: '', displayedCheckInToken: '', checkInExpiresIn: 0,
     totalYuan: '', actualCount: '', completionHeld: null, completionAnomaly: '', completionVenueIssue: '', content: [], contentLoadState: 'IDLE', contentError: '',
     expenses: [], expenseLoadState: 'IDLE', expenseError: '', outcome: null, outcomeLoadState: 'IDLE', outcomeError: '',
-    checkIns: [], manualCheckIns: [], attendanceLoadState: 'IDLE', attendanceError: '', reconfirmation: null,
+    checkIns: [], manualCheckIns: [], attendanceLoadState: 'IDLE', attendanceError: '',
+    reconfirmation: null, reconfirmationLoadState: 'IDLE', reconfirmationError: '',
     canRequestManualCheckIn: false, currentUser: '',
-    feedbackHeld: null, feedbackWouldRepeat: null, feedbackReason: '', questionText: '', factQuestionText: '', announcementText: '', answerText: '', answerQuestionId: '', removalReason: '' },
+    feedbackHeld: null, feedbackWouldRepeat: null, feedbackReason: '', questionText: '', factQuestionText: '',
+    announcementText: '', answerText: '', answerQuestionId: '', answerQuestionLabel: '', answerInputFocus: false,
+    removalReason: '' },
   async onLoad(options) {
     this.setData({ statusBarHeight: wx.getSystemInfoSync?.().statusBarHeight || 24,
       id: options.id || '', token: options.token || '', source: options.source || '', activeSection: 'detailsSection', sectionTitle: '活动详情', sectionSubtitle: '耍起 CAPER · 线下见面', checkInMode: 'participant', successState: '' });
@@ -158,16 +214,21 @@ Page({
         canGenerateCheckInToken: false, canCompleteEvent: false, checkInWindowNotice: '', checkInAvailability: '', completionAvailability: '',
         canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
         safetyStatus: 'UNKNOWN', myRegistration: null,
-        registrations: [], cohostGrants: [], cohostUserId: '', selectedCohostCapabilities: ['CHECKIN_MANAGE'], aliases: [], hostAlias: '', aliasInput: '', canSetAlias: false,
+        registrations: [], registrationsLoadState: 'IDLE', registrationsError: '',
+        cohostGrants: [], cohostGrantsLoadState: 'IDLE', cohostGrantsError: '', cohostUserId: '', cohostSelectedName: '',
+        selectedCohostCapabilities: ['CHECKIN_MANAGE'], aliases: [], hostAlias: '', aliasInput: '', canSetAlias: false,
         aliasNoticeVersion: '', aliasNoticeText: '', aliasReconfirmationRequired: false, aliasLoadState: 'IDLE', aliasError: '',
-        shareMetrics: null, shareSourceToken: '', preparingShare: false, repeatCandidates: [],
-        repeatCandidateNames: '暂无', attentionItems: [], factTodos: [], content: [], contentLoadState: 'IDLE', contentError: '',
+        shareMetrics: null, shareMetricsLoadState: 'IDLE', shareMetricsError: '', shareSourceToken: '',
+        preparingShare: false, repeatCandidates: [], repeatCandidatesLoadState: 'IDLE', repeatCandidatesError: '',
+        repeatCandidateNames: '暂无', attentionItems: [], attentionLoadState: 'IDLE', attentionError: '',
+        factTodos: [], factTodosLoadState: 'IDLE', factTodosError: '', content: [], contentLoadState: 'IDLE', contentError: '',
         expenses: [], expenseLoadState: 'IDLE', expenseError: '', outcome: null, outcomeLoadState: 'IDLE', outcomeError: '',
-        checkIns: [], manualCheckIns: [], attendanceLoadState: 'IDLE', attendanceError: '', reconfirmation: null, canRequestManualCheckIn: false,
+        checkIns: [], manualCheckIns: [], attendanceLoadState: 'IDLE', attendanceError: '',
+        reconfirmation: null, reconfirmationLoadState: 'IDLE', reconfirmationError: '', canRequestManualCheckIn: false,
         reservationToken: '', reservationTokens: [], checkInToken: '', displayedCheckInToken: '', checkInExpiresIn: 0,
         totalYuan: '', actualCount: '', completionHeld: null, completionAnomaly: '', completionVenueIssue: '', feedbackHeld: null, feedbackWouldRepeat: null,
         feedbackReason: '', questionText: '', factQuestionText: '', announcementText: '', answerText: '',
-        answerQuestionId: '', removalReason: '',
+        answerQuestionId: '', answerQuestionLabel: '', answerInputFocus: false, removalReason: '',
         message: '', currentUser: actor });
     }
     if (!this.hasShown) { this.hasShown = true; return; }
@@ -239,7 +300,8 @@ Page({
         if (refreshId === this.refreshId) this.setData({ loadState: 'ERROR', message: '邀请或活动不存在' });
         return false;
       }
-      const mine = await api.get('/me/registrations');
+      const mine = await api.get('/me/registrations?eventId=' + encodeURIComponent(id));
+      if (!Array.isArray(mine?.items)) throw new Error('本人报名状态无效，请重试');
       const myRegistration = mine.items.find(item => item.event_id === id) || null;
       const myStatus = myRegistration?.status;
       const knownMember = ['INTERESTED', 'REQUESTED', 'WAITLISTED', 'OFFERED', 'CONFIRMED', 'RECONFIRM_REQUIRED'].includes(myStatus);
@@ -258,8 +320,6 @@ Page({
       const canApproveRegistration = isHost || cohostCapabilities.includes('APPROVE_REGISTRATION');
       const canManageCheckins = isHost || cohostCapabilities.includes('CHECKIN_MANAGE');
       const canManageAnnouncements = isHost || cohostCapabilities.includes('MANAGE_ANNOUNCEMENTS');
-      const safety = await api.get('/system/safety').catch(() => ({ status: 'UNKNOWN' }));
-      const safetyStatus = ['OPEN', 'CLOSED'].includes(safety?.status) ? safety.status : 'UNKNOWN';
       const registrationLabel = { CONFIRMED: '已确认报名', REQUESTED: '待主办方审核', WAITLISTED: '候补中',
         OFFERED: '待确认补位', INTERESTED: '暂不确定', RECONFIRM_REQUIRED: '待重新确认',
         CANCELLED: '已退出', EXPIRED: '已过期', REJECTED: '未通过' }[myStatus] || '未报名';
@@ -268,12 +328,38 @@ Page({
       const canUseCollaboration = isHost || cohostCapabilities.length > 0 || ['CONFIRMED', 'RECONFIRM_REQUIRED', 'WAITLISTED', 'OFFERED'].includes(myStatus);
       const canPostQuestion = canUseCollaboration && ['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(event.status);
       const timedControls = timedEventControls(event, Date.now(), myStatus, isHost, canManageCheckins);
-      let aliasResponse = { items: [], notice: null, reconfirmationRequired: false };
       const canReadAliases = isHost || ['CONFIRMED', 'RECONFIRM_REQUIRED', 'WAITLISTED', 'OFFERED'].includes(myStatus);
+      const canReadRegistrations = canApproveRegistration || canManageCheckins;
+      const canReadExpenses = isHost || ['CONFIRMED', 'RECONFIRM_REQUIRED'].includes(myStatus);
+      const canReadAttendance = isHost || cohostCapabilities.length > 0 ||
+        ['INTERESTED', 'REQUESTED', 'WAITLISTED', 'OFFERED', 'CONFIRMED', 'RECONFIRM_REQUIRED'].includes(myStatus);
+      const needsReconfirmation = myStatus === 'RECONFIRM_REQUIRED';
+      const hasOutcome = event.status === 'COMPLETED';
+      const readIf = (enabled, path) => enabled ? readOptional(path) : Promise.resolve(null);
+      const base = `/events/${encodeURIComponent(id)}`;
+      const [safetyRead, aliasRead, registrationRead, cohostRead, shareRead, repeatRead,
+        attentionRead, factRead, contentRead, expenseRead, manualRead, scannedRead,
+        reconfirmationRead, outcomeRead] = await Promise.all([
+        readOptional('/system/safety'), readIf(canReadAliases, `${base}/aliases`),
+        readIf(canReadRegistrations, `${base}/registrations`), readIf(isHost, `${base}/cohosts`),
+        readIf(isHost && event.status !== 'DRAFT', `${base}/share-metrics`),
+        readIf(isHost && hasOutcome, `${base}/repeat-candidates`),
+        readIf(isHost && ['CANCELLED', 'EXPIRED'].includes(event.status), `${base}/attention`),
+        readIf(isHost && event.status !== 'DRAFT', `${base}/fact-todos`),
+        readIf(canUseCollaboration, `${base}/content`), readIf(canReadExpenses, `${base}/expenses`),
+        readIf(canReadAttendance, `${base}/manual-checkins`), readIf(canReadAttendance, `${base}/checkins`),
+        readIf(needsReconfirmation, `${base}/reconfirmation`), readIf(hasOutcome, `${base}/outcome`)
+      ]);
+      const safetyStatus = ['OPEN', 'CLOSED'].includes(safetyRead.value?.status) ? safetyRead.value.status : 'UNKNOWN';
+      let aliasResponse = { items: [], notice: null, reconfirmationRequired: false };
       let aliasLoadState = canReadAliases ? 'READY' : 'FORBIDDEN'; let aliasError = '';
       if (canReadAliases) try {
-        aliasResponse = await api.get(`/events/${encodeURIComponent(id)}/aliases`);
-        if (!Array.isArray(aliasResponse.items) || !aliasResponse.notice?.version || !aliasResponse.notice?.text)
+        if (aliasRead.error) throw aliasRead.error;
+        aliasResponse = aliasRead.value;
+        if (!Array.isArray(aliasResponse.items) ||
+          !aliasResponse.items.every(item => item && typeof item === 'object' &&
+            typeof item.id === 'string' && typeof item.displayName === 'string') ||
+          !aliasResponse.notice?.version || !aliasResponse.notice?.text)
           throw new Error('昵称授权信息无效，请重试');
       } catch (error) {
         aliasResponse = { items: [], notice: null, reconfirmationRequired: false };
@@ -282,88 +368,104 @@ Page({
       const aliases = aliasResponse.items;
       const hostAlias = aliases.find(item => item.isHost)?.displayName || '主办方未设置活动内昵称';
       const canSetAlias = isHost || ['CONFIRMED', 'RECONFIRM_REQUIRED', 'WAITLISTED', 'OFFERED'].includes(myRegistration?.status);
-      const registrations = canApproveRegistration || canManageCheckins
-        ? (await api.get(`/events/${encodeURIComponent(id)}/registrations`)).items : [];
-      const cohostGrants = isHost ? (await api.get(`/events/${encodeURIComponent(id)}/cohosts`)).items.map(grant => ({
-        ...grant, capabilitiesText: grant.capabilities.join('、'),
+      const displayPerson = eventPersonNames(id, actor, event.hostId, aliases);
+      const registrationSection = optionalItems(registrationRead, canReadRegistrations, '报名名单');
+      const registrations = registrationSection.items.map(item => ({ ...item,
+        displayName: displayPerson(item.user_id), statusLabel: statusText(item.status, 'registration') }));
+      const cohostSection = optionalItems(cohostRead, isHost, '协办权限');
+      const cohostGrants = cohostSection.items.map(grant => ({ ...grant,
+        displayName: displayPerson(grant.userId),
+        capabilitiesText: (Array.isArray(grant.capabilities) ? grant.capabilities : []).map(capability => ({ CHECKIN_MANAGE: '签到管理',
+          APPROVE_REGISTRATION: '报名审批', MANAGE_ANNOUNCEMENTS: '公告与回答' })[capability] || '权限待核对').join('、'),
+        expiresLabel: chinaMomentOrUnknown(grant.expiresAt),
         usable: grant.status === 'ACTIVE' && Date.parse(grant.expiresAt) > Date.now()
-      })) : [];
-      const shareMetrics = isHost && event.status !== 'DRAFT' ? await api.get(`/events/${encodeURIComponent(id)}/share-metrics`) : null;
-      const repeatCandidates = isHost && event.status === 'COMPLETED'
-        ? (await api.get(`/events/${encodeURIComponent(id)}/repeat-candidates`)).items : [];
-      const attentionItems = isHost && ['CANCELLED', 'EXPIRED'].includes(event.status)
-        ? (await api.get(`/events/${encodeURIComponent(id)}/attention`)).items : [];
-      const factTodos = isHost && event.status !== 'DRAFT' ? (await api.get(`/events/${encodeURIComponent(id)}/fact-todos`)).items : [];
-      let content = [];
-      let contentLoadState = canUseCollaboration ? 'EMPTY' : 'FORBIDDEN';
-      let contentError = '';
-      if (canUseCollaboration) try {
-        const response = await api.get(`/events/${encodeURIComponent(id)}/content`);
-        if (!Array.isArray(response.items)) throw new Error('公告问答记录无效，请重试');
-        content = response.items;
-        contentLoadState = content.length ? 'READY' : 'EMPTY';
-      } catch (error) {
-        contentLoadState = error.code === 'FORBIDDEN' ? 'FORBIDDEN' : 'ERROR';
-        contentError = error.message || '公告问答加载失败，请重试';
-      }
+      }));
+      const shareEnabled = isHost && event.status !== 'DRAFT';
+      const shareMetrics = shareEnabled && !shareRead?.error &&
+        ['shareIntents', 'attributedOpens', 'unknownSourceOpens'].every(key => Number.isSafeInteger(shareRead?.value?.[key]))
+        ? shareRead.value : null;
+      const shareMetricsLoadState = !shareEnabled ? 'IDLE' : shareMetrics ? 'READY' : 'ERROR';
+      const shareMetricsError = shareMetricsLoadState === 'ERROR' ?
+        shareRead?.error?.message || '分享统计无效，请重试' : '';
+      const repeatEnabled = isHost && hasOutcome;
+      const repeatSection = optionalItems(repeatRead, repeatEnabled, '再约成员名单', 'string');
+      const repeatCandidates = repeatSection.items;
+      const repeatCandidateNames = repeatSection.state === 'ERROR' ? '名单暂不可用' :
+        repeatCandidates.map(displayPerson).join('、') || '暂无';
+      const attentionSection = optionalItems(attentionRead,
+        isHost && ['CANCELLED', 'EXPIRED'].includes(event.status), '未读提醒');
+      const attentionItems = attentionSection.items.map(item => ({ ...item,
+        displayName: displayPerson(item.userId), kindLabel: statusText(item.kind, 'attention'),
+        externalStatusLabel: statusText(item.externalStatus, 'attention') }));
+      const factSection = optionalItems(factRead, isHost && event.status !== 'DRAFT', '事实待办');
+      const factTodos = factSection.items.map(item => ({ ...item, statusLabel: statusText(item.status, 'fact') }));
+      const contentSection = optionalItems(contentRead, canUseCollaboration, '公告问答记录');
+      const content = contentSection.items;
+      const contentLoadState = contentSection.state;
+      const contentError = contentSection.error;
       let expenses = [];
-      const canReadExpenses = isHost || ['CONFIRMED', 'RECONFIRM_REQUIRED'].includes(myStatus);
-      let expenseLoadState = canReadExpenses ? 'EMPTY' : 'FORBIDDEN';
-      let expenseError = '';
-      if (canReadExpenses) try {
-        const response = await api.get(`/events/${encodeURIComponent(id)}/expenses`);
-        if (!Array.isArray(response.items)) throw new Error('费用记录无效，请重试');
+      const expenseSection = optionalItems(expenseRead, canReadExpenses, '费用记录');
+      let expenseLoadState = expenseSection.state;
+      let expenseError = expenseSection.error;
+      if (expenseLoadState === 'READY') try {
         const consentedNames = new Map(aliases.filter(item => /^[a-f0-9]{16}$/.test(item.id || '') &&
           typeof item.displayName === 'string').map(item => [item.id, item.displayName]));
         const hashAlias = consentedNames.size ? require('../../utils/sha256.js').sha256 : null;
-        expenses = response.items.map(ledger => {
+        expenses = expenseSection.items.map(ledger => {
           const shares = (ledger.shares || []).map((share, index) => ({ ...share,
             displayName: share.userId === actor ? '我的份额' :
               (hashAlias && consentedNames.get(hashAlias(`${id}:${share.userId}`).slice(0, 16))) || `参与者 ${index + 1}`,
             amountYuan: yuanFromFen(share.amountFen) }));
-          return { ...ledger, totalYuan: yuanFromFen(ledger.totalFen), shares,
+          return { ...ledger, statusLabel: statusText(ledger.status, 'expense'),
+            totalYuan: yuanFromFen(ledger.totalFen), shares,
             visibleShares: shares.slice(0, 4), membersExpanded: false, detailsOpen: false, sortByAmount: false };
         });
-        expenseLoadState = expenses.length ? 'READY' : 'EMPTY';
       } catch (error) {
-        expenseLoadState = error.code === 'FORBIDDEN' ? 'FORBIDDEN' : 'ERROR';
+        expenseLoadState = 'ERROR';
         expenseError = error.message || '费用记录加载失败，请重试';
       }
       let manualCheckIns = [];
       let checkIns = [];
-      const canReadAttendance = isHost || cohostCapabilities.length > 0 ||
-        ['INTERESTED', 'REQUESTED', 'WAITLISTED', 'OFFERED', 'CONFIRMED', 'RECONFIRM_REQUIRED'].includes(myStatus);
       let attendanceLoadState = canReadAttendance ? 'EMPTY' : 'FORBIDDEN';
       let attendanceError = '';
       if (canReadAttendance) try {
-        const [manual, scanned] = await Promise.all([
-          api.get(`/events/${encodeURIComponent(id)}/manual-checkins`),
-          api.get(`/events/${encodeURIComponent(id)}/checkins`)
-        ]);
-        if (!Array.isArray(manual.items) || !Array.isArray(scanned.items)) throw new Error('到场记录无效，请重试');
-        manualCheckIns = manual.items;
-        checkIns = scanned.items;
+        if (manualRead.error) throw manualRead.error;
+        if (scannedRead.error) throw scannedRead.error;
+        if (!Array.isArray(manualRead.value?.items) || !Array.isArray(scannedRead.value?.items) ||
+          !manualRead.value.items.every(item => item && typeof item === 'object') ||
+          !scannedRead.value.items.every(item => item && typeof item === 'object'))
+          throw new Error('到场记录无效，请重试');
+        manualCheckIns = manualRead.value.items.map(item => ({ ...item,
+          displayName: displayPerson(item.userId), statusLabel: statusText(item.status, 'manual') }));
+        checkIns = scannedRead.value.items.map(item => ({ ...item,
+          displayName: displayPerson(item.userId), evidenceLabel: statusText(item.evidence, 'evidence'),
+          checkedAtLabel: chinaMomentOrUnknown(item.checkedAt) }));
         attendanceLoadState = manualCheckIns.length || checkIns.length ? 'READY' : 'EMPTY';
       } catch (error) {
         attendanceLoadState = error.code === 'FORBIDDEN' ? 'FORBIDDEN' : 'ERROR';
         attendanceError = error.message || '到场记录加载失败，请重试';
       }
-      const pending = myRegistration?.status === 'RECONFIRM_REQUIRED'
-        ? (await api.get(`/events/${encodeURIComponent(id)}/reconfirmation`)).pending : null;
+      const pending = !reconfirmationRead?.error ? reconfirmationRead?.value?.pending : null;
       const labels = { venueName: '场馆', startAt: '开始时间', endAt: '结束时间', feeCapFen: '费用上限（分）', feeMode: '费用模式',
         minParticipants: '最少人数', maxParticipants: '最多人数', visibility: '可见范围', cancellationRule: '取消规则', city: '城市' };
-      const reconfirmation = pending ? { ...pending, changes: pending.changes.map(change => ({ ...change, label: labels[change.field] || change.field })) } : null;
+      const reconfirmation = pending && Array.isArray(pending.changes) &&
+        pending.changes.every(change => change && typeof change === 'object') ?
+        { ...pending, changes: pending.changes.map(change => ({ ...change, label: labels[change.field] || change.field })) } : null;
+      const reconfirmationLoadState = !needsReconfirmation ? 'IDLE' : reconfirmation ? 'READY' : 'ERROR';
+      const reconfirmationError = reconfirmationLoadState === 'ERROR' ?
+        reconfirmationRead?.error?.message || '新规则确认信息无效，请重试' : '';
       let outcome = null;
       let outcomeLoadState = 'IDLE';
       let outcomeError = '';
-      if (event.status === 'COMPLETED') {
+      if (hasOutcome) {
         try {
-          const response = await api.get(`/events/${encodeURIComponent(id)}/outcome`);
+          if (outcomeRead.error) throw outcomeRead.error;
+          const response = outcomeRead.value;
           if (response?.eventId !== id || typeof response.held !== 'boolean' ||
             !Number.isInteger(response.actualCount) || typeof response.myFeedbackSubmitted !== 'boolean' ||
             !['NOT_HELD', 'HOST_ONLY', 'MEMBER_CORROBORATED', 'DISPUTED'].includes(response.level))
             throw new Error('结项证据无效，请重试');
-          outcome = response;
+          outcome = { ...response, levelLabel: statusText(response.level, 'outcome') };
           outcomeLoadState = 'READY';
         } catch (error) {
           outcomeLoadState = error.code === 'FORBIDDEN' ? 'FORBIDDEN' : 'ERROR';
@@ -383,14 +485,21 @@ Page({
         checkInWindowNotice: timedControls.checkInWindowNotice, checkInAvailability: timedControls.checkInAvailability,
         completionAvailability: timedControls.completionAvailability,
         canApproveRegistration, canManageCheckins, canManageAnnouncements,
-        safetyStatus, myRegistration, registrationLabel, registrations, cohostGrants, aliases, hostAlias,
+        safetyStatus, myRegistration, registrationLabel, registrations,
+        registrationsLoadState: registrationSection.state, registrationsError: registrationSection.error,
+        cohostGrants, cohostGrantsLoadState: cohostSection.state, cohostGrantsError: cohostSection.error,
+        aliases, hostAlias,
         aliasInput: aliases.find(item => item.isMine)?.displayName || '', canSetAlias,
         aliasNoticeVersion: aliasResponse.notice?.version || '', aliasNoticeText: aliasResponse.notice?.text || '',
         aliasReconfirmationRequired: Boolean(aliasResponse.reconfirmationRequired), aliasLoadState, aliasError,
-        shareMetrics, shareSourceToken, repeatCandidates,
-        repeatCandidateNames: repeatCandidates.join('、') || '暂无', attentionItems, factTodos, content, contentLoadState, contentError,
+        shareMetrics, shareMetricsLoadState, shareMetricsError, shareSourceToken,
+        repeatCandidates, repeatCandidatesLoadState: repeatSection.state, repeatCandidatesError: repeatSection.error,
+        repeatCandidateNames, attentionItems, attentionLoadState: attentionSection.state, attentionError: attentionSection.error,
+        factTodos, factTodosLoadState: factSection.state, factTodosError: factSection.error,
+        content, contentLoadState, contentError,
         expenses, expenseLoadState, expenseError,
-        outcome, outcomeLoadState, outcomeError, checkIns, manualCheckIns, attendanceLoadState, attendanceError, reconfirmation,
+        outcome, outcomeLoadState, outcomeError, checkIns, manualCheckIns, attendanceLoadState, attendanceError,
+        reconfirmation, reconfirmationLoadState, reconfirmationError,
         canRequestManualCheckIn, currentUser: actor, message: '' });
       this.updateTimedControls();
       this.reconcileSuccessState();
@@ -403,12 +512,19 @@ Page({
         canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
         canGenerateCheckInToken: false, canCompleteEvent: false, checkInWindowNotice: '', checkInAvailability: '', completionAvailability: '',
         canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
-        myRegistration: null, registrations: [], cohostGrants: [], aliases: [], hostAlias: '', canSetAlias: false,
+        myRegistration: null, registrations: [], registrationsLoadState: 'IDLE', registrationsError: '',
+        cohostGrants: [], cohostGrantsLoadState: 'IDLE', cohostGrantsError: '', aliases: [], hostAlias: '', canSetAlias: false,
         aliasNoticeVersion: '', aliasNoticeText: '', aliasReconfirmationRequired: false, aliasLoadState: 'IDLE', aliasError: '',
         content: [], contentLoadState: 'IDLE', contentError: '', expenses: [], expenseLoadState: 'IDLE', expenseError: '',
         outcome: null, outcomeLoadState: 'IDLE', outcomeError: '', checkIns: [],
-        manualCheckIns: [], attendanceLoadState: 'IDLE', attendanceError: '', reconfirmation: null,
-        attentionItems: [], factTodos: [], shareSourceToken: '', message: error.message || '加载失败' });
+        manualCheckIns: [], attendanceLoadState: 'IDLE', attendanceError: '',
+        reconfirmation: null, reconfirmationLoadState: 'IDLE', reconfirmationError: '',
+        shareMetrics: null, shareMetricsLoadState: 'IDLE', shareMetricsError: '',
+        repeatCandidates: [], repeatCandidatesLoadState: 'IDLE', repeatCandidatesError: '', repeatCandidateNames: '暂无',
+        attentionItems: [], attentionLoadState: 'IDLE', attentionError: '',
+        factTodos: [], factTodosLoadState: 'IDLE', factTodosError: '', shareSourceToken: '',
+        answerQuestionId: '', answerQuestionLabel: '', answerInputFocus: false,
+        message: error.message || '加载失败' });
       return false;
     }
   },
@@ -603,7 +719,8 @@ Page({
   },
   approve(event) { this.action(`/registrations/${event.currentTarget.dataset.id}/approve`, {}, '已审核报名'); },
   cohostUserInput(event) { this.setData({ cohostUserId: event.detail.value.trim() }); },
-  selectCohostMember(event) { this.setData({ cohostUserId: event.currentTarget.dataset.user }); },
+  selectCohostMember(event) { this.setData({ cohostUserId: event.currentTarget.dataset.user,
+    cohostSelectedName: event.currentTarget.dataset.name || '所选参与者' }); },
   cohostCapabilitiesChanged(event) { this.setData({ selectedCohostCapabilities: event.detail.value }); },
   async grantCohost() {
     if (!this.data.isHost || !this.data.event || !this.data.cohostUserId || !this.data.selectedCohostCapabilities.length)
@@ -614,7 +731,7 @@ Page({
         expectedVersion: this.data.event.version, userId: this.data.cohostUserId,
         capabilities: this.data.selectedCohostCapabilities, expiresAt
       });
-      if (await this.refresh()) this.setData({ cohostUserId: '', message: '本场协办权限已授予，可随时撤回。' });
+      if (await this.refresh()) this.setData({ cohostUserId: '', cohostSelectedName: '', message: '本场协办权限已授予，可随时撤回。' });
     } catch (error) { this.setData({ message: error.message || '授权失败' }); }
   },
   async revokeCohost(event) {
@@ -633,7 +750,8 @@ Page({
     const id = event.currentTarget.dataset.id; const userId = event.currentTarget.dataset.user;
     const reason = this.data.removalReason.trim();
     if (reason.length < 5) return this.setData({ message: '请先填写至少 5 字的活动内移除原因' });
-    wx.showModal({ title: '移除参与者', content: `将移除 ${userId}，本人会看到原因并可申诉。原因：${reason}`, success: result => {
+    const displayName = this.data.registrations.find(item => item.id === id && item.user_id === userId)?.displayName || '所选参与者';
+    wx.showModal({ title: '移除参与者', content: `将移除 ${displayName}，本人会看到原因并可申诉。原因：${reason}`, success: result => {
       if (result.confirm) this.action(`/registrations/${id}/remove`, { reason }, '已移除参与者，原因仅本人及运营可见');
     } });
   },
@@ -824,11 +942,26 @@ Page({
   announcementInput(event) { this.setData({ announcementText: event.detail.value }); },
   answerInput(event) { this.setData({ answerText: event.detail.value }); },
   answerQuestionInput(event) { this.setData({ answerQuestionId: event.detail.value.trim() }); },
+  replyToQuestion(event) {
+    if ((!this.data.isHost && !this.data.canManageAnnouncements) || !this.data.event ||
+      !['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(this.data.event.status)) return;
+    const id = event.currentTarget.dataset.id;
+    const question = this.data.content.find(item => item.id === id && item.kind === 'QUESTION' &&
+      item.status === 'APPROVED' && (!item.fact_event_version || item.fact_event_version === this.data.event.version));
+    const todo = this.data.isHost && this.data.factTodos.find(item => item.questionContentId === id && item.status === 'OPEN');
+    if (!question && !todo) return this.setData({ message: '此问题当前不可回复，请刷新后重试' });
+    this.jumpToSection({ currentTarget: { dataset: { section: this.data.isHost ? 'hostSection' : 'cohostContentSection' } } });
+    this.setData({ answerQuestionId: id, answerQuestionLabel: question?.body || todo.question,
+      answerText: '', answerInputFocus: false });
+    if (typeof wx.nextTick === 'function') wx.nextTick(() => this.setData({ answerInputFocus: true }));
+    else this.setData({ answerInputFocus: true });
+  },
   async submitContent(kind, body, parentId) {
     try {
       await api.post(`/events/${this.data.id}/content`, { kind, body, parentId });
       await this.refresh();
-      this.setData({ message: '内容已提交，审核通过后其他成员可见。' });
+      this.setData({ message: '内容已提交，审核通过后其他成员可见。',
+        ...(kind === 'ANSWER' ? { answerQuestionId: '', answerQuestionLabel: '', answerText: '', answerInputFocus: false } : {}) });
     } catch (error) { this.setData({ message: error.message || '提交失败' }); }
   },
   askQuestion() { this.submitContent('QUESTION', this.data.questionText, null); },
@@ -837,7 +970,7 @@ Page({
     wx.switchTab({ url: '/pages/me/me' });
   },
   postAnnouncement() { this.submitContent('ANNOUNCEMENT', this.data.announcementText, null); },
-  answerQuestion() { this.submitContent('ANSWER', this.data.answerText, this.data.answerQuestionId); },
+  answerQuestion() { return this.submitContent('ANSWER', this.data.answerText, this.data.answerQuestionId); },
   setFeedbackHeld(event) { this.setData({ feedbackHeld: event.detail.value === 'yes' ? true : event.detail.value === 'no' ? false : null }); },
   setFeedbackWouldRepeat(event) { this.setData({ feedbackWouldRepeat: event.detail.value === 'yes' ? true : event.detail.value === 'no' ? false : null }); },
   feedbackReasonInput(event) { this.setData({ feedbackReason: event.detail.value }); },

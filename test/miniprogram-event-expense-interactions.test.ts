@@ -14,7 +14,7 @@ function expensePage(ledgers: Ledger[], aliases: Array<{ id: string; displayName
   runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if (path === '../../utils/api.js') return { api: { get: async (route: string) => {
-        if (route === '/me/registrations') return { items: [] };
+        if (route === '/me/registrations?eventId=e1') return { items: [] };
         if (route === '/events/e1') return { id: 'e1', hostId: 'host', version: 2, status: 'CONFIRMED',
           payload: { title: '周末羽毛球', visibility: 'INVITE', feeMode: 'AA', feeCapFen: 2500,
             startAt: '2027-03-22T11:00:00Z', endAt: '2027-03-22T13:00:00Z' } };

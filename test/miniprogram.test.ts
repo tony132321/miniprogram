@@ -1549,7 +1549,7 @@ test('activity page hides new seat actions but keeps the exit path during a glob
         if (url === '/system/safety') return { status: 'CLOSED' };
         if (url === '/events/e1') return { id: 'e1', hostId: 'host', status: 'RECRUITING', recruiting: true,
           version: 2, payload: { startAt: '2027-01-02T12:00:00Z', endAt: '2027-01-02T14:00:00Z' } };
-        if (url === '/me/registrations') return { items: [{ id: 'r1', event_id: 'e1', status: 'CONFIRMED' }] };
+        if (url === '/me/registrations?eventId=e1') return { items: [{ id: 'r1', event_id: 'e1', status: 'CONFIRMED' }] };
         return { items: [] };
       } } };
       if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
@@ -1585,7 +1585,7 @@ test('invitation landing preserves a minimal summary and token across real login
           if (url === '/i/invite-1') return summary;
           if (url === '/events/e1') throw Object.assign(new Error('仅成员可看详情'), { code: 'FORBIDDEN' });
           if (url === '/system/safety') return { status: 'OPEN' };
-          if (url === '/me/registrations') {
+          if (url === '/me/registrations?eventId=e1') {
             if (!session) throw Object.assign(new Error('请先登录'), { code: 'UNAUTHENTICATED' });
             return { items: [] };
           }
@@ -1675,7 +1675,7 @@ test('event page does not render an unknown registration as not registered', asy
   const api = {
     async get(path: string) {
       if (path === '/events/e1') return { id: 'e1', hostId: 'host', status: 'RECRUITING', version: 1, payload: {} };
-      if (path === '/me/registrations') throw new Error('报名状态加载失败，请重试');
+      if (path === '/me/registrations?eventId=e1') throw new Error('报名状态加载失败，请重试');
       throw new Error(`unexpected request ${path}`);
     }
   };
@@ -1857,7 +1857,7 @@ test('returning to the event page refreshes its version and drops a stale share 
           return { id: 'e1', hostId: 'host', status: 'RECRUITING', version: 3, inviteToken: 'invite-2',
             recruiting: true, payload: {} };
         }
-        if (path === '/me/registrations') return { items: [] };
+        if (path === '/me/registrations?eventId=e1') return { items: [] };
         if (path === '/events/e1/share-metrics') return { shareIntents: 1, attributedOpens: 0 };
         return { items: [] };
       } } };
@@ -1891,7 +1891,7 @@ test('event page follows current cohost grant while preserving own participation
           cohostCapabilities: granted ? ['CHECKIN_MANAGE'] : [], payload: {
             startAt: new Date(Date.now() + 15 * 60_000).toISOString(),
             endAt: new Date(Date.now() + 2 * 60 * 60_000).toISOString() } };
-        if (path === '/me/registrations') return { items: [{ id: 'own-seat', event_id: 'e1', status: 'CONFIRMED' }] };
+        if (path === '/me/registrations?eventId=e1') return { items: [{ id: 'own-seat', event_id: 'e1', status: 'CONFIRMED' }] };
         return { items: [] };
       } } };
       if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
@@ -2096,7 +2096,7 @@ test('a slow older event refresh cannot overwrite a newer response', async () =>
           return Promise.resolve({ id: 'e1', hostId: 'host', status: 'RECRUITING', version: 3,
             inviteToken: 'invite-3', recruiting: true, payload: {} });
         }
-        if (path === '/me/registrations') return Promise.resolve({ items: [] });
+        if (path === '/me/registrations?eventId=e1') return Promise.resolve({ items: [] });
         if (path === '/events/e1/share-metrics') return Promise.resolve({ shareIntents: 0, attributedOpens: 0 });
         return Promise.resolve({ items: [] });
       } } };
@@ -2254,7 +2254,7 @@ test('event only reads protected sections for an eligible member or host', async
           payload: { title: '合成活动', visibility: summaryVisibility || 'INVITE',
             startAt: '2027-01-02T12:00:00Z', endAt: '2027-01-02T14:00:00Z', feeMode: 'FREE' } };
         if (route === '/system/safety') return { status: 'OPEN' };
-        if (route === '/me/registrations') return { items: actor === 'member' ? [{ event_id: 'e1', status: 'CONFIRMED' }] : [] };
+        if (route === '/me/registrations?eventId=e1') return { items: actor === 'member' ? [{ event_id: 'e1', status: 'CONFIRMED' }] : [] };
         if (route === '/me/events') return { items: actor === 'host' ? [{ id: 'e1', isHost: true }] :
           actor === 'cohost' && cohostActive ? [{ id: 'e1', isHost: false, isCohost: true }] : [] };
         if (route === '/events/e1/aliases') return { items: [], notice: { version: 'v1', text: '测试说明' } };
@@ -2314,7 +2314,7 @@ test('event expense area distinguishes network failure, empty ledger, and forbid
         if (route === '/events/e1') return { id: 'e1', hostId: 'host', version: 2, status: 'CONFIRMED',
           payload: { startAt: '2027-01-02T12:00:00Z', endAt: '2027-01-02T14:00:00Z', feeMode: 'AA' } };
         if (route === '/system/safety') return { status: 'OPEN' };
-        if (route === '/me/registrations') return { items: [{ event_id: 'e1', status: 'CONFIRMED' }] };
+        if (route === '/me/registrations?eventId=e1') return { items: [{ event_id: 'e1', status: 'CONFIRMED' }] };
         if (route === ledgerPath) {
           if (mode === 'offline') throw Object.assign(new Error('网络中断'), { code: 'NETWORK_ERROR' });
           if (mode === 'forbidden') throw Object.assign(new Error('无权查看费用记录'), { code: 'FORBIDDEN' });
@@ -2363,7 +2363,7 @@ test('event attendance area does not hide failed reads as no check-ins', async (
         if (route === '/events/e1') return { id: 'e1', hostId: 'host', version: 2, status: 'CONFIRMED',
           payload: { startAt: '2027-01-02T12:00:00Z', endAt: '2027-01-02T14:00:00Z', feeMode: 'FREE' } };
         if (route === '/system/safety') return { status: 'OPEN' };
-        if (route === '/me/registrations') return { items: [{ event_id: 'e1', status: 'CONFIRMED' }] };
+        if (route === '/me/registrations?eventId=e1') return { items: [{ event_id: 'e1', status: 'CONFIRMED' }] };
         if (route === '/events/e1/manual-checkins' && mode === 'manual-offline')
           throw Object.assign(new Error('人工补记网络中断'), { code: 'NETWORK_ERROR' });
         if (route === '/events/e1/checkins') {
@@ -2413,7 +2413,7 @@ test('event discussion area distinguishes failed reads from a genuinely empty di
         if (route === '/events/e1') return { id: 'e1', hostId: 'host', version: 2, status: 'CONFIRMED',
           payload: { startAt: '2027-01-02T12:00:00Z', endAt: '2027-01-02T14:00:00Z', feeMode: 'FREE' } };
         if (route === '/system/safety') return { status: 'OPEN' };
-        if (route === '/me/registrations') return { items: [{ event_id: 'e1', status: 'CONFIRMED' }] };
+        if (route === '/me/registrations?eventId=e1') return { items: [{ event_id: 'e1', status: 'CONFIRMED' }] };
         if (route === '/events/e1/content') {
           if (mode === 'offline') throw Object.assign(new Error('公告问答网络中断'), { code: 'NETWORK_ERROR' });
           if (mode === 'forbidden') throw Object.assign(new Error('无权查看公告问答'), { code: 'FORBIDDEN' });
@@ -2461,7 +2461,7 @@ test('completed event keeps outcome read failure visible so feedback can be retr
         if (route === '/events/e1') return { id: 'e1', hostId: 'host', version: 2, status: 'COMPLETED',
           payload: { startAt: '2026-01-02T12:00:00Z', endAt: '2026-01-02T14:00:00Z', feeMode: 'FREE' } };
         if (route === '/system/safety') return { status: 'OPEN' };
-        if (route === '/me/registrations') return { items: [{ event_id: 'e1', status: 'CONFIRMED' }] };
+        if (route === '/me/registrations?eventId=e1') return { items: [{ event_id: 'e1', status: 'CONFIRMED' }] };
         if (route === '/events/e1/outcome') {
           if (mode === 'offline') throw Object.assign(new Error('结项证据网络中断'), { code: 'NETWORK_ERROR' });
           if (mode === 'forbidden') throw Object.assign(new Error('无权查看结项证据'), { code: 'FORBIDDEN' });

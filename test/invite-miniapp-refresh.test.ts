@@ -16,7 +16,7 @@ test('known member activity opens by id when its invitation summary is withheld 
     if (path.startsWith('/i/')) throw Object.assign(new Error('邀请暂不可用'), { code: 'NOT_FOUND' });
     if (path === '/events/member-event') return event;
     if (path === '/system/safety') return { status: 'OPEN' };
-    if (path === '/me/registrations') return { items: [{ id: 'member-reg', event_id: event.id, status: 'CONFIRMED' }] };
+    if (path === '/me/registrations?eventId=member-event') return { items: [{ id: 'member-reg', event_id: event.id, status: 'CONFIRMED' }] };
     return { items: [] };
   } };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
