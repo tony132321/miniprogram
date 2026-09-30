@@ -65,6 +65,30 @@ function chinaMomentOrUnknown(value) {
   const timestamp = Date.parse(value || '');
   return Number.isFinite(timestamp) ? chinaMoment(timestamp) : '时间待确认';
 }
+function contentTimeline(items, displayPerson, hostId, actor, ownAlias) {
+  const rows = items.map(item => {
+    const isSystem = item.author_id === 'system';
+    const isHostAuthor = !isSystem && item.author_id === hostId;
+    return { ...item,
+      authorName: isSystem ? '系统更新' : item.author_id === actor && ownAlias ? ownAlias : displayPerson(item.author_id),
+      authorRole: isSystem ? '系统更新' : isHostAuthor ? '主办方' : '活动成员',
+      avatarGlyph: isSystem ? '✦' : isHostAuthor ? '主' : '友',
+      timeLabel: chinaMomentOrUnknown(item.created_at),
+      statusLabel: { APPROVED: '', PENDING_REVIEW: '审核中 · 仅自己可见', REJECTED: '未通过 · 仅自己可见' }[item.status] ?? '状态待核对',
+      replies: [] };
+  });
+  const byId = new Map(rows.map(item => [item.id, item]));
+  const topLevel = [];
+  for (const row of rows) {
+    const parent = row.kind === 'ANSWER' && row.parent_id ? byId.get(row.parent_id) : null;
+    if (parent?.kind === 'QUESTION') parent.replies.push(row);
+    else topLevel.push(row);
+  }
+  const newestFirst = (a, b) => (Date.parse(b.created_at || '') || 0) - (Date.parse(a.created_at || '') || 0);
+  topLevel.sort(newestFirst);
+  for (const row of topLevel) row.replies.sort(newestFirst);
+  return topLevel;
+}
 function visibleExpenseShares(ledger) {
   const shares = ledger.sortByAmount
     ? ledger.shares.map((share, index) => ({ share, index }))
@@ -170,7 +194,7 @@ Page({
     canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
     myRegistration: null, registrations: [], registrationsLoadState: 'IDLE', registrationsError: '',
     cohostGrants: [], cohostGrantsLoadState: 'IDLE', cohostGrantsError: '', cohostUserId: '', cohostSelectedName: '',
-    selectedCohostCapabilities: ['CHECKIN_MANAGE'], aliases: [],
+    selectedCohostCapabilities: ['CHECKIN_MANAGE'], aliases: [], memberCards: [], confirmedRoster: [],
     safetyStatus: 'UNKNOWN',
     hostAlias: '', aliasInput: '', canSetAlias: false, aliasNoticeVersion: '', aliasNoticeText: '',
     aliasReconfirmationRequired: false, aliasLoadState: 'IDLE', aliasError: '',
@@ -179,7 +203,7 @@ Page({
     attentionItems: [], attentionLoadState: 'IDLE', attentionError: '',
     factTodos: [], factTodosLoadState: 'IDLE', factTodosError: '', message: '',
     reservationToken: '', reservationTokens: [], checkInToken: '', displayedCheckInToken: '', checkInExpiresIn: 0,
-    totalYuan: '', actualCount: '', completionHeld: null, completionAnomaly: '', completionVenueIssue: '', content: [], contentLoadState: 'IDLE', contentError: '',
+    totalYuan: '', actualCount: '', completionHeld: null, completionAnomaly: '', completionVenueIssue: '', content: [], contentTimeline: [], contentLoadState: 'IDLE', contentError: '',
     expenses: [], expenseLoadState: 'IDLE', expenseError: '', outcome: null, outcomeLoadState: 'IDLE', outcomeError: '',
     checkIns: [], manualCheckIns: [], attendanceLoadState: 'IDLE', attendanceError: '',
     reconfirmation: null, reconfirmationLoadState: 'IDLE', reconfirmationError: '',
@@ -216,12 +240,12 @@ Page({
         safetyStatus: 'UNKNOWN', myRegistration: null,
         registrations: [], registrationsLoadState: 'IDLE', registrationsError: '',
         cohostGrants: [], cohostGrantsLoadState: 'IDLE', cohostGrantsError: '', cohostUserId: '', cohostSelectedName: '',
-        selectedCohostCapabilities: ['CHECKIN_MANAGE'], aliases: [], hostAlias: '', aliasInput: '', canSetAlias: false,
+        selectedCohostCapabilities: ['CHECKIN_MANAGE'], aliases: [], memberCards: [], confirmedRoster: [], hostAlias: '', aliasInput: '', canSetAlias: false,
         aliasNoticeVersion: '', aliasNoticeText: '', aliasReconfirmationRequired: false, aliasLoadState: 'IDLE', aliasError: '',
         shareMetrics: null, shareMetricsLoadState: 'IDLE', shareMetricsError: '', shareSourceToken: '',
         preparingShare: false, repeatCandidates: [], repeatCandidatesLoadState: 'IDLE', repeatCandidatesError: '',
         repeatCandidateNames: '暂无', attentionItems: [], attentionLoadState: 'IDLE', attentionError: '',
-        factTodos: [], factTodosLoadState: 'IDLE', factTodosError: '', content: [], contentLoadState: 'IDLE', contentError: '',
+        factTodos: [], factTodosLoadState: 'IDLE', factTodosError: '', content: [], contentTimeline: [], contentLoadState: 'IDLE', contentError: '',
         expenses: [], expenseLoadState: 'IDLE', expenseError: '', outcome: null, outcomeLoadState: 'IDLE', outcomeError: '',
         checkIns: [], manualCheckIns: [], attendanceLoadState: 'IDLE', attendanceError: '',
         reconfirmation: null, reconfirmationLoadState: 'IDLE', reconfirmationError: '', canRequestManualCheckIn: false,
@@ -372,6 +396,11 @@ Page({
       const registrationSection = optionalItems(registrationRead, canReadRegistrations, '报名名单');
       const registrations = registrationSection.items.map(item => ({ ...item,
         displayName: displayPerson(item.user_id), statusLabel: statusText(item.status, 'registration') }));
+      const confirmedRoster = registrations.filter(item => item.status === 'CONFIRMED').map(item => ({ ...item,
+        avatarGlyph: item.displayName === '我' ? '我' : '友' }));
+      const memberCards = aliases.map(item => ({ ...item,
+        avatarGlyph: item.isHost ? '主' : item.isMine ? '我' : '友',
+        roleLabel: item.isHost ? '主办方' : item.isMine ? '本人' : '已授权昵称' }));
       const cohostSection = optionalItems(cohostRead, isHost, '协办权限');
       const cohostGrants = cohostSection.items.map(grant => ({ ...grant,
         displayName: displayPerson(grant.userId),
@@ -401,6 +430,8 @@ Page({
       const factTodos = factSection.items.map(item => ({ ...item, statusLabel: statusText(item.status, 'fact') }));
       const contentSection = optionalItems(contentRead, canUseCollaboration, '公告问答记录');
       const content = contentSection.items;
+      const timeline = contentTimeline(content, displayPerson, event.hostId, actor,
+        aliases.find(item => item.isMine)?.displayName);
       const contentLoadState = contentSection.state;
       const contentError = contentSection.error;
       let expenses = [];
@@ -485,7 +516,7 @@ Page({
         checkInWindowNotice: timedControls.checkInWindowNotice, checkInAvailability: timedControls.checkInAvailability,
         completionAvailability: timedControls.completionAvailability,
         canApproveRegistration, canManageCheckins, canManageAnnouncements,
-        safetyStatus, myRegistration, registrationLabel, registrations,
+        safetyStatus, myRegistration, registrationLabel, registrations, confirmedRoster, memberCards,
         registrationsLoadState: registrationSection.state, registrationsError: registrationSection.error,
         cohostGrants, cohostGrantsLoadState: cohostSection.state, cohostGrantsError: cohostSection.error,
         aliases, hostAlias,
@@ -496,7 +527,7 @@ Page({
         repeatCandidates, repeatCandidatesLoadState: repeatSection.state, repeatCandidatesError: repeatSection.error,
         repeatCandidateNames, attentionItems, attentionLoadState: attentionSection.state, attentionError: attentionSection.error,
         factTodos, factTodosLoadState: factSection.state, factTodosError: factSection.error,
-        content, contentLoadState, contentError,
+        content, contentTimeline: timeline, contentLoadState, contentError,
         expenses, expenseLoadState, expenseError,
         outcome, outcomeLoadState, outcomeError, checkIns, manualCheckIns, attendanceLoadState, attendanceError,
         reconfirmation, reconfirmationLoadState, reconfirmationError,
@@ -513,9 +544,9 @@ Page({
         canGenerateCheckInToken: false, canCompleteEvent: false, checkInWindowNotice: '', checkInAvailability: '', completionAvailability: '',
         canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
         myRegistration: null, registrations: [], registrationsLoadState: 'IDLE', registrationsError: '',
-        cohostGrants: [], cohostGrantsLoadState: 'IDLE', cohostGrantsError: '', aliases: [], hostAlias: '', canSetAlias: false,
+        cohostGrants: [], cohostGrantsLoadState: 'IDLE', cohostGrantsError: '', aliases: [], memberCards: [], confirmedRoster: [], hostAlias: '', canSetAlias: false,
         aliasNoticeVersion: '', aliasNoticeText: '', aliasReconfirmationRequired: false, aliasLoadState: 'IDLE', aliasError: '',
-        content: [], contentLoadState: 'IDLE', contentError: '', expenses: [], expenseLoadState: 'IDLE', expenseError: '',
+        content: [], contentTimeline: [], contentLoadState: 'IDLE', contentError: '', expenses: [], expenseLoadState: 'IDLE', expenseError: '',
         outcome: null, outcomeLoadState: 'IDLE', outcomeError: '', checkIns: [],
         manualCheckIns: [], attendanceLoadState: 'IDLE', attendanceError: '',
         reconfirmation: null, reconfirmationLoadState: 'IDLE', reconfirmationError: '',

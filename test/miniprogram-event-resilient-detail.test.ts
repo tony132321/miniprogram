@@ -169,6 +169,65 @@ test('reply button sends the selected approved question ID and clears the compos
   assert.equal(page.data.answerText, '');
 });
 
+test('PG07 timeline groups approved replies with their real question and labels authors without exposing IDs', async () => {
+  const hostAlias = createHash('sha256').update('e1:host').digest('hex').slice(0, 16);
+  const page = pageWithReads(async route => {
+    if (route === '/events/e1') return event;
+    if (route === '/me/registrations?eventId=e1') return { items: [] };
+    if (route === '/system/safety') return { status: 'OPEN' };
+    if (route === '/events/e1/aliases') return { items: [{ id: hostAlias, displayName: 'Luna', isHost: true, isMine: true }],
+      notice: { version: 'v1', text: '说明' } };
+    if (route === '/events/e1/content') return { items: [
+      { id: 'q1', event_id: 'e1', author_id: 'member-secret', kind: 'QUESTION', parent_id: null,
+        body: '需要自带球拍吗？', status: 'APPROVED', created_at: '2026-09-30T08:00:00Z' },
+      { id: 'a1', event_id: 'e1', author_id: 'host', kind: 'ANSWER', parent_id: 'q1',
+        body: '请自带球拍。', status: 'APPROVED', created_at: '2026-09-30T08:15:00Z' },
+      { id: 's1', event_id: 'e1', author_id: 'system', kind: 'ANNOUNCEMENT', parent_id: null,
+        body: '活动人数已达到要求。', status: 'APPROVED', created_at: '2026-09-30T09:00:00Z' },
+      { id: 'p1', event_id: 'e1', author_id: 'host', kind: 'ANNOUNCEMENT', parent_id: null,
+        body: '集合点待确认。', status: 'PENDING_REVIEW', created_at: '2026-09-30T10:00:00Z' }
+    ] };
+    return { items: [] };
+  });
+  assert.equal(await page.refresh(), true);
+  assert.deepEqual(Array.from(page.data.contentTimeline, (row: Record<string, any>) => row.id), ['p1', 's1', 'q1']);
+  assert.equal(page.data.contentTimeline[0].statusLabel, '审核中 · 仅自己可见');
+  assert.equal(page.data.contentTimeline[0].authorName, 'Luna');
+  assert.equal(page.data.contentTimeline[1].authorName, '系统更新');
+  assert.equal(page.data.contentTimeline[2].authorName, '参与者 1');
+  assert.equal(page.data.contentTimeline[2].statusLabel, '');
+  assert.equal(page.data.contentTimeline[2].replies[0].id, 'a1');
+  assert.equal(page.data.contentTimeline[2].replies[0].authorName, 'Luna');
+  assert.equal(page.data.contentTimeline[2].replies[0].body, '请自带球拍。');
+});
+
+test('PG06 confirmed roster excludes pending seats while member cards use only opted-in aliases', async () => {
+  const confirmedAlias = createHash('sha256').update('e1:member-confirmed').digest('hex').slice(0, 16);
+  const waitingAlias = createHash('sha256').update('e1:member-waiting').digest('hex').slice(0, 16);
+  const page = pageWithReads(async route => {
+    if (route === '/events/e1') return event;
+    if (route === '/me/registrations?eventId=e1') return { items: [] };
+    if (route === '/system/safety') return { status: 'OPEN' };
+    if (route === '/events/e1/aliases') return { items: [
+      { id: confirmedAlias, displayName: '阿北', isHost: false, isMine: false },
+      { id: waitingAlias, displayName: '候补昵称', isHost: false, isMine: false }
+    ], notice: { version: 'v1', text: '说明' } };
+    if (route === '/events/e1/registrations') return { items: [
+      { id: 'registration-confirmed', user_id: 'member-confirmed', status: 'CONFIRMED' },
+      { id: 'registration-anonymous', user_id: 'member-anonymous', status: 'CONFIRMED' },
+      { id: 'registration-waiting', user_id: 'member-waiting', status: 'WAITLISTED' }
+    ] };
+    return { items: [] };
+  });
+  assert.equal(await page.refresh(), true);
+  assert.deepEqual(Array.from(page.data.confirmedRoster, (row: Record<string, any>) => row.displayName),
+    ['阿北', '参与者 1']);
+  assert.equal(page.data.confirmedRoster.length, 2);
+  assert.deepEqual(Array.from(page.data.memberCards, (row: Record<string, any>) => row.displayName),
+    ['阿北', '候补昵称']);
+  assert.ok(!page.data.memberCards.some((row: Record<string, any>) => row.displayName === '参与者 1'));
+});
+
 test('cancelled-event follow-up list shows an anonymous member and readable delivery state', async () => {
   const page = pageWithReads(async route => {
     if (route === '/events/e1') return { ...event, status: 'CANCELLED' };
