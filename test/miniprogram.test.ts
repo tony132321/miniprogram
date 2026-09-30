@@ -594,7 +594,9 @@ test('profile refreshes changed consent text after a stale-version denial', asyn
       if (path === '../../config.js') return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
-    Page(definition: Record<string, any>) { page = definition; }
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: { getStorageSync(key: string) { return key === 'sessionToken' ? 'member-token'
+      : key === 'userId' ? 'member' : ''; }, setStorageSync() {} }
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
@@ -609,17 +611,37 @@ test('profile refreshes changed consent text after a stale-version denial', asyn
 
 test('profile clears reconfirmation prompts after a successful fresh consent', async () => {
   let page: Record<string, any> | undefined;
-  const api = { async post() { return { granted: true }; } };
+  let reminder = false;
+  let similar = false;
+  const api = {
+    async get(path: string) {
+      if (path === '/me/consents') return { eventReminder: reminder,
+        eventReminderNotice: { text: '提醒说明', version: 'current-1' } };
+      if (path === '/me/similar-invites') return { granted: similar,
+        notice: { text: '候选说明', version: 'current-2' } };
+      if (path === '/me/notifications?offset=0') return { items: [], total: 0,
+        nextOffset: null, snapshot: 'a'.repeat(32) };
+      return { items: [] };
+    },
+    async post(path: string, body: Record<string, any>) {
+      if (path === '/me/consents') reminder = body.eventReminder;
+      if (path === '/me/similar-invites') similar = body.granted;
+      return { granted: true };
+    }
+  };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if (path === '../../utils/api.js') return { api };
       if (path === '../../config.js') return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
-    Page(definition: Record<string, any>) { page = definition; }
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: { getStorageSync(key: string) { return key === 'sessionToken' ? 'member-token'
+      : key === 'userId' ? 'member' : ''; }, setStorageSync() {} }
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  await page.refresh();
   page.setData({ eventReminderNeedsReconfirmation: true, similarInvitesNeedsReconfirmation: true,
     eventReminderNoticeVersion: 'current-1', similarInvitesNoticeVersion: 'current-2' });
   await page.toggleReminder({ detail: { value: true } });

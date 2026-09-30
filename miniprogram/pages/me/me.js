@@ -16,6 +16,7 @@ const reportKindLabels = { SAFETY: '安全举报', CONTENT: '内容举报', ATTE
 const contentKindLabels = { ANNOUNCEMENT: '活动公告', QUESTION: '活动提问', ANSWER: '主办方回复' };
 const defaultEventReminderNotice = '允许发送活动提醒；站内通知始终可查看，外部消息是否可用以实际服务配置为准。';
 const defaultSimilarInvitesNotice = '允许旧活动主办方在结项后看到自己的活动内身份并将自己列入类似活动邀请候选；不会自动发送邀请。';
+const profileConsentRecoveryKey = 'irlProfileConsentRecoveryV1';
 const maxOfferFocusPages = 5;
 function emptySectionLoadErrors() {
   return { notifications: false, privacy: false, blocks: false, removals: false, reports: false,
@@ -58,6 +59,56 @@ const profileConsentActions = {
     path: '/me/similar-invites', payloadField: 'granted',
     successOn: '已允许类似活动候选名单收录', successOff: '已撤回类似活动候选名单同意' }
 };
+function consentOwner(identity) {
+  if (!identity) return '';
+  if (identity[0]) return 'session:' + (identity[1] || identity[0]);
+  const devUser = identity[2] || config.developmentUser;
+  return devUser ? 'dev:' + devUser : '';
+}
+function readConsentRecovery() {
+  try {
+    const saved = wx.getStorageSync(profileConsentRecoveryKey);
+    return saved && typeof saved === 'object' && !Array.isArray(saved) ? { ...saved } : {};
+  } catch (_) { return {}; }
+}
+function savedConsentKey(identity, kind) { return consentOwner(identity) + ':' + kind; }
+function saveConsentRecovery(kind, operation) {
+  if (!consentOwner(operation.identity) || typeof wx.setStorageSync !== 'function') return false;
+  const saved = readConsentRecovery();
+  saved[savedConsentKey(operation.identity, kind)] = { granted: operation.granted, payload: operation.payload };
+  try { wx.setStorageSync(profileConsentRecoveryKey, saved); return true; }
+  catch (_) { return false; }
+}
+function clearConsentRecovery(kind, operation) {
+  const saved = readConsentRecovery();
+  const key = savedConsentKey(operation.identity, kind);
+  const recorded = saved[key];
+  if (!recorded || JSON.stringify(recorded.payload) !== JSON.stringify(operation.payload)) return;
+  delete saved[key];
+  try { wx.setStorageSync(profileConsentRecoveryKey, saved); } catch (_) { /* Retry remains safe. */ }
+}
+function clearConsentRecoveryForIdentity(identity) {
+  if (!consentOwner(identity)) return;
+  const saved = readConsentRecovery();
+  for (const kind of Object.keys(profileConsentActions))
+    delete saved[savedConsentKey(identity, kind)];
+  try { wx.setStorageSync(profileConsentRecoveryKey, saved); } catch (_) { /* The page remains signed out. */ }
+}
+function recoverConsentOperations(page, identity) {
+  const saved = readConsentRecovery();
+  const operations = page._consentOperations || (page._consentOperations = {});
+  for (const [kind, action] of Object.entries(profileConsentActions)) {
+    if (operations[kind]) continue;
+    const recorded = saved[savedConsentKey(identity, kind)];
+    if (!recorded || typeof recorded.granted !== 'boolean' ||
+      !recorded.payload || typeof recorded.payload !== 'object' ||
+      recorded.payload[action.payloadField] !== recorded.granted ||
+      typeof recorded.payload.noticeVersion !== 'string') continue;
+    operations[kind] = { identity, granted: recorded.granted,
+      previous: page.data[action.field], payload: recorded.payload };
+    page.setData({ [action.uncertain]: true, [action.pending]: false });
+  }
+}
 function uncertainConsentResponse(error) {
   return error?.code === 'NETWORK_ERROR' || (Number.isInteger(error?.status) &&
     (error.status < 400 || error.status === 408 || error.status >= 500));
@@ -81,6 +132,11 @@ async function submitProfileConsent(page, kind, granted, retry = false) {
     }
     operation = { identity, granted: Boolean(granted), previous: page.data[action.field],
       payload: { [action.payloadField]: Boolean(granted), noticeVersion: page.data[action.notice] } };
+    if (!saveConsentRecovery(kind, operation)) {
+      page.setData({ [action.field]: operation.previous,
+        message: '本地存储不可用，授权尚未提交，请恢复存储后重试。' });
+      return;
+    }
     operations[kind] = operation;
   }
   const current = () => page._consentOperations === operations && operations[kind] === operation &&
@@ -91,14 +147,20 @@ async function submitProfileConsent(page, kind, granted, retry = false) {
   try {
     await api.post(action.path, operation.payload);
     if (!current()) return;
-    if (originalRefreshGeneration !== (page._refreshGeneration || 0)) await page.refresh();
+    const loaded = await page.refresh();
     if (!current()) return;
     delete operations[kind];
-    page.setData({ [action.field]: operation.granted, [action.reconfirm]: false,
-      [action.pending]: false, [action.uncertain]: false,
-      message: operation.granted ? action.successOn : action.successOff });
+    clearConsentRecovery(kind, operation);
+    const consentReady = page.data[kind === 'reminder' ? 'consentLoadState' : 'similarInviteLoadState'] === 'READY';
+    const confirmed = loaded && consentReady && page.data[action.field] === operation.granted &&
+      page.data[action.reconfirm] === false;
+    page.setData({ [action.pending]: false, [action.uncertain]: false,
+      message: confirmed ? (operation.granted ? action.successOn : action.successOff)
+        : !loaded || !consentReady ? '授权提交已受理，但当前状态未能确认，请重新加载。'
+          : '授权提交结果与当前状态不一致，已显示服务端状态；如需更改，请重新操作。' });
   } catch (error) {
     if (!current()) return;
+    if (!uncertainConsentResponse(error)) clearConsentRecovery(kind, operation);
     if (page.handlePrivateAccessError(error)) return;
     if (uncertainConsentResponse(error)) {
       page.setData({ [action.field]: operation.previous, [action.pending]: false,
@@ -113,7 +175,9 @@ async function submitProfileConsent(page, kind, granted, retry = false) {
     }
     delete operations[kind];
     page.setData({ [action.pending]: false, [action.uncertain]: false,
-      ...(error?.code === 'CONSENT_NOTICE_CHANGED' ? {} : { [action.field]: operation.previous }),
+      ...(error?.code === 'CONSENT_NOTICE_CHANGED' ||
+        originalRefreshGeneration !== (page._refreshGeneration || 0)
+        ? {} : { [action.field]: operation.previous }),
       message: error?.code === 'CONSENT_NOTICE_CHANGED'
         ? '授权说明已更新，请重新阅读后确认。' : error?.message || '授权未完成，请重试。' });
   }
@@ -391,6 +455,7 @@ Page({
         sectionLoadErrors, loadState: errors === 0 ? 'READY' : errors === results.length ? 'ERROR' : 'PARTIAL',
         message: errors === results.length ? (results.find(result => result.status === 'rejected')?.reason?.message || '加载失败，请重试。')
           : errors ? '部分内容加载失败，请点击重新加载。' : '' });
+      recoverConsentOperations(this, identity);
       return errors < results.length;
     } catch (_) {
       if (generation === this._refreshGeneration) {
@@ -570,8 +635,10 @@ Page({
     }
   },
   async logout() {
+    const identity = readProfileIdentity();
     try {
       await api.logout();
+      clearConsentRecoveryForIdentity(identity);
       this.clearPrivateData();
       this._privateActor = null;
       this.setData({ hasSession: false, message: '已退出登录' });
