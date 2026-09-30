@@ -1,5 +1,6 @@
 @import "../common.wxss";
 .moments-page { padding-left: 24rpx; padding-right: 24rpx; padding-bottom: calc(180rpx + env(safe-area-inset-bottom)); }
+.moments-status-backdrop { position: fixed; top: 0; left: 0; right: 0; z-index: 12; background: #faf9fd; }
 .moments-page .pg10-header { position: sticky; z-index: 11; box-sizing: border-box; margin-left: -24rpx; margin-right: -24rpx; padding-left: 25rpx; height: 92rpx; }
 .moments-page .pg10-header-title { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-weight: 600; }
 .moments-header-actions { display: flex; flex: none; align-items: center; gap: 6rpx; }
