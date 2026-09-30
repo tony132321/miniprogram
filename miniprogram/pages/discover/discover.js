@@ -3,10 +3,10 @@ const config = require('../../config.js');
 const { defaultCity, selectedCity } = require('../../utils/city.js');
 
 const inspirationCards = [
-  { title: '城市漫步 · 滨江日落', subtitle: '把周末还给真实风景', image: '/assets/stitch/caper_discover_citywalk.jpg', tag: '城市 · 户外', sticker: 'CITY WALK', stickerNote: 'TOGETHER ☺', tags: ['城市', '户外'] },
-  { title: '周末篮球局', subtitle: '约上球友，痛快打一场', image: '/assets/stitch/caper_discover_basketball.jpg', tag: '运动 · 球局', sticker: 'BASKETBALL', stickerNote: 'NEVER ALONE!', tags: ['运动', '社交'] },
-  { title: '咖啡聊天会', subtitle: '从一杯咖啡开始认识彼此', image: '/assets/stitch/caper_discover_coffee.jpg', tag: '美食 · 社交', sticker: 'GOOD COFFEE', stickerNote: 'BETTER PEOPLE', tags: ['美食', '社交'] },
-  { title: '周五桌游局', subtitle: '一起开局，一起笑出声', image: '/assets/stitch/caper_discover_boardgame.jpg', tag: '兴趣 · 桌游', sticker: 'BOARD GAME', stickerNote: 'GOOD TIMES ☺', tags: ['桌游', '社交'] }
+  { title: '城市漫步 · 滨江日落', subtitle: '把周末还给真实风景', image: '/assets/stitch/caper_discover_citywalk.jpg', tag: '城市 · 户外', stickerVariant: 'city', stickerLines: ['CITY', 'WALK'], stickerNoteLines: ['TOGETHER ☺'], tags: ['城市', '户外'] },
+  { title: '周末篮球局', subtitle: '约上球友，痛快打一场', image: '/assets/stitch/caper_discover_basketball.jpg', tag: '运动 · 球局', stickerVariant: 'basketball', stickerLines: ['👑 BASKETBALL'], stickerNoteLines: ['NEVER', 'ALONE !'], tags: ['运动', '社交'] },
+  { title: '咖啡聊天会', subtitle: '从一杯咖啡开始认识彼此', image: '/assets/stitch/caper_discover_coffee.jpg', tag: '美食 · 社交', stickerVariant: 'coffee', stickerLines: ['GOOD COFFEE'], stickerNoteLines: ['BETTER', 'PEOPLE'], tags: ['美食', '社交'] },
+  { title: '周五桌游局', subtitle: '一起开局，一起笑出声', image: '/assets/stitch/caper_discover_boardgame.jpg', tag: '兴趣 · 桌游', stickerVariant: 'boardgame', stickerLines: ['BOARD GAME'], stickerNoteLines: ['GOOD TIMES ☺'], tags: ['桌游', '社交'] }
 ];
 const recommendationSets = [
   [
