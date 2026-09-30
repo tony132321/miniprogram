@@ -158,7 +158,7 @@ function cardPresentation(item, group) {
 Page({
   data: { items: [], organized: [], cohosting: [], pending: [], attending: [], history: [],
     tabs, categoryIdeas, activeTab: 'attending', stateView: false, draftsOnly: false,
-    visibleItems: [], featuredItem: null,
+    visibleItems: [], featuredItem: null, heroIdeaText: '', unreadTotal: 0,
     homePreviewItems: [],
     headerPaddingRight: headerPaddingRight(),
     city: '上海', statusBarHeight: typeof wx.getSystemInfoSync === 'function'
@@ -182,9 +182,10 @@ Page({
     }
     const generation = this._loadGeneration = (this._loadGeneration || 0) + 1;
     let identity = currentIdentity();
+    this.setData({ unreadTotal: 0 });
     if (this._shownIdentity !== identity) {
       this._shownIdentity = identity;
-      this.setData({ items: [], organized: [], cohosting: [], pending: [], attending: [], history: [], visibleItems: [], featuredItem: null, homePreviewItems: [], message: '' });
+      this.setData({ items: [], organized: [], cohosting: [], pending: [], attending: [], history: [], visibleItems: [], featuredItem: null, homePreviewItems: [], heroIdeaText: '', message: '' });
     }
     this.setData({ loadState: 'LOADING', errorCode: '', message: '' });
     try {
@@ -194,8 +195,9 @@ Page({
       if (identity !== authenticatedIdentity) {
         identity = authenticatedIdentity;
         this._shownIdentity = identity;
-        this.setData({ items: [], organized: [], cohosting: [], pending: [], attending: [], history: [], visibleItems: [], featuredItem: null, homePreviewItems: [], message: '' });
+        this.setData({ items: [], organized: [], cohosting: [], pending: [], attending: [], history: [], visibleItems: [], featuredItem: null, homePreviewItems: [], heroIdeaText: '', message: '' });
       }
+      this.refreshUnread(identity, generation);
       const result = await api.get('/me/events');
       if (generation !== this._loadGeneration || identity !== currentIdentity()) return;
       if (!Array.isArray(result.items)) throw new Error('活动列表无效，请重试');
@@ -222,6 +224,17 @@ Page({
     } catch (error) {
       if (generation === this._loadGeneration && identity === currentIdentity())
         this.setData({ loadState: 'ERROR', errorCode: error.code || '', message: error.message || '活动列表加载失败' });
+    }
+  },
+  async refreshUnread(identity, generation) {
+    try {
+      const page = await api.get('/me/notifications?offset=0');
+      if (generation !== this._loadGeneration || identity !== currentIdentity()) return;
+      const count = page?.unreadTotal;
+      this.setData({ unreadTotal: Number.isSafeInteger(count) && count > 0 ? count : 0 });
+    } catch (_) {
+      if (generation === this._loadGeneration && identity === currentIdentity())
+        this.setData({ unreadTotal: 0 });
     }
   },
   async selectTab(event) {
@@ -259,6 +272,31 @@ Page({
     }
   },
   goCreate() { wx.switchTab({ url: '/pages/create/create' }); },
+  heroIdeaInput(event) { this.setData({ heroIdeaText: String(event?.detail?.value || '').slice(0, 300) }); },
+  async submitHeroIdea() {
+    const text = String(this.data.heroIdeaText || '').trim();
+    if (this._heroSubmitting) return;
+    const identityAtTap = currentIdentity();
+    const canFinishInitialLogin = identityAtTap === 'dev:' && !config.developmentUser &&
+      !wx.getStorageSync('sessionSignedOut');
+    this._heroSubmitting = true;
+    try {
+      if (text) await getApp().globalData.ready;
+      const owner = currentIdentity();
+      if (owner !== identityAtTap && !(canFinishInitialLogin && owner.startsWith('user:') && owner.length > 5)) {
+        this.setData({ heroIdeaText: '', availabilityMessage: '账号已切换，之前输入的想法未转给新账号；请重新输入。' });
+        return;
+      }
+      wx.removeStorageSync('irlHomeIdeaIntent');
+      if (text) wx.setStorageSync('irlHomeIdeaIntent', { owner, text });
+      this.setData({ availabilityMessage: '' });
+      this.goCreate();
+    } catch (_) {
+      this.setData({ availabilityMessage: '暂时无法确认账号或保存这句话，请重试或直接前往发起页。' });
+    } finally {
+      this._heroSubmitting = false;
+    }
+  },
   goCity() { wx.navigateTo({ url: '/pages/city/city' }); },
   goDiscover() { wx.switchTab({ url: '/pages/discover/discover' }); },
   openCategory(event) {

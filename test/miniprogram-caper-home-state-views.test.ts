@@ -34,6 +34,8 @@ function makeHome(lists: Record<string, ListedEvent[]>,
       if (path === '../../utils/api.js') return { api: { get: async (route: string) => {
         requests.push(route);
         if (route === '/me/events') return { items: lists[String(storage.get('devUser'))] || [] };
+        if (route === '/me/notifications?offset=0')
+          return { items: [], total: 0, unreadTotal: 0, nextOffset: null, snapshot: 'test-snapshot' };
         const result = details[route.slice('/events/'.length)];
         if (!route.startsWith('/events/') || !result) throw new Error('unexpected API route');
         return result;
@@ -67,11 +69,12 @@ test('state tabs place verified card facts first without fetching every event on
     p1: detail('p1'), p2: detail('p2'), p3: detail('p3'), p4: detail('p4')
   });
   await page.onShow();
-  assert.deepEqual(requests, ['/me/events']);
+  assert.deepEqual(requests, ['/me/notifications?offset=0', '/me/events']);
   await page.selectTab({ currentTarget: { dataset: { key: 'pending' } } });
   assert.equal(page.data.stateView, true);
   assert.deepEqual(scrolls, [0]);
-  assert.deepEqual(requests, ['/me/events', '/events/p1', '/events/p2', '/events/p3', '/events/p4']);
+  assert.deepEqual(requests, ['/me/notifications?offset=0', '/me/events',
+    '/events/p1', '/events/p2', '/events/p3', '/events/p4']);
   assert.equal(page.data.visibleItems[0].dateRangeLabel, '3 月 22 日 19:00 – 21:00');
   assert.equal(page.data.visibleItems[0].venueLabel, '上海 · 蓝天体育中心');
   assert.equal(page.data.visibleItems[0].capacityLabel, '已确认 2 / 上限 8 人');

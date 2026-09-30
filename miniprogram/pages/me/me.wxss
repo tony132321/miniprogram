@@ -68,7 +68,6 @@
 .brand-actions { gap: 6rpx; }
 .brand-icon { width: 54rpx; height: 54rpx; padding: 0; margin: 0; line-height: 54rpx; border: 0; border-radius: 50%; color: #334155; background: transparent; font-size: 30rpx; }
 .brand-icon::after { border: 0; }
-.visual-only { text-align: center; color: #94a3b8; }
 .card { border: 1rpx solid #eef1f6; border-radius: 26rpx; box-shadow: 0 6rpx 20rpx rgba(15,23,42,.04); }
 .hero { position: relative; overflow: hidden; background: #fff; padding: 29rpx 24rpx 26rpx; margin-bottom: 4rpx; }
 .hero-top { align-items: flex-start; padding-right: 135rpx; gap: 16rpx; min-height: 120rpx; }

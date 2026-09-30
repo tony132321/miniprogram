@@ -1147,7 +1147,9 @@ test('activity list distinguishes load failure from empty results and retries in
   ];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/index/index.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async get() {
+      if (path === '../../utils/api.js') return { api: { async get(route: string) {
+        if (route === '/me/notifications?offset=0') return { items: [], unreadTotal: 0 };
+        assert.equal(route, '/me/events');
         reads++;
         if (reads === 1) throw new Error('网络不可用');
         return { items };

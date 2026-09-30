@@ -540,7 +540,18 @@ Page({
     this.goCreate();
   },
   goAbout() { wx.navigateTo({ url: '/pages/about/about' }); },
+  openScanEntry() {
+    wx.showModal({
+      title: '现场签到与核验',
+      content: '请选择已确认报名或正在主办的活动，在活动详情“签到与反馈”中扫码签到或现场核验。',
+      confirmText: '查看行程',
+      success: result => {
+        if (result.confirm) wx.navigateTo({ url: '/subpackages/activity/itinerary/itinerary' });
+      }
+    });
+  },
   goEditProfile() { wx.navigateTo({ url: '/subpackages/profile/profile-edit/profile-edit' }); },
+  goInterestInfo() { wx.navigateTo({ url: '/subpackages/profile/profile-edit/profile-edit?focus=interests' }); },
   goBadges() { wx.navigateTo({ url: '/subpackages/profile/badges/badges' }); },
   goMoments() { wx.navigateTo({ url: '/subpackages/profile/moments/moments' }); },
   goPrivacySafety() { wx.navigateTo({ url: '/subpackages/profile/privacy-safety/privacy-safety' }); },

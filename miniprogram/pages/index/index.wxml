@@ -6,7 +6,7 @@
     <view wx:else class="state-brand"><view class="state-brand-mark">✦</view><text>Home Feed</text></view>
     <button wx:if="{{!stateView}}" class="city-chip" bindtap="goCity" aria-label="选择城市">📍 {{city}}⌄</button>
     <view class="header-space"></view>
-    <button class="header-round" bindtap="goMessages" aria-label="查看消息"><view class="header-bell"></view></button>
+    <button class="header-round" bindtap="goMessages" aria-label="查看消息"><view class="header-bell"></view><view wx:if="{{unreadTotal > 0}}" class="header-unread-dot"></view></button>
     <button class="header-avatar" bindtap="goProfile" aria-label="进入我的页面"><view class="avatar-glyph"></view></button>
   </view>
 
@@ -17,7 +17,7 @@
       <view class="hero-kicker">More People, Brighter Days ☺</view>
       <view class="hero-title">今晚想要什么？</view>
       <view class="hero-subtitle">一句话开始，本地助手整理活动草稿</view>
-      <button class="hero-search" bindtap="goCreate" aria-label="打开活动构思"><text class="hero-search-icon">✦</text><text class="hero-search-hint">比如：周六和朋友打场羽毛球...</text><text class="hero-arrow">➜</text></button>
+      <view class="hero-search"><text class="hero-search-icon">✦</text><input class="hero-search-input" value="{{heroIdeaText}}" bindinput="heroIdeaInput" bindconfirm="submitHeroIdea" confirm-type="go" maxlength="300" placeholder="比如：周六和朋友打场羽毛球..." placeholder-style="color:#8f98a2" aria-label="输入活动想法"/><button class="hero-arrow" bindtap="submitHeroIdea" aria-label="用这句话开始构思">➜</button></view>
     </view>
 
     <scroll-view class="category-strip" scroll-x="true" show-scrollbar="false"><view class="category-row"><button wx:for="{{categoryIdeas}}" wx:key="label" class="category-card" data-label="{{item.label}}" bindtap="openCategory" aria-label="查看{{item.label}}活动灵感"><view class="category-bubble {{item.tone}}">{{item.icon}}</view><text class="category-name">{{item.label}}</text></button></view></scroll-view>

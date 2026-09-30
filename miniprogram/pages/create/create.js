@@ -34,6 +34,13 @@ function currentIdentity() {
     ? 'user:' + wx.getStorageSync('userId')
     : 'dev:' + (wx.getStorageSync('devUser') || config.developmentUser || '');
 }
+function takeHomeIdeaIntent() {
+  try {
+    const intent = wx.getStorageSync('irlHomeIdeaIntent');
+    wx.removeStorageSync('irlHomeIdeaIntent');
+    return intent;
+  } catch (_) { return null; }
+}
 function emptyEditor() {
   return { stage: 'IDEA', aiText: '', message: '', draft: null, editingEvent: null, publishPreview: null, changePreview: null,
     reviewSummary: null,
@@ -90,6 +97,13 @@ Page({
         this._shownIdentity = identity;
         this.setEditorData(emptyEditor());
       }
+      const homeIdeaIntent = takeHomeIdeaIntent();
+      if (homeIdeaIntent?.owner === identity && typeof homeIdeaIntent.text === 'string') {
+        const text = homeIdeaIntent.text.trim().slice(0, 300);
+        if (text && this.data.stage === 'IDEA' && !this.data.aiText && !this.data.draft && !this.data.editingEvent)
+          this.setData({ aiText: text });
+        else if (text) this.setData({ message: '当前有正在编辑的想法或草稿，首页输入未覆盖原内容；请先保存后重新输入。' });
+      }
       await this.loadSafety(generation, identity);
       return;
     }
@@ -125,6 +139,9 @@ Page({
       const templateDurationMinutes = Number.isSafeInteger(p.templateDurationMinutes) && p.templateDurationMinutes > 0
         ? p.templateDurationMinutes : null;
       const savedDurationMinutes = p.startAt && p.endAt ? Math.round((Date.parse(p.endAt) - Date.parse(p.startAt)) / 60_000) : null;
+      const homeIdeaIntent = takeHomeIdeaIntent();
+      const homeIdeaBlocked = homeIdeaIntent?.owner === identity &&
+        typeof homeIdeaIntent.text === 'string' && Boolean(homeIdeaIntent.text.trim());
       this.setEditorData({ draft: draftId ? draft : null, editingEvent: eventId ? draft : null, stage: 'FORM',
         editorLoadState: 'READY', editorErrorCode: '', conflict: null,
         startDate: start.date, startTime: start.time || '20:00', endDate: end.date, endTime: end.time || '22:00',
@@ -140,7 +157,9 @@ Page({
           maxParticipants: String(p.maxParticipants ?? 6),
           feeCapYuan: templateDurationMinutes !== null && p.feeCapFen === undefined ? '' : String((p.feeCapFen ?? 5000) / 100),
           cancellationRule: p.cancellationRule || '开始前可退出' },
-        message: eventId ? '已载入当前活动规则。修改后先预览受影响成员，再确认生效。' : '已载入保存的草稿。' });
+        message: homeIdeaBlocked
+          ? `已载入${eventId ? '当前活动规则' : '保存的草稿'}；首页输入未覆盖原内容。如需使用，请返回首页重新输入。`
+          : eventId ? '已载入当前活动规则。修改后先预览受影响成员，再确认生效。' : '已载入保存的草稿。' });
       wx.removeStorageSync('editDraftId');
       wx.removeStorageSync('editEventId');
       wx.removeStorageSync('editTargetOwner');
