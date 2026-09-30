@@ -73,17 +73,18 @@ export async function promote(tx: Queryable, event: EventRow): Promise<void> {
   if (await getActiveEventHold(tx, event.id)) return;
   if (event.payload.visibility === 'PUBLIC' && !(await publicRecruitmentOpen(tx, true, event.payload))) return;
   const deadline = Date.parse(event.payload.registrationDeadline!);
+  const notifyWindowClosed = async () => {
+    const existing = await tx.query<{ id: string }>(
+      "SELECT id FROM notifications WHERE event_id=$1 AND user_id=$2 AND kind='WAITLIST_WINDOW_CLOSED' AND event_version=$3 LIMIT 1",
+      [event.id, event.host_id, event.version]);
+    if (!existing.rows.length) await enqueueNotification(tx, event.id, event.host_id, 'WAITLIST_WINDOW_CLOSED', event.version,
+      { registrationDeadline: event.payload.registrationDeadline });
+  };
   while (await occupancy(tx, event.id) < event.payload.maxParticipants!) {
     const now = await databaseNow(tx);
     if (deadline - now < 5 * 60_000) {
       const waiting = await tx.query<{ id: string }>("SELECT id FROM registrations WHERE event_id=$1 AND status='WAITLISTED' LIMIT 1", [event.id]);
-      if (waiting.rows.length) {
-        const existing = await tx.query<{ id: string }>(
-          "SELECT id FROM notifications WHERE event_id=$1 AND user_id=$2 AND kind='WAITLIST_WINDOW_CLOSED' AND event_version=$3 LIMIT 1",
-          [event.id, event.host_id, event.version]);
-        if (!existing.rows.length) await enqueueNotification(tx, event.id, event.host_id, 'WAITLIST_WINDOW_CLOSED', event.version,
-          { registrationDeadline: event.payload.registrationDeadline });
-      }
+      if (waiting.rows.length) await notifyWindowClosed();
       return;
     }
     const { rows } = await tx.query<RegistrationRow>("SELECT * FROM registrations WHERE event_id=$1 AND status='WAITLISTED' ORDER BY enqueue_seq LIMIT 1 FOR UPDATE", [event.id]);
@@ -91,8 +92,15 @@ export async function promote(tx: Queryable, event: EventRow): Promise<void> {
     if (!next) return;
     const expiresAt = new Date(Math.min(now + 15 * 60_000, deadline));
     const offerId = randomUUID();
+    const { rows: inserted } = await tx.query<{ id: string }>(`INSERT INTO offers(id,event_id,registration_id,expires_at,status)
+      SELECT $1,$2,$3,$4,'ACTIVE' FROM events WHERE id=$2
+        AND (payload->>'registrationDeadline')::timestamptz >= clock_timestamp() + interval '5 minutes'
+      RETURNING id`, [offerId, event.id, next.id, expiresAt.toISOString()]);
+    if (!inserted.length) {
+      await notifyWindowClosed();
+      return;
+    }
     await tx.query("UPDATE registrations SET status='OFFERED',updated_at=now() WHERE id=$1", [next.id]);
-    await tx.query("INSERT INTO offers(id,event_id,registration_id,expires_at,status) VALUES($1,$2,$3,$4,'ACTIVE')", [offerId, event.id, next.id, expiresAt.toISOString()]);
     await enqueueNotification(tx, event.id, next.user_id, 'WAITLIST_OFFER', event.version, { offerId, expiresAt: expiresAt.toISOString() });
     await tx.query('INSERT INTO jobs(id,kind,event_id,due_at,payload) VALUES($1,$2,$3,$4,$5)', [randomUUID(), 'EXPIRE_OFFER', event.id, expiresAt.toISOString(), JSON.stringify({ offerId })]);
   }
@@ -333,7 +341,9 @@ export async function declineOffer(db: Database, actor: string, offerId: string,
     if (offer.status !== 'ACTIVE' || registration.status !== 'OFFERED' ||
       new Date(offer.expires_at).getTime() <= await databaseNow(tx))
       throw new AppError('OFFER_UNAVAILABLE', '补位邀请已失效');
-    await tx.query("UPDATE offers SET status='DECLINED' WHERE id=$1", [offerId]);
+    const { rows: declined } = await tx.query<{ id: string }>(`UPDATE offers SET status='DECLINED'
+      WHERE id=$1 AND status='ACTIVE' AND expires_at>clock_timestamp() RETURNING id`, [offerId]);
+    if (!declined.length) throw new AppError('OFFER_UNAVAILABLE', '补位邀请已失效');
     await tx.query("UPDATE registrations SET status='CANCELLED',updated_at=now() WHERE id=$1", [registration.id]);
     await promote(tx, event);
     await audit(tx, actor, event.id, 'DECLINE_OFFER');

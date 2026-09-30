@@ -1,5 +1,7 @@
 # R1 验收状态（2026-10-01）
 
+2026-10-01 [RQ08/T16 候补窗口与拒绝最终写入门控](evidence/offer-window-decline-write-gates-wave16-2026-10-01.md)：跨入最后五分钟时不再生成新补位邀请，保留候补并生成去重主办待办；拒绝动作最终写入前令牌过期则回滚。两项先失败后通过，报名定向 30/30、类型检查通过。本次未运行全量测试或 PostgreSQL 双连接池。
+
 2026-10-01 [邀请卡会话身份复核](evidence/caper-share-identity-wave16-2026-10-01.md)：同一主办人换会话或登录／开发模式切换时，旧口令、分享路径与刷新中可见卡清除；定向 10/10、类型检查通过。[城市偏好跨页面归一](evidence/caper-city-storage-wave16-2026-10-01.md)：首页、发现、城市与资料编辑共用可选城市清单，无效旧值写回默认城市，旧版有效值保留；受影响定向 79/79。此轮未运行全量测试，原生微信分享投递、城市返回实点、39 屏同尺寸视觉及外部发布条件仍待验。
 
 2026-10-01 [CAPER wave15 首页与发起](evidence/caper-wave15-home-create-2026-09-30.md)、[活动页](evidence/caper-wave15-event-2026-09-30.md)、[个人页](evidence/caper-wave15-profile-2026-09-30.md)、[消息页](evidence/caper-wave15-messages-2026-10-01.md)、[城市与行程](evidence/caper-wave15-city-itinerary-2026-10-01.md)、[邀请卡与发现入口](evidence/caper-share-account-bound-wave15-2026-10-01.md)：继续对照 Stitch ZIP 修正可客观复现的文案、顶栏、按钮目标及跨账号旧数据。各组只运行受影响的定向测试；首页/发起 50/50、活动 23/23、个人 35/35、消息 43/43、城市/行程 13/13、邀请卡 7/7、发现 4/4。[合并候选验证](evidence/caper-wave15-integrated-2026-10-01.md)：类型检查、凭证扫描、差异检查及微信 CLI 预览通过，总包 2,194,603 Byte；隔离开发者工具首页 `READY`、本人活动 3 条、异常 0，已留在开发者工具供检查。分项实点不覆盖所有按钮；未运行全量测试或最新 CI，39 屏同尺寸逐像素验收仍待完成。

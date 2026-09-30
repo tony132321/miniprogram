@@ -382,6 +382,43 @@ test('declining a valid offer advances FIFO once and never puts the decliner bac
   } finally { await db.close(); }
 });
 
+test('an offer expiring after decline validation cannot be declined at the token update', async () => {
+  const db = await createDatabase();
+  try {
+    const e = await event(db);
+    const first = await register(db, 'p1', e.id, e.version, 'decline-expiry-p1');
+    for (const actor of ['p2', 'p3', 'w1', 'w2'])
+      await register(db, actor, e.id, e.version, `decline-expiry-${actor}`);
+    await cancelRegistration(db, 'p1', first.id, e.version, 'decline-expiry-release');
+    const { rows: offers } = await db.query<{ id: string }>(
+      "SELECT id FROM offers WHERE event_id=$1 AND status='ACTIVE'", [e.id]);
+    const offerId = offers[0]!.id;
+    let crossed = false;
+    const crossingDb: Database = {
+      ...db,
+      transaction: fn => db.transaction(tx => fn({
+        query: async <T extends Record<string, unknown> = Record<string, unknown>>(sql: string, params: unknown[] = []) => {
+          if (!crossed && sql.startsWith("UPDATE offers SET status='DECLINED'")) {
+            crossed = true;
+            await tx.query("UPDATE offers SET expires_at=clock_timestamp()-interval '1 second' WHERE id=$1", [offerId]);
+          }
+          return tx.query<T>(sql, params);
+        }
+      }))
+    };
+    await assert.rejects(() => declineOffer(crossingDb, 'w1', offerId, e.version, 'decline-after-expiry'),
+      { code: 'OFFER_UNAVAILABLE' });
+    assert.equal(crossed, true);
+    const { rows: offerStates } = await db.query<{ user_id: string; offer_status: string; registration_status: string }>(
+      `SELECT r.user_id,o.status AS offer_status,r.status AS registration_status
+       FROM offers o JOIN registrations r ON r.id=o.registration_id WHERE o.event_id=$1`, [e.id]);
+    assert.deepEqual(offerStates, [{ user_id: 'w1', offer_status: 'ACTIVE', registration_status: 'OFFERED' }]);
+    const { rows: next } = await db.query<{ status: string }>(
+      "SELECT status FROM registrations WHERE event_id=$1 AND user_id='w2'", [e.id]);
+    assert.equal(next[0]?.status, 'WAITLISTED');
+  } finally { await db.close(); }
+});
+
 test('equal waitlist timestamps keep database enqueue order instead of sorting random registration ids', async () => {
   const db = await createDatabase();
   try {
@@ -437,6 +474,39 @@ test('a seat released 4 minutes 59 seconds before cutoff creates host work and n
     const { rows: hostWork } = await db.query<{ kind: string }>(
       "SELECT kind FROM notifications WHERE event_id=$1 AND user_id='host' AND kind='WAITLIST_WINDOW_CLOSED'", [e.id]);
     assert.equal(hostWork.length, 1);
+  } finally { await db.close(); }
+});
+
+test('waitlist promotion crossing into the final five minutes creates host work instead of an offer', async () => {
+  const db = await createDatabase();
+  try {
+    const e = await event(db);
+    const first = await register(db, 'p1', e.id, e.version, 'cross-window-p1');
+    for (const actor of ['p2', 'p3', 'w1']) await register(db, actor, e.id, e.version, `cross-window-${actor}`);
+    const deadline = new Date(Date.now() + 4 * 60_000).toISOString();
+    await db.query("UPDATE events SET payload=jsonb_set(payload,'{registrationDeadline}',$2::jsonb) WHERE id=$1",
+      [e.id, JSON.stringify(deadline)]);
+    let clockReads = 0;
+    const crossingDb: Database = {
+      ...db,
+      transaction: fn => db.transaction(tx => fn({
+        query: async <T extends Record<string, unknown> = Record<string, unknown>>(sql: string, params: unknown[] = []) => {
+          if (sql === 'SELECT clock_timestamp() AS current_time' && ++clockReads === 2)
+            return { rows: [{ current_time: new Date(Date.now() - 2 * 60_000) } as unknown as T] };
+          return tx.query<T>(sql, params);
+        }
+      }))
+    };
+    assert.equal((await cancelRegistration(crossingDb, 'p1', first.id, e.version, 'cross-window-release')).status,
+      'CANCELLED');
+    const { rows: waiting } = await db.query<{ status: string }>(
+      "SELECT status FROM registrations WHERE event_id=$1 AND user_id='w1'", [e.id]);
+    assert.equal(waiting[0]?.status, 'WAITLISTED');
+    const { rows: offers } = await db.query<{ id: string }>("SELECT id FROM offers WHERE event_id=$1", [e.id]);
+    assert.equal(offers.length, 0);
+    const { rows: notices } = await db.query<{ user_id: string; kind: string }>(
+      "SELECT user_id,kind FROM notifications WHERE event_id=$1 AND kind IN ('WAITLIST_OFFER','WAITLIST_WINDOW_CLOSED')", [e.id]);
+    assert.deepEqual(notices, [{ user_id: 'host', kind: 'WAITLIST_WINDOW_CLOSED' }]);
   } finally { await db.close(); }
 });
 
