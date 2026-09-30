@@ -468,7 +468,15 @@ Page({
           const shares = (ledger.shares || []).map((share, index) => ({ ...share,
             displayName: share.userId === actor ? '我的份额' :
               (hashAlias && consentedNames.get(hashAlias(`${id}:${share.userId}`).slice(0, 16))) || `参与者 ${index + 1}`,
-            amountYuan: yuanFromFen(share.amountFen) }));
+            amountYuan: yuanFromFen(share.amountFen),
+            participantStatusLabel: share.participantHandled ? '本人已处理' : '本人未记录',
+            hostStatusLabel: share.hostReceived ? '主办已收到' : '主办未记录',
+            declarationStatusLabel: !ledger.current ? '历史版本' : share.participantHandled && share.hostReceived
+              ? '双方已记录' : share.participantHandled !== share.hostReceived ? '记录不一致' : '待双方记录',
+            declarationStatusTone: !ledger.current ? 'history' : share.participantHandled && share.hostReceived
+              ? 'recorded' : share.participantHandled !== share.hostReceived ? 'review' : 'pending',
+            canMarkHandled: Boolean(ledger.current && share.userId === actor && !share.participantHandled),
+            canMarkReceived: Boolean(ledger.current && isHost && !share.hostReceived) }));
           return { ...ledger, statusLabel: statusText(ledger.status, 'expense'),
             totalYuan: yuanFromFen(ledger.totalFen), shares,
             visibleShares: shares.slice(0, 4), membersExpanded: false, detailsOpen: false, sortByAmount: false };

@@ -362,12 +362,22 @@ page{padding:0;background:#f5f6fa;color:#1b1e27;font-family:-apple-system,BlinkM
 .expense-members-heading text { padding: 3rpx 7rpx; border-radius: 11rpx; background: #e9e7ed; color: #5c6370; font-size: 18rpx; }
 .expense-members-heading button { flex: none; margin: 0; padding: 5rpx 12rpx; border-radius: 100rpx; background: #f4f3f8; color: #626678; font-size: 18rpx; line-height: 1.5; }
 .expense-members-toggle { margin: 11rpx 22rpx 21rpx; padding: 10rpx; border: 0; background: transparent; color: #5856d6; font-size: 21rpx; line-height: 1.5; }
-.expense-share { align-items: center; gap: 13rpx; padding: 18rpx 0 !important; }
-.expense-person-icon { width: 60rpx; height: 60rpx; flex: none; border-radius: 50%; background: #eaf1ff; color: #1d64f2; text-align: center; line-height: 60rpx; font-size: 22rpx; font-weight: 800; }
-.expense-share > view { flex: 1; min-width: 0; }
-.expense-share > view text { display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.expense-share > view .expense-share-state { margin-top: 2rpx; color: #6b7280; font-size: 18rpx; font-weight: 500; }
-.expense-section .expense-share > text:last-child { color: #111827; font-size: 28rpx; font-weight: 850; }
+.expense-member { border-top: 1rpx solid #eef0f4; padding: 10rpx 0; }
+.expense-share-row { display: flex; align-items: center; gap: 12rpx; min-height: 68rpx; }
+.expense-person-icon { width: 52rpx; height: 52rpx; flex: none; border-radius: 50%; background: #eaf1ff; color: #1d64f2; text-align: center; line-height: 52rpx; font-size: 20rpx; font-weight: 800; }
+.expense-share-person { flex: 1; min-width: 0; }
+.expense-share-name { display: block; overflow: hidden; color: #1f2937; font-size: 23rpx; font-weight: 750; line-height: 1.35; white-space: nowrap; text-overflow: ellipsis; }
+.expense-share-declarations { display: flex; gap: 9rpx; overflow: hidden; margin-top: 3rpx; color: #687386; font-size: 17rpx; line-height: 1.4; }
+.expense-share-declarations text { flex: none; white-space: nowrap; }
+.expense-share-declarations text.recorded { color: #148c51; }
+.expense-share-right { flex: 0 0 137rpx; text-align: right; }
+.expense-share-right text { display: block; white-space: nowrap; }
+.expense-share-amount { color: #111827; font-size: 26rpx; font-weight: 850; line-height: 1.35; }
+.expense-share-summary { color: #87909e; font-size: 17rpx; line-height: 1.4; }
+.expense-share-summary.recorded { color: #148c51; }
+.expense-share-summary.review { color: #a65c20; }
+.expense-share-actions { display: flex; justify-content: flex-end; gap: 8rpx; margin: 6rpx 0 0 64rpx; }
+.expense-section .expense-share-actions button { box-sizing: border-box; flex: 0 1 auto; min-width: 184rpx; height: 88rpx; margin: 0; padding: 0 12rpx; border-radius: 16rpx; background: #eef2ff; color: #195cce; font-size: 21rpx; line-height: 88rpx; white-space: nowrap; }
 .detail-destinations { display: flex; flex-wrap: wrap; gap: 12rpx; margin: 26rpx 0 20rpx; }
 .detail-destinations button { flex: 0 0 calc(50% - 6rpx); box-sizing: border-box; margin: 0; padding: 16rpx 12rpx; border: 1rpx solid #e9edf5; border-radius: 22rpx; background: #fff; color: #164ca4; font-size: 21rpx; box-shadow: 0 5rpx 13rpx #182c4a0b; }
 .detail-destinations button text { display: block; font-size: 32rpx; line-height: 1.2; }

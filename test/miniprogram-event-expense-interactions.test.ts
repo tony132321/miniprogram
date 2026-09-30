@@ -7,14 +7,16 @@ import { runInNewContext } from 'node:vm';
 type Share = { userId: string; amountFen: number; participantHandled: boolean; hostReceived: boolean };
 type Ledger = { id: string; revision: number; current: boolean; status: string; totalFen: number; shares: Share[] };
 
-function expensePage(ledgers: Ledger[], aliases: Array<{ id: string; displayName: string }> = []) {
+function expensePage(ledgers: Ledger[], aliases: Array<{ id: string; displayName: string }> = [],
+  confirmedMembers: string[] = []) {
   let page: Record<string, any> | undefined;
   let actor = 'host';
   let expenseReads = 0;
   runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if (path === '../../utils/api.js') return { api: { get: async (route: string) => {
-        if (route === '/me/registrations?eventId=e1') return { items: [] };
+        if (route === '/me/registrations?eventId=e1') return { items: confirmedMembers.includes(actor)
+          ? [{ event_id: 'e1', status: 'CONFIRMED' }] : [] };
         if (route === '/events/e1') return { id: 'e1', hostId: 'host', version: 2, status: 'CONFIRMED',
           payload: { title: '周末羽毛球', visibility: 'INVITE', feeMode: 'AA', feeCapFen: 2500,
             startAt: '2027-03-22T11:00:00Z', endAt: '2027-03-22T13:00:00Z' } };
@@ -48,6 +50,35 @@ const fiveShares: Share[] = [
   { userId: 'member-e', amountFen: 2000, participantHandled: false, hostReceived: false }
 ];
 const ledger: Ledger = { id: 'ledger-v2', revision: 2, current: true, status: 'OPEN', totalFen: 10001, shares: fiveShares };
+
+test('PG09 rows distinguish both declarations and expose actions only to the current actor', async () => {
+  const older: Ledger = { ...ledger, id: 'ledger-v1', current: false,
+    shares: [{ userId: 'host', amountFen: 1800, participantHandled: false, hostReceived: false }] };
+  const host = expensePage([ledger, older]);
+  assert.equal(await host.page.refresh(), true);
+  const [self, pendingReceipt, , bothRecorded] = host.page.data.expenses[0].shares;
+  assert.deepEqual({
+    participant: self.participantStatusLabel, host: self.hostStatusLabel,
+    summary: self.declarationStatusLabel, canMarkHandled: self.canMarkHandled,
+    canMarkReceived: self.canMarkReceived
+  }, {
+    participant: '本人未记录', host: '主办未记录', summary: '待双方记录',
+    canMarkHandled: true, canMarkReceived: true
+  });
+  assert.equal(pendingReceipt.declarationStatusLabel, '记录不一致');
+  assert.equal(pendingReceipt.canMarkHandled, false);
+  assert.equal(pendingReceipt.canMarkReceived, true);
+  assert.equal(bothRecorded.declarationStatusLabel, '双方已记录');
+  assert.equal(bothRecorded.canMarkReceived, false);
+  assert.equal(host.page.data.expenses[1].shares[0].canMarkHandled, false);
+  assert.equal(host.page.data.expenses[1].shares[0].canMarkReceived, false);
+
+  const member = expensePage([{ ...ledger, shares: [fiveShares[2]!] }], [], ['member-c']);
+  member.setActor('member-c');
+  assert.equal(await member.page.refresh(), true);
+  assert.equal(member.page.data.expenses[0].shares[0].canMarkHandled, true);
+  assert.equal(member.page.data.expenses[0].shares[0].canMarkReceived, false);
+});
 
 test('PG09 member expansion reveals only shares returned by the authorized expense API', async () => {
   const context = expensePage([ledger]);
