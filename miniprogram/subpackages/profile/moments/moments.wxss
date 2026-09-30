@@ -1,5 +1,5 @@
 @import "../common.wxss";
-.moments-page { padding-left: 24rpx; padding-right: 24rpx; padding-bottom: 180rpx; }
+.moments-page { padding-left: 24rpx; padding-right: 24rpx; padding-bottom: calc(180rpx + env(safe-area-inset-bottom)); }
 .moments-page .pg10-header { position: sticky; z-index: 11; box-sizing: border-box; margin-left: -24rpx; margin-right: -24rpx; padding-left: 25rpx; height: 92rpx; }
 .moments-page .pg10-header-title { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-weight: 600; }
 .moments-header-actions { display: flex; flex: none; align-items: center; gap: 6rpx; }
@@ -59,6 +59,6 @@
 .moments-privacy-note { padding: 17rpx 4rpx 8rpx; color: #737c8e; font-size: 19rpx; line-height: 1.5; }
 .moments-privacy-note button { display: inline-block; width: auto; margin: 0 0 0 5rpx; padding: 0; border: 0; background: transparent; color: #5856d6; font-size: 19rpx; line-height: 1.5; }
 .moments-privacy-note button::after { border: 0; }
-.moments-action { position: fixed; left: 24rpx; right: 24rpx; bottom: 18rpx; z-index: 9; display: flex; align-items: center; justify-content: center; gap: 12rpx; box-sizing: border-box; width: auto; margin: 0; line-height: 2.8; }
+.moments-action { position: fixed; left: 24rpx; right: 24rpx; bottom: calc(18rpx + env(safe-area-inset-bottom)); z-index: 9; display: flex; align-items: center; justify-content: center; gap: 12rpx; box-sizing: border-box; width: auto; margin: 0; line-height: 2.8; }
 .moments-action-icon { font-size: 30rpx; }
 .moments-action-tag { border-radius: 15rpx; padding: 2rpx 8rpx; background: #d2f803; color: #1a1b1f; font-size: 17rpx; line-height: 1.6; }
