@@ -222,3 +222,37 @@
 .center-empty .empty-symbol { margin-bottom:8rpx; font-size:40rpx; }
 .center-empty .hint { margin-top:6rpx; font-size:19rpx; }
 .center-pink { background:#fff0f3; color:#e92b51; }
+
+/* Notification cards follow the supplied compact stream while showing only server-backed facts. */
+.center-card { padding:24rpx 23rpx; border:0; border-radius:24rpx; }
+.center-approval-card { border-top:0; }
+.center-notices .center-card:first-child { border-top:0; }
+.center-card-layout { display:flex; align-items:flex-start; gap:15rpx; }
+.center-card-body { flex:1; min-width:0; }
+.center-card-icon { width:59rpx; height:59rpx; line-height:59rpx; font-size:33rpx; }
+.center-lime { background:#f2fae7; color:#628400; }
+.center-card-title-row { display:flex; align-items:flex-start; justify-content:space-between; gap:9rpx; }
+.center-card-title { flex:1; min-width:0; margin:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:27rpx; line-height:1.4; }
+.center-card-time { flex:none; padding-top:4rpx; color:#858a9a; font-size:17rpx; white-space:nowrap; }
+.center-card-summary { margin-top:5rpx; color:#354052; font-size:21rpx; line-height:1.48; }
+.center-card-kind { margin-top:10rpx; color:#808797; font-size:17rpx; }
+.center-unread-dot { margin-left:7rpx; color:#f43f5e; font-size:16rpx; }
+.center-card-state { margin-top:8rpx; font-size:16rpx; }
+.center-reminder-thumb { flex:none; display:flex; flex-direction:column; align-items:center; justify-content:center; width:90rpx; height:90rpx; margin-left:2rpx; border-radius:15rpx; background:linear-gradient(145deg,#b9e7ff,#327ce8 62%,#1d58c0); box-shadow:inset 0 0 0 2rpx rgba(255,255,255,.45); color:#fff; text-align:center; }
+.center-reminder-thumb text:first-child { font-size:41rpx; line-height:1; }
+.center-reminder-thumb text:last-child { margin-top:4rpx; font-size:13rpx; font-weight:750; }
+.center-reminder-actions,.center-approval-actions { display:flex; align-items:center; gap:10rpx; margin-top:17rpx; }
+.center-reminder-actions button { flex:1; min-width:0; margin:0; padding:11rpx 7rpx; border-radius:100rpx; font-size:20rpx; font-weight:800; line-height:1.5; white-space:nowrap; }
+.center-reminder-actions button::after,.center-approval-actions button::after,.center-inline-link::after,.center-status-link::after { border:0; }
+.center-reminder-actions .center-secondary { background:#e9f1ff; }
+.center-approval-card .center-card-icon { background:#fff0f3; color:#ef3462; }
+.center-approval-actions { justify-content:flex-end; }
+.center-approval-actions button { flex:none; margin:0; padding:9rpx 19rpx; border-radius:100rpx; font-size:20rpx; font-weight:800; line-height:1.5; }
+.center-approval-actions .center-secondary { background:#ececf1; color:#394252; }
+.center-inline-link { display:inline-block; margin:11rpx 0 0; padding:6rpx 14rpx; border-radius:100rpx; background:#f3f3f8; color:#455060; font-size:17rpx; line-height:1.5; text-align:left; }
+.center-status-link { display:flex; align-items:center; justify-content:space-between; width:100%; margin:12rpx 0 0; padding:8rpx 13rpx; border-radius:14rpx; background:#f2f2f8; color:#435064; font-size:17rpx; line-height:1.5; text-align:left; }
+.center-status-link text:first-child { color:#178249; }
+.center-status-link text:last-child { color:#788091; }
+.center-card-actions-right { justify-content:flex-end; margin-top:13rpx; }
+.center-card-actions-right button { flex:none; min-width:0; margin:0; padding:8rpx 16rpx; border-radius:100rpx; font-size:18rpx; line-height:1.5; }
+.center-standard.center-card { padding-bottom:18rpx; }

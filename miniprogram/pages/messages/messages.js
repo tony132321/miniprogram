@@ -108,17 +108,31 @@ function present(items) {
     const group = groupFor(item);
     const caution = ['EVENT_CANCELLED', 'EVENT_EXPIRED', 'EVENT_SAFETY_PAUSED',
       'EVENT_REVIEW_REJECTED', 'CONTENT_REJECTED'].includes(item.kind);
+    const cardVariant = item.kind === 'EVENT_REMINDER' ? 'reminder' :
+      item.kind === 'MATERIAL_CHANGE' ? 'update' :
+        item.kind === 'EVENT_CONFIRMED' ? 'milestone' : 'standard';
     return { ...item, title: noticeTitles[item.kind] || '站内通知',
       summary: noticeSummaries[item.kind] || (item.event_id ? '活动有新进展，请查看详情。' : '站内通知有更新，请查看详情。'),
       timeLabel: timeLabel(item.created_at),
       externalHint: externalHints[item.external_status] || '',
-      actionLabel: isCheckin ? '查看入场凭证' : isProfileRecord ? '查看处理记录' : item.event_id ? '查看活动详情' : '标为已读',
-      actionSection: isCheckin ? 'checkinSection' : '',
+      actionLabel: isCheckin ? '查看入场凭证' : item.kind === 'MATERIAL_CHANGE' ? '查看最新安排' :
+        item.kind === 'EVENT_CONFIRMED' ? '查看活动安排' : item.kind === 'EVENT_OUTCOME_DUE' ? '记录活动结项' :
+          item.kind === 'EVENT_OUTCOME_REVIEW' ? '反馈活动结项' :
+          isProfileRecord ? '查看处理记录' : item.event_id ? '查看活动详情' : '标为已读',
+      actionSection: isCheckin ? 'checkinSection' :
+        ['MATERIAL_CHANGE', 'EVENT_CONFIRMED'].includes(item.kind) ? 'detailsSection' :
+          item.kind === 'EVENT_OUTCOME_DUE' ? 'hostSection' :
+            item.kind === 'EVENT_OUTCOME_REVIEW' ? 'checkinSection' : '',
       categoryLabel: group === 'INTERACTION' ? '互动消息' : group === 'ACTIVITY' ? '活动提醒' : '系统通知',
+      cardVariant,
       icon: caution ? '!' : item.kind === 'EVENT_REMINDER' ? '◷' : item.kind === 'MATERIAL_CHANGE' ? '⌖'
-        : item.kind === 'EVENT_CONFIRMED' ? '✓' : group === 'INTERACTION' ? '✦' : '✉',
-      tone: caution ? 'pink' : isCheckin ? 'blue' : group === 'INTERACTION' ? 'violet'
-        : item.kind === 'EVENT_CONFIRMED' ? 'green' : item.event_id ? 'blue' : 'gray' };
+        : ['EVENT_CONFIRMED', 'REGISTRATION_APPROVED'].includes(item.kind) ? '✓'
+          : item.kind === 'EVENT_OUTCOME_DUE' ? '▣' : item.kind === 'WAITLIST_OFFER' ? 'ϟ'
+            : group === 'INTERACTION' ? '✦' : '✉',
+      tone: caution || item.kind === 'WAITLIST_OFFER' ? 'pink' : item.kind === 'MATERIAL_CHANGE' ? 'lime'
+        : ['EVENT_CONFIRMED', 'REGISTRATION_APPROVED'].includes(item.kind) ? 'green'
+          : item.kind === 'EVENT_OUTCOME_DUE' ? 'violet' : isCheckin ? 'blue'
+            : group === 'INTERACTION' ? 'violet' : item.event_id ? 'blue' : 'gray' };
   });
 }
 function displayed(items, filter, searchQuery = '') {
@@ -324,7 +338,7 @@ Page({
       if (eventId && !profileFocus) {
         await new Promise((resolve, reject) => wx.navigateTo({
           url: '/pages/event/event?id=' + encodeURIComponent(eventId) +
-            (['checkinSection', 'expenseSection', 'detailsSection'].includes(section) ? '&section=' + section : ''),
+            (['checkinSection', 'expenseSection', 'detailsSection', 'hostSection'].includes(section) ? '&section=' + section : ''),
           success: resolve, fail: reject
         }));
       }
