@@ -19,6 +19,10 @@
 
 最后再次以成员 1 打开 PG08 反馈卡，确认 `outcomeLoadState=READY`、页面异常 0，并将模拟器留在这个未提交反馈的画面供人工检查：[最终开放画面](images/caper-pg08-feedback-open-wave18-2026-10-01.png)。服务端再次回读成员 1、成员 2 的 `myFeedbackSubmitted=false`、`independentFeedback=0`、结项级别仍为 `HOST_ONLY`。
 
-本证据只覆盖测试 AppID、隔离 API 和模拟器中的上述按钮与界面。正式 AppID、HTTPS 域名、真机、订阅消息与真人活动仍需独立验收。PG08 截图中结项摘要的末尾数字折到下一行，视觉细节可在后续尺寸核对中修整。
+本证据只覆盖测试 AppID、隔离 API 和模拟器中的上述按钮与界面。正式 AppID、HTTPS 域名、真机、订阅消息与真人活动仍需独立验收。PG08 初版截图中结项摘要的末尾数字折到下一行。
 
-根智能体逐张查看本记录的 5 张截图后，确认 PG08 首图中“独立确认 0”的 `0` 孤立折行，原生 textarea 占高也使反馈卡明显比参考图稀疏。已在后续源码中将结项数字拆成不可分割的小段，并显式限定补充说明高度；这属于截图后做的视觉修正，**上述截图仍展示修正前画面**，新版预览与截图需要另行复核。
+根智能体逐张查看本记录的 5 张截图后，确认 PG08 首图中“独立确认 0”的 `0` 孤立折行，原生 textarea 占高也使反馈卡明显比参考图稀疏。已在后续源码中将结项数字拆成不可分割的小段，并显式限定补充说明高度；**上述 5 张截图仍展示修正前画面**。
+
+## 视觉修正后复核
+
+将本地提交 `d650ff78b38a7e6800c8a11623b52eb7c728aae0` 再次同步到同一隔离项目；除本机 API 的 `config.js` 外，`diff -qr` 退出码 0。微信开发者工具 CLI `preview` 退出码 0，测试 AppID 不变，包体 **2,116,205 Byte**。定向脚本 `/private/tmp/project-irl-wave18-devtools/pg08-visual-recheck.cjs` 以合成 member-1 打开未提交的已结项反馈卡，`loadState=READY`、`outcomeLoadState=READY`，页面异常 **0**；[修正后截图](images/caper-pg08-feedback-visual-fix-wave18-2026-10-01.png)显示结项证据数字同排、补充说明框高度缩短、两个 CTA 完整可见。没有提交反馈。隔离 IDE 最后留在新版 PG08 卡供人工检查。原生 Computer Use 此次仍返回 Mac 锁屏，以上为 CLI／automator 模拟器证据，尚未完成同尺寸逐像素或真机验收。
