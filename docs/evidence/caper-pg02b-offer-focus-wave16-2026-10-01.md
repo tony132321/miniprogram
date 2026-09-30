@@ -26,4 +26,10 @@
 - `tsc --noEmit`、本轮文件 `git diff --check`：退出码 0。
 - 未运行全量测试。
 
-本轮为代码与本机测试证据；未在微信开发者工具实点这一跨页路径，未做真机或正式环境验收。通知量很大时，自动定位最多读取 5 页；快照持续变化或续页失败也会停止定位并提示重试。
+## 合并后微信开发者工具实点
+
+本地提交 `496061f` 的完整 `miniprogram/` 同步到隔离项目 `/private/tmp/caper-r1-e2e-20260930/miniprogram-project`；与提交比较仅 `config.js` 指向本机合成 API `127.0.0.1:3037`，`diff -qr --exclude=config.js` 退出码 0。微信开发者工具 CLI `auto --project /private/tmp/caper-r1-e2e-20260930/miniprogram-project --port 21467 --auto-port 9494 --trust-project` 返回实际自动化端口 `9495`，测试 AppID 为 `wxbbcab69099026d3f`。
+
+合成活动 `202fdfc1-3c1f-4608-82a0-6e2cbf7c6319` 进入 `OFFERED` 后，自动化实点首页“确认或放弃补位”，切至 `pages/me/me`，高亮同场通知 `e3ea7534-2295-4ad2-96ab-fddd7e41d262`；页面当前 offer 的 `actionable` 与 `declinable` 均为真，运行异常 0，烟测脚本退出码 0。computer use 复核开发者工具当前页可见目标通知、截止时间及“主动确认补位”“拒绝补位”两个按钮。截图：[首页卡片](images/caper-pg02b-offer-home-wave16-2026-10-01.png)、[目标通知](images/caper-pg02b-offer-focused-notice-wave16-2026-10-01.png)。隔离项目 CLI `preview` 退出码 0、包体 **2,087,577 Byte**。合成种子和点击脚本位于 `/private/tmp/project-irl-wave16-devtools/seed-offer.cjs`、`offer-ui-smoke.cjs`。
+
+首次自动化脚本在切页瞬间收到 `page not on top` 并退出；重试后完成了上述跳转、按钮和运行异常检查。此实点验证定位和按钮可见，未实际提交接受或拒绝请求；它不构成同尺寸 1:1、真机、正式环境或外部通知验收。通知量很大时，自动定位最多读取 5 页；快照持续变化或续页失败也会停止定位并提示重试。
