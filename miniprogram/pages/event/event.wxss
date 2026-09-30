@@ -470,6 +470,7 @@ page{padding:0;background:#f5f6fa;color:#1b1e27;font-family:-apple-system,BlinkM
 .host-work-title { display: flex; justify-content: space-between; align-items: center; gap: 10rpx; margin-bottom: 12rpx; color: #1a1b1f; font-size: 26rpx; font-weight: 850; }
 .host-work-title text { color: #778195; font-size: 18rpx; font-weight: 600; text-align: right; }
 .host-work-block input, .host-work-block textarea { background: #f6f6fa; border-color: #edeef5; }
+.event-section .host-completion-note { height: 116rpx; min-height: 116rpx; }
 .host-work-block button { background: #ebf2fe; color: #0b58dc; }
 .host-work-block label { background: #f3f4f8; }
 .host-metric-note { padding: 14rpx 18rpx; border-radius: 18rpx; background: #f2f1fd; color: #525370; font-size: 19rpx; }

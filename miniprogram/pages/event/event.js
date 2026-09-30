@@ -625,6 +625,11 @@ Page({
       this.scrollToSection(id);
     }
   },
+  openHostCompletion() {
+    const controls = this.updateTimedControls();
+    if (this.data.loadState !== 'READY' || !controls.canCompleteEvent) return;
+    this.scrollToSection('hostSection', '#hostCompletionForm');
+  },
   scrollToSection(id, targetSelector) {
     if (!sectionHeadings[id]) return;
     if (id !== this.data.activeSection) this.clearCheckInToken();

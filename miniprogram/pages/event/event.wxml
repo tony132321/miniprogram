@@ -200,7 +200,7 @@
     <view class="host-members-card"><view class="host-card-title"><text>已确认成员（{{event.stats.confirmed || 0}}）</text><button data-section="registrationSection" bindtap="jumpToSection">查看全部 ›</button></view><view wx:if="{{registrationsLoadState === 'READY' && confirmedRoster.length}}" class="host-alias-row"><view wx:for="{{confirmedRoster}}" wx:key="id" class="host-alias"><text>{{item.avatarGlyph}}</text><text>{{item.displayName}}</text></view></view><view wx:if="{{registrationsLoadState === 'EMPTY'}}" class="host-members-empty">当前没有已确认报名成员。</view><view wx:if="{{registrationsLoadState === 'ERROR'}}" class="host-members-empty">报名名单暂不可用，请在下方重试；人数仍以活动统计为准。</view><view wx:if="{{registrationsLoadState === 'READY' && !confirmedRoster.length}}" class="host-members-empty">当前名单没有已确认成员；人数仍以活动统计为准。</view></view>
     <view class="host-ai-note"><text>✦</text><view><view>成局前请人工核对</view><view>人数由服务端回读；场地依据主办方声明。AI 组局助手尚未开放。</view></view></view>
     <view wx:if="{{event.stats}}" class="formation-card"><view class="formation-title"><text>成局条件</text><text>{{event.stats.confirmed >= event.payload.minParticipants && event.payload.venueStatus === 'HOST_CONFIRMED' ? '人数与场地声明已具备 ✓' : '仍需核对'}}</text></view><view class="formation-row"><text>{{event.stats.confirmed >= event.payload.minParticipants ? '✓' : '○'}}</text><view><view>至少 {{event.payload.minParticipants}} 人确认</view><view>目前 {{event.stats.confirmed}} / {{event.payload.minParticipants}} 人</view></view></view><view class="formation-row"><text>{{event.payload.venueStatus === 'HOST_CONFIRMED' ? '✓' : '○'}}</text><view><view>场地由主办方核实</view><view>{{event.payload.venueStatus === 'HOST_CONFIRMED' ? '已声明核实' : '尚未声明核实'}}</view></view></view><view class="muted">实际成局仍须下方人工确认，系统不代表场馆锁位。</view></view>
-    <view class="host-shortcuts"><button bindtap="openShareCard"><text>↥</text>分享活动</button><button data-section="contentSection" bindtap="jumpToSection"><text>➤</text>发送公告</button><button wx:if="{{event.status === 'RECRUITING' || event.status === 'CONFIRMED'}}" class="host-cancel-shortcut" bindtap="cancelEvent"><text>□</text>取消活动</button><button wx:else data-section="checkinSection" bindtap="jumpToSection"><text>▣</text>签到管理</button></view>
+    <view class="host-shortcuts"><button bindtap="openShareCard"><text>↥</text>分享活动</button><button data-section="contentSection" bindtap="jumpToSection"><text>➤</text>发送公告</button><button wx:if="{{canCompleteEvent}}" class="host-cancel-shortcut" bindtap="openHostCompletion"><text>□</text>活动结项</button><button wx:elif="{{event.status === 'RECRUITING' || event.status === 'CONFIRMED'}}" class="host-cancel-shortcut" bindtap="cancelEvent"><text>□</text>取消活动</button><button wx:else data-section="checkinSection" bindtap="jumpToSection"><text>▣</text>签到管理</button></view>
     <view wx:if="{{event.status !== 'DRAFT' && event.status !== 'CANCELLED' && event.status !== 'EXPIRED'}}" class="host-work-block"><view class="host-work-title">协办权限 <text>仅限本场 · 可撤回</text></view>
       <view id="cohostUserId" class="muted">{{cohostSelectedName ? '已选择：' + cohostSelectedName : '请从下方报名名单选择协办成员'}}</view>
       <checkbox-group id="cohostCapabilities" bindchange="cohostCapabilitiesChanged">
@@ -256,13 +256,13 @@
       <canvas canvas-id="checkinQr" style="width:240px;height:240px" />
       <view class="token-text">当前口令约 {{checkInExpiresIn}} 秒后更新：{{displayedCheckInToken}}</view>
     </view>
-    <radio-group wx:if="{{canCompleteEvent}}" bindchange="setCompletionHeld">
+    <radio-group id="hostCompletionForm" wx:if="{{canCompleteEvent}}" bindchange="setCompletionHeld">
       <label id="completionHeldYes"><radio value="held" checked="{{completionHeld === true}}" />实际举办</label>
       <label id="completionHeldNo"><radio value="not_held" checked="{{completionHeld === false}}" />未举办</label>
     </radio-group>
     <input id="completionActualCount" wx:if="{{completionHeld === true && canCompleteEvent}}" type="number" placeholder="实际到场人数" value="{{actualCount}}" bindinput="actualCountInput" />
-    <textarea id="completionAnomalyInput" wx:if="{{canCompleteEvent}}" placeholder="本场异常（可选；无异常可留空）" value="{{completionAnomaly}}" bindinput="completionAnomalyInput" />
-    <textarea id="completionVenueIssueInput" wx:if="{{canCompleteEvent}}" placeholder="场地问题（可选；无问题可留空）" value="{{completionVenueIssue}}" bindinput="completionVenueIssueInput" />
+    <textarea id="completionAnomalyInput" class="host-completion-note" wx:if="{{canCompleteEvent}}" placeholder="本场异常（可选；无异常可留空）" value="{{completionAnomaly}}" bindinput="completionAnomalyInput" />
+    <textarea id="completionVenueIssueInput" class="host-completion-note" wx:if="{{canCompleteEvent}}" placeholder="场地问题（可选；无问题可留空）" value="{{completionVenueIssue}}" bindinput="completionVenueIssueInput" />
     <button id="completeEventButton" wx:if="{{canCompleteEvent}}" bindtap="complete">活动结项</button>
     <view wx:if="{{!canCompleteEvent && (event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS')}}" class="muted">{{completionAvailability}} 页面按设备时间提示，最终以服务端校验为准。</view>
     </view>
