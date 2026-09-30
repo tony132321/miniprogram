@@ -12,7 +12,6 @@
   <view wx:if="{{loadState === 'LOADING'}}" class="empty">正在加载站内通知…</view>
   <view wx:if="{{filter === 'INTERACTION' && approvalLoadState === 'LOADING'}}" class="empty">正在加载待审核报名…</view>
   <view wx:if="{{filter === 'INTERACTION' && approvalLoadState === 'ERROR'}}" class="empty card">待审核报名暂时无法加载<button bindtap="loadApprovals">重新加载审核</button></view>
-  <view class="card conversation-card"><view class="conversation-icon">✉</view><view class="conversation-copy"><view class="conversation-title">最近会话<text>尚未开放</text></view><view class="hint">私聊功能尚未开放；下方仅展示真实站内通知。</view></view><button class="conversation-jump" bindtap="openNotificationCenter" aria-label="查看通知中心">›</button></view>
   <view wx:if="{{filter === 'INTERACTION' && approvalLoadState === 'READY' && approvals.length > 0}}" class="approval-list">
     <view class="approval-heading">待审核报名 · {{approvalTotal}}</view>
     <view wx:for="{{approvals}}" wx:key="registrationId" class="card approval-card">
@@ -38,6 +37,7 @@
     </block>
   </view>
   <button wx:if="{{loadState === 'READY' && nextOffset !== null}}" bindtap="loadMore" disabled="{{loadingMore}}" class="load-more inbox-load-more">{{loadingMore ? '正在加载…' : '加载更多站内通知'}}</button>
+  <view class="card conversation-card"><view class="conversation-icon">✉</view><view class="conversation-copy"><view class="conversation-title">最近会话<text>尚未开放</text></view><view class="hint">当前仅展示真实站内通知；私聊功能尚未开放。</view></view><button class="conversation-jump" bindtap="openNotificationCenter" aria-label="查看通知中心">›</button></view>
   <view class="ai-card"><view class="ai-heading"><view class="ai-orb">✦</view><view><view>🤖 AI 助手消息</view><text>尚未开放</text></view></view><view class="ai-copy">R1 还没有 AI 对话与推荐消息接口。活动状态以站内通知和活动详情为准。</view><button bindtap="goDiscover">前往活动灵感 ›</button></view>
   <view class="card preview-card"><view class="preview-title">@ 提到我 <text>尚未开放</text></view><view class="hint">当前没有群聊、提及和私聊记录接口。</view></view>
   <view class="card preview-card"><view class="preview-title">🖼 群内精彩瞬间 <text>尚未开放</text></view><view class="hint">活动相册尚未开放；下方仅为设计灵感，不是真实活动照片。</view><scroll-view class="gallery-scroll" scroll-x="true" show-scrollbar="false"><view class="gallery-row"><view class="gallery-tile gallery-blue"><text>🏸</text><text>一起运动</text></view><view class="gallery-tile gallery-orange"><text>☕</text><text>咖啡时光</text></view><view class="gallery-tile gallery-green"><text>🚶</text><text>城市漫步</text></view><view class="gallery-tile gallery-violet"><text>🎲</text><text>桌游之夜</text></view></view></scroll-view></view>
@@ -70,7 +70,7 @@
               <button wx:if="{{notice.cardVariant === 'update'}}" class="center-inline-link" data-id="{{notice.id}}" data-event-id="{{notice.event_id}}" data-kind="{{notice.kind}}" data-section="{{notice.actionSection}}" bindtap="openNotice">⌖ {{notice.actionLabel}} ›</button>
               <button wx:if="{{notice.cardVariant === 'milestone'}}" class="center-status-link" data-id="{{notice.id}}" data-event-id="{{notice.event_id}}" data-kind="{{notice.kind}}" data-section="{{notice.actionSection}}" bindtap="openNotice"><text>● 活动已成局</text><text>{{notice.actionLabel}} ›</text></button>
             </view>
-            <view wx:if="{{notice.cardVariant === 'reminder'}}" class="center-reminder-thumb" aria-label="活动提醒图形"><text>◷</text><text>活动提醒</text></view>
+            <view wx:if="{{notice.cardVariant === 'reminder'}}" class="center-reminder-thumb" aria-label="活动场景示意配图"><image class="center-reminder-thumb-photo" src="/assets/stitch/caper_home_badminton.jpg" mode="aspectFill"/><text class="center-reminder-thumb-label">示意配图</text></view>
           </view>
           <view wx:if="{{notice.cardVariant === 'reminder'}}" class="center-reminder-actions"><button class="center-primary" data-id="{{notice.id}}" data-event-id="{{notice.event_id}}" data-kind="{{notice.kind}}" data-section="{{notice.actionSection}}" bindtap="openNotice">▣ {{notice.actionLabel}}</button><button wx:if="{{notice.event_id}}" class="center-secondary" data-id="{{notice.id}}" data-event-id="{{notice.event_id}}" data-kind="{{notice.kind}}" bindtap="openNotice">活动详情 ›</button></view>
           <view wx:if="{{notice.cardVariant === 'standard'}}" class="center-card-actions center-card-actions-right"><button class="center-primary" data-id="{{notice.id}}" data-event-id="{{notice.event_id}}" data-kind="{{notice.kind}}" data-section="{{notice.actionSection}}" bindtap="openNotice">{{notice.actionLabel}}</button></view>

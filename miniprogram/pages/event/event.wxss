@@ -389,7 +389,7 @@ page{padding:0;background:#f5f6fa;color:#1b1e27;font-family:-apple-system,BlinkM
 
 /* PG08: a real scan action replaces the reference's unsupported permanent/offline pass. */
 .checkin-modes { margin: 2rpx 0 20rpx !important; }
-.checkin-participant-card { position: relative; overflow: hidden; min-height: 560rpx; padding: 24rpx; border-radius: 28rpx; background: #30445e; color: #fff; }
+.checkin-participant-card { position: relative; overflow: hidden; min-height: 735rpx; padding: 24rpx; border-radius: 28rpx; background: #30445e; color: #fff; }
 .checkin-participant-photo, .checkin-participant-shade { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
 .checkin-participant-photo { opacity: .7; }
 .checkin-participant-shade { background: linear-gradient(140deg,#10263cb8,#27345099 52%,#41374abf); }
@@ -403,7 +403,7 @@ page{padding:0;background:#f5f6fa;color:#1b1e27;font-family:-apple-system,BlinkM
 .checkin-entry button:last-child { background: #edf2ff; color: #1d64f2; }
 .checkin-entry input { height: 68rpx; box-sizing: border-box; margin: 10rpx 0; padding: 0 18rpx; background: #f5f5f8; line-height: 68rpx; text-align: center; }
 .checkin-entry-divider { margin: 15rpx 0 0; color: #7b8493; font-size: 18rpx; }
-.checkin-entry-locked { margin-top: 90rpx; min-height: 255rpx; }
+.checkin-entry-locked { display: flex; flex-direction: column; justify-content: center; margin-top: 50rpx; min-height: 405rpx; }
 .checkin-entry-locked .checkin-availability { margin-top: 15rpx; text-align: left; }
 .checkin-section .checkin-host-card { margin-top: 0; min-height: 0; }
 .checkin-section .attendance-entry { background: #fff; }
