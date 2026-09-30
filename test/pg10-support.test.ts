@@ -35,6 +35,7 @@ test('support keeps a working safety route and FAQ without claiming unavailable 
   assert.deepEqual(routes, ['/pages/me/me']);
   assert.equal(storage.get('irlProfileFocusIntent'), 'reportSection');
   assert.equal((globalData.reportContext as { actor: string }).actor, 'host');
+  assert.equal((globalData.reportContext as { owner: string }).owner, 'dev:host');
   assert.equal((globalData.reportContext as { eventId: string }).eventId, '');
 
   assert.match(markup, /AI (?:提问|客服)[^<]*未开放/);

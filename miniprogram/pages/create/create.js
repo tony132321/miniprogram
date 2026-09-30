@@ -41,8 +41,9 @@ const inspirationBatches = [
   ]
 ];
 function currentIdentity() {
-  return wx.getStorageSync('sessionToken')
-    ? 'user:' + wx.getStorageSync('userId')
+  const token = wx.getStorageSync('sessionToken');
+  return token
+    ? 'session:' + wx.getStorageSync('userId') + ':' + token
     : 'dev:' + (wx.getStorageSync('devUser') || config.developmentUser || '');
 }
 function takeHomeIdeaIntent() {

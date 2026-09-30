@@ -21,10 +21,22 @@ function createApi(platform, config) {
     });
     return sha256(normalized);
   }
+  function sessionIdentityFor(token, devUser) {
+    return token ? JSON.stringify(['session', platform.getStorageSync('userId') || '', token])
+      : JSON.stringify(['development', devUser || '']);
+  }
+  function mutationIdentityFor(token, devUser) {
+    return token ? `user:${platform.getStorageSync('userId') || token}` : `dev:${devUser || ''}`;
+  }
   function currentIdentity() {
     const token = platform.getStorageSync('sessionToken');
     const devUser = config.developmentUser ? (platform.getStorageSync('devUser') || config.developmentUser) : '';
-    return token ? `user:${platform.getStorageSync('userId') || token}` : `dev:${devUser || ''}`;
+    return sessionIdentityFor(token, devUser);
+  }
+  function currentMutationIdentity() {
+    const token = platform.getStorageSync('sessionToken');
+    const devUser = config.developmentUser ? (platform.getStorageSync('devUser') || config.developmentUser) : '';
+    return mutationIdentityFor(token, devUser);
   }
   function hasDefinitiveResponse(statusCode) {
     return (statusCode >= 200 && statusCode < 300) ||
@@ -34,12 +46,12 @@ function createApi(platform, config) {
     return new Promise((resolve, reject) => {
       const token = platform.getStorageSync('sessionToken');
       const devUser = config.developmentUser ? (platform.getStorageSync('devUser') || config.developmentUser) : '';
-      const identity = token ? `user:${platform.getStorageSync('userId') || token}` : `dev:${devUser || ''}`;
+      const identity = sessionIdentityFor(token, devUser);
       const header = { 'Content-Type': 'application/json' };
       if (token) header.Authorization = 'Bearer ' + token;
       else if (devUser) header['X-Dev-User'] = devUser;
       const fingerprint = method === 'GET' || key || path === '/auth/wechat'
-        ? null : mutationFingerprint(identity, method, path, data);
+        ? null : mutationFingerprint(mutationIdentityFor(token, devUser), method, path, data);
       if (method !== 'GET') {
         const requestKey = key || uncertainMutations.get(fingerprint) || Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
         header['Idempotency-Key'] = requestKey;
@@ -68,6 +80,10 @@ function createApi(platform, config) {
       platform.request({ url: config.apiBase + path, method, data, header,
         ...(requestOptions?.timeoutMs ? { timeout: requestOptions.timeoutMs } : {}),
         success(response) {
+          if (method === 'GET' && currentIdentity() !== identity) {
+            reject(Object.assign(new Error('账号已切换，请刷新'), { code: 'IDENTITY_CHANGED' }));
+            return;
+          }
           clearIfDefinitive(response.statusCode, response.data);
           if (response.statusCode >= 200 && response.statusCode < 300) resolve(response.data);
           else reject(Object.assign(new Error(response.statusCode === 408 || response.statusCode >= 500
@@ -75,9 +91,15 @@ function createApi(platform, config) {
             : response.data?.message || '请求失败'),
           { code: response.data?.code || 'HTTP_ERROR', status: response.statusCode }));
         },
-        fail(error) { reject(Object.assign(new Error(method === 'GET'
+        fail(error) {
+          if (method === 'GET' && currentIdentity() !== identity) {
+            reject(Object.assign(new Error('账号已切换，请刷新'), { code: 'IDENTITY_CHANGED' }));
+            return;
+          }
+          reject(Object.assign(new Error(method === 'GET'
           ? '网络中断，加载失败；请重试' : '网络中断，提交结果尚未确认；请重试同一操作'),
-          { code: 'NETWORK_ERROR', detail: error.errMsg || '网络不可用' })); }
+          { code: 'NETWORK_ERROR', detail: error.errMsg || '网络不可用' }));
+        }
       });
     });
   }
@@ -146,7 +168,7 @@ function createApi(platform, config) {
     get: path => path === '/me/events' ? listMyEvents() : call('GET', path),
     post: (path, data, key, requestOptions) => call('POST', path, data, key, requestOptions),
     acknowledgeMutation(method, path, data) {
-      const fingerprint = mutationFingerprint(currentIdentity(), method, path, data);
+      const fingerprint = mutationFingerprint(currentMutationIdentity(), method, path, data);
       const key = uncertainMutations.get(fingerprint);
       if (!key) return false;
       uncertainMutations.delete(fingerprint);

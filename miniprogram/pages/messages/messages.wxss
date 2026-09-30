@@ -80,7 +80,7 @@
 .search-panel input { height: 60rpx; padding: 0 17rpx; border-radius: 15rpx; background: #f1f5f9; color: #0f172a; font-size: 21rpx; }
 .search-panel view { margin-top: 10rpx; color: #94a3b8; font-size: 16rpx; }
 .card { border: 1rpx solid #eef1f6; border-radius: 23rpx; box-shadow: 0 5rpx 18rpx rgba(15,23,42,.045); }
-.conversation-card { display: flex; align-items: center; gap: 18rpx; margin: 5rpx 0 23rpx; padding: 18rpx 19rpx; }
+.conversation-card { display: flex; align-items: center; gap: 18rpx; min-height: 112rpx; box-sizing: border-box; margin: 0 0 18rpx; padding: 18rpx 19rpx; background: #fff; }
 .conversation-icon { flex: none; width: 68rpx; height: 68rpx; border: 1rpx solid #cbdcff; border-radius: 50%; background: linear-gradient(135deg,#1d64f2,#719dff); color: #fff; font-size: 31rpx; line-height: 68rpx; text-align: center; }
 .conversation-title { color: #0f172a; font-size: 22rpx; font-weight: 800; }
 .conversation-copy { flex: 1; min-width: 0; }

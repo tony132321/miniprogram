@@ -77,7 +77,10 @@ test('pending login binds the home idea to the authenticated member before navig
   const switches: string[] = [];
   let finishReady!: () => void;
   const ready = new Promise<void>(resolve => { finishReady = resolve; });
-  const api: Api = { async get() { throw new Error('unexpected GET'); } };
+  const api: Api = { async get(route) {
+    if (route === '/system/safety') return { status: 'OPEN' };
+    throw new Error(`unexpected GET ${route}`);
+  } };
   const home = loadPage('../miniprogram/pages/index/index.js', storage, api, switches,
     { ready, developmentUser: '' });
   home.heroIdeaInput({ detail: { value: '登录期间输入的想法' } });
@@ -88,8 +91,12 @@ test('pending login binds the home idea to the authenticated member before navig
   storage.set('userId', 'new-member');
   finishReady();
   await submitting;
-  assert.equal((storage.get('irlHomeIdeaIntent') as { owner: string }).owner, 'user:new-member');
+  assert.equal((storage.get('irlHomeIdeaIntent') as { owner: string }).owner,
+    'session:new-member:token-new');
   assert.deepEqual(switches, ['/pages/create/create']);
+  const create = loadPage('../miniprogram/pages/create/create.js', storage, api);
+  await create.onShow();
+  assert.equal(create.data.aiText, '登录期间输入的想法');
 });
 
 test('a different signed-in member cannot receive a home idea submitted before account switch', async () => {
@@ -109,6 +116,36 @@ test('a different signed-in member cannot receive a home idea submitted before a
   assert.deepEqual(switches, []);
   assert.equal(home.data.heroIdeaText, '');
   assert.match(String(home.data.availabilityMessage), /账号已切换/);
+});
+
+test('a new login session for the same member cannot inherit a pending home idea', async () => {
+  const storage: Storage = new Map<string, unknown>([['sessionToken', 'token-first'], ['userId', 'alice']]);
+  const switches: string[] = [];
+  let finishReady!: () => void;
+  const ready = new Promise<void>(resolve => { finishReady = resolve; });
+  const api: Api = { async get() { throw new Error('unexpected GET'); } };
+  const home = loadPage('../miniprogram/pages/index/index.js', storage, api, switches, { ready });
+  home.heroIdeaInput({ detail: { value: '旧会话的构思' } });
+  const submitting = home.submitHeroIdea();
+  storage.set('sessionToken', 'token-second');
+  finishReady();
+  await submitting;
+  assert.equal(storage.has('irlHomeIdeaIntent'), false);
+  assert.deepEqual(switches, []);
+  assert.match(String(home.data.availabilityMessage), /账号已切换/);
+});
+
+test('create discards a home idea from the same member previous session', async () => {
+  const storage: Storage = new Map<string, unknown>([['sessionToken', 'token-second'], ['userId', 'alice'],
+    ['irlHomeIdeaIntent', { owner: 'user:alice', text: '旧会话的构思' }]]);
+  const api: Api = { async get(route) {
+    if (route === '/system/safety') return { status: 'OPEN' };
+    throw new Error(`unexpected GET ${route}`);
+  } };
+  const create = loadPage('../miniprogram/pages/create/create.js', storage, api);
+  await create.onShow();
+  assert.equal(create.data.aiText, '');
+  assert.equal(storage.has('irlHomeIdeaIntent'), false);
 });
 
 test('overlapping create onShow calls retain the intent until the current generation can apply it', async () => {

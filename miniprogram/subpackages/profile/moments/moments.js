@@ -10,7 +10,7 @@ const statusLabels = { RECRUITING: '招募中', CONFIRMED: '已成局', IN_PROGR
   COMPLETED: '已结束', CANCELLED: '已取消', EXPIRED: '未成局' };
 function currentIdentity() {
   const session = wx.getStorageSync('sessionToken');
-  return session ? `user:${wx.getStorageSync('userId') || ''}`
+  return session ? JSON.stringify(['user', wx.getStorageSync('userId') || '', session])
     : (wx.getStorageSync('devUser') || config.developmentUser)
       ? `dev:${wx.getStorageSync('devUser') || config.developmentUser}` : '';
 }

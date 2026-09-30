@@ -31,9 +31,11 @@ Page({
   back: backToProfile,
   goReport() {
     wx.setStorageSync('irlProfileFocusIntent', 'reportSection');
-    const actor = wx.getStorageSync('sessionToken') ? wx.getStorageSync('userId')
+    const token = wx.getStorageSync('sessionToken');
+    const actor = token ? wx.getStorageSync('userId')
       : wx.getStorageSync('devUser') || config.developmentUser || '';
-    if (actor) getApp().globalData.reportContext = { actor, eventId: '' };
+    if (actor) getApp().globalData.reportContext = {
+      actor, owner: token ? `session:${actor}:${token}` : `dev:${actor}`, eventId: '' };
     wx.switchTab({ url: '/pages/me/me' });
   }
 });

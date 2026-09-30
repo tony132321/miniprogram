@@ -125,6 +125,7 @@ test('guidelines opens the real report form for the active development identity'
   page.goReport();
   assert.deepEqual(storageWrites, [['irlProfileFocusIntent', 'reportSection']]);
   assert.equal(globalData.reportContext.actor, 'host');
+  assert.equal(globalData.reportContext.owner, 'dev:host');
   assert.equal(globalData.reportContext.eventId, '');
   assert.deepEqual(routes, ['/pages/me/me']);
 });

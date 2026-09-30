@@ -2,13 +2,17 @@ const { api } = require('../../utils/api.js');
 const config = require('../../config.js');
 const { defaultCity, selectedCity } = require('../../utils/city.js');
 function currentIdentity() {
-  return wx.getStorageSync('sessionToken')
-    ? 'user:' + wx.getStorageSync('userId')
+  const token = wx.getStorageSync('sessionToken');
+  return token
+    ? 'session:' + wx.getStorageSync('userId') + ':' + token
     : 'dev:' + (wx.getStorageSync('devUser') || config.developmentUser || '');
 }
+function currentActorId() {
+  return wx.getStorageSync('sessionToken') ? wx.getStorageSync('userId')
+    : wx.getStorageSync('devUser') || config.developmentUser || '';
+}
 function offerIntentOwner() {
-  const token = wx.getStorageSync('sessionToken');
-  return token ? 'session:' + wx.getStorageSync('userId') + ':' + token : currentIdentity();
+  return currentIdentity();
 }
 function headerPaddingRight() {
   try {
@@ -84,9 +88,8 @@ function posterWord(title) {
   if (/漫步|City Walk|city walk/i.test(title)) return 'CITY WALK';
   return 'BADMINTON TOGETHER';
 }
-function withRealDetail(item, event, actor) {
+function withRealDetail(item, event, actorId) {
   if (!event || event.id !== item.id || !event.payload) return item;
-  const actorId = actor.startsWith('dev:') ? actor.slice(4) : actor.startsWith('user:') ? actor.slice(5) : actor;
   if (item.isHost && event.hostId !== actorId) return item;
   const payload = event.payload;
   const confirmed = Number(event.stats?.confirmed);
@@ -281,7 +284,7 @@ Page({
         this._detailRequestId !== requestId || this.data.activeTab !== key) return;
       const enriched = new Map();
       results.forEach((result, index) => {
-        if (result.value) enriched.set(batch[index].id, withRealDetail(batch[index], result.value, identity));
+        if (result.value) enriched.set(batch[index].id, withRealDetail(batch[index], result.value, currentActorId()));
       });
       if (!enriched.size) continue;
       const updatedGroup = this.data[key].map(item => enriched.get(item.id) || item);
@@ -302,7 +305,8 @@ Page({
     try {
       if (text) await getApp().globalData.ready;
       const owner = currentIdentity();
-      if (owner !== identityAtTap && !(canFinishInitialLogin && owner.startsWith('user:') && owner.length > 5)) {
+      if (owner !== identityAtTap && !(canFinishInitialLogin && owner.startsWith('session:') &&
+        wx.getStorageSync('userId'))) {
         this.setData({ heroIdeaText: '', availabilityMessage: '账号已切换，之前输入的想法未转给新账号；请重新输入。' });
         return;
       }

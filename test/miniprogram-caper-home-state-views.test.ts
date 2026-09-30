@@ -153,6 +153,18 @@ test('a detail whose raw host ID differs from the current actor cannot enrich a 
   assert.equal(page.data.visibleItems[0].detailLoaded, undefined);
 });
 
+test('signed-in organizer detail compares the raw host ID while session identity guards stale data', async () => {
+  const hosted: ListedEvent = { id: 'hosted', status: 'RECRUITING', title: '周日羽毛球',
+    isHost: true, myRegistrationStatus: null };
+  const { page, storage } = makeHome({ organizer: [hosted] }, { hosted: detail('hosted') });
+  storage.set('sessionToken', 'session-one');
+  storage.set('userId', 'organizer');
+  await page.onShow();
+  await page.selectTab({ currentTarget: { dataset: { key: 'organized' } } });
+  assert.equal(page.data.visibleItems[0].hostCounts.confirmed, 2);
+  assert.equal(page.data.visibleItems[0].detailLoaded, true);
+});
+
 test('history AA action appears only from reviewed detail and opens the real expense section', async () => {
   const ended: ListedEvent = { id: 'ended', status: 'COMPLETED', title: '已结束的徒步',
     isHost: false, myRegistrationStatus: 'CONFIRMED' };

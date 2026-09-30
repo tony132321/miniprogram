@@ -1,12 +1,17 @@
 const { api } = require('../../utils/api.js');
 const { drawCheckInQr } = require('../../utils/checkin-qr.js');
 const config = require('../../config.js');
-function currentIdentity() {
+function currentActorId() {
   return wx.getStorageSync('sessionToken') ? wx.getStorageSync('userId')
     : wx.getStorageSync('devUser') || config.developmentUser || '';
 }
+function currentIdentity() {
+  const token = wx.getStorageSync('sessionToken');
+  return token ? 'session:' + currentActorId() + ':' + token : currentActorId();
+}
 function editorIdentity() {
-  return wx.getStorageSync('sessionToken') ? 'user:' + wx.getStorageSync('userId')
+  const token = wx.getStorageSync('sessionToken');
+  return token ? 'session:' + wx.getStorageSync('userId') + ':' + token
     : 'dev:' + (wx.getStorageSync('devUser') || config.developmentUser || '');
 }
 function newSourceToken() {
@@ -361,7 +366,8 @@ Page({
         catch (error) { if (!summary) throw error; }
       }
       if (!event || event.id !== id) throw new Error('活动信息不匹配，请刷新页面');
-      const isHost = event.hostId === actor;
+      const actorId = currentActorId();
+      const isHost = event.hostId === actorId;
       const cohostCapabilities = Array.isArray(event.cohostCapabilities) ? event.cohostCapabilities : [];
       const canApproveRegistration = isHost || cohostCapabilities.includes('APPROVE_REGISTRATION');
       const canManageCheckins = isHost || cohostCapabilities.includes('CHECKIN_MANAGE');
@@ -414,7 +420,7 @@ Page({
       const aliases = aliasResponse.items;
       const hostAlias = aliases.find(item => item.isHost)?.displayName || '主办方未设置活动内昵称';
       const canSetAlias = isHost || ['CONFIRMED', 'RECONFIRM_REQUIRED', 'WAITLISTED', 'OFFERED'].includes(myRegistration?.status);
-      const displayPerson = eventPersonNames(id, actor, event.hostId, aliases);
+      const displayPerson = eventPersonNames(id, actorId, event.hostId, aliases);
       const registrationSection = optionalItems(registrationRead, canReadRegistrations, '报名名单');
       const registrations = registrationSection.items.map(item => ({ ...item,
         displayName: displayPerson(item.user_id), statusLabel: statusText(item.status, 'registration') }));
@@ -452,7 +458,7 @@ Page({
       const factTodos = factSection.items.map(item => ({ ...item, statusLabel: statusText(item.status, 'fact') }));
       const contentSection = optionalItems(contentRead, canUseCollaboration, '公告问答记录');
       const content = contentSection.items;
-      const timeline = contentTimeline(content, displayPerson, event.hostId, actor,
+      const timeline = contentTimeline(content, displayPerson, event.hostId, actorId,
         aliases.find(item => item.isMine)?.displayName);
       const contentLoadState = contentSection.state;
       const contentError = contentSection.error;
@@ -466,7 +472,7 @@ Page({
         const hashAlias = consentedNames.size ? require('../../utils/sha256.js').sha256 : null;
         expenses = expenseSection.items.map(ledger => {
           const shares = (ledger.shares || []).map((share, index) => ({ ...share,
-            displayName: share.userId === actor ? '我的份额' :
+            displayName: share.userId === actorId ? '我的份额' :
               (hashAlias && consentedNames.get(hashAlias(`${id}:${share.userId}`).slice(0, 16))) || `参与者 ${index + 1}`,
             amountYuan: yuanFromFen(share.amountFen),
             participantStatusLabel: share.participantHandled ? '本人已处理' : '本人未记录',
@@ -475,7 +481,7 @@ Page({
               ? '双方已记录' : share.participantHandled !== share.hostReceived ? '记录不一致' : '待双方记录',
             declarationStatusTone: !ledger.current ? 'history' : share.participantHandled && share.hostReceived
               ? 'recorded' : share.participantHandled !== share.hostReceived ? 'review' : 'pending',
-            canMarkHandled: Boolean(ledger.current && share.userId === actor && !share.participantHandled),
+            canMarkHandled: Boolean(ledger.current && share.userId === actorId && !share.participantHandled),
             canMarkReceived: Boolean(ledger.current && isHost && !share.hostReceived) }));
           return { ...ledger, statusLabel: statusText(ledger.status, 'expense'),
             totalYuan: yuanFromFen(ledger.totalFen), shares,
@@ -651,9 +657,10 @@ Page({
       } });
   },
   goToReport() {
-    const actor = currentIdentity();
+    const actor = currentActorId() || wx.getStorageSync('sessionToken');
     getApp().globalData.reportContext = undefined;
-    if (actor && this.data.id) getApp().globalData.reportContext = { actor, eventId: this.data.id };
+    if (actor && this.data.id) getApp().globalData.reportContext = {
+      actor, owner: editorIdentity(), eventId: this.data.id };
     wx.switchTab({ url: '/pages/me/me' });
   },
   copySafetyDetails() {

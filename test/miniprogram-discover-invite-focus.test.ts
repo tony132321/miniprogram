@@ -49,4 +49,12 @@ test('profile invitation entry lands on discovery input once and rejects an old 
   await discover.onShow();
   assert.deepEqual(scrolls, ['#inviteEntry'], 'an old account cannot reuse its focus intent');
   assert.equal(storage.has('irlDiscoverFocusInvite'), false);
+
+  storage.set('sessionToken', 'token-first');
+  storage.set('userId', 'member');
+  me.goInviteEntry();
+  storage.set('sessionToken', 'token-second');
+  await discover.onShow();
+  assert.deepEqual(scrolls, ['#inviteEntry'], 'a new session for the same member cannot reuse its old focus intent');
+  assert.equal(storage.has('irlDiscoverFocusInvite'), false);
 });

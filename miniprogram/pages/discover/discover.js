@@ -22,8 +22,9 @@ const recommendationSets = [
 ];
 const categories = ['全部', '附近', '本周', '活动', '文艺', '美食', '职场', '兴趣', '生活', '公益'];
 function currentIdentity() {
-  return wx.getStorageSync('sessionToken')
-    ? 'user:' + wx.getStorageSync('userId')
+  const token = wx.getStorageSync('sessionToken');
+  return token
+    ? 'session:' + wx.getStorageSync('userId') + ':' + token
     : 'dev:' + (wx.getStorageSync('devUser') || config.developmentUser || '');
 }
 function coverFor(title) {

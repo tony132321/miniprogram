@@ -98,6 +98,30 @@ test('an account switch between pages stops the old traversal before another req
   assert.equal(paths.length, 1);
 });
 
+test('a delayed activity page cannot cross a same-user session rotation', async () => {
+  const storage = new Map<string, string>([['sessionToken', 'old-token'], ['userId', 'same-user']]);
+  const snapshot = 'a'.repeat(32);
+  const requests: Record<string, any>[] = [];
+  const api = createApi({
+    getStorageSync(key: string) { return storage.get(key) ?? ''; },
+    request(options: Record<string, any>) {
+      requests.push(options);
+      if (requests.length === 1) options.success({ statusCode: 200,
+        data: { items: [{ id: 'old-first' }], total: 2, nextOffset: 1, snapshot } });
+    }
+  }, { apiBase: 'https://api.example.test', developmentUser: '' });
+  const pending = api.get('/me/events');
+  await new Promise<void>(resolve => setImmediate(resolve));
+  assert.equal(requests.length, 2);
+  assert.equal(requests[0]?.header.Authorization, 'Bearer old-token');
+  assert.equal(requests[1]?.header.Authorization, 'Bearer old-token');
+  storage.set('sessionToken', 'new-token');
+  requests[1]?.success({ statusCode: 200,
+    data: { items: [{ id: 'old-second' }], total: 2, nextOffset: null, snapshot } });
+  await assert.rejects(pending, (error: any) => error.code === 'IDENTITY_CHANGED');
+  assert.equal(requests.length, 2);
+});
+
 test('repeated page changes terminate with a retryable error', async () => {
   const { api, paths } = makeApi(path => path === '/me/events?limit=100&offset=0'
     ? { statusCode: 200, data: { items: [{ id: 'one' }], total: 2,

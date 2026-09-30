@@ -7,7 +7,7 @@ import { cityModule } from './miniprogram-city-module.js';
 type Activity = { id: string; title: string; status: string; startAt?: string;
   venueName?: string; isHost: boolean; myRegistrationStatus: string | null };
 
-function loadProfile(activities: Activity[], reportContext?: { actor: string; eventId: string }, profileFocusIntent = '') {
+function loadProfile(activities: Activity[], reportContext?: { actor: string; owner: string; eventId: string }, profileFocusIntent = '') {
   let page: Record<string, any> | undefined;
   const navigations: string[] = [];
   const storageWrites: Array<[string, string]> = [];
@@ -184,7 +184,7 @@ test('profile invitation entry lets the member choose between multiple real recr
 });
 
 test('advanced profile controls fold by default and report context unfolds its form', async () => {
-  const { page, globalData } = loadProfile([], { actor: 'host', eventId: 'safety-1' });
+  const { page, globalData } = loadProfile([], { actor: 'host', owner: 'session:host:session', eventId: 'safety-1' });
   assert.equal(page.data.advancedOpen, false);
   assert.equal(page.data.headerPaddingRight, '104px');
   await page.onShow();

@@ -179,12 +179,14 @@ Page({
     this._privateActor = privateActor;
     const reportContext = app.globalData.reportContext;
     app.globalData.reportContext = undefined;
-    if (reportContext) this.setData({ reportEventId: reportContext.actor === actor ? reportContext.eventId : '',
-      advancedOpen: reportContext.actor === actor || this.data.advancedOpen });
+    const reportContextMatches = reportContext?.actor === actor &&
+      reportContext?.owner === profileOfferIdentity();
+    if (reportContext) this.setData({ reportEventId: reportContextMatches ? reportContext.eventId : '',
+      advancedOpen: reportContextMatches || this.data.advancedOpen });
     await this.refresh();
     if (this.data.loadState === 'UNAUTHENTICATED' || this.data.loadState === 'ACCESS_DENIED') return;
     if (offerEventId) await this.focusOfferNotification(offerEventId, privateActor, offerFocusGeneration);
-    else if (reportContext?.actor === actor) this.revealAdvanced('reportSection');
+    else if (reportContextMatches) this.revealAdvanced('reportSection');
     else if (requestedFocus) this.revealAdvanced(requestedFocus, requestedFocus !== 'notificationSettingsSection');
   },
   onHide() { this._pendingFocus = ''; this._offerFocusGeneration = (this._offerFocusGeneration || 0) + 1; },
@@ -678,7 +680,7 @@ Page({
   goInviteEntry() {
     if (typeof wx.getStorageSync === 'function' && typeof wx.setStorageSync === 'function') {
       const identity = wx.getStorageSync('sessionToken')
-        ? 'user:' + wx.getStorageSync('userId')
+        ? 'session:' + wx.getStorageSync('userId') + ':' + wx.getStorageSync('sessionToken')
         : 'dev:' + (wx.getStorageSync('devUser') || config.developmentUser || '');
       wx.setStorageSync('irlDiscoverFocusInvite', identity);
     }

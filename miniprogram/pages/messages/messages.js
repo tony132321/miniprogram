@@ -145,10 +145,12 @@ function displayed(items, filter, searchQuery = '') {
     noticeGroups: groupSpecs.map(spec => ({ ...spec, items: shown.filter(item => item.visible && groupFor(item) === spec.key) })) };
 }
 function currentIdentity(developmentMode) {
-  const hasSession = Boolean(wx.getStorageSync?.('sessionToken'));
+  const sessionToken = wx.getStorageSync?.('sessionToken') || '';
+  const hasSession = Boolean(sessionToken);
   const actor = hasSession ? wx.getStorageSync?.('userId') :
     developmentMode ? (wx.getStorageSync?.('devUser') || config.developmentUser) : '';
-  return { hasSession, actor, key: actor ? `${hasSession ? 'user' : 'dev'}:${actor}` : '' };
+  return { hasSession, actor, key: actor ? (hasSession
+    ? `user:${JSON.stringify([actor, sessionToken])}` : `dev:${actor}`) : '' };
 }
 function noticeEventId(value) { return value == null ? '' : String(value); }
 Page({
@@ -409,7 +411,10 @@ Page({
     if (this._identity !== undefined && currentIdentity(this.data.developmentMode).key !== this._identity) return;
     if (kind === 'MATERIAL_CHANGE' && !eventId) return;
     const profileFocus = profileFocusByKind[kind];
-    const generation = this._generation;
+    const identity = this._identity;
+    let generation = this._generation;
+    const stillCurrent = () => generation === this._generation && (identity === undefined ||
+      (identity === this._identity && identity === currentIdentity(this.data.developmentMode).key));
     const targetSection = kind === 'MATERIAL_CHANGE' ? 'registrationSection' : section;
     try {
       if (profileFocus) {
@@ -428,16 +433,16 @@ Page({
           success: resolve, fail: reject
         }));
       }
-      if (generation !== this._generation || (this._identity !== undefined &&
-        currentIdentity(this.data.developmentMode).key !== this._identity)) return;
+      if (!stillCurrent()) return;
       await api.post(`/me/notifications/${encodeURIComponent(id)}/open`, {});
-      if (generation !== this._generation) return;
+      if (!stillCurrent()) return;
       if (profileFocus) return;
       if (!eventId) {
         await this.refresh();
-        this.setData({ message: '通知已打开。' });
+        generation = this._generation;
+        if (stillCurrent()) this.setData({ message: '通知已打开。' });
       }
-    } catch (error) { if (generation === this._generation) this.setData({ message: error.message || '打开通知失败' }); }
+    } catch (error) { if (stillCurrent()) this.setData({ message: error.message || '打开通知失败' }); }
   },
   goProfile() { wx.switchTab({ url: '/pages/me/me' }); },
   goMyActivities() {

@@ -111,6 +111,23 @@ test('mini-program API sends the current login token and preserves server errors
   assert.ok(captured?.header['Idempotency-Key']);
 });
 
+test('a delayed GET response from an earlier session is rejected', async () => {
+  const storage = new Map<string, string>([['userId', 'same-user'], ['sessionToken', 'old-token']]);
+  let finish: ((response: Record<string, unknown>) => void) | undefined;
+  const api = createApi({
+    request(options: Record<string, any>) {
+      assert.equal(options.header.Authorization, 'Bearer old-token');
+      finish = options.success;
+    },
+    getStorageSync(key: string) { return storage.get(key) ?? ''; }
+  }, { apiBase: 'https://example.test', developmentUser: '' });
+  const pending = api.get('/me/profile');
+  assert.ok(finish);
+  storage.set('sessionToken', 'new-token');
+  finish({ statusCode: 200, data: { nickname: 'old-private-profile' } });
+  await assert.rejects(pending, { code: 'IDENTITY_CHANGED' });
+});
+
 test('mini-program suggestion request forwards its 30-second network timeout', async () => {
   let timeout: number | undefined;
   const api = createApi({
@@ -373,6 +390,7 @@ test('event safety entry carries its event into the signed-in report form only f
   eventPage.setData({ id: 'event-123' });
   eventPage.goToReport();
   assert.deepEqual(tabs, ['/pages/me/me']);
+  assert.equal(globalData.reportContext.owner, 'session:member-a:token-a');
   let profile: Record<string, any> | undefined;
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
@@ -395,6 +413,16 @@ test('event safety entry carries its event into the signed-in report form only f
   profile.setData({ reportEventId: '' });
   await profile.onShow();
   assert.equal(profile.data.reportEventId, '');
+
+  eventPage.goToReport();
+  storage.set('sessionToken', 'token-rotated');
+  await profile.onShow();
+  assert.equal(profile.data.reportEventId, '', 'a report intent must not cross a same-user session change');
+  assert.equal(globalData.reportContext, undefined);
+
+  globalData.reportContext = { actor: 'member-a', eventId: 'legacy-context' };
+  await profile.onShow();
+  assert.equal(profile.data.reportEventId, '', 'an unowned legacy context must not select an event');
 
   eventPage.goToReport();
   storage.set('userId', 'member-b');
@@ -2581,7 +2609,29 @@ test('relogin of the same user keeps an uncertain mutation key across client res
   await assert.rejects(() => createApi(platform, config).post('/reports', { description: '同一事件' }), { code: 'NETWORK_ERROR' });
   storage.set('sessionToken', 'new-token');
   await assert.rejects(() => createApi(platform, config).post('/reports', { description: '同一事件' }), { code: 'NETWORK_ERROR' });
+  await assert.rejects(() => createApi(platform, config).post('/reports', { description: '同一事件' }), { code: 'NETWORK_ERROR' });
+  assert.equal(requests[0]?.header.Authorization, 'Bearer old-token');
+  assert.equal(requests[1]?.header.Authorization, 'Bearer new-token');
   assert.equal(requests[1]?.header['Idempotency-Key'], requests[0]?.header['Idempotency-Key']);
+  assert.equal(requests[2]?.header['Idempotency-Key'], requests[1]?.header['Idempotency-Key']);
+});
+
+test('a different logged-in user does not inherit an uncertain mutation key', async () => {
+  const storage = new Map<string, string>([['userId', 'first-user'], ['sessionToken', 'first-token']]);
+  const requests: Record<string, any>[] = [];
+  const api = createApi({
+    request(options: Record<string, any>) {
+      requests.push(options);
+      options.fail({ errMsg: 'request:fail timeout' });
+    },
+    getStorageSync(key: string) { return storage.get(key) ?? ''; }
+  }, { apiBase: 'https://example.test', developmentUser: '' });
+  const payload = { description: '同样文字的新事件' };
+  await assert.rejects(() => api.post('/reports', payload), { code: 'NETWORK_ERROR' });
+  storage.set('sessionToken', 'second-token');
+  storage.set('userId', 'second-user');
+  await assert.rejects(() => api.post('/reports', payload), { code: 'NETWORK_ERROR' });
+  assert.notEqual(requests[1]?.header['Idempotency-Key'], requests[0]?.header['Idempotency-Key']);
 });
 
 test('a failed durable key write prevents a mutation from being sent', async () => {
