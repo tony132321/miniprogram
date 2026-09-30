@@ -3,7 +3,16 @@
   <view class="sync-bar"><view class="sync-copy"><text class="sync-dot"></text>资料保存暂未开放</view><view class="save-unavailable">✓ 保存待开放</view></view>
   <view class="edit-identity"><view class="identity-avatar">人<button class="camera-chip" disabled="{{true}}" aria-label="头像上传待开放">⌕</button></view><view class="handle">@ 全局 ID 尚未设置</view><view class="identity-photo-note">头像上传待开放</view></view>
   <view class="pg10-card edit-card">
-    <view class="field-heading">昵称 <text>活动内昵称可单独设置</text></view><view class="disabled-field">尚未设置全局昵称 <text>✎</text></view>
+    <view class="field-heading">昵称 <text>活动内昵称可单独设置</text></view><view class="disabled-field">全局昵称暂未开放 <text>✎</text></view>
+    <button class="alias-entry" bindtap="openAliasPicker" aria-label="选择活动并设置本场昵称"><view><view class="alias-entry-title">设置本场昵称</view><view class="alias-entry-note">仅在选定活动内展示，需本人确认</view></view><text>›</text></button>
+    <view wx:if="{{aliasPickerOpen}}" class="alias-picker">
+      <view class="alias-picker-heading"><view>选择我的活动</view><button bindtap="closeAliasPicker" aria-label="关闭活动选择">×</button></view>
+      <view wx:if="{{aliasLoadState === 'LOADING'}}" class="alias-picker-note">正在加载我的活动…</view>
+      <view wx:elif="{{aliasLoadState === 'UNAUTHENTICATED'}}" class="alias-picker-state"><view>请先登录，才能查看可设置昵称的活动。</view><button bindtap="goProfile">前往我的页面登录　›</button></view>
+      <view wx:elif="{{aliasLoadState === 'EMPTY'}}" class="alias-picker-state"><view>暂无可设置昵称的活动。主办方、已确认成员及候补中的成员可在对应活动内设置。</view><button bindtap="goProfile">查看我的活动　›</button></view>
+      <view wx:elif="{{aliasLoadState === 'ERROR'}}" class="alias-picker-state"><view>{{aliasError}}</view><button bindtap="openAliasPicker">重新加载　›</button></view>
+      <view wx:elif="{{aliasLoadState === 'READY'}}" class="alias-picker-list"><button wx:for="{{aliasCandidates}}" wx:key="id" class="alias-activity" data-id="{{item.id}}" bindtap="goAliasActivity"><view><view class="alias-activity-title">{{item.title}}</view><view class="alias-activity-role">{{item.role}} · 在活动详情设置或撤回</view></view><text>›</text></button></view>
+    </view>
     <view class="field-heading gender-heading">性别 <text>性别选择待开放</text></view><view class="gender-options"><button disabled="{{true}}" aria-label="女，选择未开放">女 ♀</button><button disabled="{{true}}" aria-label="男，选择未开放">男 ♂</button><button disabled="{{true}}" aria-label="保密，选择未开放">保密 ◉</button></view>
     <view class="field-heading bio-heading">个性签名 / 组局宣言 <text>暂不可编辑</text></view><view class="bio-field">把相遇带回真实世界<view class="field-hint">示意文案 · 未保存为个人资料</view></view>
     <button class="city-row" bindtap="goCity"><view class="city-icon">⌖</view><view class="city-copy"><view>我的浏览城市</view><text>{{city}} · 仅在本机用于浏览</text></view><view class="city-arrow">›</view></button>

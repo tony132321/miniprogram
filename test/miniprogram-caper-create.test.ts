@@ -11,6 +11,7 @@ function loadPage(now: number, apiOverrides: Record<string, any> = {}) {
   const scrolls: Array<Record<string, unknown>> = [];
   const toasts: Array<Record<string, unknown>> = [];
   const actionSheets: Array<{ itemList: string[]; success: (result: { tapIndex: number }) => void }> = [];
+  const modals: Array<{ content: string; success: (result: { confirm: boolean }) => void }> = [];
   class Clock extends Date {
     static now() { return now; }
   }
@@ -21,6 +22,7 @@ function loadPage(now: number, apiOverrides: Record<string, any> = {}) {
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
+    getApp() { return { globalData: { ready: Promise.resolve() } }; },
     Date: Clock,
     setTimeout,
     clearTimeout,
@@ -33,13 +35,124 @@ function loadPage(now: number, apiOverrides: Record<string, any> = {}) {
       navigateTo({ url }: { url: string }) { routes.push(url); },
       pageScrollTo(options: Record<string, unknown>) { scrolls.push(options); },
       showActionSheet(options: { itemList: string[]; success: (result: { tapIndex: number }) => void }) { actionSheets.push(options); },
+      showModal(options: { content: string; success: (result: { confirm: boolean }) => void }) { modals.push(options); },
       showToast(options: Record<string, unknown>) { toasts.push(options); }
     }
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>, done?: () => void) { Object.assign(this.data, patch); done?.(); };
-  return { page, routes, storage, scrolls, toasts, actionSheets };
+  return { page, routes, storage, scrolls, toasts, actionSheets, modals };
 }
+
+test('fresh-event intent preserves unsaved editor on cancel and resets to IDEA on confirmation', async () => {
+  const { page, storage, modals } = loadPage(Date.now());
+  page._shownIdentity = 'dev:host';
+  page.loadSafety = async () => {};
+  page.setData({ stage: 'FORM', form: { ...page.data.form, title: '尚未保存的周末局' } });
+  storage.set('irlCreateFreshIntent', { owner: 'dev:host' });
+  const cancelled = page.onShow();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.match(modals[0]?.content || '', /未保存修改/);
+  modals[0]?.success({ confirm: false });
+  await cancelled;
+  assert.equal(page.data.form.title, '尚未保存的周末局');
+  assert.equal(page.data.stage, 'FORM');
+  assert.equal(storage.has('irlCreateFreshIntent'), false);
+
+  storage.set('irlCreateFreshIntent', { owner: 'dev:host' });
+  storage.set('editDraftId', 'saved-draft-1');
+  storage.set('editTargetOwner', 'dev:host');
+  const confirmed = page.onShow();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.match(modals[1]?.content || '', /已保存草稿仍保留/);
+  modals[1]?.success({ confirm: true });
+  await confirmed;
+  assert.equal(page.data.stage, 'IDEA');
+  assert.equal(page.data.form.title, '');
+  assert.equal(storage.has('editDraftId'), false, 'queued draft edit must not overwrite the fresh IDEA');
+  assert.equal(storage.has('editTargetOwner'), false);
+});
+
+test('cancelling a fresh-event intent keeps the loaded draft association before opening a queued target', async () => {
+  const { page, storage, modals } = loadPage(Date.now());
+  page._shownIdentity = 'dev:host';
+  page.loadSafety = async () => {};
+  page.setData({ stage: 'FORM', editorLoadState: 'READY',
+    draft: { id: 'current-draft', version: 3 },
+    form: { ...page.data.form, title: '当前未保存修改' } });
+  storage.set('editDraftId', 'other-draft');
+  storage.set('editTargetOwner', 'dev:host');
+  storage.set('irlCreateFreshIntent', { owner: 'dev:host' });
+
+  const showing = page.onShow();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(modals.length, 1);
+  modals[0]?.success({ confirm: false });
+  await showing;
+
+  assert.equal(page.data.draft?.id, 'current-draft', 'saving must still update the loaded draft');
+  assert.equal(page.data.editorLoadState, 'READY', 'the retained editor must remain usable');
+  assert.equal(page.data.form.title, '当前未保存修改');
+  assert.equal(storage.has('editDraftId'), false, 'queued target must not overwrite the retained editor');
+});
+
+test('fresh-event intent survives a queued edit target owned by another session', async () => {
+  const { page, storage, modals } = loadPage(Date.now());
+  page._shownIdentity = 'dev:host';
+  page.loadSafety = async () => {};
+  page.setData({ stage: 'FORM', form: { ...page.data.form, title: '旧编辑' } });
+  storage.set('editDraftId', 'old-account-draft');
+  storage.set('editTargetOwner', 'dev:another-user');
+  storage.set('irlCreateFreshIntent', { owner: 'dev:host' });
+
+  const showing = page.onShow();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(modals.length, 1, 'the current user should still be asked before replacing the editor');
+  modals[0]?.success({ confirm: true });
+  await showing;
+  assert.equal(page.data.stage, 'IDEA');
+  assert.equal(page.data.form.title, '');
+  assert.equal(storage.has('editDraftId'), false);
+});
+
+test('fresh-event intent from a different session is consumed without changing the current editor', async () => {
+  const { page, storage, modals } = loadPage(Date.now());
+  page._shownIdentity = 'dev:new-user';
+  page.loadSafety = async () => {};
+  storage.set('devUser', 'new-user');
+  storage.set('irlCreateFreshIntent', { owner: 'dev:host' });
+  page.setData({ stage: 'FORM', form: { ...page.data.form, title: '新账号正在编辑' } });
+  await page.onShow();
+  assert.equal(page.data.form.title, '新账号正在编辑');
+  assert.equal(page.data.stage, 'FORM');
+  assert.equal(storage.has('irlCreateFreshIntent'), false);
+  assert.equal(modals.length, 0);
+});
+
+test('fresh-event intent opens IDEA directly when there is no edit to lose', async () => {
+  const { page, storage, modals } = loadPage(Date.now());
+  page._shownIdentity = 'dev:host';
+  page.loadSafety = async () => {};
+  storage.set('irlCreateFreshIntent', { owner: 'dev:host' });
+  await page.onShow();
+  assert.equal(page.data.stage, 'IDEA');
+  assert.equal(storage.has('irlCreateFreshIntent'), false);
+  assert.equal(modals.length, 0);
+});
+
+test('fresh-event intent asks before discarding schedule edits hidden behind the IDEA screen', async () => {
+  const { page, storage, modals } = loadPage(Date.now());
+  page._shownIdentity = 'dev:host';
+  page.loadSafety = async () => {};
+  page.setData({ stage: 'IDEA', startDate: '2026-10-05' });
+  storage.set('irlCreateFreshIntent', { owner: 'dev:host' });
+  const showing = page.onShow();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.match(modals[0]?.content || '', /未保存修改/);
+  modals[0]?.success({ confirm: false });
+  await showing;
+  assert.equal(page.data.startDate, '2026-10-05');
+});
 
 test('review more menu lets the host edit the draft or open the saved drafts list', () => {
   const { page, actionSheets, routes, storage } = loadPage(Date.now());

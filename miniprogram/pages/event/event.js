@@ -225,12 +225,14 @@ Page({
     checkIns: [], manualCheckIns: [], attendanceLoadState: 'IDLE', attendanceError: '',
     reconfirmation: null, reconfirmationLoadState: 'IDLE', reconfirmationError: '',
     canRequestManualCheckIn: false, currentUser: '',
-    feedbackHeld: null, feedbackWouldRepeat: null, feedbackReason: '', questionText: '', factQuestionText: '',
+    feedbackHeld: null, feedbackWouldRepeat: null, feedbackReason: '', feedbackSubmitting: false, feedbackUncertain: false, questionText: '', factQuestionText: '',
     announcementText: '', answerText: '', answerQuestionId: '', answerQuestionLabel: '', answerInputFocus: false,
     removalReason: '' },
   async onLoad(options) {
+    this.feedbackRequestId = (this.feedbackRequestId || 0) + 1;
+    this.feedbackUncertainRequest = null;
     this.setData({ statusBarHeight: wx.getSystemInfoSync?.().statusBarHeight || 24,
-      id: options.id || '', token: options.token || '', source: options.source || '', activeSection: 'detailsSection', sectionTitle: '活动详情', sectionSubtitle: '耍起 CAPER · 线下见面', checkInMode: 'participant', successState: '' });
+      id: options.id || '', token: options.token || '', source: options.source || '', activeSection: 'detailsSection', sectionTitle: '活动详情', sectionSubtitle: '耍起 CAPER · 线下见面', checkInMode: 'participant', successState: '', feedbackSubmitting: false, feedbackUncertain: false });
     await getApp().globalData.ready;
     const loaded = await this.refresh();
     if (loaded && options.success === 'published' && this.data.isHost &&
@@ -249,14 +251,18 @@ Page({
         this.data.event.status === 'COMPLETED' && !this.data.isHost &&
         this.data.myRegistration?.status === 'CONFIRMED' && this.data.outcomeLoadState === 'READY' &&
         this.data.outcome && !this.data.outcome.myFeedbackSubmitted;
+      const aliasForm = sameEvent && options.section === 'registrationSection' && options.entry === 'alias' &&
+        this.data.canSetAlias && this.data.aliasLoadState === 'READY';
       if (hostCheckin) this.setData({ checkInMode: 'host' });
-      this.scrollToSection(options.section, memberFeedback ? '#feedbackForm' : '');
+      this.scrollToSection(options.section, aliasForm ? '#aliasForm' : memberFeedback ? '#feedbackForm' : '');
     }
   },
   async onShow() {
     this.checkInPageHidden = false;
     const actor = currentIdentity();
     if (this.data.currentUser && this.data.currentUser !== actor) {
+      this.feedbackRequestId = (this.feedbackRequestId || 0) + 1;
+      this.feedbackUncertainRequest = null;
       this.refreshId = (this.refreshId || 0) + 1;
       this.clearCheckInToken();
       this.setData({ token: '', source: '', activeSection: 'detailsSection', sectionTitle: '活动详情', sectionSubtitle: '耍起 CAPER · 线下见面', checkInMode: 'participant', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '',
@@ -277,7 +283,7 @@ Page({
         checkIns: [], manualCheckIns: [], attendanceLoadState: 'IDLE', attendanceError: '',
         reconfirmation: null, reconfirmationLoadState: 'IDLE', reconfirmationError: '', canRequestManualCheckIn: false,
         reservationToken: '', reservationTokens: [], checkInToken: '', displayedCheckInToken: '', checkInExpiresIn: 0,
-        totalYuan: '', actualCount: '', completionHeld: null, completionAnomaly: '', completionVenueIssue: '', feedbackHeld: null, feedbackWouldRepeat: null,
+        totalYuan: '', actualCount: '', completionHeld: null, completionAnomaly: '', completionVenueIssue: '', feedbackHeld: null, feedbackWouldRepeat: null, feedbackSubmitting: false, feedbackUncertain: false,
         feedbackReason: '', questionText: '', factQuestionText: '', announcementText: '', answerText: '',
         answerQuestionId: '', answerQuestionLabel: '', answerInputFocus: false, removalReason: '',
         message: '', currentUser: actor });
@@ -1054,18 +1060,62 @@ Page({
   },
   postAnnouncement() { this.submitContent('ANNOUNCEMENT', this.data.announcementText, null); },
   answerQuestion() { return this.submitContent('ANSWER', this.data.answerText, this.data.answerQuestionId); },
-  setFeedbackHeld(event) { this.setData({ feedbackHeld: event.detail.value === 'yes' ? true : event.detail.value === 'no' ? false : null }); },
+  setFeedbackHeld(event) {
+    const held = event.detail.value === 'yes' ? true : event.detail.value === 'no' ? false : null;
+    this.setData({ feedbackHeld: held });
+  },
   setFeedbackWouldRepeat(event) { this.setData({ feedbackWouldRepeat: event.detail.value === 'yes' ? true : event.detail.value === 'no' ? false : null }); },
   feedbackReasonInput(event) { this.setData({ feedbackReason: event.detail.value }); },
   async submitFeedback() {
-    if (typeof this.data.feedbackHeld !== 'boolean') return this.setData({ message: '请先选择活动是否实际举办' });
-    if (typeof this.data.feedbackWouldRepeat !== 'boolean') return this.setData({ message: '请先选择是否愿意再参加类似活动' });
+    if (this.data.loadState !== 'READY' || this.data.currentUser !== currentIdentity() ||
+      this.data.event?.id !== this.data.id || this.data.event.status !== 'COMPLETED' ||
+      this.data.outcomeLoadState !== 'READY' || !this.data.outcome || this.data.outcome.myFeedbackSubmitted ||
+      this.data.isHost || this.data.myRegistration?.status !== 'CONFIRMED')
+      return this.setData({ message: '当前无法提交独立反馈，请刷新活动状态。' });
+    if (this.data.feedbackSubmitting) return;
+    const actor = currentIdentity();
+    const eventId = this.data.id;
+    const retry = this.feedbackUncertainRequest;
+    const retryPayload = retry?.actor === actor && retry.eventId === eventId ? retry.payload : null;
+    if (!retryPayload) {
+      if (typeof this.data.feedbackHeld !== 'boolean') return this.setData({ message: '请先选择活动是否实际举办' });
+      if (typeof this.data.feedbackWouldRepeat !== 'boolean') return this.setData({ message: '请先选择是否愿意再参加类似活动' });
+      if (this.data.feedbackHeld === false && !String(this.data.feedbackReason || '').trim())
+        return this.setData({ message: '如活动未举办，请填写原因' });
+    }
+    const refreshGeneration = this.refreshId || 0;
+    const requestId = this.feedbackRequestId = (this.feedbackRequestId || 0) + 1;
+    const payload = retryPayload || { expectedVersion: this.data.event.version, held: this.data.feedbackHeld,
+      wouldRepeat: this.data.feedbackWouldRepeat, reason: this.data.feedbackReason };
+    const sameContext = () => this.feedbackRequestId === requestId && currentIdentity() === actor &&
+      this.data.currentUser === actor && this.data.id === eventId && this.data.event?.id === eventId;
+    this.setData({ feedbackSubmitting: true });
     try {
-      await api.post(`/events/${this.data.id}/feedback`, { expectedVersion: this.data.event.version, held: this.data.feedbackHeld,
-        wouldRepeat: this.data.feedbackWouldRepeat, reason: this.data.feedbackReason });
-      await this.refresh();
-      this.setData({ message: '独立反馈已记录；争议将进入人工处理。' });
-    } catch (error) { this.setData({ message: error.message || '反馈失败' }); }
+      await api.post(`/events/${eventId}/feedback`, payload);
+      if (this.feedbackRequestId === requestId) this.feedbackUncertainRequest = null;
+      if (!sameContext() || (this.refreshId || 0) !== refreshGeneration) return;
+      this.setData({ feedbackUncertain: false });
+      const loaded = await this.refresh();
+      if (loaded && sameContext() && this.data.outcome?.myFeedbackSubmitted)
+        this.setData({ message: payload.held ? '独立反馈已记录。' : '独立反馈已记录；争议将进入人工处理。' });
+    } catch (error) {
+      if (sameContext() && (this.refreshId || 0) === refreshGeneration) {
+        const uncertain = error.code === 'NETWORK_ERROR' || error.status === 408 || error.status >= 500;
+        this.feedbackUncertainRequest = uncertain ? { actor, eventId, payload } : null;
+        this.setData({ feedbackUncertain: uncertain, message: error.message || '反馈失败' });
+      }
+    } finally {
+      if (this.feedbackRequestId === requestId) this.setData({ feedbackSubmitting: false });
+    }
+  },
+  startAnotherEvent() {
+    if (this.data.loadState !== 'READY' || this.data.currentUser !== currentIdentity() ||
+      this.data.event?.id !== this.data.id || this.data.event.status !== 'COMPLETED' ||
+      this.data.outcomeLoadState !== 'READY' ||
+      !this.data.outcome || this.data.isHost ||
+      this.data.myRegistration?.status !== 'CONFIRMED') return;
+    wx.setStorageSync('irlCreateFreshIntent', { owner: editorIdentity() });
+    wx.switchTab({ url: '/pages/create/create' });
   },
   async prepareShare() {
     const event = this.data.event;

@@ -25,6 +25,21 @@
 .field-heading text { float: right; color: #8c94a6; font-size: 20rpx; font-weight: 500; }
 .disabled-field { display: flex; justify-content: space-between; padding: 18rpx 22rpx; margin-top: 9rpx; border-radius: 16rpx; background: #f1f1f6; color: #7b8392; font-size: 26rpx; }
 .disabled-field text { color: #afb6c8; }
+.alias-entry { box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; width: 100%; margin: 16rpx 0 0; padding: 18rpx 20rpx; border: 1rpx solid #dbe7ff; border-radius: 17rpx; background: #f1f6ff; color: #1d5ed5; text-align: left; }
+.alias-entry::after,.alias-picker button::after { border: 0; }
+.alias-entry-title { font-size: 25rpx; font-weight: 700; line-height: 1.4; }
+.alias-entry-note { margin-top: 3rpx; color: #536b93; font-size: 19rpx; line-height: 1.4; }
+.alias-entry > text { font-size: 38rpx; line-height: 1; }
+.alias-picker { margin-top: 13rpx; padding: 17rpx; border: 1rpx solid #dce6f4; border-radius: 18rpx; background: #fff; }
+.alias-picker-heading { display: flex; align-items: center; justify-content: space-between; color: #243247; font-size: 23rpx; font-weight: 700; }
+.alias-picker-heading button { width: 42rpx; height: 42rpx; margin: 0; padding: 0; border-radius: 50%; background: #f1f3f8; color: #667085; line-height: 42rpx; font-size: 29rpx; }
+.alias-picker-note,.alias-picker-state { padding: 19rpx 2rpx 4rpx; color: #626f83; font-size: 21rpx; line-height: 1.5; }
+.alias-picker-state button { width: auto; margin: 11rpx 0 0; padding: 3rpx 0; background: transparent; color: #1e62d7; text-align: left; font-size: 21rpx; }
+.alias-picker-list { margin-top: 10rpx; }
+.alias-activity { box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; width: 100%; margin: 0; padding: 16rpx 2rpx; border-radius: 0; border-top: 1rpx solid #edf0f6; background: transparent; color: #253248; text-align: left; }
+.alias-activity-title { font-size: 22rpx; font-weight: 650; line-height: 1.4; }
+.alias-activity-role { margin-top: 4rpx; color: #748197; font-size: 18rpx; line-height: 1.4; }
+.alias-activity > text { color: #7b8daa; font-size: 29rpx; }
 .gender-heading { margin-top: 28rpx; }
 .gender-options { display: flex; margin-top: 9rpx; padding: 7rpx; border-radius: 18rpx; background: #f1f1f6; gap: 7rpx; }
 .gender-options button { flex: 1; min-width: 0; margin: 0; padding: 10rpx 0; border-radius: 13rpx; background: transparent !important; color: #9198a6 !important; text-align: center; font-size: 24rpx; font-weight: 650; line-height: 1.4; }

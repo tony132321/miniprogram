@@ -1802,11 +1802,13 @@ test('independent feedback requires both answers before recording willingness to
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
-    wx: {}, setTimeout, clearTimeout
+    wx: { getStorageSync() { return ''; } }, setTimeout, clearTimeout
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
-  page.setData({ id: 'e1', event: { version: 2 } });
+  page.setData({ id: 'e1', event: { id: 'e1', version: 2, status: 'COMPLETED' },
+    outcome: { myFeedbackSubmitted: false }, outcomeLoadState: 'READY', myRegistration: { status: 'CONFIRMED' },
+    isHost: false, currentUser: 'p1', loadState: 'READY' });
   page.refresh = async () => true;
   await page.submitFeedback();
   assert.equal(sent.length, 0);
@@ -1816,10 +1818,30 @@ test('independent feedback requires both answers before recording willingness to
   assert.equal(sent.length, 0);
   assert.match(page.data.message, /再参加/);
   page.setFeedbackWouldRepeat({ detail: { value: 'no' } });
+  page.setFeedbackHeld({ detail: { value: 'no' } });
+  await page.submitFeedback();
+  assert.equal(sent.length, 0, 'a not-held report needs an explanation before it reaches the server');
+  assert.match(page.data.message, /未举办.*原因/);
+  page.feedbackReasonInput({ detail: { value: '到场后活动没有举办' } });
   await page.submitFeedback();
   assert.equal(sent.length, 1);
-  assert.equal(sent[0]?.held, true);
+  assert.equal(sent[0]?.held, false);
   assert.equal(sent[0]?.wouldRepeat, false);
+  page.setFeedbackHeld({ detail: { value: 'yes' } });
+  assert.equal(page.data.feedbackReason, '到场后活动没有举办',
+    'switching the answer must preserve an explanation the member may edit into a dispute note');
+  page.feedbackReasonInput({ detail: { value: '活动举办了，但场地与公告不符' } });
+  await page.submitFeedback();
+  assert.equal(sent.length, 2);
+  assert.equal(sent[1]?.held, true);
+  assert.equal(sent[1]?.reason, '活动举办了，但场地与公告不符');
+  page.setData({ event: { id: 'e1', version: 2, status: 'IN_PROGRESS' } });
+  await page.submitFeedback();
+  assert.equal(sent.length, 2, 'feedback must stay closed until the event is completed');
+  page.setData({ event: { id: 'e1', version: 2, status: 'COMPLETED' },
+    outcome: { myFeedbackSubmitted: true } });
+  await page.submitFeedback();
+  assert.equal(sent.length, 2, 'already submitted feedback must not be sent again');
 });
 
 test('AA page refuses an empty or malformed amount instead of recording zero', () => {

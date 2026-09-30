@@ -11,6 +11,7 @@ function eventPage(apiPost?: (path: string, body: Record<string, unknown>) => Pr
   let page: Record<string, any> | undefined;
   const scrolls: Record<string, unknown>[] = [];
   const routes: string[] = [];
+  const storage = new Map<string, unknown>();
   runInNewContext(source, {
     require(path: string) {
       if (path === '../../utils/api.js') return { api: { post: apiPost } };
@@ -21,7 +22,8 @@ function eventPage(apiPost?: (path: string, body: Record<string, unknown>) => Pr
     Page(definition: Record<string, any>) { page = definition; },
     getApp() { return { globalData: { ready: Promise.resolve() } }; },
     wx: {
-      getStorageSync() { return ''; },
+      getStorageSync(key: string) { return storage.get(key) ?? ''; },
+      setStorageSync(key: string, value: unknown) { storage.set(key, value); },
       getSystemInfoSync() { return { statusBarHeight: 20 }; },
       pageScrollTo(options: Record<string, unknown>) { scrolls.push(options); },
       navigateBack({ success }: { success?: () => void }) { routes.push('back'); success?.(); },
@@ -41,7 +43,7 @@ function eventPage(apiPost?: (path: string, body: Record<string, unknown>) => Pr
     canManageCheckins: true,
     loadState: 'READY'
   });
-  return { page, scrolls, routes };
+  return { page, scrolls, routes, storage };
 }
 
 test('activity subsections open as focused screens and back returns to event details', () => {
@@ -137,6 +139,112 @@ test('home feedback link locates the form only for confirmed members of complete
     await page.onLoad({ id: 'e1', section: 'checkinSection', entry: 'memberFeedback' });
     assert.equal(scrolls.length, 1);
     assert.equal(scrolls[0]?.scrollTop, 0, `ineligible ${JSON.stringify(state)} stays on section overview`);
+  }
+});
+
+test('profile alias link locates the form only when the same activity can edit its alias', async () => {
+  const { page, scrolls } = eventPage();
+  const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  assert.ok(markup.includes('id="aliasForm" wx:if="{{canSetAlias}}"'),
+    'the alias form needs a stable scroll target only when editing is available');
+  page.refresh = async function () {
+    this.setData({ loadState: 'READY', event: { id: 'e1', status: 'CONFIRMED' },
+      canSetAlias: true, aliasLoadState: 'READY' });
+    return true;
+  };
+  await page.onLoad({ id: 'e1', section: 'registrationSection', entry: 'alias' });
+  assert.equal(page.data.activeSection, 'registrationSection');
+  assert.equal(scrolls.length, 1);
+  assert.equal(scrolls[0]?.selector, '#aliasForm');
+
+  for (const state of [
+    { eventId: 'e1', canSetAlias: false, aliasLoadState: 'READY' },
+    { eventId: 'e1', canSetAlias: true, aliasLoadState: 'ERROR' },
+    { eventId: 'e2', canSetAlias: true, aliasLoadState: 'READY' }
+  ]) {
+    page.refresh = async function () {
+      this.setData({ loadState: 'READY', event: { id: state.eventId, status: 'CONFIRMED' },
+        canSetAlias: state.canSetAlias, aliasLoadState: state.aliasLoadState });
+      return true;
+    };
+    scrolls.length = 0;
+    await page.onLoad({ id: 'e1', section: 'registrationSection', entry: 'alias' });
+    assert.equal(scrolls.length, 1);
+    assert.equal(scrolls[0]?.scrollTop, 0, `ineligible ${JSON.stringify(state)} stays in registration overview`);
+  }
+});
+
+test('completed member can start another event without repeating or publishing the old one', () => {
+  const { page, routes, storage } = eventPage();
+  page.setData({ id: 'e1', event: { id: 'e1', status: 'COMPLETED' }, outcome: { myFeedbackSubmitted: true },
+    outcomeLoadState: 'READY',
+    isHost: false, myRegistration: { status: 'CONFIRMED' }, currentUser: 'host' });
+  page.startAnotherEvent();
+  assert.deepEqual(routes, ['/pages/create/create']);
+  assert.equal((storage.get('irlCreateFreshIntent') as { owner: string })?.owner, 'dev:host');
+
+  routes.length = 0;
+  page.setData({ event: { id: 'e1', status: 'IN_PROGRESS' } });
+  page.startAnotherEvent();
+  assert.deepEqual(routes, [], 'live events cannot expose the completed-feedback shortcut');
+  page.setData({ event: { id: 'e1', status: 'COMPLETED' }, myRegistration: { status: 'REQUESTED' } });
+  page.startAnotherEvent();
+  assert.deepEqual(routes, [], 'unconfirmed members cannot use the completed-feedback shortcut');
+  page.setData({ id: 'e2', myRegistration: { status: 'CONFIRMED' } });
+  page.startAnotherEvent();
+  assert.deepEqual(routes, [], 'a stale activity card cannot open a new event from another activity route');
+});
+
+test('feedback accepts one in-flight tap and allows a retry after an uncertain response', async () => {
+  let settleFirst: ((error?: Error) => void) | undefined;
+  const sent: Array<{ path: string; body: Record<string, unknown> }> = [];
+  const { page } = eventPage((path, body) => {
+    sent.push({ path, body });
+    if (sent.length === 1) return new Promise((_resolve, reject) => {
+      settleFirst = error => reject(error);
+    });
+    return Promise.resolve({});
+  });
+  page.setData({ id: 'e1', event: { id: 'e1', status: 'COMPLETED', version: 3 },
+    isHost: false, currentUser: 'host', outcome: { myFeedbackSubmitted: false },
+    outcomeLoadState: 'READY', myRegistration: { status: 'CONFIRMED' },
+    feedbackHeld: true, feedbackWouldRepeat: true, feedbackReason: '场地安排有偏差' });
+  page.refresh = async () => true;
+
+  const first = page.submitFeedback();
+  await page.submitFeedback();
+  assert.equal(sent.length, 1, 'the second tap must not submit while the first request is pending');
+  settleFirst?.(Object.assign(new Error('提交结果尚未确认'), { code: 'NETWORK_ERROR' }));
+  await first;
+  assert.equal(page.data.feedbackUncertain, true);
+  page.setData({ feedbackReason: '后来修改的说明' });
+  await page.submitFeedback();
+  assert.equal(sent.length, 2, 'retry must be available after an uncertain response');
+  assert.deepEqual(sent[1]?.body, sent[0]?.body, 'same feedback payload lets the API reuse its pending idempotency key');
+  assert.equal(page.data.feedbackUncertain, false);
+});
+
+test('old feedback response cannot refresh or announce success in a different session or activity', async () => {
+  for (const changed of ['session', 'activity']) {
+    let settle: (() => void) | undefined;
+    let refreshed = 0;
+    const { page, storage } = eventPage(() => new Promise(resolve => { settle = () => resolve({}); }));
+    page.setData({ id: 'e1', event: { id: 'e1', status: 'COMPLETED', version: 3 },
+      isHost: false, currentUser: 'host', outcome: { myFeedbackSubmitted: false },
+      outcomeLoadState: 'READY', myRegistration: { status: 'CONFIRMED' },
+      feedbackHeld: true, feedbackWouldRepeat: false });
+    page.refresh = async () => { refreshed++; return true; };
+    const submitting = page.submitFeedback();
+    if (changed === 'session') {
+      storage.set('devUser', 'another-user');
+      page.setData({ currentUser: 'another-user' });
+    } else {
+      page.setData({ id: 'e2', event: { id: 'e2', status: 'COMPLETED', version: 1 } });
+    }
+    settle?.();
+    await submitting;
+    assert.equal(refreshed, 0, `${changed} change must not trigger an old feedback refresh`);
+    assert.equal(page.data.message, '', `${changed} change must not show an old feedback success message`);
   }
 });
 

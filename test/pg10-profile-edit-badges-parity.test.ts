@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { runInNewContext } from 'node:vm';
+import { cityModule } from './miniprogram-city-module.js';
 
 const profileStem = fileURLToPath(new URL('../miniprogram/subpackages/profile/profile-edit/profile-edit', import.meta.url));
 
@@ -27,6 +28,7 @@ test('profile edit header avoids the native capsule and opens real R1 destinatio
       switchTab({ url }: { url: string }) { routes.push(url); }
     },
     require(module: string) {
+      if (module === '../../../utils/city.js') return cityModule;
       assert.equal(module, '../navigation.js');
       return { backToProfile() {}, statusBarHeight() { return 24; } };
     }

@@ -78,7 +78,7 @@
   <view class="roster-title">活动内已授权昵称</view><view class="roster-intro">只展示本人同意在本场公开的昵称；这里也可能包含候补成员。</view>
   <view wx:if="{{memberCards.length}}" class="member-card-grid"><view wx:for="{{memberCards}}" wx:key="id" class="member-card"><text class="member-card-avatar {{item.isHost ? 'host' : ''}}">{{item.avatarGlyph}}</text><view class="member-card-name">{{item.displayName}}</view><view class="member-card-role">{{item.roleLabel}}</view><button wx:if="{{!item.isMine}}" data-member="{{item.id}}" bindtap="blockMember">屏蔽成员</button></view></view>
   <view wx:if="{{aliasLoadState === 'READY' && !memberCards.length}}" class="roster-empty">本场暂无成员同意展示活动内昵称；报名人数以服务端统计为准。</view>
-  <view wx:if="{{canSetAlias}}">
+  <view id="aliasForm" wx:if="{{canSetAlias}}">
     <view wx:if="{{aliasReconfirmationRequired}}">旧昵称尚未按当前展示说明确认，需重新输入并同意后才对成员可见。</view>
     <view wx:if="{{aliasLoadState === 'ERROR'}}" class="error">{{aliasError}} <button bindtap="refresh">重新加载昵称授权</button></view>
     <view wx:if="{{aliasNoticeVersion}}">{{aliasNoticeText}}</view>
@@ -134,20 +134,27 @@
   <view wx:if="{{outcome && isHost}}" wx:for="{{outcome.issues}}" wx:key="*this" class="item">{{item}}</view>
   <view wx:if="{{outcomeLoadState === 'FORBIDDEN'}}" class="muted">当前无权查看结项证据。</view>
   <view wx:if="{{outcomeLoadState === 'ERROR'}}" class="error">{{outcomeError}} <button id="outcomeRetryButton" bindtap="refresh">重新加载结项证据</button></view>
-  <view id="feedbackForm" wx:if="{{outcome && !isHost && myRegistration.status === 'CONFIRMED' && !outcome.myFeedbackSubmitted}}">
-    <view>这次活动是否实际举办</view>
-    <radio-group id="feedbackHeldGroup" bindchange="setFeedbackHeld">
-      <label id="feedbackHeldYes"><radio value="yes" checked="{{feedbackHeld === true}}" />实际举办</label>
-      <label id="feedbackHeldNo"><radio value="no" checked="{{feedbackHeld === false}}" />未举办</label>
-    </radio-group>
-    <view>是否愿意再参加类似活动</view>
-    <radio-group id="feedbackRepeatGroup" bindchange="setFeedbackWouldRepeat">
-      <label id="feedbackRepeatYes"><radio value="yes" checked="{{feedbackWouldRepeat === true}}" />愿意</label>
-      <label id="feedbackRepeatNo"><radio value="no" checked="{{feedbackWouldRepeat === false}}" />不愿意</label>
-    </radio-group>
-    <textarea placeholder="如未举办或有争议，请说明" value="{{feedbackReason}}" bindinput="feedbackReasonInput" />
-    <button id="submitFeedbackButton" bindtap="submitFeedback">提交独立反馈</button>
+  <view wx:if="{{outcome && !isHost && myRegistration.status === 'CONFIRMED'}}" class="feedback-card">
+    <view class="feedback-card-header"><view><view class="feedback-card-title">活动结束啦！</view><view class="feedback-card-question">这次活动有顺利举行吗？</view></view><view class="feedback-celebration" aria-hidden="true">✦</view></view>
+    <view id="feedbackForm" wx:if="{{outcome && !isHost && myRegistration.status === 'CONFIRMED' && !outcome.myFeedbackSubmitted}}">
+      <radio-group id="feedbackHeldGroup" class="feedback-choice-grid" bindchange="setFeedbackHeld">
+        <label id="feedbackHeldYes" class="feedback-choice {{feedbackHeld === true ? 'feedback-choice-green' : ''}}"><radio class="feedback-native-radio" value="yes" checked="{{feedbackHeld === true}}" disabled="{{feedbackSubmitting || feedbackUncertain}}" /><text class="feedback-choice-icon">✓</text><text>顺利举行了！</text></label>
+        <label id="feedbackHeldNo" class="feedback-choice {{feedbackHeld === false ? 'feedback-choice-neutral-selected' : ''}}"><radio class="feedback-native-radio" value="no" checked="{{feedbackHeld === false}}" disabled="{{feedbackSubmitting || feedbackUncertain}}" /><text class="feedback-choice-icon">☹</text><text>未能举行</text></label>
+      </radio-group>
+      <view class="feedback-repeat-question">还想参加类似的活动吗？</view>
+      <radio-group id="feedbackRepeatGroup" class="feedback-choice-grid" bindchange="setFeedbackWouldRepeat">
+        <label id="feedbackRepeatYes" class="feedback-choice {{feedbackWouldRepeat === true ? 'feedback-choice-violet' : ''}}"><radio class="feedback-native-radio" value="yes" checked="{{feedbackWouldRepeat === true}}" disabled="{{feedbackSubmitting || feedbackUncertain}}" /><text class="feedback-choice-icon">✓</text><text>想！多来一些</text></label>
+        <label id="feedbackRepeatNo" class="feedback-choice {{feedbackWouldRepeat === false ? 'feedback-choice-neutral-selected' : ''}}"><radio class="feedback-native-radio" value="no" checked="{{feedbackWouldRepeat === false}}" disabled="{{feedbackSubmitting || feedbackUncertain}}" /><text class="feedback-choice-icon">○</text><text>暂时不</text></label>
+      </radio-group>
+      <view class="feedback-reason-label">{{feedbackHeld === false ? '未举办原因（必填）' : '补充说明（选填）'}}</view>
+      <textarea class="feedback-reason" placeholder="{{feedbackHeld === false ? '请说明未举办情况' : '如有争议，可补充现场情况'}}" value="{{feedbackReason}}" bindinput="feedbackReasonInput" disabled="{{feedbackSubmitting || feedbackUncertain}}" maxlength="500" />
+      <button id="submitFeedbackButton" class="feedback-submit" bindtap="submitFeedback" disabled="{{feedbackSubmitting}}">{{feedbackSubmitting ? '正在提交反馈…' : feedbackUncertain ? '重试原反馈' : '提交独立反馈'}}</button>
+    </view>
+    <view wx:else class="feedback-recorded">✓ 独立反馈已记录；如有争议，请以结项与人工复核结果为准。</view>
+    <button class="feedback-next-round" bindtap="startAnotherEvent">再来一局 <text>✨</text></button>
+    <view class="feedback-next-note">进入发起页构思新活动；不会复制或发布当前活动。</view>
   </view>
+  <view wx:if="{{outcome && !isHost && myRegistration.status === 'CONFIRMED'}}" class="feedback-brandline"><text>REAL PEOPLE.</text><text>REAL CONNECTIONS.</text><text>MORE GOOD DAYS.</text></view>
   </view>
   <view id="contentSection" class="event-section content-section {{activeSection !== 'contentSection' ? 'section-hidden' : ''}}"><view class="section-kicker">STAY IN THE LOOP</view><view class="section-heading">活动公告与问答</view><view class="section-intro">主办公告与提问按审核状态展示。</view><view class="content-welcome"><text>☺</text><view>这里会更新活动动态；有问题，可以直接问主办方 ✨</view></view>
   <view wx:if="{{contentLoadState === 'EMPTY'}}" class="content-empty"><text>✦</text><view><view>还没有活动公告</view><view>主办方更新后会在这里显示。你也可以在下方提问。</view></view></view>

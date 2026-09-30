@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { runInNewContext } from 'node:vm';
+import { cityModule } from './miniprogram-city-module.js';
 
 const meMarkup = readFileSync(new URL('../miniprogram/pages/me/me.wxml', import.meta.url), 'utf8');
 
@@ -68,6 +69,7 @@ test('interest controls open the actual explanatory section without offering an 
     wx: { pageScrollTo({ selector }: { selector: string }) { scrolls.push(selector); } },
     require(path: string) {
       if (path === '../navigation.js') return { backToProfile() {}, statusBarHeight() { return 24; } };
+      if (path === '../../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     }
   });

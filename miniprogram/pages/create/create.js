@@ -53,6 +53,13 @@ function takeHomeIdeaIntent() {
     return intent;
   } catch (_) { return null; }
 }
+function takeFreshIdeaIntent() {
+  try {
+    const intent = wx.getStorageSync('irlCreateFreshIntent');
+    wx.removeStorageSync('irlCreateFreshIntent');
+    return intent;
+  } catch (_) { return null; }
+}
 function emptyEditor() {
   return { stage: 'IDEA', aiText: '', message: '', draft: null, editingEvent: null, publishPreview: null, changePreview: null,
     reviewSummary: null,
@@ -81,6 +88,46 @@ Page({
   setEditorData(patch, callback) {
     this.setData(patch, callback);
     if (Object.prototype.hasOwnProperty.call(patch, 'stage')) this.syncCreateTabBar(patch.stage);
+  },
+  async consumeFreshIdeaIntent(identity, generation, pendingEditId) {
+    const intent = takeFreshIdeaIntent();
+    if (intent?.owner !== identity) return false;
+    const blank = emptyEditor();
+    const editedFields = ['startDate', 'startTime', 'endDate', 'endTime', 'templateDurationMinutes',
+      'repeatEndEdited', 'feeMode', 'hostParticipates', 'venueConfirmed', 'visibility', 'visibilityIndex',
+      'approvalMode', 'approvalIndex', 'customDeadlines', 'registrationDate', 'registrationTime',
+      'confirmationDate', 'confirmationTime', 'quickDateSelected', 'quickTimeSelected'];
+    const currentEdit = this.data.stage !== 'IDEA' || Boolean(String(this.data.aiText || '').trim()) ||
+      Boolean(this.data.draft || this.data.editingEvent || this.data.publishPreview || this.data.changePreview) ||
+      Object.keys(emptyForm).some(key => String(this.data.form?.[key] ?? '') !== emptyForm[key]) ||
+      editedFields.some(key => this.data[key] !== blank[key]);
+    if (currentEdit || pendingEditId) {
+      const confirmed = await new Promise(resolve => wx.showModal({
+        title: '开启新局',
+        content: '开启新局会舍弃当前未保存修改，已保存草稿仍保留。',
+        confirmText: '开启新局', cancelText: '保留编辑',
+        success: result => resolve(Boolean(result.confirm)), fail: () => resolve(false)
+      }));
+      if (generation !== this._loadGeneration || identity !== currentIdentity()) return true;
+      if (!confirmed) {
+        if (currentEdit) {
+          wx.removeStorageSync('editDraftId');
+          wx.removeStorageSync('editEventId');
+          wx.removeStorageSync('editTargetOwner');
+          this.setData({ message: '已保留当前编辑内容。' });
+          await this.loadSafety(generation, identity);
+          return true;
+        }
+        return false;
+      }
+    }
+    wx.removeStorageSync('editDraftId');
+    wx.removeStorageSync('editEventId');
+    wx.removeStorageSync('editTargetOwner');
+    wx.removeStorageSync('irlHomeIdeaIntent');
+    this.setEditorData(emptyEditor());
+    await this.loadSafety(generation, identity);
+    return true;
   },
   discardOldEditorResponse(identity, loadGeneration) {
     if (identity === currentIdentity() && loadGeneration === this._loadGeneration) return false;
@@ -116,6 +163,7 @@ Page({
         this._shownIdentity = identity;
         this.setEditorData(emptyEditor());
       }
+      if (await this.consumeFreshIdeaIntent(identity, generation, '')) return;
       const homeIdeaIntent = takeHomeIdeaIntent();
       if (homeIdeaIntent?.owner === identity && typeof homeIdeaIntent.text === 'string') {
         const text = homeIdeaIntent.text.trim().slice(0, 300);
@@ -126,8 +174,6 @@ Page({
       await this.loadSafety(generation, identity);
       return;
     }
-    this.setData({ editorLoadState: 'LOADING', editorErrorCode: '', draft: null, editingEvent: null,
-      publishPreview: null, changePreview: null });
     try {
       await getApp().globalData.ready;
       if (generation !== this._loadGeneration) return;
@@ -141,9 +187,13 @@ Page({
         wx.removeStorageSync('editDraftId');
         wx.removeStorageSync('editEventId');
         wx.removeStorageSync('editTargetOwner');
+        if (await this.consumeFreshIdeaIntent(identity, generation, '')) return;
         await this.loadSafety(generation, identity);
         return;
       }
+      if (await this.consumeFreshIdeaIntent(identity, generation, id)) return;
+      this.setData({ editorLoadState: 'LOADING', editorErrorCode: '', draft: null, editingEvent: null,
+        publishPreview: null, changePreview: null });
       const draft = await api.get('/events/' + encodeURIComponent(id));
       if (generation !== this._loadGeneration || identity !== currentIdentity()) return;
       if (draftId && draft.status !== 'DRAFT') throw new Error('活动已发布，不能按草稿编辑');
