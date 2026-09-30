@@ -67,7 +67,7 @@ Page({
     if (!searchableCities.some(item => item.name === city)) return;
     wx.setStorageSync('irlSelectedCity', city);
     this.setData({ currentCity: city });
-    wx.navigateBack();
+    this.back();
   },
   jumpToLetter(event) {
     const letter = event.currentTarget.dataset.letter;
@@ -85,5 +85,5 @@ Page({
     wx.showModal({ title: '城市浏览偏好', content: '当前仅支持手动选择城市，保存于本机。活动的实际地点和状态请以活动详情为准。', showCancel: false });
   },
   goProfile() { wx.switchTab({ url: '/pages/me/me' }); },
-  back() { wx.navigateBack(); }
+  back() { wx.navigateBack({ delta: 1, fail: () => wx.switchTab({ url: '/pages/index/index' }) }); }
 });

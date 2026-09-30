@@ -3,24 +3,30 @@ import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { runInNewContext } from 'node:vm';
 
-function createCityPage() {
+function createCityPage(backStackAvailable = true) {
   let page: Record<string, any> | undefined;
   const scrolled: unknown[] = [];
   const toasts: string[] = [];
+  const routes: string[] = [];
+  const savedCities: string[] = [];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/city/city.js', import.meta.url), 'utf8'), {
     Page(definition: Record<string, any>) { page = definition; },
     wx: {
       getStorageSync() { return '上海'; },
-      setStorageSync() {},
+      setStorageSync(_key: string, city: string) { savedCities.push(city); },
       getSystemInfoSync() { return { statusBarHeight: 24 }; },
       pageScrollTo(options: unknown) { scrolled.push(options); },
       showToast(options: { title: string }) { toasts.push(options.title); },
-      navigateBack() {}
+      navigateBack(options?: { fail?: () => void }) {
+        routes.push('back');
+        if (!backStackAvailable) options?.fail?.();
+      },
+      switchTab({ url }: { url: string }) { routes.push(url); }
     }
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, unknown>) { Object.assign(this.data, patch); };
-  return { page, scrolled, toasts };
+  return { page, scrolled, toasts, routes, savedCities };
 }
 
 test('city rail jumps only to visible letter groups, and search narrows it', () => {
@@ -47,4 +53,18 @@ test('city list matches reference city coverage and unsupported location action 
   page.searchMoreCities();
   assert.equal(page.data.searchFocused, true);
   assert.equal(JSON.stringify(scrolled), JSON.stringify([{ scrollTop: 0, duration: 250 }]));
+});
+
+test('city returns home when opened as the root route, including after a city selection', () => {
+  const direct = createCityPage(false);
+  direct.page.back();
+  assert.deepEqual(direct.routes, ['back', '/pages/index/index']);
+  direct.page.selectCity({ currentTarget: { dataset: { city: '北京' } } });
+  assert.deepEqual(direct.savedCities, ['北京']);
+  assert.deepEqual(direct.routes, ['back', '/pages/index/index', 'back', '/pages/index/index']);
+
+  const nested = createCityPage(true);
+  nested.page.selectCity({ currentTarget: { dataset: { city: '北京' } } });
+  assert.deepEqual(nested.savedCities, ['北京']);
+  assert.deepEqual(nested.routes, ['back']);
 });

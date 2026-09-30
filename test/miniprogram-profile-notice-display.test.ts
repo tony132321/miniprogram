@@ -9,6 +9,7 @@ function mount(notifications: Record<string, any>[], activities: Record<string, 
   let page: Record<string, any> | undefined;
   const requests: string[] = [];
   const actions: string[] = [];
+  const scrolls: string[] = [];
   const snapshot = 'a'.repeat(32);
   runInNewContext(source, {
     require(path: string) {
@@ -36,12 +37,13 @@ function mount(notifications: Record<string, any>[], activities: Record<string, 
     wx: {
       navigateTo({ url, success }: { url: string; success: () => void }) {
         actions.push(url); success();
-      }
+      },
+      pageScrollTo({ selector }: { selector: string }) { scrolls.push(selector); }
     }
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
-  return { page, requests, actions };
+  return { page, requests, actions, scrolls };
 }
 
 test('profile notices show Chinese labels and a real member event title without exposing its UUID', async () => {
@@ -98,4 +100,27 @@ test('profile notice markup renders presentation labels while retaining the real
   assert.match(section, /{{item\.eventLabel}}/);
   assert.doesNotMatch(section, />[^<]*{{item\.(?:kind|status|event_id|event_version)}}/);
   assert.match(section, /data-id="{{item\.id}}" data-event="{{item\.event_id}}" data-kind="{{item\.kind}}" bindtap="openNotice"/);
+});
+
+test('profile processing notices open their matching record section after marking read', async () => {
+  const cases = [
+    ['REPORT_CREATED_UNSCOPED', null, '#reportSection'],
+    ['REPORT_IN_REVIEW_UNSCOPED', null, '#reportSection'],
+    ['REPORT_RESOLVED_UNSCOPED', null, '#reportSection'],
+    ['APPEAL_CREATED', null, '#appealSection'],
+    ['CONTENT_REVIEW_OVERTURN', 'event-1', '#contentSection']
+  ] as const;
+  for (const [kind, eventId, destination] of cases) {
+    const { page, actions, scrolls } = mount([{
+      id: 'notice-1', event_id: eventId, kind, status: 'IN_APP',
+      external_status: 'NOT_REQUESTED', detail: {}
+    }], []);
+    await page.refresh();
+    await page.openNotice({ currentTarget: { dataset: {
+      id: 'notice-1', event: eventId, kind
+    } } });
+    assert.deepEqual(actions, ['/me/notifications/notice-1/open'], kind);
+    assert.equal(scrolls.at(-1), destination, kind);
+    assert.equal(page.data.advancedOpen, true, kind);
+  }
 });

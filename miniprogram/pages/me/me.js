@@ -84,6 +84,19 @@ const noticeKindLabels = {
   CONTENT_REJECTED: '活动内容未通过审核', CONTENT_REVIEW_OVERTURN: '活动内容复核已有结论',
   EVENT_REVIEW_APPROVED: '活动内容审核通过', EVENT_REVIEW_REJECTED: '活动内容审核未通过'
 };
+const profileRecordSectionByNoticeKind = {
+  REGISTRATION_REMOVED: 'appealSection',
+  REPORT_IN_REVIEW: 'reportSection', REPORT_RESOLVED: 'reportSection',
+  REPORT_CREATED_UNSCOPED: 'reportSection', REPORT_IN_REVIEW_UNSCOPED: 'reportSection',
+  REPORT_RESOLVED_UNSCOPED: 'reportSection',
+  APPEAL_CREATED: 'appealSection', APPEAL_IN_REVIEW: 'appealSection', APPEAL_RESOLVED: 'appealSection',
+  CONTENT_REJECTED: 'contentSection', CONTENT_REVIEW_OVERTURN: 'contentSection'
+};
+const profileRecordFocusMessages = {
+  reportSection: '请在下方“举报与求助”查看处理进度与结论。',
+  appealSection: '请在下方“报名移除与申诉”查看原因和复核进度。',
+  contentSection: '请在下方“内容审核与复核”查看原因和复核结论。'
+};
 function presentNotifications(items, activities = []) {
   const eventTitles = new Map(activities.filter(item => item.id && item.title)
     .map(item => [item.id, item.title]));
@@ -427,34 +440,18 @@ Page({
   async openNotice(event) {
     const id = event.currentTarget.dataset.id; const eventId = event.currentTarget.dataset.event;
     const kind = event.currentTarget.dataset.kind;
-    const detailOnProfile = ['REGISTRATION_REMOVED', 'REPORT_IN_REVIEW', 'REPORT_RESOLVED',
-      'APPEAL_IN_REVIEW', 'APPEAL_RESOLVED', 'CONTENT_REJECTED'].includes(kind);
+    const profileRecordSection = profileRecordSectionByNoticeKind[kind];
     try {
-      if (eventId && !detailOnProfile) {
+      if (eventId && !profileRecordSection) {
         await new Promise((resolve, reject) => wx.navigateTo({
           url: '/pages/event/event?id=' + encodeURIComponent(eventId), success: resolve, fail: reject
         }));
       }
       await api.post(`/me/notifications/${id}/open`, {});
-      if (kind === 'REGISTRATION_REMOVED') {
+      if (profileRecordSection) {
         await this.refresh();
-        this.revealAdvanced('appealSection');
-        return this.setData({ message: '请在下方“报名移除与申诉”查看原因。' });
-      }
-      if (kind === 'REPORT_IN_REVIEW' || kind === 'REPORT_RESOLVED') {
-        await this.refresh();
-        this.revealAdvanced('reportSection');
-        return this.setData({ message: '请在下方“举报与求助”查看处理进度与结论。' });
-      }
-      if (kind === 'APPEAL_IN_REVIEW' || kind === 'APPEAL_RESOLVED') {
-        await this.refresh();
-        this.revealAdvanced('appealSection');
-        return this.setData({ message: '请在下方“报名移除与申诉”查看复核进度与结论。' });
-      }
-      if (kind === 'CONTENT_REJECTED') {
-        await this.refresh();
-        this.revealAdvanced('contentSection');
-        return this.setData({ message: '请在下方“内容审核与复核”查看原因并申请复核。' });
+        this.revealAdvanced(profileRecordSection);
+        return this.setData({ message: profileRecordFocusMessages[profileRecordSection] });
       }
       if (!eventId) {
         await this.refresh();
