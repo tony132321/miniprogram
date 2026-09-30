@@ -17,22 +17,47 @@ const categories = [
   { id: 'social', title: '社交达人' }, { id: 'organizer', title: '靠谱组织' },
   { id: 'explorer', title: '探索家' }
 ];
+function headerPaddingRight() {
+  try {
+    const menu = wx.getMenuButtonBoundingClientRect?.();
+    const width = (wx.getWindowInfo?.() || wx.getSystemInfoSync?.() || {}).windowWidth;
+    if (Number.isFinite(menu?.left) && Number.isFinite(width) && menu.left >= 0 && menu.left < width)
+      return `${Math.ceil(width - menu.left + 8)}px`;
+  } catch (_) { /* Keep a reserved space for the native menu on older clients. */ }
+  return '112px';
+}
 
 Page({
-  data: { statusBarHeight: 24, awardState: 'UNAVAILABLE', categories, showcaseSlots: [1, 2, 3, 4],
-    activeCategory: 'all', visibleBadges: plannedBadges, badgeMessage: '' },
-  onLoad() { this.setData({ statusBarHeight: statusBarHeight() }); },
+  data: { statusBarHeight: 24, headerPaddingRight: '112px', moreOpen: false,
+    awardState: 'UNAVAILABLE', categories, showcaseSlots: [1, 2, 3, 4],
+    activeCategory: 'all', visibleBadges: plannedBadges, selectedBadge: null },
+  onLoad() { this.setData({ statusBarHeight: statusBarHeight(), headerPaddingRight: headerPaddingRight() }); },
+  onShow() { this.setData({ headerPaddingRight: headerPaddingRight() }); },
+  onHide() { this.setData({ moreOpen: false, selectedBadge: null }); },
   back: backToProfile,
+  toggleMore() { this.setData({ moreOpen: !this.data.moreOpen }); },
+  goProfile() {
+    this.setData({ moreOpen: false, selectedBadge: null });
+    wx.switchTab({ url: '/pages/me/me' });
+  },
+  goPrivacy() {
+    this.setData({ moreOpen: false, selectedBadge: null });
+    wx.navigateTo({ url: '/subpackages/profile/privacy-safety/privacy-safety' });
+  },
   selectCategory(event) {
     const category = event?.currentTarget?.dataset?.category;
     if (!categories.some(item => item.id === category)) return;
-    this.setData({ activeCategory: category, badgeMessage: '', visibleBadges:
+    this.setData({ activeCategory: category, selectedBadge: null, visibleBadges:
       category === 'all' ? plannedBadges : plannedBadges.filter(item => item.category === category) });
   },
   openBadge(event) {
     const id = event?.currentTarget?.dataset?.id;
     const badge = plannedBadges.find(item => item.id === id);
-    if (badge) this.setData({ badgeMessage: `「${badge.title}」是设计中的勋章，评定和佩戴功能尚未开放。` });
+    if (badge) this.setData({ selectedBadge: badge, moreOpen: false });
   },
-  goActivities() { wx.switchTab({ url: '/pages/index/index' }); }
+  closeBadge() { this.setData({ selectedBadge: null }); },
+  goActivities() {
+    this.setData({ selectedBadge: null, moreOpen: false });
+    wx.navigateTo({ url: '/subpackages/profile/moments/moments?filter=all' });
+  }
 });

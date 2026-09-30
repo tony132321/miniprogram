@@ -1,9 +1,15 @@
 @import "../common.wxss";
 .badge-page { padding-left: 30rpx; padding-right: 30rpx; }
-.badge-page .pg10-header { margin-left: -30rpx; margin-right: -30rpx; padding: 0 28rpx; }
-.badge-page .pg10-header-title { font-weight: 600; }
-.header-more { width: 50rpx; font-size: 25rpx; text-align: center; }
-.header-avatar { width: 58rpx; height: 58rpx; border-radius: 50%; background: #064dca; color: white; line-height: 58rpx; text-align: center; font-size: 31rpx; }
+.badge-page .pg10-header { position: sticky; z-index: 11; box-sizing: border-box; margin-left: -30rpx; margin-right: -30rpx; padding-left: 28rpx; height: 92rpx; }
+.badge-page .pg10-header-title { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-weight: 600; }
+.badge-header-actions { display: flex; flex: none; align-items: center; gap: 6rpx; }
+.badge-header-more,.badge-header-avatar { display: block; flex: none; margin: 0; padding: 0; border: 0; text-align: center; }
+.badge-header-more { width: 48rpx; height: 54rpx; background: transparent; color: #171a24; line-height: 54rpx; font-size: 32rpx; font-weight: 800; }
+.badge-header-avatar { width: 54rpx; height: 54rpx; border-radius: 50%; background: #064dca; color: #fff; line-height: 54rpx; font-size: 28rpx; font-weight: 800; }
+.badge-header-more::after,.badge-header-avatar::after,.badge-header-menu button::after { border: 0; }
+.badge-header-menu { position: absolute; top: 86rpx; z-index: 12; width: 245rpx; padding: 8rpx; border: 1rpx solid #edf0f5; border-radius: 20rpx; background: #fff; box-shadow: 0 12rpx 30rpx rgba(15,23,42,.14); }
+.badge-header-menu button { display: block; box-sizing: border-box; width: 100%; margin: 0; padding: 13rpx 10rpx; border-bottom: 1rpx solid #edf0f5; border-radius: 0; background: transparent; color: #334155; text-align: left; line-height: 1.4; font-size: 20rpx; }
+.badge-header-menu button:last-child { border-bottom: 0; }
 .badge-status { display: flex; align-items: center; justify-content: space-between; margin: 17rpx 0 16rpx; font-size: 21rpx; color: #424a5a; font-weight: 650; }
 .muted-dot { display: inline-block; width: 13rpx; height: 13rpx; border-radius: 50%; background: #a5b0c2; margin-right: 8rpx; }
 .status-pill { color: #607049; background: #f2fbe6; border-radius: 30rpx; padding: 7rpx 16rpx; font-size: 19rpx; }
@@ -44,5 +50,23 @@
 .badge-circle.muted { background: #e6e5ed; color: #a2a8b7; box-shadow: none; }
 .badge-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 22rpx; font-weight: 700; }
 .badge-cell text { display: block; color: #838a9b; font-size: 17rpx; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.badge-message { margin-top: 18rpx; border-radius: 17rpx; padding: 17rpx; background: #eef2ff; color: #2754b2; font-size: 21rpx; }
 .badge-action { margin-top: 70rpx; }
+.badge-detail-backdrop { position: fixed; inset: 0; z-index: 20; background: rgba(13,20,41,.45); }
+.badge-detail-sheet { position: fixed; z-index: 21; left: 0; right: 0; bottom: 0; box-sizing: border-box; padding: 11rpx 32rpx 45rpx; border-radius: 36rpx 36rpx 0 0; background: #fff; box-shadow: 0 -12rpx 35rpx rgba(13,20,41,.13); }
+.badge-detail-handle { width: 72rpx; height: 7rpx; margin: 0 auto 23rpx; border-radius: 8rpx; background: #d5d8e2; }
+.badge-detail-top { position: relative; display: flex; align-items: center; justify-content: center; }
+.badge-detail-icon { width: 102rpx; height: 102rpx; border-radius: 28rpx; background: #e9f1ff; color: #225ee8; text-align: center; line-height: 102rpx; font-size: 55rpx; box-shadow: 0 10rpx 20rpx rgba(64,82,118,.13); }
+.badge-detail-icon.amber { background: linear-gradient(135deg,#ffd148,#ffaf14); color: #fff; }
+.badge-detail-icon.violet { background: linear-gradient(135deg,#7069df,#433bc8); color: #fff; }
+.badge-detail-icon.lime { background: linear-gradient(135deg,#d2f803,#94c700); color: #253000; }
+.badge-detail-icon.pink { background: linear-gradient(135deg,#ff7693,#ff2856); color: #fff; }
+.badge-detail-icon.orange { background: linear-gradient(135deg,#ffc45e,#fc7b66); color: #fff; }
+.badge-detail-icon.coffee { background: linear-gradient(135deg,#d69c0a,#a76504); color: #fff; }
+.badge-detail-icon.blue { background: linear-gradient(135deg,#24b7fa,#205ff0); color: #fff; }
+.badge-detail-icon.muted { background: #e6e5ed; color: #a2a8b7; box-shadow: none; }
+.badge-detail-close { position: absolute; right: 0; top: 0; width: 56rpx; height: 56rpx; margin: 0; padding: 0; border-radius: 50%; background: #f1f2f6; color: #687385; line-height: 56rpx; font-size: 39rpx; }
+.badge-detail-close::after,.badge-detail-activities::after { border: 0; }
+.badge-detail-title { margin-top: 17rpx; color: #171a23; text-align: center; font-size: 31rpx; font-weight: 800; }
+.badge-detail-category { margin-top: 4rpx; color: #667085; text-align: center; font-size: 20rpx; }
+.badge-detail-notice { margin-top: 24rpx; padding: 20rpx; border-radius: 18rpx; background: #f5f6fa; color: #555f72; font-size: 21rpx; line-height: 1.55; }
+.badge-detail-activities { width: 100%; margin: 24rpx 0 0; border-radius: 38rpx; background: #2164f0; color: #fff; line-height: 2.4; font-size: 23rpx; font-weight: 700; }
