@@ -110,6 +110,39 @@ test('organized cards show only authorized real counts and route to the host wor
   assert.deepEqual(navigations, ['/pages/event/event?id=hosted&section=hostSection']);
 });
 
+test('organizer cards expose the relevant announcement and check-in actions without a duplicate shortcut', async () => {
+  const recruiting: ListedEvent = { id: 'recruiting', status: 'RECRUITING', title: '周六羽毛球',
+    isHost: true, myRegistrationStatus: null };
+  const confirmed: ListedEvent = { id: 'confirmed', status: 'CONFIRMED', title: '周日羽毛球',
+    isHost: true, myRegistrationStatus: null };
+  const draft: ListedEvent = { id: 'draft', status: 'DRAFT', title: '未发布羽毛球',
+    isHost: true, myRegistrationStatus: null };
+  const { page, navigations, storage } = makeHome({ organizer: [recruiting, confirmed, draft] }, {
+    recruiting: detail('recruiting'), confirmed: detail('confirmed', 'organizer', { status: 'CONFIRMED' }),
+    draft: detail('draft', 'organizer', { status: 'DRAFT' })
+  });
+  await page.onShow();
+  await page.selectTab({ currentTarget: { dataset: { key: 'organized' } } });
+  const byId = (id: string) => page.data.items.find((item: any) => item.id === id);
+  assert.equal(byId('recruiting').secondaryLabel, '发公告');
+  assert.equal(byId('confirmed').secondaryLabel, '签到核销码');
+  assert.equal(byId('confirmed').shortcutAction, '', 'check-in belongs in the reference button row');
+  assert.equal(byId('draft').secondaryLabel, '查看活动');
+
+  page.openCardAction({ currentTarget: { dataset: { id: 'recruiting', action: byId('recruiting').secondaryAction } } });
+  page.openCardAction({ currentTarget: { dataset: { id: 'confirmed', action: byId('confirmed').secondaryAction } } });
+  assert.deepEqual(navigations, [
+    '/pages/event/event?id=recruiting&section=hostSection&entry=hostAnnouncement',
+    '/pages/event/event?id=confirmed&section=checkinSection&entry=hostCheckin'
+  ]);
+  page.openCardAction({ currentTarget: { dataset: { id: 'draft', action: 'hostAnnouncement' } } });
+  page.openCardAction({ currentTarget: { dataset: { id: 'recruiting', action: 'checkinSection' } } });
+  assert.equal(navigations.length, 2, 'other statuses cannot forge the host shortcuts');
+  storage.set('devUser', 'other-actor');
+  page.openCardAction({ currentTarget: { dataset: { id: 'recruiting', action: 'hostAnnouncement' } } });
+  assert.equal(navigations.length, 2, 'a stale account cannot reuse announcement navigation');
+});
+
 test('organizer cover badge shows activity status even when the host also registered', async () => {
   const hosted: ListedEvent = { id: 'hosted', status: 'RECRUITING', title: '周日羽毛球',
     isHost: true, myRegistrationStatus: 'CONFIRMED' };
@@ -228,7 +261,8 @@ test('state cards deep-link current activity exit, check-in, feedback and repeat
   assert.equal(byId('pending-exit').shortcutAction, 'registrationSection');
   assert.match(byId('pending-exit').shortcutLabel, /退出/);
   assert.equal(byId('started-pending').shortcutAction, '');
-  assert.equal(byId('host-checkin').shortcutAction, 'checkinSection');
+  assert.equal(byId('host-checkin').secondaryAction, 'checkinSection');
+  assert.equal(byId('host-checkin').shortcutAction, '');
   assert.equal(byId('member-feedback').shortcutAction, 'checkinSection');
   assert.equal(byId('interest-only').shortcutAction, '');
   assert.equal(byId('host-repeat').shortcutAction, 'hostSection');

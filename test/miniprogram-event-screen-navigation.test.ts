@@ -107,6 +107,38 @@ test('home host check-in link selects verifier only for a live organizer', async
   assert.equal(page.data.checkInMode, 'participant', 'a completed event cannot reopen the live organizer shortcut');
 });
 
+test('home organizer announcement link locates the real composer only for the current recruiting host', async () => {
+  const { page, scrolls } = eventPage();
+  const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  assert.match(markup, /id="hostAnnouncementForm"[^>]*wx:if="{{event\.status === 'RECRUITING'/);
+  assert.match(markup, /id="hostAnnouncementAnchor"[\s\S]*?id="hostAnnouncementForm"/,
+    'the announcement deep link needs a scroll target above the sticky titlebar');
+  page.refresh = async function () {
+    this.setData({ loadState: 'READY', event: { id: 'e1', status: 'RECRUITING' },
+      isHost: true, canManageAnnouncements: true });
+    return true;
+  };
+  await page.onLoad({ id: 'e1', section: 'hostSection', entry: 'hostAnnouncement' });
+  assert.equal(page.data.activeSection, 'hostSection');
+  assert.equal(scrolls[0]?.selector, '#hostAnnouncementAnchor');
+
+  for (const state of [
+    { id: 'e1', status: 'RECRUITING', isHost: false, canManageAnnouncements: true },
+    { id: 'e1', status: 'RECRUITING', isHost: true, canManageAnnouncements: false },
+    { id: 'e1', status: 'COMPLETED', isHost: true, canManageAnnouncements: true },
+    { id: 'e2', status: 'RECRUITING', isHost: true, canManageAnnouncements: true }
+  ]) {
+    page.refresh = async function () {
+      this.setData({ loadState: 'READY', event: { id: state.id, status: state.status },
+        isHost: state.isHost, canManageAnnouncements: state.canManageAnnouncements });
+      return true;
+    };
+    scrolls.length = 0;
+    await page.onLoad({ id: 'e1', section: 'hostSection', entry: 'hostAnnouncement' });
+    assert.equal(scrolls[0]?.selector, undefined, `ineligible ${JSON.stringify(state)} stays on host overview`);
+  }
+});
+
 test('home feedback link locates the form only for confirmed members of completed events', async () => {
   const { page, scrolls } = eventPage();
   const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');

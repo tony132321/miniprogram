@@ -247,6 +247,8 @@ Page({
       const hostCheckin = sameEvent && options.section === 'checkinSection' && options.entry === 'hostCheckin' &&
         this.data.isHost && this.data.canManageCheckins &&
         ['CONFIRMED', 'IN_PROGRESS'].includes(this.data.event.status);
+      const hostAnnouncement = sameEvent && options.section === 'hostSection' && options.entry === 'hostAnnouncement' &&
+        this.data.isHost && this.data.canManageAnnouncements && this.data.event.status === 'RECRUITING';
       const memberFeedback = sameEvent && options.section === 'checkinSection' && options.entry === 'memberFeedback' &&
         this.data.event.status === 'COMPLETED' && !this.data.isHost &&
         this.data.myRegistration?.status === 'CONFIRMED' && this.data.outcomeLoadState === 'READY' &&
@@ -254,7 +256,8 @@ Page({
       const aliasForm = sameEvent && options.section === 'registrationSection' && options.entry === 'alias' &&
         this.data.canSetAlias && this.data.aliasLoadState === 'READY';
       if (hostCheckin) this.setData({ checkInMode: 'host' });
-      this.scrollToSection(options.section, aliasForm ? '#aliasForm' : memberFeedback ? '#feedbackForm' : '');
+      this.scrollToSection(options.section, aliasForm ? '#aliasForm' : memberFeedback ? '#feedbackForm' :
+        hostAnnouncement ? '#hostAnnouncementAnchor' : '');
     }
   },
   async onShow() {

@@ -218,7 +218,8 @@
     <view wx:if="{{factTodosLoadState === 'ERROR'}}" class="error">{{factTodosError}} <button bindtap="refresh">重新加载事实待办</button></view>
     <view wx:for="{{factTodos}}" wx:key="id" class="item host-fact-row">事实待办：{{item.question}} · {{item.statusLabel}} <button wx:if="{{item.status === 'OPEN' && (event.status === 'RECRUITING' || event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS')}}" data-id="{{item.questionContentId}}" bindtap="replyToQuestion">回复此问题 ›</button></view>
     <button id="editDraftButton" wx:if="{{event.status === 'DRAFT'}}" bindtap="editDraft">继续编辑草稿</button>
-    <view wx:if="{{event.status === 'RECRUITING' || event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS'}}" class="host-work-block"><view class="host-work-title">公告与问答 <text>提交后需审核</text></view>
+    <view id="hostAnnouncementAnchor" wx:if="{{event.status === 'RECRUITING' || event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS'}}" class="host-announcement-anchor"></view>
+    <view id="hostAnnouncementForm" wx:if="{{event.status === 'RECRUITING' || event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS'}}" class="host-work-block"><view class="host-work-title">公告与问答 <text>提交后需审核</text></view>
       <input placeholder="主办方公告" value="{{announcementText}}" bindinput="announcementInput" />
       <button wx:if="{{event.status === 'RECRUITING' || event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS'}}" bindtap="postAnnouncement">提交公告</button>
       <view class="muted">{{answerQuestionLabel ? '正在回复：' + answerQuestionLabel : '请从活动公告与问答选择要回复的问题'}}</view>

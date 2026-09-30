@@ -147,10 +147,13 @@ function cardPresentation(item, group) {
       CONFIRMED: '活动已成局；请在工作台核对现场安排。',
       IN_PROGRESS: '活动进行中；可在工作台处理现场事项。'
     };
+    const announcementReady = item.isHost && item.status === 'RECRUITING';
+    const hostCheckinReady = item.isHost && ['CONFIRMED', 'IN_PROGRESS'].includes(item.status);
     return { cardKind: 'organized', cardNote: notes[item.status] || '主办信息以活动当前版本为准。',
       primaryLabel: item.status === 'DRAFT' ? '继续编辑草稿' : '主办工作台',
       primaryAction: item.status === 'DRAFT' ? 'editDraft' : 'hostSection',
-      secondaryLabel: '查看活动', secondaryAction: 'detailsSection' };
+      secondaryLabel: announcementReady ? '发公告' : hostCheckinReady ? '签到核销码' : '查看活动',
+      secondaryAction: announcementReady ? 'hostAnnouncement' : hostCheckinReady ? 'checkinSection' : 'detailsSection' };
   }
   if (group === 'history') {
     const notes = { COMPLETED: '活动已结束；结项与独立反馈请到详情页查看。',
@@ -167,8 +170,6 @@ function cardShortcut(item, group) {
   if (group === 'pending' && ['RECRUITING', 'CONFIRMED'].includes(item.status) &&
     ['INTERESTED', 'REQUESTED', 'WAITLISTED', 'OFFERED', 'RECONFIRM_REQUIRED'].includes(item.myRegistrationStatus))
     return { shortcutLabel: '前往退出报名', shortcutAction: 'registrationSection' };
-  if (group === 'organized' && item.isHost && ['CONFIRMED', 'IN_PROGRESS'].includes(item.status))
-    return { shortcutLabel: '前往签到管理', shortcutAction: 'checkinSection' };
   if (group === 'history' && item.status === 'COMPLETED') {
     if (item.isHost) return { shortcutLabel: '查看再约一场', shortcutAction: 'hostSection' };
     if (item.myRegistrationStatus === 'CONFIRMED')
@@ -379,10 +380,15 @@ Page({
       wx.setStorageSync('editTargetOwner', currentIdentity());
       return wx.switchTab({ url: '/pages/create/create' });
     }
+    if (action === 'hostAnnouncement') {
+      if (!item.isHost || item.status !== 'RECRUITING') return;
+      return wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) +
+        '&section=hostSection&entry=hostAnnouncement' });
+    }
     if (!['detailsSection', 'registrationSection', 'hostSection', 'checkinSection', 'expenseSection'].includes(action)) return;
     if (action === 'hostSection' && !item.isHost) return;
     let entry = '';
-    if (action === 'checkinSection' && action === item.shortcutAction) {
+    if (action === 'checkinSection' && [item.secondaryAction, item.shortcutAction].includes(action)) {
       if (item.isHost && ['CONFIRMED', 'IN_PROGRESS'].includes(item.status)) entry = 'hostCheckin';
       else if (!item.isHost && item.status === 'COMPLETED' && item.myRegistrationStatus === 'CONFIRMED')
         entry = 'memberFeedback';
