@@ -33,6 +33,33 @@ test('discovery all-activity and unavailable favorite actions reach honest desti
   assert.deepEqual(routes, ['/subpackages/profile/moments/moments?filter=all']);
 });
 
+test('the selected All category clears a closed category notice without claiming All is unavailable', () => {
+  let page: Record<string, any> | undefined;
+  const toasts: string[] = [];
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/discover/discover.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: {} };
+      if (path === '../../config.js') return { developmentUser: '' };
+      if (path === '../../utils/city.js') return cityModule;
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: { showToast(options: { title: string }) { toasts.push(options.title); } }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+
+  page.selectCategory({ currentTarget: { dataset: { name: '美食分类' } } });
+  assert.match(page.data.availabilityMessage, /美食分类暂未开放/);
+  assert.deepEqual(toasts, ['美食分类暂未开放']);
+  page.selectCategory({ currentTarget: { dataset: { name: '全部分类' } } });
+  assert.equal(page.data.availabilityMessage, '');
+  assert.deepEqual(toasts, ['美食分类暂未开放']);
+
+  const markup = readFileSync(new URL('../miniprogram/pages/discover/discover.wxml', import.meta.url), 'utf8');
+  assert.match(markup, /wx:for="{{categories}}"[^>]+bindtap="selectCategory"/);
+});
+
 test('a closed public-search entry leads to the real invitation field and keeps invite navigation usable', () => {
   let page: Record<string, any> | undefined;
   const scrolls: Array<Record<string, unknown>> = [];

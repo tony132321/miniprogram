@@ -117,6 +117,13 @@ Page({
   openCity() { wx.navigateTo({ url: '/pages/city/city' }); },
   goHome() { wx.switchTab({ url: '/pages/index/index' }); },
   goMessages() { wx.switchTab({ url: '/pages/messages/messages' }); },
+  selectCategory(event) {
+    if (event?.currentTarget?.dataset?.name === '全部分类') {
+      this.setData({ availabilityMessage: '' });
+      return;
+    }
+    this.showUnavailable(event);
+  },
   showUnavailable(event) {
     const name = event?.currentTarget?.dataset?.name;
     const title = name ? `${name}暂未开放` : '公开找局暂未开放';
