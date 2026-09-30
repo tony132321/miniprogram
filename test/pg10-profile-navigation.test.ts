@@ -52,6 +52,7 @@ test('privacy page clears another account blocks and never fetches when signed o
   let page: Record<string, any> | undefined;
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/profile/privacy-safety/privacy-safety.js', import.meta.url), 'utf8'), {
     Page(definition: Record<string, any>) { page = definition; },
+    getApp() { return { globalData: { ready: Promise.resolve() } }; },
     wx: { getStorageSync(key: string) { return key === 'sessionToken' ? session.token : ''; },
       navigateBack() {}, switchTab() {} },
     require(module: string) {
@@ -91,6 +92,7 @@ test('privacy page shows only service-backed block details and ignores duplicate
   let page: Record<string, any> | undefined;
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/profile/privacy-safety/privacy-safety.js', import.meta.url), 'utf8'), {
     Page(definition: Record<string, any>) { page = definition; },
+    getApp() { return { globalData: { ready: Promise.resolve() } }; },
     wx: { getStorageSync(key: string) { return key === 'sessionToken' ? actor : ''; } },
     require(module: string) {
       if (module === '../../../utils/api.js') return { api: {
@@ -121,6 +123,117 @@ test('privacy page shows only service-backed block details and ignores duplicate
   assert.deepEqual(posts, ['/me/blocks/old-block/revoke', '/me/blocks/new-block/revoke']);
   assert.deepEqual(Array.from(page.data.blocks), []);
   assert.equal(page.data.message, '已解除屏蔽。');
+});
+
+test('privacy header respects the native capsule and links to real profile, help and privacy pages', () => {
+  const markup = readFileSync(new URL('../miniprogram/subpackages/profile/privacy-safety/privacy-safety.wxml', import.meta.url), 'utf8');
+  assert.match(markup, /padding-right: {{headerPaddingRight}}/);
+  assert.match(markup, /bindtap="toggleMore"/);
+  assert.match(markup, /bindtap="goProfile"/);
+  assert.match(markup, /bindtap="goLegal"/);
+  const routes: string[] = [];
+  let page: Record<string, any> | undefined;
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/profile/privacy-safety/privacy-safety.js', import.meta.url), 'utf8'), {
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: {
+      getStorageSync() { return ''; },
+      getSystemInfoSync() { return { statusBarHeight: 24 }; },
+      getWindowInfo() { return { windowWidth: 390 }; },
+      getMenuButtonBoundingClientRect() { return { left: 294 }; },
+      navigateTo({ url }: { url: string }) { routes.push(url); },
+      switchTab({ url }: { url: string }) { routes.push(url); }
+    },
+    getApp() { return { globalData: { ready: Promise.resolve() } }; },
+    require(module: string) {
+      if (module === '../../../utils/api.js') return { api: {} };
+      if (module === '../../../config.js') return { developmentUser: '' };
+      if (module === '../navigation.js') return { backToProfile() {}, statusBarHeight() { return 24; } };
+      throw new Error(`unexpected require ${module}`);
+    }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, unknown>) { Object.assign(this.data, patch); };
+  page.onLoad();
+  assert.equal(page.data.headerPaddingRight, '104px');
+  page.toggleMore();
+  assert.equal(page.data.moreOpen, true);
+  page.goLegal();
+  assert.equal(page.data.moreOpen, false);
+  page.goSupport();
+  page.goProfile();
+  assert.deepEqual(routes, [
+    '/subpackages/profile/legal/legal',
+    '/subpackages/profile/support/support',
+    '/pages/me/me'
+  ]);
+});
+
+test('privacy waits for account startup before loading and rejects malformed block replies', async () => {
+  let releaseReady!: () => void;
+  const ready = new Promise<void>(resolve => { releaseReady = resolve; });
+  let token = '';
+  let malformed = false;
+  const requests: string[] = [];
+  let page: Record<string, any> | undefined;
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/profile/privacy-safety/privacy-safety.js', import.meta.url), 'utf8'), {
+    Page(definition: Record<string, any>) { page = definition; },
+    getApp() { return { globalData: { ready } }; },
+    wx: { getStorageSync(key: string) { return key === 'sessionToken' ? token : ''; } },
+    require(module: string) {
+      if (module === '../../../utils/api.js') return { api: { async get(path: string) {
+        requests.push(path);
+        return malformed ? {} : { items: [{ id: 'own-block', eventTitle: '本人活动' }] };
+      } } };
+      if (module === '../../../config.js') return { developmentUser: '' };
+      if (module === '../navigation.js') return { backToProfile() {} };
+      throw new Error(`unexpected require ${module}`);
+    }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, unknown>) { Object.assign(this.data, patch); };
+  const pending = page.onShow();
+  assert.equal(page.data.loadState, 'LOADING');
+  assert.deepEqual(requests, []);
+  token = 'signed-in-after-startup';
+  releaseReady();
+  await pending;
+  assert.deepEqual(requests, ['/me/blocks']);
+  assert.equal(page.data.loadState, 'READY');
+  assert.equal(page.data.blocks[0].eventTitle, '本人活动');
+
+  malformed = true;
+  await page.onShow();
+  assert.equal(page.data.loadState, 'ERROR');
+  assert.deepEqual(Array.from(page.data.blocks), []);
+});
+
+test('privacy does not show a previous account request error after identity changes', async () => {
+  let failRequest!: (error: Error) => void;
+  const request = new Promise<never>((_resolve, reject) => { failRequest = reject; });
+  let markRequestStarted!: () => void;
+  const requestStarted = new Promise<void>(resolve => { markRequestStarted = resolve; });
+  let token = 'account-a';
+  let page: Record<string, any> | undefined;
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/profile/privacy-safety/privacy-safety.js', import.meta.url), 'utf8'), {
+    Page(definition: Record<string, any>) { page = definition; },
+    getApp() { return { globalData: { ready: Promise.resolve() } }; },
+    wx: { getStorageSync(key: string) { return key === 'sessionToken' ? token : ''; } },
+    require(module: string) {
+      if (module === '../../../utils/api.js') return { api: { get() { markRequestStarted(); return request; } } };
+      if (module === '../../../config.js') return { developmentUser: '' };
+      if (module === '../navigation.js') return { backToProfile() {} };
+      throw new Error(`unexpected require ${module}`);
+    }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, unknown>) { Object.assign(this.data, patch); };
+  const pending = page.onShow();
+  await requestStarted;
+  token = 'account-b';
+  failRequest(new Error('旧账号网络错误'));
+  await pending;
+  assert.equal(page.data.message, '');
+  assert.equal(page.data.loadState, 'LOADING');
 });
 
 test('each PG10 subpage wires every visible interaction and has a return action', () => {

@@ -14,6 +14,7 @@
 .moments-filter { display: inline-block; width: auto; margin: 0 8rpx 0 0; padding: 10rpx 21rpx; border-radius: 35rpx; background: #eeeef5; color: #3d4657; font-size: 21rpx; font-weight: 650; line-height: 1.5; }
 .moments-filter::after,.moment-footer button::after,.privacy-banner button::after,.moments-state button::after { border: 0; }
 .moments-filter.active { background: #2164f0; color: white; }
+.moments-filter-icon { margin-right: 8rpx; font-size: 24rpx; line-height: 1; }
 .moments-filter.disabled-filter { color: #959aaa; }
 .moments-summary { display: flex; align-items: center; gap: 15rpx; padding: 17rpx; margin-bottom: 21rpx; border-radius: 24rpx; background: linear-gradient(115deg,#eaf2ff,#f7f0ff 68%,#fbf5d8); }
 .summary-icon { flex: none; width: 55rpx; height: 55rpx; border-radius: 50%; background: #fff; color: #1f63ec; line-height: 55rpx; text-align: center; font-size: 27rpx; }
@@ -30,9 +31,12 @@
 .moment-title { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #141922; font-size: 26rpx; font-weight: 750; }
 .moment-meta { color: #626d80; font-size: 19rpx; }
 .moment-status { border-radius: 20rpx; padding: 4rpx 11rpx; background: #eaf2ff; color: #1b64ed; font-size: 18rpx; }
-.moment-photo-layout { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 159rpx 159rpx; gap: 7rpx; }
+.moment-photo-layout { display: flex; align-items: flex-start; gap: 7rpx; box-sizing: border-box; width: 100%; margin: 0; padding: 0; border: 0; background: transparent; text-align: left; line-height: normal; }
+.moment-photo-layout::after { border: 0; }
 .photo-large,.photo-small { position: relative; overflow: hidden; border-radius: 16rpx; background: #dce8fc; }
-.photo-large { grid-row: 1 / span 2; }
+.photo-large { flex: none; width: 66%; height: 550rpx; }
+.photo-stack { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: 7rpx; }
+.photo-small { width: 100%; height: 218rpx; }
 .photo-large image,.photo-small image { display: block; width: 100%; height: 100%; }
 .photo-overlay { position: absolute; inset: auto 0 0; box-sizing: border-box; width: 100%; padding: 30rpx 13rpx 12rpx; background: linear-gradient(transparent,rgba(15,23,42,.72)); color: #fff; }
 .photo-overlay text { display: block; font-size: 19rpx; font-weight: 750; line-height: 1.45; }

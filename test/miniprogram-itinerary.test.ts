@@ -80,3 +80,29 @@ test('itinerary uses the reference badminton cover and opens real registration d
   page.openRegistration({ currentTarget: { dataset: { id: 'rally' } } });
   assert.deepEqual(navigations, ['/pages/event/event?id=rally&section=registrationSection']);
 });
+
+test('itinerary keeps a long running confirmed activity in the current schedule', async () => {
+  const { page } = createPage(async () => ({ items: [{ id: 'weekend', title: '周末露营',
+    status: 'IN_PROGRESS', myRegistrationStatus: 'CONFIRMED',
+    startAt: new Date(Date.now() - 3 * 86_400_000).toISOString() }] }));
+  await page.onShow();
+  assert.equal(page.data.featured?.id, 'weekend');
+  assert.equal(page.data.featured?.countdown, '进行中');
+});
+
+test('itinerary exposes distinct registration, check-in and details routes for the same featured event', async () => {
+  const { page, navigations } = createPage(async () => ({ items: [{ id: 'event /?一', title: '周末羽毛球',
+    status: 'CONFIRMED', myRegistrationStatus: 'CONFIRMED',
+    startAt: new Date(Date.now() + 3 * 86_400_000).toISOString() }] }));
+  await page.onShow();
+  const markup = readFileSync(markupPath, 'utf8');
+  assert.match(markup, /class="featured-cover" data-id="\{\{featured\.id\}\}" bindtap="openEvent"/);
+  assert.match(markup, /data-id="\{\{featured\.id\}\}" bindtap="openRegistration"[^>]*>查看报名与成员/);
+  assert.match(markup, /data-id="\{\{featured\.id\}\}" bindtap="openCheckin"[^>]*>查看签到与到场/);
+  page.openRegistration({ currentTarget: { dataset: { id: page.data.featured.id } } });
+  page.openCheckin({ currentTarget: { dataset: { id: page.data.featured.id } } });
+  page.openEvent({ currentTarget: { dataset: { id: page.data.featured.id } } });
+  const prefix = '/pages/event/event?id=event%20%2F%3F%E4%B8%80&section=';
+  assert.deepEqual(navigations, [prefix + 'registrationSection', prefix + 'checkinSection',
+    prefix + 'detailsSection']);
+});

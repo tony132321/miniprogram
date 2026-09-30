@@ -37,7 +37,7 @@ function present(item, now) {
 function eligible(item, now) {
   const timestamp = Date.parse(item.startAt);
   return Number.isFinite(timestamp) && (timestamp >= now ||
-    (item.status === 'IN_PROGRESS' && timestamp >= now - 24 * 60 * 60_000)) &&
+    item.status === 'IN_PROGRESS') &&
     !['CANCELLED', 'EXPIRED', 'COMPLETED', 'DRAFT', 'REVIEW_PENDING'].includes(item.status) &&
     (item.myRegistrationStatus === 'CONFIRMED' || item.isHost);
 }
@@ -77,6 +77,10 @@ Page({
   openRegistration(event) {
     const id = event.currentTarget.dataset.id;
     if (id) wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) + '&section=registrationSection' });
+  },
+  openCheckin(event) {
+    const id = event.currentTarget.dataset.id;
+    if (id) wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) + '&section=checkinSection' });
   },
   goHome() { wx.switchTab({ url: '/pages/index/index' }); },
   goProfile() { wx.switchTab({ url: '/pages/me/me' }); },

@@ -197,6 +197,7 @@ Page({
     return this.onShow();
   },
   returnToMyActivities() { wx.switchTab({ url: '/pages/index/index' }); },
+  goProfile() { wx.switchTab({ url: '/pages/me/me' }); },
   markVersionConflict(error, type, id) {
     if (error.code !== 'VERSION_CONFLICT' || !id) return false;
     this.setEditorData({ stage: 'FORM', conflict: { type, id }, publishPreview: null, changePreview: null,

@@ -10,7 +10,7 @@
     <view wx:if="{{loadState === 'READY' && !featured}}" class="state-card"><view>暂无已确认报名或组织中的近期活动。</view><button bindtap="goHome">返回首页查看活动</button></view>
 
     <view wx:if="{{loadState === 'READY' && featured}}" class="featured-card">
-      <view class="featured-cover"><image src="{{featured.cover}}" mode="aspectFill" /><view class="cover-shade"></view><view class="countdown">◉ {{featured.countdown}}</view><view class="real-event-badge">✓ 真实行程</view></view>
+      <view class="featured-cover" data-id="{{featured.id}}" bindtap="openEvent" role="button" aria-label="查看{{featured.title}}活动详情"><image src="{{featured.cover}}" mode="aspectFill" /><view class="cover-shade"></view><view class="countdown">◉ {{featured.countdown}}</view><view class="real-event-badge">✓ 本人活动</view></view>
       <view class="featured-body">
         <view class="featured-title">{{featured.title || '活动名称以详情为准'}}</view>
         <view class="featured-subtitle">线下相聚 · 活动事实与变更以详情为准</view>
@@ -20,7 +20,7 @@
           <view class="fact-row"><text class="fact-icon fee">▤</text><view><view>{{featured.feeLabel}}</view><text>费用与状态以活动详情和双方记录为准</text></view></view>
         </view>
         <view class="attendance-heading"><text>报名与成局状态</text><text>{{featured.stateLabel}}</text></view>
-        <button class="featured-registration" data-id="{{featured.id}}" bindtap="openRegistration">查看报名与签到　›</button>
+        <view class="featured-links"><button class="featured-registration" data-id="{{featured.id}}" bindtap="openRegistration">查看报名与成员　›</button><button class="featured-checkin" data-id="{{featured.id}}" bindtap="openCheckin">查看签到与到场　›</button></view>
         <view class="venue-note"><text>ⓘ</text><view>活动地点、场地声明与规则可能变化，请在出发前打开详情核对。</view></view>
         <button class="featured-action" data-id="{{featured.id}}" bindtap="openEvent">查看活动详情　›</button>
       </view>

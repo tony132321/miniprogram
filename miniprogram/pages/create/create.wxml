@@ -1,6 +1,7 @@
 <view class="create-page stage-{{stage}}">
   <view class="page-header" style="padding-top: {{statusBarHeight}}px">
     <button class="header-back" bindtap="backFromCreate" aria-label="返回">‹</button>
+    <button class="header-profile" bindtap="goProfile" aria-label="进入我的页面">♙</button>
     <view wx:if="{{stage === 'FORM' && !editingEvent}}" class="header-brand"><text class="brand-mark">耍</text><text>耍起 <text class="brand-en">CAPER</text></text></view>
     <text wx:else class="header-title">{{stage === 'IDEA' ? '活动构思' : stage === 'REVIEW' ? '草稿确认' : '编辑活动'}}</text>
     <button class="header-side" bindtap="openHeaderAction" aria-label="{{stage === 'REVIEW' ? '草稿确认更多操作' : '打开草稿箱'}}">{{stage === 'REVIEW' ? '•••' : '▣ 草稿箱'}}</button>
@@ -32,7 +33,7 @@
     <view class="inspiration-head"><view class="section-head">试试这些灵感 <text class="popular">POPULAR</text></view><button class="rotate-button" bindtap="rotateInspirations">换一批 ↻</button></view>
     <button wx:for="{{inspirations}}" wx:key="title" class="inspiration" data-index="{{index}}" bindtap="selectInspiration"><view class="inspiration-icon icon-{{index}}">{{item.icon}}</view><view class="inspiration-copy"><view class="inspiration-title">{{item.title}}<text wx:if="{{item.available === false}}" class="inspiration-unavailable">暂未开放</text></view><view class="inspiration-subtitle">{{item.subtitle}}</view></view><text class="chevron">›</text></button>
     <view class="idea-quote">Good Ideas Create Great People →</view>
-    <view class="sticky-actions"><button class="primary-button" disabled="{{suggestionLoading || !aiText}}" bindtap="suggest">‹　生成活动草稿</button></view>
+    <view class="sticky-actions"><button class="primary-button" disabled="{{suggestionLoading || !aiText}}" bindtap="suggest">‹　生成活动草稿</button><button class="manual-entry" bindtap="openForm">不用建议，直接手动填写</button></view>
   </view>
 
   <view wx:if="{{stage === 'FORM'}}" class="form-page">
@@ -108,7 +109,7 @@
     <view class="field-card cover-card">
       <view class="card-heading">🖼️ <text>活动封面／海报风格</text><text class="small">R1 展示素材</text></view>
       <view class="helper">当前固定展示羽毛球封面；不会作为自定义海报上传或发布。</view>
-      <scroll-view scroll-x="true" show-scrollbar="false"><view class="cover-tiles"><view class="cover-tile selected"><image src="/assets/stitch/caper_home_badminton.jpg" mode="aspectFill"/><text>运动活力</text></view><button class="cover-tile" data-name="轻松治愈封面" bindtap="showUnavailable"><text>☕</text><text class="small">轻松治愈</text></button><button class="cover-tile" data-name="城市探索封面" bindtap="showUnavailable"><text>🏙️</text><text class="small">城市探索</text></button><button class="cover-tile dashed" data-name="自定义海报" bindtap="showUnavailable"><text>＋</text><text class="small">自定义</text></button></view></scroll-view>
+      <scroll-view scroll-x="true" show-scrollbar="false"><view class="cover-tiles"><view class="cover-tile selected"><image src="/assets/stitch/caper_home_badminton.jpg" mode="aspectFill"/><text>运动活力</text></view><button class="cover-tile unavailable" data-name="轻松治愈封面" bindtap="showUnavailable"><image src="/assets/stitch/caper_discover_coffee.jpg" mode="aspectFill"/><text>轻松治愈</text><text class="cover-unavailable">待开放</text></button><button class="cover-tile unavailable" data-name="城市探索封面" bindtap="showUnavailable"><image src="/assets/stitch/caper_discover_citywalk.jpg" mode="aspectFill"/><text>城市探索</text><text class="cover-unavailable">待开放</text></button><button class="cover-tile dashed" data-name="自定义海报" bindtap="showUnavailable"><text>＋</text><text class="small">自定义</text></button></view></scroll-view>
     </view>
 
     <view id="form-visibility" class="field-card">
@@ -124,7 +125,7 @@
   </view>
 
   <view wx:if="{{stage === 'REVIEW'}}" class="review-page">
-    <button class="review-banner" bindtap="backToForm"><view class="mini-orb"><text>●　●</text><text class="small">▰</text></view><view><view class="banner-title">发布前帮你检查活动信息 ✨</view><view class="banner-subtitle">规则建议仅供参考，所有细节由你最终确认。</view></view><text class="chevron">›</text></button>
+    <button class="review-banner" bindtap="backToForm"><view class="mini-orb"><text>●　●</text><text class="small">▰</text></view><view><view class="banner-title">发布前帮你检查活动信息 ✨</view><view class="banner-subtitle">本地规则建议仅供参考，所有细节由你最终确认。</view></view><text class="chevron">›</text></button>
     <view wx:if="{{changePreview}}" class="review-card change-card"><view class="review-card-head"><text>活动变更预览</text><text class="preview-version">版本 {{editingEvent.version}}</text></view><view class="review-note">受影响 {{changePreview.affectedCount}} 人 · {{changePreview.material ? '需本人重新确认' : '信息更新'}}</view><view wx:for="{{changePreview.changes}}" wx:key="field" class="review-row"><text>{{item.label}}</text><text>{{item.before === null ? '待定' : item.before}} → {{item.after === null ? '待定' : item.after}}</text></view><button class="primary-button" bindtap="confirmPublish">上述差异已核实，最终确认变更</button></view>
     <view wx:if="{{publishPreview}}" class="review-card preview-card">
       <view class="review-card-head"><text>活动详情确认</text><text class="preview-version">版本 {{publishPreview.version}}</text></view>

@@ -1,6 +1,15 @@
 @import "../common.wxss";
 .privacy-page { padding: 0 40rpx 110rpx; background: #f8f7fc; }
-.privacy-header { margin: 0 -40rpx 26rpx; padding: 0 40rpx; background: #faf9fd; }
+.privacy-header { position: sticky; z-index: 11; box-sizing: border-box; margin: 0 -40rpx 26rpx; padding-left: 40rpx; background: #faf9fd; }
+.privacy-header .pg10-header-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.privacy-header-actions { display: flex; flex: none; align-items: center; gap: 6rpx; }
+.privacy-header-more, .privacy-header-avatar { display: block; flex: none; min-width: 0; margin: 0; padding: 0; border: 0; text-align: center; }
+.privacy-header-more { width: 48rpx; height: 54rpx; background: transparent; color: #171a24; line-height: 54rpx; font-size: 32rpx; font-weight: 800; }
+.privacy-header-avatar { width: 54rpx; height: 54rpx; border-radius: 50%; background: #064dca; color: #fff; line-height: 54rpx; font-size: 28rpx; font-weight: 800; }
+.privacy-header-more::after, .privacy-header-avatar::after, .privacy-header-menu button::after { border: 0; }
+.privacy-header-menu { position: absolute; top: 86rpx; z-index: 12; width: 258rpx; padding: 8rpx; border: 1rpx solid #edf0f5; border-radius: 20rpx; background: #fff; box-shadow: 0 12rpx 30rpx rgba(15,23,42,.14); }
+.privacy-header-menu button { display: block; box-sizing: border-box; width: 100%; min-width: 0; margin: 0; padding: 13rpx 10rpx; border-bottom: 1rpx solid #edf0f5; border-radius: 0; background: transparent; color: #334155; text-align: left; line-height: 1.4; font-size: 20rpx; }
+.privacy-header-menu button:last-child { border-bottom: 0; }
 .privacy-intro { padding: 31rpx 29rpx 33rpx; border: 1rpx solid #f0f2fa; background: linear-gradient(135deg,#fff,#fafcff); }
 .intro-head { display: flex; align-items: center; gap: 20rpx; }
 .intro-symbol { width: 80rpx; height: 80rpx; flex: none; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #eaf1ff; color: #1d64f2; font-size: 42rpx; }

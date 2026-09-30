@@ -154,7 +154,7 @@ test('a completed hosted event remains in view all and opens its own detail', as
   moments.onLoad({ filter: 'hosted' });
   await moments.onShow();
   assert.equal(moments.data.visibleEvents.map((item: Activity) => item.id).join(','), 'ended-host');
-  assert.equal(moments.data.visibleEvents[0].cover, '/assets/stitch/caper_home_badminton.jpg');
+  assert.equal(moments.data.visibleEvents[0].cover, '/assets/stitch/pg01_badminton_player.jpg');
   assert.equal(moments.data.visibleEvents[0].venueName, '静安体育中心');
   const momentsMarkup = readFileSync(new URL('../miniprogram/subpackages/profile/moments/moments.wxml', import.meta.url), 'utf8');
   assert.match(momentsMarkup, /class="photo-large"[\s\S]*?<image[^>]+src="{{item\.cover}}"/);

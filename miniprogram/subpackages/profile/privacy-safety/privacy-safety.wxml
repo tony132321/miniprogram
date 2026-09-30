@@ -1,5 +1,10 @@
 <view class="pg10-page privacy-page" style="padding-top: {{statusBarHeight}}px">
-  <view class="pg10-header privacy-header"><button class="pg10-back" bindtap="back" aria-label="返回">‹</button><view class="pg10-header-title">隐私与安全</view><view class="pg10-header-spacer"></view></view>
+  <view class="pg10-header privacy-header" style="padding-right: {{headerPaddingRight}}; top: {{statusBarHeight}}px">
+    <button class="pg10-back" bindtap="back" aria-label="返回">‹</button>
+    <view class="pg10-header-title">隐私与安全</view>
+    <view class="privacy-header-actions"><button class="privacy-header-more" bindtap="toggleMore" aria-label="更多页面入口" aria-expanded="{{moreOpen}}">···</button><button class="privacy-header-avatar" bindtap="goProfile" aria-label="返回我的页面">人</button></view>
+    <view wx:if="{{moreOpen}}" class="privacy-header-menu" style="right: {{headerPaddingRight}}"><button bindtap="goLegal">隐私与使用说明　›</button><button bindtap="goSupport">帮助与反馈　›</button><button bindtap="goProfile">我的页面　›</button></view>
+  </view>
 
   <view class="pg10-card privacy-intro">
     <view class="intro-head"><view class="intro-symbol">⊘</view><view><view class="intro-title">关于黑名单机制</view><view class="intro-subtitle">由你管理的活动边界</view></view></view>

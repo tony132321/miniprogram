@@ -85,6 +85,41 @@ test('moments clears another account data and drops an in-flight response', asyn
   assert.deepEqual(Array.from(page.data.events), []);
 });
 
+test('moments waits for startup identity and includes a host who really joined in participated records', async () => {
+  let actor = '';
+  let finishReady!: () => void;
+  const ready = new Promise<void>(resolve => { finishReady = resolve; });
+  const calls: string[] = [];
+  const { page, globalData, routes } = loadPage('moments', { actor: () => actor, get: async path => {
+    calls.push(path);
+    return { items: [
+      { id: 'host-and-player', title: 'CAPER 合成验收', type: 'badminton', status: 'COMPLETED',
+        isHost: true, myRegistrationStatus: 'CONFIRMED' },
+      { id: 'joined', title: '周末羽毛球', status: 'COMPLETED',
+        isHost: false, myRegistrationStatus: 'CONFIRMED' }
+    ] };
+  } });
+  globalData.ready = ready;
+  const loading = page.onShow();
+  assert.deepEqual(calls, [], 'private activity reads wait for startup login');
+  actor = 'member';
+  finishReady();
+  await loading;
+  assert.deepEqual(calls, ['/me/events']);
+  assert.equal(page.data.loadState, 'READY');
+  assert.equal(page.data.events[0].cover, '/assets/stitch/pg01_badminton_player.jpg');
+  page.selectFilter({ currentTarget: { dataset: { filter: 'participated' } } });
+  assert.deepEqual(Array.from(page.data.visibleEvents, (event: any) => event.id), ['host-and-player', 'joined']);
+  page.openActivity({ currentTarget: { dataset: { id: 'host-and-player' } } });
+  assert.deepEqual(routes, ['/pages/event/event?id=host-and-player']);
+});
+
+test('moments photo illustration opens the matching real activity instead of an unavailable album', () => {
+  const markup = readFileSync(new URL('../miniprogram/subpackages/profile/moments/moments.wxml', import.meta.url), 'utf8');
+  assert.match(markup, /<button[^>]*class="moment-photo-layout"[^>]*data-id="{{item\.id}}"[^>]*bindtap="openActivity"/);
+  assert.match(markup, /活动相册未开放/);
+});
+
 test('guidelines opens the real report form for the active development identity', () => {
   const { page, routes, globalData, storageWrites } = loadPage('guidelines', { developmentUser: 'host' });
   page.goReport();

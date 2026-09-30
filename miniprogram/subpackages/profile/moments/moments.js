@@ -3,8 +3,8 @@ const config = require('../../../config.js');
 const { backToProfile, statusBarHeight } = require('../navigation.js');
 
 const filters = [
-  { id: 'all', title: '全部精选' }, { id: 'participated', title: '我参与的' },
-  { id: 'hosted', title: '我主办的' }
+  { id: 'all', title: '全部精选', icon: '✧' }, { id: 'participated', title: '我参与的', icon: '♧' },
+  { id: 'hosted', title: '我主办的', icon: '♛' }
 ];
 const statusLabels = { RECRUITING: '招募中', CONFIRMED: '已成局', IN_PROGRESS: '进行中',
   COMPLETED: '已结束', CANCELLED: '已取消', EXPIRED: '未成局' };
@@ -31,8 +31,8 @@ function headerPaddingRight() {
 function eventIllustrations(item) {
   const title = item.title || '';
   if (item.type === 'badminton' || /羽毛球/.test(title)) return [
-    '/assets/stitch/caper_home_badminton.jpg', '/assets/stitch/pg01_badminton_player.jpg',
-    '/assets/stitch/itinerary_badminton.jpg'
+    '/assets/stitch/pg01_badminton_player.jpg', '/assets/stitch/itinerary_badminton.jpg',
+    '/assets/stitch/caper_home_badminton.jpg'
   ];
   if (/咖啡|聊天|创业/.test(title)) return [
     '/assets/stitch/caper_discover_coffee.jpg', '/assets/stitch/caper_home_dinner.jpg',
@@ -50,12 +50,12 @@ function eventIllustrations(item) {
     '/assets/stitch/caper_discover_art.jpg', '/assets/stitch/caper_discover_citywalk.jpg',
     '/assets/stitch/caper_discover_coffee.jpg'
   ];
-  return ['/assets/stitch/caper_discover_citywalk.jpg', '/assets/stitch/caper_home_shanghai.jpg',
-    '/assets/stitch/caper_home_dinner.jpg'];
+  return ['/assets/stitch/pg01_badminton_player.jpg', '/assets/stitch/itinerary_badminton.jpg',
+    '/assets/stitch/caper_home_badminton.jpg'];
 }
 function visibleEvents(events, filter) {
   if (filter === 'hosted') return events.filter(item => item.isHost);
-  if (filter === 'participated') return events.filter(item => !item.isHost && item.myRegistrationStatus === 'CONFIRMED');
+  if (filter === 'participated') return events.filter(item => item.myRegistrationStatus === 'CONFIRMED');
   return events;
 }
 
@@ -70,14 +70,16 @@ Page({
   },
   async onShow() {
     const generation = this._generation = (this._generation || 0) + 1;
-    const identity = currentIdentity();
+    let identity = currentIdentity();
     this._identity = identity;
     this.setData({ events: [], visibleEvents: [], headerPaddingRight: headerPaddingRight(),
-      loadState: identity ? 'LOADING' : 'UNAUTHENTICATED', message: '' });
-    if (!identity) return;
+      loadState: 'LOADING', message: '' });
     try {
       await getApp().globalData.ready;
-      if (generation !== this._generation || identity !== currentIdentity()) return;
+      if (generation !== this._generation) return;
+      identity = currentIdentity();
+      this._identity = identity;
+      if (!identity) return this.setData({ loadState: 'UNAUTHENTICATED' });
       const response = await api.get('/me/events');
       if (generation !== this._generation || identity !== currentIdentity()) return;
       if (!Array.isArray(response?.items)) throw new Error('活动列表无效');
