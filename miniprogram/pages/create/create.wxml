@@ -2,7 +2,7 @@
   <view class="page-header" style="padding-top: {{statusBarHeight}}px">
     <button class="header-back" bindtap="backFromCreate" aria-label="返回">‹</button>
     <view wx:if="{{stage === 'FORM' && !editingEvent}}" class="header-brand"><text class="brand-mark">耍</text><text>耍起 <text class="brand-en">CAPER</text></text></view>
-    <text wx:else class="header-title">{{stage === 'IDEA' ? 'Pg03 Ai 建局' : stage === 'REVIEW' ? '草稿确认' : '编辑活动'}}</text>
+    <text wx:else class="header-title">{{stage === 'IDEA' ? '活动构思' : stage === 'REVIEW' ? '草稿确认' : '编辑活动'}}</text>
     <button class="header-side" bindtap="openHeaderAction" aria-label="{{stage === 'REVIEW' ? '草稿确认更多操作' : '打开草稿箱'}}">{{stage === 'REVIEW' ? '•••' : '▣ 草稿箱'}}</button>
   </view>
 
