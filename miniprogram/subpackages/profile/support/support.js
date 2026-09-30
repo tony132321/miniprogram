@@ -16,6 +16,7 @@ Page({
   },
   back: backToProfile,
   goReport() {
+    wx.setStorageSync('irlProfileFocusIntent', 'reportSection');
     const actor = wx.getStorageSync('sessionToken') ? wx.getStorageSync('userId')
       : wx.getStorageSync('devUser') || config.developmentUser || '';
     if (actor) getApp().globalData.reportContext = { actor, eventId: '' };

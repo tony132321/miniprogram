@@ -154,6 +154,10 @@ test('a completed hosted event remains in view all and opens its own detail', as
   moments.onLoad({ filter: 'hosted' });
   await moments.onShow();
   assert.equal(moments.data.visibleEvents.map((item: Activity) => item.id).join(','), 'ended-host');
+  assert.equal(moments.data.visibleEvents[0].cover, '/assets/stitch/caper_home_badminton.jpg');
+  const momentsMarkup = readFileSync(new URL('../miniprogram/subpackages/profile/moments/moments.wxml', import.meta.url), 'utf8');
+  assert.match(momentsMarkup, /class="photo-large"[\s\S]*?<image[^>]+src="{{item\.cover}}"/);
+  assert.match(momentsMarkup, /示意配图[\s\S]*?活动相册未开放/);
   moments.openActivity({ currentTarget: { dataset: { id: 'ended-host' } } });
   assert.deepEqual(momentNavigations, ['/pages/event/event?id=ended-host']);
 });
@@ -222,6 +226,30 @@ test('profile edit account deletion entry reveals the real privacy request form'
 
   const editMarkup = readFileSync(new URL('../miniprogram/subpackages/profile/profile-edit/profile-edit.wxml', import.meta.url), 'utf8');
   assert.match(editMarkup, /bindtap="goPrivacyRequests"/);
+});
+
+test('support report shortcut preserves the profile report destination through sign-in', () => {
+  let supportPage: Record<string, any> | undefined;
+  const storageWrites: Array<[string, string]> = [];
+  const navigations: string[] = [];
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/profile/support/support.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../navigation.js') return { backToProfile() {}, statusBarHeight() { return 24; } };
+      if (path === '../../../config.js') return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { supportPage = definition; },
+    getApp() { return { globalData: {} }; },
+    wx: {
+      getStorageSync() { return ''; },
+      setStorageSync(key: string, value: string) { storageWrites.push([key, value]); },
+      switchTab({ url }: { url: string }) { navigations.push(url); }
+    }
+  });
+  assert.ok(supportPage);
+  supportPage.goReport();
+  assert.deepEqual(storageWrites, [['irlProfileFocusIntent', 'reportSection']]);
+  assert.deepEqual(navigations, ['/pages/me/me']);
 });
 
 test('a home waitlist notification deep link opens the current member notice controls', async () => {

@@ -24,13 +24,14 @@
 .moment-title { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #141922; font-size: 26rpx; font-weight: 750; }
 .moment-meta { color: #626d80; font-size: 19rpx; }
 .moment-status { border-radius: 20rpx; padding: 4rpx 11rpx; background: #eaf2ff; color: #1b64ed; font-size: 18rpx; }
-.moment-photo-layout { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 110rpx 110rpx; gap: 7rpx; }
-.photo-large,.photo-small { display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 16rpx; background: linear-gradient(135deg,#dce8fc,#e9edff); color: #566a98; text-align: center; }
+.moment-photo-layout { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 159rpx 159rpx; gap: 7rpx; }
+.photo-large,.photo-small { position: relative; overflow: hidden; border-radius: 16rpx; background: #dce8fc; }
 .photo-large { grid-row: 1 / span 2; }
-.photo-large view { font-size: 53rpx; line-height: 1.1; }
-.photo-large text { font-size: 18rpx; }
-.photo-small { background: #f0eff7; font-size: 19rpx; line-height: 1.5; }
-.photo-small.second { background: #eaf1f8; }
+.photo-large image,.photo-small image { display: block; width: 100%; height: 100%; }
+.photo-overlay { position: absolute; inset: auto 0 0; box-sizing: border-box; width: 100%; padding: 30rpx 13rpx 12rpx; background: linear-gradient(transparent,rgba(15,23,42,.72)); color: #fff; }
+.photo-overlay text { display: block; font-size: 19rpx; font-weight: 750; line-height: 1.45; }
+.photo-overlay text:last-child { font-size: 17rpx; font-weight: 500; }
+.photo-small text { position: absolute; top: 8rpx; left: 8rpx; border-radius: 20rpx; padding: 3rpx 9rpx; background: rgba(255,255,255,.92); color: #334155; font-size: 15rpx; font-weight: 700; }
 .moment-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 16rpx; color: #939baa; font-size: 18rpx; }
 .moment-footer button { width: auto; padding: 0; margin: 0; background: transparent; color: #1c62e7; font-size: 19rpx; line-height: 1.6; }
 .privacy-banner { display: flex; align-items: center; gap: 12rpx; border-radius: 25rpx; padding: 20rpx; background: #f0f3ff; }

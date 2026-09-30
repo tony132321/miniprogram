@@ -19,6 +19,31 @@ function dateLabel(value) {
   const date = new Date(Date.parse(value) + 8 * 60 * 60_000);
   return `${date.getUTCMonth() + 1} 月 ${date.getUTCDate()} 日 ${String(date.getUTCHours()).padStart(2, '0')}:${String(date.getUTCMinutes()).padStart(2, '0')}`;
 }
+function eventIllustrations(item) {
+  const title = item.title || '';
+  if (item.type === 'badminton' || /羽毛球/.test(title)) return [
+    '/assets/stitch/caper_home_badminton.jpg', '/assets/stitch/pg01_badminton_player.jpg',
+    '/assets/stitch/itinerary_badminton.jpg'
+  ];
+  if (/咖啡|聊天|创业/.test(title)) return [
+    '/assets/stitch/caper_discover_coffee.jpg', '/assets/stitch/caper_home_dinner.jpg',
+    '/assets/stitch/caper_discover_boardgame.jpg'
+  ];
+  if (/桌游|游戏/.test(title)) return [
+    '/assets/stitch/caper_discover_boardgame.jpg', '/assets/stitch/caper_home_dinner.jpg',
+    '/assets/stitch/caper_discover_coffee.jpg'
+  ];
+  if (/徒步|露营|登山/.test(title)) return [
+    '/assets/stitch/caper_home_hiking.jpg', '/assets/stitch/caper_discover_camping.jpg',
+    '/assets/stitch/caper_discover_citywalk.jpg'
+  ];
+  if (/展览|艺术|摄影/.test(title)) return [
+    '/assets/stitch/caper_discover_art.jpg', '/assets/stitch/caper_discover_citywalk.jpg',
+    '/assets/stitch/caper_discover_coffee.jpg'
+  ];
+  return ['/assets/stitch/caper_discover_citywalk.jpg', '/assets/stitch/caper_home_shanghai.jpg',
+    '/assets/stitch/caper_home_dinner.jpg'];
+}
 function visibleEvents(events, filter) {
   if (filter === 'hosted') return events.filter(item => item.isHost);
   if (filter === 'participated') return events.filter(item => !item.isHost && item.myRegistrationStatus === 'CONFIRMED');
@@ -45,11 +70,15 @@ Page({
       const response = await api.get('/me/events');
       if (generation !== this._generation || identity !== currentIdentity()) return;
       if (!Array.isArray(response?.items)) throw new Error('活动列表无效');
-      const events = response.items.filter(item => item?.id).map(item => ({
-        id: item.id, title: item.title || '未命名活动', isHost: Boolean(item.isHost),
-        myRegistrationStatus: item.myRegistrationStatus || '',
-        dateLabel: dateLabel(item.startAt), statusLabel: statusLabels[item.status] || '状态待确认'
-      }));
+      const events = response.items.filter(item => item?.id).map(item => {
+        const [cover, sideCover, detailCover] = eventIllustrations(item);
+        return {
+          id: item.id, title: item.title || '未命名活动', isHost: Boolean(item.isHost),
+          myRegistrationStatus: item.myRegistrationStatus || '',
+          dateLabel: dateLabel(item.startAt), statusLabel: statusLabels[item.status] || '状态待确认',
+          cover, sideCover, detailCover
+        };
+      });
       this.setData({ events, visibleEvents: visibleEvents(events, this.data.activeFilter), loadState: 'READY' });
     } catch (error) {
       if (generation === this._generation && identity === currentIdentity())

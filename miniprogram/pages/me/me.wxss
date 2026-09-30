@@ -102,6 +102,8 @@
 .interest-chips { display: flex; flex-wrap: wrap; gap: 11rpx; }
 .interest-chip { padding: 10rpx 21rpx; border: 1rpx solid #e2e8f0; border-radius: 100rpx; background: #fff; color: #475569; font-size: 20rpx; }
 .interest-chip.active { color: #fff; border-color: #1d64f2; background: #1d64f2; }
+.interest-chip-add { width: auto; margin: 0; border-color: #bcd3ff; border-style: dashed; color: #1d64f2; line-height: 1.2; }
+.interest-chip-add::after { border: 0; }
 .interest-note { margin: 10rpx 0 0; color: #94a3b8; font-size: 17rpx; }
 .privacy-card { padding: 4rpx 19rpx; }
 .privacy-line { display: flex; gap: 14rpx; align-items: center; padding: 20rpx 0; border-bottom: 1rpx solid #f1f5f9; }
