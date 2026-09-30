@@ -17,6 +17,10 @@ Page({
   goAbout() { this.setData({ moreOpen: false }); wx.navigateTo({ url: '/pages/about/about' }); },
   goProfile() { this.setData({ moreOpen: false }); wx.switchTab({ url: '/pages/me/me' }); },
   back: backToProfile,
+  onShareAppMessage() {
+    return { title: 'Project IRL · 开源许可与致谢',
+      path: '/subpackages/profile/open-source/open-source' };
+  },
   copyRepository() {
     wx.setClipboardData({ data: 'https://github.com/tony132321/miniprogram',
       success: () => this.setData({ message: '仓库地址已复制。' }),

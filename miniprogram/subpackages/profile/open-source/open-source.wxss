@@ -3,6 +3,10 @@
 .source-page .pg10-header { position: sticky; z-index: 11; box-sizing: border-box; margin: 0 -18rpx 16rpx; padding-left: 22rpx; }
 .source-page .pg10-header-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 25rpx; font-weight: 600; }
 .source-header .pg10-header-actions { display: flex; flex: none; align-items: center; gap: 6rpx; }
+.source-header .pg10-header-share { display: block; flex: none; width: 48rpx; height: 54rpx; min-width: 0; margin: 0; padding: 0; border: 0; background: transparent; color: #171a24; }
+.source-header .pg10-header-share::after { border: 0; }
+.source-header .pg10-header-share-icon { position: relative; box-sizing: border-box; width: 22rpx; height: 20rpx; margin: 22rpx auto 0; border: 2rpx solid currentColor; border-top: 0; border-radius: 0 0 3rpx 3rpx; }
+.source-header .pg10-header-share-icon text { position: absolute; top: -19rpx; left: 50%; transform: translateX(-50%); font-size: 30rpx; line-height: 1; }
 .source-header .pg10-header-more, .source-header .pg10-header-avatar { display: block; flex: none; min-width: 0; margin: 0; padding: 0; border: 0; text-align: center; }
 .source-header .pg10-header-more { width: 48rpx; height: 54rpx; background: transparent; color: #171a24; line-height: 54rpx; font-size: 32rpx; font-weight: 800; }
 .source-header .pg10-header-avatar { width: 54rpx; height: 54rpx; border-radius: 50%; background: #064dca; color: #fff; line-height: 54rpx; font-size: 28rpx; font-weight: 800; }

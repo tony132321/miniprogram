@@ -18,6 +18,10 @@ Page({
   goAbout() { this.setData({ moreOpen: false }); wx.navigateTo({ url: '/pages/about/about' }); },
   goProfile() { this.setData({ moreOpen: false }); wx.switchTab({ url: '/pages/me/me' }); },
   back: backToProfile,
+  onShareAppMessage() {
+    return { title: 'Project IRL · 社区引导与线下社交守则',
+      path: '/subpackages/profile/guidelines/guidelines' };
+  },
   goReport() {
     wx.setStorageSync('irlProfileFocusIntent', 'reportSection');
     const token = wx.getStorageSync('sessionToken');

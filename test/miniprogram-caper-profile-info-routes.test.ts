@@ -3,7 +3,8 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { runInNewContext } from 'node:vm';
 
-function loadPage(path: string, options: { developmentUser?: string } = {}) {
+function loadPage(path: string, options: { developmentUser?: string;
+  storage?: Record<string, string> } = {}) {
   let page: Record<string, any> | undefined;
   const navigations: string[] = [];
   const storageWrites: Array<[string, string]> = [];
@@ -17,7 +18,7 @@ function loadPage(path: string, options: { developmentUser?: string } = {}) {
     Page(definition: Record<string, any>) { page = definition; },
     getApp() { return { globalData }; },
     wx: {
-      getStorageSync() { return ''; },
+      getStorageSync(key: string) { return options.storage?.[key] || ''; },
       setStorageSync(key: string, value: string) { storageWrites.push([key, value]); },
       getSystemInfoSync() { return { statusBarHeight: 24 }; },
       getWindowInfo() { return { windowWidth: 390 }; },
@@ -44,6 +45,22 @@ test('community charter help action keeps the report section destination through
   assert.deepEqual(storageWrites, [['irlProfileFocusIntent', 'reportSection']]);
   assert.equal(globalData.reportContext, undefined);
   assert.deepEqual(navigations, ['/pages/me/me']);
+});
+
+test('PG10 information pages share only their public destination and current title', () => {
+  const pages = [
+    ['release-notes', 'Project IRL · 当前功能与版本说明'],
+    ['guidelines', 'Project IRL · 社区引导与线下社交守则'],
+    ['open-source', 'Project IRL · 开源许可与致谢']
+  ] as const;
+  for (const [name, title] of pages) {
+    const { page } = loadPage(`../miniprogram/subpackages/profile/${name}/${name}.js`, {
+      storage: { sessionToken: 'private-session', userId: 'private-user', inviteToken: 'private-invite' }
+    });
+    const share = page.onShareAppMessage();
+    assert.equal(share.title, title, name);
+    assert.equal(share.path, `/subpackages/profile/${name}/${name}`, name);
+  }
 });
 
 test('about screen page actions fit left of the native capsule and open real destinations', () => {
