@@ -83,6 +83,11 @@ page { background: #f5f7fa; color: #172033; }
 .tab { flex: none; display: inline-flex; align-items: center; gap: 8rpx; margin-right: 10rpx!important; padding: 12rpx 19rpx; border-radius: 99rpx; background: #f1f3f6; color: #455061; font-size: 21rpx; font-weight: 650; }
 .tab text { padding: 1rpx 8rpx; border-radius: 99rpx; background: rgba(0,0,0,.05); font-size: 17rpx; }
 .tab.selected { color: #fff; background: #1d64f2; }.tab.selected text { color: #153263; background: #d2f803; }
+.draft-list-heading { display: flex; align-items: center; justify-content: space-between; gap: 12rpx; margin: 0 0 18rpx; padding: 16rpx 18rpx; border-radius: 18rpx; background: #eef4ff; }
+.draft-list-heading view { display: flex; flex-direction: column; gap: 3rpx; }
+.draft-list-title { color: #173b78; font-size: 25rpx; font-weight: 800; }
+.draft-list-copy { color: #65768f; font-size: 18rpx; }
+.draft-list-heading button { flex: none; margin: 0!important; padding: 8rpx 10rpx; color: #1d64f2; background: transparent; font-size: 19rpx; font-weight: 750; }
 .state-card { margin: 0 0 22rpx; border-radius: 24rpx; padding: 32rpx 20rpx; background: #f5f7fa; color: #6b7786; text-align: center; font-size: 23rpx; }
 .state-card.error { color: #b62442; }.state-card.muted { color: #6b7786; }
 .retry,.empty-action { display: block; margin: 20rpx auto 0!important; padding: 12rpx 25rpx; border-radius: 99rpx; color: #fff; background: #1d64f2; font-size: 22rpx; }

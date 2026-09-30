@@ -32,6 +32,11 @@ const tabs = [
 ];
 const detailedStateTabs = ['pending', 'organized', 'history'];
 const stateDetailBatchSize = 3;
+function visibleForTab(items, key, draftsOnly) {
+  const selected = Array.isArray(items) ? items : [];
+  return key === 'organized' && draftsOnly
+    ? selected.filter(item => item.isHost && item.status === 'DRAFT') : selected;
+}
 const categoryIdeas = [
   { icon: '🏸', label: '运动', tone: 'mint' }, { icon: '🥘', label: '美食', tone: 'peach' },
   { icon: '☕', label: '喝一杯', tone: 'cream' }, { icon: '🏙️', label: 'City Walk', tone: 'sky' },
@@ -152,7 +157,8 @@ function cardPresentation(item, group) {
 }
 Page({
   data: { items: [], organized: [], cohosting: [], pending: [], attending: [], history: [],
-    tabs, categoryIdeas, activeTab: 'attending', stateView: false, visibleItems: [], featuredItem: null,
+    tabs, categoryIdeas, activeTab: 'attending', stateView: false, draftsOnly: false,
+    visibleItems: [], featuredItem: null,
     homePreviewItems: [],
     headerPaddingRight: headerPaddingRight(),
     city: '上海', statusBarHeight: typeof wx.getSystemInfoSync === 'function'
@@ -165,9 +171,14 @@ Page({
     const savedCity = wx.getStorageSync('irlSelectedCity');
     this.setData({ city: typeof savedCity === 'string' && savedCity ? savedCity : '上海' });
     const requestedTab = wx.getStorageSync('irlHomeTabIntent');
-    if (tabs.some(tab => tab.key === requestedTab)) {
+    if (requestedTab === 'drafts') {
       wx.removeStorageSync('irlHomeTabIntent');
-      this.setData({ activeTab: requestedTab, stateView: requestedTab !== 'attending', visibleItems: this.data[requestedTab] });
+      this.setData({ activeTab: 'organized', stateView: true, draftsOnly: true,
+        visibleItems: visibleForTab(this.data.organized, 'organized', true) });
+    } else if (tabs.some(tab => tab.key === requestedTab)) {
+      wx.removeStorageSync('irlHomeTabIntent');
+      this.setData({ activeTab: requestedTab, stateView: requestedTab !== 'attending', draftsOnly: false,
+        visibleItems: visibleForTab(this.data[requestedTab], requestedTab, false) });
     }
     const generation = this._loadGeneration = (this._loadGeneration || 0) + 1;
     let identity = currentIdentity();
@@ -193,8 +204,9 @@ Page({
         const group = sectionFor(item);
         return { ...item, ...cardPresentation(item, group), statusLabel: statusLabels[item.status] || item.status || '状态待确认',
           registrationLabel: registrationLabels[item.myRegistrationStatus] || '',
-          cardLabel: registrationLabels[item.myRegistrationStatus] ||
-            (group === 'cohosting' ? '协办中' : statusLabels[item.status] || item.status || '状态待确认'),
+          cardLabel: group === 'organized' ? statusLabels[item.status] || item.status || '状态待确认'
+            : registrationLabels[item.myRegistrationStatus] ||
+              (group === 'cohosting' ? '协办中' : statusLabels[item.status] || item.status || '状态待确认'),
           dateLabel: dateLabel(item.startAt), dateRangeLabel: dateLabel(item.startAt),
           venueLabel: '地点请到活动详情查看', capacityLabel: '', hostCounts: null,
           posterWord: posterWord(item.title || ''), cover: coverFor(item.title || '') };
@@ -203,7 +215,8 @@ Page({
       const featuredItem = pickFeaturedItem(items);
       const homePreviewItems = items.filter(item => ['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(item.status)).slice(0, 3);
       this.setData({ items, ...groups, featuredItem, homePreviewItems,
-        visibleItems: groups[this.data.activeTab], loadState: 'READY', errorCode: '', message: '' });
+        visibleItems: visibleForTab(groups[this.data.activeTab], this.data.activeTab, this.data.draftsOnly),
+        loadState: 'READY', errorCode: '', message: '' });
       if (detailedStateTabs.includes(this.data.activeTab))
         await this.enrichStateCards(this.data.activeTab, identity, generation, this._detailRequestId);
     } catch (error) {
@@ -215,13 +228,17 @@ Page({
     const key = event.currentTarget.dataset.key;
     if (!tabs.some(tab => tab.key === key)) return;
     const requestId = this._detailRequestId = (this._detailRequestId || 0) + 1;
-    this.setData({ activeTab: key, stateView: key !== 'attending', visibleItems: this.data[key] });
+    this.setData({ activeTab: key, stateView: key !== 'attending', draftsOnly: false,
+      visibleItems: visibleForTab(this.data[key], key, false) });
     if (typeof wx.pageScrollTo === 'function') wx.pageScrollTo({ scrollTop: 0, duration: 0 });
     if (this.data.loadState === 'READY' && detailedStateTabs.includes(key))
       await this.enrichStateCards(key, currentIdentity(), this._loadGeneration, requestId);
   },
+  showAllOrganized() {
+    return this.selectTab({ currentTarget: { dataset: { key: 'organized' } } });
+  },
   async enrichStateCards(key, identity, loadGeneration, requestId) {
-    const selected = Array.isArray(this.data[key]) ? this.data[key] : [];
+    const selected = visibleForTab(this.data[key], key, this.data.draftsOnly);
     const targets = selected.filter(item => !item.detailLoaded);
     if (!targets.length) return;
     for (let offset = 0; offset < targets.length; offset += stateDetailBatchSize) {
@@ -236,7 +253,8 @@ Page({
       });
       if (!enriched.size) continue;
       const updatedGroup = this.data[key].map(item => enriched.get(item.id) || item);
-      this.setData({ [key]: updatedGroup, visibleItems: updatedGroup,
+      this.setData({ [key]: updatedGroup,
+        visibleItems: visibleForTab(updatedGroup, key, this.data.draftsOnly),
         items: this.data.items.map(item => enriched.get(item.id) || item) });
     }
   },

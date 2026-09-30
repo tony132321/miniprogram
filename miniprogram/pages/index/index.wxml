@@ -79,10 +79,12 @@
       <button class="tab {{activeTab === 'cohosting' ? 'selected' : ''}}" data-key="cohosting" bindtap="selectTab">协办 <text>{{cohosting.length}}</text></button>
       <button class="tab {{activeTab === 'history' ? 'selected' : ''}}" data-key="history" bindtap="selectTab">历史 <text>{{history.length}}</text></button>
     </view></scroll-view>
+    <view wx:if="{{draftsOnly}}" class="draft-list-heading"><view><text class="draft-list-title">我的草稿</text><text class="draft-list-copy">仅显示当前账号尚未发布的活动</text></view><button bindtap="showAllOrganized">查看全部我组织的　›</button></view>
     <view wx:if="{{loadState === 'LOADING'}}" class="state-card">正在加载我的活动…</view>
     <view wx:if="{{loadState === 'ERROR'}}" class="state-card error">{{message}} <button class="retry" bindtap="retry">{{errorCode === 'UNAUTHENTICATED' ? '微信登录' : '重试'}}</button></view>
-    <view wx:if="{{loadState === 'READY' && items.length === 0}}" class="state-card muted"><view class="empty-icon">✹</view><view class="empty-title">下一场相聚，从这里开始</view><view class="empty-copy">暂无活动。可从邀请进入或发起真实活动。</view><button class="empty-action" bindtap="goCreate">发起一个活动　→</button></view>
-    <view wx:if="{{loadState === 'READY' && visibleItems.length === 0 && items.length > 0}}" class="state-card muted">这个分类里暂时没有活动。</view>
+    <view wx:if="{{loadState === 'READY' && draftsOnly && visibleItems.length === 0}}" class="state-card muted"><view class="empty-icon">✹</view><view class="empty-title">还没有保存的草稿</view><view class="empty-copy">发起活动后保存草稿，就能在这里继续编辑。</view><button class="empty-action" bindtap="goCreate">去发起活动　→</button></view>
+    <view wx:if="{{loadState === 'READY' && items.length === 0 && !draftsOnly}}" class="state-card muted"><view class="empty-icon">✹</view><view class="empty-title">下一场相聚，从这里开始</view><view class="empty-copy">暂无活动。可从邀请进入或发起真实活动。</view><button class="empty-action" bindtap="goCreate">发起一个活动　→</button></view>
+    <view wx:if="{{loadState === 'READY' && !draftsOnly && visibleItems.length === 0 && items.length > 0}}" class="state-card muted">这个分类里暂时没有活动。</view>
     <view wx:if="{{loadState === 'READY'}}" class="cards">
       <view wx:for="{{visibleItems}}" wx:key="id" class="event-card card-{{item.cardKind}}">
         <button class="cover-wrap" data-id="{{item.id}}" bindtap="openEvent" aria-label="查看{{item.title || '活动'}}详情"><image class="cover" src="{{item.cover}}" mode="aspectFill" /><view class="cover-tint"></view><view wx:if="{{stateView && item.cardKind === 'history'}}" class="cover-sticker">MEMORIES ✦ GOOD TIMES</view><view class="cover-status">{{item.cardLabel}}</view><view wx:if="{{stateView}}" class="cover-poster"><text class="cover-poster-word">{{item.posterWord}}</text><text class="cover-poster-line">GOOD PEOPLE · REAL PLANS</text></view><view wx:else class="cover-title">{{item.title || '未命名草稿'}}</view><view wx:if="{{stateView}}" class="cover-credit">配图为活动类型示意</view></button>

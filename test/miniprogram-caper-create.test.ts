@@ -52,7 +52,7 @@ test('review more menu lets the host edit the draft or open the saved drafts lis
   page.openHeaderAction();
   actionSheets[1]?.success({ tapIndex: 1 });
   assert.deepEqual(routes, ['/pages/index/index']);
-  assert.equal(storage.get('irlHomeTabIntent'), 'organized');
+  assert.equal(storage.get('irlHomeTabIntent'), 'drafts');
 });
 
 test('reference form shortcuts fill supported city and participant range, while unsupported category stays closed', () => {
@@ -127,7 +127,7 @@ test('cohost shortcut reaches the published activity workbench', () => {
   assert.deepEqual(routes, ['/pages/event/event?id=event-host&section=hostSection']);
 });
 
-test('drafts shortcut opens the organized list once and exposes a saved draft', async () => {
+test('drafts shortcut opens only owned drafts and returns to edit the selected one', async () => {
   const { page: create, routes, storage } = loadPage(Date.now());
   create.openDrafts();
   assert.deepEqual(routes, ['/pages/index/index']);
@@ -135,9 +135,19 @@ test('drafts shortcut opens the organized list once and exposes a saved draft', 
   let home: Record<string, any> | undefined;
   runInNewContext(readFileSync(new URL('../miniprogram/pages/index/index.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async () => ({ items: [
-        { id: 'draft-1', title: '周六羽毛球', status: 'DRAFT', isHost: true }
-      ] }) } };
+      if (path === '../../utils/api.js') return { api: { get: async (route: string) => {
+        if (route === '/me/events') return { items: [
+          { id: 'draft-1', title: '周六羽毛球', status: 'DRAFT', isHost: true },
+          { id: 'published-1', title: '周日羽毛球', status: 'RECRUITING', isHost: true },
+          { id: 'foreign-draft', title: '其他人的草稿', status: 'DRAFT', isHost: false }
+        ] };
+        if (route === '/events/draft-1') return { id: 'draft-1', hostId: 'host', status: 'DRAFT',
+          reviewStatus: 'DRAFT', payload: { title: '周六羽毛球', city: '上海', venueName: '体育馆',
+            startAt: '2027-03-22T11:00:00.000Z', endAt: '2027-03-22T13:00:00.000Z',
+            minParticipants: 4, maxParticipants: 8, feeMode: 'FREE' },
+          stats: { confirmed: 0, reserved: 0, requested: 0, waitlisted: 0 } };
+        throw new Error('detail unavailable');
+      } } };
       if (path === '../../config.js') return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -145,16 +155,28 @@ test('drafts shortcut opens the organized list once and exposes a saved draft', 
     getApp() { return { globalData: { ready: Promise.resolve() } }; },
     wx: {
       getStorageSync(key: string) { return storage.get(key) ?? ''; },
-      removeStorageSync(key: string) { storage.delete(key); }
+      setStorageSync(key: string, value: unknown) { storage.set(key, value); },
+      removeStorageSync(key: string) { storage.delete(key); },
+      switchTab({ url }: { url: string }) { routes.push(url); }
     }
   });
   assert.ok(home);
   home.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
   await home.onShow();
   assert.equal(home.data.activeTab, 'organized');
-  assert.equal(home.data.visibleItems[0]?.id, 'draft-1');
+  assert.equal(home.data.draftsOnly, true);
+  assert.deepEqual(Array.from(home.data.visibleItems, (item: { id: string }) => item.id), ['draft-1']);
+  assert.equal(home.data.visibleItems[0].detailLoaded, true);
   assert.equal(storage.has('irlHomeTabIntent'), false);
-  home.setData({ activeTab: 'attending' });
+  home.openCardAction({ currentTarget: { dataset: { id: 'draft-1', action: 'editDraft' } } });
+  assert.equal(storage.get('editDraftId'), 'draft-1');
+  assert.equal(storage.get('editTargetOwner'), 'dev:host');
+  assert.deepEqual(routes, ['/pages/index/index', '/pages/create/create']);
+  await home.showAllOrganized();
+  assert.equal(home.data.draftsOnly, false);
+  assert.deepEqual(Array.from(home.data.visibleItems, (item: { id: string }) => item.id),
+    ['draft-1', 'published-1']);
+  await home.selectTab({ currentTarget: { dataset: { key: 'attending' } } });
   await home.onShow();
   assert.equal(home.data.activeTab, 'attending', 'the shortcut must not override a later manual tab choice');
 });

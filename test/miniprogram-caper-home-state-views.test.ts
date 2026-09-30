@@ -93,6 +93,19 @@ test('organized cards show only authorized real counts and route to the host wor
   assert.deepEqual(navigations, ['/pages/event/event?id=hosted&section=hostSection']);
 });
 
+test('organizer cover badge shows activity status even when the host also registered', async () => {
+  const hosted: ListedEvent = { id: 'hosted', status: 'RECRUITING', title: '周日羽毛球',
+    isHost: true, myRegistrationStatus: 'CONFIRMED' };
+  const attending: ListedEvent = { id: 'attending', status: 'RECRUITING', title: '周六羽毛球',
+    isHost: false, myRegistrationStatus: 'CONFIRMED' };
+  const { page } = makeHome({ organizer: [hosted, attending] }, { hosted: detail('hosted') });
+  await page.onShow();
+  await page.selectTab({ currentTarget: { dataset: { key: 'organized' } } });
+  assert.equal(page.data.visibleItems[0].cardLabel, '招募中');
+  assert.equal(page.data.visibleItems[0].statusLabel, '招募中');
+  assert.equal(page.data.attending[0].cardLabel, '已报名');
+});
+
 test('multiple recruiting host cards let the organizer choose the exact invite destination', async () => {
   const first: ListedEvent = { id: 'first-host', status: 'RECRUITING', title: '周六羽毛球',
     isHost: true, myRegistrationStatus: null };

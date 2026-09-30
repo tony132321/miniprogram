@@ -253,7 +253,7 @@ Page({
       () => wx.pageScrollTo?.({ scrollTop: 0, duration: 0 }));
   },
   openDrafts() {
-    wx.setStorageSync('irlHomeTabIntent', 'organized');
+    wx.setStorageSync('irlHomeTabIntent', 'drafts');
     wx.switchTab({ url: '/pages/index/index' });
   },
   openHeaderAction() {
