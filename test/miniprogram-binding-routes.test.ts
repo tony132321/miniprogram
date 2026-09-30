@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { runInNewContext } from 'node:vm';
+import { cityModule } from './miniprogram-city-module.js';
 
 const app = JSON.parse(readFileSync(new URL('../miniprogram/app.json', import.meta.url), 'utf8')) as {
   pages: string[];
@@ -22,6 +23,7 @@ test('every WXML event binding has a page handler and every literal page navigat
       require(path: string) {
         if (path.endsWith('/config.js')) return { developmentUser: '' };
         if (path.endsWith('/utils/api.js')) return { api: {} };
+        if (path.endsWith('/utils/city.js')) return cityModule;
         return new Proxy({}, { get: () => () => {} });
       },
       wx: {}, setTimeout, clearTimeout

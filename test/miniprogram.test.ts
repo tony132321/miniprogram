@@ -10,6 +10,7 @@ import { createApp } from '../src/server.ts';
 const require = createRequire(import.meta.url);
 const { createApi } = require('../miniprogram/utils/api.js');
 const { sha256 } = require('../miniprogram/utils/sha256.js');
+const cityModule = require('../miniprogram/utils/city.js');
 
 test('mini-program fingerprint hashing matches SHA-256 for plain and Unicode text', () => {
   for (const value of ['', 'abc', '举报：现场有人受伤', '球拍🏸与换行\n继续说明', 'abc'.repeat(100), '🏸'.repeat(100)])
@@ -27,6 +28,7 @@ test('R1 discovery has no active public-search controls while invitation and cre
     require(path: string) {
       if (path === '../../utils/api.js') return { api: {} };
       if (path === '../../config.js') return { developmentUser: '' };
+      if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -799,6 +801,7 @@ test('activity list clears the previous identity and ignores a late old response
     require(path: string) {
       if (path === '../../utils/api.js') return { api };
       if (path === '../../config.js') return { developmentUser: 'old-member' };
+      if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1119,6 +1122,7 @@ test('activity list loads after startup login establishes the real identity', as
     require(path: string) {
       if (path === '../../utils/api.js') return { api: { get: async () => ({ items: [{ id: 'member-event' }] }) } };
       if (path === '../../config.js') return { developmentUser: '' };
+      if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1155,6 +1159,7 @@ test('activity list distinguishes load failure from empty results and retries in
         return { items };
       } } };
       if (path === '../../config.js') return { developmentUser: 'host' };
+      if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1199,6 +1204,7 @@ test('activity list retry renews an expired real login before loading', async ()
         async login() { logins++; token = 'renewed'; }
       } };
       if (path === '../../config.js') return { developmentUser: '' };
+      if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
