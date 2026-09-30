@@ -27,6 +27,7 @@ test('known member activity opens by id when its invitation summary is withheld 
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
+    Date: class extends Date { static now() { return Date.parse('2027-01-02T12:00:00.000Z'); } },
     wx: { getStorageSync(key: string) { return key === 'devUser' ? 'member' : ''; },
       switchTab({ url }: { url: string }) { switchedTo = url; } },
     setTimeout, clearTimeout
