@@ -77,7 +77,7 @@
         </view>
         <button wx:if="{{approvalNextOffset !== null}}" class="center-load-more" bindtap="loadMoreApprovals" disabled="{{loadingMoreApprovals}}">{{loadingMoreApprovals ? '正在加载…' : '加载更多审核'}}</button>
       </view>
-      <view wx:if="{{loadState === 'READY'}}" class="center-notices"><block wx:for="{{items}}" wx:key="id" wx:for-item="notice">
+      <view wx:if="{{loadState === 'READY'}}" class="center-notices"><block wx:for="{{centerItems}}" wx:key="id" wx:for-item="notice">
         <view wx:if="{{notice.visible}}" class="center-card center-{{notice.cardVariant}} {{notice.kind === 'EVENT_REMINDER' ? 'center-highlight' : ''}}">
           <view class="center-card-layout">
             <view class="center-card-icon center-{{notice.tone}}">{{notice.icon}}</view>

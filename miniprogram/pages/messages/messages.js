@@ -138,7 +138,8 @@ function present(items) {
 }
 function displayed(items, filter, searchQuery = '') {
   const shown = items.map(item => ({ ...item, visible: visible(item, filter, searchQuery) }));
-  return { items: shown, filteredCount: shown.filter(item => item.visible).length,
+  const centerItems = shown.filter(item => item.visible);
+  return { items: shown, centerItems, filteredCount: centerItems.length,
     noticeGroups: groupSpecs.map(spec => ({ ...spec, items: shown.filter(item => item.visible && groupFor(item) === spec.key) })) };
 }
 function currentIdentity(developmentMode) {
@@ -149,7 +150,7 @@ function currentIdentity(developmentMode) {
 }
 function noticeEventId(value) { return value == null ? '' : String(value); }
 Page({
-  data: { statusBarHeight: 24, capsuleInset: 96, items: [], noticeGroups: [], filteredCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
+  data: { statusBarHeight: 24, capsuleInset: 96, items: [], centerItems: [], noticeGroups: [], filteredCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
     loadState: 'IDLE', loadingMore: false, markingAllRead: false, message: '',
     approvals: [], approvalTotal: 0, approvalNextOffset: null, approvalSnapshot: null, approvalLoadState: 'IDLE',
     approvingId: '', loadingMoreApprovals: false,
@@ -172,7 +173,7 @@ Page({
     const { hasSession, actor, key } = currentIdentity(this.data.developmentMode);
     if (this._identity !== key) {
       this._generation = (this._generation || 0) + 1;
-      this.setData({ items: [], noticeGroups: [], filteredCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
+      this.setData({ items: [], centerItems: [], noticeGroups: [], filteredCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
         loadingMore: false, markingAllRead: false, approvals: [], approvalTotal: 0,
         approvalNextOffset: null, approvalSnapshot: null, approvalLoadState: 'IDLE',
         approvingId: '', loadingMoreApprovals: false, viewMode: 'INBOX', filter: 'ALL',
@@ -194,6 +195,7 @@ Page({
     else wx.showTabBar?.({ animation: false });
   },
   async refresh() {
+    if (this.clearPrivateAfterIdentityChange()) return;
     const identity = this._identity;
     if (!identity || identity !== currentIdentity(this.data.developmentMode).key) return;
     const generation = this._generation = (this._generation || 0) + 1;
@@ -213,6 +215,7 @@ Page({
     }
   },
   setFilter(event) {
+    if (this.clearPrivateAfterIdentityChange()) return;
     if (this.data.loadState !== 'READY') return;
     const filter = event.currentTarget.dataset.filter;
     if (!['ALL', 'ACTIVITY', 'INTERACTION', 'SYSTEM'].includes(filter)) return;
@@ -220,6 +223,7 @@ Page({
     if (filter === 'INTERACTION' && this.data.approvalLoadState === 'IDLE') return this.loadApprovals();
   },
   async openNotificationCenter() {
+    if (this.clearPrivateAfterIdentityChange()) return;
     const filter = 'ALL';
     this.setData({ viewMode: 'CENTER', filter, searchOpen: false, searchQuery: '',
       ...displayed(this.data.items, filter) });
@@ -228,27 +232,32 @@ Page({
       await this.loadApprovals();
   },
   openPrivateChatPreview() {
+    if (this.clearPrivateAfterIdentityChange()) return;
     const filter = 'ALL';
     this.setData({ viewMode: 'CHAT_UNAVAILABLE', filter, searchOpen: false, searchQuery: '',
       ...displayed(this.data.items, filter) });
     this.setTabBarHidden(true);
   },
   backToInbox() {
+    if (this.clearPrivateAfterIdentityChange()) return;
     const filter = 'ALL';
     this.setData({ viewMode: 'INBOX', filter,
       ...displayed(this.data.items, filter, this.data.searchQuery) });
     this.setTabBarHidden(false);
   },
   toggleSearch() {
+    if (this.clearPrivateAfterIdentityChange()) return;
     const searchOpen = !this.data.searchOpen;
     const searchQuery = searchOpen ? this.data.searchQuery : '';
     this.setData({ searchOpen, searchQuery, ...displayed(this.data.items, this.data.filter, searchQuery) });
   },
   searchInput(event) {
+    if (this.clearPrivateAfterIdentityChange()) return;
     const searchQuery = (event.detail.value || '').trim();
     this.setData({ searchQuery, ...displayed(this.data.items, this.data.filter, searchQuery) });
   },
   async loadMore() {
+    if (this.clearPrivateAfterIdentityChange()) return;
     const offset = this.data.nextOffset;
     if (this.data.loadingMore || offset === null || offset === undefined) return;
     const identity = this._identity;
@@ -276,6 +285,7 @@ Page({
     }
   },
   async markAllRead() {
+    if (this.clearPrivateAfterIdentityChange()) return;
     if (this.data.markingAllRead || this.data.loadState !== 'READY' || !this.data.unreadTotal) return;
     const identity = this._identity;
     if (!identity || currentIdentity(this.data.developmentMode).key !== identity) return;
@@ -297,38 +307,60 @@ Page({
       if (stillCurrent()) this.setData({ markingAllRead: false });
     }
   },
+  clearPrivateAfterIdentityChange() {
+    if (!this._identity || this._identity === currentIdentity(this.data.developmentMode).key) return false;
+    this._generation = (this._generation || 0) + 1;
+    this._approvalLoadId = (this._approvalLoadId || 0) + 1;
+    this.setData({ items: [], centerItems: [], noticeGroups: [], filteredCount: 0,
+      total: 0, unreadTotal: 0, nextOffset: null, snapshot: null, loadState: 'IDLE',
+      loadingMore: false, markingAllRead: false,
+      approvals: [], approvalTotal: 0, approvalNextOffset: null, approvalSnapshot: null,
+      approvalLoadState: 'IDLE', approvingId: '', loadingMoreApprovals: false,
+      viewMode: 'INBOX', filter: 'ALL', searchOpen: false, searchQuery: '',
+      message: '账号已切换，请返回后重新加载消息。' });
+    this.setTabBarHidden(false);
+    return true;
+  },
   async loadApprovals() {
+    if (this.clearPrivateAfterIdentityChange()) return;
     const generation = this._generation;
     const approvalLoadId = this._approvalLoadId = (this._approvalLoadId || 0) + 1;
+    const identity = this._identity;
     this.setData({ approvalLoadState: 'LOADING', approvalNextOffset: null,
       approvalSnapshot: null, approvals: [], approvalTotal: 0, loadingMoreApprovals: false });
     try {
       const page = await api.get('/me/approval-requests?offset=0');
-      if (generation !== this._generation || approvalLoadId !== this._approvalLoadId) return;
+      if (generation !== this._generation || approvalLoadId !== this._approvalLoadId ||
+        identity !== this._identity || this.clearPrivateAfterIdentityChange()) return;
       this.setData({ approvals: (page.items || []).map(item => ({ ...item, timeLabel: timeLabel(item.createdAt) })),
         approvalTotal: page.total || 0,
         approvalNextOffset: page.nextOffset ?? null, approvalSnapshot: page.snapshot ?? null,
         approvalLoadState: 'READY' });
     } catch (error) {
-      if (generation === this._generation && approvalLoadId === this._approvalLoadId) this.setData({ approvalLoadState: 'ERROR',
+      if (generation === this._generation && approvalLoadId === this._approvalLoadId &&
+        identity === this._identity && !this.clearPrivateAfterIdentityChange()) this.setData({ approvalLoadState: 'ERROR',
         message: error.message || '待审核报名加载失败' });
     }
   },
   async loadMoreApprovals() {
+    if (this.clearPrivateAfterIdentityChange()) return;
     const offset = this.data.approvalNextOffset;
     if (this.data.loadingMoreApprovals || offset === null || offset === undefined) return;
     const generation = this._generation;
     const approvalLoadId = this._approvalLoadId;
+    const identity = this._identity;
     this.setData({ loadingMoreApprovals: true });
     try {
       const page = await api.get(`/me/approval-requests?offset=${offset}&snapshot=${encodeURIComponent(this.data.approvalSnapshot)}`);
-      if (generation !== this._generation || approvalLoadId !== this._approvalLoadId) return;
+      if (generation !== this._generation || approvalLoadId !== this._approvalLoadId ||
+        identity !== this._identity || this.clearPrivateAfterIdentityChange()) return;
       this.setData({ approvals: this.data.approvals.concat((page.items || []).map(item => ({
         ...item, timeLabel: timeLabel(item.createdAt) }))), approvalTotal: page.total,
         approvalNextOffset: page.nextOffset ?? null, approvalSnapshot: page.snapshot ?? null,
         loadingMoreApprovals: false });
     } catch (error) {
-      if (generation !== this._generation || approvalLoadId !== this._approvalLoadId) return;
+      if (generation !== this._generation || approvalLoadId !== this._approvalLoadId ||
+        identity !== this._identity || this.clearPrivateAfterIdentityChange()) return;
       if (error.code === 'QUEUE_CHANGED') {
         await this.loadApprovals();
         return this.setData({ message: '审核列表已变化，已重新加载。', loadingMoreApprovals: false });
@@ -337,30 +369,37 @@ Page({
     }
   },
   async approveRequest(event) {
+    if (this.clearPrivateAfterIdentityChange()) return;
     const { id, version } = event.currentTarget.dataset;
     if (!id || this.data.approvingId || !this.data.approvals.some(item => item.registrationId === id && item.canApprove)) return;
     const generation = this._generation;
+    const identity = this._identity;
+    if (identity && identity !== currentIdentity(this.data.developmentMode).key) return;
+    const stillCurrent = () => generation === this._generation && identity === this._identity &&
+      identity === currentIdentity(this.data.developmentMode).key;
     this.setData({ approvingId: id, message: '' });
     try {
       await api.post(`/registrations/${encodeURIComponent(id)}/approve`, { expectedVersion: Number(version) });
-      if (generation !== this._generation) return;
+      if (!stillCurrent()) { if (identity === this._identity) this.clearPrivateAfterIdentityChange(); return; }
       await this.loadApprovals();
-      if (generation === this._generation) this.setData({ message: '报名已通过，名额以服务端结果为准。' });
+      if (stillCurrent()) this.setData({ message: '报名已通过，名额以服务端结果为准。' });
     } catch (error) {
-      if (generation === this._generation) {
+      if (stillCurrent()) {
         await this.loadApprovals();
         this.setData({ message: error.message || '审核失败，请重试' });
-      }
+      } else if (identity === this._identity) this.clearPrivateAfterIdentityChange();
     } finally {
-      if (generation === this._generation) this.setData({ approvingId: '' });
+      if (stillCurrent()) this.setData({ approvingId: '' });
     }
   },
   viewApproval(event) {
+    if (this.clearPrivateAfterIdentityChange()) return;
     const { eventId, isHost } = event.currentTarget.dataset;
     if (eventId) wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(eventId) +
       '&section=' + (isHost ? 'hostSection' : 'cohostApprovalSection') });
   },
   async openNotice(event) {
+    if (this.clearPrivateAfterIdentityChange()) return;
     const { id, eventId, kind, section } = event.currentTarget.dataset;
     if (!id || !kind || !this.data.items.some(item =>
       String(item.id) === String(id) && item.kind === kind &&

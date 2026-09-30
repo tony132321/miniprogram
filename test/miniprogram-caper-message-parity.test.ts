@@ -130,6 +130,28 @@ test('entering notification center clears the inbox-only search so All shows eve
     [item.id, item.visible]), [['reminder', true], ['report', true]]);
 });
 
+test('notification center category buttons display only matching loaded notices', async () => {
+  const page = mount({ async get(path: string) {
+    if (path.startsWith('/me/approval-requests')) return { items: [], total: 0, nextOffset: null };
+    return { items: [
+      { id: 'reminder', kind: 'EVENT_REMINDER', event_id: 'event-1', status: 'IN_APP' },
+      { id: 'approved', kind: 'REGISTRATION_APPROVED', event_id: 'event-1', status: 'IN_APP' },
+      { id: 'system', kind: 'ACCOUNT_NOTICE', event_id: null, status: 'IN_APP' }
+    ], total: 3, unreadTotal: 3, nextOffset: null };
+  } }, { getStorageSync(key: string) { return key === 'sessionToken' ? 'token' : 'member'; } });
+  await page.onShow();
+  await page.openNotificationCenter();
+  const shownIds = () => Array.from(page.data.centerItems, (item: { id: string }) => item.id);
+  assert.deepEqual(shownIds(), ['reminder', 'approved', 'system']);
+  page.setFilter({ currentTarget: { dataset: { filter: 'ACTIVITY' } } });
+  assert.deepEqual(shownIds(), ['reminder']);
+  page.setFilter({ currentTarget: { dataset: { filter: 'INTERACTION' } } });
+  assert.deepEqual(shownIds(), ['approved']);
+  page.setFilter({ currentTarget: { dataset: { filter: 'SYSTEM' } } });
+  assert.deepEqual(shownIds(), ['system']);
+  assert.match(markup, /class="center-notices"><block wx:for="{{centerItems}}"/);
+});
+
 test('notification settings action opens the real profile consent controls', () => {
   const actions: string[] = [];
   const page = mount({}, {

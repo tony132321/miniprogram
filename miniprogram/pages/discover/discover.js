@@ -37,6 +37,17 @@ function dateLabel(value) {
   const date = new Date(Date.parse(value) + 8 * 60 * 60_000);
   return `${date.getUTCMonth() + 1} 月 ${date.getUTCDate()} 日 ${String(date.getUTCHours()).padStart(2, '0')}:${String(date.getUTCMinutes()).padStart(2, '0')}`;
 }
+function endTimeLabel(startAt, endAt) {
+  if (!startAt || !endAt || Number.isNaN(Date.parse(startAt)) || Number.isNaN(Date.parse(endAt))) return '';
+  const start = new Date(Date.parse(startAt) + 8 * 60 * 60_000);
+  const end = new Date(Date.parse(endAt) + 8 * 60 * 60_000);
+  if (start.getUTCFullYear() !== end.getUTCFullYear() || start.getUTCMonth() !== end.getUTCMonth() ||
+    start.getUTCDate() !== end.getUTCDate()) return '—' + dateLabel(endAt);
+  return `—${String(end.getUTCHours()).padStart(2, '0')}:${String(end.getUTCMinutes()).padStart(2, '0')}`;
+}
+function locationLabel(city, venueName) {
+  return [city, venueName].filter(value => typeof value === 'string' && value.trim()).join(' · ') || '地点待确认';
+}
 function headerPaddingRight() {
   try {
     const menu = wx.getMenuButtonBoundingClientRect?.();
@@ -53,7 +64,8 @@ Page({
     city: '上海', categories, inspirationCards, recommendationCards: recommendationSets[0],
     recommendationSetIndex: 0, headerPaddingRight: headerPaddingRight(),
     discoveryEnabled: false, publicItems: [],
-    tokenInput: '', message: '', availabilityMessage: '', personalEvents: [], personalState: 'IDLE'
+    tokenInput: '', message: '', availabilityMessage: '', personalEvents: [], personalState: 'IDLE',
+    invitePreview: null, invitePreviewState: 'IDLE'
   },
   async onShow() {
     const bar = this.getTabBar && this.getTabBar();
@@ -62,8 +74,25 @@ Page({
     this.setData({ city: typeof city === 'string' && city ? city : '上海' });
     const generation = this._personalGeneration = (this._personalGeneration || 0) + 1;
     const identity = currentIdentity();
+    const staleInvite = Boolean(this.data.tokenInput && this._tokenIdentity !== identity) ||
+      Boolean(this._visibleIdentity && this._visibleIdentity !== identity);
+    this._visibleIdentity = identity;
+    if (staleInvite) this._tokenIdentity = '';
     this._shownIdentity = '';
-    this.setData({ personalEvents: [], personalState: 'LOADING' });
+    this._inviteGeneration = (this._inviteGeneration || 0) + 1;
+    this._previewToken = '';
+    this._previewIdentity = '';
+    this.setData({ personalEvents: [], personalState: 'LOADING', invitePreview: null, invitePreviewState: 'IDLE',
+      tokenInput: staleInvite ? '' : this.data.tokenInput, message: '' });
+    const focusIdentity = wx.getStorageSync('irlDiscoverFocusInvite');
+    if (focusIdentity) {
+      wx.removeStorageSync?.('irlDiscoverFocusInvite');
+      if (focusIdentity === identity) {
+        const jump = () => { if (identity === currentIdentity()) this.jumpToInvite(); };
+        if (typeof wx.nextTick === 'function') wx.nextTick(jump);
+        else jump();
+      }
+    }
     try {
       await getApp().globalData.ready;
       if (generation !== this._personalGeneration || identity !== currentIdentity()) return;
@@ -74,7 +103,9 @@ Page({
         COMPLETED: '已结束', CANCELLED: '已取消', EXPIRED: '已过期' };
       const personalEvents = result.items.filter(item => item?.id && !['DRAFT', 'REVIEW_PENDING'].includes(item.status))
         .slice(0, 3).map(item => ({ id: item.id, title: item.title || '未命名活动',
-          statusLabel: labels[item.status] || '状态待确认', dateLabel: dateLabel(item.startAt), cover: coverFor(item.title || '') }));
+          statusLabel: labels[item.status] || '状态待确认', dateLabel: dateLabel(item.startAt),
+          endTimeLabel: endTimeLabel(item.startAt, item.endAt), locationLabel: locationLabel(item.city, item.venueName),
+          isHost: Boolean(item.isHost), cover: coverFor(item.title || '') }));
       this._shownIdentity = identity;
       this.setData({ personalEvents, personalState: 'READY' });
     } catch (_) {
@@ -96,21 +127,96 @@ Page({
     this.setData({ recommendationSetIndex, recommendationCards: recommendationSets[recommendationSetIndex] });
   },
   jumpToInvite() { wx.pageScrollTo?.({ selector: '#inviteEntry', duration: 300 }); },
-  tokenChanged(event) { this.setData({ tokenInput: event.detail.value.trim(), message: '' }); },
+  tokenChanged(event) {
+    const identity = currentIdentity();
+    if (this._visibleIdentity && this._visibleIdentity !== identity) {
+      this._inviteGeneration = (this._inviteGeneration || 0) + 1;
+      this._tokenIdentity = '';
+      this._previewToken = '';
+      this._previewIdentity = '';
+      this.setData({ tokenInput: '', invitePreview: null, invitePreviewState: 'IDLE',
+        message: '账号已切换，请重新进入发现页后输入邀请码。' });
+      return;
+    }
+    this._visibleIdentity = identity;
+    this._inviteGeneration = (this._inviteGeneration || 0) + 1;
+    this._previewToken = '';
+    this._previewIdentity = '';
+    this._tokenIdentity = event.detail.value.trim() ? identity : '';
+    this.setData({ tokenInput: event.detail.value.trim(), message: '', invitePreview: null, invitePreviewState: 'IDLE' });
+  },
+  clearStaleInvite() {
+    const identity = currentIdentity();
+    if ((!this._visibleIdentity || this._visibleIdentity === identity) &&
+      (!this.data.tokenInput || this._tokenIdentity === identity)) return false;
+    this._inviteGeneration = (this._inviteGeneration || 0) + 1;
+    this._tokenIdentity = '';
+    this._previewToken = '';
+    this._previewIdentity = '';
+    this.setData({ tokenInput: '', invitePreview: null, invitePreviewState: 'IDLE',
+      message: '账号已切换，请重新输入邀请码。' });
+    return true;
+  },
+  async previewInvite() {
+    if (this.clearStaleInvite()) return;
+    const token = String(this.data.tokenInput || '').trim();
+    if (!/^[A-Za-z0-9_-]{32}$/.test(token))
+      return this.setData({ invitePreview: null, invitePreviewState: 'IDLE', message: '请输入活动邀请卡上的 32 位口令。' });
+    const identity = currentIdentity();
+    const generation = this._inviteGeneration = (this._inviteGeneration || 0) + 1;
+    this._previewToken = '';
+    this._previewIdentity = '';
+    this.setData({ invitePreview: null, invitePreviewState: 'LOADING', message: '' });
+    try {
+      const summary = await api.get('/i/' + encodeURIComponent(token));
+      if (generation !== this._inviteGeneration || identity !== currentIdentity() || token !== this.data.tokenInput) return;
+      if (!summary?.id || !(summary.title || summary.payload?.title)) throw new Error('邀请摘要无效');
+      const title = summary.title || summary.payload.title;
+      const startAt = summary.startAt || summary.payload?.startAt;
+      const endAt = summary.endAt || summary.payload?.endAt;
+      this._previewToken = token;
+      this._previewIdentity = identity;
+      this.setData({ invitePreview: { id: summary.id, title, cover: coverFor(title),
+        dateLabel: dateLabel(startAt), endTimeLabel: endTimeLabel(startAt, endAt),
+        locationLabel: locationLabel(summary.city || summary.payload?.city, summary.venueName || summary.payload?.venueName),
+        statusLabel: summary.riskPaused ? '安全暂停' :
+          summary.status === 'RECRUITING' && summary.recruiting === false ? '暂停招募' :
+          ({ RECRUITING: '招募中', CONFIRMED: '已成局', IN_PROGRESS: '进行中',
+            COMPLETED: '已结束', CANCELLED: '已取消', EXPIRED: '已过期' }[summary.status] || '以详情为准') },
+      invitePreviewState: 'READY' });
+    } catch (_) {
+      if (generation === this._inviteGeneration && identity === currentIdentity() && token === this.data.tokenInput)
+        this.setData({ invitePreview: null, invitePreviewState: 'ERROR', message: '邀请暂不可用或已失效，请核对口令。' });
+    }
+  },
+  openPreviewedInvite() {
+    if (!this.data.invitePreview?.id || !this._previewToken || this._previewIdentity !== currentIdentity() ||
+      this._previewToken !== this.data.tokenInput) {
+      this.setData({ invitePreview: null, invitePreviewState: 'IDLE', message: '邀请卡已过期或账号已切换，请重新预览。' });
+      return;
+    }
+    wx.navigateTo({ url: '/pages/event/event?token=' + encodeURIComponent(this._previewToken) });
+  },
   openInvite() {
+    if (this.clearStaleInvite()) return;
     if (!this.data.tokenInput) return this.setData({ message: '请输入邀请口令' });
     wx.navigateTo({ url: '/pages/event/event?token=' + encodeURIComponent(this.data.tokenInput) });
   },
   scanInviteQr() {
+    this.clearStaleInvite();
     const identity = currentIdentity();
     if (typeof wx.scanCode !== 'function') return this.setData({ message: '此设备暂不能扫码，请手动输入邀请码。' });
     try {
       wx.scanCode({ onlyFromCamera: true, scanType: ['qrCode'],
         success: result => {
-          if (identity !== currentIdentity()) return this.setData({ message: '账号已切换，请重新扫码。' });
+          if (identity !== currentIdentity()) {
+            this.clearStaleInvite();
+            return this.setData({ message: '账号已切换，请重新扫码。' });
+          }
           const token = typeof result?.result === 'string' ? result.result.trim() : '';
           if (!/^[A-Za-z0-9_-]{32}$/.test(token))
             return this.setData({ message: '这不是耍起 CAPER 的邀请码二维码，请扫描活动邀请卡。' });
+          this._tokenIdentity = identity;
           this.setData({ tokenInput: token, message: '' });
           wx.navigateTo({ url: '/pages/event/event?token=' + encodeURIComponent(token) });
         },

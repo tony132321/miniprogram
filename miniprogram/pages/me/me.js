@@ -565,5 +565,14 @@ Page({
     if (id) wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) });
   },
   goDiscover() { wx.switchTab({ url: '/pages/discover/discover' }); },
+  goInviteEntry() {
+    if (typeof wx.getStorageSync === 'function' && typeof wx.setStorageSync === 'function') {
+      const identity = wx.getStorageSync('sessionToken')
+        ? 'user:' + wx.getStorageSync('userId')
+        : 'dev:' + (wx.getStorageSync('devUser') || config.developmentUser || '');
+      wx.setStorageSync('irlDiscoverFocusInvite', identity);
+    }
+    this.goDiscover();
+  },
   goCreate() { wx.switchTab({ url: '/pages/create/create' }); }
 });

@@ -1,5 +1,5 @@
 @import "../common.wxss";
-.moments-page { padding-left: 24rpx; padding-right: 24rpx; }
+.moments-page { padding-left: 24rpx; padding-right: 24rpx; padding-bottom: 180rpx; }
 .moments-page .pg10-header { position: sticky; z-index: 11; box-sizing: border-box; margin-left: -24rpx; margin-right: -24rpx; padding-left: 25rpx; height: 92rpx; }
 .moments-page .pg10-header-title { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-weight: 600; }
 .moments-header-actions { display: flex; flex: none; align-items: center; gap: 6rpx; }
@@ -16,37 +16,49 @@
 .moments-filter.active { background: #2164f0; color: white; }
 .moments-filter-icon { margin-right: 8rpx; font-size: 24rpx; line-height: 1; }
 .moments-filter.disabled-filter { color: #959aaa; }
-.moments-summary { display: flex; align-items: center; gap: 15rpx; padding: 17rpx; margin-bottom: 21rpx; border-radius: 24rpx; background: linear-gradient(115deg,#eaf2ff,#f7f0ff 68%,#fbf5d8); }
+.moments-summary { display: flex; align-items: center; gap: 15rpx; padding: 19rpx; margin-bottom: 21rpx; border-radius: 24rpx; background: linear-gradient(115deg,#eaf2ff,#f7f0ff 68%,#fbf5d8); }
 .summary-icon { flex: none; width: 55rpx; height: 55rpx; border-radius: 50%; background: #fff; color: #1f63ec; line-height: 55rpx; text-align: center; font-size: 27rpx; }
-.moments-summary > view:nth-child(2) { flex: 1; min-width: 0; }
+.summary-copy { flex: 1; min-width: 0; }
+.summary-heading { display: flex; align-items: center; gap: 8rpx; }
 .summary-title { font-size: 25rpx; font-weight: 750; }
+.summary-badge { border-radius: 14rpx; padding: 1rpx 8rpx; background: #d2f803; color: #1a1b1f; font-size: 16rpx; font-weight: 800; }
 .summary-note { color: #596579; font-size: 19rpx; line-height: 1.35; }
-.summary-state { flex: none; border-radius: 24rpx; padding: 6rpx 12rpx; background: #fff; color: #586080; font-size: 18rpx; }
+.summary-state { flex: none; border-radius: 24rpx; padding: 6rpx 12rpx; background: rgba(255,255,255,.86); color: #db315b; font-size: 17rpx; font-weight: 700; }
 .moments-state { padding: 80rpx 20rpx; margin-bottom: 20rpx; border-radius: 28rpx; background: #fff; color: #7a8496; text-align: center; font-size: 23rpx; }
 .moments-state button { display: inline-block; width: auto; margin: 15rpx 0 0; padding: 0; background: transparent; color: #1d64f2; font-size: 22rpx; }
 .moment-card { margin-bottom: 23rpx; padding: 20rpx; border-radius: 28rpx; background: #fff; box-shadow: 0 5rpx 16rpx rgba(48,55,104,.04); }
 .moment-card-head { display: flex; align-items: center; gap: 13rpx; margin-bottom: 18rpx; }
-.moment-symbol { width: 52rpx; height: 52rpx; border-radius: 50%; flex: none; background: #eaf1ff; color: #2066eb; line-height: 52rpx; text-align: center; font-size: 26rpx; }
+.moment-symbol { width: 52rpx; height: 52rpx; border-radius: 50%; flex: none; background: #f2f1fd; color: #5856d6; line-height: 52rpx; text-align: center; font-size: 26rpx; }
 .moment-title-wrap { flex: 1; min-width: 0; }
 .moment-title { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #141922; font-size: 26rpx; font-weight: 750; }
-.moment-meta { color: #626d80; font-size: 19rpx; }
-.moment-status { border-radius: 20rpx; padding: 4rpx 11rpx; background: #eaf2ff; color: #1b64ed; font-size: 18rpx; }
+.moment-meta { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #626d80; font-size: 19rpx; }
+.moment-pack-unavailable { flex: none; border-radius: 22rpx; padding: 5rpx 10rpx; background: #ebf2fe; color: #1d64f2; font-size: 17rpx; font-weight: 700; }
 .moment-photo-layout { display: flex; align-items: flex-start; gap: 7rpx; box-sizing: border-box; width: 100%; margin: 0; padding: 0; border: 0; background: transparent; text-align: left; line-height: normal; }
 .moment-photo-layout::after { border: 0; }
 .photo-large,.photo-small { position: relative; overflow: hidden; border-radius: 16rpx; background: #dce8fc; }
 .photo-large { flex: none; width: 66%; height: 550rpx; }
 .photo-stack { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: 7rpx; }
-.photo-small { width: 100%; height: 218rpx; }
+.photo-small { width: 100%; height: 228rpx; }
 .photo-large image,.photo-small image { display: block; width: 100%; height: 100%; }
-.photo-overlay { position: absolute; inset: auto 0 0; box-sizing: border-box; width: 100%; padding: 30rpx 13rpx 12rpx; background: linear-gradient(transparent,rgba(15,23,42,.72)); color: #fff; }
-.photo-overlay text { display: block; font-size: 19rpx; font-weight: 750; line-height: 1.45; }
-.photo-overlay text:last-child { font-size: 17rpx; font-weight: 500; }
+.photo-overlay { position: absolute; top: 14rpx; left: 14rpx; max-width: 90%; border-radius: 20rpx; padding: 6rpx 11rpx; background: rgba(15,23,42,.76); color: #fff; }
+.photo-overlay text { display: inline; font-size: 18rpx; font-weight: 750; line-height: 1.45; }
+.photo-overlay text:last-child { margin-left: 8rpx; color: #d2f803; font-size: 16rpx; font-weight: 600; }
 .photo-small text { position: absolute; top: 8rpx; left: 8rpx; border-radius: 20rpx; padding: 3rpx 9rpx; background: rgba(255,255,255,.92); color: #334155; font-size: 15rpx; font-weight: 700; }
+.photo-small-shade { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; background: rgba(17,24,39,.52); color: #fff; }
+.photo-small-shade text { position: static; padding: 0; background: transparent; color: #fff; font-size: 21rpx; line-height: 1.3; }
+.photo-small-shade text:last-child { margin-top: 7rpx; color: rgba(255,255,255,.9); font-size: 16rpx; font-weight: 500; }
 .moment-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 16rpx; color: #939baa; font-size: 18rpx; }
-.moment-footer button { width: auto; padding: 0; margin: 0; background: transparent; color: #1c62e7; font-size: 19rpx; line-height: 1.6; }
-.privacy-banner { display: flex; align-items: center; gap: 12rpx; border-radius: 25rpx; padding: 20rpx; background: #f0f3ff; }
+.moment-footer-state { display: flex; align-items: center; gap: 8rpx; min-width: 0; }
+.moment-footer-mark { font-size: 25rpx; color: #9aa3b5; }
+.moment-footer button { flex: none; width: auto; padding: 0; margin: 0; background: transparent; color: #1c62e7; font-size: 19rpx; line-height: 1.6; }
+.privacy-banner { display: flex; align-items: center; gap: 12rpx; border-radius: 25rpx; padding: 20rpx; background: linear-gradient(110deg,#f2f1fd,#eef5ff); }
 .privacy-icon { flex: none; width: 53rpx; height: 53rpx; border-radius: 50%; background: #fff; color: #5b59d5; line-height: 53rpx; text-align: center; font-size: 32rpx; }
 .privacy-banner > view:nth-child(2) { flex: 1; min-width: 0; color: #242b3b; font-size: 22rpx; font-weight: 700; }
 .privacy-banner text { display: block; color: #6c7486; font-size: 18rpx; font-weight: 400; line-height: 1.35; }
-.privacy-banner button { width: auto; min-width: 0; padding: 0; margin: 0; background: transparent; color: #5854d3; font-size: 18rpx; }
-.moments-action { margin-top: 37rpx; }
+.privacy-unavailable { flex: none; border-radius: 25rpx; padding: 8rpx 13rpx; background: #e1e0f8; color: #5856d6; font-size: 18rpx; font-weight: 700; }
+.moments-privacy-note { padding: 17rpx 4rpx 8rpx; color: #737c8e; font-size: 19rpx; line-height: 1.5; }
+.moments-privacy-note button { display: inline-block; width: auto; margin: 0 0 0 5rpx; padding: 0; border: 0; background: transparent; color: #5856d6; font-size: 19rpx; line-height: 1.5; }
+.moments-privacy-note button::after { border: 0; }
+.moments-action { position: fixed; left: 24rpx; right: 24rpx; bottom: 18rpx; z-index: 9; display: flex; align-items: center; justify-content: center; gap: 12rpx; box-sizing: border-box; width: auto; margin: 0; line-height: 2.8; }
+.moments-action-icon { font-size: 30rpx; }
+.moments-action-tag { border-radius: 15rpx; padding: 2rpx 8rpx; background: #d2f803; color: #1a1b1f; font-size: 17rpx; line-height: 1.6; }

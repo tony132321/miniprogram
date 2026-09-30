@@ -34,13 +34,16 @@ page { background: #f7f9fc; color: #172033; }
 .personal-state button { display: inline-block; margin: 14rpx auto 0; padding: 10rpx 20rpx; border-radius: 99rpx; background: #1d64f2; color: #fff; font-size: 19rpx; }
 .personal-scroll { width: calc(100% + 48rpx); margin: 0 -24rpx; white-space: nowrap; }
 .personal-row { display: flex; width: max-content; padding: 0 24rpx 12rpx; gap: 13rpx; }
-.personal-card { width: 248rpx; overflow: hidden; padding: 0; border-radius: 19rpx; background: #fff; text-align: left; box-shadow: 0 5rpx 18rpx rgba(23,38,60,.07); }
+.personal-card { width: 330rpx; overflow: hidden; padding: 0; border-radius: 19rpx; background: #fff; text-align: left; box-shadow: 0 5rpx 18rpx rgba(23,38,60,.07); }
 .personal-cover { position: relative; height: 145rpx; overflow: hidden; background: #e8edf5; }
 .personal-cover image { width: 100%; height: 100%; }
 .personal-cover text { position: absolute; left: 10rpx; top: 10rpx; padding: 4rpx 9rpx; border-radius: 99rpx; background: #d2f803; color: #17351f; font-size: 16rpx; font-weight: 800; }
 .personal-body { padding: 12rpx 13rpx 15rpx; }
 .personal-body view { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #172033; font-size: 21rpx; font-weight: 800; }
 .personal-body text { display: block; margin-top: 5rpx; color: #8591a0; font-size: 16rpx; }
+.personal-body .personal-time { color: #53647a; font-weight: 650; }
+.personal-body .personal-location { min-height: 38rpx; color: #53647a; line-height: 1.35; white-space: normal; overflow-wrap: break-word; }
+.personal-body .personal-source { margin-top: 8rpx; padding-top: 8rpx; border-top: 1rpx solid #eef2f7; color: #1d64f2; font-weight: 750; }
 .moment-note { color: #8e98a6; font-size: 19rpx; margin-top: -8rpx; margin-bottom: 12rpx; }.moment-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10rpx; }.moment-cell { position: relative; height: 210rpx; overflow: hidden; border-radius: 16rpx; background: #e8edf5; }.moment-cell image { width: 100%; height: 100%; }.moment-cell::after { content: ''; position: absolute; inset: 45% 0 0; background: linear-gradient(transparent,rgba(0,0,0,.68)); }.moment-cell text { position: absolute; z-index: 1; left: 7rpx; right: 7rpx; bottom: 9rpx; color: #fff; font-size: 17rpx; font-weight: 800; text-shadow: 0 2rpx 5rpx rgba(0,0,0,.4); }
 .voices-card { display: flex; align-items: center; gap: 17rpx; padding: 22rpx; border-radius: 20rpx; background: #f2f7ff; }
 .voices-orb { flex: none; width: 52rpx; height: 52rpx; line-height: 52rpx; border-radius: 17rpx; color: #1d64f2; background: #fff; text-align: center; font-size: 30rpx; }
@@ -50,3 +53,13 @@ page { background: #f7f9fc; color: #172033; }
 .place-note { margin: -7rpx 0 13rpx; color: #8992a1; font-size: 18rpx; line-height: 1.4; }.place-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10rpx; }.place-grid button { position: relative; height: 166rpx; padding: 0; overflow: hidden; border-radius: 16rpx; background: #1b2433; color: #fff; }.place-grid image { width: 100%; height: 100%; }.place-grid text { position: absolute; left: 8rpx; right: 8rpx; bottom: 8rpx; color: #fff; text-shadow: 0 2rpx 6rpx rgba(0,0,0,.6); font-size: 17rpx; font-weight: 800; }
 .invite-card { padding: 22rpx; margin-top: 30rpx; border-radius: 22rpx; background: #eff3fb; }.invite-heading { font-size: 26rpx; font-weight: 800; }.invite-copy { margin-top: 5rpx; color: #6f7b8c; font-size: 20rpx; }.invite-row { display: flex; align-items: center; gap: 10rpx; margin-top: 15rpx; }.invite-row input { flex: 1; width: 0; height: 69rpx; padding: 0 13rpx; border-radius: 13rpx; background: #fff; font-size: 21rpx; }.invite-row button { flex: none; height: 69rpx; padding: 0 15rpx; border-radius: 13rpx; color: #fff; background: #1d64f2; line-height: 69rpx; font-size: 20rpx; }.invite-scan { width: 100%; margin-top: 12rpx!important; padding: 12rpx 15rpx; border: 1rpx solid #c7d8fa; border-radius: 13rpx; color: #1d64f2; background: #fff; font-size: 20rpx; font-weight: 800; }.message { margin-top: 10rpx; color: #b62442; font-size: 20rpx; }
 .create-card { width: 100%; padding: 19rpx; margin-top: 20rpx!important; display: flex; align-items: center; gap: 15rpx; border-radius: 23rpx; color: #fff; background: #1d64f2; text-align: left; }.create-icon { width: 58rpx; height: 58rpx; flex: none; line-height: 58rpx; border-radius: 50%; background: rgba(255,255,255,.2); text-align: center; font-size: 39rpx; }.create-title { font-size: 25rpx; font-weight: 800; }.create-copy { margin-top: 4rpx; font-size: 18rpx; opacity: .87; }.create-arrow { margin-left: auto; font-size: 30rpx; }.discover-foot { margin: 30rpx 0 7rpx; color: #a4aeb9; text-align: center; font-size: 16rpx; }
+.invite-preview-action { margin-top: 12rpx!important; padding: 4rpx 0; color: #1d64f2; background: transparent; font-size: 19rpx; font-weight: 750; text-align: left; }
+.invite-preview-action[disabled] { color: #8697ad; }
+.invite-preview { margin-top: 13rpx; overflow: hidden; border: 1rpx solid #dce7fa; border-radius: 18rpx; background: #fff; box-shadow: 0 6rpx 18rpx rgba(30,68,123,.08); }
+.invite-preview > image { width: 100%; height: 190rpx; }
+.invite-preview-body { padding: 15rpx 17rpx 17rpx; }
+.invite-preview-heading { display: flex; justify-content: space-between; gap: 10rpx; color: #1d64f2; font-size: 16rpx; font-weight: 750; }
+.invite-preview-heading text:last-child { color: #8793a2; font-weight: 400; }
+.invite-preview-title { margin-top: 7rpx; color: #172033; font-size: 25rpx; font-weight: 850; }
+.invite-preview-fact { margin-top: 6rpx; color: #53647a; font-size: 18rpx; line-height: 1.4; overflow-wrap: break-word; }
+.invite-preview-body button { margin-top: 13rpx!important; width: 100%; padding: 11rpx 14rpx; border-radius: 12rpx; color: #fff; background: #1d64f2; font-size: 19rpx; font-weight: 750; }

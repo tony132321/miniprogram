@@ -41,6 +41,28 @@ test('messages reads only the current member notification route and clears old a
   assert.match(wxml, /私聊功能尚未开放/);
 });
 
+test('message filter and center hide private notices as soon as the account changes', async () => {
+  let actor = 'first';
+  const page = mount({
+    async get() { return { items: [{ id: `notice-${actor}`, kind: 'EVENT_REMINDER',
+      status: 'IN_APP', event_id: `event-${actor}` }], total: 1, unreadTotal: 1, nextOffset: null }; }
+  }, { getStorageSync(key: string) { return key === 'sessionToken' ? 'token' : actor; } });
+  await page.onShow();
+  assert.equal(page.data.items[0].id, 'notice-first');
+
+  actor = 'second';
+  page.setFilter({ currentTarget: { dataset: { filter: 'ACTIVITY' } } });
+  assert.equal(page.data.items.length, 0);
+  assert.equal(page.data.centerItems.length, 0);
+
+  await page.onShow();
+  assert.equal(page.data.items[0].id, 'notice-second');
+  actor = 'third';
+  await page.openNotificationCenter();
+  assert.equal(page.data.items.length, 0);
+  assert.equal(page.data.centerItems.length, 0);
+});
+
 test('message detail marks a notice opened only after event navigation succeeds', async () => {
   const order: string[] = [];
   let failNavigation = true;
@@ -441,6 +463,37 @@ test('interaction filter reads authorized pending approvals and one tap approves
   const wxml = readFileSync(new URL('../miniprogram/pages/messages/messages.wxml', import.meta.url), 'utf8');
   assert.match(wxml, /data-filter="INTERACTION"[^>]*bindtap="setFilter"/);
   assert.match(wxml, /data-id="{{item.registrationId}}"[^>]*bindtap="approveRequest"/);
+});
+
+test('an approval response and approval button from a previous account cannot cross into the next account', async () => {
+  let actor = 'first-host';
+  let finishOldRead!: (value: object) => void;
+  const posts: string[] = [];
+  const navigations: string[] = [];
+  const page = mount({
+    async get(path: string) {
+      if (path.startsWith('/me/notifications')) return { items: [], total: 0, nextOffset: null };
+      return new Promise(resolve => { finishOldRead = resolve; });
+    },
+    async post(path: string) { posts.push(path); }
+  }, {
+    getStorageSync(key: string) { return key === 'sessionToken' ? 'token' : actor; },
+    navigateTo({ url }: { url: string }) { navigations.push(url); }
+  });
+  await page.onShow();
+  const oldRead = page.setFilter({ currentTarget: { dataset: { filter: 'INTERACTION' } } });
+  actor = 'second-host';
+  finishOldRead({ items: [{ registrationId: 'old-request', eventId: 'old-event',
+    expectedVersion: 2, canApprove: true }], total: 1, nextOffset: null });
+  await oldRead;
+  assert.deepEqual(Array.from(page.data.approvals), []);
+  page.data.approvals = [{ registrationId: 'old-request', eventId: 'old-event',
+    expectedVersion: 2, canApprove: true }];
+  await page.approveRequest({ currentTarget: { dataset: { id: 'old-request', version: 2 } } });
+  assert.deepEqual(Array.from(page.data.approvals), [], 'the old approval card is removed when identity changes');
+  page.viewApproval({ currentTarget: { dataset: { eventId: 'old-event', isHost: true } } });
+  assert.deepEqual(posts, []);
+  assert.deepEqual(navigations, []);
 });
 
 test('full approval card offers detail but cannot submit approval', async () => {

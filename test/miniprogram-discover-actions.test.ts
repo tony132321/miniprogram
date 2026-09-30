@@ -43,6 +43,7 @@ test('a closed public-search entry leads to the real invitation field and keeps 
     },
     Page(definition: Record<string, any>) { page = definition; },
     wx: {
+      getStorageSync() { return ''; },
       pageScrollTo(options: Record<string, unknown>) { scrolls.push(options); },
       navigateTo({ url }: { url: string }) { routes.push(url); }
     }
@@ -99,4 +100,35 @@ test('discovery scans only a plain invitation token and ignores a result after a
   page.scanInviteQr();
   scan?.success({ result: 'A'.repeat(32), scanType: 'QR_CODE' });
   assert.deepEqual(routes, ['/pages/event/event?token=' + 'A'.repeat(32)]);
+});
+
+test('an invitation entered by one account cannot remain visible or open after account switch', async () => {
+  let page: Record<string, any> | undefined;
+  const storage = new Map<string, string>([['devUser', 'one']]);
+  const routes: string[] = [];
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/discover/discover.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: { get: async () => ({ items: [] }) } };
+      if (path === '../../config.js') return { developmentUser: 'one' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    getApp() { return { globalData: { ready: Promise.resolve() } }; },
+    wx: {
+      getStorageSync(key: string) { return storage.get(key) || ''; },
+      navigateTo({ url }: { url: string }) { routes.push(url); }
+    }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.tokenChanged({ detail: { value: 'A'.repeat(32) } });
+  storage.set('devUser', 'two');
+  page.tokenChanged({ detail: { value: 'A'.repeat(32) } }); // late input event from the previous account
+  page.openInvite();
+  assert.deepEqual(routes, [], 'direct-open guard blocks the stale token before onShow');
+  await page.onShow();
+  assert.equal(page.data.tokenInput, '');
+  assert.equal(page.data.message, '');
+  page.openInvite();
+  assert.deepEqual(routes, []);
 });
