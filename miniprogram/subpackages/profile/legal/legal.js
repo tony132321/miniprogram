@@ -14,6 +14,10 @@ Page({
   onShow() { this.setData({ headerPaddingRight: headerPaddingRight() }); },
   onHide() { this.setData({ moreOpen: false }); },
   back: backToProfile,
+  onShareAppMessage() {
+    return { title: 'Project IRL · 当前服务与隐私说明',
+      path: '/subpackages/profile/legal/legal' };
+  },
   toggleMore() { this.setData({ moreOpen: !this.data.moreOpen }); },
   goProfile() { this.setData({ moreOpen: false }); wx.switchTab({ url: '/pages/me/me' }); },
   goCache() { this.setData({ moreOpen: false }); wx.navigateTo({ url: '/subpackages/profile/cache/cache' }); },

@@ -9,8 +9,11 @@
 .legal-meta-chip, .legal-meta-pending { padding: 6rpx 12rpx; border-radius: 15rpx; font-size: 18rpx; font-weight: 700; }
 .legal-meta-chip { background: #e8f0ff; color: #175ee8; }
 .legal-meta-pending { background: #f0f1f5; color: #6e788b; }
-.legal-text-size { width: 51rpx; min-width: 51rpx; height: 43rpx; line-height: 43rpx; margin: 0 0 0 auto; padding: 0; border-radius: 50%; color: #586174; background: #eeeef3; font-size: 20rpx; font-weight: 800; }
-.legal-text-size::after { border: 0; }
+.legal-text-size, .legal-meta-share { display: block; flex: none; box-sizing: border-box; width: 64rpx; min-width: 64rpx; height: 64rpx; margin: 0; padding: 0; border: 0; border-radius: 50%; color: #586174; background: #eeeef3; }
+.legal-text-size { margin-left: auto; font-size: 20rpx; font-weight: 800; line-height: 64rpx; }
+.legal-text-size::after, .legal-meta-share::after { border: 0; }
+.legal-meta-share-icon { position: relative; box-sizing: border-box; width: 22rpx; height: 20rpx; margin: 22rpx auto 0; border: 2rpx solid currentColor; border-top: 0; border-radius: 0 0 3rpx 3rpx; }
+.legal-meta-share-icon text { position: absolute; top: -19rpx; left: 50%; transform: translateX(-50%); font-size: 30rpx; line-height: 1; }
 .legal-text-size.active { color: #1d61ea; background: #e8f0ff; }
 .legal-summary { padding: 22rpx; }
 .legal-summary-head { display: flex; align-items: center; gap: 14rpx; }

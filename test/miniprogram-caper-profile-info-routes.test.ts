@@ -63,6 +63,17 @@ test('PG10 information pages share only their public destination and current tit
   }
 });
 
+test('PG10 legal explanation shares its public current-service page without account data', () => {
+  const { page } = loadPage('../miniprogram/subpackages/profile/legal/legal.js', {
+    storage: { sessionToken: 'private-session', userId: 'private-user', inviteToken: 'private-invite' }
+  });
+  const share = page.onShareAppMessage();
+  assert.deepEqual({ ...share }, {
+    title: 'Project IRL · 当前服务与隐私说明',
+    path: '/subpackages/profile/legal/legal'
+  });
+});
+
 test('about screen page actions fit left of the native capsule and open real destinations', () => {
   const { page, navigations } = loadPage('../miniprogram/pages/about/about.js');
   page.onLoad();
