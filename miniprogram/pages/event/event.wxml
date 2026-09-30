@@ -125,7 +125,7 @@
   <view wx:if="{{event.status !== 'COMPLETED'}}" class="checkin-feedback-preview"><view class="checkin-feedback-heading">活动结束后，留下真实反馈</view><view>结项后，已确认参与者可独立确认活动是否举办，以及是否愿意再参加类似活动。</view><view class="checkin-feedback-options"><text>✓ 顺利举办</text><text>○ 未能举办</text></view><view class="checkin-feedback-notice">活动结项后开放 · 当前不可提交</view></view>
   </view>
     <view wx:if="{{event.status === 'COMPLETED'}}" class="event-section outcome-section {{activeSection !== 'checkinSection' ? 'section-hidden' : ''}}"><view class="section-heading">活动结项与反馈</view>
-  <view wx:if="{{outcome}}">结项证据：{{outcome.levelLabel}} · 实际人数 {{outcome.actualCount}} · 独立确认 {{outcome.independentFeedback}}</view>
+  <view wx:if="{{outcome}}" class="outcome-summary"><text>结项证据：{{outcome.levelLabel}}</text><text>实际人数 {{outcome.actualCount}}</text><text>独立确认 {{outcome.independentFeedback}}</text></view>
   <view wx:if="{{outcome && outcome.reviewDecision === 'HELD_CONFIRMED'}}">人工复核：已核实举办；原争议记录保留。</view>
   <view wx:if="{{outcome && outcome.reviewDecision === 'NOT_HELD_CONFIRMED'}}">人工复核：确认未举办；不计入可信完成。</view>
   <view wx:if="{{outcome && outcome.reviewDecision === 'INCONCLUSIVE'}}">人工复核：证据不足，继续待核查。</view>

@@ -516,6 +516,8 @@ page{padding:0;background:#f5f6fa;color:#1b1e27;font-family:-apple-system,BlinkM
 .checkin-feedback-options text:last-child { background: #f1f0f5; color: #677084; }
 .checkin-feedback-notice { color: #8b93a2; font-size: 18rpx; text-align: center; }
 .event-view-checkinSection .outcome-section { background: transparent; border: 0; box-shadow: none; padding: 0; }
+.outcome-summary { display: flex; flex-wrap: wrap; column-gap: 16rpx; row-gap: 4rpx; color: #586375; font-size: 20rpx; line-height: 1.5; }
+.outcome-summary text { white-space: nowrap; }
 .feedback-card { margin: 22rpx 0 0; padding: 27rpx 23rpx 24rpx; border-radius: 31rpx; background: #fff; box-shadow: 0 8rpx 26rpx #1c293d0e; }
 .feedback-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 15rpx; margin-bottom: 16rpx; }
 .feedback-card-title { color: #1a1b1f; font-size: 31rpx; font-weight: 850; line-height: 1.25; }
@@ -531,7 +533,7 @@ page{padding:0;background:#f5f6fa;color:#1b1e27;font-family:-apple-system,BlinkM
 .event-section .feedback-native-radio { position: absolute; width: 1rpx; height: 1rpx; opacity: 0; transform: scale(0); }
 .feedback-repeat-question { margin: 27rpx 0 12rpx; }
 .feedback-reason-label { margin: 22rpx 0 0; color: #5b6474; font-size: 20rpx; font-weight: 700; }
-.event-section .feedback-reason { min-height: 110rpx; margin: 18rpx 0 0; background: #f6f6fa; border-radius: 17rpx; font-size: 21rpx; }
+.event-section .feedback-reason { height: 116rpx; min-height: 116rpx; margin: 18rpx 0 0; background: #f6f6fa; border-radius: 17rpx; font-size: 21rpx; }
 .event-section .feedback-submit { width: 100%; box-sizing: border-box; min-height: 70rpx; margin: 20rpx 0 0; border: 2rpx solid #d8e5ff; border-radius: 19rpx; background: #eef3ff; color: #1d64f2; line-height: 1.4; font-size: 23rpx; font-weight: 800; }
 .feedback-recorded { margin: 19rpx 0 4rpx; padding: 20rpx; border-radius: 18rpx; background: #eaf8ef; color: #218a50; font-size: 21rpx; line-height: 1.5; }
 .event-section .feedback-next-round { width: 100%; box-sizing: border-box; min-height: 88rpx; margin: 24rpx 0 0; border-radius: 19rpx; background: linear-gradient(100deg,#1d64f2,#5c55d8); color: #fff; box-shadow: 0 11rpx 25rpx #245ee73b; line-height: 1.35; font-size: 29rpx; font-weight: 850; }
