@@ -13,5 +13,9 @@ Page({
         usagePercent: Math.min(100, Math.max(0, Math.round(size / limit * 100))), storageState: 'READY' });
     } catch { this.setData({ storageSize: '', storageLimit: '', usagePercent: 0, storageState: 'UNAVAILABLE' }); }
   },
+  goPrivacy() {
+    getApp().globalData.profileFocus = 'privacySection';
+    wx.switchTab({ url: '/pages/me/me' });
+  },
   back: backToProfile
 });

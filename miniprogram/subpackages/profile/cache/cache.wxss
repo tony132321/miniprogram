@@ -38,7 +38,8 @@
 .storage-info-copy { flex: 1; }
 .storage-info-title { color: #1c222b; font-size: 24rpx; font-weight: 800; line-height: 1.4; }
 .storage-info-note { color: #687386; font-size: 21rpx; line-height: 1.52; margin-top: 6rpx; }
-.storage-info-pill { display: inline-block; border-radius: 25rpx; background: #f0eff4; color: #667083; font-size: 18rpx; font-weight: 700; padding: 6rpx 12rpx; margin-top: 15rpx; }
+.storage-info-pill { display: inline-block; width: auto; height: auto; border-radius: 25rpx; background: #f0eff4; color: #2465ef; font-size: 18rpx; font-weight: 700; line-height: 1.5; padding: 6rpx 12rpx; margin: 15rpx 0 0; }
+.storage-info-pill::after { border: 0; }
 .storage-protection { display: flex; align-items: flex-start; gap: 18rpx; padding: 25rpx 23rpx; margin: 22rpx 0 27rpx; border-radius: 23rpx; background: #f0f0f5; color: #5a6476; font-size: 20rpx; line-height: 1.55; }
 .storage-protection-icon { color: #2fbf66; font-size: 30rpx; font-weight: 800; line-height: 1.15; }
 .storage-refresh { width: 100%; height: 78rpx; margin: 0; border-radius: 44rpx; background: #2465ef; color: #fff; font-size: 25rpx; font-weight: 800; line-height: 78rpx; box-shadow: 0 11rpx 24rpx rgba(36, 101, 239, .16); }

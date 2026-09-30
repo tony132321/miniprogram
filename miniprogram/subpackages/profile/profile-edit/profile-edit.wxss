@@ -1,17 +1,25 @@
 @import "../common.wxss";
 .edit-page { padding-left: 30rpx; padding-right: 30rpx; }
-.edit-page .pg10-header { margin-left: -30rpx; margin-right: -30rpx; padding: 0 28rpx; }
-.edit-page .pg10-header-title { font-weight: 600; }
-.header-more { width: 50rpx; font-size: 25rpx; text-align: center; }
-.header-avatar { width: 58rpx; height: 58rpx; border-radius: 50%; background: #064dca; color: white; line-height: 58rpx; text-align: center; font-size: 31rpx; }
+.edit-page .pg10-header { position: relative; z-index: 11; box-sizing: border-box; margin-left: -30rpx; margin-right: -30rpx; padding-left: 28rpx; }
+.edit-page .pg10-header-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.edit-header-actions { display: flex; flex: none; align-items: center; gap: 6rpx; }
+.edit-header-more,.edit-header-avatar { display: block; flex: none; min-width: 0; margin: 0; padding: 0; border: 0; text-align: center; }
+.edit-header-more { width: 48rpx; height: 54rpx; background: transparent; color: #171a24; line-height: 54rpx; font-size: 32rpx; font-weight: 800; }
+.edit-header-avatar { width: 54rpx; height: 54rpx; border-radius: 50%; background: #064dca; color: #fff; line-height: 54rpx; font-size: 28rpx; font-weight: 800; }
+.edit-header-more::after,.edit-header-avatar::after,.edit-header-menu button::after { border: 0; }
+.edit-header-menu { position: absolute; top: 86rpx; z-index: 12; width: 258rpx; padding: 8rpx; border: 1rpx solid #edf0f5; border-radius: 20rpx; background: #fff; box-shadow: 0 12rpx 30rpx rgba(15,23,42,.14); }
+.edit-header-menu button { display: block; box-sizing: border-box; width: 100%; min-width: 0; margin: 0; padding: 13rpx 10rpx; border-bottom: 1rpx solid #edf0f5; border-radius: 0; background: transparent; color: #334155; text-align: left; line-height: 1.4; font-size: 20rpx; }
+.edit-header-menu button:last-child { border-bottom: 0; }
 .sync-bar { min-height: 72rpx; display: flex; align-items: center; justify-content: space-between; color: #394256; font-size: 21rpx; font-weight: 650; }
 .sync-copy { display: flex; align-items: center; gap: 8rpx; }
 .sync-dot { width: 14rpx; height: 14rpx; border-radius: 50%; background: #aab1be; }
 .save-unavailable { padding: 13rpx 21rpx; border-radius: 40rpx; background: #e9ebf1; color: #687183; font-size: 21rpx; }
 .edit-identity { text-align: center; padding: 32rpx 0 29rpx; }
 .identity-avatar { position: relative; width: 168rpx; height: 168rpx; margin: 0 auto 22rpx; border: 7rpx solid #fff; border-radius: 50%; background: linear-gradient(145deg,#d8e5ff,#f4f1ff); color: #2164e9; line-height: 168rpx; font-size: 66rpx; box-shadow: 0 8rpx 22rpx rgba(40,60,105,.13); }
-.camera-chip { position: absolute; right: -5rpx; bottom: -7rpx; width: 55rpx; height: 55rpx; border-radius: 50%; background: #1c2027; color: white; font-size: 31rpx; line-height: 55rpx; }
+.camera-chip { position: absolute; right: -5rpx; bottom: -7rpx; width: 55rpx; height: 55rpx; margin: 0; padding: 0; border-radius: 50%; background: #555b67 !important; color: white !important; font-size: 31rpx; line-height: 55rpx; }
+.camera-chip::after,.gender-options button::after { border: 0; }
 .handle { display: inline-block; border-radius: 40rpx; padding: 9rpx 23rpx; background: #f0eff5; color: #4e5871; font-size: 22rpx; }
+.identity-photo-note { margin-top: 9rpx; color: #8c94a6; font-size: 19rpx; }
 .edit-card { padding: 24rpx; }
 .field-heading,.section-heading { color: #303849; font-size: 26rpx; font-weight: 700; }
 .field-heading text { float: right; color: #8c94a6; font-size: 20rpx; font-weight: 500; }
@@ -19,8 +27,7 @@
 .disabled-field text { color: #afb6c8; }
 .gender-heading { margin-top: 28rpx; }
 .gender-options { display: flex; margin-top: 9rpx; padding: 7rpx; border-radius: 18rpx; background: #f1f1f6; gap: 7rpx; }
-.gender-options view { flex: 1; padding: 10rpx 0; border-radius: 13rpx; color: #9198a6; text-align: center; font-size: 24rpx; font-weight: 650; }
-.gender-options view:first-child { background: white; color: #6b7893; }
+.gender-options button { flex: 1; min-width: 0; margin: 0; padding: 10rpx 0; border-radius: 13rpx; background: transparent !important; color: #9198a6 !important; text-align: center; font-size: 24rpx; font-weight: 650; line-height: 1.4; }
 .bio-heading { margin-top: 28rpx; }
 .bio-heading text { color: #1c63e9; }
 .bio-field { min-height: 142rpx; box-sizing: border-box; margin-top: 9rpx; padding: 20rpx; border-radius: 16rpx; background: #f1f1f6; color: #596173; font-size: 23rpx; }
@@ -37,7 +44,7 @@
 .interest-chip { border-radius: 34rpx; padding: 9rpx 19rpx; background: #ecebf1; color: #394051; font-size: 22rpx; font-weight: 650; }
 .interest-chip.blue { background: #eaf1ff; color: #1d64f2; }
 .interest-chip.violet { background: #f0efff; color: #5b54d2; }
-.green-note { margin-left: auto; color: #31b457; font-size: 18rpx; font-weight: 600; }
+.green-note { margin-left: auto; color: #8c94a4; font-size: 18rpx; font-weight: 600; }
 .visibility-row { display: flex; align-items: center; justify-content: space-between; margin: 28rpx 0; color: #303744; font-size: 23rpx; font-weight: 700; }
 .visibility-row text { display: block; color: #697386; font-size: 19rpx; font-weight: 400; }
 .unavailable-switch { border-radius: 22rpx; padding: 8rpx 15rpx; background: #eff0f5; color: #8c94a4; font-size: 18rpx; }

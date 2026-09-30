@@ -11,7 +11,7 @@
 
   <view class="storage-list-heading"><text>本地数据说明</text><text>暂无安全清理分类</text></view>
   <view class="pg10-card storage-info-card"><view class="storage-info-icon blue-icon">▣</view><view class="storage-info-copy"><view class="storage-info-title">登录会话与个人偏好</view><view class="storage-info-note">本机存储可能包含登录状态、浏览城市和未提交的表单暂存。</view><view class="storage-info-pill">保留当前状态</view></view></view>
-  <view class="pg10-card storage-info-card"><view class="storage-info-icon violet-icon">▤</view><view class="storage-info-copy"><view class="storage-info-title">活动与账号资料</view><view class="storage-info-note">本人活动和隐私请求由服务端管理；本机读数无法拆分它们的大小。</view><view class="storage-info-pill">可在“我的”申请数据处理</view></view></view>
+  <view class="pg10-card storage-info-card"><view class="storage-info-icon violet-icon">▤</view><view class="storage-info-copy"><view class="storage-info-title">活动与账号资料</view><view class="storage-info-note">本人活动和隐私请求由服务端管理；本机读数无法拆分它们的大小。</view><button class="storage-info-pill" bindtap="goPrivacy">管理账号与数据请求　›</button></view></view>
 
   <view class="storage-protection"><text class="storage-protection-icon">◇</text><text>当前没有经过验证的可清理分类。清空全部存储可能移除登录会话或草稿，因此此页不提供一键清理。</text></view>
   <button class="storage-refresh" bindtap="refreshStorage">重新读取设备存储</button>

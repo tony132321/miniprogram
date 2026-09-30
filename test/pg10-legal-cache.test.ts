@@ -37,6 +37,20 @@ test('legal page keeps real privacy and guidelines routes while formal documents
   assert.doesNotMatch(markup, /已知悉并确认|privacy@project-irl\.com|V4\.2|2024年3月1日/);
 });
 
+test('legal reading size control enlarges and restores the current service summary', () => {
+  const page = loadProfilePage('legal', {});
+  const markup = readFileSync(new URL('../miniprogram/subpackages/profile/legal/legal.wxml', import.meta.url), 'utf8');
+  const styles = readFileSync(new URL('../miniprogram/subpackages/profile/legal/legal.wxss', import.meta.url), 'utf8');
+  assert.equal(page.data.largeText, false);
+  page.toggleTextSize();
+  assert.equal(page.data.largeText, true);
+  page.toggleTextSize();
+  assert.equal(page.data.largeText, false);
+  assert.match(markup, /bindtap="toggleTextSize"/);
+  assert.match(markup, /legal-large-text/);
+  assert.match(styles, /\.legal-large-text \.legal-section-copy/);
+});
+
 test('cache page reports only native storage totals and does not clear session data', () => {
   let cleared = false;
   const page = loadProfilePage('cache', {
@@ -63,4 +77,19 @@ test('cache page rejects incomplete device statistics instead of showing a false
   assert.equal(page.data.storageSize, '');
   assert.equal(page.data.storageLimit, '');
   assert.equal(page.data.usagePercent, 0);
+});
+
+test('cache page opens the existing personal data request form without clearing local storage', () => {
+  const routes: string[] = [];
+  let cleared = false;
+  const page = loadProfilePage('cache', {
+    switchTab({ url }: { url: string }) { routes.push(url); },
+    clearStorageSync() { cleared = true; }
+  });
+  const markup = readFileSync(new URL('../miniprogram/subpackages/profile/cache/cache.wxml', import.meta.url), 'utf8');
+  page.goPrivacy();
+  assert.equal(page._testApp.globalData.profileFocus, 'privacySection');
+  assert.deepEqual(routes, ['/pages/me/me']);
+  assert.equal(cleared, false);
+  assert.match(markup, /bindtap="goPrivacy"[^>]*>管理账号与数据请求/);
 });

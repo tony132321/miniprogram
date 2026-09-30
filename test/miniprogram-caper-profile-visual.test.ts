@@ -219,6 +219,7 @@ test('profile edit account deletion entry reveals the real privacy request form'
     wx: { switchTab({ url }: { url: string }) { navigations.push(url); } }
   });
   assert.ok(editPage);
+  editPage.setData = function (patch: Record<string, unknown>) { Object.assign(this.data, patch); };
   editPage.goPrivacyRequests();
   assert.deepEqual(navigations, ['/pages/me/me']);
   assert.equal(globalData.profileFocus, 'privacySection');

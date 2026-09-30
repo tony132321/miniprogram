@@ -1,7 +1,7 @@
-<view class="pg10-page legal-page" style="padding-top: {{statusBarHeight}}px">
+<view class="pg10-page legal-page {{largeText ? 'legal-large-text' : ''}}" style="padding-top: {{statusBarHeight}}px">
   <view class="pg10-header legal-header"><button class="pg10-back legal-back" bindtap="back" aria-label="返回">‹</button><view class="pg10-header-title">隐私与使用说明</view><view class="legal-header-space"></view></view>
 
-  <view class="legal-meta"><text class="legal-meta-chip">当前服务说明</text><text class="legal-meta-pending">正式协议待核定</text></view>
+  <view class="legal-meta"><text class="legal-meta-chip">当前服务说明</text><text class="legal-meta-pending">正式协议待核定</text><button class="legal-text-size {{largeText ? 'active' : ''}}" bindtap="toggleTextSize" aria-label="{{largeText ? '恢复标准字号' : '放大正文'}}">Aa</button></view>
   <view class="pg10-card legal-summary"><view class="legal-summary-head"><view class="legal-shield">✦</view><view><view class="legal-summary-kicker">PRIVACY · TERMS</view><view class="legal-summary-title">隐私与使用摘要</view></view></view><view class="legal-summary-copy">以下归纳当前小程序已实现的规则和本人数据入口。正式协议版本、运营主体和第三方清单待核定后发布。</view></view>
 
   <view class="legal-tabs"><view class="legal-tab selected">当前服务说明</view><button class="legal-tab" bindtap="goGuidelines">社区公约</button><button class="legal-tab unavailable" disabled="{{true}}">第三方清单未发布</button></view>

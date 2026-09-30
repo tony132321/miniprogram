@@ -10,6 +10,9 @@
 .legal-meta-chip, .legal-meta-pending { padding: 6rpx 12rpx; border-radius: 15rpx; font-size: 18rpx; font-weight: 700; }
 .legal-meta-chip { background: #e8f0ff; color: #175ee8; }
 .legal-meta-pending { background: #f0f1f5; color: #6e788b; }
+.legal-text-size { width: 51rpx; min-width: 51rpx; height: 43rpx; line-height: 43rpx; margin: 0 0 0 auto; padding: 0; border-radius: 50%; color: #586174; background: #eeeef3; font-size: 20rpx; font-weight: 800; }
+.legal-text-size::after { border: 0; }
+.legal-text-size.active { color: #1d61ea; background: #e8f0ff; }
 .legal-summary { padding: 22rpx; }
 .legal-summary-head { display: flex; align-items: center; gap: 14rpx; }
 .legal-shield { width: 47rpx; height: 47rpx; display: flex; align-items: center; justify-content: center; border-radius: 17rpx; color: #fff; background: linear-gradient(145deg, #2465ef, #6258db); font-size: 28rpx; }
@@ -48,3 +51,5 @@
 .legal-pdf { flex: 0.9; color: #7e8797 !important; background: #eeeef3 !important; }
 .legal-privacy { flex: 1.35; color: #fff; background: #2465ef; box-shadow: 0 7rpx 18rpx rgba(36, 101, 239, .2); }
 .legal-foot { color: #9399a7; font-size: 18rpx; text-align: center; line-height: 1.5; margin: 14rpx 0 32rpx; }
+.legal-large-text .legal-summary-copy, .legal-large-text .legal-section-copy { font-size: 23rpx; line-height: 1.75; }
+.legal-large-text .legal-info-box, .legal-large-text .legal-request-copy { font-size: 22rpx; line-height: 1.7; }
