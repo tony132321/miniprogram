@@ -33,6 +33,91 @@ function profileOfferIdentity() {
 function sameProfileIdentity(expected, current) {
   return !expected || !current || expected.every((value, index) => value === current[index]);
 }
+function beginProfileAction(page, key) {
+  const identity = readProfileIdentity();
+  if (page._loadedIdentity && !sameProfileIdentity(page._loadedIdentity, identity)) {
+    page.clearForIdentitySwitch();
+    return null;
+  }
+  const generations = page._actionGenerations || (page._actionGenerations = {});
+  const actionGeneration = generations[key] = (generations[key] || 0) + 1;
+  const viewGeneration = page._viewGeneration || 0;
+  const originalRefreshGeneration = page._refreshGeneration || 0;
+  return (refreshGeneration = originalRefreshGeneration) =>
+    generations[key] === actionGeneration && (page._viewGeneration || 0) === viewGeneration &&
+    (page._refreshGeneration || 0) === refreshGeneration &&
+    sameProfileIdentity(identity, readProfileIdentity());
+}
+const profileConsentActions = {
+  reminder: { field: 'eventReminder', pending: 'reminderConsentPending', uncertain: 'reminderConsentUncertain',
+    reconfirm: 'eventReminderNeedsReconfirmation', notice: 'eventReminderNoticeVersion',
+    path: '/me/consents', payloadField: 'eventReminder',
+    successOn: '已同意活动提醒', successOff: '已关闭活动提醒' },
+  similar: { field: 'similarInvites', pending: 'similarInvitesConsentPending', uncertain: 'similarInvitesConsentUncertain',
+    reconfirm: 'similarInvitesNeedsReconfirmation', notice: 'similarInvitesNoticeVersion',
+    path: '/me/similar-invites', payloadField: 'granted',
+    successOn: '已允许类似活动候选名单收录', successOff: '已撤回类似活动候选名单同意' }
+};
+function uncertainConsentResponse(error) {
+  return error?.code === 'NETWORK_ERROR' || (Number.isInteger(error?.status) &&
+    (error.status < 400 || error.status === 408 || error.status >= 500));
+}
+async function submitProfileConsent(page, kind, granted, retry = false) {
+  const action = profileConsentActions[kind];
+  const identity = readProfileIdentity();
+  if (page._loadedIdentity && !sameProfileIdentity(page._loadedIdentity, identity)) {
+    page.clearForIdentitySwitch();
+    return;
+  }
+  const operations = page._consentOperations || (page._consentOperations = {});
+  if (page.data[action.pending]) return;
+  let operation = operations[kind];
+  if (retry) {
+    if (!page.data[action.uncertain] || !operation || !sameProfileIdentity(operation.identity, identity)) return;
+  } else {
+    if (page.data[action.uncertain]) {
+      page.setData({ [action.field]: page.data[action.field] });
+      return;
+    }
+    operation = { identity, granted: Boolean(granted), previous: page.data[action.field],
+      payload: { [action.payloadField]: Boolean(granted), noticeVersion: page.data[action.notice] } };
+    operations[kind] = operation;
+  }
+  const current = () => page._consentOperations === operations && operations[kind] === operation &&
+    sameProfileIdentity(operation.identity, readProfileIdentity());
+  const originalRefreshGeneration = page._refreshGeneration || 0;
+  page.setData({ [action.field]: operation.previous, [action.pending]: true, [action.uncertain]: false,
+    message: retry ? '正在核对上次授权提交结果…' : '正在提交授权，请稍候…' });
+  try {
+    await api.post(action.path, operation.payload);
+    if (!current()) return;
+    if (originalRefreshGeneration !== (page._refreshGeneration || 0)) await page.refresh();
+    if (!current()) return;
+    delete operations[kind];
+    page.setData({ [action.field]: operation.granted, [action.reconfirm]: false,
+      [action.pending]: false, [action.uncertain]: false,
+      message: operation.granted ? action.successOn : action.successOff });
+  } catch (error) {
+    if (!current()) return;
+    if (page.handlePrivateAccessError(error)) return;
+    if (uncertainConsentResponse(error)) {
+      page.setData({ [action.field]: operation.previous, [action.pending]: false,
+        [action.uncertain]: true,
+        message: '授权提交结果尚未确认。请点击下方按钮核对同一次操作，暂不要重新切换。' });
+      return;
+    }
+    if (error?.code === 'CONSENT_NOTICE_CHANGED' ||
+      originalRefreshGeneration !== (page._refreshGeneration || 0)) {
+      await page.refresh();
+      if (!current()) return;
+    }
+    delete operations[kind];
+    page.setData({ [action.pending]: false, [action.uncertain]: false,
+      ...(error?.code === 'CONSENT_NOTICE_CHANGED' ? {} : { [action.field]: operation.previous }),
+      message: error?.code === 'CONSENT_NOTICE_CHANGED'
+        ? '授权说明已更新，请重新阅读后确认。' : error?.message || '授权未完成，请重试。' });
+  }
+}
 function activityCover(item) {
   const title = item.title || '';
   if (item.type === 'badminton' || /羽毛球/.test(title)) return '/assets/stitch/caper_home_badminton.jpg';
@@ -138,18 +223,26 @@ Page({
     eventReminderNoticeVersion: '',
     similarInvitesNotice: defaultSimilarInvitesNotice,
     similarInvitesNoticeVersion: '',
-    consentLoadState: 'IDLE', similarInviteLoadState: 'IDLE', sectionLoadErrors: emptySectionLoadErrors(),
+    consentLoadState: 'IDLE', similarInviteLoadState: 'IDLE',
+    reminderConsentPending: false, similarInvitesConsentPending: false,
+    reminderConsentUncertain: false, similarInvitesConsentUncertain: false,
+    sectionLoadErrors: emptySectionLoadErrors(),
     loadState: 'IDLE', message: '', reportDescription: '', reportEventId: '',
     focusedOfferId: '', offerFocusMessage: '' },
   onLoad() { this.setData({ statusBarHeight: wx.getSystemInfoSync?.().statusBarHeight || 24,
     headerPaddingRight: headerPaddingRight() }); },
   async onShow() {
+    this._viewGeneration = (this._viewGeneration || 0) + 1;
+    if (this._loadedIdentity && !sameProfileIdentity(this._loadedIdentity, readProfileIdentity()))
+      this.clearPrivateData();
+    const viewGeneration = this._viewGeneration;
     const offerFocusGeneration = this._offerFocusGeneration = (this._offerFocusGeneration || 0) + 1;
     const bar = this.getTabBar && this.getTabBar(); if (bar) bar.setData({ selected: 4 });
     this.setData({ headerPaddingRight: headerPaddingRight() });
     if (this.data.developmentMode) this.setData({ devUser: wx.getStorageSync('devUser') || config.developmentUser });
     const app = getApp();
     await app.globalData.ready;
+    if (viewGeneration !== this._viewGeneration) return;
     const profileFocus = app.globalData.profileFocus === 'privacySection' ? 'privacySection' : '';
     app.globalData.profileFocus = undefined;
     const storedFocus = wx.getStorageSync('irlProfileFocusIntent');
@@ -208,8 +301,12 @@ Page({
     return true;
   },
   async refresh() {
-    const generation = this._refreshGeneration = (this._refreshGeneration || 0) + 1;
     const identity = readProfileIdentity();
+    if (this._loadedIdentity && !sameProfileIdentity(this._loadedIdentity, identity)) {
+      this.clearPrivateData();
+      this._privateActor = null;
+    }
+    const generation = this._refreshGeneration = (this._refreshGeneration || 0) + 1;
     this.setData({ nextNotificationOffset: null, loadState: 'LOADING', sectionLoadErrors: emptySectionLoadErrors() });
     try {
       const names = ['notifications', 'privacy', 'blocks', 'removals', 'reports', 'appeals', 'content',
@@ -422,8 +519,10 @@ Page({
     }
   },
   clearPrivateData() {
+    this._viewGeneration = (this._viewGeneration || 0) + 1;
     this._refreshGeneration = (this._refreshGeneration || 0) + 1;
     this._loadedIdentity = null;
+    this._consentOperations = {};
     this.setData({ notifications: [], notificationsTotal: 0, nextNotificationOffset: null,
       activityStats: { total: null, hosted: null, confirmed: null }, activityItems: [], activityFilter: 'all',
       activityEmptyLabel: activityEmptyLabels.all, activityPreview: [], hostedPreview: null,
@@ -433,6 +532,8 @@ Page({
       similarInvitesNeedsReconfirmation: false, eventReminderNotice: defaultEventReminderNotice,
       eventReminderNoticeVersion: '', similarInvitesNotice: defaultSimilarInvitesNotice,
       similarInvitesNoticeVersion: '', consentLoadState: 'IDLE', similarInviteLoadState: 'IDLE',
+      reminderConsentPending: false, similarInvitesConsentPending: false,
+      reminderConsentUncertain: false, similarInvitesConsentUncertain: false,
       sectionLoadErrors: emptySectionLoadErrors(), advancedOpen: false,
       focusedOfferId: '', offerFocusMessage: '', reportDescription: '', appealDescription: '',
       reportAppealDescription: '', contentAppealDescription: '', reportEventId: '', loadState: 'IDLE', message: '' });
@@ -478,38 +579,23 @@ Page({
     } catch (error) { this.setData({ message: '退出未完成：' + (error.message || '请重试') }); }
   },
   async toggleReminder(event) {
-    const granted = event.detail.value;
-    try {
-      await api.post('/me/consents', { eventReminder: granted, noticeVersion: this.data.eventReminderNoticeVersion });
-      this.setData({ eventReminder: granted, eventReminderNeedsReconfirmation: false,
-        message: granted ? '已同意活动提醒' : '已关闭活动提醒' });
-    } catch (error) {
-      if (error.code === 'CONSENT_NOTICE_CHANGED') {
-        if (await this.refresh()) this.setData({ message: '授权说明已更新，请重新阅读后确认。' });
-        return;
-      }
-      this.setData({ eventReminder: !granted, message: error.message });
-    }
+    return submitProfileConsent(this, 'reminder', event.detail.value);
   },
   async toggleSimilarInvites(event) {
-    const granted = event.detail.value;
-    try {
-      await api.post('/me/similar-invites', { granted, noticeVersion: this.data.similarInvitesNoticeVersion });
-      this.setData({ similarInvites: granted, similarInvitesNeedsReconfirmation: false,
-        message: granted ? '已允许类似活动候选名单收录' : '已撤回类似活动候选名单同意' });
-    } catch (error) {
-      if (error.code === 'CONSENT_NOTICE_CHANGED') {
-        if (await this.refresh()) this.setData({ message: '授权说明已更新，请重新阅读后确认。' });
-        return;
-      }
-      this.setData({ similarInvites: !granted, message: error.message });
-    }
+    return submitProfileConsent(this, 'similar', event.detail.value);
   },
+  async retryReminderConsent() { return submitProfileConsent(this, 'reminder', undefined, true); },
+  async retrySimilarInvitesConsent() { return submitProfileConsent(this, 'similar', undefined, true); },
   async revokeBlock(event) {
+    const current = beginProfileAction(this, 'revokeBlock');
+    if (!current) return;
     try {
       await api.post(`/me/blocks/${encodeURIComponent(event.currentTarget.dataset.id)}/revoke`, {});
-      await this.refresh(); this.setData({ message: '已撤销屏蔽。' });
-    } catch (error) { this.setData({ message: error.message }); }
+      if (!current()) return;
+      const refreshing = this.refresh();
+      const refreshGeneration = this._refreshGeneration || 0;
+      if (await refreshing && current(refreshGeneration)) this.setData({ message: '已撤销屏蔽。' });
+    } catch (error) { if (current()) this.setData({ message: error.message }); }
   },
   async acceptOffer(event) {
     return this.runOfferDecision(event, 'accept', '已主动确认补位');
@@ -550,6 +636,8 @@ Page({
     if (current()) this.setData({ message: error?.message || '补位操作未完成，请重试。' });
   },
   async openNotice(event) {
+    const current = beginProfileAction(this, 'openNotice');
+    if (!current) return;
     const id = event.currentTarget.dataset.id; const eventId = event.currentTarget.dataset.event;
     const kind = event.currentTarget.dataset.kind;
     const profileRecordSection = profileRecordSectionByNoticeKind[kind];
@@ -559,62 +647,92 @@ Page({
           url: '/pages/event/event?id=' + encodeURIComponent(eventId), success: resolve, fail: reject
         }));
       }
+      if (!current()) return;
       await api.post(`/me/notifications/${id}/open`, {});
+      if (!current()) return;
       if (profileRecordSection) {
-        await this.refresh();
+        const refreshing = this.refresh();
+        const refreshGeneration = this._refreshGeneration || 0;
+        if (!await refreshing || !current(refreshGeneration)) return;
         this.revealAdvanced(profileRecordSection);
         return this.setData({ message: profileRecordFocusMessages[profileRecordSection] });
       }
       if (!eventId) {
-        await this.refresh();
+        const refreshing = this.refresh();
+        const refreshGeneration = this._refreshGeneration || 0;
+        if (!await refreshing || !current(refreshGeneration)) return;
         return this.setData({ message: '通知已打开。' });
       }
-    } catch (error) { this.setData({ message: error.message || error.errMsg || '打开通知失败，请重试。' }); }
+    } catch (error) { if (current()) this.setData({ message: error.message || error.errMsg || '打开通知失败，请重试。' }); }
   },
   reportInput(event) { this.setData({ reportDescription: event.detail.value }); },
   appealInput(event) { this.setData({ appealDescription: event.detail.value }); },
   reportAppealInput(event) { this.setData({ reportAppealDescription: event.detail.value }); },
   contentAppealInput(event) { this.setData({ contentAppealDescription: event.detail.value }); },
   async appealRemoval(event) {
+    const current = beginProfileAction(this, 'appealRemoval');
+    if (!current) return;
     try {
       await api.post('/appeals', { removalId: event.currentTarget.dataset.id, description: this.data.appealDescription });
-      await this.refresh();
-      this.setData({ appealDescription: '', message: '申诉已提交，等待人工复核。' });
-    } catch (error) { this.setData({ message: error.message }); }
+      if (!current()) return;
+      const refreshing = this.refresh();
+      const refreshGeneration = this._refreshGeneration || 0;
+      if (await refreshing && current(refreshGeneration))
+        this.setData({ appealDescription: '', message: '申诉已提交，等待人工复核。' });
+    } catch (error) { if (current()) this.setData({ message: error.message }); }
   },
   async appealReport(event) {
+    const current = beginProfileAction(this, 'appealReport');
+    if (!current) return;
     try {
       await api.post('/appeals', { reportId: event.currentTarget.dataset.id, description: this.data.reportAppealDescription });
-      await this.refresh();
-      this.setData({ reportAppealDescription: '', message: '复核申请已提交，等待人工处理。' });
-    } catch (error) { this.setData({ message: error.message }); }
+      if (!current()) return;
+      const refreshing = this.refresh();
+      const refreshGeneration = this._refreshGeneration || 0;
+      if (await refreshing && current(refreshGeneration))
+        this.setData({ reportAppealDescription: '', message: '复核申请已提交，等待人工处理。' });
+    } catch (error) { if (current()) this.setData({ message: error.message }); }
   },
   async appealContent(event) {
+    const current = beginProfileAction(this, 'appealContent');
+    if (!current) return;
     try {
       await api.post('/appeals', { contentId: event.currentTarget.dataset.id, description: this.data.contentAppealDescription });
-      await this.refresh();
-      this.setData({ contentAppealDescription: '', message: '内容复核申请已提交，等待独立审核。' });
-    } catch (error) { this.setData({ message: error.message }); }
+      if (!current()) return;
+      const refreshing = this.refresh();
+      const refreshGeneration = this._refreshGeneration || 0;
+      if (await refreshing && current(refreshGeneration))
+        this.setData({ contentAppealDescription: '', message: '内容复核申请已提交，等待独立审核。' });
+    } catch (error) { if (current()) this.setData({ message: error.message }); }
   },
   reportEventInput(event) { this.setData({ reportEventId: event.detail.value.trim() }); },
   async report() {
+    const current = beginProfileAction(this, 'report');
+    if (!current) return;
     try {
       await api.post('/reports', { kind: 'SAFETY', description: this.data.reportDescription, ...(this.data.reportEventId ? { eventId: this.data.reportEventId } : {}) });
-      await this.refresh();
-      this.setData({ reportDescription: '', message: '举报工单已提交，等待人工处理。' });
-    } catch (error) { this.setData({ message: error.message }); }
+      if (!current()) return;
+      const refreshing = this.refresh();
+      const refreshGeneration = this._refreshGeneration || 0;
+      if (await refreshing && current(refreshGeneration))
+        this.setData({ reportDescription: '', message: '举报工单已提交，等待人工处理。' });
+    } catch (error) { if (current()) this.setData({ message: error.message }); }
   },
   async privacyRequest(event) {
+    const current = beginProfileAction(this, 'privacyRequest');
+    if (!current) return;
     try {
       const receipt = await api.post('/privacy/requests', { kind: event.currentTarget.dataset.kind });
-      if (await this.refresh()) this.setData({ message: receipt.notice || '请求已提交，等待人工处理。' });
-    } catch (error) { this.setData({ message: error.message }); }
+      if (!current()) return;
+      const refreshing = this.refresh();
+      const refreshGeneration = this._refreshGeneration || 0;
+      if (await refreshing && current(refreshGeneration))
+        this.setData({ message: receipt.notice || '请求已提交，等待人工处理。' });
+    } catch (error) { if (current()) this.setData({ message: error.message }); }
   },
   async exportData() {
-    const generation = this._refreshGeneration || 0;
-    const token = typeof wx.getStorageSync === 'function' ? wx.getStorageSync('sessionToken') : undefined;
-    const isCurrent = () => generation === (this._refreshGeneration || 0) &&
-      (token === undefined || wx.getStorageSync('sessionToken') === token);
+    const isCurrent = beginProfileAction(this, 'exportData');
+    if (!isCurrent) return;
     try {
       const ticket = await api.post('/privacy/exports', {});
       if (!isCurrent()) return;
