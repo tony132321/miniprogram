@@ -15,7 +15,17 @@ function localDate(value) {
   const weekday = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][date.getUTCDay()];
   return `${date.getUTCMonth() + 1} 月 ${date.getUTCDate()} 日（${weekday}）${String(date.getUTCHours()).padStart(2, '0')}:${String(date.getUTCMinutes()).padStart(2, '0')}`;
 }
-function coverFor(title) {
+function coverFor(title, type) {
+  const typedCover = {
+    badminton: '/assets/stitch/caper_home_badminton.jpg',
+    basketball: '/assets/stitch/caper_discover_basketball.jpg',
+    coffee: '/assets/stitch/caper_discover_coffee.jpg',
+    boardgame: '/assets/stitch/caper_discover_boardgame.jpg',
+    hiking: '/assets/stitch/caper_home_hiking.jpg',
+    citywalk: '/assets/stitch/caper_discover_citywalk.jpg'
+  };
+  const normalizedType = String(type || '').trim().toLowerCase();
+  if (normalizedType) return typedCover[normalizedType] || '/assets/stitch/caper_discover_citywalk.jpg';
   if (/羽毛球/.test(title)) return '/assets/stitch/caper_home_badminton.jpg';
   if (/篮球/.test(title)) return '/assets/stitch/caper_discover_basketball.jpg';
   if (/咖啡|创业|聊天/.test(title)) return '/assets/stitch/caper_discover_coffee.jpg';
@@ -88,7 +98,7 @@ Page({
         location: [payload.city, payload.venueName].filter(Boolean).join(' · ') || '场地待确认',
         status: { RECRUITING: '招募中', CONFIRMED: '已成局', IN_PROGRESS: '进行中',
           COMPLETED: '已结束', CANCELLED: '已取消', EXPIRED: '未成局' }[event.status] || event.status || '状态待确认',
-        confirmed, minimum, cover: coverFor(title), inviteToken: reason ? '' : event.inviteToken };
+        confirmed, minimum, cover: coverFor(title, payload.type), inviteToken: reason ? '' : event.inviteToken };
       this._loadedActor = actor;
       this.setData({ event, display, canShare: !reason, shareReason: reason,
         sourceToken: !reason && previousActor === actor && previous?.id === event.id &&

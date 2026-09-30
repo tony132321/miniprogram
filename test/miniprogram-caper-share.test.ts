@@ -93,6 +93,20 @@ test('share page rejects non-host and stale invitation versions without showing 
   assert.equal(copied.length, 0);
 });
 
+test('share preview artwork follows the event type when its title is generic or misleading', async () => {
+  const badminton = loadShare({ payload: { title: '周末活动', type: 'badminton',
+    startAt: '2027-03-22T06:00:00.000Z', endAt: '2027-03-22T08:00:00.000Z',
+    city: '上海', venueName: '公共羽毛球馆', minParticipants: 4 } });
+  await badminton.page.onLoad({ id: 'event-1' });
+  assert.equal(badminton.page.data.display.cover, '/assets/stitch/caper_home_badminton.jpg');
+
+  const coffee = loadShare({ payload: { title: '羽毛球赛后咖啡', type: 'coffee',
+    startAt: '2027-03-22T06:00:00.000Z', endAt: '2027-03-22T08:00:00.000Z',
+    city: '上海', venueName: '咖啡馆', minParticipants: 4 } });
+  await coffee.page.onLoad({ id: 'event-1' });
+  assert.equal(coffee.page.data.display.cover, '/assets/stitch/caper_discover_coffee.jpg');
+});
+
 test('share route has real copy and WeChat actions without an invented QR or guaranteed seat', () => {
   const config = JSON.parse(readFileSync(new URL('../miniprogram/app.json', import.meta.url), 'utf8'));
   assert.ok(config.subPackages.find((pack: any) => pack.root === 'subpackages/activity')?.pages.includes('share/share'));
