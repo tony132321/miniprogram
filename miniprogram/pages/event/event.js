@@ -248,7 +248,8 @@ Page({
         this.data.isHost && this.data.canManageCheckins &&
         ['CONFIRMED', 'IN_PROGRESS'].includes(this.data.event.status);
       const hostAnnouncement = sameEvent && options.section === 'hostSection' && options.entry === 'hostAnnouncement' &&
-        this.data.isHost && this.data.canManageAnnouncements && this.data.event.status === 'RECRUITING';
+        this.data.isHost && this.data.canManageAnnouncements && this.data.event.status === 'RECRUITING' &&
+        this.data.event.reviewStatus === 'APPROVED' && this.data.event.recruiting === true;
       const memberFeedback = sameEvent && options.section === 'checkinSection' && options.entry === 'memberFeedback' &&
         this.data.event.status === 'COMPLETED' && !this.data.isHost &&
         this.data.myRegistration?.status === 'CONFIRMED' && this.data.outcomeLoadState === 'READY' &&

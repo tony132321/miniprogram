@@ -33,6 +33,19 @@ function sectionFor(item) {
 }
 const statusLabels = { DRAFT: '草稿', REVIEW_PENDING: '待审核', RECRUITING: '招募中', CONFIRMED: '已成局',
   IN_PROGRESS: '进行中', COMPLETED: '已结束', CANCELLED: '已取消', EXPIRED: '已过期' };
+function hostRecruitmentReady(item) {
+  return Boolean(item.isHost && item.status === 'RECRUITING' &&
+    item.reviewStatus === 'APPROVED' && item.recruiting === true);
+}
+function hostStatusLabel(item) {
+  if (item.isHost && item.status === 'RECRUITING' && !hostRecruitmentReady(item)) {
+    if (item.reviewStatus === 'PENDING') return '待审核';
+    if (item.reviewStatus === 'REJECTED') return '审核未通过';
+    if (item.reviewStatus === 'APPROVED') return '招募暂停';
+    return '资格待核对';
+  }
+  return statusLabels[item.status] || item.status || '状态待确认';
+}
 const registrationLabels = { INTERESTED: '待决定', REQUESTED: '待主办审批', WAITLISTED: '候补中',
   OFFERED: '待接受补位', CONFIRMED: '已报名', RECONFIRM_REQUIRED: '待重新确认' };
 const tabs = [
@@ -91,6 +104,12 @@ function posterWord(title) {
 function withRealDetail(item, event, actorId) {
   if (!event || event.id !== item.id || !event.payload) return item;
   if (item.isHost && event.hostId !== actorId) return item;
+  if (item.isHost && Number.isSafeInteger(item.version) &&
+    (!Number.isSafeInteger(event.version) || event.version < item.version)) return item;
+  const currentItem = item.isHost ? { ...item, status: event.status, reviewStatus: event.reviewStatus,
+    recruiting: event.recruiting, version: event.version } : item;
+  const currentPresentation = item.isHost && item.cardKind === 'organized' ?
+    cardPresentation(currentItem, 'organized') : null;
   const payload = event.payload;
   const confirmed = Number(event.stats?.confirmed);
   const capacity = Number(payload.maxParticipants);
@@ -104,15 +123,20 @@ function withRealDetail(item, event, actorId) {
       gap: Math.max(0, minParticipants - confirmed)
     } : null;
   return {
-    ...item,
+    ...currentItem,
+    ...(currentPresentation || {}),
+    ...(item.isHost ? { statusLabel: hostStatusLabel(currentItem), cardLabel: hostStatusLabel(currentItem),
+      shareReady: hostRecruitmentReady(currentItem) } : {}),
     dateRangeLabel: dateRangeLabel(payload.startAt || item.startAt, payload.endAt),
     venueLabel: [payload.city, payload.venueName].filter(Boolean).join(' · ') || '地点请到活动详情查看',
     capacityLabel: Number.isFinite(confirmed) && Number.isFinite(capacity) && capacity > 0
       ? `已确认 ${confirmed} / 上限 ${capacity} 人` : '',
     hostCounts,
     feeMode: payload.feeMode || '',
-    secondaryLabel: hasAARecordRoute ? '查看 AA 记录' : item.secondaryLabel,
-    secondaryAction: hasAARecordRoute ? 'expenseSection' : item.secondaryAction,
+    secondaryLabel: hasAARecordRoute ? '查看 AA 记录' :
+      currentPresentation ? currentPresentation.secondaryLabel : item.secondaryLabel,
+    secondaryAction: hasAARecordRoute ? 'expenseSection' :
+      currentPresentation ? currentPresentation.secondaryAction : item.secondaryAction,
     detailLoaded: true
   };
 }
@@ -147,9 +171,14 @@ function cardPresentation(item, group) {
       CONFIRMED: '活动已成局；请在工作台核对现场安排。',
       IN_PROGRESS: '活动进行中；可在工作台处理现场事项。'
     };
-    const announcementReady = item.isHost && item.status === 'RECRUITING';
+    const announcementReady = hostRecruitmentReady(item);
     const hostCheckinReady = item.isHost && ['CONFIRMED', 'IN_PROGRESS'].includes(item.status);
-    return { cardKind: 'organized', cardNote: notes[item.status] || '主办信息以活动当前版本为准。',
+    const recruitingNote = item.status === 'RECRUITING' && !announcementReady ?
+      item.reviewStatus === 'PENDING' ? '活动正在审核，通过前不会开放邀请与招募。' :
+        item.reviewStatus === 'REJECTED' ? '活动未通过审核，请核对意见并修改。' :
+          item.reviewStatus === 'APPROVED' ? '当前已暂停招募，请到活动详情核对状态。' :
+            '正在核对活动审核与招募资格。' : '';
+    return { cardKind: 'organized', cardNote: recruitingNote || notes[item.status] || '主办信息以活动当前版本为准。',
       primaryLabel: item.status === 'DRAFT' ? '继续编辑草稿' : '主办工作台',
       primaryAction: item.status === 'DRAFT' ? 'editDraft' : 'hostSection',
       secondaryLabel: announcementReady ? '发公告' : hostCheckinReady ? '签到核销码' : '查看活动',
@@ -226,14 +255,14 @@ Page({
       const items = result.items.map(item => {
         const group = sectionFor(item);
         return { ...item, ...cardPresentation(item, group), ...cardShortcut(item, group),
-          statusLabel: statusLabels[item.status] || item.status || '状态待确认',
+          statusLabel: item.isHost ? hostStatusLabel(item) : statusLabels[item.status] || item.status || '状态待确认',
           registrationLabel: registrationLabels[item.myRegistrationStatus] || '',
-          cardLabel: group === 'organized' ? statusLabels[item.status] || item.status || '状态待确认'
+          cardLabel: group === 'organized' ? hostStatusLabel(item)
             : registrationLabels[item.myRegistrationStatus] ||
               (group === 'cohosting' ? '协办中' : statusLabels[item.status] || item.status || '状态待确认'),
           dateLabel: dateLabel(item.startAt), dateRangeLabel: dateRangeLabel(item.startAt, item.endAt),
           venueLabel: [item.city, item.venueName].filter(Boolean).join(' · ') || '地点请到活动详情查看',
-          capacityLabel: '', hostCounts: null,
+          capacityLabel: '', hostCounts: null, shareReady: hostRecruitmentReady(item),
           posterWord: posterWord(item.title || ''), cover: coverFor(item.title || '') };
       });
       for (const item of items) groups[sectionFor(item)].push(item);
@@ -381,7 +410,7 @@ Page({
       return wx.switchTab({ url: '/pages/create/create' });
     }
     if (action === 'hostAnnouncement') {
-      if (!item.isHost || item.status !== 'RECRUITING') return;
+      if (!hostRecruitmentReady(item)) return;
       return wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) +
         '&section=hostSection&entry=hostAnnouncement' });
     }
@@ -400,7 +429,7 @@ Page({
     const id = event?.currentTarget?.dataset?.id;
     if (!id || this._shownIdentity !== currentIdentity()) return;
     const item = this.data.items.find(candidate => candidate.id === id);
-    if (!item?.isHost || item.status !== 'RECRUITING') return;
+    if (!item || !hostRecruitmentReady(item)) return;
     wx.navigateTo({ url: '/subpackages/activity/share/share?id=' + encodeURIComponent(id) });
   },
   openEvent(event) {

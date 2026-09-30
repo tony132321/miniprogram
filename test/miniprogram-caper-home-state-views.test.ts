@@ -6,15 +6,17 @@ import { cityModule } from './miniprogram-city-module.js';
 
 type ListedEvent = { id: string; status: string; title: string; startAt?: string; endAt?: string;
   city?: string; venueName?: string;
-  isHost: boolean; isCohost?: boolean; myRegistrationStatus: string | null };
+  isHost: boolean; isCohost?: boolean; myRegistrationStatus: string | null;
+  reviewStatus?: string; recruiting?: boolean; version?: number };
 type Detail = { id: string; hostId: string; status: string; reviewStatus: string;
+  recruiting: boolean; version: number;
   payload: { title: string; startAt: string; endAt: string; city: string; venueName: string;
     minParticipants: number; maxParticipants: number; feeMode: string };
   stats: { confirmed: number; reserved: number; requested: number; waitlisted: number } };
 
 function detail(id: string, hostId = 'organizer', overrides: Partial<Detail> = {}): Detail {
   return {
-    id, hostId, status: 'RECRUITING', reviewStatus: 'APPROVED',
+    id, hostId, status: 'RECRUITING', reviewStatus: 'APPROVED', recruiting: true, version: 2,
     payload: { title: '真实活动', startAt: '2027-03-22T11:00:00.000Z',
       endAt: '2027-03-22T13:00:00.000Z', city: '上海', venueName: '蓝天体育中心',
       minParticipants: 4, maxParticipants: 8, feeMode: 'FREE' },
@@ -141,6 +143,68 @@ test('organizer cards expose the relevant announcement and check-in actions with
   storage.set('devUser', 'other-actor');
   page.openCardAction({ currentTarget: { dataset: { id: 'recruiting', action: 'hostAnnouncement' } } });
   assert.equal(navigations.length, 2, 'a stale account cannot reuse announcement navigation');
+});
+
+test('pending review recruitment never advertises announcement or share before or after fresh detail', async () => {
+  const markup = readFileSync(new URL('../miniprogram/pages/index/index.wxml', import.meta.url), 'utf8');
+  assert.match(markup, /wx:if="{{item\.shareReady}}" class="card-share"/,
+    'the visible share control must use the checked host recruitment state');
+  const pending: ListedEvent = { id: 'pending-review', status: 'RECRUITING', title: '审核中的羽毛球',
+    isHost: true, myRegistrationStatus: null, reviewStatus: 'PENDING', recruiting: false, version: 2 };
+  const approved: ListedEvent = { id: 'changed-after-list', status: 'RECRUITING', title: '已批准的羽毛球',
+    isHost: true, myRegistrationStatus: null, reviewStatus: 'APPROVED', recruiting: true, version: 2 };
+  const unknown: ListedEvent = { id: 'older-summary', status: 'RECRUITING', title: '旧版列表活动',
+    isHost: true, myRegistrationStatus: null };
+  const { page, navigations } = makeHome({ organizer: [pending, approved, unknown] }, {
+    'pending-review': detail('pending-review', 'organizer', { reviewStatus: 'PENDING', recruiting: false }),
+    'changed-after-list': detail('changed-after-list', 'organizer',
+      { reviewStatus: 'PENDING', recruiting: false, version: 3 }),
+    'older-summary': detail('older-summary', 'organizer', { reviewStatus: 'PENDING', recruiting: false })
+  });
+  await page.onShow();
+  let awaiting = page.data.organized.find((item: any) => item.id === pending.id);
+  assert.equal(awaiting.cardLabel, '待审核');
+  assert.equal(awaiting.secondaryLabel, '查看活动');
+  assert.equal(awaiting.shareReady, false);
+  const unverified = page.data.organized.find((item: any) => item.id === unknown.id);
+  assert.equal(unverified.cardLabel, '资格待核对');
+  assert.equal(unverified.secondaryLabel, '查看活动');
+  assert.equal(unverified.shareReady, false);
+  page.openCardAction({ currentTarget: { dataset: { id: pending.id, action: 'hostAnnouncement' } } });
+  page.openHostShare({ currentTarget: { dataset: { id: pending.id } } });
+  assert.deepEqual(navigations, []);
+
+  await page.selectTab({ currentTarget: { dataset: { key: 'organized' } } });
+  awaiting = page.data.visibleItems.find((item: any) => item.id === pending.id);
+  const changed = page.data.visibleItems.find((item: any) => item.id === approved.id);
+  assert.equal(awaiting.cardLabel, '待审核');
+  assert.equal(awaiting.shareReady, false);
+  assert.equal(changed.cardLabel, '待审核', 'fresh current review state overrides an earlier approved list');
+  assert.equal(changed.secondaryLabel, '查看活动');
+  assert.equal(changed.shareReady, false);
+  const checked = page.data.visibleItems.find((item: any) => item.id === unknown.id);
+  assert.equal(checked.cardLabel, '待审核');
+  assert.equal(checked.shareReady, false);
+  page.openCardAction({ currentTarget: { dataset: { id: approved.id, action: 'hostAnnouncement' } } });
+  page.openHostShare({ currentTarget: { dataset: { id: approved.id } } });
+  assert.deepEqual(navigations, []);
+});
+
+test('an older event detail cannot override a newer host review summary', async () => {
+  const hosted: ListedEvent = { id: 'newer-summary', status: 'RECRUITING', title: '周末羽毛球',
+    isHost: true, myRegistrationStatus: null, reviewStatus: 'APPROVED', recruiting: true, version: 4 };
+  const { page } = makeHome({ organizer: [hosted] }, {
+    'newer-summary': detail('newer-summary', 'organizer',
+      { reviewStatus: 'PENDING', recruiting: false, version: 3 })
+  });
+  await page.onShow();
+  await page.selectTab({ currentTarget: { dataset: { key: 'organized' } } });
+  const card = page.data.visibleItems[0];
+  assert.equal(card.version, 4);
+  assert.equal(card.cardLabel, '招募中');
+  assert.equal(card.secondaryLabel, '发公告');
+  assert.equal(card.shareReady, true);
+  assert.equal(card.detailLoaded, undefined);
 });
 
 test('organizer cover badge shows activity status even when the host also registered', async () => {

@@ -5,7 +5,8 @@ import { runInNewContext } from 'node:vm';
 import { cityModule } from './miniprogram-city-module.js';
 
 type HomeItem = { id: string; status: string; title: string; isHost: boolean;
-  myRegistrationStatus: string | null; startAt?: string };
+  myRegistrationStatus: string | null; startAt?: string; reviewStatus?: string;
+  recruiting?: boolean; version?: number };
 const activities: HomeItem[] = [
   { id: 'requested', status: 'RECRUITING', title: '周五羽毛球', isHost: false, myRegistrationStatus: 'REQUESTED' },
   { id: 'offer', status: 'RECRUITING', title: '周六羽毛球', isHost: false, myRegistrationStatus: 'OFFERED' },
@@ -80,7 +81,8 @@ test('home itinerary shortcut opens the registered real itinerary page', () => {
 test('featured card uses the real list title, start time and state, with a detail route', async () => {
   const { page, navigations } = loadHome([{
     id: 'real-event', status: 'RECRUITING', title: '周六晚场羽毛球',
-    startAt: '2027-03-22T11:00:00.000Z', isHost: true, myRegistrationStatus: null
+    startAt: '2027-03-22T11:00:00.000Z', isHost: true, myRegistrationStatus: null,
+    reviewStatus: 'APPROVED', recruiting: true, version: 2
   }]);
   await page.onShow();
   assert.equal(page.data.featuredItem.title, '周六晚场羽毛球');

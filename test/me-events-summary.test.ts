@@ -148,6 +148,56 @@ test('my event logistics follow host, member and cohost review visibility withou
   } finally { await new Promise<void>(resolve => server.close(() => resolve())); await db.close(); }
 });
 
+test('pending recruiting status is distinguished from reviewed recruitment in host summaries and page snapshots', async () => {
+  const db = await createDatabase();
+  const server = createApp(db, { environment: 'test', devAuth: true, checkInSecret: 'host-review-summary' });
+  server.listen(0, '127.0.0.1'); await once(server, 'listening');
+  const base = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
+  const read = async (actor: string, path = '/me/events') => {
+    const response = await fetch(base + path, { headers: { 'X-Dev-User': actor } });
+    return { status: response.status, body: await response.json() as Record<string, any> };
+  };
+  try {
+    const draft = await createDraft(db, 'host', input, 'pending-host-review-draft');
+    const pending = await publishEvent(db, 'host', draft.id, draft.version, 'pending-host-review-publish');
+    assert.equal(pending.status, 'RECRUITING');
+    assert.equal(pending.reviewStatus, 'PENDING');
+    assert.equal(pending.recruiting, false);
+    await createDraft(db, 'host', { ...input, title: '第二条草稿' }, 'pending-host-review-second');
+    await db.query(`INSERT INTO registrations(id,event_id,user_id,status,accepted_version)
+      VALUES('pending-host-review-member',$1,'member','CONFIRMED',$2)`, [pending.id, pending.version]);
+
+    for (const path of ['/me/events', '/me/events?limit=1&offset=0']) {
+      const host = await read('host', path);
+      assert.equal(host.status, 200);
+      const row = host.body.items.find((item: any) => item.id === pending.id);
+      assert.ok(row);
+      assert.equal(row.reviewStatus, 'PENDING');
+      assert.equal(row.recruiting, false);
+      assert.equal(row.version, pending.version);
+    }
+    for (const path of ['/me/events', '/me/events?limit=1&offset=0']) {
+      const member = await read('member', path);
+      assert.equal(member.status, 200);
+      assert.equal(member.body.items[0]?.reviewStatus, undefined);
+      assert.equal(member.body.items[0]?.recruiting, undefined);
+      assert.equal(member.body.items[0]?.version, undefined);
+    }
+    const firstPage = await read('host', '/me/events?limit=1&offset=0');
+    const approved = await reviewEvent(db, 'ops', pending.id, pending.version, 'APPROVED',
+      '审核通过真实招募', 'pending-host-review-approve');
+    assert.equal(approved.recruiting, true);
+    const stalePage = await read('host', `/me/events?limit=1&offset=1&snapshot=${firstPage.body.snapshot}`);
+    assert.equal(stalePage.status, 409);
+    assert.equal(stalePage.body.code, 'QUEUE_CHANGED');
+    const hostApproved = await read('host');
+    const approvedRow = hostApproved.body.items.find((item: any) => item.id === pending.id);
+    assert.equal(approvedRow.reviewStatus, 'APPROVED');
+    assert.equal(approvedRow.recruiting, true);
+    assert.equal(approvedRow.version, approved.version);
+  } finally { await new Promise<void>(resolve => server.close(() => resolve())); await db.close(); }
+});
+
 test('my events pages are bounded, complete, actor-bound and reject a changed list', async () => {
   const db = await createDatabase();
   const server = createApp(db, { environment: 'test', devAuth: true, checkInSecret: 'summary-pages-test' });

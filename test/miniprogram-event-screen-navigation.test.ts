@@ -114,7 +114,8 @@ test('home organizer announcement link locates the real composer only for the cu
   assert.match(markup, /id="hostAnnouncementAnchor"[\s\S]*?id="hostAnnouncementForm"/,
     'the announcement deep link needs a scroll target above the sticky titlebar');
   page.refresh = async function () {
-    this.setData({ loadState: 'READY', event: { id: 'e1', status: 'RECRUITING' },
+    this.setData({ loadState: 'READY', event: { id: 'e1', status: 'RECRUITING',
+      reviewStatus: 'APPROVED', recruiting: true },
       isHost: true, canManageAnnouncements: true });
     return true;
   };
@@ -123,13 +124,15 @@ test('home organizer announcement link locates the real composer only for the cu
   assert.equal(scrolls[0]?.selector, '#hostAnnouncementAnchor');
 
   for (const state of [
-    { id: 'e1', status: 'RECRUITING', isHost: false, canManageAnnouncements: true },
-    { id: 'e1', status: 'RECRUITING', isHost: true, canManageAnnouncements: false },
-    { id: 'e1', status: 'COMPLETED', isHost: true, canManageAnnouncements: true },
-    { id: 'e2', status: 'RECRUITING', isHost: true, canManageAnnouncements: true }
+    { id: 'e1', status: 'RECRUITING', reviewStatus: 'APPROVED', recruiting: true, isHost: false, canManageAnnouncements: true },
+    { id: 'e1', status: 'RECRUITING', reviewStatus: 'APPROVED', recruiting: true, isHost: true, canManageAnnouncements: false },
+    { id: 'e1', status: 'RECRUITING', reviewStatus: 'PENDING', recruiting: false, isHost: true, canManageAnnouncements: true },
+    { id: 'e1', status: 'COMPLETED', reviewStatus: 'APPROVED', recruiting: false, isHost: true, canManageAnnouncements: true },
+    { id: 'e2', status: 'RECRUITING', reviewStatus: 'APPROVED', recruiting: true, isHost: true, canManageAnnouncements: true }
   ]) {
     page.refresh = async function () {
-      this.setData({ loadState: 'READY', event: { id: state.id, status: state.status },
+      this.setData({ loadState: 'READY', event: { id: state.id, status: state.status,
+        reviewStatus: state.reviewStatus, recruiting: state.recruiting },
         isHost: state.isHost, canManageAnnouncements: state.canManageAnnouncements });
       return true;
     };

@@ -325,7 +325,7 @@ export function createApp(db: Database, options: AppOptions) {
               UNION SELECT event_id AS id FROM cohost_grants WHERE user_id=$1
                 AND revoked_at IS NULL AND expires_at>$2::timestamptz
             ), actor_events AS (
-              SELECT e.id,e.status,e.created_at,e.payload,e.review_status,
+              SELECT e.id,e.status,e.version,e.created_at,e.payload,e.review_status,e.recruiting,
                 (e.host_id=$1) AS is_host,(c.id IS NOT NULL) AS is_cohost,r.status AS my_status,
                 CASE WHEN e.host_id=$1 OR e.review_status='APPROVED' OR
                   (e.review_status='NOT_REQUIRED' AND
@@ -362,17 +362,21 @@ export function createApp(db: Database, options: AppOptions) {
                     CASE WHEN reviewed THEN payload->>'venueName' END,
                     CASE WHEN reviewed THEN payload->>'feeMode' END,
                     CASE WHEN reviewed THEN payload->'feeCapFen' END,
-                    is_host,is_cohost,my_status,priority,created_at
+                    is_host,is_cohost,my_status,priority,created_at,
+                    CASE WHEN is_host THEN review_status END,
+                    CASE WHEN is_host THEN recruiting END,
+                    CASE WHEN is_host THEN version END
                   )::text))::bit(128))::text,repeat('0',128))) AS snapshot FROM ranked`,
               [actor, nowText]);
             const summary = summaries[0]!;
             if (offset > 0 && requestedSnapshot !== summary.snapshot)
               throw new AppError('QUEUE_CHANGED', '活动列表已变化，请从第一页刷新', 409);
-            const { rows: pageRows } = await tx.query<{ id: string; status: string;
+            const { rows: pageRows } = await tx.query<{ id: string; status: string; version: number;
               payload: { title?: string; startAt?: string; endAt?: string; city?: string;
                 venueName?: string; feeMode?: string; feeCapFen?: number };
-              reviewed: boolean; is_host: boolean; is_cohost: boolean; my_status: string | null }>(
-              `${scope} SELECT id,status,payload,reviewed,is_host,is_cohost,my_status FROM ranked
+              reviewed: boolean; review_status: string; recruiting: boolean;
+              is_host: boolean; is_cohost: boolean; my_status: string | null }>(
+              `${scope} SELECT id,status,version,payload,reviewed,review_status,recruiting,is_host,is_cohost,my_status FROM ranked
                 ORDER BY priority,
                   CASE WHEN priority IN (0,1) THEN visible_start END ASC NULLS LAST,
                   CASE WHEN priority=4 THEN visible_start END DESC NULLS LAST,
@@ -388,17 +392,20 @@ export function createApp(db: Database, options: AppOptions) {
               feeMode: row.reviewed ? row.payload.feeMode : undefined,
               feeCapFen: row.reviewed ? row.payload.feeCapFen : undefined,
               isHost: row.is_host, isCohost: row.is_cohost,
-              myRegistrationStatus: row.my_status
+              myRegistrationStatus: row.my_status,
+              ...(row.is_host ? { reviewStatus: row.review_status, recruiting: row.recruiting,
+                version: row.version } : {})
             }));
             return { items: pageItems, total: summary.total,
               nextOffset: offset + pageItems.length < summary.total ? offset + pageItems.length : null,
               snapshot: summary.snapshot };
           }
-          const { rows } = await tx.query<{ id: string; status: string; created_at: Date;
+          const { rows } = await tx.query<{ id: string; status: string; version: number;
+            recruiting: boolean; created_at: Date;
             payload: { title?: string; startAt?: string; endAt?: string; city?: string;
               venueName?: string; feeMode?: string; feeCapFen?: number };
             review_status: string; legacy_review_closed: boolean | null; is_host: boolean; is_cohost: boolean;
-            my_status: string | null }>(`SELECT e.id,e.status,e.created_at,e.payload,e.review_status,
+            my_status: string | null }>(`SELECT e.id,e.status,e.version,e.recruiting,e.created_at,e.payload,e.review_status,
             $2::timestamptz>=CASE WHEN e.status='RECRUITING' THEN
               (e.payload->>'confirmationDeadline')::timestamptz ELSE (e.payload->>'startAt')::timestamptz END
               AS legacy_review_closed,
@@ -426,7 +433,9 @@ export function createApp(db: Database, options: AppOptions) {
               venueName: reviewed ? r.payload.venueName : undefined,
               feeMode: reviewed ? r.payload.feeMode : undefined,
               feeCapFen: reviewed ? r.payload.feeCapFen : undefined,
-              isHost: r.is_host, isCohost: r.is_cohost, myRegistrationStatus: r.my_status },
+              isHost: r.is_host, isCohost: r.is_cohost, myRegistrationStatus: r.my_status,
+              ...(r.is_host ? { reviewStatus: r.review_status, recruiting: r.recruiting,
+                version: r.version } : {}) },
             priority, startTime, createdAt: new Date(r.created_at).getTime() };
           });
           items.sort((a, b) => a.priority - b.priority ||
