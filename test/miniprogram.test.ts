@@ -64,11 +64,19 @@ test('event success state appears only after the server confirms the published e
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
   page.refresh = async function () {
     this.setData({ loadState: 'READY', event: { id: 'e1', status: 'RECRUITING', version: 2,
-      payload: { title: '羽毛球', startAt: '2026-10-01T10:00:00Z', feeMode: 'FREE' } }, isHost: true });
+      reviewStatus: 'PENDING', payload: { title: '羽毛球', startAt: '2026-10-01T10:00:00Z', feeMode: 'FREE' } }, isHost: true });
     return true;
   };
   await page.onLoad({ id: 'e1', success: 'published' });
   assert.equal(page.data.successState, 'PUBLISHED');
+  page.setData({ successState: '' });
+  page.refresh = async function () {
+    this.setData({ loadState: 'READY', event: { id: 'e1', status: 'RECRUITING', version: 2,
+      reviewStatus: 'REJECTED', payload: { title: '羽毛球', startAt: '2026-10-01T10:00:00Z', feeMode: 'FREE' } }, isHost: true });
+    return true;
+  };
+  await page.onLoad({ id: 'e1', success: 'published' });
+  assert.equal(page.data.successState, '');
   page.setData({ successState: '' });
   page.refresh = async function () {
     this.setData({ loadState: 'READY', event: { id: 'e1', status: 'RECRUITING', version: 2,

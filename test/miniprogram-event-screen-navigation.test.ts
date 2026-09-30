@@ -7,13 +7,13 @@ import { runInNewContext } from 'node:vm';
 const source = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
 const require = createRequire(import.meta.url);
 
-function eventPage() {
+function eventPage(apiPost?: (path: string, body: Record<string, unknown>) => Promise<unknown>) {
   let page: Record<string, any> | undefined;
   const scrolls: Record<string, unknown>[] = [];
   const routes: string[] = [];
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
+      if (path === '../../utils/api.js') return { api: { post: apiPost } };
       if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
       if (path === '../../config.js') return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
@@ -85,4 +85,45 @@ test('confirmed registration success opens live details or the existing itinerar
   assert.equal(page.data.activeSection, 'detailsSection');
   page.goToItinerary();
   assert.deepEqual(routes, ['/subpackages/activity/itinerary/itinerary']);
+});
+
+test('the unsure choice records interest without presenting a confirmed seat', async () => {
+  const writes: Array<{ path: string; body: Record<string, unknown> }> = [];
+  let posted = false;
+  const { page } = eventPage(async (path, body) => {
+    writes.push({ path, body });
+    posted = true;
+    return { id: 'r-interest', status: 'INTERESTED' };
+  });
+  const liveEvent = { id: 'e1', version: 3, status: 'RECRUITING', recruiting: true,
+    payload: { title: '周末羽毛球', startAt: '2027-01-02T12:00:00Z', endAt: '2027-01-02T14:00:00Z',
+      city: '深圳', venueName: '测试球馆', maxParticipants: 6, feeMode: 'FREE', approvalMode: 'AUTO' },
+    stats: { confirmed: 1 } };
+  page.setData({ event: liveEvent, id: 'e1', token: 'invite-token', canJoin: true,
+    canExpressInterest: true, isHost: false, successState: '' });
+  page.refresh = async function () {
+    this.setData({ loadState: 'READY', event: liveEvent, canJoin: !posted,
+      canExpressInterest: !posted, myRegistration: posted ? { id: 'r-interest', status: 'INTERESTED' } : null });
+    return true;
+  };
+  page.openJoinConfirmation();
+  page.selectJoinChoice({ currentTarget: { dataset: { choice: 'INTERESTED' } } });
+  assert.equal(page.data.joinChoice, 'INTERESTED');
+  await page.confirmJoin();
+  assert.equal(page.data.myRegistration.status, 'INTERESTED');
+  assert.equal(page.data.successState, '');
+  assert.equal(page.data.joinConfirmation, null);
+  assert.equal(writes.length, 1);
+  const write = writes[0]!;
+  assert.equal(write.path, '/events/e1/interests');
+  assert.equal(write.body.inviteToken, 'invite-token');
+  assert.equal(write.body.expectedVersion, 3);
+});
+
+test('a rejected publication no longer shows the submitted success screen', () => {
+  const { page } = eventPage();
+  page.setData({ successState: 'PUBLISHED', isHost: true,
+    event: { id: 'e1', status: 'RECRUITING', reviewStatus: 'REJECTED' } });
+  page.reconcileSuccessState();
+  assert.equal(page.data.successState, '');
 });

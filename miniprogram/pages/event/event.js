@@ -192,7 +192,7 @@ Page({
     canJoin: false, canExpressInterest: false, canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
     canGenerateCheckInToken: false, canCompleteEvent: false, checkInWindowNotice: '', checkInAvailability: '', completionAvailability: '',
     canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
-    myRegistration: null, registrations: [], registrationsLoadState: 'IDLE', registrationsError: '',
+    myRegistration: null, registrations: [], registrationsLoadState: 'IDLE', registrationsError: '', joinChoice: 'JOIN',
     cohostGrants: [], cohostGrantsLoadState: 'IDLE', cohostGrantsError: '', cohostUserId: '', cohostSelectedName: '',
     selectedCohostCapabilities: ['CHECKIN_MANAGE'], aliases: [], memberCards: [], confirmedRoster: [],
     safetyStatus: 'UNKNOWN',
@@ -217,7 +217,8 @@ Page({
     await getApp().globalData.ready;
     const loaded = await this.refresh();
     if (loaded && options.success === 'published' && this.data.isHost &&
-      this.data.event?.id === options.id && this.data.event.status === 'RECRUITING')
+      this.data.event?.id === options.id && this.data.event.status === 'RECRUITING' &&
+      ['PENDING', 'APPROVED'].includes(this.data.event.reviewStatus))
       this.setData({ successState: 'PUBLISHED' });
     if (loaded && this.data.loadState === 'READY' &&
       sectionAvailable(options.section, this.data.isHost, this.data.canApproveRegistration,
@@ -598,7 +599,8 @@ Page({
   dismissSuccess() { this.setData({ successState: '' }); },
   reconcileSuccessState() {
     const { successState, event, isHost, myRegistration } = this.data;
-    const publishedStillCurrent = successState === 'PUBLISHED' && isHost && event?.status === 'RECRUITING';
+    const publishedStillCurrent = successState === 'PUBLISHED' && isHost && event?.status === 'RECRUITING' &&
+      ['PENDING', 'APPROVED'].includes(event?.reviewStatus);
     const joinedStillCurrent = successState === 'JOINED' && myRegistration?.status === 'CONFIRMED' &&
       ['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(event?.status);
     if (successState && !publishedStillCurrent && !joinedStillCurrent) this.dismissSuccess();
@@ -663,7 +665,7 @@ Page({
     const display = eventDisplay(event);
     this.joinConfirmationGeneration = (this.joinConfirmationGeneration || 0) + 1;
     this.joinConfirmationActor = currentIdentity();
-    this.setData({ joinSubmitting: false, joinConfirmation: {
+    this.setData({ joinSubmitting: false, joinChoice: 'JOIN', joinConfirmation: {
       id: event.id, version: event.version, token: this.data.token,
       title: display.title, isBadminton: display.isBadminton,
       date: display.date, end: display.end, location: display.location, fee: display.fee,
@@ -676,7 +678,13 @@ Page({
     this.joinConfirmationGeneration = (this.joinConfirmationGeneration || 0) + 1;
     this.joinConfirmationActor = '';
     if (this.data.joinConfirmation || this.data.joinSubmitting)
-      this.setData({ joinConfirmation: null, joinSubmitting: false });
+      this.setData({ joinConfirmation: null, joinSubmitting: false, joinChoice: 'JOIN' });
+  },
+  selectJoinChoice(event) {
+    if (!this.data.joinConfirmation || this.data.joinSubmitting) return;
+    const choice = event.currentTarget.dataset.choice;
+    if (choice === 'JOIN' || (choice === 'INTERESTED' && this.data.canExpressInterest))
+      this.setData({ joinChoice: choice });
   },
   cancelJoin() {
     if (!this.data.joinSubmitting) this.closeJoinConfirmation();
@@ -699,6 +707,7 @@ Page({
     if (!review || this.data.joinSubmitting) return;
     const generation = this.joinConfirmationGeneration;
     const actor = this.joinConfirmationActor;
+    const choice = this.data.joinChoice === 'INTERESTED' ? 'INTERESTED' : 'JOIN';
     if (actor !== currentIdentity()) {
       this.closeJoinConfirmation();
       this.setData({ message: '登录身份已变化，请重新打开活动并核对报名规则。' });
@@ -716,13 +725,16 @@ Page({
       this.closeJoinConfirmation();
       return;
     }
-    if (!this.data.canJoin || this.data.event?.id !== review.id || this.data.event?.version !== review.version ||
+    if (!(choice === 'INTERESTED' ? this.data.canExpressInterest : this.data.canJoin) ||
+      this.data.event?.id !== review.id || this.data.event?.version !== review.version ||
       this.data.token !== review.token || actor !== currentIdentity()) {
       this.closeJoinConfirmation();
       this.setData({ message: '活动或登录身份已变化，请重新核对报名规则。' });
       return;
     }
-    await this.submitRegistration(this.data.event, actor);
+    if (choice === 'INTERESTED')
+      await this.action(`/events/${review.id}/interests`, { inviteToken: review.token }, '已记录待定意向，不占名额，也不会进入候补队列');
+    else await this.submitRegistration(this.data.event, actor);
     if (generation === this.joinConfirmationGeneration) this.closeJoinConfirmation();
   },
   async join() {

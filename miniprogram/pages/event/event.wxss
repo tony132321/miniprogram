@@ -29,10 +29,16 @@ page{padding:0;background:#f5f6fa;color:#1b1e27;font-family:-apple-system,BlinkM
 .join-rule-title { color: #173d83; font-size: 23rpx; font-weight: 800; }
 .join-review-choice { margin: 30rpx 0 0; }
 .join-choice-label { font-size: 22rpx; color: #697389; font-weight: 800; margin: 0 0 14rpx; }
-.join-choice-selected { display: flex; gap: 16rpx; align-items: center; background: #fff; border: 3rpx solid #0052ff; border-radius: 22rpx; padding: 24rpx; box-shadow: 0 6rpx 20rpx #0052ff15; }
-.join-choice-check { width: 31rpx; height: 31rpx; flex: none; border-radius: 50%; background: #0052ff; color: #fff; text-align: center; line-height: 31rpx; font-size: 23rpx; font-weight: 800; }
-.join-choice-title { font-size: 25rpx; font-weight: 800; }
-.join-choice-hint { font-size: 21rpx; color: #697389; line-height: 1.5; margin-top: 5rpx; }
+.join-choice-grid { display: flex; gap: 14rpx; }
+.join-choice-option { flex: 1; min-width: 0; min-height: 142rpx; margin: 0; padding: 17rpx 15rpx; border: 2rpx solid #d8dde6; border-radius: 20rpx; background: #fff; color: #17191f; line-height: 1.35; text-align: left; white-space: normal; }
+.join-choice-option::after { border: 0; }
+.join-choice-option.selected { border-color: #0052ff; box-shadow: 0 5rpx 16rpx #0052ff18; }
+.join-choice-line { display: flex; gap: 10rpx; align-items: center; }
+.join-choice-check { width: 29rpx; height: 29rpx; flex: none; box-sizing: border-box; border: 3rpx solid #d2d5dc; border-radius: 50%; color: #fff; text-align: center; line-height: 23rpx; font-size: 21rpx; font-weight: 800; }
+.join-choice-option.selected .join-choice-check { border-color: #0052ff; background: #0052ff; }
+.join-choice-title { font-size: 23rpx; font-weight: 800; }
+.join-choice-hint { margin-top: 10rpx; color: #697389; font-size: 19rpx; line-height: 1.4; }
+.join-message-unavailable { margin-top: 27rpx; padding: 16rpx 18rpx; border: 1rpx solid #e5e8ef; border-radius: 14rpx; color: #8b95a4; font-size: 20rpx; }
 .join-review-caution { color: #5f6b7e; font-size: 21rpx; line-height: 1.6; margin: 21rpx 0 45rpx; }
 .join-review-footer { display: flex; gap: 18rpx; flex: none; padding: 20rpx 28rpx calc(22rpx + env(safe-area-inset-bottom)); background: #ffffffed; border-top: 1rpx solid #eef0f4; box-shadow: 0 -6rpx 20rpx #1b29420d; }
 .join-review-footer button { margin: 0; height: 86rpx; line-height: 86rpx; border-radius: 19rpx; font-size: 26rpx; font-weight: 800; padding: 0 18rpx; }
@@ -207,6 +213,36 @@ page{padding:0;background:#f5f6fa;color:#1b1e27;font-family:-apple-system,BlinkM
 .event-page:not(.event-view-detailsSection) .event-tabs button.active { background: #1d64f2; color: #fff; }
 .event-success .poster, .event-success .detail-section, .event-success .event-tabs { display: none !important; }
 .event-success .success-panel { margin-top: 32rpx; }
+.event-topbar-success .event-nav-share,.event-topbar-success .event-nav-safety { display: none; }
+.event-page.event-success { min-height: 100vh; background: #f5f6fa; }
+.event-success .published-success { margin: 0; padding: 25rpx 28rpx 65rpx; border: 0; border-radius: 0; background: #f5f6fa; box-shadow: none; }
+.published-hero { padding: 0 4rpx 10rpx; text-align: center; }
+.published-hero .success-mark { width: 103rpx; height: 103rpx; line-height: 103rpx; background: #ebfaef; color: #1db85b; font-size: 68rpx; }
+.published-hero .success-title { margin-top: 17rpx; font-size: 39rpx; }
+.published-hero .success-copy { max-width: 610rpx; margin: 0 auto; font-size: 22rpx; }
+.published-event-card { overflow: hidden; margin: 23rpx 0 27rpx; border-radius: 26rpx; background: #fff; text-align: left; box-shadow: 0 7rpx 24rpx #17244b12; }
+.published-cover { position: relative; height: 320rpx; overflow: hidden; color: #fff; }
+.published-cover image { display: block; width: 100%; height: 100%; }
+.published-cover-shade { position: absolute; inset: 0; background: linear-gradient(180deg,#10182755 0%,#10182710 39%,#101827c9 100%); }
+.published-cover-top { position: absolute; top: 20rpx; left: 18rpx; right: 18rpx; display: flex; align-items: center; gap: 10rpx; font-size: 18rpx; font-weight: 800; }
+.published-cover-top text { padding: 7rpx 13rpx; border-radius: 50rpx; background: #ffffffdc; color: #203044; }
+.published-cover-top text:last-child { background: #1d64f2; color: #fff; }
+.published-cover-title { position: absolute; left: 22rpx; right: 150rpx; bottom: 23rpx; font-size: 29rpx; font-weight: 900; line-height: 1.25; text-shadow: 0 2rpx 8rpx #11182788; }
+.published-cover-fee { position: absolute; right: 15rpx; bottom: 19rpx; max-width: 135rpx; padding: 6rpx 10rpx; border-radius: 45rpx; background: #283547a8; font-size: 17rpx; font-weight: 700; }
+.published-facts { padding: 10rpx 24rpx 17rpx; }
+.published-facts > view { display: flex; gap: 16rpx; align-items: center; min-height: 58rpx; border-bottom: 1rpx solid #eef0f5; color: #222938; font-size: 22rpx; font-weight: 650; }
+.published-facts > view:last-child { border-bottom: 0; }
+.published-facts > view > text:first-child { width: 36rpx; flex: none; color: #1d64f2; font-size: 25rpx; text-align: center; }
+.published-actions-title { display: flex; justify-content: space-between; gap: 10rpx; margin: 10rpx 0 18rpx; text-align: left; color: #17191f; font-size: 28rpx; font-weight: 850; }
+.published-actions-title text { align-self: center; color: #637083; font-size: 18rpx; font-weight: 500; }
+.published-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 15rpx; }
+.published-actions button { display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; box-sizing: border-box; width: 100%; min-height: 151rpx; margin: 0; padding: 16rpx; border-radius: 22rpx; background: #fff; color: #17191f; text-align: left; line-height: 1.35; box-shadow: 0 3rpx 12rpx #17244b0a; }
+.published-actions button::after { border: 0; }
+.published-actions button text:first-child { display: block; width: 43rpx; height: 43rpx; margin-bottom: 9rpx; border-radius: 50%; background: #e9f1ff; color: #1d64f2; line-height: 43rpx; text-align: center; font-size: 25rpx; }
+.published-actions button text:nth-child(2) { font-size: 23rpx; font-weight: 850; }
+.published-actions button text:last-child { margin-top: 3rpx; color: #697589; font-size: 18rpx; }
+.published-ai-note { margin: 21rpx 0 25rpx; padding: 20rpx; border-radius: 20rpx; background: #eeedff; color: #4743a3; text-align: left; font-size: 20rpx; line-height: 1.45; }
+.published-success > .success-primary { margin-top: 0; }
 .event-view-checkinSection .outcome-section { margin-top: 18rpx; }
 .detail-participant-card, .detail-roster-card { margin: 22rpx 0; padding: 23rpx; border-radius: 22rpx; background: #eaf7ef; color: #195e3c; }
 .detail-roster-card { background: #f0f3ff; color: #24428f; }
@@ -360,6 +396,12 @@ page{padding:0;background:#f5f6fa;color:#1b1e27;font-family:-apple-system,BlinkM
 .joined-card-heading { font-size: 25rpx; font-weight: 850; }
 .joined-success-card > view:nth-child(2) { margin-top: 7rpx; color: #64748b; font-size: 20rpx; line-height: 1.5; }
 .joined-success-card button { width: auto; margin: 13rpx 0 0; padding: 8rpx 15rpx; background: #eaf1ff; color: #1d64f2; font-size: 20rpx; }
+.joined-roster-card .joined-card-heading { display: flex; justify-content: space-between; gap: 12rpx; }
+.joined-roster-card .joined-card-heading text { align-self: center; color: #1d64f2; font-size: 18rpx; font-weight: 600; }
+.joined-roster-preview { display: flex; gap: 14rpx; margin-top: 16rpx; }
+.joined-roster-person { min-width: 75rpx; max-width: 118rpx; color: #576273; text-align: center; font-size: 18rpx; }
+.joined-roster-person text { display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.joined-roster-person text:first-child { width: 62rpx; height: 62rpx; margin: 0 auto 6rpx; border-radius: 19rpx; background: #eaf1ff; color: #1d64f2; line-height: 62rpx; text-align: center; font-size: 26rpx; font-weight: 850; }
 .joined-rule-card { margin: 19rpx 0 0; padding: 20rpx; border-radius: 18rpx; background: #f0eff4; color: #626b79; font-size: 20rpx; line-height: 1.55; }
 .joined-success-footer { position: fixed; z-index: 11; bottom: 0; left: 0; right: 0; display: flex; gap: 10rpx; padding: 15rpx 28rpx calc(18rpx + env(safe-area-inset-bottom)); background: #ffffffed; box-shadow: 0 -8rpx 24rpx #17244b13; }
 .joined-success-footer button { width: auto; flex: 1; margin: 0; padding: 11rpx 10rpx; border-radius: 100rpx; background: #f0eff4; color: #202938; font-size: 22rpx; }

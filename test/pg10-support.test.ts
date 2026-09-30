@@ -8,12 +8,14 @@ const prefix = '../miniprogram/subpackages/profile/support/support';
 test('support keeps a working safety route and FAQ without claiming unavailable service', () => {
   const markup = readFileSync(new URL(`${prefix}.wxml`, import.meta.url), 'utf8');
   const routes: string[] = [];
+  const storage = new Map<string, string>([['devUser', 'host']]);
   const globalData: Record<string, unknown> = {};
   let page: Record<string, any> | undefined;
   runInNewContext(readFileSync(new URL(`${prefix}.js`, import.meta.url), 'utf8'), {
     Page(definition: Record<string, any>) { page = definition; },
     wx: {
-      getStorageSync(key: string) { return key === 'devUser' ? 'host' : ''; },
+      getStorageSync(key: string) { return storage.get(key) || ''; },
+      setStorageSync(key: string, value: string) { storage.set(key, value); },
       switchTab({ url }: { url: string }) { routes.push(url); }
     },
     getApp() { return { globalData }; },
@@ -31,6 +33,7 @@ test('support keeps a working safety route and FAQ without claiming unavailable 
   assert.equal(page.data.openIndex, -1);
   page.goReport();
   assert.deepEqual(routes, ['/pages/me/me']);
+  assert.equal(storage.get('irlProfileFocusIntent'), 'reportSection');
   assert.equal((globalData.reportContext as { actor: string }).actor, 'host');
   assert.equal((globalData.reportContext as { eventId: string }).eventId, '');
 
