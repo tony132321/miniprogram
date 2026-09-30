@@ -20,11 +20,13 @@ function convert(row: RegistrationRow): Registration {
   return { id: row.id, eventId: row.event_id, userId: row.user_id, status: row.status, acceptedVersion: row.accepted_version };
 }
 
-export async function command<T>(db: Database, actor: string, route: string, key: string, run: (tx: Queryable) => Promise<T>): Promise<T> {
+export async function command<T>(db: Database, actor: string, route: string, key: string, run: (tx: Queryable) => Promise<T>,
+  validateReplay?: (tx: Queryable, previous: T) => Promise<void>): Promise<T> {
   if (!actor || !key) throw new AppError('BAD_REQUEST', '身份与幂等键必填');
   return db.transaction(async tx => {
     if (!(await claimIdempotency(tx, actor, route, key))) {
       const previous = await tx.query<{ result: T }>('SELECT result FROM idempotency WHERE actor_id=$1 AND route=$2 AND key=$3', [actor, route, key]);
+      if (validateReplay) await validateReplay(tx, previous.rows[0]!.result);
       return previous.rows[0]!.result;
     }
     const result = await run(tx);

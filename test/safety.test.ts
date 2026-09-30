@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { once } from 'node:events';
 import { createDatabase, type Database } from '../src/db.ts';
-import { createDraft, publishEvent } from '../src/events.ts';
+import { createDraft, publishEvent, rotateInvite } from '../src/events.ts';
 import { publishApprovedInvite } from './helpers.ts';
 import { confirmEvent } from '../src/lifecycle.ts';
 import { acceptOffer, cancelRegistration, reserveSeats } from '../src/registrations.ts';
@@ -13,6 +13,7 @@ import { reviewEvent } from '../src/event-review.ts';
 import { setEmergencyGate } from '../src/emergency-gate.ts';
 import { setPublicGate } from '../src/public-gate.ts';
 import { openSyntheticPublicCoverage } from './helpers/public-coverage.ts';
+import { recordShareIntent } from '../src/sharing.ts';
 
 const input = {
   title: '安全流程测试', type: 'badminton', startAt: '2027-01-02T12:00:00.000Z',
@@ -61,6 +62,125 @@ test('active safety hold still permits rejecting a pending event', async () => {
     assert.equal(rejected.reviewStatus, 'REJECTED');
     assert.equal(rejected.recruiting, false);
     assert.equal((await getActiveEventHold(db, event.id))?.status, 'ACTIVE');
+  } finally { await db.close(); }
+});
+
+test('active safety hold rejects share intent without consuming a retry key', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'held-share-draft');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'held-share-publish');
+    const hold = await placeEventHold(db, 'ops', event.id, '场地安全风险仍在核查中', 'held-share-place');
+    const sourceToken = 'a'.repeat(32);
+    const requestKey = 'held-share-intent';
+
+    await assert.rejects(() => recordShareIntent(db, 'host', event.id, event.version,
+      sourceToken, requestKey), { code: 'RISK_HOLD' });
+    const { rows: blocked } = await db.query<{ total: number }>(
+      'SELECT count(*)::int AS total FROM share_intents WHERE event_id=$1', [event.id]);
+    assert.equal(blocked[0]?.total, 0);
+
+    await releaseEventHold(db, 'ops', hold.id, '场地安全风险已核查完成', 'held-share-release');
+    assert.deepEqual(await recordShareIntent(db, 'host', event.id, event.version,
+      sourceToken, requestKey), { sourceToken });
+    const { rows: accepted } = await db.query<{ total: number }>(
+      'SELECT count(*)::int AS total FROM share_intents WHERE event_id=$1', [event.id]);
+    assert.equal(accepted[0]?.total, 1);
+  } finally { await db.close(); }
+});
+
+test('active safety hold rejects a successful share intent replay until release', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'replayed-share-draft');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'replayed-share-publish');
+    const sourceToken = 'b'.repeat(32);
+    const requestKey = 'replayed-share-intent';
+    assert.deepEqual(await recordShareIntent(db, 'host', event.id, event.version,
+      sourceToken, requestKey), { sourceToken });
+
+    const hold = await placeEventHold(db, 'ops', event.id, '分享期间发现待核查风险', 'replayed-share-place');
+    await assert.rejects(() => recordShareIntent(db, 'host', event.id, event.version,
+      sourceToken, requestKey), { code: 'RISK_HOLD' });
+    const { rows: paused } = await db.query<{ total: number }>(
+      'SELECT count(*)::int AS total FROM share_intents WHERE event_id=$1', [event.id]);
+    assert.equal(paused[0]?.total, 1);
+
+    await releaseEventHold(db, 'ops', hold.id, '分享风险已经人工核查', 'replayed-share-release');
+    assert.deepEqual(await recordShareIntent(db, 'host', event.id, event.version,
+      sourceToken, requestKey), { sourceToken });
+    const { rows: resumed } = await db.query<{ total: number }>(
+      'SELECT count(*)::int AS total FROM share_intents WHERE event_id=$1', [event.id]);
+    assert.equal(resumed[0]?.total, 1);
+  } finally { await db.close(); }
+});
+
+test('global safety pause rejects new and replayed share intents until reopened', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'global-share-draft');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'global-share-publish');
+    const sourceToken = 'c'.repeat(32);
+    const requestKey = 'global-share-intent';
+    assert.deepEqual(await recordShareIntent(db, 'host', event.id, event.version,
+      sourceToken, requestKey), { sourceToken });
+
+    await setEmergencyGate(db, 'ops', 'CLOSED', '暂停所有新增邀请及报名', 'global-share-close');
+    await assert.rejects(() => recordShareIntent(db, 'host', event.id, event.version,
+      sourceToken, requestKey), { code: 'EMERGENCY_PAUSED' });
+    await assert.rejects(() => recordShareIntent(db, 'host', event.id, event.version,
+      'd'.repeat(32), 'global-share-new'), { code: 'EMERGENCY_PAUSED' });
+    const { rows: paused } = await db.query<{ total: number }>(
+      'SELECT count(*)::int AS total FROM share_intents WHERE event_id=$1', [event.id]);
+    assert.equal(paused[0]?.total, 1);
+
+    await setEmergencyGate(db, 'ops', 'OPEN', '风险核查完成恢复新增操作', 'global-share-open');
+    assert.deepEqual(await recordShareIntent(db, 'host', event.id, event.version,
+      sourceToken, requestKey), { sourceToken });
+  } finally { await db.close(); }
+});
+
+test('invite rotation invalidates a replayed share source without changing event version', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'rotated-share-draft');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'rotated-share-publish');
+    const sourceToken = 'e'.repeat(32);
+    const requestKey = 'rotated-share-intent';
+    assert.deepEqual(await recordShareIntent(db, 'host', event.id, event.version,
+      sourceToken, requestKey), { sourceToken });
+
+    const rotated = await rotateInvite(db, 'host', event.id, event.version, 'rotated-share-invite');
+    assert.equal(rotated.version, event.version);
+    assert.notEqual(rotated.inviteToken, event.inviteToken);
+    await assert.rejects(() => recordShareIntent(db, 'host', event.id, event.version,
+      sourceToken, requestKey), { code: 'SOURCE_STALE' });
+    const { rows: oldSources } = await db.query<{ total: number }>(
+      'SELECT count(*)::int AS total FROM share_intents WHERE event_id=$1', [event.id]);
+    assert.equal(oldSources[0]?.total, 1);
+
+    const freshSource = 'f'.repeat(32);
+    assert.deepEqual(await recordShareIntent(db, 'host', event.id, event.version,
+      freshSource, 'rotated-share-fresh'), { sourceToken: freshSource });
+    const { rows: sources } = await db.query<{ source_token: string; invite_token_hash: string }>(
+      'SELECT source_token,invite_token_hash FROM share_intents WHERE event_id=$1 ORDER BY source_token', [event.id]);
+    assert.deepEqual(sources.map(row => row.source_token), [sourceToken, freshSource]);
+    assert.notEqual(sources[0]?.invite_token_hash, sources[1]?.invite_token_hash);
+  } finally { await db.close(); }
+});
+
+test('share intent replay cannot return a different valid source for the same key', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'mismatch-share-draft');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'mismatch-share-publish');
+    const firstSource = '1'.repeat(32);
+    const secondSource = '2'.repeat(32);
+    await recordShareIntent(db, 'host', event.id, event.version, firstSource, 'mismatch-share-first');
+    await recordShareIntent(db, 'host', event.id, event.version, secondSource, 'mismatch-share-second');
+
+    await assert.rejects(() => recordShareIntent(db, 'host', event.id, event.version,
+      secondSource, 'mismatch-share-first'), { code: 'IDEMPOTENCY_MISMATCH' });
   } finally { await db.close(); }
 });
 
