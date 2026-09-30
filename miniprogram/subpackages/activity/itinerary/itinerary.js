@@ -15,6 +15,9 @@ function coverFor(title) {
   if (/桌游|游戏/.test(title)) return '/assets/stitch/caper_discover_boardgame.jpg';
   return '/assets/stitch/caper_discover_citywalk.jpg';
 }
+function shanghaiDayNumber(timestamp) {
+  return Math.floor((timestamp + 8 * 60 * 60_000) / 86_400_000);
+}
 function present(item, now) {
   const timestamp = Date.parse(item.startAt);
   const local = new Date(timestamp + 8 * 60 * 60_000);
@@ -28,7 +31,7 @@ function present(item, now) {
     local.getUTCMonth() === end.getUTCMonth() && local.getUTCDate() === end.getUTCDate()
     ? endTime : `${end.getUTCMonth() + 1}月${end.getUTCDate()}日 ${endTime}`);
   const timeLabel = endLabel ? `${startTime} - ${endLabel}` : startTime;
-  const days = Math.ceil((timestamp - now) / 86_400_000);
+  const days = shanghaiDayNumber(timestamp) - shanghaiDayNumber(now);
   const feeLabel = item.feeMode === 'FREE' ? '免费' :
     item.feeMode === 'AA' && Number.isSafeInteger(item.feeCapFen)
       ? `AA 制 · 每人上限 ¥${(item.feeCapFen / 100).toFixed(2)}` : '费用以活动详情为准';

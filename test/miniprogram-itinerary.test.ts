@@ -6,10 +6,11 @@ import test from 'node:test';
 const pagePath = new URL('../miniprogram/subpackages/activity/itinerary/itinerary.js', import.meta.url);
 const markupPath = new URL('../miniprogram/subpackages/activity/itinerary/itinerary.wxml', import.meta.url);
 
-function createPage(get: (route: string) => Promise<unknown>, identity: { userId: string; token?: string } = { userId: 'one' }) {
+function createPage(get: (route: string) => Promise<unknown>, identity: { userId: string; token?: string } = { userId: 'one' }, nowAt?: number) {
   let page: Record<string, any> | undefined;
   const navigations: string[] = [];
   runInNewContext(readFileSync(pagePath, 'utf8'), {
+    Date: nowAt === undefined ? Date : class FixedDate extends Date { static now() { return nowAt; } },
     require(path: string) {
       if (path === '../../../utils/api.js') return { api: { get } };
       if (path === '../../../config.js') return { developmentUser: '' };
@@ -28,6 +29,28 @@ function createPage(get: (route: string) => Promise<unknown>, identity: { userId
   page.setData = function (patch: Record<string, unknown>) { Object.assign(this.data, patch); };
   return { page, navigations, identity };
 }
+
+test('itinerary countdown follows Shanghai calendar days across midnight and New Year', async () => {
+  const nowAt = Date.parse('2025-12-30T16:05:00.000Z'); // 12/31 00:05 in Shanghai
+  const { page } = createPage(async route => {
+    assert.equal(route, '/me/events');
+    return { items: [
+      { id: 'today', title: '跨年前夜', status: 'CONFIRMED', isHost: true,
+        startAt: '2025-12-31T15:50:00.000Z' }, // 12/31 23:50
+      { id: 'tomorrow', title: '新年清晨', status: 'CONFIRMED', isHost: true,
+        startAt: '2025-12-31T16:10:00.000Z' }, // 1/1 00:10
+      { id: 'two-days', title: '次日凌晨', status: 'CONFIRMED', isHost: true,
+        startAt: '2026-01-01T16:01:00.000Z' } // 1/2 00:01
+    ] };
+  }, { userId: 'one' }, nowAt);
+  await page.onShow();
+  assert.equal(page.data.featured.countdown, '今天开始');
+  assert.equal(page.data.featured.dateLabel, '12 月 31 日（周三）');
+  assert.deepEqual(Array.from(page.data.later, (item: { countdown: string }) => item.countdown),
+    ['明天开始', '约 2 天后开始']);
+  assert.deepEqual(Array.from(page.data.later, (item: { monthLabel: string }) => item.monthLabel),
+    ['01月', '01月']);
+});
 
 test('itinerary shows only real upcoming confirmed or hosted activities in time order', async () => {
   const future = (days: number) => new Date(Date.now() + days * 86_400_000).toISOString();
