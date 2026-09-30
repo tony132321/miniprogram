@@ -68,6 +68,44 @@ test('signing in as another operator clears the previous account’s private pag
   assert.equal(ui.item('hostReviewUserId').value, '');
 });
 
+test('a late first login cannot replace the operator who completed a later login', async () => {
+  const pending = new Map<string, (response: unknown) => void>();
+  const ui = await workbench(async (path, options) => {
+    if (path === '/ops/auth/login') {
+      const user = JSON.parse(options?.body || '{}').username;
+      return new Promise(resolve => { pending.set(user, resolve); });
+    }
+    return { ok: true, status: 200, json: async () => ({ items: [], status: 'OPEN', weeks: [] }) };
+  });
+  ui.item('operatorUser').value = 'first';
+  const first = ui.item('operatorLogin').onclick?.();
+  ui.item('operatorUser').value = 'second';
+  const second = ui.item('operatorLogin').onclick?.();
+  pending.get('second')?.({ ok: true, status: 200, json: async () => ({ token: 'second-token' }) });
+  await second;
+  const secondStatus = ui.item('status').textContent;
+  pending.get('first')?.({ ok: true, status: 200, json: async () => ({ token: 'first-token' }) });
+  await first;
+  assert.equal(ui.storage.get('operatorToken'), 'second-token');
+  assert.equal(ui.item('token').value, 'second-token');
+  assert.equal(ui.item('status').textContent, secondStatus);
+});
+
+test('logout cancels a pending login response', async () => {
+  let finishLogin!: (response: unknown) => void;
+  const ui = await workbench(async path => path === '/ops/auth/login'
+    ? new Promise(resolve => { finishLogin = resolve; })
+    : { ok: true, status: 200, json: async () => ({ items: [], status: 'OPEN', weeks: [] }) });
+  ui.item('operatorUser').value = 'operator';
+  const login = ui.item('operatorLogin').onclick?.();
+  await ui.item('operatorLogout').onclick?.();
+  finishLogin({ ok: true, status: 200, json: async () => ({ token: 'late-token' }) });
+  await login;
+  assert.equal(ui.storage.has('operatorToken'), false);
+  assert.equal(ui.item('token').value, '');
+  assert.equal(ui.item('status').textContent, '已退出登录');
+});
+
 test('a pending refresh cannot overwrite logged-out state', async () => {
   let resolveReads!: (value: unknown) => void;
   const reads = new Promise(resolve => { resolveReads = resolve; });
@@ -80,6 +118,129 @@ test('a pending refresh cannot overwrite logged-out state', async () => {
   assert.equal(ui.item('status').textContent, '已退出登录');
 });
 
+test('an expired operator session clears private workbench state and disables its controls', async () => {
+  const ui = await workbench(async path => path === '/ops/metrics'
+    ? { ok: false, status: 401, json: async () => ({ code: 'UNAUTHENTICATED', message: '登录已失效' }) }
+    : { ok: true, status: 200, json: async () => ({ items: [], status: 'OPEN', weeks: [] }) });
+  ui.item('reports').appendChild({ textContent: '旧举报' });
+  ui.item('coverageResult').textContent = '旧值守记录';
+  ui.item('hostReviewResult').textContent = '旧主办方核验';
+  ui.item('publicGate').textContent = '开放 · 私有原因';
+  ui.item('emergencyGate').textContent = '关闭 · 私有原因';
+  ui.item('supportEventId').value = 'private-event-id';
+  await ui.item('refresh').onclick?.();
+  assert.equal(ui.storage.has('operatorToken'), false);
+  assert.equal(ui.item('token').value, '');
+  assert.equal(ui.item('reports').children.length, 0);
+  for (const id of ['coverageResult', 'hostReviewResult', 'publicGate', 'emergencyGate'])
+    assert.equal(ui.item(id).textContent, '', `${id} remains visible`);
+  assert.equal(ui.item('supportEventId').value, '');
+  assert.equal(ui.item('operatorWorkbench').disabled, true);
+  assert.match(ui.item('status').textContent, /登录已失效.*重新登录/);
+});
+
+test('an old 401 response cannot invalidate a newly logged-in operator', async () => {
+  let releaseOld!: (response: unknown) => void;
+  const oldMetrics = new Promise(resolve => { releaseOld = resolve; });
+  const ui = await workbench(async (path, options) => {
+    if (path === '/ops/auth/login') return { ok: true, status: 200, json: async () => ({ token: 'new-operator-token' }) };
+    if (path === '/ops/metrics' && options?.headers?.Authorization === 'Bearer session-token') return oldMetrics;
+    return { ok: true, status: 200, json: async () => ({ items: [], status: 'OPEN', weeks: [] }) };
+  });
+  const oldRefresh = ui.item('refresh').onclick?.();
+  ui.item('operatorUser').value = 'another-operator';
+  await ui.item('operatorLogin').onclick?.();
+  const newStatus = ui.item('status').textContent;
+  releaseOld({ ok: false, status: 401, json: async () => ({ code: 'UNAUTHENTICATED', message: '登录已失效' }) });
+  await oldRefresh;
+  assert.equal(ui.storage.get('operatorToken'), 'new-operator-token');
+  assert.equal(ui.item('token').value, 'new-operator-token');
+  assert.equal(ui.item('status').textContent, newStatus);
+  assert.equal(ui.item('operatorWorkbench').disabled, false);
+});
+
+test('a delayed old write body cannot display its result after another operator logs in', async () => {
+  let releaseOld!: (body: unknown) => void;
+  const oldBody = new Promise(resolve => { releaseOld = resolve; });
+  const ui = await workbench(async path => {
+    if (path === '/ops/hosts/old-host/status')
+      return { ok: true, status: 200, json: async () => oldBody };
+    if (path === '/ops/auth/login')
+      return { ok: true, status: 200, json: async () => ({ token: 'new-operator-token' }) };
+    return { ok: true, status: 200, json: async () => ({ items: [], status: 'OPEN', weeks: [] }) };
+  });
+  ui.item('hostReviewUserId').value = 'old-host';
+  ui.item('hostReviewReason').value = '人工核验已完成';
+  const oldWrite = ui.item('submitHostReview').onclick?.();
+  ui.item('operatorUser').value = 'another-operator';
+  await ui.item('operatorLogin').onclick?.();
+  releaseOld({ hostId: 'old-host', status: 'ESTABLISHED', reviewedBy: 'old-operator' });
+  await oldWrite;
+  assert.equal(ui.storage.get('operatorToken'), 'new-operator-token');
+  assert.equal(ui.item('hostReviewResult').textContent, '');
+});
+
+test('an old write network failure cannot replace a newer operator’s status', async () => {
+  let rejectOld!: (reason: Error) => void;
+  const oldWriteResponse = new Promise((_, reject) => { rejectOld = reject; });
+  const ui = await workbench(async path => {
+    if (path === '/ops/events/old-event/hold') return oldWriteResponse;
+    if (path === '/ops/auth/login')
+      return { ok: true, status: 200, json: async () => ({ token: 'new-operator-token' }) };
+    return { ok: true, status: 200, json: async () => ({ items: [], status: 'OPEN', weeks: [] }) };
+  });
+  ui.item('holdEventId').value = 'old-event';
+  ui.item('holdReason').value = '旧账号的暂停原因';
+  const oldWrite = ui.item('placeHold').onclick?.();
+  ui.item('operatorUser').value = 'another-operator';
+  await ui.item('operatorLogin').onclick?.();
+  const newStatus = ui.item('status').textContent;
+  rejectOld(new Error('Failed to fetch'));
+  await oldWrite;
+  assert.equal(ui.storage.get('operatorToken'), 'new-operator-token');
+  assert.equal(ui.item('status').textContent, newStatus);
+});
+
+test('an old write body failure cannot display an error for a newer operator', async () => {
+  let rejectOld!: (reason: Error) => void;
+  const oldBody = new Promise((_, reject) => { rejectOld = reject; });
+  const ui = await workbench(async path => {
+    if (path === '/ops/hosts/old-host/status')
+      return { ok: true, status: 200, json: async () => oldBody };
+    if (path === '/ops/auth/login')
+      return { ok: true, status: 200, json: async () => ({ token: 'new-operator-token' }) };
+    return { ok: true, status: 200, json: async () => ({ items: [], status: 'OPEN', weeks: [] }) };
+  });
+  ui.item('hostReviewUserId').value = 'old-host';
+  ui.item('hostReviewReason').value = '旧账号的核验依据';
+  const oldWrite = ui.item('submitHostReview').onclick?.();
+  ui.item('operatorUser').value = 'another-operator';
+  await ui.item('operatorLogin').onclick?.();
+  rejectOld(new Error('body stream aborted'));
+  await oldWrite;
+  assert.equal(ui.item('hostReviewResult').textContent, '');
+});
+
+test('a write that receives 401 expires only its current session and login restores the workbench', async () => {
+  const ui = await workbench(async (path, options) => {
+    if (path === '/ops/auth/login') return { ok: true, status: 200, json: async () => ({ token: 'renewed-token' }) };
+    if (path === '/ops/events/event-1/support-minutes' && options?.method === 'POST')
+      return { ok: false, status: 401, json: async () => ({ code: 'UNAUTHENTICATED', message: '登录已失效' }) };
+    return { ok: true, status: 200, json: async () => ({ items: [], status: 'OPEN', weeks: [] }) };
+  });
+  ui.item('supportEventId').value = 'event-1';
+  ui.item('supportMinutes').value = '5';
+  ui.item('supportCategory').value = 'SUPPORT';
+  await ui.item('recordSupportMinutes').onclick?.();
+  assert.equal(ui.storage.has('operatorToken'), false);
+  assert.equal(ui.item('operatorWorkbench').disabled, true);
+  ui.item('operatorUser').value = 'operator';
+  await ui.item('operatorLogin').onclick?.();
+  assert.equal(ui.storage.get('operatorToken'), 'renewed-token');
+  assert.equal(ui.item('operatorWorkbench').disabled, false);
+  assert.match(ui.item('status').textContent, /举报 0/);
+});
+
 test('a denied queue does not hide other permitted operator queues', async () => {
   const ui = await workbench(async path => path === '/ops/privacy?offset=0'
     ? { ok: false, status: 403, json: async () => ({ code: 'FORBIDDEN', message: '无运营权限' }) }
@@ -89,6 +250,7 @@ test('a denied queue does not hide other permitted operator queues', async () =>
   assert.match(ui.item('status').textContent, /个人信息请求 无权限/);
   assert.doesNotMatch(ui.item('status').textContent, /个人信息请求 0/);
   assert.match(ui.item('status').textContent, /无权限.*privacy/i);
+  assert.equal(ui.storage.get('operatorToken'), 'session-token');
 });
 
 test('AI draft alert can be reviewed from the operator list without claiming cost settlement', async () => {
@@ -163,6 +325,7 @@ test('operator refresh shows a recoverable network error instead of a perpetual 
   await ui.item('refresh').onclick?.();
   assert.match(ui.item('status').textContent, /网络连接失败.*刷新/);
   assert.match(ui.item('metrics').textContent, /读取失败/);
+  assert.equal(ui.storage.get('operatorToken'), 'session-token');
   offline = false;
   await ui.item('refresh').onclick?.();
   assert.match(ui.item('metrics').textContent, /到期活动 0/);
