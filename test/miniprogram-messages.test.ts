@@ -288,15 +288,15 @@ test('approval detail and reminder receipt navigate to the matching event sectio
     '/pages/event/event?id=event%2F1&section=checkinSection']);
 });
 
-test('an unscoped safety notice opens its real profile record after it is marked read', async () => {
+test('an unscoped safety notice opens its real profile record before it is marked read', async () => {
   const actions: string[] = [];
   const page = mount({ async post(path: string) { actions.push(path); } }, {
-    switchTab(options: { url: string }) { actions.push(options.url); }
+    switchTab(options: { url: string; success?: () => void }) { actions.push(options.url); options.success?.(); }
   });
   await page.openNotice({ currentTarget: { dataset: {
     id: 'report-notice', eventId: '', kind: 'REPORT_RESOLVED_UNSCOPED'
   } } });
-  assert.deepEqual(actions, ['/me/notifications/report-notice/open', '/pages/me/me']);
+  assert.deepEqual(actions, ['/pages/me/me', '/me/notifications/report-notice/open']);
 });
 
 test('approval pagination restarts after another reviewer changes the queue', async () => {

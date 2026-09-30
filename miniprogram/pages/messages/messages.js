@@ -209,8 +209,8 @@ Page({
   },
   async openNotificationCenter() {
     const filter = 'ALL';
-    this.setData({ viewMode: 'CENTER', filter,
-      ...displayed(this.data.items, filter, this.data.searchQuery) });
+    this.setData({ viewMode: 'CENTER', filter, searchOpen: false, searchQuery: '',
+      ...displayed(this.data.items, filter) });
     this.setTabBarHidden(true);
     if (this.data.loadState === 'READY' && this.data.approvalLoadState === 'IDLE')
       await this.loadApprovals();
@@ -335,19 +335,25 @@ Page({
     const profileFocus = profileFocusByKind[kind];
     const generation = this._generation;
     try {
-      if (eventId && !profileFocus) {
+      if (profileFocus) {
+        wx.setStorageSync?.('irlProfileFocusIntent', profileFocus);
+        try {
+          await new Promise((resolve, reject) => wx.switchTab({ url: '/pages/me/me', success: resolve, fail: reject }));
+        } catch (error) {
+          wx.removeStorageSync?.('irlProfileFocusIntent');
+          throw error;
+        }
+      } else if (eventId) {
         await new Promise((resolve, reject) => wx.navigateTo({
           url: '/pages/event/event?id=' + encodeURIComponent(eventId) +
             (['checkinSection', 'expenseSection', 'detailsSection', 'hostSection'].includes(section) ? '&section=' + section : ''),
           success: resolve, fail: reject
         }));
       }
+      if (generation !== this._generation) return;
       await api.post(`/me/notifications/${encodeURIComponent(id)}/open`, {});
       if (generation !== this._generation) return;
-      if (profileFocus) {
-        wx.setStorageSync?.('irlProfileFocusIntent', profileFocus);
-        return wx.switchTab({ url: '/pages/me/me' });
-      }
+      if (profileFocus) return;
       if (!eventId) {
         await this.refresh();
         this.setData({ message: '通知已打开。' });

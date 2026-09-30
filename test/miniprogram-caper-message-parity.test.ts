@@ -80,6 +80,27 @@ test('notification center reloads live approvals when returning and restores the
   assert.equal(bar.at(-1), 'show');
 });
 
+test('entering notification center clears the inbox-only search so All shows every loaded notice', async () => {
+  const page = mount({ async get(path: string) {
+    if (path.startsWith('/me/approval-requests')) return { items: [], total: 0, nextOffset: null };
+    return { items: [
+      { id: 'reminder', kind: 'EVENT_REMINDER', event_id: 'event-1', status: 'IN_APP' },
+      { id: 'report', kind: 'REPORT_RESOLVED_UNSCOPED', event_id: null, status: 'IN_APP' }
+    ], total: 2, unreadTotal: 2, nextOffset: null };
+  } }, { getStorageSync(key: string) { return key === 'sessionToken' ? 'token' : 'member'; } });
+  await page.onShow();
+  page.toggleSearch();
+  page.searchInput({ detail: { value: 'reminder' } });
+  assert.equal(page.data.filteredCount, 1);
+
+  await page.openNotificationCenter();
+  assert.equal(page.data.searchOpen, false);
+  assert.equal(page.data.searchQuery, '');
+  assert.equal(page.data.filteredCount, 2);
+  assert.deepEqual(Array.from(page.data.items, (item: { id: string; visible: boolean }) =>
+    [item.id, item.visible]), [['reminder', true], ['report', true]]);
+});
+
 test('notification settings action opens the real profile consent controls', () => {
   const actions: string[] = [];
   const page = mount({}, {
@@ -90,21 +111,50 @@ test('notification settings action opens the real profile consent controls', () 
   assert.deepEqual(actions, ['irlProfileFocusIntent=notificationSettingsSection', '/pages/me/me']);
 });
 
-test('offer notice opens the profile action queue after marking the notice read', async () => {
+test('offer notice opens the profile action queue before marking the notice read', async () => {
   const actions: string[] = [];
   const page = mount({
     async post(path: string) { actions.push(path); }
   }, {
     setStorageSync(key: string, value: string) { actions.push(key + '=' + value); },
-    switchTab(options: { url: string }) { actions.push(options.url); }
+    switchTab(options: { url: string; success?: () => void }) { actions.push(options.url); options.success?.(); }
   });
   await page.openNotice({ currentTarget: { dataset: {
     id: 'offer-notice', eventId: 'event-1', kind: 'WAITLIST_OFFER'
   } } });
   assert.deepEqual(actions, [
-    '/me/notifications/offer-notice/open',
     'irlProfileFocusIntent=noticeSection',
-    '/pages/me/me'
+    '/pages/me/me',
+    '/me/notifications/offer-notice/open'
+  ]);
+});
+
+test('a profile record notice stays unread when its destination fails to open', async () => {
+  const actions: string[] = [];
+  let canOpenProfile = false;
+  const page = mount({ async post(path: string) { actions.push(path); } }, {
+    setStorageSync(key: string, value: string) { actions.push(key + '=' + value); },
+    removeStorageSync(key: string) { actions.push('remove:' + key); },
+    switchTab(options: { url: string; success?: () => void; fail?: (error: Error) => void }) {
+      actions.push(options.url);
+      if (canOpenProfile) options.success?.();
+      else options.fail?.(new Error('profile unavailable'));
+    }
+  });
+  const notice = { currentTarget: { dataset: {
+    id: 'report-notice', eventId: '', kind: 'REPORT_RESOLVED_UNSCOPED'
+  } } };
+
+  await page.openNotice(notice);
+  assert.deepEqual(actions, [
+    'irlProfileFocusIntent=reportSection', '/pages/me/me', 'remove:irlProfileFocusIntent'
+  ]);
+  assert.match(page.data.message, /profile unavailable/);
+
+  canOpenProfile = true;
+  await page.openNotice(notice);
+  assert.deepEqual(actions.slice(3), [
+    'irlProfileFocusIntent=reportSection', '/pages/me/me', '/me/notifications/report-notice/open'
   ]);
 });
 
@@ -118,13 +168,13 @@ test('safety and appeal notice actions open the matching profile record section'
     const actions: string[] = [];
     const page = mount({ async post(path: string) { actions.push(path); } }, {
       setStorageSync(key: string, value: string) { actions.push(key + '=' + value); },
-      switchTab(options: { url: string }) { actions.push(options.url); }
+      switchTab(options: { url: string; success?: () => void }) { actions.push(options.url); options.success?.(); }
     });
     await page.openNotice({ currentTarget: { dataset: { id: 'notice-' + kind, eventId: 'event-1', kind } } });
     assert.deepEqual(actions, [
-      `/me/notifications/notice-${kind}/open`,
       `irlProfileFocusIntent=${focus}`,
-      '/pages/me/me'
+      '/pages/me/me',
+      `/me/notifications/notice-${kind}/open`
     ]);
   }
 });
