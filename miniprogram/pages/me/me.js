@@ -4,6 +4,29 @@ const activityStatusLabels = {
   DRAFT: '草稿', REVIEW_PENDING: '待审核', RECRUITING: '招募中', CONFIRMED: '已成局',
   IN_PROGRESS: '进行中', COMPLETED: '已结束', CANCELLED: '已取消', EXPIRED: '未成局'
 };
+const recordStatusLabels = {
+  OPEN: '待处理', IN_REVIEW: '处理中', RESOLVED: '已处理', FULFILLED: '已完成', CANCELLED: '已取消',
+  PROTECTED_PENDING_POLICY: '保护措施已生效，待人工核查',
+  SAFEGUARDS_APPLIED_PENDING_REVIEW: '账号保护已执行，待人工核查'
+};
+const appealStatusLabels = { ...recordStatusLabels, IN_REVIEW: '复核中', RESOLVED: '复核完成' };
+const appealOutcomeLabels = { UPHOLD: '维持原结论', OVERTURN: '复核改判' };
+const privacyKindLabels = { EXPORT: '导出本人数据', DELETE: '注销或删除申请', CORRECT: '更正本人数据' };
+const reportKindLabels = { SAFETY: '安全举报', CONTENT: '内容举报', ATTENDANCE: '到场争议', OTHER: '问题反馈' };
+const contentKindLabels = { ANNOUNCEMENT: '活动公告', QUESTION: '活动提问', ANSWER: '主办方回复' };
+const defaultEventReminderNotice = '允许发送活动提醒；站内通知始终可查看，外部消息是否可用以实际服务配置为准。';
+const defaultSimilarInvitesNotice = '允许旧活动主办方在结项后看到自己的活动内身份并将自己列入类似活动邀请候选；不会自动发送邀请。';
+function emptySectionLoadErrors() {
+  return { notifications: false, privacy: false, blocks: false, removals: false, reports: false,
+    appeals: false, content: false, consents: false, similar: false, activities: false };
+}
+function readProfileIdentity() {
+  return typeof wx !== 'undefined' && typeof wx.getStorageSync === 'function'
+    ? ['sessionToken', 'userId', 'devUser'].map(key => wx.getStorageSync(key)) : null;
+}
+function sameProfileIdentity(expected, current) {
+  return !expected || !current || expected.every((value, index) => value === current[index]);
+}
 function activityCover(item) {
   const title = item.title || '';
   if (item.type === 'badminton' || /羽毛球/.test(title)) return '/assets/stitch/caper_home_badminton.jpg';
@@ -88,13 +111,15 @@ Page({
     activityStats: { total: null, hosted: null, confirmed: null }, activityItems: [], activityFilter: 'all',
     activityEmptyLabel: activityEmptyLabels.all, activityPreview: [], hostedPreview: null,
     inviteReady: false, inviteCandidateCount: 0, activityLoadState: 'IDLE',
-    nextNotificationOffset: null, notificationSnapshot: null, privacy: [], blocks: [], removals: [], reports: [], appeals: [], rejectedContent: [],
+    nextNotificationOffset: null, notificationSnapshot: null, notificationLoadState: 'IDLE',
+    privacy: [], blocks: [], removals: [], reports: [], appeals: [], rejectedContent: [],
     appealDescription: '', reportAppealDescription: '', contentAppealDescription: '', eventReminder: false,
     similarInvites: false, eventReminderNeedsReconfirmation: false, similarInvitesNeedsReconfirmation: false,
-    eventReminderNotice: '允许发送活动提醒；站内通知始终可查看，外部消息是否可用以实际服务配置为准。',
+    eventReminderNotice: defaultEventReminderNotice,
     eventReminderNoticeVersion: '',
-    similarInvitesNotice: '允许旧活动主办方在结项后看到自己的活动内身份并将自己列入类似活动邀请候选；不会自动发送邀请。',
+    similarInvitesNotice: defaultSimilarInvitesNotice,
     similarInvitesNoticeVersion: '',
+    consentLoadState: 'IDLE', similarInviteLoadState: 'IDLE', sectionLoadErrors: emptySectionLoadErrors(),
     loadState: 'IDLE', message: '', reportDescription: '', reportEventId: '' },
   onLoad() { this.setData({ statusBarHeight: wx.getSystemInfoSync?.().statusBarHeight || 24,
     headerPaddingRight: headerPaddingRight() }); },
@@ -121,7 +146,7 @@ Page({
       return this.setData({ loadState: 'UNAUTHENTICATED', message: '请先微信登录' });
     }
     this._pendingFocus = '';
-    const actor = hasSession ? wx.getStorageSync('userId') : this.data.devUser;
+    const actor = hasSession ? (wx.getStorageSync('userId') || wx.getStorageSync('sessionToken')) : this.data.devUser;
     const privateActor = `${hasSession ? 'session' : 'dev'}:${actor}`;
     if (this._privateActor !== privateActor) this.clearPrivateData();
     this._privateActor = privateActor;
@@ -130,36 +155,102 @@ Page({
     if (reportContext) this.setData({ reportEventId: reportContext.actor === actor ? reportContext.eventId : '',
       advancedOpen: reportContext.actor === actor || this.data.advancedOpen });
     await this.refresh();
+    if (this.data.loadState === 'UNAUTHENTICATED' || this.data.loadState === 'ACCESS_DENIED') return;
     if (reportContext?.actor === actor) this.revealAdvanced('reportSection');
     else if (requestedFocus) this.revealAdvanced(requestedFocus, requestedFocus !== 'notificationSettingsSection');
   },
   onHide() { this._pendingFocus = ''; },
   onUnload() { this._pendingFocus = ''; },
+  clearForIdentitySwitch() {
+    this.clearPrivateData(); this._privateActor = null;
+    this.setData({ hasSession: false, loadState: 'UNAUTHENTICATED', message: '账号已切换，请重新进入个人页。' });
+  },
+  handlePrivateAccessError(error) {
+    if (!['UNAUTHENTICATED', 'FORBIDDEN', 'IDENTITY_CHANGED'].includes(error?.code) &&
+      error?.status !== 401 && error?.status !== 403) return false;
+    const unauthenticated = error?.code === 'UNAUTHENTICATED' || error?.status === 401;
+    this.clearPrivateData(); this._privateActor = null;
+    if (unauthenticated && typeof wx !== 'undefined') {
+      wx.removeStorageSync?.('sessionToken'); wx.removeStorageSync?.('userId');
+    }
+    this.setData({ hasSession: false, loadState: unauthenticated ? 'UNAUTHENTICATED' : 'ACCESS_DENIED',
+      message: unauthenticated ? '登录已失效，请重新微信登录。' : '当前身份无法读取个人资料，请重新核对账号。' });
+    return true;
+  },
   async refresh() {
     const generation = this._refreshGeneration = (this._refreshGeneration || 0) + 1;
-    this.setData({ nextNotificationOffset: null, loadState: 'LOADING' });
+    const identity = readProfileIdentity();
+    this.setData({ nextNotificationOffset: null, loadState: 'LOADING', sectionLoadErrors: emptySectionLoadErrors() });
     try {
-      const [notifications, privacy, blocks, removals, reports, appeals, rejectedContent, consents, similar, activityResult] = await Promise.all([api.get('/me/notifications?offset=0'), api.get('/privacy/requests'), api.get('/me/blocks'),
-        api.get('/me/removals'), api.get('/me/reports'), api.get('/me/appeals'), api.get('/me/content'), api.get('/me/consents'), api.get('/me/similar-invites'),
-        api.get('/me/events').catch(() => null)]);
+      const names = ['notifications', 'privacy', 'blocks', 'removals', 'reports', 'appeals', 'content',
+        'consents', 'similar', 'activities'];
+      const paths = ['/me/notifications?offset=0', '/privacy/requests', '/me/blocks', '/me/removals',
+        '/me/reports', '/me/appeals', '/me/content', '/me/consents', '/me/similar-invites', '/me/events'];
+      const results = await Promise.all(paths.map(path => Promise.resolve().then(() => api.get(path))
+        .then(value => ({ status: 'fulfilled', value }), reason => ({ status: 'rejected', reason }))));
       if (generation !== this._refreshGeneration) return false;
+      if (!sameProfileIdentity(identity, readProfileIdentity())) { this.clearForIdentitySwitch(); return false; }
+      const denied = results.find(result => result.status === 'rejected' &&
+        (['UNAUTHENTICATED', 'FORBIDDEN', 'IDENTITY_CHANGED'].includes(result.reason?.code) ||
+          result.reason?.status === 401 || result.reason?.status === 403));
+      if (denied) { this.handlePrivateAccessError(denied.reason); return false; }
+      const values = results.map(result => result.status === 'fulfilled' ? result.value : null);
+      const sectionLoadErrors = emptySectionLoadErrors();
+      names.forEach((name, index) => { sectionLoadErrors[name] = results[index].status === 'rejected'; });
+      [0, 1, 2, 3, 4, 5, 6, 9].forEach(index => {
+        if (values[index] && !Array.isArray(values[index].items)) {
+          sectionLoadErrors[names[index]] = true; values[index] = null;
+        }
+      });
+      if (values[7] && typeof values[7].eventReminder !== 'boolean') {
+        sectionLoadErrors.consents = true; values[7] = null;
+      }
+      if (values[8] && typeof values[8].granted !== 'boolean') {
+        sectionLoadErrors.similar = true; values[8] = null;
+      }
+      const [notifications, privacy, blocks, removals, reports, appeals, rejectedContent, consents, similar, activityResult] = values;
       const activityItems = Array.isArray(activityResult?.items) ? activityResult.items : null;
+      if (!activityItems) sectionLoadErrors.activities = true;
+      const eventTitles = new Map((activityItems || []).filter(item => item.id && item.title)
+        .map(item => [item.id, item.title]));
+      const eventLabel = eventId => eventTitles.get(eventId) || '相关活动';
+      const listItems = value => Array.isArray(value?.items) ? value.items : [];
+      const errors = Object.values(sectionLoadErrors).filter(Boolean).length;
       const mappedActivityItems = activityItems ? activityItems.map(item => ({
-        ...item, statusLabel: activityStatusLabels[item.status] || item.status || '状态待核对',
+        ...item, statusLabel: activityStatusLabels[item.status] || '状态待核对',
         dateLabel: activityDateLabel(item.startAt), cover: activityCover(item)
       })) : [];
       const activityFilter = this.data.activityFilter;
-      this.setData({ notifications: presentNotifications(notifications.items, activityItems || []), notificationsTotal: notifications.total ?? notifications.items.length,
-        nextNotificationOffset: notifications.nextOffset ?? null, notificationSnapshot: notifications.snapshot ?? null,
-        privacy: privacy.items, blocks: blocks.items, removals: removals.items, reports: reports.items,
-        appeals: appeals.items, rejectedContent: rejectedContent.items,
-        eventReminder: consents.eventReminder, similarInvites: similar.granted,
-        eventReminderNeedsReconfirmation: Boolean(consents.reconfirmationRequired),
-        similarInvitesNeedsReconfirmation: Boolean(similar.reconfirmationRequired),
-        eventReminderNotice: consents.eventReminderNotice?.text || this.data.eventReminderNotice,
-        eventReminderNoticeVersion: consents.eventReminderNotice?.version || '',
-        similarInvitesNotice: similar.notice?.text || this.data.similarInvitesNotice,
-        similarInvitesNoticeVersion: similar.notice?.version || '',
+      const notificationItems = listItems(notifications);
+      this._loadedIdentity = identity;
+      this.setData({ notifications: presentNotifications(notificationItems, activityItems || []),
+        notificationsTotal: notifications ? notifications.total ?? notificationItems.length : 0,
+        nextNotificationOffset: notifications?.nextOffset ?? null, notificationSnapshot: notifications?.snapshot ?? null,
+        notificationLoadState: notifications ? 'READY' : 'ERROR',
+        privacy: listItems(privacy).map(item => ({ ...item,
+          kindLabel: privacyKindLabels[item.kind] || '个人信息请求',
+          statusLabel: recordStatusLabels[item.status] || '状态待核对' })),
+        blocks: listItems(blocks),
+        removals: listItems(removals).map(item => ({ ...item, eventLabel: eventLabel(item.event_id) })),
+        reports: listItems(reports).map(item => ({ ...item,
+          eventLabel: item.event_id ? eventLabel(item.event_id) : '',
+          kindLabel: reportKindLabels[item.kind] || '举报与求助',
+          statusLabel: recordStatusLabels[item.status] || '状态待核对' })),
+        appeals: listItems(appeals).map(item => ({ ...item,
+          statusLabel: appealStatusLabels[item.status] || '状态待核对',
+          outcomeLabel: item.outcome ? (appealOutcomeLabels[item.outcome] || '结论待核对') : '' })),
+        rejectedContent: listItems(rejectedContent).map(item => ({ ...item,
+          eventLabel: eventLabel(item.event_id),
+          kindLabel: contentKindLabels[item.kind] || '活动内容',
+          appealStatusLabel: item.appeal_status ? (appealStatusLabels[item.appeal_status] || '状态待核对') : '' })),
+        eventReminder: Boolean(consents?.eventReminder), similarInvites: Boolean(similar?.granted),
+        eventReminderNeedsReconfirmation: Boolean(consents?.reconfirmationRequired),
+        similarInvitesNeedsReconfirmation: Boolean(similar?.reconfirmationRequired),
+        eventReminderNotice: consents?.eventReminderNotice?.text || defaultEventReminderNotice,
+        eventReminderNoticeVersion: consents?.eventReminderNotice?.version || '',
+        similarInvitesNotice: similar?.notice?.text || defaultSimilarInvitesNotice,
+        similarInvitesNoticeVersion: similar?.notice?.version || '',
+        consentLoadState: consents ? 'READY' : 'ERROR', similarInviteLoadState: similar ? 'READY' : 'ERROR',
         activityStats: activityItems ? { total: activityItems.length,
           hosted: activityItems.filter(item => item.isHost).length,
           confirmed: activityItems.filter(item => item.myRegistrationStatus === 'CONFIRMED').length } :
@@ -170,12 +261,21 @@ Page({
         inviteReady: mappedActivityItems.some(item => item.isHost && item.status === 'RECRUITING'),
         inviteCandidateCount: mappedActivityItems.filter(item => item.isHost && item.status === 'RECRUITING').length,
         activityLoadState: activityItems ? 'READY' : 'ERROR',
-        loadState: 'READY', message: '' });
-      return true;
-    } catch (error) { if (generation === this._refreshGeneration) this.setData({ loadState: 'ERROR', message: error.message }); return false; }
+        sectionLoadErrors, loadState: errors === 0 ? 'READY' : errors === results.length ? 'ERROR' : 'PARTIAL',
+        message: errors === results.length ? (results.find(result => result.status === 'rejected')?.reason?.message || '加载失败，请重试。')
+          : errors ? '部分内容加载失败，请点击重新加载。' : '' });
+      return errors < results.length;
+    } catch (_) {
+      if (generation === this._refreshGeneration) {
+        this.clearPrivateData();
+        this.setData({ loadState: 'ERROR', message: '个人资料加载失败，请重试。' });
+      }
+      return false;
+    }
   },
   retryRefresh() {
-    if (!this.data.hasSession && !this.data.developmentMode) return;
+    if (!this.data.hasSession && !this.data.developmentMode)
+      return this.data.loadState === 'ACCESS_DENIED' ? this.login() : undefined;
     return this.refresh();
   },
   toggleAdvanced() {
@@ -204,29 +304,39 @@ Page({
     const offset = this.data.nextNotificationOffset;
     if (offset === null || offset === undefined) return;
     const generation = this._refreshGeneration;
+    const identity = readProfileIdentity();
+    if (!sameProfileIdentity(this._loadedIdentity, identity)) return this.clearForIdentitySwitch();
     const snapshot = this.data.notificationSnapshot;
     this.setData({ nextNotificationOffset: null });
     try {
       const page = await api.get(`/me/notifications?offset=${offset}&snapshot=${encodeURIComponent(snapshot)}`);
       if (generation !== this._refreshGeneration) return;
+      if (!sameProfileIdentity(identity, readProfileIdentity())) return this.clearForIdentitySwitch();
       this.setData({ notifications: this.data.notifications.concat(presentNotifications(page.items, this.data.activityItems)), notificationsTotal: page.total,
         nextNotificationOffset: page.nextOffset ?? null, notificationSnapshot: page.snapshot });
     } catch (error) {
       if (generation !== this._refreshGeneration) return;
+      if (!sameProfileIdentity(identity, readProfileIdentity())) return this.clearForIdentitySwitch();
+      if (this.handlePrivateAccessError(error)) return;
       if (error.code === 'QUEUE_CHANGED') {
-        if (await this.refresh()) this.setData({ message: '通知列表已变化，已从最新通知重新加载。' });
+        if (await this.refresh() && this.data.notificationLoadState === 'READY')
+          this.setData({ message: '通知列表已变化，已从最新通知重新加载。' });
       } else this.setData({ nextNotificationOffset: offset, message: error.message });
     }
   },
   clearPrivateData() {
     this._refreshGeneration = (this._refreshGeneration || 0) + 1;
+    this._loadedIdentity = null;
     this.setData({ notifications: [], notificationsTotal: 0, nextNotificationOffset: null,
       activityStats: { total: null, hosted: null, confirmed: null }, activityItems: [], activityFilter: 'all',
       activityEmptyLabel: activityEmptyLabels.all, activityPreview: [], hostedPreview: null,
       inviteReady: false, inviteCandidateCount: 0, activityLoadState: 'IDLE',
-      notificationSnapshot: null, privacy: [], blocks: [], removals: [], reports: [], appeals: [], rejectedContent: [],
+      notificationSnapshot: null, notificationLoadState: 'IDLE', privacy: [], blocks: [], removals: [], reports: [], appeals: [], rejectedContent: [],
       eventReminder: false, similarInvites: false, eventReminderNeedsReconfirmation: false,
-      similarInvitesNeedsReconfirmation: false, advancedOpen: false,
+      similarInvitesNeedsReconfirmation: false, eventReminderNotice: defaultEventReminderNotice,
+      eventReminderNoticeVersion: '', similarInvitesNotice: defaultSimilarInvitesNotice,
+      similarInvitesNoticeVersion: '', consentLoadState: 'IDLE', similarInviteLoadState: 'IDLE',
+      sectionLoadErrors: emptySectionLoadErrors(), advancedOpen: false,
       reportDescription: '', appealDescription: '',
       reportAppealDescription: '', contentAppealDescription: '', reportEventId: '', loadState: 'IDLE', message: '' });
   },
@@ -252,7 +362,7 @@ Page({
       }
       this.clearPrivateData();
       this._privateActor = `session:${session.userId}`;
-      this.setData({ hasSession: true, message: '已登录：' + session.userId });
+      this.setData({ hasSession: true, message: '已登录，正在加载个人资料。' });
       await this.refresh();
       this._pendingFocus = '';
       if (requestedFocus) this.revealAdvanced(requestedFocus, requestedFocus !== 'notificationSettingsSection');

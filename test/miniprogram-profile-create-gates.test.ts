@@ -6,13 +6,17 @@ import { runInNewContext } from 'node:vm';
 test('signed-out profile leaves login and public navigation visible but gates private actions', () => {
   const markup = readFileSync(new URL('../miniprogram/pages/me/me.wxml', import.meta.url), 'utf8');
   const login = markup.indexOf('bindtap="login"');
-  const privateGate = markup.indexOf('<block wx:if="{{hasSession || developmentMode}}">');
+  const gate = markup.match(/<block wx:if="\{\{([^"]+)\}\}">/);
+  const privateGate = gate?.index ?? -1;
   const reminder = markup.indexOf('id="reminderConsentSwitch"');
   const exportData = markup.indexOf('id="exportDataButton"');
   const report = markup.indexOf('bindtap="report"');
   const about = markup.indexOf('id="aboutButton"');
   const lastPrivateGateEnd = markup.lastIndexOf('</block>', about);
 
+  assert.match(gate?.[1] || '', /\bhasSession\s*\|\|\s*developmentMode\b/);
+  assert.match(gate?.[1] || '', /loadState\s*!==\s*'ACCESS_DENIED'/);
+  assert.match(gate?.[1] || '', /loadState\s*!==\s*'UNAUTHENTICATED'/);
   assert.ok(login >= 0 && login < privateGate, 'WeChat login must remain visible before the private gate');
   assert.ok(privateGate < reminder && reminder < exportData && exportData < report,
     'consents, privacy export and reports must stay inside the private gate');
