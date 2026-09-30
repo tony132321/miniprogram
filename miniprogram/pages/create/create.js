@@ -366,7 +366,9 @@ Page({
     if (this.data.templateDurationMinutes && !this.data.repeatEndEdited) {
       const end = endFromDuration(startDate, this.data.startTime, this.data.templateDurationMinutes);
       this.setData({ startDate, endDate: end.date, endTime: end.time, venueConfirmed: false, quickDateSelected: '' });
-    } else this.setData({ startDate, endDate: this.data.endDate || startDate,
+    } else this.setData({ startDate,
+      endDate: !this.data.endDate || this.data.endDate === this.data.startDate || this.data.endDate < startDate
+        ? startDate : this.data.endDate,
       venueConfirmed: startDate === this.data.startDate ? this.data.venueConfirmed : false, quickDateSelected: '' });
   },
   chooseQuickDate(event) {

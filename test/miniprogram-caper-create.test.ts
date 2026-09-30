@@ -229,6 +229,20 @@ test('quick schedule uses Shanghai day and clears stale venue confirmation', () 
   assert.equal(page.data.venueConfirmed, false);
 });
 
+test('changing a quick date keeps a same-day event valid without overwriting a later manual end date', () => {
+  const { page } = loadPage(Date.parse('2026-09-29T16:01:00Z'));
+  page.chooseQuickDate({ currentTarget: { dataset: { choice: 'saturday' } } });
+  page.chooseQuickDate({ currentTarget: { dataset: { choice: 'sunday' } } });
+  assert.equal(page.data.startDate, '2026-10-04');
+  assert.equal(page.data.endDate, '2026-10-04', 'the old Saturday must not remain as the end date');
+  assert.ok(Date.parse(page.buildInput().endAt) > Date.parse(page.buildInput().startAt));
+
+  page.setEndDate({ detail: { value: '2026-10-06' } });
+  page.chooseQuickDate({ currentTarget: { dataset: { choice: 'saturday' } } });
+  assert.equal(page.data.startDate, '2026-10-03');
+  assert.equal(page.data.endDate, '2026-10-06', 'a still-valid manual multi-day end should remain');
+});
+
 test('published event editor back action returns to a valid tab', () => {
   const { page, routes } = loadPage(Date.now());
   page.setData({ stage: 'FORM', editingEvent: { id: 'event-1' } });
