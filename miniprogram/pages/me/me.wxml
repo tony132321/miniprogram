@@ -47,12 +47,14 @@
   <view class="section-head" id="noticeSection"><text class="section-mark"></text><text>站内通知</text><button class="section-link" bindtap="goMessages">查看全部 ›</button></view>
   <view class="section-card card">
   <view wx:if="{{sectionLoadErrors.notifications}}" class="empty">站内通知暂不可用，请重新加载。</view>
+  <view wx:if="{{offerFocusMessage && !focusedOfferId}}" class="hint offer-focus-message">{{offerFocusMessage}}</view>
   <view wx:if="{{!sectionLoadErrors.notifications && notifications.length === 0}}" class="empty">暂无站内通知</view>
   <view wx:if="{{notificationsTotal > 0}}" class="hint">已显示 {{notifications.length}} / {{notificationsTotal}} 条；未打开的通知优先显示。</view>
-  <view wx:for="{{notifications}}" wx:key="id" class="list-row notice-item">
+  <view wx:for="{{notifications}}" wx:key="id" id="notice-{{item.id}}" class="list-row notice-item {{item.id === focusedOfferId ? 'notice-offer-focused' : ''}}">
     <view class="notice-head"><text class="notice-title">{{item.kindLabel}}</text><text class="notice-read {{item.isOpened ? 'is-opened' : ''}}">{{item.statusLabel}}</text></view>
     <view wx:if="{{item.eventLabel}}" class="notice-context">关联活动 · {{item.eventLabel}}</view>
     <view class="notice-external">{{item.externalStatusLabel}}</view>
+    <view wx:if="{{item.id === focusedOfferId && offerFocusMessage}}" class="hint offer-focus-message">{{offerFocusMessage}}</view>
     <button class="notice-action" data-id="{{item.id}}" data-event="{{item.event_id}}" data-kind="{{item.kind}}" bindtap="openNotice">查看通知并标记已打开 ›</button>
     <block wx:if="{{item.kind === 'WAITLIST_OFFER'}}">
       <view wx:if="{{item.declinable}}" class="hint">补位确认截止：{{item.detail.expiresAt}}</view>

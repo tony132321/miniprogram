@@ -16,6 +16,7 @@ const reportKindLabels = { SAFETY: '安全举报', CONTENT: '内容举报', ATTE
 const contentKindLabels = { ANNOUNCEMENT: '活动公告', QUESTION: '活动提问', ANSWER: '主办方回复' };
 const defaultEventReminderNotice = '允许发送活动提醒；站内通知始终可查看，外部消息是否可用以实际服务配置为准。';
 const defaultSimilarInvitesNotice = '允许旧活动主办方在结项后看到自己的活动内身份并将自己列入类似活动邀请候选；不会自动发送邀请。';
+const maxOfferFocusPages = 5;
 function emptySectionLoadErrors() {
   return { notifications: false, privacy: false, blocks: false, removals: false, reports: false,
     appeals: false, content: false, consents: false, similar: false, activities: false };
@@ -23,6 +24,11 @@ function emptySectionLoadErrors() {
 function readProfileIdentity() {
   return typeof wx !== 'undefined' && typeof wx.getStorageSync === 'function'
     ? ['sessionToken', 'userId', 'devUser'].map(key => wx.getStorageSync(key)) : null;
+}
+function profileOfferIdentity() {
+  const token = wx.getStorageSync('sessionToken');
+  return token ? 'session:' + wx.getStorageSync('userId') + ':' + token :
+    'dev:' + (wx.getStorageSync('devUser') || config.developmentUser || '');
 }
 function sameProfileIdentity(expected, current) {
   return !expected || !current || expected.every((value, index) => value === current[index]);
@@ -133,10 +139,12 @@ Page({
     similarInvitesNotice: defaultSimilarInvitesNotice,
     similarInvitesNoticeVersion: '',
     consentLoadState: 'IDLE', similarInviteLoadState: 'IDLE', sectionLoadErrors: emptySectionLoadErrors(),
-    loadState: 'IDLE', message: '', reportDescription: '', reportEventId: '' },
+    loadState: 'IDLE', message: '', reportDescription: '', reportEventId: '',
+    focusedOfferId: '', offerFocusMessage: '' },
   onLoad() { this.setData({ statusBarHeight: wx.getSystemInfoSync?.().statusBarHeight || 24,
     headerPaddingRight: headerPaddingRight() }); },
   async onShow() {
+    const offerFocusGeneration = this._offerFocusGeneration = (this._offerFocusGeneration || 0) + 1;
     const bar = this.getTabBar && this.getTabBar(); if (bar) bar.setData({ selected: 4 });
     this.setData({ headerPaddingRight: headerPaddingRight() });
     if (this.data.developmentMode) this.setData({ devUser: wx.getStorageSync('devUser') || config.developmentUser });
@@ -146,6 +154,12 @@ Page({
     app.globalData.profileFocus = undefined;
     const storedFocus = wx.getStorageSync('irlProfileFocusIntent');
     if (storedFocus) wx.removeStorageSync('irlProfileFocusIntent');
+    const storedOfferIntent = wx.getStorageSync('irlProfileOfferIntent');
+    if (storedOfferIntent) wx.removeStorageSync('irlProfileOfferIntent');
+    const offerEventId = storedOfferIntent && typeof storedOfferIntent.eventId === 'string' &&
+      storedOfferIntent.eventId && storedOfferIntent.owner === profileOfferIdentity()
+      ? storedOfferIntent.eventId : '';
+    this.setData({ focusedOfferId: '', offerFocusMessage: '' });
     const allowedNoticeSections = ['noticeSection', 'reportSection', 'appealSection', 'contentSection',
       'notificationSettingsSection'];
     const requestedFocus = profileFocus || (allowedNoticeSections.includes(storedFocus) ? storedFocus : '');
@@ -169,11 +183,12 @@ Page({
       advancedOpen: reportContext.actor === actor || this.data.advancedOpen });
     await this.refresh();
     if (this.data.loadState === 'UNAUTHENTICATED' || this.data.loadState === 'ACCESS_DENIED') return;
-    if (reportContext?.actor === actor) this.revealAdvanced('reportSection');
+    if (offerEventId) await this.focusOfferNotification(offerEventId, privateActor, offerFocusGeneration);
+    else if (reportContext?.actor === actor) this.revealAdvanced('reportSection');
     else if (requestedFocus) this.revealAdvanced(requestedFocus, requestedFocus !== 'notificationSettingsSection');
   },
-  onHide() { this._pendingFocus = ''; },
-  onUnload() { this._pendingFocus = ''; },
+  onHide() { this._pendingFocus = ''; this._offerFocusGeneration = (this._offerFocusGeneration || 0) + 1; },
+  onUnload() { this._pendingFocus = ''; this._offerFocusGeneration = (this._offerFocusGeneration || 0) + 1; },
   clearForIdentitySwitch() {
     this.clearPrivateData(); this._privateActor = null;
     this.setData({ hasSession: false, loadState: 'UNAUTHENTICATED', message: '账号已切换，请重新进入个人页。' });
@@ -313,6 +328,73 @@ Page({
     if (typeof wx.nextTick === 'function') wx.nextTick(scroll);
     else scroll();
   },
+  async focusOfferNotification(eventId, actor, focusGeneration) {
+    const current = () => this._offerFocusGeneration === focusGeneration &&
+      this._privateActor === actor && this._loadedIdentity &&
+      sameProfileIdentity(this._loadedIdentity, readProfileIdentity());
+    const unavailable = message => {
+      if (!current()) return;
+      this.setData({ offerFocusMessage: message,
+        notifications: this.data.notifications.map(item => item.kind === 'WAITLIST_OFFER' &&
+          item.event_id === eventId ? { ...item, actionable: false, declinable: false } : item) });
+      this.revealAdvanced('noticeSection');
+    };
+    if (this.data.notificationLoadState !== 'READY' || this.data.activityLoadState !== 'READY')
+      return unavailable('当前补位通知或报名状态暂不可用，请重新加载后核对。');
+    if (!this.data.activityItems.some(item => item.id === eventId && item.myRegistrationStatus === 'OFFERED'))
+      return unavailable('这场活动的报名状态已变化，请到活动详情核对。');
+    let event;
+    try { event = await api.get('/events/' + encodeURIComponent(eventId)); }
+    catch (error) {
+      if (!current()) return;
+      if (this.handlePrivateAccessError(error)) return;
+      return unavailable('当前活动版本暂不可核对，请重新加载后处理补位。');
+    }
+    if (!current()) return;
+    if (event?.id !== eventId || !Number.isSafeInteger(event.version))
+      return unavailable('当前活动版本暂不可核对，请重新加载后处理补位。');
+    let stale = null;
+    let restarts = 0;
+    let pagesRead = 1;
+    while (current()) {
+      const matches = this.data.notifications.filter(item =>
+        item.kind === 'WAITLIST_OFFER' && item.event_id === eventId);
+      const live = matches.find(item => typeof item.detail?.offerId === 'string' && item.detail.offerId &&
+        item.event_version === event.version && Date.parse(item.detail.expiresAt) > Date.now() &&
+        (item.actionable || item.declinable));
+      if (live) {
+        this.setData({ focusedOfferId: live.id,
+          offerFocusMessage: '请核对补位截止时间，再选择确认或放弃。' });
+        return this.revealAdvanced(/^[A-Za-z0-9_-]+$/.test(live.id) ? 'notice-' + live.id : 'noticeSection');
+      }
+      if (!stale && matches.length) stale = matches[0];
+      const offset = this.data.nextNotificationOffset;
+      if (offset === null || offset === undefined) break;
+      if (pagesRead >= maxOfferFocusPages)
+        return unavailable('通知较多，暂未定位到这场活动的补位邀请；请在全部通知中查找或刷新。');
+      const beforeCount = this.data.notifications.length;
+      const beforeSnapshot = this.data.notificationSnapshot;
+      await this.loadMoreNotifications();
+      if (!current()) return;
+      pagesRead += beforeSnapshot === this.data.notificationSnapshot ? 1 : 2;
+      if (pagesRead > maxOfferFocusPages)
+        return unavailable('通知列表变化且通知较多，请在全部通知中查找或刷新。');
+      if (beforeSnapshot !== this.data.notificationSnapshot) {
+        if (++restarts > 1) return unavailable('通知列表持续变化，请重新加载后处理补位。');
+        stale = null;
+        continue;
+      }
+      if (this.data.notifications.length <= beforeCount || this.data.nextNotificationOffset === offset)
+        return unavailable('后续通知暂不可用，请重新加载后处理补位。');
+    }
+    if (!current()) return;
+    if (!stale) return unavailable('未找到这场活动当前可处理的补位通知，请刷新活动状态。');
+    this.setData({ focusedOfferId: stale.id,
+      offerFocusMessage: '这场活动的补位邀请已失效或版本已变化，请刷新活动状态。',
+      notifications: this.data.notifications.map(item => item.kind === 'WAITLIST_OFFER' && item.event_id === eventId
+        ? { ...item, actionable: false, declinable: false } : item) });
+    this.revealAdvanced(/^[A-Za-z0-9_-]+$/.test(stale.id) ? 'notice-' + stale.id : 'noticeSection');
+  },
   async loadMoreNotifications() {
     const offset = this.data.nextNotificationOffset;
     if (offset === null || offset === undefined) return;
@@ -350,7 +432,7 @@ Page({
       eventReminderNoticeVersion: '', similarInvitesNotice: defaultSimilarInvitesNotice,
       similarInvitesNoticeVersion: '', consentLoadState: 'IDLE', similarInviteLoadState: 'IDLE',
       sectionLoadErrors: emptySectionLoadErrors(), advancedOpen: false,
-      reportDescription: '', appealDescription: '',
+      focusedOfferId: '', offerFocusMessage: '', reportDescription: '', appealDescription: '',
       reportAppealDescription: '', contentAppealDescription: '', reportEventId: '', loadState: 'IDLE', message: '' });
   },
   devInput(event) { this.setData({ devUser: event.detail.value.trim() }); },
@@ -428,14 +510,42 @@ Page({
     } catch (error) { this.setData({ message: error.message }); }
   },
   async acceptOffer(event) {
-    const id = event.currentTarget.dataset.id; const version = Number(event.currentTarget.dataset.version);
-    try { await api.post(`/offers/${id}/accept`, { expectedVersion: version }); await this.refresh(); this.setData({ message: '已主动确认补位' }); }
-    catch (error) { this.setData({ message: error.message }); }
+    return this.runOfferDecision(event, 'accept', '已主动确认补位');
   },
   async declineOffer(event) {
+    return this.runOfferDecision(event, 'decline', '已拒绝补位，名额将按候补顺序处理。');
+  },
+  async runOfferDecision(event, decision, successMessage) {
     const id = event.currentTarget.dataset.id; const version = Number(event.currentTarget.dataset.version);
-    try { await api.post(`/offers/${id}/decline`, { expectedVersion: version }); await this.refresh(); this.setData({ message: '已拒绝补位，名额将按候补顺序处理。' }); }
-    catch (error) { this.setData({ message: error.message }); }
+    const identity = readProfileIdentity();
+    const actor = this._privateActor;
+    const focusGeneration = this._offerFocusGeneration;
+    const current = () => this._privateActor === actor && this._offerFocusGeneration === focusGeneration &&
+      sameProfileIdentity(identity, readProfileIdentity());
+    if (!current()) return;
+    try {
+      await api.post(`/offers/${id}/${decision}`, { expectedVersion: version });
+      if (!current()) return;
+      const refreshing = this.refresh();
+      const refreshGeneration = this._refreshGeneration;
+      await refreshing;
+      if (!current() || this._refreshGeneration !== refreshGeneration) return;
+      this.setData({ focusedOfferId: '', offerFocusMessage: '', message: successMessage });
+    } catch (error) { if (current()) await this.handleOfferActionError(error, id, current); }
+  },
+  async handleOfferActionError(error, offerId, current) {
+    if (!current()) return;
+    if (['OFFER_UNAVAILABLE', 'VERSION_CONFLICT'].includes(error?.code)) {
+      const refreshing = this.refresh();
+      const refreshGeneration = this._refreshGeneration;
+      await refreshing;
+      if (!current() || this._refreshGeneration !== refreshGeneration) return;
+      this.setData({ focusedOfferId: this.data.notifications.some(item => item.id === this.data.focusedOfferId)
+        ? this.data.focusedOfferId : '', offerFocusMessage: error.message || '补位状态已变化，请重新核对。',
+      notifications: this.data.notifications.map(item => item.kind === 'WAITLIST_OFFER' &&
+        item.detail?.offerId === offerId ? { ...item, actionable: false, declinable: false } : item) });
+    }
+    if (current()) this.setData({ message: error?.message || '补位操作未完成，请重试。' });
   },
   async openNotice(event) {
     const id = event.currentTarget.dataset.id; const eventId = event.currentTarget.dataset.event;

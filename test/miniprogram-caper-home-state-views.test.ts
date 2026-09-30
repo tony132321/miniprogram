@@ -188,7 +188,7 @@ test('a delayed detail from the previous identity cannot replace the new actor c
   assert.equal(page.data.visibleItems[0].venueLabel, '上海 · 蓝天体育中心');
 });
 
-test('an offered seat opens the existing profile decision controls instead of claiming acceptance', async () => {
+test('an offered seat identifies its event for fresh profile offer controls without claiming acceptance', async () => {
   const offered: ListedEvent = { id: 'offer', status: 'RECRUITING', title: '周五桌游',
     isHost: false, myRegistrationStatus: 'OFFERED' };
   const { page, switches, storage } = makeHome({ organizer: [offered] }, { offer: detail('offer') });
@@ -197,7 +197,8 @@ test('an offered seat opens the existing profile decision controls instead of cl
   assert.equal(item.primaryAction, 'offerNotifications');
   page.openCardAction({ currentTarget: { dataset: { id: item.id, action: item.primaryAction } } });
   assert.deepEqual(switches, ['/pages/me/me']);
-  assert.equal(storage.get('irlProfileFocusIntent'), 'noticeSection');
+  assert.equal(JSON.stringify(storage.get('irlProfileOfferIntent')),
+    JSON.stringify({ eventId: 'offer', owner: 'dev:organizer' }));
 });
 
 test('state cards deep-link current activity exit, check-in, feedback and repeat controls without writing business state', async () => {

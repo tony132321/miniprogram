@@ -183,6 +183,8 @@
 .dev-box button { margin: 9rpx 0; border-radius: 13rpx; background: #eaf1ff; color: #1d64f2; font-size: 21rpx; }
 .dev-box button::after { border: 0; }
 .notice-item { padding: 21rpx 0; }
+.notice-offer-focused { margin: 0 -12rpx; padding: 21rpx 12rpx; border-radius: 16rpx; background: #f0f5ff; }
+.offer-focus-message { color: #1554c0; }
 .notice-head { display: flex; align-items: center; gap: 12rpx; }
 .notice-title { flex: 1; min-width: 0; color: #0f172a; font-size: 23rpx; font-weight: 800; }
 .notice-read { flex: none; padding: 5rpx 11rpx; border-radius: 30rpx; background: #e8f1ff; color: #1d64f2; font-size: 17rpx; font-weight: 700; }

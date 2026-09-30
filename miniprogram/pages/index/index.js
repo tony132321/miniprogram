@@ -6,6 +6,10 @@ function currentIdentity() {
     ? 'user:' + wx.getStorageSync('userId')
     : 'dev:' + (wx.getStorageSync('devUser') || config.developmentUser || '');
 }
+function offerIntentOwner() {
+  const token = wx.getStorageSync('sessionToken');
+  return token ? 'session:' + wx.getStorageSync('userId') + ':' + token : currentIdentity();
+}
 function headerPaddingRight() {
   try {
     const menu = wx.getMenuButtonBoundingClientRect?.();
@@ -123,12 +127,12 @@ function cardPresentation(item, group) {
       INTERESTED: '你已表达兴趣，尚未报名或占用席位。',
       REQUESTED: '报名申请已提交，等待主办方审核。',
       WAITLISTED: '目前仍在候补，尚未获得确认席位。',
-      OFFERED: '席位尚未确认；到“我的 > 账号与安全操作 > 站内通知”核对补位有效期。',
+      OFFERED: '席位尚未确认；请核对当前补位邀请的有效期后决定。',
       RECONFIRM_REQUIRED: '活动规则已变化，请先核对新版本。'
     };
     return { cardKind: 'pending', cardNote: notes[item.myRegistrationStatus] || '请到活动详情核对当前报名状态。',
       primaryLabel: item.myRegistrationStatus === 'RECONFIRM_REQUIRED' ? '核对变更' :
-        item.myRegistrationStatus === 'OFFERED' ? '到我的通知处理' : '查看报名状态',
+        item.myRegistrationStatus === 'OFFERED' ? '确认或放弃补位' : '查看报名状态',
       primaryAction: item.myRegistrationStatus === 'OFFERED' ? 'offerNotifications' : 'registrationSection',
       secondaryLabel: '查看活动规则', secondaryAction: 'detailsSection' };
   }
@@ -361,7 +365,7 @@ Page({
     if (![item.primaryAction, item.secondaryAction, item.shortcutAction].includes(action)) return;
     if (action === 'offerNotifications') {
       if (item.myRegistrationStatus !== 'OFFERED') return;
-      wx.setStorageSync('irlProfileFocusIntent', 'noticeSection');
+      wx.setStorageSync('irlProfileOfferIntent', { eventId: id, owner: offerIntentOwner() });
       return wx.switchTab({ url: '/pages/me/me' });
     }
     if (action === 'editDraft') {
