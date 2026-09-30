@@ -9,6 +9,8 @@ const rotatedInviteToken = 'B'.repeat(32);
 function loadShare(overrides: Record<string, any> = {}) {
   let page: Record<string, any> | undefined;
   let actor = 'host';
+  let sessionToken = 'session';
+  let devUser = '';
   let event = { id: 'event-1', hostId: 'host', version: 4, status: 'RECRUITING',
     reviewStatus: 'APPROVED', recruiting: true, riskPaused: false, inviteToken,
     payload: { title: '周六一起打羽毛球', startAt: '2027-03-22T06:00:00.000Z',
@@ -22,6 +24,8 @@ function loadShare(overrides: Record<string, any> = {}) {
   const qrFills: Array<[number, number, number, number]> = [];
   let postGate: Promise<void> | null = null;
   let releasePost: (() => void) | null = null;
+  let getGate: Promise<void> | null = null;
+  let releaseGet: (() => void) | null = null;
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/share/share.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if (path === '../../../vendor/qrcode.js') return () => ({
@@ -32,7 +36,10 @@ function loadShare(overrides: Record<string, any> = {}) {
       });
       if (path === '../../../utils/api.js') return { api: {
         async get(url: string) {
-          if (url === '/events/event-1') return event;
+          if (url === '/events/event-1') {
+            if (getGate) await getGate;
+            return event;
+          }
           if (url === '/system/safety') return { status: 'OPEN' };
           throw new Error(`unexpected GET ${url}`);
         },
@@ -48,7 +55,9 @@ function loadShare(overrides: Record<string, any> = {}) {
     Page(definition: Record<string, any>) { page = definition; },
     getApp() { return { globalData: { ready: Promise.resolve() } }; },
     wx: {
-      getStorageSync(key: string) { return key === 'sessionToken' ? 'session' : key === 'userId' ? actor : ''; },
+      getStorageSync(key: string) {
+        return key === 'sessionToken' ? sessionToken : key === 'userId' ? actor : key === 'devUser' ? devUser : '';
+      },
       getSystemInfoSync() { return { statusBarHeight: 24, windowWidth: 390 }; },
       getWindowInfo() { return { windowWidth: 390 }; },
       getMenuButtonBoundingClientRect() { return { left: 294 }; },
@@ -70,9 +79,15 @@ function loadShare(overrides: Record<string, any> = {}) {
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
   return { page, posts, copied, routes, qrPayloads, qrCanvasIds, qrFills,
     setActor(next: string) { actor = next; },
+    setSession(next: string) { sessionToken = next; },
+    setDevUser(next: string) { devUser = next; },
     holdPosts() {
       postGate = new Promise<void>(resolve => { releasePost = resolve; });
       return () => { releasePost?.(); postGate = null; releasePost = null; };
+    },
+    holdEventGet() {
+      getGate = new Promise<void>(resolve => { releaseGet = resolve; });
+      return () => { releaseGet?.(); getGate = null; releaseGet = null; };
     },
     setEvent(next: Record<string, any>) { event = { ...event, ...next }; } };
 }
@@ -89,6 +104,47 @@ test('share card hides the old private invitation immediately when the active ac
   assert.equal(page.onShareAppMessage().path, '/pages/index/index');
   page.copyInvite();
   assert.equal(copied.length, 0);
+});
+
+test('a renewed session for the same host cannot reuse the old invite card or prepared share', async () => {
+  const { page, posts, copied, setSession } = loadShare();
+  await page.onLoad({ id: 'event-1' });
+  await page.prepareShare();
+  assert.equal(posts.length, 1);
+  setSession('renewed-session');
+  assert.equal(page.onShareAppMessage().path, '/pages/index/index');
+  page.openShareSheet();
+  page.copyInvite();
+  assert.equal(page.data.display, null);
+  assert.equal(page.data.canShare, false);
+  assert.equal(page.data.shareSheetOpen, false);
+  assert.equal(copied.length, 0);
+});
+
+test('switching from a signed-in host to a developer host with the same ID clears the invitation', async () => {
+  const { page, copied, setSession, setDevUser } = loadShare();
+  await page.onLoad({ id: 'event-1' });
+  setSession('');
+  setDevUser('host');
+  page.openShareSheet();
+  page.copyInvite();
+  assert.equal(page.data.display, null);
+  assert.equal(page.data.canShare, false);
+  assert.equal(page.data.shareSheetOpen, false);
+  assert.equal(copied.length, 0);
+});
+
+test('a session change while refreshing removes the old invite from the visible card', async () => {
+  const { page, setSession, holdEventGet } = loadShare();
+  await page.onLoad({ id: 'event-1' });
+  const releaseGet = holdEventGet();
+  const pending = page.refresh();
+  setSession('renewed-session');
+  releaseGet();
+  await pending;
+  assert.equal(page.data.display, null);
+  assert.equal(page.data.canShare, false);
+  assert.equal(page.data.loadState, 'ERROR');
 });
 
 test('account switch during share-intent request removes the previous invitation', async () => {

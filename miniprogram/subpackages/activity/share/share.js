@@ -24,6 +24,11 @@ function currentActor() {
   return wx.getStorageSync('sessionToken') ? wx.getStorageSync('userId')
     : wx.getStorageSync('devUser') || config.developmentUser || '';
 }
+function currentIdentity() {
+  const session = wx.getStorageSync('sessionToken');
+  return session ? JSON.stringify(['session', session, wx.getStorageSync('userId')])
+    : JSON.stringify(['development', wx.getStorageSync('devUser') || config.developmentUser || '']);
+}
 function newSourceToken() {
   return Array.from({ length: 4 }, () => Math.floor(Math.random() * 0x100000000).toString(16).padStart(8, '0')).join('');
 }
@@ -89,24 +94,30 @@ Page({
   async refresh() {
     const id = this.data.id;
     const actor = currentActor();
+    const identity = currentIdentity();
     const generation = this._loadGeneration = (this._loadGeneration || 0) + 1;
     const previous = this.data.event;
     const previousSource = this.data.sourceToken;
     const previousActor = this._loadedActor;
-    this.setData({ loadState: 'LOADING', canShare: false, sourceToken: '', shareSheetOpen: false, message: '' });
+    const previousIdentity = this._loadedIdentity;
+    this.setData({ loadState: 'LOADING', canShare: false, sourceToken: '', shareSheetOpen: false, message: '',
+      ...(previousIdentity && previousIdentity !== identity ? { event: null, display: null } : {}) });
     if (!id) return this.setData({ loadState: 'ERROR', event: null, display: null, message: '缺少活动编号，请返回活动详情。' });
     if (!actor) return this.setData({ loadState: 'UNAUTHENTICATED', event: null, display: null, message: '请先登录主办账号。' });
     try {
       const event = await api.get('/events/' + encodeURIComponent(id));
-      if (generation !== this._loadGeneration || actor !== currentActor()) return;
+      if (generation !== this._loadGeneration) return;
+      if (identity !== currentIdentity()) return this.clearIfAccountChanged();
       if (event?.id !== id) throw new Error('活动信息不匹配，请重试。');
       if (event.hostId !== actor) {
         this._loadedActor = actor;
+        this._loadedIdentity = identity;
         return this.setData({ loadState: 'FORBIDDEN', event: null, display: null,
           message: '只有本活动主办方可以查看邀请卡。' });
       }
       const safety = await api.get('/system/safety').catch(() => ({ status: 'UNKNOWN' }));
-      if (generation !== this._loadGeneration || actor !== currentActor()) return;
+      if (generation !== this._loadGeneration) return;
+      if (identity !== currentIdentity()) return this.clearIfAccountChanged();
       const safetyStatus = ['OPEN', 'CLOSED'].includes(safety?.status) ? safety.status : 'UNKNOWN';
       const reason = shareReason(event, safetyStatus);
       const payload = event.payload || {};
@@ -119,14 +130,16 @@ Page({
           COMPLETED: '已结束', CANCELLED: '已取消', EXPIRED: '未成局' }[event.status] || event.status || '状态待确认',
         confirmed, minimum, cover: coverFor(title, payload.type), inviteToken: reason ? '' : event.inviteToken };
       this._loadedActor = actor;
+      this._loadedIdentity = identity;
       this.setData({ event, display, canShare: !reason, shareReason: reason,
-        sourceToken: !reason && previousActor === actor && previous?.id === event.id &&
+        sourceToken: !reason && previousActor === actor && previousIdentity === identity && previous?.id === event.id &&
           previous.version === event.version && previous.inviteToken === event.inviteToken ? previousSource : '',
         loadState: 'READY', message: '' });
       if (!reason) {
         const draw = () => {
-          if (generation !== this._loadGeneration || actor !== currentActor() || !this.data.canShare ||
-            this.data.event?.inviteToken !== event.inviteToken) return;
+          if (generation !== this._loadGeneration) return;
+          if (identity !== currentIdentity()) return this.clearIfAccountChanged();
+          if (!this.data.canShare || this.data.event?.inviteToken !== event.inviteToken) return;
           try { drawInviteQr(event.inviteToken, wx.createCanvasContext('inviteQr', this)); }
           catch (_) { this.setData({ message: '二维码暂不可用，请复制邀请码发送。' }); }
         };
@@ -134,15 +147,17 @@ Page({
         else draw();
       }
     } catch (error) {
-      if (generation !== this._loadGeneration || actor !== currentActor()) return;
+      if (generation !== this._loadGeneration) return;
+      if (identity !== currentIdentity()) return this.clearIfAccountChanged();
       this.setData({ loadState: 'ERROR', event: null, display: null, canShare: false, sourceToken: '',
         message: error.message || '邀请卡读取失败，请重试。' });
     }
   },
   clearIfAccountChanged() {
-    if (this._loadedActor === currentActor()) return false;
+    if (this._loadedIdentity === currentIdentity()) return false;
     this._loadGeneration = (this._loadGeneration || 0) + 1;
     this._loadedActor = null;
+    this._loadedIdentity = null;
     this.setData({ loadState: 'ERROR', event: null, display: null, canShare: false,
       sourceToken: '', shareSheetOpen: false, preparingShare: false,
       message: '账号已切换，请重新核对分享资格。' });
@@ -158,20 +173,21 @@ Page({
     if (this.clearIfAccountChanged()) return;
     const event = this.data.event;
     const actor = currentActor();
+    const identity = currentIdentity();
     if (this.data.preparingShare) return;
-    if (!this.data.canShare || !event?.inviteToken || actor !== this._loadedActor)
+    if (!this.data.canShare || !event?.inviteToken || actor !== this._loadedActor || identity !== this._loadedIdentity)
       return this.setData({ message: this.data.shareReason || '当前无法准备分享。' });
     const sourceToken = newSourceToken();
     this.setData({ preparingShare: true, sourceToken: '' });
     try {
       await api.post(`/events/${encodeURIComponent(event.id)}/share-intents`, { expectedVersion: event.version, sourceToken });
-      if (actor === currentActor() && this._loadedActor === actor && this.data.canShare &&
+      if (identity === currentIdentity() && this._loadedIdentity === identity && this.data.canShare &&
         this.data.event?.id === event.id && this.data.event.version === event.version &&
         this.data.event.inviteToken === event.inviteToken)
         this.setData({ sourceToken, message: '分享邀请已准备好，请点击微信好友或群聊。' });
-    } catch (error) { if (actor === currentActor()) this.setData({ message: error.message || '准备分享失败，请重试。' }); }
+    } catch (error) { if (identity === currentIdentity()) this.setData({ message: error.message || '准备分享失败，请重试。' }); }
     finally {
-      if (actor !== currentActor()) this.clearIfAccountChanged();
+      if (identity !== currentIdentity()) this.clearIfAccountChanged();
       else this.setData({ preparingShare: false });
     }
   },
@@ -179,14 +195,15 @@ Page({
     if (this.clearIfAccountChanged()) return;
     const event = this.data.event;
     const actor = currentActor();
-    if (!this.data.canShare || !event?.inviteToken || actor !== this._loadedActor)
+    const identity = currentIdentity();
+    if (!this.data.canShare || !event?.inviteToken || actor !== this._loadedActor || identity !== this._loadedIdentity)
       return this.setData({ message: this.data.shareReason || '当前邀请码不可复制。' });
     const title = this.data.display?.title || '活动';
     const data = `耍起 CAPER 活动邀请：${title}\n邀请码：${event.inviteToken}\n请打开耍起 CAPER 小程序，在首页输入邀请码查看活动并按规则报名。`;
     wx.setClipboardData({ data,
-      success: () => { if (actor !== currentActor()) this.clearIfAccountChanged();
+      success: () => { if (identity !== currentIdentity()) this.clearIfAccountChanged();
         else this.setData({ message: '真实邀请码与使用说明已复制。' }); },
-      fail: () => { if (actor !== currentActor()) this.clearIfAccountChanged();
+      fail: () => { if (identity !== currentIdentity()) this.clearIfAccountChanged();
         else this.setData({ message: '复制失败，请重试。' }); } });
   },
   back() {
@@ -197,7 +214,8 @@ Page({
     if (this.clearIfAccountChanged()) return { title: '活动详情', path: '/pages/index/index' };
     const event = this.data.event;
     if (!this.data.canShare || !this.data.sourceToken || !event?.inviteToken ||
-      this._loadedActor !== currentActor()) return { title: '活动详情', path: '/pages/index/index' };
+      this._loadedActor !== currentActor() || this._loadedIdentity !== currentIdentity())
+      return { title: '活动详情', path: '/pages/index/index' };
     return { title: (event.aiSuggestionGenerated ? '【曾生成 AI 建议】' : '') + this.data.display.title,
       path: '/pages/event/event?token=' + encodeURIComponent(event.inviteToken) + '&source=' + this.data.sourceToken };
   }

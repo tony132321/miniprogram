@@ -90,7 +90,7 @@
 | `pages/event/event` | 邀请摘要 `/i/:token`、受权限保护的 `/events/:id`、报名／审批、内容、签到、费用、协办、分享意图、结项反馈等当前业务端点。 | 路由内多状态共用，不自动得到设计的地图、永久凭证、人物头像、海报或付款。 |
 | `pages/me/me` 与 PG10 分包 | 本人活动／通知／屏蔽、同意、举报、申诉、隐私请求；分包中的缓存大小由 `wx.getStorageInfoSync` 读取。 | 无全局资料编辑、勋章、相册、AI 客服保存或展示接口。 |
 | `subpackages/activity/itinerary/itinerary` | `GET /me/events` 过滤本人已确认或主办的近期活动，进入既有详情页；身份切换清空旧数据。 | 无系统日历写入、永久电子票证或自动支付。 |
-| `subpackages/activity/share/share` | 主办读取 `/events/:id` 与 `/system/safety` 核对资格；符合条件时写 `/events/:id/share-intents`，复制真实邀请码并通过微信原生分享入口发出。 | 不生成二维码、海报或 HTTPS 链接；本机待审活动只验证分享阻断。 |
+| `subpackages/activity/share/share` | 主办读取 `/events/:id` 与 `/system/safety` 核对资格；符合条件时绘制当前服务端邀请码 QR，写 `/events/:id/share-intents`，复制真实邀请码并通过微信原生分享入口发出。 | 没有海报或 HTTPS 链接；原生微信投递和真机扫码尚未验收。 |
 
 ## 逐屏矩阵：主入口、首页和消息（12 屏）
 
