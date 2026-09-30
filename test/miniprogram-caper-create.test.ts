@@ -243,11 +243,11 @@ test('changing a quick date keeps a same-day event valid without overwriting a l
   assert.equal(page.data.endDate, '2026-10-06', 'a still-valid manual multi-day end should remain');
 });
 
-test('published event editor back action returns to a valid tab', () => {
+test('published event editor back action opens the real activity record', () => {
   const { page, routes } = loadPage(Date.now());
   page.setData({ stage: 'FORM', editingEvent: { id: 'event-1' } });
   page.backFromCreate();
-  assert.deepEqual(routes, ['/pages/index/index']);
+  assert.deepEqual(routes, ['/subpackages/profile/moments/moments?filter=all']);
 });
 
 test('cohost shortcut reaches the published activity workbench', () => {

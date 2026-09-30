@@ -265,7 +265,7 @@ Page({
     }
     return this.onShow();
   },
-  returnToMyActivities() { wx.switchTab({ url: '/pages/index/index' }); },
+  returnToMyActivities() { wx.navigateTo({ url: '/subpackages/profile/moments/moments?filter=all' }); },
   goProfile() { wx.switchTab({ url: '/pages/me/me' }); },
   markVersionConflict(error, type, id) {
     if (error.code !== 'VERSION_CONFLICT' || !id) return false;

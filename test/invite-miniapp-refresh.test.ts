@@ -6,7 +6,7 @@ import { runInNewContext } from 'node:vm';
 test('known member activity opens by id when its invitation summary is withheld for review', async () => {
   let page: Record<string, any> | undefined;
   const paths: string[] = [];
-  let switchedTo = '';
+  let navigatedTo = '';
   const event = { id: 'member-event', hostId: 'host', version: 3, status: 'CONFIRMED',
     reviewStatus: 'PENDING', recruiting: false, visibleContentVersion: 2,
     payload: { title: '已审核标题', startAt: '2027-01-02T12:00:00.000Z',
@@ -29,7 +29,7 @@ test('known member activity opens by id when its invitation summary is withheld 
     Page(definition: Record<string, any>) { page = definition; },
     Date: class extends Date { static now() { return Date.parse('2027-01-02T12:00:00.000Z'); } },
     wx: { getStorageSync(key: string) { return key === 'devUser' ? 'member' : ''; },
-      switchTab({ url }: { url: string }) { switchedTo = url; } },
+      navigateTo({ url }: { url: string }) { navigatedTo = url; } },
     setTimeout, clearTimeout
   });
   assert.ok(page);
@@ -47,5 +47,5 @@ test('known member activity opens by id when its invitation summary is withheld 
   assert.equal(page.data.loadState, 'ERROR');
   assert.equal(paths.some(path => path.startsWith('/events/')), false);
   page.goToMyActivities();
-  assert.equal(switchedTo, '/pages/index/index');
+  assert.equal(navigatedTo, '/subpackages/profile/moments/moments?filter=all');
 });

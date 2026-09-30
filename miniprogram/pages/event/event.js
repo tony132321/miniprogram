@@ -608,7 +608,7 @@ Page({
     try { await api.login(); await this.refresh(); }
     catch (error) { this.setData({ loadState: 'LOGIN_REQUIRED', message: error.message || '登录失败，请重试' }); }
   },
-  goToMyActivities() { wx.switchTab({ url: '/pages/index/index' }); },
+  goToMyActivities() { wx.navigateTo({ url: '/subpackages/profile/moments/moments?filter=all' }); },
   goToItinerary() { wx.navigateTo({ url: '/subpackages/activity/itinerary/itinerary' }); },
   goBack() {
     if (this.data.joinConfirmation) return this.cancelJoin();
