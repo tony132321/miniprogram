@@ -220,6 +220,12 @@ Page({
     this.setData({ message: `${name}暂未开放；当前可创建和发布受控羽毛球活动。` });
     wx.showToast?.({ title: `${name}暂未开放`, icon: 'none', duration: 2500 });
   },
+  openCohostSetup() {
+    const eventId = this.data.editingEvent?.id;
+    if (eventId) return wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(eventId) + '&section=hostSection' });
+    this.setData({ message: '发布活动后，在主办工作台从报名名单选择协办成员，并设置本场权限。' });
+    wx.showToast?.({ title: '发布后在工作台添加', icon: 'none', duration: 2500 });
+  },
   chooseQuickCity(event) {
     const city = event.currentTarget.dataset.city;
     if (!['上海', '北京', '深圳', '杭州', '成都'].includes(city)) return;

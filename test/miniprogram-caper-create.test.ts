@@ -27,6 +27,7 @@ function loadPage(now: number) {
       setStorageSync(key: string, value: unknown) { storage.set(key, value); },
       removeStorageSync(key: string) { storage.delete(key); },
       switchTab({ url }: { url: string }) { routes.push(url); },
+      navigateTo({ url }: { url: string }) { routes.push(url); },
       pageScrollTo(options: Record<string, unknown>) { scrolls.push(options); },
       showActionSheet(options: { itemList: string[]; success: (result: { tapIndex: number }) => void }) { actionSheets.push(options); },
       showToast(options: Record<string, unknown>) { toasts.push(options); }
@@ -117,6 +118,13 @@ test('published event editor back action returns to a valid tab', () => {
   page.setData({ stage: 'FORM', editingEvent: { id: 'event-1' } });
   page.backFromCreate();
   assert.deepEqual(routes, ['/pages/index/index']);
+});
+
+test('cohost shortcut reaches the published activity workbench', () => {
+  const { page, routes } = loadPage(Date.now());
+  page.setData({ stage: 'FORM', editingEvent: { id: 'event-host', version: 2 } });
+  page.openCohostSetup();
+  assert.deepEqual(routes, ['/pages/event/event?id=event-host&section=hostSection']);
 });
 
 test('drafts shortcut opens the organized list once and exposes a saved draft', async () => {

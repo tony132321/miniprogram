@@ -2,12 +2,12 @@
   <view class="home-status-shield" style="height: {{statusBarHeight}}px"></view>
   <view class="safe-area" style="height: {{statusBarHeight}}px"></view>
   <view class="home-header" style="top: {{statusBarHeight}}px; padding-right: {{headerPaddingRight}}">
-    <view wx:if="{{!stateView}}" class="brand"><view class="brand-mark">✹</view><view class="brand-word"><text class="brand-cn">耍起</text><text class="brand-en">CAPER</text></view></view>
+    <view wx:if="{{!stateView}}" class="brand"><view class="brand-mark">耍</view><view class="brand-word"><text class="brand-cn">耍起</text><text class="brand-en">CAPER</text></view></view>
     <view wx:else class="state-brand"><view class="state-brand-mark">✦</view><text>Home Feed</text></view>
     <button wx:if="{{!stateView}}" class="city-chip" bindtap="goCity" aria-label="选择城市">📍 {{city}}⌄</button>
     <view class="header-space"></view>
-    <button class="header-round" bindtap="goMessages" aria-label="查看消息">♧</button>
-    <button class="header-avatar" bindtap="goProfile" aria-label="进入我的页面">我</button>
+    <button class="header-round" bindtap="goMessages" aria-label="查看消息"><view class="header-bell"></view></button>
+    <button class="header-avatar" bindtap="goProfile" aria-label="进入我的页面"><view class="avatar-glyph"></view></button>
   </view>
 
   <view class="home-main {{stateView ? 'state-main' : ''}}">

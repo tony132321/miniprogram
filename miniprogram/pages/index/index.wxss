@@ -6,7 +6,7 @@ page { background: #f5f7fa; color: #172033; }
 .home-page button::after { border: 0; }
 .home-header { position: sticky; z-index: 11; min-height: 92rpx; padding: 0 112px 0 30rpx; box-sizing: border-box; display: flex; align-items: center; gap: 12rpx; background: #fff; }
 .brand { display: flex; align-items: center; gap: 7rpx; flex: none; }
-.brand-mark { width: 48rpx; height: 48rpx; border-radius: 16rpx; background: linear-gradient(145deg,#d2f803,#1d64f2 65%,#5856d6); color: #fff; line-height: 48rpx; text-align: center; font-size: 30rpx; font-weight: 900; }
+.brand-mark { width: 40rpx; height: 40rpx; border-radius: 50%; background: #1d64f2; color: #fff; line-height: 40rpx; text-align: center; font-size: 22rpx; font-weight: 900; }
 .brand-word { display: flex; flex-direction: column; line-height: 1; }
 .brand-cn { font-size: 27rpx; font-weight: 900; white-space: nowrap; letter-spacing: -2rpx; }
 .brand-en { font-size: 15rpx; font-weight: 800; color: #1d64f2; letter-spacing: 1rpx; margin-top: 2rpx; }
@@ -14,7 +14,13 @@ page { background: #f5f7fa; color: #172033; }
 .header-space { flex: 1; }
 .header-round,.header-avatar { width: 48rpx; height: 48rpx; flex: none; border-radius: 50%; text-align: center; line-height: 48rpx!important; font-size: 26rpx; }
 .header-round { background: #f3f5f8; color: #1d64f2; }
-.header-avatar { background: #dce7ff; color: #1d64f2; font-size: 21rpx; font-weight: 800; }
+.header-bell { position: relative; display: block; width: 19rpx; height: 21rpx; margin: 11rpx auto 0; box-sizing: border-box; border: 2rpx solid currentColor; border-radius: 11rpx 11rpx 4rpx 4rpx; }
+.header-bell::before { content: ''; position: absolute; left: -5rpx; right: -5rpx; bottom: -4rpx; height: 3rpx; border-radius: 3rpx; background: currentColor; }
+.header-bell::after { content: ''; position: absolute; left: 5rpx; bottom: -9rpx; width: 5rpx; height: 3rpx; border-radius: 3rpx; background: currentColor; }
+.header-avatar { background: #0758cb; color: #fff; }
+.avatar-glyph { position: relative; display: block; width: 26rpx; height: 29rpx; margin: 9rpx auto 0; }
+.avatar-glyph::before { content: ''; position: absolute; top: 1rpx; left: 8rpx; width: 10rpx; height: 10rpx; border: 2rpx solid currentColor; border-radius: 50%; box-sizing: border-box; }
+.avatar-glyph::after { content: ''; position: absolute; left: 3rpx; bottom: 1rpx; width: 20rpx; height: 11rpx; border: 2rpx solid currentColor; border-radius: 10rpx 10rpx 4rpx 4rpx; box-sizing: border-box; }
 .home-main { padding: 0 28rpx; }
 .hero { position: relative; overflow: hidden; min-height: 208rpx; margin-top: 8rpx; padding: 25rpx 24rpx 22rpx; border-radius: 28rpx; box-sizing: border-box; background: linear-gradient(118deg,#d2f803 0%,#c9f542 39%,#b9eec9 68%,#91bfff 100%); }
 .hero::after { content: ''; position: absolute; width: 220rpx; height: 220rpx; right: -110rpx; bottom: -140rpx; background: rgba(29,100,242,.3); border-radius: 50%; filter: blur(28rpx); }
