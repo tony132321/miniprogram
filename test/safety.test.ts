@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { once } from 'node:events';
 import { createDatabase, type Database } from '../src/db.ts';
-import { createDraft } from '../src/events.ts';
+import { createDraft, publishEvent } from '../src/events.ts';
 import { publishApprovedInvite } from './helpers.ts';
 import { confirmEvent } from '../src/lifecycle.ts';
 import { acceptOffer, cancelRegistration, reserveSeats } from '../src/registrations.ts';
@@ -22,6 +22,47 @@ const input = {
   confirmationDeadline: '2027-01-02T10:30:00.000Z', feeMode: 'FREE', feeCapFen: 0,
   cancellationRule: '开始前可退出', visibility: 'INVITE', approvalMode: 'AUTO', hostParticipates: true
 };
+
+test('active safety hold blocks pending approval until released', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'held-review-draft');
+    const event = await publishEvent(db, 'host', draft.id, draft.version, 'held-review-publish');
+    assert.equal(event.reviewStatus, 'PENDING');
+    assert.equal(event.recruiting, false);
+    const hold = await placeEventHold(db, 'ops', event.id, '场地风险仍在核查中', 'held-review-place');
+
+    await assert.rejects(() => reviewEvent(db, 'ops', event.id, event.version, 'APPROVED',
+      '场地风险尚未解除，不能通过审核', 'held-review-approve'), { code: 'RISK_HOLD' });
+    const { rows: pending } = await db.query<{ review_status: string; recruiting: boolean }>(
+      'SELECT review_status,recruiting FROM events WHERE id=$1', [event.id]);
+    assert.deepEqual(pending[0], { review_status: 'PENDING', recruiting: false });
+    const { rows: decisions } = await db.query<{ count: number }>(
+      'SELECT count(*)::int AS count FROM event_review_decisions WHERE event_id=$1', [event.id]);
+    assert.equal(decisions[0]?.count, 0);
+
+    await releaseEventHold(db, 'ops', hold.id, '场地风险核查完成并允许审核', 'held-review-release');
+    const approved = await reviewEvent(db, 'ops', event.id, event.version, 'APPROVED',
+      '风险解除后重新核对活动信息', 'held-review-approve');
+    assert.equal(approved.reviewStatus, 'APPROVED');
+    assert.equal(approved.recruiting, true);
+  } finally { await db.close(); }
+});
+
+test('active safety hold still permits rejecting a pending event', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'held-reject-draft');
+    const event = await publishEvent(db, 'host', draft.id, draft.version, 'held-reject-publish');
+    await placeEventHold(db, 'ops', event.id, '活动资料存在待核查风险', 'held-reject-place');
+
+    const rejected = await reviewEvent(db, 'ops', event.id, event.version, 'REJECTED',
+      '存在风险，活动审核不通过', 'held-reject-review');
+    assert.equal(rejected.reviewStatus, 'REJECTED');
+    assert.equal(rejected.recruiting, false);
+    assert.equal((await getActiveEventHold(db, event.id))?.status, 'ACTIVE');
+  } finally { await db.close(); }
+});
 
 test('operator safety hold blocks new seats and formation while preserving exits; release resumes FIFO', async () => {
   const db = await createDatabase();
