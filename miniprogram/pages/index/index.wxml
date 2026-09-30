@@ -16,8 +16,8 @@
       <view class="hero-sticker">Good People More Plans ☺</view>
       <view class="hero-kicker">More People, Brighter Days ☺</view>
       <view class="hero-title">今晚想要什么？</view>
-      <view class="hero-subtitle">一句话发起，AI 帮你组局</view>
-      <button class="hero-search" bindtap="goCreate" aria-label="打开 AI 建局"><text class="hero-search-icon">✦</text><text class="hero-search-hint">比如：周六和朋友打场羽毛球...</text><text class="hero-arrow">➜</text></button>
+      <view class="hero-subtitle">一句话开始，本地助手整理活动草稿</view>
+      <button class="hero-search" bindtap="goCreate" aria-label="打开活动构思"><text class="hero-search-icon">✦</text><text class="hero-search-hint">比如：周六和朋友打场羽毛球...</text><text class="hero-arrow">➜</text></button>
     </view>
 
     <scroll-view class="category-strip" scroll-x="true" show-scrollbar="false"><view class="category-row"><button wx:for="{{categoryIdeas}}" wx:key="label" class="category-card" data-label="{{item.label}}" bindtap="openCategory" aria-label="查看{{item.label}}活动灵感"><view class="category-bubble {{item.tone}}">{{item.icon}}</view><text class="category-name">{{item.label}}</text></button></view></scroll-view>

@@ -15,9 +15,9 @@
   <view wx:if="{{stage === 'IDEA'}}" class="idea-page">
     <view class="hero">
       <view class="hero-copy">
-        <view class="hero-title"><view>用 AI，</view><view>把想法变成一场好活动</view></view>
+        <view class="hero-title"><view>本地构思，</view><view>把想法变成活动草稿</view></view>
         <view class="hero-subtitle">一句话说出你的想法</view>
-        <view class="hero-middle">剩下的交给 AI</view>
+        <view class="hero-middle">发布前由你逐项确认</view>
         <view class="hero-caption">从创意到邀请，轻松搞定 〈</view>
         <button class="hero-truth" bindtap="openForm">本地规则提取 · 也可手动填写 ›</button>
       </view>
@@ -37,7 +37,7 @@
 
   <view wx:if="{{stage === 'FORM'}}" class="form-page">
     <view class="form-intro">
-      <view><view class="form-intro-title"><view>用 AI，</view><view>把想法变成一场好活动</view></view><view class="form-intro-subtitle">一句话说出你的想法，剩下的交给 AI</view><view class="form-truth">当前用本地规则提取，发布前请逐项核实。</view></view>
+      <view><view class="form-intro-title"><view>本地构思，</view><view>把想法变成活动草稿</view></view><view class="form-intro-subtitle">一句话说出想法，由本地规则整理草稿</view><view class="form-truth">当前用本地规则提取，发布前请逐项核实。</view></view>
       <view class="form-orb"><view class="form-orb-eye">●　●</view><view class="form-orb-name">Social Copilot</view></view>
     </view>
     <view class="form-prompt">
@@ -118,7 +118,7 @@
     </view>
 
     <view class="field-card cohost-card"><view class="card-heading">👤 <text>协办人与主理人设置</text><text class="small">添加协办人，一起管理活动</text></view><view class="cohost-row"><view class="cohost-avatar">我</view><view><text>我来做主理人</text><text class="small">发布后可进入主办工作台处理报名</text></view><button data-name="添加协办人" bindtap="showUnavailable">＋ 添加协办人</button></view></view>
-    <view class="toolbox-card"><view class="toolbox-title">✦　AI 帮你补全　<text>本地规则建议</text></view><view class="toolbox-grid"><text>✓ 生成活动草稿</text><text>✓ 手动编辑所有字段</text><text>✓ 发布前逐项核对</text><text>✓ 保存草稿继续编辑</text></view><view class="toolbox-note">模型生成与自动邀约尚未开放。</view></view>
+    <view class="toolbox-card"><view class="toolbox-title">✦　本地助手整理　<text>规则建议</text></view><view class="toolbox-grid"><text>✓ 生成活动草稿</text><text>✓ 手动编辑所有字段</text><text>✓ 发布前逐项核对</text><text>✓ 保存草稿继续编辑</text></view><view class="toolbox-note">模型生成与自动邀约尚未开放。</view></view>
     <view class="draft-preview"><view class="draft-preview-title">◉ 活动预览 <text>生成后在确认页检查</text></view><view class="draft-preview-card"><image src="/assets/stitch/caper_home_badminton.jpg" mode="aspectFill"/><view><text>{{form.title || '周末羽毛球'}}</text><text class="small">🏸 {{startDate || '日期待定'}}　{{startTime}}　·　{{form.city || '城市待定'}}</text><text class="small">{{form.minParticipants}}–{{form.maxParticipants}} 人　{{feeMode === 'FREE' ? '免费' : 'AA 制'}}</text></view></view></view>
     <view class="form-actions"><button id="saveDraftButton" wx:if="{{!editingEvent}}" class="secondary-button" disabled="{{editorLoadState === 'LOADING' || editorLoadState === 'ERROR' || (!draft && safetyStatus !== 'OPEN')}}" bindtap="saveDraft">保存草稿</button><button id="publishPreviewButton" class="primary-button" disabled="{{editorLoadState === 'LOADING' || editorLoadState === 'ERROR' || (!editingEvent && safetyStatus !== 'OPEN')}}" bindtap="publish">{{editingEvent ? '预览活动变更 →' : '生成活动草稿 →'}}</button></view>
   </view>
