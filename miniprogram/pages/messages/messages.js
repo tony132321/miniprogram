@@ -120,9 +120,10 @@ function present(items) {
           item.kind === 'EVENT_OUTCOME_REVIEW' ? '反馈活动结项' :
           isProfileRecord ? '查看处理记录' : item.event_id ? '查看活动详情' : '标为已读',
       actionSection: isCheckin ? 'checkinSection' :
-        ['MATERIAL_CHANGE', 'EVENT_CONFIRMED'].includes(item.kind) ? 'detailsSection' :
-          item.kind === 'EVENT_OUTCOME_DUE' ? 'hostSection' :
-            item.kind === 'EVENT_OUTCOME_REVIEW' ? 'checkinSection' : '',
+        item.kind === 'MATERIAL_CHANGE' ? 'registrationSection' :
+          item.kind === 'EVENT_CONFIRMED' ? 'detailsSection' :
+            item.kind === 'EVENT_OUTCOME_DUE' ? 'hostSection' :
+              item.kind === 'EVENT_OUTCOME_REVIEW' ? 'checkinSection' : '',
       categoryLabel: group === 'INTERACTION' ? '互动消息' : group === 'ACTIVITY' ? '活动提醒' : '系统通知',
       cardVariant,
       icon: caution ? '!' : item.kind === 'EVENT_REMINDER' ? '◷' : item.kind === 'MATERIAL_CHANGE' ? '⌖'
@@ -140,6 +141,13 @@ function displayed(items, filter, searchQuery = '') {
   return { items: shown, filteredCount: shown.filter(item => item.visible).length,
     noticeGroups: groupSpecs.map(spec => ({ ...spec, items: shown.filter(item => item.visible && groupFor(item) === spec.key) })) };
 }
+function currentIdentity(developmentMode) {
+  const hasSession = Boolean(wx.getStorageSync?.('sessionToken'));
+  const actor = hasSession ? wx.getStorageSync?.('userId') :
+    developmentMode ? (wx.getStorageSync?.('devUser') || config.developmentUser) : '';
+  return { hasSession, actor, key: actor ? `${hasSession ? 'user' : 'dev'}:${actor}` : '' };
+}
+function noticeEventId(value) { return value == null ? '' : String(value); }
 Page({
   data: { statusBarHeight: 24, capsuleInset: 96, items: [], noticeGroups: [], filteredCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
     loadState: 'IDLE', loadingMore: false, markingAllRead: false, message: '',
@@ -161,9 +169,8 @@ Page({
     await getApp().globalData.ready;
     const focusIntent = wx.getStorageSync?.('irlMessagesFocusIntent');
     if (focusIntent) wx.removeStorageSync?.('irlMessagesFocusIntent');
-    const hasSession = Boolean(wx.getStorageSync('sessionToken'));
-    const actor = hasSession ? wx.getStorageSync('userId') : this.data.developmentMode ? (wx.getStorageSync('devUser') || config.developmentUser) : '';
-    if (this._actor !== actor) {
+    const { hasSession, actor, key } = currentIdentity(this.data.developmentMode);
+    if (this._identity !== key) {
       this._generation = (this._generation || 0) + 1;
       this.setData({ items: [], noticeGroups: [], filteredCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
         loadingMore: false, markingAllRead: false, approvals: [], approvalTotal: 0,
@@ -171,10 +178,11 @@ Page({
         approvingId: '', loadingMoreApprovals: false, viewMode: 'INBOX', filter: 'ALL',
         searchOpen: false, searchQuery: '' });
     }
+    this._identity = key;
     this._actor = actor;
     if (focusIntent === 'approvals') this.setData({ viewMode: 'INBOX', filter: 'INTERACTION' });
     this.setData({ hasSession });
-    this.setTabBarHidden(this.data.viewMode === 'CENTER');
+    this.setTabBarHidden(this.data.viewMode !== 'INBOX');
     if (!actor) return this.setData({ loadState: 'UNAUTHENTICATED', message: '请先微信登录后查看本人消息。' });
     return this.refresh();
   },
@@ -186,18 +194,22 @@ Page({
     else wx.showTabBar?.({ animation: false });
   },
   async refresh() {
+    const identity = this._identity;
+    if (!identity || identity !== currentIdentity(this.data.developmentMode).key) return;
     const generation = this._generation = (this._generation || 0) + 1;
+    const stillCurrent = () => generation === this._generation && identity === this._identity &&
+      identity === currentIdentity(this.data.developmentMode).key;
     this.setData({ loadState: 'LOADING', loadingMore: false, message: '', nextOffset: null });
     try {
       const page = await api.get('/me/notifications?offset=0');
-      if (generation !== this._generation) return;
+      if (!stillCurrent()) return;
       const inbox = displayed(present(page.items || []), this.data.filter, this.data.searchQuery);
       this.setData({ ...inbox, total: page.total ?? (page.items || []).length,
         unreadTotal: page.unreadTotal ?? (page.items || []).filter(item => item.status !== 'OPENED').length,
         nextOffset: page.nextOffset ?? null, snapshot: page.snapshot ?? null, loadState: 'READY' });
       if (this.data.filter === 'INTERACTION' || this.data.viewMode === 'CENTER') await this.loadApprovals();
     } catch (error) {
-      if (generation === this._generation) this.setData({ loadState: 'ERROR', message: error.message || '消息加载失败' });
+      if (stillCurrent()) this.setData({ loadState: 'ERROR', message: error.message || '消息加载失败' });
     }
   },
   setFilter(event) {
@@ -214,6 +226,12 @@ Page({
     this.setTabBarHidden(true);
     if (this.data.loadState === 'READY' && this.data.approvalLoadState === 'IDLE')
       await this.loadApprovals();
+  },
+  openPrivateChatPreview() {
+    const filter = 'ALL';
+    this.setData({ viewMode: 'CHAT_UNAVAILABLE', filter, searchOpen: false, searchQuery: '',
+      ...displayed(this.data.items, filter) });
+    this.setTabBarHidden(true);
   },
   backToInbox() {
     const filter = 'ALL';
@@ -233,38 +251,50 @@ Page({
   async loadMore() {
     const offset = this.data.nextOffset;
     if (this.data.loadingMore || offset === null || offset === undefined) return;
+    const identity = this._identity;
+    if (!identity || identity !== currentIdentity(this.data.developmentMode).key) return;
     const generation = this._generation;
+    const stillCurrent = () => generation === this._generation && identity === this._identity &&
+      identity === currentIdentity(this.data.developmentMode).key;
     this.setData({ loadingMore: true });
     try {
       const page = await api.get(`/me/notifications?offset=${offset}&snapshot=${encodeURIComponent(this.data.snapshot)}`);
-      if (generation !== this._generation) return;
+      if (!stillCurrent()) return;
       const inbox = displayed(this.data.items.concat(present(page.items || [])), this.data.filter, this.data.searchQuery);
       this.setData({ ...inbox, total: page.total,
         unreadTotal: page.unreadTotal ?? this.data.unreadTotal, loadingMore: false,
         nextOffset: page.nextOffset ?? null, snapshot: page.snapshot });
     } catch (error) {
-      if (generation !== this._generation) return;
+      if (!stillCurrent()) return;
       if (error.code === 'QUEUE_CHANGED') {
         await this.refresh();
-        return this.setData({ message: '消息列表已变化，已重新加载。' });
+        if (identity === this._identity && identity === currentIdentity(this.data.developmentMode).key &&
+          this.data.loadState === 'READY') this.setData({ message: '消息列表已变化，已重新加载。' });
+        return;
       }
       this.setData({ loadingMore: false, message: error.message || '加载更多失败' });
     }
   },
   async markAllRead() {
     if (this.data.markingAllRead || this.data.loadState !== 'READY' || !this.data.unreadTotal) return;
-    const generation = this._generation;
-    const actor = this._actor;
+    const identity = this._identity;
+    if (!identity || currentIdentity(this.data.developmentMode).key !== identity) return;
+    let expectedGeneration = this._generation;
+    const stillCurrent = () => expectedGeneration === this._generation &&
+      identity === this._identity && currentIdentity(this.data.developmentMode).key === identity;
     this.setData({ markingAllRead: true, message: '' });
     try {
+      if (!stillCurrent()) return;
       await api.post('/me/notifications/open-all', {});
-      if (generation !== this._generation) return;
-      await this.refresh();
-      if (actor === this._actor && this.data.loadState === 'READY') this.setData({ message: '已将全部站内通知标为已读。' });
+      if (!stillCurrent()) return;
+      const refresh = this.refresh();
+      expectedGeneration = this._generation;
+      await refresh;
+      if (stillCurrent() && this.data.loadState === 'READY') this.setData({ message: '已将全部站内通知标为已读。' });
     } catch (error) {
-      if (actor === this._actor) this.setData({ message: error.message || '标记失败，请重试' });
+      if (stillCurrent()) this.setData({ message: error.message || '标记失败，请重试' });
     } finally {
-      if (actor === this._actor) this.setData({ markingAllRead: false });
+      if (stillCurrent()) this.setData({ markingAllRead: false });
     }
   },
   async loadApprovals() {
@@ -332,8 +362,14 @@ Page({
   },
   async openNotice(event) {
     const { id, eventId, kind, section } = event.currentTarget.dataset;
+    if (!id || !kind || !this.data.items.some(item =>
+      String(item.id) === String(id) && item.kind === kind &&
+      noticeEventId(item.event_id) === noticeEventId(eventId))) return;
+    if (this._identity !== undefined && currentIdentity(this.data.developmentMode).key !== this._identity) return;
+    if (kind === 'MATERIAL_CHANGE' && !eventId) return;
     const profileFocus = profileFocusByKind[kind];
     const generation = this._generation;
+    const targetSection = kind === 'MATERIAL_CHANGE' ? 'registrationSection' : section;
     try {
       if (profileFocus) {
         wx.setStorageSync?.('irlProfileFocusIntent', profileFocus);
@@ -346,11 +382,13 @@ Page({
       } else if (eventId) {
         await new Promise((resolve, reject) => wx.navigateTo({
           url: '/pages/event/event?id=' + encodeURIComponent(eventId) +
-            (['checkinSection', 'expenseSection', 'detailsSection', 'hostSection'].includes(section) ? '&section=' + section : ''),
+            ((kind === 'MATERIAL_CHANGE' || ['checkinSection', 'expenseSection', 'detailsSection', 'hostSection'].includes(targetSection))
+              ? '&section=' + targetSection : ''),
           success: resolve, fail: reject
         }));
       }
-      if (generation !== this._generation) return;
+      if (generation !== this._generation || (this._identity !== undefined &&
+        currentIdentity(this.data.developmentMode).key !== this._identity)) return;
       await api.post(`/me/notifications/${encodeURIComponent(id)}/open`, {});
       if (generation !== this._generation) return;
       if (profileFocus) return;
@@ -361,6 +399,10 @@ Page({
     } catch (error) { if (generation === this._generation) this.setData({ message: error.message || '打开通知失败' }); }
   },
   goProfile() { wx.switchTab({ url: '/pages/me/me' }); },
+  goMyActivities() {
+    this.backToInbox();
+    wx.switchTab({ url: '/pages/index/index' });
+  },
   goNotificationSettings() {
     wx.setStorageSync?.('irlProfileFocusIntent', 'notificationSettingsSection');
     wx.switchTab({ url: '/pages/me/me' });

@@ -37,8 +37,8 @@ test('my events puts an offer first, then reviewed upcoming events by time rathe
   const server = createApp(clockDb, { environment: 'test', devAuth: true, checkInSecret: 'summary-test' });
   server.listen(0, '127.0.0.1'); await once(server, 'listening');
   const base = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
-  const read = async (actor: string) => {
-    const response = await fetch(base + '/me/events', { headers: { 'X-Dev-User': actor } });
+  const read = async (actor: string, path = '/me/events') => {
+    const response = await fetch(base + path, { headers: { 'X-Dev-User': actor } });
     assert.equal(response.status, 200);
     return (await response.json() as { items: Array<Record<string, any>> }).items;
   };
@@ -57,9 +57,10 @@ test('my events puts an offer first, then reviewed upcoming events by time rathe
     const byDay = [...published].sort((left, right) => Date.parse(left.payload.startAt!) - Date.parse(right.payload.startAt!));
     const hosted = await read('host');
     assert.deepEqual(hosted.map(item => item.id), byDay.map(event => event.id));
-    assert.deepEqual(hosted.map(item => [item.title, item.startAt, item.venueName, item.feeMode, item.feeCapFen]),
-      byDay.map(event => [event.payload.title, event.payload.startAt, event.payload.venueName,
-        event.payload.feeMode, event.payload.feeCapFen]));
+    assert.deepEqual(hosted.map(item => [item.title, item.startAt, item.endAt, item.city,
+      item.venueName, item.feeMode, item.feeCapFen]),
+      byDay.map(event => [event.payload.title, event.payload.startAt, event.payload.endAt,
+        event.payload.city, event.payload.venueName, event.payload.feeMode, event.payload.feeCapFen]));
     const realNow = Date.now;
     Date.now = () => realNow() + 365 * 86_400_000;
     try {
@@ -72,6 +73,8 @@ test('my events puts an offer first, then reviewed upcoming events by time rathe
     const member = await read('member');
     assert.deepEqual(member.map(item => item.id), [offerEvent.id, byDay[0]!.id, byDay[1]!.id]);
     assert.equal(member[0]?.myRegistrationStatus, 'OFFERED');
+    assert.deepEqual((await read('member', '/me/events?limit=2&offset=0')).map(item => item.id),
+      [offerEvent.id, byDay[0]!.id]);
     assert.deepEqual(await read('stranger'), []);
   } finally { await new Promise<void>(resolve => server.close(() => resolve())); await db.close(); }
 });
@@ -81,8 +84,8 @@ test('my event logistics follow host, member and cohost review visibility withou
   const server = createApp(db, { environment: 'test', devAuth: true, checkInSecret: 'summary-review-test' });
   server.listen(0, '127.0.0.1'); await once(server, 'listening');
   const base = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
-  const read = async (actor: string) => {
-    const response = await fetch(base + '/me/events', { headers: { 'X-Dev-User': actor } });
+  const read = async (actor: string, path = '/me/events') => {
+    const response = await fetch(base + path, { headers: { 'X-Dev-User': actor } });
     assert.equal(response.status, 200);
     return (await response.json() as { items: Array<Record<string, any>> }).items;
   };
@@ -95,17 +98,21 @@ test('my event logistics follow host, member and cohost review visibility withou
       new Date(Date.parse(pending.payload.endAt!) + 86_400_000).toISOString(), 'review-cohost');
 
     const hostPending = (await read('host'))[0]!;
-    assert.deepEqual([hostPending.title, hostPending.venueName, hostPending.feeMode, hostPending.feeCapFen],
-      ['待审秘密标题', '待审秘密球馆', 'AA', 4200]);
+    assert.deepEqual([hostPending.title, hostPending.endAt, hostPending.city,
+      hostPending.venueName, hostPending.feeMode, hostPending.feeCapFen],
+      ['待审秘密标题', pending.payload.endAt, '深圳', '待审秘密球馆', 'AA', 4200]);
     for (const actor of ['member', 'helper']) {
       const items = await read(actor);
       assert.equal(items.length, 1);
       assert.equal(items[0]!.title, '活动审核中');
       assert.equal(items[0]!.startAt, undefined);
+      assert.equal(items[0]!.endAt, undefined);
+      assert.equal(items[0]!.city, undefined);
       assert.equal(items[0]!.venueName, undefined);
       assert.equal(items[0]!.feeMode, undefined);
       assert.equal(items[0]!.feeCapFen, undefined);
       assert.doesNotMatch(JSON.stringify(items), /待审秘密|4200/);
+      assert.deepEqual(await read(actor, '/me/events?limit=1&offset=0'), items);
     }
     assert.deepEqual(await read('stranger'), []);
 
@@ -113,8 +120,9 @@ test('my event logistics follow host, member and cohost review visibility withou
       '核对活动标题、场地与费用', 'review-approve');
     for (const actor of ['member', 'helper']) {
       const item = (await read(actor))[0]!;
-      assert.deepEqual([item.title, item.startAt, item.venueName, item.feeMode, item.feeCapFen],
-        ['待审秘密标题', pending.payload.startAt, '待审秘密球馆', 'AA', 4200]);
+      assert.deepEqual([item.title, item.startAt, item.endAt, item.city,
+        item.venueName, item.feeMode, item.feeCapFen],
+        ['待审秘密标题', pending.payload.startAt, pending.payload.endAt, '深圳', '待审秘密球馆', 'AA', 4200]);
     }
 
     const changed = await changeEvent(db, 'host', approved.id, approved.version,
@@ -128,10 +136,13 @@ test('my event logistics follow host, member and cohost review visibility withou
       const items = await read(actor);
       assert.equal(items[0]!.title, '活动审核中');
       assert.equal(items[0]!.startAt, undefined);
+      assert.equal(items[0]!.endAt, undefined);
+      assert.equal(items[0]!.city, undefined);
       assert.equal(items[0]!.venueName, undefined);
       assert.equal(items[0]!.feeMode, undefined);
       assert.equal(items[0]!.feeCapFen, undefined);
       assert.doesNotMatch(JSON.stringify(items), /秘密|4200/);
+      assert.deepEqual(await read(actor, '/me/events?limit=1&offset=0'), items);
     }
     assert.deepEqual(await read('stranger'), []);
   } finally { await new Promise<void>(resolve => server.close(() => resolve())); await db.close(); }
@@ -178,5 +189,70 @@ test('my events pages are bounded, complete, actor-bound and reject a changed li
     assert.equal((await read('/me/events?limit=0&offset=0')).status, 400);
     assert.equal((await read('/me/events?limit=2&offset=1')).status, 400);
     assert.equal((await read('/me/events?limit=2&offset=-1')).status, 400);
+  } finally { await new Promise<void>(resolve => server.close(() => resolve())); await db.close(); }
+});
+
+test('a paged activity read does not materialize the actor whole list in Node', async () => {
+  const db = await createDatabase();
+  let largestResult = 0;
+  const boundedDb: Database = { ...db,
+    transaction: fn => db.transaction(tx => fn({
+      query: async <T extends Record<string, unknown> = Record<string, unknown>>(
+        sql: string, params: unknown[] = []) => {
+        const result = await tx.query<T>(sql, params);
+        largestResult = Math.max(largestResult, result.rows.length);
+        return result;
+      }
+    })) };
+  const server = createApp(boundedDb, { environment: 'test', devAuth: true,
+    checkInSecret: 'summary-bounded-test' });
+  server.listen(0, '127.0.0.1'); await once(server, 'listening');
+  try {
+    await db.query(`INSERT INTO events(id,host_id,status,version,payload)
+      SELECT 'bounded-' || n,'host','DRAFT',1,$1::jsonb FROM generate_series(1,205) AS n`,
+    [JSON.stringify(input)]);
+    const response = await fetch(`http://127.0.0.1:${(server.address() as { port: number }).port}/me/events?limit=20&offset=0`,
+      { headers: { 'X-Dev-User': 'host' } });
+    assert.equal(response.status, 200);
+    const body = await response.json() as { items: unknown[]; total: number };
+    assert.equal(body.items.length, 20);
+    assert.equal(body.total, 205);
+    assert.ok(largestResult <= 20, `server materialized ${largestResult} rows for a 20-item page`);
+  } finally { await new Promise<void>(resolve => server.close(() => resolve())); await db.close(); }
+});
+
+test('mixed reviewed and pending pages keep a stable order without using hidden start times', async () => {
+  const db = await createDatabase();
+  const server = createApp(db, { environment: 'test', devAuth: true,
+    checkInSecret: 'summary-mixed-sort-test' });
+  server.listen(0, '127.0.0.1'); await once(server, 'listening');
+  const base = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
+  const read = async (offset: number, snapshot = '') => {
+    const path = `/me/events?limit=1&offset=${offset}` + (snapshot ? `&snapshot=${snapshot}` : '');
+    const response = await fetch(base + path, { headers: { 'X-Dev-User': 'member' } });
+    assert.equal(response.status, 200);
+    return response.json() as Promise<{ items: Array<Record<string, any>>;
+      snapshot: string; nextOffset: number | null }>;
+  };
+  try {
+    for (const [id, days, status, review] of [
+      ['mixed-late', 3, 'RECRUITING', 'APPROVED'],
+      ['mixed-hidden', 2, 'IN_PROGRESS', 'PENDING'],
+      ['mixed-early', 1, 'RECRUITING', 'APPROVED']
+    ]) await db.query(`INSERT INTO events(id,host_id,status,version,payload,review_status)
+      VALUES($1,'host',$2,1,$3::jsonb,$4)`, [id, status, JSON.stringify({ ...input,
+      ...schedule(Number(days)), title: `秘密${id}` }), review]);
+    await db.query(`INSERT INTO registrations(id,event_id,user_id,status,accepted_version)
+      SELECT 'reg-' || id,id,'member','CONFIRMED',1 FROM events WHERE id LIKE 'mixed-%'`);
+    const first = await read(0);
+    const second = await read(first.nextOffset!, first.snapshot);
+    const third = await read(second.nextOffset!, first.snapshot);
+    assert.deepEqual([first.items[0]?.id, second.items[0]?.id, third.items[0]?.id],
+      ['mixed-early', 'mixed-late', 'mixed-hidden']);
+    assert.equal(third.items[0]?.title, '活动审核中');
+    assert.equal(third.items[0]?.startAt, undefined);
+    assert.equal(third.nextOffset, null);
+    assert.equal(second.snapshot, first.snapshot);
+    assert.equal(third.snapshot, first.snapshot);
   } finally { await new Promise<void>(resolve => server.close(() => resolve())); await db.close(); }
 });

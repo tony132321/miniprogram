@@ -36,6 +36,36 @@ test('all existing /me/events callers receive every page in server order', async
     `/me/events?limit=100&offset=100&snapshot=${snapshot}`]);
 });
 
+test('remaining activity pages load concurrently and return in server order', async () => {
+  const snapshot = 'a'.repeat(32);
+  const first = Array.from({ length: 100 }, (_, n) => ({ id: `event-${n}` }));
+  const second = Array.from({ length: 100 }, (_, n) => ({ id: `event-${n + 100}` }));
+  const waiting = new Map<string, (response: object) => void>();
+  const paths: string[] = [];
+  const api = createApi({
+    getStorageSync(key: string) { return key === 'devUser' ? 'member' : ''; },
+    request(options: Record<string, any>) {
+      const path = new URL(options.url).pathname + new URL(options.url).search;
+      paths.push(path);
+      if (path === '/me/events?limit=100&offset=0') options.success({ statusCode: 200,
+        data: { items: first, total: 201, nextOffset: 100, snapshot } });
+      else waiting.set(path, options.success);
+    }
+  }, { apiBase: 'https://api.example.test', developmentUser: 'member' });
+  const pending = api.get('/me/events');
+  await new Promise<void>(resolve => setImmediate(resolve));
+  const secondPath = `/me/events?limit=100&offset=100&snapshot=${snapshot}`;
+  const thirdPath = `/me/events?limit=100&offset=200&snapshot=${snapshot}`;
+  assert.deepEqual(paths, ['/me/events?limit=100&offset=0', secondPath, thirdPath]);
+  waiting.get(thirdPath)!({ statusCode: 200,
+    data: { items: [{ id: 'event-200' }], total: 201, nextOffset: null, snapshot } });
+  waiting.get(secondPath)!({ statusCode: 200,
+    data: { items: second, total: 201, nextOffset: 200, snapshot } });
+  const result = await pending;
+  assert.deepEqual(result.items.map((item: { id: string }) => item.id),
+    [...first, ...second, { id: 'event-200' }].map(item => item.id));
+});
+
 test('a changed page restarts from page one and never mixes two snapshots', async () => {
   const oldSnapshot = 'a'.repeat(32); const newSnapshot = 'b'.repeat(32);
   let firstCount = 0;

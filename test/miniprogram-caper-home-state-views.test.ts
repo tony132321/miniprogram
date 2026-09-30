@@ -3,7 +3,8 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { runInNewContext } from 'node:vm';
 
-type ListedEvent = { id: string; status: string; title: string; startAt?: string;
+type ListedEvent = { id: string; status: string; title: string; startAt?: string; endAt?: string;
+  city?: string; venueName?: string;
   isHost: boolean; isCohost?: boolean; myRegistrationStatus: string | null };
 type Detail = { id: string; hostId: string; status: string; reviewStatus: string;
   payload: { title: string; startAt: string; endAt: string; city: string; venueName: string;
@@ -80,6 +81,17 @@ test('state tabs place verified card facts first without fetching every event on
   assert.equal(page.data.visibleItems[0].capacityLabel, '已确认 2 / 上限 8 人');
   assert.equal(page.data.visibleItems[3].venueLabel, '上海 · 蓝天体育中心');
   assert.equal(page.data.visibleItems[3].capacityLabel, '已确认 2 / 上限 8 人');
+});
+
+test('attending cards show reviewed city, venue and time range from the first list response', async () => {
+  const listed: ListedEvent = { id: 'joined', status: 'CONFIRMED', title: '周末羽毛球',
+    isHost: false, myRegistrationStatus: 'CONFIRMED', city: '深圳', venueName: '南山体育馆',
+    startAt: '2099-03-22T11:00:00.000Z', endAt: '2099-03-22T13:00:00.000Z' };
+  const { page, requests } = makeHome({ organizer: [listed] }, {});
+  await page.onShow();
+  assert.equal(page.data.visibleItems[0].dateRangeLabel, '3 月 22 日 19:00 – 21:00');
+  assert.equal(page.data.visibleItems[0].venueLabel, '深圳 · 南山体育馆');
+  assert.deepEqual(requests, ['/me/notifications?offset=0', '/me/events']);
 });
 
 test('organized cards show only authorized real counts and route to the host workspace', async () => {
@@ -184,6 +196,66 @@ test('an offered seat opens the existing profile decision controls instead of cl
   page.openCardAction({ currentTarget: { dataset: { id: item.id, action: item.primaryAction } } });
   assert.deepEqual(switches, ['/pages/me/me']);
   assert.equal(storage.get('irlProfileFocusIntent'), 'noticeSection');
+});
+
+test('state cards deep-link current activity exit, check-in, feedback and repeat controls without writing business state', async () => {
+  const listed: ListedEvent[] = [
+    { id: 'pending-exit', status: 'RECRUITING', title: '待审批的局', isHost: false, myRegistrationStatus: 'REQUESTED' },
+    { id: 'started-pending', status: 'IN_PROGRESS', title: '已开始的局', isHost: false, myRegistrationStatus: 'REQUESTED' },
+    { id: 'host-checkin', status: 'CONFIRMED', title: '主办签到的局', isHost: true, myRegistrationStatus: null },
+    { id: 'member-feedback', status: 'COMPLETED', title: '成员已参加的局', isHost: false, myRegistrationStatus: 'CONFIRMED' },
+    { id: 'interest-only', status: 'COMPLETED', title: '仅表达兴趣的局', isHost: false, myRegistrationStatus: 'INTERESTED' },
+    { id: 'host-repeat', status: 'COMPLETED', title: '主办完成的局', isHost: true, myRegistrationStatus: null }
+  ];
+  const { page, navigations, storage, requests } = makeHome({ organizer: listed }, {});
+  await page.onShow();
+  const byId = (id: string) => page.data.items.find((item: any) => item.id === id);
+  assert.equal(byId('pending-exit').shortcutAction, 'registrationSection');
+  assert.match(byId('pending-exit').shortcutLabel, /退出/);
+  assert.equal(byId('started-pending').shortcutAction, '');
+  assert.equal(byId('host-checkin').shortcutAction, 'checkinSection');
+  assert.equal(byId('member-feedback').shortcutAction, 'checkinSection');
+  assert.equal(byId('interest-only').shortcutAction, '');
+  assert.equal(byId('host-repeat').shortcutAction, 'hostSection');
+  for (const [id, action] of [
+    ['pending-exit', 'registrationSection'], ['host-checkin', 'checkinSection'],
+    ['member-feedback', 'checkinSection'], ['host-repeat', 'hostSection']
+  ]) page.openCardAction({ currentTarget: { dataset: { id, action } } });
+  assert.deepEqual(navigations, [
+    '/pages/event/event?id=pending-exit&section=registrationSection',
+    '/pages/event/event?id=host-checkin&section=checkinSection&entry=hostCheckin',
+    '/pages/event/event?id=member-feedback&section=checkinSection&entry=memberFeedback',
+    '/pages/event/event?id=host-repeat&section=hostSection'
+  ]);
+  page.openCardAction({ currentTarget: { dataset: { id: 'interest-only', action: 'checkinSection' } } });
+  page.openCardAction({ currentTarget: { dataset: { id: 'started-pending', action: 'checkinSection' } } });
+  assert.equal(navigations.length, 4, 'missing shortcuts cannot be forged');
+  storage.set('devUser', 'another-account');
+  page.openCardAction({ currentTarget: { dataset: { id: 'host-repeat', action: 'hostSection' } } });
+  assert.equal(navigations.length, 4, 'stale identity cannot reuse a prior account shortcut');
+  assert.deepEqual(requests, ['/me/notifications?offset=0', '/me/events']);
+
+  const markup = readFileSync(new URL('../miniprogram/pages/index/index.wxml', import.meta.url), 'utf8');
+  assert.match(markup, /wx:if="{{item.shortcutAction}}"[^>]*class="card-shortcut"[^>]*data-action="{{item.shortcutAction}}"[^>]*bindtap="openCardAction"/);
+});
+
+test('cover click opens only a current account event from the loaded list', async () => {
+  const first: ListedEvent = { id: 'first', status: 'RECRUITING', title: '第一场',
+    isHost: true, myRegistrationStatus: null };
+  const second: ListedEvent = { id: 'second', status: 'CONFIRMED', title: '第二场',
+    isHost: false, myRegistrationStatus: 'CONFIRMED' };
+  const { page, navigations, storage } = makeHome({ organizer: [first], second: [second] }, {});
+  await page.onShow();
+  page.openEvent({ currentTarget: { dataset: { id: 'first' } } });
+  page.openEvent({ currentTarget: { dataset: { id: 'not-loaded' } } });
+  assert.deepEqual(navigations, ['/pages/event/event?id=first']);
+  storage.set('devUser', 'second');
+  page.openEvent({ currentTarget: { dataset: { id: 'first' } } });
+  assert.equal(navigations.length, 1, 'stale cover cannot navigate after identity changes');
+  await page.onShow();
+  page.openEvent({ currentTarget: { dataset: { id: 'first' } } });
+  page.openEvent({ currentTarget: { dataset: { id: 'second' } } });
+  assert.deepEqual(navigations, ['/pages/event/event?id=first', '/pages/event/event?id=second']);
 });
 
 test('non-badminton home inspiration requires an honest confirmation before opening create', async () => {

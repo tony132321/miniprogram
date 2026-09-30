@@ -19,8 +19,10 @@ function eventPage(apiPost?: (path: string, body: Record<string, unknown>) => Pr
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
+    getApp() { return { globalData: { ready: Promise.resolve() } }; },
     wx: {
       getStorageSync() { return ''; },
+      getSystemInfoSync() { return { statusBarHeight: 20 }; },
       pageScrollTo(options: Record<string, unknown>) { scrolls.push(options); },
       navigateBack({ success }: { success?: () => void }) { routes.push('back'); success?.(); },
       navigateTo({ url }: { url: string }) { routes.push(url); },
@@ -70,6 +72,72 @@ test('only an authorized organizer can enter the QR display mode', () => {
   assert.equal(page.data.checkInMode, 'host');
   page.selectCheckInMode({ currentTarget: { dataset: { mode: 'participant' } } });
   assert.equal(page.data.checkInMode, 'participant');
+});
+
+test('home host check-in link selects verifier only for a live organizer', async () => {
+  const { page, scrolls } = eventPage();
+  page.refresh = async function () {
+    this.setData({ loadState: 'READY', event: { id: 'e1', status: 'IN_PROGRESS' },
+      isHost: true, canManageCheckins: true });
+    return true;
+  };
+  await page.onLoad({ id: 'e1', section: 'checkinSection', entry: 'hostCheckin' });
+  assert.equal(page.data.activeSection, 'checkinSection');
+  assert.equal(page.data.checkInMode, 'host');
+  assert.equal(scrolls.length, 1);
+  assert.equal(scrolls[0]?.scrollTop, 0);
+  assert.equal(scrolls[0]?.duration, 0);
+
+  page.refresh = async function () {
+    this.setData({ loadState: 'READY', event: { id: 'e1', status: 'IN_PROGRESS' },
+      isHost: false, canManageCheckins: true });
+    return true;
+  };
+  scrolls.length = 0;
+  await page.onLoad({ id: 'e1', section: 'checkinSection', entry: 'hostCheckin' });
+  assert.equal(page.data.checkInMode, 'participant', 'delegated check-in access does not become organizer mode via Home');
+  page.refresh = async function () {
+    this.setData({ loadState: 'READY', event: { id: 'e1', status: 'COMPLETED' },
+      isHost: true, canManageCheckins: true });
+    return true;
+  };
+  await page.onLoad({ id: 'e1', section: 'checkinSection', entry: 'hostCheckin' });
+  assert.equal(page.data.checkInMode, 'participant', 'a completed event cannot reopen the live organizer shortcut');
+});
+
+test('home feedback link locates the form only for confirmed members of completed events', async () => {
+  const { page, scrolls } = eventPage();
+  const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  assert.match(markup, /id="feedbackForm"[^>]*wx:if="{{outcome && !isHost && myRegistration.status === 'CONFIRMED' && !outcome.myFeedbackSubmitted}}"/);
+  page.refresh = async function () {
+    this.setData({ loadState: 'READY', event: { id: 'e1', status: 'COMPLETED' },
+      isHost: false, myRegistration: { status: 'CONFIRMED' },
+      outcome: { myFeedbackSubmitted: false }, outcomeLoadState: 'READY' });
+    return true;
+  };
+  await page.onLoad({ id: 'e1', section: 'checkinSection', entry: 'memberFeedback' });
+  assert.equal(page.data.activeSection, 'checkinSection');
+  assert.equal(scrolls.length, 1);
+  assert.equal(scrolls[0]?.selector, '#feedbackForm');
+  assert.equal(scrolls[0]?.duration, 0);
+
+  for (const state of [
+    { status: 'IN_PROGRESS', host: false, registration: 'CONFIRMED', submitted: false },
+    { status: 'COMPLETED', host: false, registration: 'REQUESTED', submitted: false },
+    { status: 'COMPLETED', host: true, registration: 'CONFIRMED', submitted: false },
+    { status: 'COMPLETED', host: false, registration: 'CONFIRMED', submitted: true }
+  ]) {
+    page.refresh = async function () {
+      this.setData({ loadState: 'READY', event: { id: 'e1', status: state.status },
+        isHost: state.host, myRegistration: { status: state.registration },
+        outcome: { myFeedbackSubmitted: state.submitted }, outcomeLoadState: 'READY' });
+      return true;
+    };
+    scrolls.length = 0;
+    await page.onLoad({ id: 'e1', section: 'checkinSection', entry: 'memberFeedback' });
+    assert.equal(scrolls.length, 1);
+    assert.equal(scrolls[0]?.scrollTop, 0, `ineligible ${JSON.stringify(state)} stays on section overview`);
+  }
 });
 
 test('confirmed registration success opens live details or the existing itinerary route', () => {

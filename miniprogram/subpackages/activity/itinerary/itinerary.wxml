@@ -16,7 +16,7 @@
         <view class="featured-subtitle">线下相聚 · 活动事实与变更以详情为准</view>
         <view class="facts">
           <view class="fact-row"><text class="fact-icon">▣</text><view><view>{{featured.dateLabel}} {{featured.timeLabel}}</view><text>具体时间以活动详情的最新版本为准</text></view></view>
-          <view class="fact-row"><text class="fact-icon location">⌖</text><view><view>{{featured.venueLabel}}</view><text>{{featured.city || '活动城市以详情为准'}}</text></view></view>
+          <view class="fact-row"><text class="fact-icon location">⌖</text><view><view>{{featured.locationLabel}}</view><text>公共集合地点以活动详情最新版本为准</text></view></view>
           <view class="fact-row"><text class="fact-icon fee">▤</text><view><view>{{featured.feeLabel}}</view><text>费用与状态以活动详情和双方记录为准</text></view></view>
         </view>
         <view class="attendance-heading"><text>报名与成局状态</text><text>{{featured.stateLabel}}</text></view>
@@ -27,7 +27,7 @@
     </view>
 
     <view wx:if="{{later.length > 0}}" class="later-heading"><text>后续排程规划</text><text>时间升序排列</text></view>
-    <button wx:for="{{later}}" wx:key="id" class="later-card" data-id="{{item.id}}" bindtap="openEvent"><view class="later-date"><text>{{item.monthLabel}}</text><text>{{item.dayLabel}}</text></view><view class="later-main"><view class="later-title"><text>{{item.title || '活动名称以详情为准'}}</text><text class="later-state">{{item.stateLabel}}</text></view><text class="later-detail">{{item.dateLabel}} {{item.timeLabel}} · {{item.venueLabel}}</text></view><text class="later-chevron">›</text></button>
+    <button wx:for="{{later}}" wx:key="id" class="later-card" data-id="{{item.id}}" bindtap="openEvent"><view class="later-date"><text>{{item.monthLabel}}</text><text>{{item.dayLabel}}</text></view><view class="later-main"><view class="later-title"><text>{{item.title || '活动名称以详情为准'}}</text><text class="later-state">{{item.stateLabel}}</text></view><text class="later-detail">{{item.dateLabel}} {{item.timeLabel}} · {{item.locationLabel}}</text></view><text class="later-chevron">›</text></button>
     <view wx:if="{{loadState === 'READY' && total > 0}}" class="truth-note"><view class="truth-mark">✓</view><view><text>行程来自本人活动</text><view>活动时间、地点、报名和费用可能变化；请以实时活动详情为准。本页未同步系统日历，也不生成永久入场凭证。</view></view></view>
     <view class="foot">✨ 行程准备好了，期待在真实世界相遇</view>
   </view>

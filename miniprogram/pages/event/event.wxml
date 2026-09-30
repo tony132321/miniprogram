@@ -88,8 +88,8 @@
   </view>
   <view wx:if="{{reconfirmation}}" class="item">
     <view>请重新确认：版本 {{reconfirmation.fromVersion}} → {{reconfirmation.toVersion}}</view>
-    <view>确认截止：{{reconfirmation.deadline}}</view>
-    <view wx:for="{{reconfirmation.changes}}" wx:key="field">{{item.label}}：{{item.before}} → {{item.after}}</view>
+    <view>确认截止：{{reconfirmation.deadlineLabel}}</view>
+    <view wx:for="{{reconfirmation.changes}}" wx:key="field">{{item.label}}：{{item.beforeLabel}} → {{item.afterLabel}}</view>
     <view>逾期或不同意可退出，不计平台处罚。</view>
   </view>
   <view wx:if="{{reconfirmationLoadState === 'ERROR'}}" class="error">{{reconfirmationError}} <button bindtap="refresh">重新加载新规则</button></view>
@@ -134,7 +134,7 @@
   <view wx:if="{{outcome && isHost}}" wx:for="{{outcome.issues}}" wx:key="*this" class="item">{{item}}</view>
   <view wx:if="{{outcomeLoadState === 'FORBIDDEN'}}" class="muted">当前无权查看结项证据。</view>
   <view wx:if="{{outcomeLoadState === 'ERROR'}}" class="error">{{outcomeError}} <button id="outcomeRetryButton" bindtap="refresh">重新加载结项证据</button></view>
-  <view wx:if="{{outcome && !isHost && myRegistration.status === 'CONFIRMED' && !outcome.myFeedbackSubmitted}}">
+  <view id="feedbackForm" wx:if="{{outcome && !isHost && myRegistration.status === 'CONFIRMED' && !outcome.myFeedbackSubmitted}}">
     <view>这次活动是否实际举办</view>
     <radio-group id="feedbackHeldGroup" bindchange="setFeedbackHeld">
       <label id="feedbackHeldYes"><radio value="yes" checked="{{feedbackHeld === true}}" />实际举办</label>

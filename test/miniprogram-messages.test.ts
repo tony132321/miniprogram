@@ -53,6 +53,7 @@ test('message detail marks a notice opened only after event navigation succeeds'
       else options.success();
     }
   });
+  page.data.items = [{ id: 'notice', kind: 'EVENT_REMINDER', event_id: 'event-1' }];
   const event = { currentTarget: { dataset: { id: 'notice', eventId: 'event-1', kind: 'EVENT_REMINDER' } } };
   await page.openNotice(event);
   assert.deepEqual(order, ['/pages/event/event?id=event-1']);
@@ -80,6 +81,112 @@ test('late notification response from another account cannot replace current mes
   releaseOld({ items: [{ id: 'a' }], total: 1 });
   await previous;
   assert.equal(page.data.items[0].id, 'b');
+});
+
+test('a refresh response cannot render old-account notices when storage changes before onShow', async () => {
+  let actor = 'first';
+  let resolveOld!: (value: object) => void;
+  let signalStarted!: () => void;
+  const oldResponse = new Promise<object>(resolve => { resolveOld = resolve; });
+  const started = new Promise<void>(resolve => { signalStarted = resolve; });
+  const page = mount({
+    get() { signalStarted(); return oldResponse; }
+  }, { getStorageSync(key: string) { return key === 'sessionToken' ? 'token' : actor; } });
+  const pending = page.onShow();
+  await started;
+  actor = 'second';
+  resolveOld({ items: [{ id: 'first-notice', kind: 'EVENT_REMINDER', event_id: 'first-event' }],
+    total: 1, unreadTotal: 1, nextOffset: null });
+  await pending;
+  assert.deepEqual(Array.from(page.data.items), []);
+  assert.notEqual(page.data.loadState, 'READY');
+});
+
+test('an old-account material-change card cannot open or mark a notice after identity changes', async () => {
+  let actor = 'first';
+  const actions: string[] = [];
+  const page = mount({
+    async get() { return { items: [{ id: 'notice-' + actor, kind: 'MATERIAL_CHANGE',
+      event_id: 'event-' + actor, status: 'IN_APP' }], total: 1, nextOffset: null }; },
+    async post(path: string) { actions.push(path); }
+  }, {
+    getStorageSync(key: string) { return key === 'sessionToken' ? 'token' : actor; },
+    navigateTo(options: { url: string; success: () => void }) { actions.push(options.url); options.success(); }
+  });
+  await page.onShow();
+  const oldCard = { currentTarget: { dataset: {
+    id: 'notice-first', eventId: 'event-first', kind: 'MATERIAL_CHANGE'
+  } } };
+  actor = 'second';
+  await page.openNotice(oldCard);
+  assert.deepEqual(actions, []);
+  await page.onShow();
+  await page.openNotice(oldCard);
+  assert.deepEqual(actions, []);
+  await page.openNotice({ currentTarget: { dataset: {
+    id: 'notice-second', eventId: 'event-second', kind: 'MATERIAL_CHANGE'
+  } } });
+  assert.deepEqual(actions, ['/pages/event/event?id=event-second&section=registrationSection',
+    '/me/notifications/notice-second/open']);
+});
+
+test('material-change navigation finishing after an account switch does not mark the old notice read', async () => {
+  let actor = 'first';
+  let finishNavigation!: () => void;
+  const actions: string[] = [];
+  const page = mount({
+    async get() { return { items: [{ id: 'old', kind: 'MATERIAL_CHANGE', event_id: 'event-first' }],
+      total: 1, nextOffset: null }; },
+    async post(path: string) { actions.push(path); }
+  }, {
+    getStorageSync(key: string) { return key === 'sessionToken' ? 'token' : actor; },
+    navigateTo(options: { url: string; success: () => void }) {
+      actions.push(options.url);
+      finishNavigation = options.success;
+    }
+  });
+  await page.onShow();
+  const pending = page.openNotice({ currentTarget: { dataset: {
+    id: 'old', eventId: 'event-first', kind: 'MATERIAL_CHANGE'
+  } } });
+  actor = 'second';
+  finishNavigation();
+  await pending;
+  assert.deepEqual(actions, ['/pages/event/event?id=event-first&section=registrationSection']);
+});
+
+test('ordinary event and profile notices reject old-account cards and mismatched current-card data', async () => {
+  let actor = 'first';
+  const actions: string[] = [];
+  const page = mount({
+    async get() { return { items: [
+      { id: 'shared', kind: 'EVENT_REMINDER', event_id: 'event-' + actor },
+      { id: 'profile-' + actor, kind: 'REPORT_RESOLVED_UNSCOPED', event_id: null }
+    ], total: 2, nextOffset: null }; },
+    async post(path: string) { actions.push(path); }
+  }, {
+    getStorageSync(key: string) { return key === 'sessionToken' ? 'token' : actor; },
+    navigateTo(options: { url: string; success: () => void }) { actions.push(options.url); options.success(); },
+    switchTab(options: { url: string; success: () => void }) { actions.push(options.url); options.success(); },
+    setStorageSync() {}
+  });
+  await page.onShow();
+  actor = 'second';
+  await page.onShow();
+  for (const dataset of [
+    { id: 'shared', kind: 'EVENT_REMINDER', eventId: 'event-first' },
+    { id: 'profile-first', kind: 'REPORT_RESOLVED_UNSCOPED', eventId: '' },
+    { id: 'shared', kind: 'EVENT_CONFIRMED', eventId: 'event-second' }
+  ]) await page.openNotice({ currentTarget: { dataset } });
+  assert.deepEqual(actions, [], 'stale id, kind and event ID cannot navigate or mark a notice opened');
+  await page.openNotice({ currentTarget: { dataset: {
+    id: 'shared', kind: 'EVENT_REMINDER', eventId: 'event-second'
+  } } });
+  await page.openNotice({ currentTarget: { dataset: {
+    id: 'profile-second', kind: 'REPORT_RESOLVED_UNSCOPED', eventId: ''
+  } } });
+  assert.deepEqual(actions, ['/pages/event/event?id=event-second', '/me/notifications/shared/open',
+    '/pages/me/me', '/me/notifications/profile-second/open']);
 });
 
 test('message filters update visible items and action rows use native buttons', async () => {
@@ -201,6 +308,28 @@ test('loading more keeps a pending state and ignores a second tap until the requ
   assert.equal(page.data.nextOffset, null);
 });
 
+test('load-more cannot append an old-account page before the new account onShow', async () => {
+  let actor = 'first';
+  let releaseMore!: (value: object) => void;
+  const page = mount({
+    get(path: string) {
+      if (path === '/me/notifications?offset=0') return Promise.resolve({ items: [
+        { id: 'first-page', kind: 'EVENT_REMINDER', event_id: 'event-first' }
+      ], total: 2, unreadTotal: 2, nextOffset: 1, snapshot: 'a'.repeat(32) });
+      return new Promise(resolve => { releaseMore = resolve; });
+    }
+  }, { getStorageSync(key: string) { return key === 'sessionToken' ? 'token' : actor; } });
+  await page.onShow();
+  const pending = page.loadMore();
+  actor = 'second';
+  releaseMore({ items: [{ id: 'second-page-of-first-account', kind: 'EVENT_REMINDER',
+    event_id: 'event-first' }], total: 2, unreadTotal: 2, nextOffset: null,
+  snapshot: 'a'.repeat(32) });
+  await pending;
+  assert.deepEqual(Array.from(page.data.items, (item: { id: string }) => item.id), ['first-page']);
+  assert.equal(page.data.nextOffset, 1);
+});
+
 test('all-read updates the whole inbox through one server action and exposes the Stitch button', async () => {
   const calls: string[] = [];
   let unreadTotal = 3;
@@ -220,6 +349,67 @@ test('all-read updates the whole inbox through one server action and exposes the
   const wxml = readFileSync(new URL('../miniprogram/pages/messages/messages.wxml', import.meta.url), 'utf8');
   assert.match(wxml, /id="markAllReadButton"[^\n]*bindtap="markAllRead"/);
   assert.match(wxml, /data-section="checkinSection"[^>]*bindtap="openNotice"/);
+});
+
+test('all-read rejects a card after switching from session to development identity with the same actor', async () => {
+  let sessionToken = 'token';
+  const calls: string[] = [];
+  const page = mount({
+    async get(path: string) { calls.push(path); return { items: [{ id: 'notice', kind: 'EVENT_REMINDER',
+      event_id: 'event-1' }], total: 1, unreadTotal: 1, nextOffset: null }; },
+    async post(path: string) { calls.push(path); }
+  }, { getStorageSync(key: string) { return key === 'sessionToken' ? sessionToken : 'member'; } });
+  page.data.developmentMode = true;
+  await page.onShow();
+  sessionToken = '';
+  await page.markAllRead();
+  assert.deepEqual(calls, ['/me/notifications?offset=0']);
+});
+
+test('all-read completion cannot refresh or overwrite state after identity changes during its request', async () => {
+  let sessionToken = 'token';
+  let finishPost!: () => void;
+  const calls: string[] = [];
+  const page = mount({
+    async get(path: string) { calls.push(path); return { items: [{ id: 'notice', kind: 'EVENT_REMINDER',
+      event_id: 'event-1' }], total: 1, unreadTotal: 1, nextOffset: null }; },
+    post(path: string) { calls.push(path); return new Promise<void>(resolve => { finishPost = resolve; }); }
+  }, { getStorageSync(key: string) { return key === 'sessionToken' ? sessionToken : 'member'; } });
+  page.data.developmentMode = true;
+  await page.onShow();
+  const pending = page.markAllRead();
+  sessionToken = '';
+  finishPost();
+  await pending;
+  assert.deepEqual(calls, ['/me/notifications?offset=0', '/me/notifications/open-all']);
+  assert.equal(page.data.message, '');
+});
+
+test('an old all-read completion cannot clear a new identity operation with the same actor name', async () => {
+  let sessionToken = 'token';
+  const finishPosts: Array<() => void> = [];
+  const page = mount({
+    async get() { return { items: [{ id: 'notice', kind: 'EVENT_REMINDER', event_id: 'event-1' }],
+      total: 1, unreadTotal: 1, nextOffset: null }; },
+    post() { return new Promise<void>(resolve => { finishPosts.push(resolve); }); }
+  }, { getStorageSync(key: string) { return key === 'sessionToken' ? sessionToken : 'member'; } });
+  page.data.developmentMode = true;
+  await page.onShow();
+  const first = page.markAllRead();
+  sessionToken = '';
+  await page.onShow();
+  const second = page.markAllRead();
+  assert.equal(page.data.markingAllRead, true);
+  const finishFirst = finishPosts[0];
+  assert.ok(finishFirst);
+  finishFirst();
+  await first;
+  assert.equal(page.data.markingAllRead, true, 'the earlier identity must not clear the current spinner');
+  const finishSecond = finishPosts[1];
+  assert.ok(finishSecond);
+  finishSecond();
+  await second;
+  assert.equal(page.data.markingAllRead, false);
 });
 
 test('interaction filter reads authorized pending approvals and one tap approves the exact request', async () => {
@@ -278,6 +468,7 @@ test('approval detail and reminder receipt navigate to the matching event sectio
   const page = mount({ async post() { return { status: 'OPENED' }; } }, {
     navigateTo(options: Record<string, any>) { navigations.push(options.url); options.success?.(); }
   });
+  page.data.items = [{ id: 'reminder', kind: 'EVENT_REMINDER', event_id: 'event/1' }];
   page.viewApproval({ currentTarget: { dataset: { eventId: 'event/1', isHost: true } } });
   page.viewApproval({ currentTarget: { dataset: { eventId: 'event/2', isHost: false } } });
   await page.openNotice({ currentTarget: { dataset: {
@@ -293,6 +484,7 @@ test('an unscoped safety notice opens its real profile record before it is marke
   const page = mount({ async post(path: string) { actions.push(path); } }, {
     switchTab(options: { url: string; success?: () => void }) { actions.push(options.url); options.success?.(); }
   });
+  page.data.items = [{ id: 'report-notice', kind: 'REPORT_RESOLVED_UNSCOPED', event_id: null }];
   await page.openNotice({ currentTarget: { dataset: {
     id: 'report-notice', eventId: '', kind: 'REPORT_RESOLVED_UNSCOPED'
   } } });

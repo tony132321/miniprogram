@@ -1,5 +1,24 @@
 const { api } = require('../../../utils/api.js');
 const config = require('../../../config.js');
+const qrcode = require('../../../vendor/qrcode.js');
+
+function drawInviteQr(token, context) {
+  const size = 200;
+  const qr = qrcode(0, 'M');
+  qr.addData(token);
+  qr.make();
+  const count = qr.getModuleCount();
+  const unit = size / (count + 8);
+  context.setFillStyle('#fff');
+  context.fillRect(0, 0, size, size);
+  context.setFillStyle('#111');
+  for (let y = 0; y < count; y++) for (let x = 0; x < count; x++) {
+    if (qr.isDark(y, x)) context.fillRect(Math.floor((x + 4) * unit), Math.floor((y + 4) * unit),
+      Math.ceil((x + 5) * unit) - Math.floor((x + 4) * unit),
+      Math.ceil((y + 5) * unit) - Math.floor((y + 4) * unit));
+  }
+  context.draw(false);
+}
 
 function currentActor() {
   return wx.getStorageSync('sessionToken') ? wx.getStorageSync('userId')
@@ -95,7 +114,7 @@ Page({
       const confirmed = Number.isInteger(event.stats?.confirmed) ? event.stats.confirmed : null;
       const minimum = Number.isInteger(payload.minParticipants) ? payload.minParticipants : null;
       const display = { title, date: localDate(payload.startAt), end: localDate(payload.endAt),
-        location: [payload.city, payload.venueName].filter(Boolean).join(' · ') || '场地待确认',
+        location: [payload.city, '具体地点请在活动详情核对'].filter(Boolean).join(' · '),
         status: { RECRUITING: '招募中', CONFIRMED: '已成局', IN_PROGRESS: '进行中',
           COMPLETED: '已结束', CANCELLED: '已取消', EXPIRED: '未成局' }[event.status] || event.status || '状态待确认',
         confirmed, minimum, cover: coverFor(title, payload.type), inviteToken: reason ? '' : event.inviteToken };
@@ -104,6 +123,16 @@ Page({
         sourceToken: !reason && previousActor === actor && previous?.id === event.id &&
           previous.version === event.version && previous.inviteToken === event.inviteToken ? previousSource : '',
         loadState: 'READY', message: '' });
+      if (!reason) {
+        const draw = () => {
+          if (generation !== this._loadGeneration || actor !== currentActor() || !this.data.canShare ||
+            this.data.event?.inviteToken !== event.inviteToken) return;
+          try { drawInviteQr(event.inviteToken, wx.createCanvasContext('inviteQr', this)); }
+          catch (_) { this.setData({ message: '二维码暂不可用，请复制邀请码发送。' }); }
+        };
+        if (typeof wx.nextTick === 'function') wx.nextTick(draw);
+        else draw();
+      }
     } catch (error) {
       if (generation !== this._loadGeneration || actor !== currentActor()) return;
       this.setData({ loadState: 'ERROR', event: null, display: null, canShare: false, sourceToken: '',

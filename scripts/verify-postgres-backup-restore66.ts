@@ -90,7 +90,7 @@ let restored: Database | undefined;
 let report: Record<string, unknown> | undefined;
 try {
   source = await createProductionDatabase(sourceUrl);
-  assert.equal(LATEST_SCHEMA_VERSION, 66, 'this rehearsal is scoped to schema 66');
+  assert.ok(LATEST_SCHEMA_VERSION >= 67, 'the current backup rehearsal requires schema 67 or later');
   const start = Date.now() + 14 * 86_400_000;
   const input = {
     title: '第66版备份恢复合成活动', type: 'badminton', startAt: new Date(start).toISOString(),
@@ -120,7 +120,7 @@ try {
   await source.query(`INSERT INTO reports(id,reporter_id,event_id,kind,description)
     VALUES('pg66_private_report','pg66_deleted',$1,'ATTENDANCE','恢复前私人举报')`, [privateDraft.id]);
   const before = await snapshot(source, event.id);
-  assert.equal(before.migrations.length, 66);
+  assert.equal(before.migrations.length, LATEST_SCHEMA_VERSION);
   assert.ok(before.registrations.some(row => (row as { user_id: string }).user_id === 'pg66_member'));
   assert.equal(before.cohostGrants.length, 1);
   assert.equal(before.consents.length, 1);

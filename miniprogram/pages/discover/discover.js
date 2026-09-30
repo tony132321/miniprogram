@@ -62,6 +62,7 @@ Page({
     this.setData({ city: typeof city === 'string' && city ? city : '上海' });
     const generation = this._personalGeneration = (this._personalGeneration || 0) + 1;
     const identity = currentIdentity();
+    this._shownIdentity = '';
     this.setData({ personalEvents: [], personalState: 'LOADING' });
     try {
       await getApp().globalData.ready;
@@ -74,6 +75,7 @@ Page({
       const personalEvents = result.items.filter(item => item?.id && !['DRAFT', 'REVIEW_PENDING'].includes(item.status))
         .slice(0, 3).map(item => ({ id: item.id, title: item.title || '未命名活动',
           statusLabel: labels[item.status] || '状态待确认', dateLabel: dateLabel(item.startAt), cover: coverFor(item.title || '') }));
+      this._shownIdentity = identity;
       this.setData({ personalEvents, personalState: 'READY' });
     } catch (_) {
       if (generation === this._personalGeneration && identity === currentIdentity())
@@ -99,9 +101,30 @@ Page({
     if (!this.data.tokenInput) return this.setData({ message: '请输入邀请口令' });
     wx.navigateTo({ url: '/pages/event/event?token=' + encodeURIComponent(this.data.tokenInput) });
   },
+  scanInviteQr() {
+    const identity = currentIdentity();
+    if (typeof wx.scanCode !== 'function') return this.setData({ message: '此设备暂不能扫码，请手动输入邀请码。' });
+    try {
+      wx.scanCode({ onlyFromCamera: true, scanType: ['qrCode'],
+        success: result => {
+          if (identity !== currentIdentity()) return this.setData({ message: '账号已切换，请重新扫码。' });
+          const token = typeof result?.result === 'string' ? result.result.trim() : '';
+          if (!/^[A-Za-z0-9_-]{32}$/.test(token))
+            return this.setData({ message: '这不是耍起 CAPER 的邀请码二维码，请扫描活动邀请卡。' });
+          this.setData({ tokenInput: token, message: '' });
+          wx.navigateTo({ url: '/pages/event/event?token=' + encodeURIComponent(token) });
+        },
+        fail: error => {
+          if (identity === currentIdentity() && !/cancel/i.test(String(error?.errMsg || '')))
+            this.setData({ message: '扫码暂不可用，请手动输入邀请码。' });
+        }
+      });
+    } catch (_) { this.setData({ message: '扫码暂不可用，请手动输入邀请码。' }); }
+  },
   openPersonalEvent(event) {
     const id = event?.currentTarget?.dataset?.id;
-    if (!id || !this.data.personalEvents.some(item => item.id === id)) return;
+    if (!id || this._shownIdentity !== currentIdentity() ||
+      !this.data.personalEvents.some(item => item.id === id)) return;
     wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) });
   },
   goPersonalAll() { wx.navigateTo({ url: '/subpackages/profile/moments/moments?filter=all' }); },

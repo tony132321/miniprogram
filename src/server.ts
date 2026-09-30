@@ -315,8 +315,88 @@ export function createApp(db: Database, options: AppOptions) {
         const result = await db.transaction(async tx => {
           await tx.query('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY');
           const now = await databaseNow(tx);
+          if (paged) {
+            // A page sorts only its visible keys. The order-independent signature still
+            // scans the actor's projection so a changed later page cannot be mixed in.
+            const scope = `WITH visible_ids AS (
+              SELECT id FROM events WHERE host_id=$1
+              UNION SELECT event_id AS id FROM registrations WHERE user_id=$1
+                AND status IN ('INTERESTED','REQUESTED','WAITLISTED','OFFERED','CONFIRMED','RECONFIRM_REQUIRED')
+              UNION SELECT event_id AS id FROM cohost_grants WHERE user_id=$1
+                AND revoked_at IS NULL AND expires_at>$2::timestamptz
+            ), actor_events AS (
+              SELECT e.id,e.status,e.created_at,e.payload,e.review_status,
+                (e.host_id=$1) AS is_host,(c.id IS NOT NULL) AS is_cohost,r.status AS my_status,
+                CASE WHEN e.host_id=$1 OR e.review_status='APPROVED' OR
+                  (e.review_status='NOT_REQUIRED' AND
+                    ($2::timestamptz>=CASE WHEN e.status='RECRUITING' THEN
+                      (e.payload->>'confirmationDeadline')::timestamptz
+                    ELSE (e.payload->>'startAt')::timestamptz END OR
+                    e.status IN ('IN_PROGRESS','COMPLETED','CANCELLED','EXPIRED')))
+                  THEN true ELSE false END AS reviewed
+              FROM visible_ids v JOIN events e ON e.id=v.id
+              LEFT JOIN registrations r ON r.event_id=e.id AND r.user_id=$1
+              LEFT JOIN cohost_grants c ON c.event_id=e.id AND c.user_id=$1
+                AND c.revoked_at IS NULL AND c.expires_at>$2::timestamptz
+            ), visible_events AS (
+              SELECT *, CASE WHEN reviewed THEN (payload->>'startAt')::timestamptz
+                ELSE NULL END AS visible_start FROM actor_events
+            ), ranked AS (
+              SELECT *, CASE
+                WHEN status IN ('RECRUITING','CONFIRMED','IN_PROGRESS') AND my_status='OFFERED' THEN 0
+                WHEN status IN ('RECRUITING','CONFIRMED','IN_PROGRESS') AND
+                  (status='IN_PROGRESS' OR visible_start >= $2::timestamptz) THEN 1
+                WHEN status='DRAFT' THEN 2
+                WHEN status IN ('RECRUITING','CONFIRMED','IN_PROGRESS') AND visible_start IS NULL THEN 3
+                ELSE 4 END AS priority FROM visible_events
+            )`;
+            const nowText = new Date(now).toISOString();
+            const { rows: summaries } = await tx.query<{ total: number; snapshot: string }>(
+              `${scope} SELECT COUNT(*)::integer AS total,
+                md5($1::text || '|' || COUNT(*)::text || '|' ||
+                  COALESCE(bit_xor(('x' || md5(jsonb_build_array(
+                    id,status,reviewed,CASE WHEN reviewed THEN payload->>'title' ELSE '活动审核中' END,
+                    CASE WHEN reviewed THEN payload->>'startAt' END,
+                    CASE WHEN reviewed THEN payload->>'endAt' END,
+                    CASE WHEN reviewed THEN payload->>'city' END,
+                    CASE WHEN reviewed THEN payload->>'venueName' END,
+                    CASE WHEN reviewed THEN payload->>'feeMode' END,
+                    CASE WHEN reviewed THEN payload->'feeCapFen' END,
+                    is_host,is_cohost,my_status,priority,created_at
+                  )::text))::bit(128))::text,repeat('0',128))) AS snapshot FROM ranked`,
+              [actor, nowText]);
+            const summary = summaries[0]!;
+            if (offset > 0 && requestedSnapshot !== summary.snapshot)
+              throw new AppError('QUEUE_CHANGED', '活动列表已变化，请从第一页刷新', 409);
+            const { rows: pageRows } = await tx.query<{ id: string; status: string;
+              payload: { title?: string; startAt?: string; endAt?: string; city?: string;
+                venueName?: string; feeMode?: string; feeCapFen?: number };
+              reviewed: boolean; is_host: boolean; is_cohost: boolean; my_status: string | null }>(
+              `${scope} SELECT id,status,payload,reviewed,is_host,is_cohost,my_status FROM ranked
+                ORDER BY priority,
+                  CASE WHEN priority IN (0,1) THEN visible_start END ASC NULLS LAST,
+                  CASE WHEN priority=4 THEN visible_start END DESC NULLS LAST,
+                  date_trunc('milliseconds',created_at) DESC,id COLLATE "C" ASC
+                LIMIT $3 OFFSET $4`, [actor, nowText, limit, offset]);
+            const pageItems = pageRows.map(row => ({
+              id: row.id, status: row.status,
+              title: row.reviewed ? row.payload.title : '活动审核中',
+              startAt: row.reviewed ? row.payload.startAt : undefined,
+              endAt: row.reviewed ? row.payload.endAt : undefined,
+              city: row.reviewed ? row.payload.city : undefined,
+              venueName: row.reviewed ? row.payload.venueName : undefined,
+              feeMode: row.reviewed ? row.payload.feeMode : undefined,
+              feeCapFen: row.reviewed ? row.payload.feeCapFen : undefined,
+              isHost: row.is_host, isCohost: row.is_cohost,
+              myRegistrationStatus: row.my_status
+            }));
+            return { items: pageItems, total: summary.total,
+              nextOffset: offset + pageItems.length < summary.total ? offset + pageItems.length : null,
+              snapshot: summary.snapshot };
+          }
           const { rows } = await tx.query<{ id: string; status: string; created_at: Date;
-            payload: { title?: string; startAt?: string; venueName?: string; feeMode?: string; feeCapFen?: number };
+            payload: { title?: string; startAt?: string; endAt?: string; city?: string;
+              venueName?: string; feeMode?: string; feeCapFen?: number };
             review_status: string; legacy_review_closed: boolean | null; is_host: boolean; is_cohost: boolean;
             my_status: string | null }>(`SELECT e.id,e.status,e.created_at,e.payload,e.review_status,
             $2::timestamptz>=CASE WHEN e.status='RECRUITING' THEN
@@ -341,7 +421,9 @@ export function createApp(db: Database, options: AppOptions) {
               active && (r.status === 'IN_PROGRESS' || startTime >= now) ? 1 :
                 r.status === 'DRAFT' ? 2 : active && !Number.isFinite(startTime) ? 3 : 4;
             return { item: { id: r.id, status: r.status, title: reviewed ? r.payload.title : '活动审核中',
-              startAt, venueName: reviewed ? r.payload.venueName : undefined,
+              startAt, endAt: reviewed ? r.payload.endAt : undefined,
+              city: reviewed ? r.payload.city : undefined,
+              venueName: reviewed ? r.payload.venueName : undefined,
               feeMode: reviewed ? r.payload.feeMode : undefined,
               feeCapFen: reviewed ? r.payload.feeCapFen : undefined,
               isHost: r.is_host, isCohost: r.is_cohost, myRegistrationStatus: r.my_status },

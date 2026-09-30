@@ -20,7 +20,14 @@ function present(item, now) {
   const local = new Date(timestamp + 8 * 60 * 60_000);
   const weekday = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][local.getUTCDay()];
   const dateLabel = `${local.getUTCMonth() + 1} 月 ${local.getUTCDate()} 日（${weekday}）`;
-  const timeLabel = `${String(local.getUTCHours()).padStart(2, '0')}:${String(local.getUTCMinutes()).padStart(2, '0')}`;
+  const startTime = `${String(local.getUTCHours()).padStart(2, '0')}:${String(local.getUTCMinutes()).padStart(2, '0')}`;
+  const endTimestamp = Date.parse(item.endAt);
+  const end = Number.isFinite(endTimestamp) ? new Date(endTimestamp + 8 * 60 * 60_000) : null;
+  const endTime = end && `${String(end.getUTCHours()).padStart(2, '0')}:${String(end.getUTCMinutes()).padStart(2, '0')}`;
+  const endLabel = end && (local.getUTCFullYear() === end.getUTCFullYear() &&
+    local.getUTCMonth() === end.getUTCMonth() && local.getUTCDate() === end.getUTCDate()
+    ? endTime : `${end.getUTCMonth() + 1}月${end.getUTCDate()}日 ${endTime}`);
+  const timeLabel = endLabel ? `${startTime} - ${endLabel}` : startTime;
   const days = Math.ceil((timestamp - now) / 86_400_000);
   const feeLabel = item.feeMode === 'FREE' ? '免费' :
     item.feeMode === 'AA' && Number.isSafeInteger(item.feeCapFen)
@@ -29,6 +36,7 @@ function present(item, now) {
     monthLabel: `${String(local.getUTCMonth() + 1).padStart(2, '0')}月`,
     dayLabel: String(local.getUTCDate()).padStart(2, '0'),
     venueLabel: item.venueName || '具体场地以活动详情为准',
+    locationLabel: [item.city, item.venueName].filter(Boolean).join(' · ') || '具体场地以活动详情为准',
     countdown: item.status === 'IN_PROGRESS' ? '进行中' : days <= 0 ? '今天开始' :
       days === 1 ? '明天开始' : `约 ${days} 天后开始`,
     stateLabel: item.status === 'IN_PROGRESS' ? '进行中' : item.status === 'CONFIRMED' ? '已成局' :
@@ -45,11 +53,12 @@ Page({
   data: { statusBarHeight: 24, loadState: 'IDLE', message: '', featured: null, later: [], total: 0 },
   onLoad() { this.setData({ statusBarHeight: wx.getSystemInfoSync?.().statusBarHeight || 24 }); },
   async onShow() { return this.refresh(); },
-  onHide() { this._generation = (this._generation || 0) + 1; },
-  onUnload() { this._generation = (this._generation || 0) + 1; },
+  onHide() { this._generation = (this._generation || 0) + 1; this._shownIdentity = null; },
+  onUnload() { this._generation = (this._generation || 0) + 1; this._shownIdentity = null; },
   async onPullDownRefresh() { await this.refresh(); wx.stopPullDownRefresh?.(); },
   async refresh() {
     const generation = this._generation = (this._generation || 0) + 1;
+    this._shownIdentity = null;
     this.setData({ loadState: 'LOADING', message: '', featured: null, later: [], total: 0 });
     await getApp().globalData.ready;
     if (generation !== this._generation) return;
@@ -63,6 +72,7 @@ Page({
       const upcoming = response.items.filter(item => eligible(item, now))
         .sort((left, right) => Date.parse(left.startAt) - Date.parse(right.startAt))
         .map(item => present(item, now));
+      this._shownIdentity = identity;
       this.setData({ featured: upcoming[0] || null, later: upcoming.slice(1), total: upcoming.length,
         loadState: 'READY' });
     } catch (error) {
@@ -70,17 +80,25 @@ Page({
         this.setData({ loadState: 'ERROR', message: error.message || '行程读取失败，请重试' });
     }
   },
-  openEvent(event) {
-    const id = event.currentTarget.dataset.id;
-    if (id) wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) + '&section=detailsSection' });
+  openSection(event, section) {
+    if (this._shownIdentity !== currentIdentity()) {
+      this._generation = (this._generation || 0) + 1;
+      this._shownIdentity = null;
+      this.setData({ featured: null, later: [], total: 0, loadState: 'ERROR',
+        message: '账号已切换，请重新加载行程。' });
+      return;
+    }
+    if (this.data.loadState !== 'READY') return;
+    const id = event?.currentTarget?.dataset?.id;
+    if (!id || ![this.data.featured, ...this.data.later].some(item => item?.id === id)) return;
+    wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) + '&section=' + section });
   },
+  openEvent(event) { this.openSection(event, 'detailsSection'); },
   openRegistration(event) {
-    const id = event.currentTarget.dataset.id;
-    if (id) wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) + '&section=registrationSection' });
+    this.openSection(event, 'registrationSection');
   },
   openCheckin(event) {
-    const id = event.currentTarget.dataset.id;
-    if (id) wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) + '&section=checkinSection' });
+    this.openSection(event, 'checkinSection');
   },
   goHome() { wx.switchTab({ url: '/pages/index/index' }); },
   goProfile() { wx.switchTab({ url: '/pages/me/me' }); },

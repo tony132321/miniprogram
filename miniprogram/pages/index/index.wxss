@@ -131,6 +131,9 @@ page { background: #f5f7fa; color: #172033; }
 .card-secondary,.card-disabled { flex: 1; color: #3c4654; background: #f0f2f6; }
 .card-actions .card-share { flex: 0 0 72rpx; width: 72rpx; color: #1d64f2; background: #edf3ff; font-size: 32rpx; }
 .card-disabled { color: #8993a2; font-weight: 550; }
+.card-shortcut { box-sizing: border-box; width: 100%; min-height: 58rpx; margin: 10rpx 0 0; padding: 10rpx 18rpx; border-radius: 16rpx; background: #eef3ff; color: #1d64f2; text-align: left; line-height: 1.4; font-size: 20rpx; font-weight: 750; }
+.card-shortcut::after { border: 0; }
+.card-history .card-shortcut { color: #5856d6; background: #f1effd; }
 .card-history .card-primary { background: #5856d6; box-shadow: 0 5rpx 14rpx rgba(88,86,214,.15); }
 .dashboard-links { display: flex!important; align-items: center; gap: 14rpx!important; }
 .pending-state .state-icon { background: #e74766; }

@@ -47,6 +47,9 @@ test('discovery shows only current-account activities and routes their real IDs'
   assert.deepEqual(routes, []);
   page.openPersonalEvent({ currentTarget: { dataset: { id: 'current' } } });
   assert.deepEqual(routes, ['/pages/event/event?id=current']);
+  storage.set('devUser', 'three');
+  page.openPersonalEvent({ currentTarget: { dataset: { id: 'current' } } });
+  assert.deepEqual(routes, ['/pages/event/event?id=current'], 'old-account card cannot navigate after identity changes');
 
   const markup = readFileSync(new URL('../miniprogram/pages/discover/discover.wxml', import.meta.url), 'utf8');
   assert.match(markup, /wx:for="{{personalEvents}}"[^>]+bindtap="openPersonalEvent"/);

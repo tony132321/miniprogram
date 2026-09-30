@@ -155,6 +155,19 @@ function cardPresentation(item, group) {
     '查看活动详情与最新安排。', primaryLabel: '查看活动', primaryAction: 'detailsSection',
     secondaryLabel: '', secondaryAction: '' };
 }
+function cardShortcut(item, group) {
+  if (group === 'pending' && ['RECRUITING', 'CONFIRMED'].includes(item.status) &&
+    ['INTERESTED', 'REQUESTED', 'WAITLISTED', 'OFFERED', 'RECONFIRM_REQUIRED'].includes(item.myRegistrationStatus))
+    return { shortcutLabel: '前往退出报名', shortcutAction: 'registrationSection' };
+  if (group === 'organized' && item.isHost && ['CONFIRMED', 'IN_PROGRESS'].includes(item.status))
+    return { shortcutLabel: '前往签到管理', shortcutAction: 'checkinSection' };
+  if (group === 'history' && item.status === 'COMPLETED') {
+    if (item.isHost) return { shortcutLabel: '查看再约一场', shortcutAction: 'hostSection' };
+    if (item.myRegistrationStatus === 'CONFIRMED')
+      return { shortcutLabel: '查看或填写反馈', shortcutAction: 'checkinSection' };
+  }
+  return { shortcutLabel: '', shortcutAction: '' };
+}
 Page({
   data: { items: [], organized: [], cohosting: [], pending: [], attending: [], history: [],
     tabs, categoryIdeas, activeTab: 'attending', stateView: false, draftsOnly: false,
@@ -204,13 +217,15 @@ Page({
       const groups = { organized: [], cohosting: [], pending: [], attending: [], history: [] };
       const items = result.items.map(item => {
         const group = sectionFor(item);
-        return { ...item, ...cardPresentation(item, group), statusLabel: statusLabels[item.status] || item.status || '状态待确认',
+        return { ...item, ...cardPresentation(item, group), ...cardShortcut(item, group),
+          statusLabel: statusLabels[item.status] || item.status || '状态待确认',
           registrationLabel: registrationLabels[item.myRegistrationStatus] || '',
           cardLabel: group === 'organized' ? statusLabels[item.status] || item.status || '状态待确认'
             : registrationLabels[item.myRegistrationStatus] ||
               (group === 'cohosting' ? '协办中' : statusLabels[item.status] || item.status || '状态待确认'),
-          dateLabel: dateLabel(item.startAt), dateRangeLabel: dateLabel(item.startAt),
-          venueLabel: '地点请到活动详情查看', capacityLabel: '', hostCounts: null,
+          dateLabel: dateLabel(item.startAt), dateRangeLabel: dateRangeLabel(item.startAt, item.endAt),
+          venueLabel: [item.city, item.venueName].filter(Boolean).join(' · ') || '地点请到活动详情查看',
+          capacityLabel: '', hostCounts: null,
           posterWord: posterWord(item.title || ''), cover: coverFor(item.title || '') };
       });
       for (const item of items) groups[sectionFor(item)].push(item);
@@ -339,7 +354,7 @@ Page({
     const { id, action } = event.currentTarget.dataset;
     const item = this.data.items.find(candidate => candidate.id === id);
     if (!item || this._shownIdentity !== currentIdentity()) return;
-    if (![item.primaryAction, item.secondaryAction].includes(action)) return;
+    if (![item.primaryAction, item.secondaryAction, item.shortcutAction].includes(action)) return;
     if (action === 'offerNotifications') {
       if (item.myRegistrationStatus !== 'OFFERED') return;
       wx.setStorageSync('irlProfileFocusIntent', 'noticeSection');
@@ -352,9 +367,16 @@ Page({
       wx.setStorageSync('editTargetOwner', currentIdentity());
       return wx.switchTab({ url: '/pages/create/create' });
     }
-    if (!['detailsSection', 'registrationSection', 'hostSection', 'expenseSection'].includes(action)) return;
+    if (!['detailsSection', 'registrationSection', 'hostSection', 'checkinSection', 'expenseSection'].includes(action)) return;
     if (action === 'hostSection' && !item.isHost) return;
-    wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) + '&section=' + action });
+    let entry = '';
+    if (action === 'checkinSection' && action === item.shortcutAction) {
+      if (item.isHost && ['CONFIRMED', 'IN_PROGRESS'].includes(item.status)) entry = 'hostCheckin';
+      else if (!item.isHost && item.status === 'COMPLETED' && item.myRegistrationStatus === 'CONFIRMED')
+        entry = 'memberFeedback';
+    }
+    wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) + '&section=' + action +
+      (entry ? '&entry=' + entry : '') });
   },
   openHostShare(event) {
     const id = event?.currentTarget?.dataset?.id;
@@ -363,5 +385,10 @@ Page({
     if (!item?.isHost || item.status !== 'RECRUITING') return;
     wx.navigateTo({ url: '/subpackages/activity/share/share?id=' + encodeURIComponent(id) });
   },
-  openEvent(event) { wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(event.currentTarget.dataset.id) }); }
+  openEvent(event) {
+    const id = event?.currentTarget?.dataset?.id;
+    if (!id || this._shownIdentity !== currentIdentity() ||
+      !this.data.items.some(item => item.id === id)) return;
+    wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) });
+  }
 });

@@ -65,6 +65,18 @@ function chinaMomentOrUnknown(value) {
   const timestamp = Date.parse(value || '');
   return Number.isFinite(timestamp) ? chinaMoment(timestamp) : '时间待确认';
 }
+function chinaDateTimeOrUnknown(value) {
+  const timestamp = Date.parse(value || '');
+  if (!Number.isFinite(timestamp)) return '时间待确认';
+  const local = new Date(timestamp + 8 * 60 * 60_000);
+  return `${local.getUTCFullYear()}年${chinaMoment(timestamp)}`;
+}
+function changeValueLabel(field, value) {
+  if (value == null || value === '') return '未设置';
+  if (field === 'startAt' || field === 'endAt') return chinaDateTimeOrUnknown(value);
+  if (field === 'feeCapFen') return yuanFromFen(value);
+  return String(value);
+}
 function contentTimeline(items, displayPerson, hostId, actor, ownAlias) {
   const rows = items.map(item => {
     const isSystem = item.author_id === 'system';
@@ -224,7 +236,16 @@ Page({
       sectionAvailable(options.section, this.data.isHost, this.data.canApproveRegistration,
         this.data.canManageAnnouncements, this.data.canManageCheckins)) {
       if (typeof wx.nextTick === 'function') await new Promise(resolve => wx.nextTick(resolve));
-      this.scrollToSection(options.section);
+      const sameEvent = Boolean(options.id && this.data.event?.id === options.id);
+      const hostCheckin = sameEvent && options.section === 'checkinSection' && options.entry === 'hostCheckin' &&
+        this.data.isHost && this.data.canManageCheckins &&
+        ['CONFIRMED', 'IN_PROGRESS'].includes(this.data.event.status);
+      const memberFeedback = sameEvent && options.section === 'checkinSection' && options.entry === 'memberFeedback' &&
+        this.data.event.status === 'COMPLETED' && !this.data.isHost &&
+        this.data.myRegistration?.status === 'CONFIRMED' && this.data.outcomeLoadState === 'READY' &&
+        this.data.outcome && !this.data.outcome.myFeedbackSubmitted;
+      if (hostCheckin) this.setData({ checkInMode: 'host' });
+      this.scrollToSection(options.section, memberFeedback ? '#feedbackForm' : '');
     }
   },
   async onShow() {
@@ -482,7 +503,10 @@ Page({
         minParticipants: '最少人数', maxParticipants: '最多人数', visibility: '可见范围', cancellationRule: '取消规则', city: '城市' };
       const reconfirmation = pending && Array.isArray(pending.changes) &&
         pending.changes.every(change => change && typeof change === 'object') ?
-        { ...pending, changes: pending.changes.map(change => ({ ...change, label: labels[change.field] || change.field })) } : null;
+        { ...pending, deadlineLabel: chinaDateTimeOrUnknown(pending.deadline),
+          changes: pending.changes.map(change => ({ ...change, label: labels[change.field] || change.field,
+            beforeLabel: changeValueLabel(change.field, change.before),
+            afterLabel: changeValueLabel(change.field, change.after) })) } : null;
       const reconfirmationLoadState = !needsReconfirmation ? 'IDLE' : reconfirmation ? 'READY' : 'ERROR';
       const reconfirmationError = reconfirmationLoadState === 'ERROR' ?
         reconfirmationRead?.error?.message || '新规则确认信息无效，请重试' : '';
@@ -581,12 +605,13 @@ Page({
       this.scrollToSection(id);
     }
   },
-  scrollToSection(id) {
+  scrollToSection(id, targetSelector) {
     if (!sectionHeadings[id]) return;
     if (id !== this.data.activeSection) this.clearCheckInToken();
     const [sectionTitle, sectionSubtitle] = sectionHeadings[id];
     this.setData({ activeSection: id, sectionTitle, sectionSubtitle }, () => {
-      if (typeof wx.pageScrollTo === 'function') wx.pageScrollTo({ scrollTop: 0, duration: 0 });
+      if (typeof wx.pageScrollTo === 'function') wx.pageScrollTo(targetSelector
+        ? { selector: targetSelector, duration: 0 } : { scrollTop: 0, duration: 0 });
     });
   },
   selectCheckInMode(event) {

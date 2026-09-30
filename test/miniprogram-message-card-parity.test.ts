@@ -34,7 +34,7 @@ test('notification cards distinguish actual reminder, location/rule update and f
   assert.equal(cards[0].actionSection, 'checkinSection');
   assert.equal(cards[1].cardVariant, 'update');
   assert.equal(cards[1].tone, 'lime');
-  assert.equal(cards[1].actionSection, 'detailsSection');
+  assert.equal(cards[1].actionSection, 'registrationSection');
   assert.equal(cards[2].cardVariant, 'milestone');
   assert.equal(cards[2].tone, 'green');
   assert.equal(cards[3].tone, 'violet');
@@ -75,15 +75,22 @@ test('update, formation and outcome actions open the matching event section befo
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, unknown>) { Object.assign(this.data, patch); };
+  page.data.items = ['MATERIAL_CHANGE', 'EVENT_CONFIRMED', 'EVENT_OUTCOME_DUE',
+    'EVENT_OUTCOME_REVIEW', 'MATERIAL_CHANGE_INBOX'].map(id => ({ id,
+    kind: id === 'MATERIAL_CHANGE_INBOX' ? 'MATERIAL_CHANGE' : id, event_id: 'event-1' }));
   for (const [kind, section] of [['MATERIAL_CHANGE', 'detailsSection'],
     ['EVENT_CONFIRMED', 'detailsSection'], ['EVENT_OUTCOME_DUE', 'hostSection'],
     ['EVENT_OUTCOME_REVIEW', 'checkinSection']]) await page.openNotice({
     currentTarget: { dataset: { id: kind, eventId: 'event-1', kind, section } }
   });
+  await page.openNotice({ currentTarget: { dataset: {
+    id: 'MATERIAL_CHANGE_INBOX', eventId: 'event-1', kind: 'MATERIAL_CHANGE'
+  } } });
   assert.deepEqual(actions, [
-    '/pages/event/event?id=event-1&section=detailsSection', '/me/notifications/MATERIAL_CHANGE/open',
+    '/pages/event/event?id=event-1&section=registrationSection', '/me/notifications/MATERIAL_CHANGE/open',
     '/pages/event/event?id=event-1&section=detailsSection', '/me/notifications/EVENT_CONFIRMED/open',
     '/pages/event/event?id=event-1&section=hostSection', '/me/notifications/EVENT_OUTCOME_DUE/open',
-    '/pages/event/event?id=event-1&section=checkinSection', '/me/notifications/EVENT_OUTCOME_REVIEW/open'
+    '/pages/event/event?id=event-1&section=checkinSection', '/me/notifications/EVENT_OUTCOME_REVIEW/open',
+    '/pages/event/event?id=event-1&section=registrationSection', '/me/notifications/MATERIAL_CHANGE_INBOX/open'
   ]);
 });

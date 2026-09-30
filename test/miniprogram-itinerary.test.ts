@@ -71,14 +71,34 @@ test('itinerary discards a late response from another identity', async () => {
 test('itinerary uses the reference badminton cover and opens real registration detail', async () => {
   const { page, navigations } = createPage(async () => ({ items: [{ id: 'rally', title: '周六羽毛球',
     status: 'CONFIRMED', myRegistrationStatus: 'CONFIRMED',
-    venueName: '公共羽毛球馆', feeMode: 'AA', feeCapFen: 4200,
-    startAt: new Date(Date.now() + 3 * 86_400_000).toISOString() }] }));
+    city: '深圳', venueName: '公共羽毛球馆', feeMode: 'AA', feeCapFen: 4200,
+    startAt: '2099-03-22T11:00:00.000Z', endAt: '2099-03-22T13:00:00.000Z' }] }));
   await page.onShow();
   assert.equal(page.data.featured.cover, '/assets/stitch/itinerary_badminton.jpg');
   assert.equal(page.data.featured.venueLabel, '公共羽毛球馆');
+  assert.equal(page.data.featured.locationLabel, '深圳 · 公共羽毛球馆');
+  assert.equal(page.data.featured.timeLabel, '19:00 - 21:00');
   assert.equal(page.data.featured.feeLabel, 'AA 制 · 每人上限 ¥42.00');
   page.openRegistration({ currentTarget: { dataset: { id: 'rally' } } });
   assert.deepEqual(navigations, ['/pages/event/event?id=rally&section=registrationSection']);
+});
+
+test('itinerary buttons reject stale identity and event ids before opening a detail route', async () => {
+  const { page, identity, navigations } = createPage(async () => ({ items: [{ id: 'mine', title: '本人羽毛球',
+    status: 'CONFIRMED', myRegistrationStatus: 'CONFIRMED',
+    startAt: new Date(Date.now() + 3 * 86_400_000).toISOString() }] }));
+  await page.onShow();
+  const tapped = (id: string) => ({ currentTarget: { dataset: { id } } });
+  page.openEvent(tapped('other'));
+  page.openRegistration(tapped('other'));
+  page.openCheckin(tapped('other'));
+  assert.deepEqual(navigations, []);
+  identity.userId = 'two';
+  page.openEvent(tapped('mine'));
+  page.openRegistration(tapped('mine'));
+  page.openCheckin(tapped('mine'));
+  assert.deepEqual(navigations, []);
+  assert.equal(page.data.featured, null, 'old account details are cleared after identity switch');
 });
 
 test('itinerary keeps a long running confirmed activity in the current schedule', async () => {

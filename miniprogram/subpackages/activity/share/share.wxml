@@ -13,7 +13,7 @@
         <view wx:if="{{display.confirmed !== null || display.minimum !== null}}" class="ticket-count"><text wx:if="{{display.confirmed !== null}}">已确认 {{display.confirmed}} 人</text><text wx:if="{{display.minimum !== null}}">最低成局 {{display.minimum}} 人</text></view>
       </view>
       <view class="ticket-divider"></view>
-      <view wx:if="{{canShare}}" class="ticket-invite"><view class="invite-symbol">⌁</view><view class="invite-label">真实邀请码</view><view class="invite-code">{{display.inviteToken}}</view><view class="invite-hint">好友可在耍起 CAPER 首页输入此码查看活动</view><button bindtap="copyInvite" class="invite-copy">复制邀请码　→</button></view>
+      <view wx:if="{{canShare}}" class="ticket-invite"><canvas class="invite-qr" canvas-id="inviteQr" style="width:200px;height:200px" aria-label="仅包含本场邀请码的二维码"/><view class="invite-label">扫码或输入真实邀请码</view><view class="invite-code">{{display.inviteToken}}</view><view class="invite-hint">好友可在耍起 CAPER 发现页扫码，或在首页输入此码查看活动；具体地点以活动详情为准。</view><button bindtap="copyInvite" class="invite-copy">复制邀请码　→</button></view>
       <view wx:else class="ticket-invite unavailable"><view class="invite-symbol">⌁</view><view class="invite-label">当前邀请码不可分享</view><view class="invite-hint">请返回活动详情核对审核、招募和安全状态。</view></view>
     </view>
 

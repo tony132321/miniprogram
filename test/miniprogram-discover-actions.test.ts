@@ -60,3 +60,43 @@ test('a closed public-search entry leads to the real invitation field and keeps 
   page.openInvite();
   assert.deepEqual(routes, ['/pages/event/event?token=ABC%20123']);
 });
+
+test('discovery scans only a plain invitation token and ignores a result after account switch', () => {
+  let page: Record<string, any> | undefined;
+  let scan: Record<string, any> | undefined;
+  const storage = new Map<string, string>([['devUser', 'visitor-one']]);
+  const routes: string[] = [];
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/discover/discover.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: {} };
+      if (path === '../../config.js') return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: {
+      getStorageSync(key: string) { return storage.get(key) || ''; },
+      scanCode(options: Record<string, any>) { scan = options; },
+      navigateTo({ url }: { url: string }) { routes.push(url); }
+    }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  const markup = readFileSync(new URL('../miniprogram/pages/discover/discover.wxml', import.meta.url), 'utf8');
+  assert.match(markup, /class="invite-scan"[^>]+bindtap="scanInviteQr"/);
+
+  page.scanInviteQr();
+  assert.equal(scan?.onlyFromCamera, true);
+  assert.deepEqual(Array.from(scan?.scanType || []), ['qrCode']);
+  scan?.success({ result: 'https://example.invalid/abc', scanType: 'QR_CODE' });
+  assert.equal(routes.length, 0);
+  assert.match(page.data.message, /邀请码二维码/);
+
+  page.scanInviteQr();
+  storage.set('devUser', 'visitor-two');
+  scan?.success({ result: 'a'.repeat(32), scanType: 'QR_CODE' });
+  assert.equal(routes.length, 0);
+
+  page.scanInviteQr();
+  scan?.success({ result: 'A'.repeat(32), scanType: 'QR_CODE' });
+  assert.deepEqual(routes, ['/pages/event/event?token=' + 'A'.repeat(32)]);
+});

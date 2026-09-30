@@ -85,37 +85,57 @@ function createApi(platform, config) {
     const identity = currentIdentity();
     const changedIdentity = () => Object.assign(new Error('账号已切换，请刷新活动列表'), { code: 'IDENTITY_CHANGED' });
     for (let attempt = 0; attempt < 3; attempt++) {
-      const items = [];
-      let offset = 0;
-      let snapshot = '';
       try {
-        while (true) {
-          if (currentIdentity() !== identity) throw changedIdentity();
-          const path = `/me/events?limit=100&offset=${offset}` +
-            (offset ? `&snapshot=${encodeURIComponent(snapshot)}` : '');
-          const page = await call('GET', path);
-          if (currentIdentity() !== identity) throw changedIdentity();
-          if (!Array.isArray(page?.items)) throw new Error('活动列表无效，请重试');
-          // An older server may ignore the new query and return its complete legacy list.
-          if (page.nextOffset === undefined && page.snapshot === undefined && offset === 0)
-            return { items: page.items };
-          if (!Number.isSafeInteger(page.total) || page.total < 0 ||
-            !/^[a-f0-9]{32}$/.test(page.snapshot) ||
-            (offset > 0 && page.snapshot !== snapshot) ||
-            page.items.length > 100 || offset + page.items.length > page.total ||
-            (page.nextOffset !== null && page.items.length === 0) ||
-            (page.nextOffset !== null &&
-              (!Number.isSafeInteger(page.nextOffset) || page.nextOffset !== offset + page.items.length ||
-                page.nextOffset >= page.total)))
-            throw new Error('活动列表分页无效，请重试');
-          if (!snapshot) snapshot = page.snapshot;
-          items.push(...page.items);
-          if (page.nextOffset === null) {
-            if (items.length !== page.total) throw new Error('活动列表分页不完整，请重试');
-            return { items };
-          }
-          offset = page.nextOffset;
+        if (currentIdentity() !== identity) throw changedIdentity();
+        const first = await call('GET', '/me/events?limit=100&offset=0');
+        if (currentIdentity() !== identity) throw changedIdentity();
+        if (!Array.isArray(first?.items)) throw new Error('活动列表无效，请重试');
+        // An older server may ignore the new query and return its complete legacy list.
+        if (first.nextOffset === undefined && first.snapshot === undefined)
+          return { items: first.items };
+        const total = first.total;
+        const snapshot = first.snapshot;
+        const pageSize = first.items.length;
+        const invalidPage = () => new Error('活动列表分页无效，请重试');
+        function validatePage(page, offset) {
+          if (!Array.isArray(page?.items) || !Number.isSafeInteger(page.total) || page.total !== total ||
+            total < 0 || !/^[a-f0-9]{32}$/.test(page.snapshot) || page.snapshot !== snapshot ||
+            page.items.length > 100 || offset + page.items.length > total ||
+            (offset < total && page.items.length !== Math.min(pageSize, total - offset)) ||
+            page.nextOffset !== (offset + page.items.length < total ? offset + page.items.length : null))
+            throw invalidPage();
         }
+        if (!Number.isSafeInteger(total) || total < 0 || !/^[a-f0-9]{32}$/.test(snapshot) ||
+          pageSize > 100 || (total > 0 && pageSize === 0) || pageSize > total ||
+          first.nextOffset !== (pageSize < total ? pageSize : null)) throw invalidPage();
+        if (first.nextOffset === null) return { items: first.items };
+
+        const offsets = [];
+        for (let offset = pageSize; offset < total; offset += pageSize) offsets.push(offset);
+        const pages = new Array(offsets.length);
+        let next = 0;
+        let failure = null;
+        async function loadWorker() {
+          while (next < offsets.length && !failure) {
+            if (currentIdentity() !== identity) { failure = changedIdentity(); return; }
+            const index = next++;
+            const offset = offsets[index];
+            try {
+              const page = await call('GET', `/me/events?limit=100&offset=${offset}` +
+                `&snapshot=${encodeURIComponent(snapshot)}`);
+              if (currentIdentity() !== identity) throw changedIdentity();
+              validatePage(page, offset);
+              pages[index] = page.items;
+            } catch (error) { failure = failure || error; }
+          }
+        }
+        await Promise.all(Array.from({ length: Math.min(4, offsets.length) }, () => loadWorker()));
+        if (currentIdentity() !== identity) throw changedIdentity();
+        if (failure) throw failure;
+        const items = first.items.slice();
+        for (const pageItems of pages) items.push(...pageItems);
+        if (items.length !== total) throw new Error('活动列表分页不完整，请重试');
+        return { items };
       } catch (error) {
         if (currentIdentity() !== identity) throw changedIdentity();
         if (error.code !== 'QUEUE_CHANGED' || attempt === 2) throw error;

@@ -80,6 +80,35 @@ test('notification center reloads live approvals when returning and restores the
   assert.equal(bar.at(-1), 'show');
 });
 
+test('recent conversations opens an honest private-chat preview with real exit paths', async () => {
+  const reads: string[] = [];
+  const destinations: string[] = [];
+  const page = mount({ async get(path: string) {
+    reads.push(path);
+    return { items: [], total: 0, unreadTotal: 0, nextOffset: null };
+  } }, {
+    getStorageSync(key: string) { return key === 'sessionToken' ? 'token' : 'member'; },
+    switchTab({ url }: { url: string }) { destinations.push(url); },
+    hideTabBar() {}, showTabBar() {}
+  });
+  const bar = { data: { hidden: false }, setData(patch: Record<string, boolean>) { Object.assign(this.data, patch); } };
+  page.getTabBar = () => bar;
+  await page.onShow();
+  page.openPrivateChatPreview();
+  assert.equal(page.data.viewMode, 'CHAT_UNAVAILABLE');
+  assert.equal(bar.data.hidden, true);
+  assert.deepEqual(reads, ['/me/notifications?offset=0'], 'preview does not fabricate or fetch conversation data');
+  page.goMyActivities();
+  assert.deepEqual(destinations, ['/pages/index/index']);
+  page.backToInbox();
+  assert.equal(page.data.viewMode, 'INBOX');
+  assert.equal(bar.data.hidden, false);
+  assert.match(markup, /class="conversation-jump" bindtap="openPrivateChatPreview"/);
+  assert.match(markup, /viewMode === 'CHAT_UNAVAILABLE'/);
+  assert.match(markup, /私聊尚未开放/);
+  assert.doesNotMatch(markup, /Alex|已读 ·|发送消息/);
+});
+
 test('entering notification center clears the inbox-only search so All shows every loaded notice', async () => {
   const page = mount({ async get(path: string) {
     if (path.startsWith('/me/approval-requests')) return { items: [], total: 0, nextOffset: null };
@@ -119,6 +148,7 @@ test('offer notice opens the profile action queue before marking the notice read
     setStorageSync(key: string, value: string) { actions.push(key + '=' + value); },
     switchTab(options: { url: string; success?: () => void }) { actions.push(options.url); options.success?.(); }
   });
+  page.data.items = [{ id: 'offer-notice', kind: 'WAITLIST_OFFER', event_id: 'event-1' }];
   await page.openNotice({ currentTarget: { dataset: {
     id: 'offer-notice', eventId: 'event-1', kind: 'WAITLIST_OFFER'
   } } });
@@ -141,6 +171,7 @@ test('a profile record notice stays unread when its destination fails to open', 
       else options.fail?.(new Error('profile unavailable'));
     }
   });
+  page.data.items = [{ id: 'report-notice', kind: 'REPORT_RESOLVED_UNSCOPED', event_id: null }];
   const notice = { currentTarget: { dataset: {
     id: 'report-notice', eventId: '', kind: 'REPORT_RESOLVED_UNSCOPED'
   } } };
@@ -170,6 +201,7 @@ test('safety and appeal notice actions open the matching profile record section'
       setStorageSync(key: string, value: string) { actions.push(key + '=' + value); },
       switchTab(options: { url: string; success?: () => void }) { actions.push(options.url); options.success?.(); }
     });
+    page.data.items = [{ id: 'notice-' + kind, kind, event_id: 'event-1' }];
     await page.openNotice({ currentTarget: { dataset: { id: 'notice-' + kind, eventId: 'event-1', kind } } });
     assert.deepEqual(actions, [
       `irlProfileFocusIntent=${focus}`,
