@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { createDatabase } from '../src/db.ts';
-import { createDraft, publishEvent as publishRawEvent } from '../src/events.ts';
+import { createDraft, updateDraft, publishEvent as publishRawEvent } from '../src/events.ts';
 import { approveInviteEvent, publishApprovedInvite } from './helpers.ts';
 import { register } from '../src/registrations.ts';
 import { reviewEvent } from '../src/event-review.ts';
@@ -27,6 +27,32 @@ const valid = (visibility: 'INVITE' | 'PUBLIC') => {
 
 type BusinessEvent = { event_uuid: string; event_name: string; occurred_at: Date; user_id_pseudonymous: string | null;
   activity_id: string; version: number; source: string; release: string; is_test: boolean };
+
+test('successful draft creation and revision emit private, versioned events once', async () => {
+  const db = await createDatabase();
+  try {
+    const initial = await createDraft(db, 'draft-owner-secret', { title: '私人草稿原文' }, 'draft-events-create', false);
+    assert.equal((await createDraft(db, 'draft-owner-secret', { title: '私人草稿原文' }, 'draft-events-create', false)).id,
+      initial.id);
+    const revised = await updateDraft(db, 'draft-owner-secret', initial.id, initial.version,
+      { title: '更新后的私人草稿' }, 'draft-events-update');
+    assert.equal((await updateDraft(db, 'draft-owner-secret', initial.id, initial.version,
+      { title: '更新后的私人草稿' }, 'draft-events-update')).version, revised.version);
+    await assert.rejects(() => updateDraft(db, 'draft-owner-secret', initial.id, initial.version,
+      { title: '不应保存' }, 'draft-events-stale'), { code: 'VERSION_CONFLICT' });
+    const { rows } = await db.query<BusinessEvent>(`SELECT * FROM business_events WHERE activity_id=$1
+      AND event_name IN ('DRAFT_CREATED','DRAFT_UPDATED') ORDER BY version`, [initial.id]);
+    assert.deepEqual(rows.map(row => [row.event_name, row.version]),
+      [['DRAFT_CREATED', 1], ['DRAFT_UPDATED', 2]]);
+    assert.ok(rows.every(row => row.activity_id === initial.id && row.source === 'API' &&
+      row.release === 'R1' && row.is_test === false && row.occurred_at &&
+      /^[a-f0-9]{64}$/.test(row.user_id_pseudonymous ?? '')));
+    assert.equal(JSON.stringify(rows).includes('私人'), false);
+    const { rows: audits } = await db.query<{ id: string }>(`SELECT id FROM audit WHERE event_id=$1
+      AND action IN ('CREATE_DRAFT','UPDATE_DRAFT') ORDER BY created_at,id`, [initial.id]);
+    assert.deepEqual(rows.map(row => row.event_uuid).sort(), audits.map(row => row.id).sort());
+  } finally { await db.close(); }
+});
 
 test('activity content and first notification open emit committed events without private text', async () => {
   const db = await createDatabase();
@@ -69,8 +95,10 @@ test('committed business events are pseudonymous, versioned and idempotent', asy
     await register(db, 'participant-secret', draft.id, published.version, 'join', published.inviteToken!);
     const { rows } = await db.query<BusinessEvent>('SELECT * FROM business_events WHERE activity_id=$1 ORDER BY occurred_at,event_uuid', [draft.id]);
     assert.deepEqual(rows.map(row => row.event_name).sort(),
-      ['ACTIVITY_PUBLISHED', 'INVITE_REVIEW_SUBMITTED', 'REGISTER_CONFIRMED', 'REGISTER_CONFIRMED']);
-    assert.ok(rows.every(row => row.activity_id === draft.id && row.version === published.version && !row.is_test));
+      ['ACTIVITY_PUBLISHED', 'DRAFT_CREATED', 'INVITE_REVIEW_SUBMITTED', 'REGISTER_CONFIRMED', 'REGISTER_CONFIRMED']);
+    assert.equal(rows.find(row => row.event_name === 'DRAFT_CREATED')?.version, draft.version);
+    assert.ok(rows.every(row => row.activity_id === draft.id && !row.is_test &&
+      (row.event_name === 'DRAFT_CREATED' || row.version === published.version)));
     assert.ok(rows.every(row => row.release === 'R1' && row.occurred_at));
     assert.equal(rows.find(row => row.event_name === 'INVITE_REVIEW_SUBMITTED')?.source, 'API');
     assert.equal(rows.find(row => row.event_name === 'ACTIVITY_PUBLISHED')?.source, 'OPS');

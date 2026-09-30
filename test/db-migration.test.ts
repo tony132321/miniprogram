@@ -9,6 +9,35 @@ import { createDatabase, LATEST_SCHEMA_VERSION } from '../src/db.ts';
 import { getPilotMetrics } from '../src/metrics.ts';
 import { changeReportStatus, listReportResponseAlerts } from '../src/operations.ts';
 
+test('draft event migration preserves old audit history and records only new success actions', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'project-irl-draft-events-upgrade-'));
+  try {
+    const old = await createDatabase(directory);
+    try {
+      await old.query('DROP TRIGGER audit_draft_business_event ON audit');
+      await old.query('DROP FUNCTION record_draft_business_event()');
+      await old.query('DELETE FROM schema_migrations WHERE version=68');
+      await old.query("INSERT INTO events(id,host_id,status,version,payload,is_test) VALUES('draft-upgrade','owner','DRAFT',2,'{}',true)");
+      await old.query(`INSERT INTO audit(id,actor_id,event_id,action)
+        VALUES('old-draft-audit','owner','draft-upgrade','CREATE_DRAFT')`);
+      assert.equal((await old.query("SELECT 1 FROM business_events WHERE activity_id='draft-upgrade'")).rows.length, 0);
+    } finally { await old.close(); }
+
+    const upgraded = await createDatabase(directory);
+    try {
+      assert.equal((await upgraded.query<{ version: number }>('SELECT max(version)::int AS version FROM schema_migrations'))
+        .rows[0]?.version, LATEST_SCHEMA_VERSION);
+      assert.equal((await upgraded.query("SELECT 1 FROM business_events WHERE event_uuid='old-draft-audit'"))
+        .rows.length, 0);
+      await upgraded.query(`INSERT INTO audit(id,actor_id,event_id,action)
+        VALUES('new-draft-audit','owner','draft-upgrade','UPDATE_DRAFT')`);
+      const { rows } = await upgraded.query<{ event_uuid: string; event_name: string; version: number; is_test: boolean }>(
+        "SELECT event_uuid,event_name,version,is_test FROM business_events WHERE activity_id='draft-upgrade'");
+      assert.deepEqual(rows, [{ event_uuid: 'new-draft-audit', event_name: 'DRAFT_UPDATED', version: 2, is_test: true }]);
+    } finally { await upgraded.close(); }
+  } finally { await rm(directory, { recursive: true, force: true }); }
+});
+
 test('legacy in-review reports keep first response unknown through upgrade and closure', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'project-irl-report-response-upgrade-'));
   try {
