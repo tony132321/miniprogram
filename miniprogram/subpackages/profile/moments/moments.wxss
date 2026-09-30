@@ -16,7 +16,7 @@
 .moments-filter.active { background: #2164f0; color: white; }
 .moments-filter-icon { margin-right: 8rpx; font-size: 24rpx; line-height: 1; }
 .moments-filter.disabled-filter { color: #959aaa; }
-.moments-summary { display: flex; align-items: center; gap: 15rpx; padding: 19rpx; margin-bottom: 21rpx; border-radius: 24rpx; background: linear-gradient(115deg,#eaf2ff,#f7f0ff 68%,#fbf5d8); }
+.moments-summary { display: flex; align-items: center; gap: 15rpx; box-sizing: border-box; min-height: 160rpx; padding: 19rpx; margin-bottom: 21rpx; border-radius: 24rpx; background: linear-gradient(115deg,#eaf2ff,#f7f0ff 68%,#fbf5d8); }
 .summary-icon { flex: none; width: 55rpx; height: 55rpx; border-radius: 50%; background: #fff; color: #1f63ec; line-height: 55rpx; text-align: center; font-size: 27rpx; }
 .summary-copy { flex: 1; min-width: 0; }
 .summary-heading { display: flex; align-items: center; gap: 8rpx; }
