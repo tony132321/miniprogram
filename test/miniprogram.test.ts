@@ -1716,7 +1716,9 @@ test('event completion sends the host’s actual held choice and zero people whe
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
-  page.setData({ id: 'e1' });
+  page.setData({ id: 'e1', isHost: true, event: { id: 'e1', status: 'CONFIRMED',
+    payload: { startAt: new Date(Date.now() - 3 * 60 * 60_000).toISOString(),
+      endAt: new Date(Date.now() - 60 * 60_000).toISOString() } } });
   const sent: Record<string, any>[] = [];
   page.action = (_path: string, payload: Record<string, any>) => sent.push(payload);
   page.complete();
@@ -1886,8 +1888,9 @@ test('event page follows current cohost grant while preserving own participation
     require(path: string) {
       if (path === '../../utils/api.js') return { api: { async get(path: string) {
         if (path === '/events/e1') return { id: 'e1', hostId: 'host', status: 'CONFIRMED', version: 2,
-          cohostCapabilities: granted ? ['CHECKIN_MANAGE'] : [], payload: { startAt: '2027-01-02T12:00:00.000Z',
-            endAt: '2027-01-02T14:00:00.000Z' } };
+          cohostCapabilities: granted ? ['CHECKIN_MANAGE'] : [], payload: {
+            startAt: new Date(Date.now() + 15 * 60_000).toISOString(),
+            endAt: new Date(Date.now() + 2 * 60 * 60_000).toISOString() } };
         if (path === '/me/registrations') return { items: [{ id: 'own-seat', event_id: 'e1', status: 'CONFIRMED' }] };
         return { items: [] };
       } } };
@@ -1961,14 +1964,16 @@ test('a check-in token arriving after the event page hides is not displayed or r
     },
     Page(definition: Record<string, any>) { page = definition; },
     wx: { getStorageSync(key: string) { return key === 'devUser' ? 'host' : ''; }, createCanvasContext() { return {}; } },
-    setTimeout() { refreshTimers++; return 1; }, clearTimeout() {}
+    setTimeout(_callback: () => void, delay: number) { if (delay <= 60_000) refreshTimers++; return 1; }, clearTimeout() {}
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>, callback?: () => void) {
     Object.assign(this.data, patch);
     callback?.();
   };
-  page.setData({ id: 'e1', event: { id: 'e1', version: 2, status: 'CONFIRMED' }, isHost: true });
+  page.setData({ id: 'e1', event: { id: 'e1', version: 2, status: 'CONFIRMED', payload: {
+    startAt: new Date(Date.now() + 15 * 60_000).toISOString(),
+    endAt: new Date(Date.now() + 2 * 60 * 60_000).toISOString() } }, isHost: true });
   const pending = page.showCheckInToken();
   page.onHide();
   finishToken({ token: 'signed-token', expiresInSeconds: 30 });
@@ -1998,7 +2003,9 @@ test('an expired check-in token is hidden while its replacement is still loading
     Object.assign(this.data, patch);
     callback?.();
   };
-  page.setData({ id: 'e1', event: { id: 'e1', version: 2, status: 'CONFIRMED' }, isHost: true,
+  page.setData({ id: 'e1', event: { id: 'e1', version: 2, status: 'CONFIRMED', payload: {
+    startAt: new Date(Date.now() + 15 * 60_000).toISOString(),
+    endAt: new Date(Date.now() + 2 * 60 * 60_000).toISOString() } }, isHost: true,
     displayedCheckInToken: 'expired-token', checkInExpiresIn: 0 });
   const pending = page.showCheckInToken();
   const visibleDuringReplacement = page.data.displayedCheckInToken;
@@ -2032,7 +2039,9 @@ test('a check-in token received after its remaining lifetime is never shown', as
     Object.assign(this.data, patch);
     callback?.();
   };
-  page.setData({ id: 'e1', event: { id: 'e1', version: 2, status: 'CONFIRMED' }, isHost: true });
+  page.setData({ id: 'e1', event: { id: 'e1', version: 2, status: 'CONFIRMED', payload: {
+    startAt: new Date(now + 15 * 60_000).toISOString(),
+    endAt: new Date(now + 2 * 60 * 60_000).toISOString() } }, isHost: true });
   const pending = page.showCheckInToken();
   now += 2_500;
   finishToken({ token: 'already-expired', expiresInSeconds: 2 });

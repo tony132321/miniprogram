@@ -62,6 +62,39 @@ function eventDisplay(event) {
       COMPLETED: '已结束', CANCELLED: '已取消', EXPIRED: '未成局' }[event.status] || event.status || '状态待确认'
   };
 }
+function chinaMoment(timestamp) {
+  const date = new Date(timestamp + 8 * 60 * 60_000);
+  return `${date.getUTCMonth() + 1}月${date.getUTCDate()}日 ${date.toISOString().slice(11, 16)}`;
+}
+function timedEventControls(event, now, myStatus, isHost, canManageCheckins) {
+  const start = Date.parse(event?.payload?.startAt || '');
+  const end = Date.parse(event?.payload?.endAt || '');
+  const eligibleStatus = ['CONFIRMED', 'IN_PROGRESS'].includes(event?.status);
+  const validTime = Number.isFinite(start) && Number.isFinite(end) && start < end;
+  const opens = start - 30 * 60_000;
+  const closes = end + 30 * 60_000;
+  const checkInOpen = eligibleStatus && validTime && now >= opens && now <= closes;
+  const checkInWindowNotice = !validTime ? '活动时间待确认，暂不能签到。' : !eligibleStatus
+    ? '当前活动状态不能生成签到码或记录扫码签到。'
+    : now < opens ? `签到将于 ${chinaMoment(opens)} 开放（活动开始前 30 分钟）。`
+      : now > closes ? `签到已于 ${chinaMoment(closes)} 结束（活动结束后 30 分钟）。`
+        : `现场签到进行中，将于 ${chinaMoment(closes)} 结束。`;
+  const canCompleteEvent = Boolean(isHost && eligibleStatus && validTime && now >= end);
+  const completionAvailability = !validTime ? '活动结束时间待确认，暂不能结项。'
+    : !eligibleStatus ? '当前活动状态不能结项。'
+      : now < end ? `活动结束后（${chinaMoment(end)}）可填写实际举办情况并结项。`
+        : '活动已到结束时间，可填写实际举办情况并结项。';
+  return {
+    canCheckIn: Boolean(myStatus === 'CONFIRMED' && checkInOpen),
+    canGenerateCheckInToken: Boolean((isHost || canManageCheckins) && checkInOpen),
+    canCompleteEvent,
+    checkInWindowNotice,
+    checkInAvailability: myStatus === 'CONFIRMED' ? checkInWindowNotice
+      : '只有已确认席位的参与者可现场扫码签到；请先查看报名状态。',
+    completionAvailability,
+    nextTimeBoundary: validTime ? [opens, end, closes + 1].filter(at => at > now).sort((a, b) => a - b)[0] : undefined
+  };
+}
 function sectionAvailable(section, isHost, canApproveRegistration, canManageAnnouncements, canManageCheckins) {
   return ['detailsSection', 'registrationSection', 'contentSection', 'checkinSection', 'expenseSection'].includes(section) ||
     (section === 'hostSection' && isHost) ||
@@ -84,6 +117,7 @@ Page({
   data: { statusBarHeight: 24, id: '', token: '', source: '', activeSection: 'detailsSection', sectionTitle: '活动详情', sectionSubtitle: '耍起 CAPER · 线下见面', checkInMode: 'participant', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '',
     joinConfirmation: null, joinSubmitting: false,
     canJoin: false, canExpressInterest: false, canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
+    canGenerateCheckInToken: false, canCompleteEvent: false, checkInWindowNotice: '', checkInAvailability: '', completionAvailability: '',
     canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
     myRegistration: null, registrations: [], cohostGrants: [], cohostUserId: '', selectedCohostCapabilities: ['CHECKIN_MANAGE'], aliases: [],
     safetyStatus: 'UNKNOWN',
@@ -121,6 +155,7 @@ Page({
       this.setData({ token: '', source: '', activeSection: 'detailsSection', sectionTitle: '活动详情', sectionSubtitle: '耍起 CAPER · 线下见面', checkInMode: 'participant', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '',
         joinConfirmation: null, joinSubmitting: false,
         canJoin: false, canExpressInterest: false, canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
+        canGenerateCheckInToken: false, canCompleteEvent: false, checkInWindowNotice: '', checkInAvailability: '', completionAvailability: '',
         canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
         safetyStatus: 'UNKNOWN', myRegistration: null,
         registrations: [], cohostGrants: [], cohostUserId: '', selectedCohostCapabilities: ['CHECKIN_MANAGE'], aliases: [], hostAlias: '', aliasInput: '', canSetAlias: false,
@@ -142,12 +177,14 @@ Page({
   onHide() {
     this.checkInPageHidden = true;
     this.clearCheckInToken();
+    this.clearTimeBoundaryTimer();
     this.closeJoinConfirmation();
     if (this.data.successState) this.setData({ successState: '' });
   },
   onUnload() {
     this.checkInPageHidden = true;
     this.clearCheckInToken();
+    this.clearTimeBoundaryTimer();
     this.closeJoinConfirmation();
   },
   clearCheckInToken() {
@@ -156,10 +193,32 @@ Page({
     this.checkInRefreshTimer = null;
     if (this.data.displayedCheckInToken) this.setData({ displayedCheckInToken: '', checkInExpiresIn: 0 });
   },
+  clearTimeBoundaryTimer() {
+    clearTimeout(this.timeBoundaryTimer);
+    this.timeBoundaryTimer = null;
+  },
+  updateTimedControls() {
+    const controls = timedEventControls(this.data.event, Date.now(), this.data.myRegistration?.status,
+      this.data.isHost, this.data.canManageCheckins);
+    if (!controls.canGenerateCheckInToken && this.data.displayedCheckInToken) this.clearCheckInToken();
+    this.setData({ canCheckIn: controls.canCheckIn, canGenerateCheckInToken: controls.canGenerateCheckInToken,
+      canCompleteEvent: controls.canCompleteEvent, checkInWindowNotice: controls.checkInWindowNotice,
+      checkInAvailability: controls.checkInAvailability, completionAvailability: controls.completionAvailability });
+    this.clearTimeBoundaryTimer();
+    if (this.data.event && !this.checkInPageHidden && controls.nextTimeBoundary) {
+      const eventId = this.data.event.id;
+      this.timeBoundaryTimer = setTimeout(() => {
+        if (this.data.event?.id === eventId && !this.checkInPageHidden) this.updateTimedControls();
+      }, Math.max(1, Math.min(controls.nextTimeBoundary - Date.now(), 2_147_483_647)));
+      if (typeof this.timeBoundaryTimer?.unref === 'function') this.timeBoundaryTimer.unref();
+    }
+    return controls;
+  },
   async refresh() {
     const refreshId = (this.refreshId || 0) + 1;
     this.refreshId = refreshId;
     this.clearCheckInToken();
+    this.clearTimeBoundaryTimer();
     const actor = currentIdentity();
     this.setData({ loadState: 'LOADING' });
     let summary = null;
@@ -208,7 +267,7 @@ Page({
       const canExpressInterest = !myStatus || ['CANCELLED', 'EXPIRED', 'REJECTED'].includes(myStatus);
       const canUseCollaboration = isHost || cohostCapabilities.length > 0 || ['CONFIRMED', 'RECONFIRM_REQUIRED', 'WAITLISTED', 'OFFERED'].includes(myStatus);
       const canPostQuestion = canUseCollaboration && ['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(event.status);
-      const canCheckIn = myStatus === 'CONFIRMED' && ['CONFIRMED', 'IN_PROGRESS'].includes(event.status);
+      const timedControls = timedEventControls(event, Date.now(), myStatus, isHost, canManageCheckins);
       let aliasResponse = { items: [], notice: null, reconfirmationRequired: false };
       const canReadAliases = isHost || ['CONFIRMED', 'RECONFIRM_REQUIRED', 'WAITLISTED', 'OFFERED'].includes(myStatus);
       let aliasLoadState = canReadAliases ? 'READY' : 'FORBIDDEN'; let aliasError = '';
@@ -313,7 +372,11 @@ Page({
       const shareSourceToken = event.recruiting && !event.riskPaused && previous?.id === id && previous.version === event.version &&
         previous.inviteToken === event.inviteToken ? this.data.shareSourceToken : '';
       this.setData({ id, event, display: eventDisplay(event), inviteSummary: null, loadState: 'READY', isHost, canJoin, canExpressInterest,
-        canUseCollaboration, canPostQuestion, canCheckIn, canApproveRegistration, canManageCheckins, canManageAnnouncements,
+        canUseCollaboration, canPostQuestion, canCheckIn: timedControls.canCheckIn,
+        canGenerateCheckInToken: timedControls.canGenerateCheckInToken, canCompleteEvent: timedControls.canCompleteEvent,
+        checkInWindowNotice: timedControls.checkInWindowNotice, checkInAvailability: timedControls.checkInAvailability,
+        completionAvailability: timedControls.completionAvailability,
+        canApproveRegistration, canManageCheckins, canManageAnnouncements,
         safetyStatus, myRegistration, registrationLabel, registrations, cohostGrants, aliases, hostAlias,
         aliasInput: aliases.find(item => item.isMine)?.displayName || '', canSetAlias,
         aliasNoticeVersion: aliasResponse.notice?.version || '', aliasNoticeText: aliasResponse.notice?.text || '',
@@ -323,6 +386,7 @@ Page({
         expenses, expenseLoadState, expenseError,
         outcome, outcomeLoadState, outcomeError, checkIns, manualCheckIns, attendanceLoadState, attendanceError, reconfirmation,
         canRequestManualCheckIn, currentUser: actor, message: '' });
+      this.updateTimedControls();
       this.reconcileSuccessState();
       return true;
     } catch (error) {
@@ -331,6 +395,7 @@ Page({
       this.setData({ event: null, display: null, registrationLabel: '未报名', inviteSummary: needsLogin ? summary : null,
         loadState: needsLogin ? 'LOGIN_REQUIRED' : 'ERROR', canJoin: false, canExpressInterest: false,
         canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
+        canGenerateCheckInToken: false, canCompleteEvent: false, checkInWindowNotice: '', checkInAvailability: '', completionAvailability: '',
         canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
         myRegistration: null, registrations: [], cohostGrants: [], aliases: [], hostAlias: '', canSetAlias: false,
         aliasNoticeVersion: '', aliasNoticeText: '', aliasReconfirmationRequired: false, aliasLoadState: 'IDLE', aliasError: '',
@@ -587,14 +652,15 @@ Page({
     { expectedEventId: this.data.event.id }, '已认领预留名额'); },
   async showCheckInToken() {
     if (this.checkInPageHidden || !this.data.event || (!this.data.isHost && !this.data.canManageCheckins) ||
-      !['CONFIRMED', 'IN_PROGRESS'].includes(this.data.event.status)) return;
+      !this.updateTimedControls().canGenerateCheckInToken) return;
     const requestId = this.checkInRequestId = (this.checkInRequestId || 0) + 1;
     const eventId = this.data.id;
     const eventVersion = this.data.event.version;
     const actor = currentIdentity();
     const stillCurrent = () => requestId === this.checkInRequestId && !this.checkInPageHidden &&
       actor === currentIdentity() && this.data.id === eventId && this.data.event?.version === eventVersion &&
-      (this.data.isHost || this.data.canManageCheckins);
+      (this.data.isHost || this.data.canManageCheckins) && timedEventControls(this.data.event, Date.now(),
+        this.data.myRegistration?.status, this.data.isHost, this.data.canManageCheckins).canGenerateCheckInToken;
     clearTimeout(this.checkInRefreshTimer);
     if (this.data.displayedCheckInToken) this.setData({ displayedCheckInToken: '', checkInExpiresIn: 0 });
     try {
@@ -621,9 +687,17 @@ Page({
     }
   },
   checkInInput(event) { this.setData({ checkInToken: event.detail.value.trim() }); },
-  checkIn() { this.action(`/events/${this.data.id}/checkins`, { token: this.data.checkInToken }, '签到证据已记录'); },
+  checkIn() {
+    const controls = this.updateTimedControls();
+    if (!controls.canCheckIn) return this.setData({ message: controls.checkInAvailability });
+    this.action(`/events/${this.data.id}/checkins`, { token: this.data.checkInToken }, '签到证据已记录');
+  },
   scanCheckIn() {
+    const controls = this.updateTimedControls();
+    if (!controls.canCheckIn) return this.setData({ message: controls.checkInAvailability });
     wx.scanCode({ onlyFromCamera: true, scanType: ['qrCode'], success: result => {
+      const latest = this.updateTimedControls();
+      if (!latest.canCheckIn) return this.setData({ message: latest.checkInAvailability });
       const token = String(result.result || '').trim();
       if (!/^\d+\.[A-Za-z0-9_-]{43}$/.test(token)) return this.setData({ message: '这不是本活动的签到二维码' });
       this.action(`/events/${this.data.id}/checkins`, { token }, '扫码签到证据已记录');
@@ -646,6 +720,8 @@ Page({
   completionAnomalyInput(event) { this.setData({ completionAnomaly: event.detail.value }); },
   completionVenueIssueInput(event) { this.setData({ completionVenueIssue: event.detail.value }); },
   complete() {
+    const controls = this.updateTimedControls();
+    if (!controls.canCompleteEvent) return this.setData({ message: controls.completionAvailability });
     const held = this.data.completionHeld;
     if (typeof held !== 'boolean') return this.setData({ message: '请先选择活动是否实际举办' });
     if (held && !/^\d+$/.test(String(this.data.actualCount).trim()))

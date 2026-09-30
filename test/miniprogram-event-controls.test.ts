@@ -67,7 +67,7 @@ test('terminal event and free activity controls cannot invite an action the serv
     payload: { feeMode: 'FREE' } }, isHost: true, currentUser: 'host',
     myRegistration: { status: 'CONFIRMED' }, item: { user_id: 'friend', status: 'CONFIRMED' },
     safetyStatus: 'OPEN', canUseCollaboration: true, canManageAnnouncements: true,
-    canApproveRegistration: true, canCheckIn: false, outcome: {} };
+    canApproveRegistration: true, canCheckIn: false, canCompleteEvent: false, outcome: {} };
   for (const control of ['leaveButton', 'claim', 'removeParticipant', 'approve', 'completionAnomalyInput',
     'completionVenueIssueInput', 'expenseTotalYuan', 'postAnnouncement', 'askFact', 'reconfirmButton'])
     assert.equal(visibleControl(control, completed), false, `${control} should be unavailable after completion`);

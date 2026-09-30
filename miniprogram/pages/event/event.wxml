@@ -96,9 +96,9 @@
     <view class="checkin-modes"><button class="{{checkInMode === 'participant' ? 'selected' : ''}}" data-mode="participant" bindtap="selectCheckInMode">参与者扫码</button><button wx:if="{{canManageCheckins}}" class="{{checkInMode === 'host' ? 'selected' : ''}}" data-mode="host" bindtap="selectCheckInMode">主办方验码</button></view>
   <view wx:if="{{checkInMode === 'participant'}}" class="checkin-participant-card"><image class="checkin-participant-photo" src="/assets/stitch/caper_discover_coffee.jpg" mode="aspectFill"/><view class="checkin-participant-shade"></view><view class="checkin-participant-copy"><text>See You</text><text>In Real Life ♡</text></view><view class="checkin-participant-brand"><text>GOOD PEOPLE</text><text>BRIGHTER DAYS ✦</text></view>
     <view wx:if="{{canCheckIn}}" class="checkin-entry"><view class="checkin-entry-mark">⌗</view><view class="checkin-entry-title">在现场扫描主办方动态码</view><button bindtap="scanCheckIn">打开扫码 ›</button><view class="checkin-entry-divider">或输入现场口令</view><input placeholder="现场动态签到口令" value="{{checkInToken}}" bindinput="checkInInput" /><button bindtap="checkIn">记录签到证据</button></view>
-    <view wx:else class="checkin-entry checkin-entry-locked"><view class="checkin-entry-mark">⌗</view><view class="checkin-entry-title">签到尚未开放</view><view class="checkin-availability">需要已确认席位，且活动进入可签到阶段。请以本页实时状态为准。</view></view>
+    <view wx:else class="checkin-entry checkin-entry-locked"><view class="checkin-entry-mark">⌗</view><view class="checkin-entry-title">签到当前不可用</view><view class="checkin-availability">{{checkInAvailability}} 页面按设备时间提示，最终以服务端校验为准。</view></view>
   </view>
-  <view wx:if="{{checkInMode === 'host' && canManageCheckins}}" class="checkin-host-card"><view class="qr-brand">See You In Real Life <text>GOOD PEOPLE · BRIGHTER DAYS</text></view><view class="checkin-host-title">现场动态签到码</view><view class="checkin-host-help">仅在活动已成局且可签到时生成；口令过期会自动更新，不提供离线保证。</view><button wx:if="{{event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS'}}" bindtap="showCheckInToken">{{displayedCheckInToken ? '刷新二维码' : '生成动态二维码'}}</button><view wx:else class="checkin-host-unavailable">活动已成局后，主办方可在这里生成现场动态二维码。</view><canvas wx:if="{{displayedCheckInToken}}" canvas-id="checkinQrScreen" style="width:240px;height:240px"/><view wx:if="{{displayedCheckInToken}}" class="token-text">当前口令约 {{checkInExpiresIn}} 秒后更新：{{displayedCheckInToken}}</view></view>
+  <view wx:if="{{checkInMode === 'host' && canManageCheckins}}" class="checkin-host-card"><view class="qr-brand">See You In Real Life <text>GOOD PEOPLE · BRIGHTER DAYS</text></view><view class="checkin-host-title">现场动态签到码</view><view class="checkin-host-help">仅在活动已成局且可签到时生成；口令过期会自动更新，不提供离线保证。</view><button id="checkinScreenTokenButton" wx:if="{{canGenerateCheckInToken}}" bindtap="showCheckInToken">{{displayedCheckInToken ? '刷新二维码' : '生成动态二维码'}}</button><view wx:else class="checkin-host-unavailable">{{checkInWindowNotice}} 页面按设备时间提示，最终以服务端校验为准。</view><canvas wx:if="{{displayedCheckInToken}}" canvas-id="checkinQrScreen" style="width:240px;height:240px"/><view wx:if="{{displayedCheckInToken}}" class="token-text">当前口令约 {{checkInExpiresIn}} 秒后更新：{{displayedCheckInToken}}</view></view>
   <view wx:if="{{attendanceLoadState === 'EMPTY'}}" class="muted">暂无到场记录或人工补记。</view>
   <view wx:if="{{attendanceLoadState === 'FORBIDDEN'}}" class="muted">当前无权查看到场记录。</view>
   <view wx:if="{{attendanceLoadState === 'ERROR'}}" class="error">{{attendanceError}} <button id="attendanceRetryButton" bindtap="refresh">重新加载到场记录</button></view>
@@ -226,19 +226,21 @@
     <button id="confirmEventButton" wx:if="{{safetyStatus === 'OPEN' && event.status === 'RECRUITING' && !event.riskPaused && (event.reviewStatus === 'APPROVED' || event.reviewStatus === 'NOT_REQUIRED')}}" bindtap="confirmEvent">确认人数及场地可用并成局</button>
     <button wx:if="{{event.status === 'RECRUITING' || event.status === 'CONFIRMED'}}" bindtap="cancelEvent">取消活动</button>
     <button id="editPublishedButton" wx:if="{{event.status === 'RECRUITING' || event.status === 'CONFIRMED'}}" bindtap="editPublished">编辑活动规则并预览变更</button>
-    <button wx:if="{{event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS'}}" bindtap="showCheckInToken">展示动态签到二维码</button>
+    <button id="hostTokenButton" wx:if="{{canGenerateCheckInToken}}" bindtap="showCheckInToken">展示动态签到二维码</button>
+    <view wx:if="{{!canGenerateCheckInToken && (event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS')}}" class="muted">{{checkInWindowNotice}} 页面按设备时间提示，最终以服务端校验为准。</view>
     <view wx:if="{{displayedCheckInToken}}" class="checkin-qr-display"><view class="qr-brand">See You In Real Life <text>GOOD PEOPLE · BRIGHTER DAYS</text></view>
       <canvas canvas-id="checkinQr" style="width:240px;height:240px" />
       <view class="token-text">当前口令约 {{checkInExpiresIn}} 秒后更新：{{displayedCheckInToken}}</view>
     </view>
-    <radio-group wx:if="{{event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS'}}" bindchange="setCompletionHeld">
+    <radio-group wx:if="{{canCompleteEvent}}" bindchange="setCompletionHeld">
       <label id="completionHeldYes"><radio value="held" checked="{{completionHeld === true}}" />实际举办</label>
       <label id="completionHeldNo"><radio value="not_held" checked="{{completionHeld === false}}" />未举办</label>
     </radio-group>
-    <input id="completionActualCount" wx:if="{{completionHeld === true && (event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS')}}" type="number" placeholder="实际到场人数" value="{{actualCount}}" bindinput="actualCountInput" />
-    <textarea id="completionAnomalyInput" wx:if="{{event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS'}}" placeholder="本场异常（可选；无异常可留空）" value="{{completionAnomaly}}" bindinput="completionAnomalyInput" />
-    <textarea id="completionVenueIssueInput" wx:if="{{event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS'}}" placeholder="场地问题（可选；无问题可留空）" value="{{completionVenueIssue}}" bindinput="completionVenueIssueInput" />
-    <button id="completeEventButton" wx:if="{{event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS'}}" bindtap="complete">活动结项</button>
+    <input id="completionActualCount" wx:if="{{completionHeld === true && canCompleteEvent}}" type="number" placeholder="实际到场人数" value="{{actualCount}}" bindinput="actualCountInput" />
+    <textarea id="completionAnomalyInput" wx:if="{{canCompleteEvent}}" placeholder="本场异常（可选；无异常可留空）" value="{{completionAnomaly}}" bindinput="completionAnomalyInput" />
+    <textarea id="completionVenueIssueInput" wx:if="{{canCompleteEvent}}" placeholder="场地问题（可选；无问题可留空）" value="{{completionVenueIssue}}" bindinput="completionVenueIssueInput" />
+    <button id="completeEventButton" wx:if="{{canCompleteEvent}}" bindtap="complete">活动结项</button>
+    <view wx:if="{{!canCompleteEvent && (event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS')}}" class="muted">{{completionAvailability}} 页面按设备时间提示，最终以服务端校验为准。</view>
     </view>
     <view class="host-work-block"><view class="host-work-title">AA 记录与再约一场</view>
     <input id="expenseTotalYuan" wx:if="{{event.payload.feeMode === 'AA'}}" type="digit" placeholder="本场总费用（元）" value="{{totalYuan}}" bindinput="yuanInput" />
@@ -268,7 +270,8 @@
   </view>
   <view id="cohostCheckinSection" wx:if="{{!isHost && canManageCheckins}}" class="event-section cohost-section {{activeSection !== 'cohostCheckinSection' ? 'section-hidden' : ''}}">
     <view class="section-kicker">CO-HOST WORKSPACE</view><view class="section-heading">协办签到管理</view>
-    <button wx:if="{{event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS'}}" bindtap="showCheckInToken">展示动态签到二维码</button>
+    <button id="cohostTokenButton" wx:if="{{canGenerateCheckInToken}}" bindtap="showCheckInToken">展示动态签到二维码</button>
+    <view wx:if="{{!canGenerateCheckInToken && (event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS')}}" class="muted">{{checkInWindowNotice}} 页面按设备时间提示，最终以服务端校验为准。</view>
     <view wx:if="{{displayedCheckInToken}}" class="checkin-qr-display"><view class="qr-brand">See You In Real Life <text>GOOD PEOPLE · BRIGHTER DAYS</text></view>
       <canvas canvas-id="checkinQr" style="width:240px;height:240px" />
       <view class="token-text">当前口令约 {{checkInExpiresIn}} 秒后更新：{{displayedCheckInToken}}</view>
