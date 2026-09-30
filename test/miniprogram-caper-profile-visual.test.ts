@@ -4,7 +4,7 @@ import test from 'node:test';
 import { runInNewContext } from 'node:vm';
 
 type Activity = { id: string; title: string; status: string; startAt?: string;
-  isHost: boolean; myRegistrationStatus: string | null };
+  venueName?: string; isHost: boolean; myRegistrationStatus: string | null };
 
 function loadProfile(activities: Activity[], reportContext?: { actor: string; eventId: string }, profileFocusIntent = '') {
   let page: Record<string, any> | undefined;
@@ -137,7 +137,7 @@ test('a completed hosted event remains in view all and opens its own detail', as
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/profile/moments/moments.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if (path === '../../../utils/api.js') return { api: { get: async () => ({ items: [
-        { id: 'ended-host', title: '已结束羽毛球', status: 'COMPLETED', isHost: true },
+        { id: 'ended-host', title: '已结束羽毛球', venueName: '静安体育中心', status: 'COMPLETED', isHost: true },
         { id: 'joined', title: '报名活动', status: 'CONFIRMED', isHost: false, myRegistrationStatus: 'CONFIRMED' }
       ] }) } };
       if (path === '../../../config.js') return { developmentUser: 'host' };
@@ -155,9 +155,11 @@ test('a completed hosted event remains in view all and opens its own detail', as
   await moments.onShow();
   assert.equal(moments.data.visibleEvents.map((item: Activity) => item.id).join(','), 'ended-host');
   assert.equal(moments.data.visibleEvents[0].cover, '/assets/stitch/caper_home_badminton.jpg');
+  assert.equal(moments.data.visibleEvents[0].venueName, '静安体育中心');
   const momentsMarkup = readFileSync(new URL('../miniprogram/subpackages/profile/moments/moments.wxml', import.meta.url), 'utf8');
   assert.match(momentsMarkup, /class="photo-large"[\s\S]*?<image[^>]+src="{{item\.cover}}"/);
   assert.match(momentsMarkup, /示意配图[\s\S]*?活动相册未开放/);
+  assert.match(momentsMarkup, /class="moment-meta"[^>]*>[^<]*{{item\.dateLabel}}[^<]*{{item\.venueName/);
   moments.openActivity({ currentTarget: { dataset: { id: 'ended-host' } } });
   assert.deepEqual(momentNavigations, ['/pages/event/event?id=ended-host']);
 });
@@ -250,6 +252,41 @@ test('support report shortcut preserves the profile report destination through s
   supportPage.goReport();
   assert.deepEqual(storageWrites, [['irlProfileFocusIntent', 'reportSection']]);
   assert.deepEqual(navigations, ['/pages/me/me']);
+});
+
+test('moments header keeps profile actions clear of the native capsule and routes through R1 pages', () => {
+  let moments: Record<string, any> | undefined;
+  const navigations: string[] = [];
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/profile/moments/moments.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../../utils/api.js') return { api: {} };
+      if (path === '../../../config.js') return { developmentUser: '' };
+      if (path === '../navigation.js') return { backToProfile() {}, statusBarHeight() { return 24; } };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { moments = definition; },
+    wx: {
+      getWindowInfo() { return { windowWidth: 390 }; },
+      getMenuButtonBoundingClientRect() { return { left: 294 }; },
+      navigateTo({ url }: { url: string }) { navigations.push(url); },
+      switchTab({ url }: { url: string }) { navigations.push(url); }
+    }
+  });
+  assert.ok(moments);
+  moments.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  moments.onLoad({});
+  assert.equal(moments.data.headerPaddingRight, '104px');
+  moments.toggleMore();
+  assert.equal(moments.data.moreOpen, true);
+  moments.goPrivacy();
+  assert.equal(moments.data.moreOpen, false);
+  moments.goProfile();
+  assert.deepEqual(navigations, ['/subpackages/profile/privacy-safety/privacy-safety', '/pages/me/me']);
+  const markup = readFileSync(new URL('../miniprogram/subpackages/profile/moments/moments.wxml', import.meta.url), 'utf8');
+  assert.match(markup, /class="pg10-header moments-header"[^>]*padding-right: {{headerPaddingRight}}/);
+  assert.match(markup, /class="moments-header-more"[^>]*bindtap="toggleMore"/);
+  assert.match(markup, /class="moments-header-avatar"[^>]*bindtap="goProfile"/);
+  assert.match(markup, /wx:if="{{moreOpen}}"[^>]*class="moments-more-menu"/);
 });
 
 test('a home waitlist notification deep link opens the current member notice controls', async () => {

@@ -19,6 +19,15 @@ function dateLabel(value) {
   const date = new Date(Date.parse(value) + 8 * 60 * 60_000);
   return `${date.getUTCMonth() + 1} 月 ${date.getUTCDate()} 日 ${String(date.getUTCHours()).padStart(2, '0')}:${String(date.getUTCMinutes()).padStart(2, '0')}`;
 }
+function headerPaddingRight() {
+  try {
+    const menu = wx.getMenuButtonBoundingClientRect?.();
+    const width = (wx.getWindowInfo?.() || wx.getSystemInfoSync?.() || {}).windowWidth;
+    if (Number.isFinite(menu?.left) && Number.isFinite(width) && menu.left >= 0 && menu.left < width)
+      return `${Math.ceil(width - menu.left + 8)}px`;
+  } catch (_) { /* Use the reserved fallback width on older clients. */ }
+  return '112px';
+}
 function eventIllustrations(item) {
   const title = item.title || '';
   if (item.type === 'badminton' || /羽毛球/.test(title)) return [
@@ -51,18 +60,20 @@ function visibleEvents(events, filter) {
 }
 
 Page({
-  data: { statusBarHeight: 24, filters, activeFilter: 'all', events: [],
+  data: { statusBarHeight: 24, headerPaddingRight: '112px', moreOpen: false,
+    filters, activeFilter: 'all', events: [],
     visibleEvents: [], loadState: 'IDLE', message: '' },
   onLoad(options) {
     const requestedFilter = options?.filter;
-    this.setData({ statusBarHeight: statusBarHeight(),
+    this.setData({ statusBarHeight: statusBarHeight(), headerPaddingRight: headerPaddingRight(),
       activeFilter: filters.some(item => item.id === requestedFilter) ? requestedFilter : 'all' });
   },
   async onShow() {
     const generation = this._generation = (this._generation || 0) + 1;
     const identity = currentIdentity();
     this._identity = identity;
-    this.setData({ events: [], visibleEvents: [], loadState: identity ? 'LOADING' : 'UNAUTHENTICATED', message: '' });
+    this.setData({ events: [], visibleEvents: [], headerPaddingRight: headerPaddingRight(),
+      loadState: identity ? 'LOADING' : 'UNAUTHENTICATED', message: '' });
     if (!identity) return;
     try {
       await getApp().globalData.ready;
@@ -75,6 +86,7 @@ Page({
         return {
           id: item.id, title: item.title || '未命名活动', isHost: Boolean(item.isHost),
           myRegistrationStatus: item.myRegistrationStatus || '',
+          venueName: item.venueName || '',
           dateLabel: dateLabel(item.startAt), statusLabel: statusLabels[item.status] || '状态待确认',
           cover, sideCover, detailCover
         };
@@ -85,7 +97,17 @@ Page({
         this.setData({ events: [], visibleEvents: [], loadState: 'ERROR', message: error?.message || '活动加载失败' });
     }
   },
+  onHide() { this.setData({ moreOpen: false }); },
   back: backToProfile,
+  toggleMore() { this.setData({ moreOpen: !this.data.moreOpen }); },
+  goProfile() {
+    this.setData({ moreOpen: false });
+    wx.switchTab({ url: '/pages/me/me' });
+  },
+  goPrivacy() {
+    this.setData({ moreOpen: false });
+    wx.navigateTo({ url: '/subpackages/profile/privacy-safety/privacy-safety' });
+  },
   selectFilter(event) {
     const filter = event?.currentTarget?.dataset?.filter;
     if (!filters.some(item => item.id === filter)) return;
@@ -99,5 +121,8 @@ Page({
   },
   refresh() { return this.onShow(); },
   goActivities() { wx.switchTab({ url: '/pages/index/index' }); },
-  goGuidelines() { wx.navigateTo({ url: '/subpackages/profile/guidelines/guidelines' }); }
+  goGuidelines() {
+    this.setData({ moreOpen: false });
+    wx.navigateTo({ url: '/subpackages/profile/guidelines/guidelines' });
+  }
 });
