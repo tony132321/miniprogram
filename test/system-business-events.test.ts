@@ -6,6 +6,7 @@ import { confirmEvent } from '../src/lifecycle.ts';
 import { createAppeal, createPrivacyRequest, createReport } from '../src/operations.ts';
 import { dispatchNotification, enqueueNotification, enqueueStartReminder, reconcileUnknownNotification, setConsent } from '../src/notifications.ts';
 import { publishApprovedInvite, register } from './helpers.ts';
+import { exportPersonalData } from '../src/privacy.ts';
 
 const input = () => {
   const start = Date.now() + 7 * 24 * 60 * 60_000;
@@ -48,9 +49,15 @@ test('external dispatch events distinguish claim, provider responses, uncertaint
       called = true; return { status: 'ACCEPTED', providerRef: 'should-not-exist' };
     } });
     assert.equal(called, false);
+    // Reconciliation can arrive after a later activity revision; the event
+    // must retain the version bound into the original notification.
+    await db.query('UPDATE events SET version=version+1 WHERE id=$1', [event.id]);
     const uncertainId = ids.get('unknown-secret')!;
     await reconcileUnknownNotification(db, 'operator:notifications', uncertainId, 'system-events-lookup', {
       lookup: async () => ({ status: 'ACCEPTED', providerRef: 'private-lookup-ref' })
+    });
+    await reconcileUnknownNotification(db, 'operator:notifications', uncertainId, 'system-events-lookup', {
+      lookup: async () => { throw new Error('idempotent reconciliation must not call provider again'); }
     });
     const { rows } = await db.query<{ event_name: string; occurred_at: Date; is_test: boolean | null }>(
       'SELECT * FROM system_business_events ORDER BY occurred_at');
@@ -65,13 +72,112 @@ test('external dispatch events distinguish claim, provider responses, uncertaint
     for (const secret of ['host-secret', 'accepted-secret', 'rejected-secret', 'unknown-secret',
       'private-provider-ref', 'private-lookup-ref', 'PRIVATE_REJECTION_CODE', event.id, uncertainId])
       assert.equal(serialized.includes(secret), false, secret);
+    const { rows: acceptedEvents } = await db.query<{ event_uuid: string; event_name: string;
+      occurred_at: Date; user_id_pseudonymous: string; activity_id: string; version: number;
+      source: string; release: string; is_test: boolean }>(
+      "SELECT * FROM business_events WHERE event_name='NOTIFICATION_PROVIDER_ACCEPTED' ORDER BY occurred_at,event_uuid");
+    assert.equal(acceptedEvents.length, 2, 'direct and reconciled provider acceptance each count once');
+    assert.ok(acceptedEvents.every(row => row.event_uuid.match(/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/) &&
+      row.occurred_at && row.activity_id === event.id && row.version === event.version &&
+      ['JOB','OPS'].includes(row.source) && row.release === 'R1' && row.is_test === true &&
+      /^[a-f0-9]{64}$/.test(row.user_id_pseudonymous)));
+    assert.deepEqual(acceptedEvents.map(row => row.source), ['JOB','OPS']);
+    assert.equal(new Set(acceptedEvents.map(row => row.event_uuid)).size, 2);
+    assert.equal(new Set(acceptedEvents.map(row => row.user_id_pseudonymous)).size, 2);
+    assert.deepEqual(Object.keys(acceptedEvents[0]!).sort(),
+      ['event_uuid', 'event_name', 'occurred_at', 'user_id_pseudonymous', 'activity_id', 'version',
+        'source', 'release', 'is_test'].sort());
+    const acceptedSerialized = JSON.stringify(acceptedEvents);
+    for (const secret of ['accepted-secret', 'unknown-secret', 'private-provider-ref', 'private-lookup-ref',
+      'PRIVATE_REJECTION_CODE', uncertainId]) assert.equal(acceptedSerialized.includes(secret), false, secret);
+    const exported = await exportPersonalData(db, 'accepted-secret');
+    assert.equal(exported.businessEvents.filter(item => item.event_name === 'NOTIFICATION_PROVIDER_ACCEPTED').length, 1,
+      'the recipient must be able to read their own accepted event in a private export');
     await dispatchNotification(db, ids.get('accepted-secret')!, { send: async () => { throw Error('replay must not send'); } });
     assert.equal((await db.query('SELECT 1 FROM system_business_events')).rows.length, rows.length);
+    assert.equal((await db.query("SELECT 1 FROM business_events WHERE event_name='NOTIFICATION_PROVIDER_ACCEPTED'")).rows.length,
+      acceptedEvents.length);
+    // Defensive deduplication also holds if an operational writer reopens an
+    // already accepted row after pseudonym salt rotation and confirms again.
+    await db.query("UPDATE business_event_identity_salt SET salt='rotated-for-acceptance-replay' WHERE singleton=true");
+    await db.query("UPDATE notifications SET external_status='UNKNOWN_REQUIRES_RECONCILIATION' WHERE id=$1",
+      [ids.get('accepted-secret')!]);
+    await db.query(`UPDATE notifications SET external_status='PROVIDER_ACCEPTED',
+      provider_responded_at=clock_timestamp() WHERE id=$1`, [ids.get('accepted-secret')!]);
+    assert.equal((await db.query("SELECT 1 FROM business_events WHERE event_name='NOTIFICATION_PROVIDER_ACCEPTED'")).rows.length,
+      acceptedEvents.length);
+    const systemCountBeforeRollback = (await db.query('SELECT 1 FROM system_business_events')).rows.length;
     await assert.rejects(db.transaction(async tx => {
       await tx.query("UPDATE notifications SET external_status='DISPATCHING' WHERE id=$1", [blockedId]);
+      await tx.query(`UPDATE notifications SET external_status='PROVIDER_ACCEPTED',
+        provider_ref='rollback-private-ref',provider_responded_at=clock_timestamp() WHERE id=$1`, [blockedId]);
       throw new Error('rollback-probe');
     }), /rollback-probe/);
-    assert.equal((await db.query('SELECT 1 FROM system_business_events')).rows.length, rows.length);
+    assert.equal((await db.query('SELECT 1 FROM system_business_events')).rows.length, systemCountBeforeRollback);
+    assert.equal((await db.query("SELECT 1 FROM business_events WHERE event_name='NOTIFICATION_PROVIDER_ACCEPTED'")).rows.length,
+      acceptedEvents.length);
+    assert.equal((await db.query('SELECT 1 FROM notification_provider_accepted_event_keys')).rows.length,
+      acceptedEvents.length, 'a rolled-back provider result must leave no deduplication key');
+  } finally { await db.close(); }
+});
+
+test('account-scoped notifications retain aggregate acceptance without an activity event', async () => {
+  const db = await createDatabase();
+  try {
+    await db.query(`INSERT INTO notifications(id,event_id,user_id,kind,event_version)
+      VALUES('account-only-provider-result',NULL,'recipient','REPORT_RESOLVED',0)`);
+    await db.query("UPDATE notifications SET external_status='DISPATCHING' WHERE id='account-only-provider-result'");
+    await db.query(`UPDATE notifications SET external_status='PROVIDER_ACCEPTED',
+      provider_ref='private-account-provider-ref',provider_responded_at=clock_timestamp()
+      WHERE id='account-only-provider-result'`);
+    const { rows: aggregate } = await db.query<{ event_name: string; is_test: boolean | null }>(
+      'SELECT event_name,is_test FROM system_business_events ORDER BY occurred_at');
+    assert.deepEqual(aggregate, [
+      { event_name: 'EXTERNAL_DISPATCH_CLAIMED', is_test: null },
+      { event_name: 'EXTERNAL_PROVIDER_ACCEPTED', is_test: null }
+    ]);
+    assert.equal((await db.query("SELECT 1 FROM business_events WHERE event_name='NOTIFICATION_PROVIDER_ACCEPTED'"))
+      .rows.length, 0);
+    assert.equal((await db.query('SELECT 1 FROM notification_provider_accepted_event_keys')).rows.length, 0);
+  } finally { await db.close(); }
+});
+
+test('revoked consent and pending deletion block provider acceptance analytics before the adapter call', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'barrier-host', input(), 'barrier-draft');
+    const event = await publishApprovedInvite(db, 'barrier-host', draft.id, draft.version, 'barrier-publish');
+    for (const actor of ['consent-revoked', 'deletion-pending']) {
+      await db.query('INSERT INTO users(id,wechat_openid) VALUES($1,$2)', [actor, `wx-${actor}`]);
+      await setConsent(db, actor, 'EVENT_REMINDER', true, `barrier-consent-${actor}`);
+      await register(db, actor, event.id, event.version, `barrier-join-${actor}`);
+    }
+    await register(db, 'third-member', event.id, event.version, 'barrier-join-third');
+    await confirmEvent(db, 'barrier-host', event.id, event.version, 'barrier-confirm');
+    const ids: string[] = [];
+    for (const actor of ['consent-revoked', 'deletion-pending']) {
+      await enqueueStartReminder(db, event.id, actor, event.version);
+      const { rows } = await db.query<{ id: string }>(
+        "SELECT id FROM notifications WHERE event_id=$1 AND user_id=$2 AND kind='EVENT_REMINDER'",
+        [event.id, actor]);
+      ids.push(rows[0]!.id);
+    }
+    await setConsent(db, 'consent-revoked', 'EVENT_REMINDER', false, 'barrier-revoke');
+    await createPrivacyRequest(db, 'deletion-pending', { kind: 'DELETE' }, 'barrier-delete');
+    let calls = 0;
+    for (const id of ids) await dispatchNotification(db, id, { send: async () => {
+      calls++;
+      return { status: 'ACCEPTED', providerRef: 'must-never-be-used' };
+    } });
+    assert.equal(calls, 0);
+    assert.equal((await db.query("SELECT 1 FROM business_events WHERE event_name='NOTIFICATION_PROVIDER_ACCEPTED'"))
+      .rows.length, 0);
+    const { rows: statuses } = await db.query<{ user_id: string; external_status: string }>(
+      "SELECT user_id,external_status FROM notifications WHERE id=$1 OR id=$2 ORDER BY user_id", ids);
+    assert.deepEqual(statuses, [
+      { user_id: 'consent-revoked', external_status: 'CONSENT_WITHDRAWN' },
+      { user_id: 'deletion-pending', external_status: 'DELETE_REQUEST_PENDING' }
+    ]);
   } finally { await db.close(); }
 });
 

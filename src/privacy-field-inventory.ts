@@ -116,6 +116,10 @@ const groups: Group[] = [
       ...fields('EXTERNAL_DELIVERY', 'provider_ref', 'external_failure_code', 'external_dispatch_token',
         'external_status', 'external_purpose', 'external_channel', 'template_slot', 'external_scheduled_at',
         'external_dispatch_started_at', 'provider_responded_at')] },
+  { table: 'notification_provider_accepted_event_keys',
+    from: 'notification_provider_accepted_event_keys t JOIN notifications n ON n.id=t.notification_id',
+    where: notificationRecipient('n.user_id'), ownerLink: 'recipient_notification_or_expiry_tombstone',
+    fields: [...fields('DIRECT_IDENTIFIER', 'notification_id'), ...fields('AUDIT_REPLAY', 'event_uuid')] },
   { table: 'notification_followups', from: 'notification_followups t',
     where: `EXISTS (SELECT 1 FROM notifications n WHERE n.id=t.notification_id
       AND ${notificationRecipient('n.user_id')})`, ownerLink: 'recipient_notification_or_expiry_tombstone',

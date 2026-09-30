@@ -9,6 +9,59 @@ import { createDatabase, LATEST_SCHEMA_VERSION } from '../src/db.ts';
 import { getPilotMetrics } from '../src/metrics.ts';
 import { changeReportStatus, listReportResponseAlerts } from '../src/operations.ts';
 
+test('notification provider acceptance migration does not backfill old responses', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'project-irl-provider-events-upgrade-'));
+  try {
+    const old = await createDatabase(directory);
+    try {
+      await old.query('DROP TRIGGER notifications_provider_accepted_business_event ON notifications');
+      await old.query('DROP FUNCTION record_notification_provider_accepted_business_event()');
+      await old.query('DROP TABLE notification_provider_accepted_event_keys');
+      await old.query('DELETE FROM schema_migrations WHERE version=69');
+      await old.query(`INSERT INTO events(id,host_id,status,version,payload,is_test)
+        VALUES('analytics-upgrade','host','CONFIRMED',3,'{}',false)`);
+      await old.query(`INSERT INTO notifications(id,event_id,user_id,kind,event_version)
+        VALUES('legacy-provider-notice','analytics-upgrade','old-recipient','EVENT_REMINDER',2)`);
+      await old.query("UPDATE notifications SET external_status='DISPATCHING' WHERE id='legacy-provider-notice'");
+      await old.query(`UPDATE notifications SET external_status='PROVIDER_ACCEPTED',
+        provider_ref='legacy-private-ref',provider_responded_at=clock_timestamp()
+        WHERE id='legacy-provider-notice'`);
+      assert.equal((await old.query("SELECT 1 FROM business_events WHERE event_name='NOTIFICATION_PROVIDER_ACCEPTED'"))
+        .rows.length, 0);
+    } finally { await old.close(); }
+
+    const upgraded = await createDatabase(directory);
+    try {
+      assert.equal((await upgraded.query<{ version: number }>('SELECT max(version)::int AS version FROM schema_migrations'))
+        .rows[0]?.version, LATEST_SCHEMA_VERSION);
+      assert.equal((await upgraded.query("SELECT 1 FROM business_events WHERE event_name='NOTIFICATION_PROVIDER_ACCEPTED'"))
+        .rows.length, 0, 'migration must not invent a historical recipient or response time');
+      await upgraded.query(`UPDATE notifications SET external_status='UNKNOWN_REQUIRES_RECONCILIATION'
+        WHERE id='legacy-provider-notice'`);
+      await upgraded.query(`UPDATE notifications SET external_status='PROVIDER_ACCEPTED'
+        WHERE id='legacy-provider-notice'`);
+      assert.equal((await upgraded.query("SELECT 1 FROM business_events WHERE event_name='NOTIFICATION_PROVIDER_ACCEPTED'"))
+        .rows.length, 0, 'a status-only toggle must not reuse an old provider response as a new success');
+      await upgraded.query(`INSERT INTO notifications(id,event_id,user_id,kind,event_version)
+        VALUES('new-provider-notice','analytics-upgrade','new-recipient','EVENT_REMINDER',2)`);
+      await upgraded.query("UPDATE notifications SET external_status='DISPATCHING' WHERE id='new-provider-notice'");
+      await upgraded.query(`UPDATE notifications SET external_status='PROVIDER_ACCEPTED',
+        provider_ref='new-private-ref',provider_responded_at=clock_timestamp()
+        WHERE id='new-provider-notice'`);
+      const { rows } = await upgraded.query<{ event_name: string; version: number; source: string;
+        is_test: boolean; user_id_pseudonymous: string }>(
+        "SELECT event_name,version,source,is_test,user_id_pseudonymous FROM business_events WHERE activity_id='analytics-upgrade'");
+      assert.equal(rows.length, 1);
+      assert.deepEqual({ event_name: rows[0]?.event_name, version: rows[0]?.version,
+        source: rows[0]?.source, is_test: rows[0]?.is_test },
+      { event_name: 'NOTIFICATION_PROVIDER_ACCEPTED', version: 2, source: 'JOB', is_test: false });
+      assert.match(rows[0]!.user_id_pseudonymous, /^[a-f0-9]{64}$/);
+      assert.equal(JSON.stringify(rows).includes('new-recipient'), false);
+      assert.equal(JSON.stringify(rows).includes('new-private-ref'), false);
+    } finally { await upgraded.close(); }
+  } finally { await rm(directory, { recursive: true, force: true }); }
+});
+
 test('draft event migration preserves old audit history and records only new success actions', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'project-irl-draft-events-upgrade-'));
   try {

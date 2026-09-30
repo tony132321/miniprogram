@@ -31,6 +31,8 @@ test('impact and dry run count specific populated fields without returning their
     [event.id, JSON.stringify({ private: 'secret-notification-detail' })]);
     await db.query(`INSERT INTO notification_followups(notification_id,recorded_by,note)
       VALUES('own-notice','operator:jobs','secret-followup-note')`);
+    await db.query(`INSERT INTO notification_provider_accepted_event_keys(notification_id,event_uuid)
+      VALUES('own-notice','private-own-event-key'),('other-notice','private-other-event-key')`);
     await db.query(`INSERT INTO notification_consent_history(id,user_id,purpose,scope,notice_version,notice_text,granted)
       VALUES('consent-own','p1','EVENT_REMINDER','secret-scope','v1','secret-notice-text',true)`);
     await db.query(`INSERT INTO ai_semantic_requests
@@ -53,6 +55,8 @@ test('impact and dry run count specific populated fields without returning their
     assert.equal(field('events', 'payload')?.populatedRows, 1);
     assert.equal(field('notifications', 'detail')?.populatedRows, 1);
     assert.equal(field('notifications', 'provider_ref')?.populatedRows, 1);
+    assert.equal(field('notification_provider_accepted_event_keys', 'notification_id')?.populatedRows, 1);
+    assert.equal(field('notification_provider_accepted_event_keys', 'event_uuid')?.populatedRows, 1);
     assert.equal(field('notification_followups', 'note')?.populatedRows, 1);
     assert.equal(field('notification_consent_history', 'notice_text')?.populatedRows, 1);
     assert.equal(field('ai_semantic_requests', 'provider_evidence')?.populatedRows, 1);
@@ -135,6 +139,9 @@ test('notification field inventory retains a deleted recipient after expiry with
       VALUES('p1-notice','operator:jobs','p1 followup secret'),
         ('p2-notice-a','operator:jobs','p2 followup secret a'),
         ('p2-notice-b','operator:jobs','p2 followup secret b')`);
+    await db.query(`INSERT INTO notification_provider_accepted_event_keys(notification_id,event_uuid)
+      VALUES('p1-notice','p1-accepted-event'),
+        ('p2-notice-a','p2-accepted-event-a'),('p2-notice-b','p2-accepted-event-b')`);
     const request = await createPrivacyRequest(db, 'p1', { kind: 'DELETE' }, 'inventory-notice-delete');
     await db.query("INSERT INTO privacy_requests(id,user_id,kind) VALUES('p2-delete','p2','DELETE')");
     const fieldCount = (impact: Awaited<ReturnType<typeof getPrivacyRequestImpact>>,
@@ -142,6 +149,7 @@ test('notification field inventory retains a deleted recipient after expiry with
         item => item.table === table && item.column === column)?.populatedRows;
     const before = await getPrivacyRequestImpact(db, 'operator:privacy', request.id);
     assert.equal(fieldCount(before, 'notifications', 'provider_ref'), 1);
+    assert.equal(fieldCount(before, 'notification_provider_accepted_event_keys', 'event_uuid'), 1);
     assert.equal(fieldCount(before, 'notification_followups', 'note'), 1);
 
     await executePrivacyDeletionWithMarker(db, journal, 'operator:privacy', request.id, expiryPolicy);
@@ -153,8 +161,10 @@ test('notification field inventory retains a deleted recipient after expiry with
     const dryRun = await dryRunPrivacyDeletion(db, request.id);
     assert.equal(after.ordinaryProfileDisposition?.retainedNotificationRows, 1);
     assert.equal(fieldCount(after, 'notifications', 'provider_ref'), 1);
+    assert.equal(fieldCount(after, 'notification_provider_accepted_event_keys', 'event_uuid'), 1);
     assert.equal(fieldCount(after, 'notification_followups', 'note'), 1);
     assert.equal(fieldCount(other, 'notifications', 'provider_ref'), 2);
+    assert.equal(fieldCount(other, 'notification_provider_accepted_event_keys', 'event_uuid'), 2);
     assert.equal(fieldCount(other, 'notification_followups', 'note'), 2);
     assert.deepEqual(dryRun.fieldInventory, after.fieldInventory);
     assert.doesNotMatch(JSON.stringify(after), /p1-provider|p2-provider|followup secret|secret notification text/);
