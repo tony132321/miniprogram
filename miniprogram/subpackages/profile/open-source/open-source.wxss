@@ -1,9 +1,15 @@
 @import "../common.wxss";
 .source-page { padding: 0 18rpx 80rpx; background: #f4f5f8; }
-.source-page .pg10-header { margin: 0 -18rpx 16rpx; padding: 0 22rpx; }
-.source-page .pg10-header-title { font-size: 25rpx; font-weight: 600; }
-.header-more { width: 46rpx; font-size: 22rpx; text-align: center; }
-.header-avatar { width: 42rpx; height: 42rpx; border-radius: 50%; background: #064dca; color: white; line-height: 42rpx; text-align: center; font-size: 24rpx; }
+.source-page .pg10-header { position: sticky; z-index: 11; box-sizing: border-box; margin: 0 -18rpx 16rpx; padding-left: 22rpx; }
+.source-page .pg10-header-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 25rpx; font-weight: 600; }
+.source-header .pg10-header-actions { display: flex; flex: none; align-items: center; gap: 6rpx; }
+.source-header .pg10-header-more, .source-header .pg10-header-avatar { display: block; flex: none; min-width: 0; margin: 0; padding: 0; border: 0; text-align: center; }
+.source-header .pg10-header-more { width: 48rpx; height: 54rpx; background: transparent; color: #171a24; line-height: 54rpx; font-size: 32rpx; font-weight: 800; }
+.source-header .pg10-header-avatar { width: 54rpx; height: 54rpx; border-radius: 50%; background: #064dca; color: #fff; line-height: 54rpx; font-size: 28rpx; font-weight: 800; }
+.source-header .pg10-header-more::after, .source-header .pg10-header-avatar::after, .source-header .pg10-header-menu button::after { border: 0; }
+.source-header .pg10-header-menu { position: absolute; top: 86rpx; z-index: 12; width: 245rpx; padding: 8rpx; border: 1rpx solid #edf0f5; border-radius: 20rpx; background: #fff; box-shadow: 0 12rpx 30rpx rgba(15,23,42,.14); }
+.source-header .pg10-header-menu button { display: block; box-sizing: border-box; width: 100%; min-width: 0; margin: 0; padding: 13rpx 10rpx; border-bottom: 1rpx solid #edf0f5; border-radius: 0; background: transparent; color: #334155; text-align: left; line-height: 1.4; font-size: 20rpx; }
+.source-header .pg10-header-menu button:last-child { border-bottom: 0; }
 .source-page .pg10-card { padding: 17rpx; margin-bottom: 9rpx; border-radius: 20rpx; box-shadow: none; }
 .intro-head { display:flex; align-items:center; gap:12rpx; }
 .source-icon { width:48rpx; height:48rpx; border-radius:14rpx; background:#eaf1ff; color:#1d64f2; text-align:center; line-height:48rpx; font-size:30rpx; }

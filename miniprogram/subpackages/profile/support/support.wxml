@@ -1,8 +1,9 @@
 <view class="pg10-page support-page" style="padding-top: {{statusBarHeight}}px">
-  <view class="pg10-header support-header">
+  <view class="pg10-header support-header" style="padding-right: {{headerPaddingRight}}; top: {{statusBarHeight}}px">
     <button class="pg10-back support-back" bindtap="back" aria-label="返回">‹</button>
     <view class="pg10-header-title">帮助与反馈</view>
-    <view class="support-header-space"></view>
+    <view class="pg10-header-actions"><button class="pg10-header-more" bindtap="toggleMore" aria-label="更多页面入口" aria-expanded="{{moreOpen}}">···</button><button class="pg10-header-avatar" bindtap="goProfile" aria-label="返回我的页面">人</button></view>
+    <view wx:if="{{moreOpen}}" class="pg10-header-menu" style="right: {{headerPaddingRight}}"><button bindtap="goAbout">关于 Project IRL　›</button><button bindtap="goProfile">我的页面　›</button></view>
   </view>
 
   <view class="pg10-card support-hero">

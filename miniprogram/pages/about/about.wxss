@@ -1,11 +1,15 @@
 .about-page { box-sizing:border-box; min-height:100vh; padding:0 26rpx 80rpx; background:#faf8fe; color:#1a1b1f; }
-.about-header { height:92rpx; display:flex; align-items:center; margin:0 -26rpx; padding:0 28rpx; background:#faf9fd; }
+.about-header { position:sticky; z-index:11; box-sizing:border-box; height:92rpx; display:flex; align-items:center; margin:0 -26rpx; padding-left:28rpx; background:#faf9fd; }
 .about-header button { width:74rpx; min-width:74rpx; margin:0; padding:0; background:transparent; color:#1a1b1f; font-size:48rpx; text-align:left; line-height:1.4; }
 .about-header button::after,.action-list button::after,.repository-link::after,.about-actions button::after { border:0; }
-.about-header-title { flex:1; text-align:center; font-size:30rpx; font-weight:600; }
-.about-header .header-spacer { width:74rpx; min-width:74rpx; }
-.about-header .more { width:49rpx; text-align:center; font-size:25rpx; }
-.about-header .header-avatar { width:58rpx; height:58rpx; border-radius:50%; background:#064dca; color:white; text-align:center; line-height:58rpx; font-size:31rpx; }
+.about-header-title { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:center; font-size:30rpx; font-weight:600; }
+.about-header-actions { display:flex; flex:none; align-items:center; gap:6rpx; }
+.about-header .about-header-more,.about-header .about-header-avatar { display:block; flex:none; min-width:0; margin:0; padding:0; border:0; text-align:center; }
+.about-header .about-header-more { width:48rpx; height:54rpx; background:transparent; color:#171a24; line-height:54rpx; font-size:32rpx; font-weight:800; }
+.about-header .about-header-avatar { width:54rpx; height:54rpx; border-radius:50%; background:#064dca; color:#fff; line-height:54rpx; font-size:28rpx; font-weight:800; }
+.about-header-menu { position:absolute; top:86rpx; z-index:12; width:245rpx; padding:8rpx; border:1rpx solid #edf0f5; border-radius:20rpx; background:#fff; box-shadow:0 12rpx 30rpx rgba(15,23,42,.14); }
+.about-header .about-header-menu button { display:block; box-sizing:border-box; width:100%; min-width:0; margin:0; padding:13rpx 10rpx; border-bottom:1rpx solid #edf0f5; border-radius:0; background:transparent; color:#334155; text-align:left; line-height:1.4; font-size:20rpx; }
+.about-header .about-header-menu button:last-child { border-bottom:0; }
 .brand-hero { text-align:center; padding:42rpx 0 32rpx; }
 .logo { position:relative; width:148rpx; height:148rpx; margin:0 auto 24rpx; border:4rpx solid #1d64f2; border-radius:42rpx; background:white; color:#225ee8; font-size:93rpx; font-weight:800; line-height:145rpx; box-shadow:0 15rpx 44rpx rgba(34,91,200,.12); }
 .logo-crown { position:absolute; left:47rpx; top:5rpx; width:50rpx; line-height:45rpx; color:#2466f1; font-size:25rpx; }

@@ -7,11 +7,13 @@ function loadPage(name: string, options: { get?: (path: string) => Promise<unkno
   developmentUser?: string } = {}) {
   let page: Record<string, any> | undefined;
   const routes: string[] = [];
+  const storageWrites: Array<[string, string]> = [];
   const globalData: Record<string, any> = { ready: Promise.resolve() };
   const wx = {
     getStorageSync(key: string) {
       return key === 'sessionToken' ? (options.actor?.() || '') : key === 'userId' ? (options.actor?.() || '') : '';
     },
+    setStorageSync(key: string, value: string) { storageWrites.push([key, value]); },
     navigateTo({ url }: { url: string }) { routes.push(url); },
     switchTab({ url }: { url: string }) { routes.push(url); }
   };
@@ -28,10 +30,10 @@ function loadPage(name: string, options: { get?: (path: string) => Promise<unkno
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, unknown>) { Object.assign(this.data, patch); };
-  return { page, routes, globalData };
+  return { page, routes, globalData, storageWrites };
 }
 
-test('badge category selection filters only planned concepts and keeps award state unavailable', () => {
+test('badge category selection opens an unawarded detail and links to real activity records', () => {
   const { page, routes } = loadPage('badges');
   assert.equal(page.data.awardState, 'UNAVAILABLE');
   assert.ok(page.data.visibleBadges.length >= 6);
@@ -39,9 +41,11 @@ test('badge category selection filters only planned concepts and keeps award sta
   assert.equal(page.data.activeCategory, 'sports');
   assert.ok(page.data.visibleBadges.every((badge: any) => badge.category === 'sports'));
   page.openBadge({ currentTarget: { dataset: { id: page.data.visibleBadges[0].id } } });
-  assert.match(page.data.badgeMessage, /尚未开放/);
+  assert.equal(page.data.selectedBadge.id, page.data.visibleBadges[0].id);
+  page.closeBadge();
+  assert.equal(page.data.selectedBadge, null);
   page.goActivities();
-  assert.deepEqual(routes, ['/pages/index/index']);
+  assert.deepEqual(routes, ['/subpackages/profile/moments/moments?filter=all']);
 });
 
 test('moments shows only real activities and category switches preserve real detail links', async () => {
@@ -82,8 +86,9 @@ test('moments clears another account data and drops an in-flight response', asyn
 });
 
 test('guidelines opens the real report form for the active development identity', () => {
-  const { page, routes, globalData } = loadPage('guidelines', { developmentUser: 'host' });
+  const { page, routes, globalData, storageWrites } = loadPage('guidelines', { developmentUser: 'host' });
   page.goReport();
+  assert.deepEqual(storageWrites, [['irlProfileFocusIntent', 'reportSection']]);
   assert.equal(globalData.reportContext.actor, 'host');
   assert.equal(globalData.reportContext.eventId, '');
   assert.deepEqual(routes, ['/pages/me/me']);

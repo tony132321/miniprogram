@@ -1,9 +1,15 @@
 @import "../common.wxss";
 .guidelines-page { padding: 0 18rpx 80rpx; background: #f4f5f8; }
-.guidelines-page .pg10-header { margin: 0 -18rpx 17rpx; padding: 0 22rpx; }
-.guidelines-page .pg10-header-title { font-size: 25rpx; font-weight: 600; }
-.header-more { width: 46rpx; font-size: 22rpx; text-align: center; }
-.header-avatar { width: 42rpx; height: 42rpx; border-radius: 50%; background: #064dca; color: white; line-height: 42rpx; text-align: center; font-size: 24rpx; }
+.guidelines-page .pg10-header { position: sticky; z-index: 11; box-sizing: border-box; margin: 0 -18rpx 17rpx; padding-left: 22rpx; }
+.guidelines-page .pg10-header-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 25rpx; font-weight: 600; }
+.guidelines-header .pg10-header-actions { display: flex; flex: none; align-items: center; gap: 6rpx; }
+.guidelines-header .pg10-header-more, .guidelines-header .pg10-header-avatar { display: block; flex: none; min-width: 0; margin: 0; padding: 0; border: 0; text-align: center; }
+.guidelines-header .pg10-header-more { width: 48rpx; height: 54rpx; background: transparent; color: #171a24; line-height: 54rpx; font-size: 32rpx; font-weight: 800; }
+.guidelines-header .pg10-header-avatar { width: 54rpx; height: 54rpx; border-radius: 50%; background: #064dca; color: #fff; line-height: 54rpx; font-size: 28rpx; font-weight: 800; }
+.guidelines-header .pg10-header-more::after, .guidelines-header .pg10-header-avatar::after, .guidelines-header .pg10-header-menu button::after { border: 0; }
+.guidelines-header .pg10-header-menu { position: absolute; top: 86rpx; z-index: 12; width: 245rpx; padding: 8rpx; border: 1rpx solid #edf0f5; border-radius: 20rpx; background: #fff; box-shadow: 0 12rpx 30rpx rgba(15,23,42,.14); }
+.guidelines-header .pg10-header-menu button { display: block; box-sizing: border-box; width: 100%; min-width: 0; margin: 0; padding: 13rpx 10rpx; border-bottom: 1rpx solid #edf0f5; border-radius: 0; background: transparent; color: #334155; text-align: left; line-height: 1.4; font-size: 20rpx; }
+.guidelines-header .pg10-header-menu button:last-child { border-bottom: 0; }
 .guidelines-page .pg10-card { padding: 20rpx; margin-bottom: 15rpx; border-radius: 24rpx; box-shadow: none; }
 .charter-hero { text-align: center; padding: 31rpx 23rpx !important; background: linear-gradient(145deg,#fff,#f5f9ff); }
 .charter-mark { position: relative; width: 77rpx; height: 77rpx; margin: 0 auto 15rpx; border-radius: 50%; background: linear-gradient(135deg,#2468ef,#6456d6); color: #fff; font-size: 48rpx; line-height: 77rpx; box-shadow: 0 9rpx 16rpx rgba(60,81,196,.17); }
