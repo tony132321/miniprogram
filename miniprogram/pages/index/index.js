@@ -427,8 +427,9 @@ Page({
   showInspirationAvailability(title) {
     const notice = `${title}目前仅供灵感参考。当前只能发起羽毛球活动，是否前往发起？`;
     if (typeof wx.showModal !== 'function') return this.setData({ availabilityMessage: notice });
-    wx.showModal({ title: '活动灵感', content: notice, confirmText: '发起羽毛球', cancelText: '继续浏览',
-      success: result => { if (result.confirm) this.goCreate(); } });
+    wx.showModal({ title: '活动灵感', content: notice, confirmText: '去发起', cancelText: '继续浏览',
+      success: result => { if (result.confirm) this.goCreate(); },
+      fail: () => { this.setData({ availabilityMessage: notice }); } });
   },
   goMessages() { wx.switchTab({ url: '/pages/messages/messages' }); },
   goProfile() { wx.switchTab({ url: '/pages/me/me' }); },

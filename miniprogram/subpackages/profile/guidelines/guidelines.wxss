@@ -71,3 +71,10 @@
 .report-chevron { margin-left: auto; color: #34C759; }
 .guidelines-foot { display: flex; align-items: center; justify-content: center; gap: 8rpx; margin-top: 32rpx; padding: 8rpx 0 16rpx; color: #424655; text-align: center; font-size: 22rpx; line-height: 28rpx; font-weight: 700; letter-spacing: .44rpx; opacity: .6; }
 .guidelines-foot image { flex: none; width: 28rpx; height: 28rpx; }
+
+/* The source imports upright faces; its Chinese italic quote stays italic. */
+.guidelines-page .pg10-header-title, .charter-kicker, .charter-title,
+.charter-subtitle, .charter-values > view, .guideline-heading, .head-tag,
+.rule-copy, .rule-title, .quote-copy, .guidelines-report, .guidelines-foot {
+  font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", sans-serif;
+}

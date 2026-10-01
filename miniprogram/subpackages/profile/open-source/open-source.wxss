@@ -61,3 +61,12 @@
 .repository-card button::after { border:0; }
 .copy-message { color:#279759; font-size:26rpx; line-height:36rpx; margin-top:16rpx; }
 .source-foot { padding:24rpx 0 32rpx; color:#424655; font-size:26rpx; line-height:32rpx; font-weight:600; text-align:center; }
+
+/* Preserve the original mono-license exception; the current summary is excluded. */
+.source-page .pg10-header-title, .intro-title, .intro-head text, .intro-copy,
+.source-section text, .dependency-title, .dependency-maker, .license-badge,
+.dependency-copy, .dependency-copyright, .thanks-title, .thanks-head text,
+.thanks-row, .repository-title, .repository-card > text,
+.repository-card button, .copy-message, .source-foot {
+  font-family:"Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", sans-serif;
+}

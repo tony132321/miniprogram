@@ -1,0 +1,2102 @@
+{
+  "batch": "Wave 65",
+  "date": "2026-10-02",
+  "baseline": {
+    "local": "6cf710ee750000d32639e5649466620bec2d6dac",
+    "remote": "e1c3c1ade12458fd0d5f048ab244c9aa1cbcaf31",
+    "tree": "c407825e3dc10082a7b6ade44e2330c78e977814"
+  },
+  "scope": "Five actual official font faces, home two fixed handwriting phrases, H/H1/H2/H3 Latin and digits, truthful font license cards, two inspiration modal API contracts. No full suite or CI.",
+  "runtime": {
+    "devtools": "2.02.2609231",
+    "sdkVersion": "3.17.2",
+    "window": {
+      "width": 402,
+      "height": 874,
+      "statusBarHeight": 54
+    },
+    "testAppID": true,
+    "localAPI": 3037,
+    "clone": "/private/tmp/irl-pg05s-final-20261001"
+  },
+  "fontSegments": {
+    "home": {
+      "route": "pages/index/index",
+      "mode": "home",
+      "level": "only actual changed font registration/glyph/layout and current license cards; no business suite",
+      "checks": [
+        {
+          "pass": true,
+          "label": "real current SDK supports Data URL",
+          "actual": {
+            "support": "supported",
+            "sdkVersion": "3.17.2",
+            "faces": [
+              {
+                "family": "Caveat",
+                "weight": "700",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "400",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "600",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "700",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "800",
+                "status": "loaded"
+              }
+            ]
+          },
+          "expected": "supported"
+        },
+        {
+          "pass": true,
+          "label": "five real wx.loadFontFace success callbacks",
+          "actual": [
+            {
+              "family": "Caveat",
+              "weight": "700",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "400",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "600",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "700",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "800",
+              "status": "loaded"
+            }
+          ],
+          "expected": "all loaded"
+        },
+        {
+          "pass": true,
+          "label": "actual expected family .hero-kicker",
+          "actual": "Caveat, \"Permanent Marker\", cursive, sans-serif",
+          "expected": "Caveat"
+        },
+        {
+          "pass": true,
+          "label": "actual laid out text .hero-kicker",
+          "actual": {
+            "width": 329.015869140625,
+            "height": 45.1278076171875
+          },
+          "expected": "positive"
+        },
+        {
+          "pass": true,
+          "label": "actual expected family .feature-tagline",
+          "actual": "Caveat, \"Permanent Marker\", cursive, sans-serif",
+          "expected": "Caveat"
+        },
+        {
+          "pass": true,
+          "label": "actual laid out text .feature-tagline",
+          "actual": {
+            "width": 145.6171875,
+            "height": 20
+          },
+          "expected": "positive"
+        },
+        {
+          "pass": true,
+          "label": "two original handwritten weight700",
+          "actual": [
+            "700",
+            "700"
+          ],
+          "expected": [
+            700,
+            700
+          ]
+        },
+        {
+          "pass": true,
+          "label": "real original first phrase",
+          "actual": "More People, Brighter Days ☺",
+          "expected": "More People, Brighter Days"
+        },
+        {
+          "pass": true,
+          "label": "real original second phrase",
+          "actual": "Same Game & New Friends",
+          "expected": "Same Game & New Friends"
+        },
+        {
+          "pass": true,
+          "label": "current exception events",
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-font-home-top-wave65-2026-10-02.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-font-home-feature-wave65-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "fonts": {
+        "support": "supported",
+        "sdkVersion": "3.17.2",
+        "faces": [
+          {
+            "family": "Caveat",
+            "weight": "700",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "600",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "700",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "800",
+            "status": "loaded"
+          }
+        ]
+      },
+      "native": {
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      "nodes": [
+        {
+          "selector": ".hero-kicker",
+          "offset": {
+            "left": 36.4920539855957,
+            "top": 134.43609619140625
+          },
+          "size": {
+            "width": 329.015869140625,
+            "height": 45.1278076171875
+          },
+          "text": "More People, Brighter Days ☺",
+          "family": "Caveat, \"Permanent Marker\", cursive, sans-serif",
+          "weight": "700",
+          "fontSize": "18px",
+          "lineHeight": "28px"
+        },
+        {
+          "selector": ".feature-tagline",
+          "offset": {
+            "left": 128.1875,
+            "top": 539
+          },
+          "size": {
+            "width": 145.6171875,
+            "height": 20
+          },
+          "text": "Same Game & New Friends",
+          "family": "Caveat, \"Permanent Marker\", cursive, sans-serif",
+          "weight": "700",
+          "fontSize": "14px",
+          "lineHeight": "20px"
+        }
+      ],
+      "pass": true,
+      "elapsedMs": 6197
+    },
+    "about": {
+      "route": "pages/about/about",
+      "mode": "about",
+      "level": "only actual changed font registration/glyph/layout and current license cards; no business suite",
+      "checks": [
+        {
+          "pass": true,
+          "label": "real current SDK supports Data URL",
+          "actual": {
+            "support": "supported",
+            "sdkVersion": "3.17.2",
+            "faces": [
+              {
+                "family": "Caveat",
+                "weight": "700",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "400",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "600",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "700",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "800",
+                "status": "loaded"
+              }
+            ]
+          },
+          "expected": "supported"
+        },
+        {
+          "pass": true,
+          "label": "five real wx.loadFontFace success callbacks",
+          "actual": [
+            {
+              "family": "Caveat",
+              "weight": "700",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "400",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "600",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "700",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "800",
+              "status": "loaded"
+            }
+          ],
+          "expected": "all loaded"
+        },
+        {
+          "pass": true,
+          "label": "actual expected family .about-header-title",
+          "actual": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "expected": "Plus Jakarta Sans"
+        },
+        {
+          "pass": true,
+          "label": "actual laid out text .about-header-title",
+          "actual": {
+            "width": 139,
+            "height": 23
+          },
+          "expected": "positive"
+        },
+        {
+          "pass": true,
+          "label": "actual expected family .title",
+          "actual": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "expected": "Plus Jakarta Sans"
+        },
+        {
+          "pass": true,
+          "label": "actual laid out text .title",
+          "actual": {
+            "width": 147.1015625,
+            "height": 38
+          },
+          "expected": "positive"
+        },
+        {
+          "pass": true,
+          "label": "actual expected family .slogan > text",
+          "actual": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "expected": "Plus Jakarta Sans"
+        },
+        {
+          "pass": true,
+          "label": "actual laid out text .slogan > text",
+          "actual": {
+            "width": 4.71875,
+            "height": 16.5
+          },
+          "expected": "positive"
+        },
+        {
+          "pass": true,
+          "label": "actual expected family .eyebrow",
+          "actual": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "expected": "Plus Jakarta Sans"
+        },
+        {
+          "pass": true,
+          "label": "actual laid out text .eyebrow",
+          "actual": {
+            "width": 292,
+            "height": 15
+          },
+          "expected": "positive"
+        },
+        {
+          "pass": true,
+          "label": "font header stays out of capsule",
+          "actual": {
+            "selector": ".about-header-title",
+            "offset": {
+              "left": 68,
+              "top": 72.5
+            },
+            "size": {
+              "width": 139,
+              "height": 23
+            },
+            "text": "关于 Project IRL",
+            "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+            "weight": "600",
+            "fontSize": "18px",
+            "lineHeight": "23px"
+          },
+          "expected": {
+            "capsuleLeft": 308
+          }
+        },
+        {
+          "pass": true,
+          "label": "current exception events",
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-font-about-top-wave65-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "fonts": {
+        "support": "supported",
+        "sdkVersion": "3.17.2",
+        "faces": [
+          {
+            "family": "Caveat",
+            "weight": "700",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "600",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "700",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "800",
+            "status": "loaded"
+          }
+        ]
+      },
+      "native": {
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      "nodes": [
+        {
+          "selector": ".about-header-title",
+          "offset": {
+            "left": 68,
+            "top": 72.5
+          },
+          "size": {
+            "width": 139,
+            "height": 23
+          },
+          "text": "关于 Project IRL",
+          "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "weight": "600",
+          "fontSize": "18px",
+          "lineHeight": "23px"
+        },
+        {
+          "selector": ".title",
+          "offset": {
+            "left": 127.4453125,
+            "top": 253
+          },
+          "size": {
+            "width": 147.1015625,
+            "height": 38
+          },
+          "text": "Project IRL",
+          "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "weight": "800",
+          "fontSize": "30px",
+          "lineHeight": "38px"
+        },
+        {
+          "selector": ".slogan > text",
+          "offset": {
+            "left": 179.53125,
+            "top": 295
+          },
+          "size": {
+            "width": 4.71875,
+            "height": 16.5
+          },
+          "text": "·",
+          "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "weight": "400",
+          "fontSize": "13px",
+          "lineHeight": "17px"
+        },
+        {
+          "selector": ".eyebrow",
+          "offset": {
+            "left": 76,
+            "top": 389
+          },
+          "size": {
+            "width": 292,
+            "height": 15
+          },
+          "text": "MANIFESTO",
+          "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "weight": "700",
+          "fontSize": "11px",
+          "lineHeight": "15px"
+        }
+      ],
+      "header": {
+        "title": {
+          "selector": ".about-header-title",
+          "offset": {
+            "left": 68,
+            "top": 72.5
+          },
+          "size": {
+            "width": 139,
+            "height": 23
+          },
+          "text": "关于 Project IRL",
+          "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "weight": "600",
+          "fontSize": "18px",
+          "lineHeight": "23px"
+        },
+        "header": {
+          "selector": ".about-header",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 60
+          },
+          "text": "关于 Project IRL",
+          "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "weight": "400",
+          "fontSize": "16px",
+          "lineHeight": "normal"
+        }
+      },
+      "pass": true,
+      "elapsedMs": 4534
+    },
+    "release": {
+      "route": "subpackages/profile/release-notes/release-notes",
+      "mode": "release",
+      "level": "only actual changed font registration/glyph/layout and current license cards; no business suite",
+      "checks": [
+        {
+          "pass": true,
+          "label": "real current SDK supports Data URL",
+          "actual": {
+            "support": "supported",
+            "sdkVersion": "3.17.2",
+            "faces": [
+              {
+                "family": "Caveat",
+                "weight": "700",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "400",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "600",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "700",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "800",
+                "status": "loaded"
+              }
+            ]
+          },
+          "expected": "supported"
+        },
+        {
+          "pass": true,
+          "label": "five real wx.loadFontFace success callbacks",
+          "actual": [
+            {
+              "family": "Caveat",
+              "weight": "700",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "400",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "600",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "700",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "800",
+              "status": "loaded"
+            }
+          ],
+          "expected": "all loaded"
+        },
+        {
+          "pass": true,
+          "label": "actual expected family .pg10-header-title",
+          "actual": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "expected": "Plus Jakarta Sans"
+        },
+        {
+          "pass": true,
+          "label": "actual laid out text .pg10-header-title",
+          "actual": {
+            "width": 100,
+            "height": 23
+          },
+          "expected": "positive"
+        },
+        {
+          "pass": true,
+          "label": "actual expected family .whats-new",
+          "actual": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "expected": "Plus Jakarta Sans"
+        },
+        {
+          "pass": true,
+          "label": "actual laid out text .whats-new",
+          "actual": {
+            "width": 112.3984375,
+            "height": 19
+          },
+          "expected": "positive"
+        },
+        {
+          "pass": true,
+          "label": "actual expected family .version-chip text",
+          "actual": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "expected": "Plus Jakarta Sans"
+        },
+        {
+          "pass": true,
+          "label": "actual laid out text .version-chip text",
+          "actual": {
+            "width": 74.78125,
+            "height": 15
+          },
+          "expected": "positive"
+        },
+        {
+          "pass": true,
+          "label": "actual expected family .release-intro-note text",
+          "actual": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "expected": "Plus Jakarta Sans"
+        },
+        {
+          "pass": true,
+          "label": "actual laid out text .release-intro-note text",
+          "actual": {
+            "width": 314,
+            "height": 38
+          },
+          "expected": "positive"
+        },
+        {
+          "pass": true,
+          "label": "font header stays out of capsule",
+          "actual": {
+            "selector": ".pg10-header-title",
+            "offset": {
+              "left": 60,
+              "top": 72.5
+            },
+            "size": {
+              "width": 100,
+              "height": 23
+            },
+            "text": "Meetup Info",
+            "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+            "weight": "600",
+            "fontSize": "18px",
+            "lineHeight": "23px"
+          },
+          "expected": {
+            "capsuleLeft": 308
+          }
+        },
+        {
+          "pass": true,
+          "label": "current exception events",
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-font-release-top-wave65-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "fonts": {
+        "support": "supported",
+        "sdkVersion": "3.17.2",
+        "faces": [
+          {
+            "family": "Caveat",
+            "weight": "700",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "600",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "700",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "800",
+            "status": "loaded"
+          }
+        ]
+      },
+      "native": {
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      "nodes": [
+        {
+          "selector": ".pg10-header-title",
+          "offset": {
+            "left": 60,
+            "top": 72.5
+          },
+          "size": {
+            "width": 100,
+            "height": 23
+          },
+          "text": "Meetup Info",
+          "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "weight": "600",
+          "fontSize": "18px",
+          "lineHeight": "23px"
+        },
+        {
+          "selector": ".whats-new",
+          "offset": {
+            "left": 34,
+            "top": 186
+          },
+          "size": {
+            "width": 112.3984375,
+            "height": 19
+          },
+          "text": "WHAT'S NEW ✨",
+          "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "weight": "700",
+          "fontSize": "11px",
+          "lineHeight": "15px"
+        },
+        {
+          "selector": ".version-chip text",
+          "offset": {
+            "left": 58,
+            "top": 152
+          },
+          "size": {
+            "width": 74.78125,
+            "height": 15
+          },
+          "text": "R1 · 本地测试候选",
+          "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "weight": "700",
+          "fontSize": "11px",
+          "lineHeight": "15px"
+        },
+        {
+          "selector": ".release-intro-note text",
+          "offset": {
+            "left": 54,
+            "top": 247
+          },
+          "size": {
+            "width": 314,
+            "height": 38
+          },
+          "text": "发布状态以小程序当前工程为准；正式版本号与上线日期待确认。",
+          "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "weight": "400",
+          "fontSize": "13px",
+          "lineHeight": "19px"
+        }
+      ],
+      "header": {
+        "title": {
+          "selector": ".pg10-header-title",
+          "offset": {
+            "left": 60,
+            "top": 72.5
+          },
+          "size": {
+            "width": 100,
+            "height": 23
+          },
+          "text": "Meetup Info",
+          "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "weight": "600",
+          "fontSize": "18px",
+          "lineHeight": "23px"
+        },
+        "header": {
+          "selector": ".pg10-header",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 60
+          },
+          "text": "Meetup Info",
+          "family": "\"PingFang SC\"",
+          "weight": "400",
+          "fontSize": "16px",
+          "lineHeight": "normal"
+        }
+      },
+      "pass": true,
+      "elapsedMs": 4818
+    },
+    "guidelines": {
+      "route": "subpackages/profile/guidelines/guidelines",
+      "mode": "guidelines",
+      "level": "only actual changed font registration/glyph/layout and current license cards; no business suite",
+      "checks": [
+        {
+          "pass": true,
+          "label": "real current SDK supports Data URL",
+          "actual": {
+            "support": "supported",
+            "sdkVersion": "3.17.2",
+            "faces": [
+              {
+                "family": "Caveat",
+                "weight": "700",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "400",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "600",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "700",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "800",
+                "status": "loaded"
+              }
+            ]
+          },
+          "expected": "supported"
+        },
+        {
+          "pass": true,
+          "label": "five real wx.loadFontFace success callbacks",
+          "actual": [
+            {
+              "family": "Caveat",
+              "weight": "700",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "400",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "600",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "700",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "800",
+              "status": "loaded"
+            }
+          ],
+          "expected": "all loaded"
+        },
+        {
+          "pass": true,
+          "label": "actual expected family .pg10-header-title",
+          "actual": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "expected": "Plus Jakarta Sans"
+        },
+        {
+          "pass": true,
+          "label": "actual laid out text .pg10-header-title",
+          "actual": {
+            "width": 100,
+            "height": 23
+          },
+          "expected": "positive"
+        },
+        {
+          "pass": true,
+          "label": "actual expected family .charter-kicker",
+          "actual": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "expected": "Plus Jakarta Sans"
+        },
+        {
+          "pass": true,
+          "label": "actual laid out text .charter-kicker",
+          "actual": {
+            "width": 165.5859375,
+            "height": 19
+          },
+          "expected": "positive"
+        },
+        {
+          "pass": true,
+          "label": "actual expected family .charter-subtitle",
+          "actual": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "expected": "Plus Jakarta Sans"
+        },
+        {
+          "pass": true,
+          "label": "actual laid out text .charter-subtitle",
+          "actual": {
+            "width": 334,
+            "height": 52
+          },
+          "expected": "positive"
+        },
+        {
+          "pass": true,
+          "label": "actual expected family .quote-copy",
+          "actual": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "expected": "Plus Jakarta Sans"
+        },
+        {
+          "pass": true,
+          "label": "actual laid out text .quote-copy",
+          "actual": {
+            "width": 296,
+            "height": 71
+          },
+          "expected": "positive"
+        },
+        {
+          "pass": true,
+          "label": "font header stays out of capsule",
+          "actual": {
+            "selector": ".pg10-header-title",
+            "offset": {
+              "left": 60,
+              "top": 72.5
+            },
+            "size": {
+              "width": 100,
+              "height": 23
+            },
+            "text": "Safety &amp; Guidelines",
+            "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+            "weight": "600",
+            "fontSize": "18px",
+            "lineHeight": "23px"
+          },
+          "expected": {
+            "capsuleLeft": 308
+          }
+        },
+        {
+          "pass": true,
+          "label": "current exception events",
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-font-guidelines-top-wave65-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "fonts": {
+        "support": "supported",
+        "sdkVersion": "3.17.2",
+        "faces": [
+          {
+            "family": "Caveat",
+            "weight": "700",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "600",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "700",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "800",
+            "status": "loaded"
+          }
+        ]
+      },
+      "native": {
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      "nodes": [
+        {
+          "selector": ".pg10-header-title",
+          "offset": {
+            "left": 60,
+            "top": 72.5
+          },
+          "size": {
+            "width": 100,
+            "height": 23
+          },
+          "text": "Safety &amp; Guidelines",
+          "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "weight": "600",
+          "fontSize": "18px",
+          "lineHeight": "23px"
+        },
+        {
+          "selector": ".charter-kicker",
+          "offset": {
+            "left": 118.203125,
+            "top": 223
+          },
+          "size": {
+            "width": 165.5859375,
+            "height": 19
+          },
+          "text": "IRL CHARTER · 纯粹相遇",
+          "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "weight": "700",
+          "fontSize": "11px",
+          "lineHeight": "15px"
+        },
+        {
+          "selector": ".charter-subtitle",
+          "offset": {
+            "left": 34,
+            "top": 280
+          },
+          "size": {
+            "width": 334,
+            "height": 52
+          },
+          "text": "Project IRL 希望与参与者一起营造真诚、守时、友善且充满包容的线下社群环境。",
+          "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "weight": "400",
+          "fontSize": "16px",
+          "lineHeight": "26px"
+        },
+        {
+          "selector": ".quote-copy",
+          "offset": {
+            "left": 72,
+            "top": 1475
+          },
+          "size": {
+            "width": 296,
+            "height": 71
+          },
+          "text": "“把有趣的人聚在真实世界，用真实守护彼此的善意。”— Project IRL 当前社区引导",
+          "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "weight": "600",
+          "fontSize": "18px",
+          "lineHeight": "25px"
+        }
+      ],
+      "header": {
+        "title": {
+          "selector": ".pg10-header-title",
+          "offset": {
+            "left": 60,
+            "top": 72.5
+          },
+          "size": {
+            "width": 100,
+            "height": 23
+          },
+          "text": "Safety &amp; Guidelines",
+          "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "weight": "600",
+          "fontSize": "18px",
+          "lineHeight": "23px"
+        },
+        "header": {
+          "selector": ".pg10-header",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 60
+          },
+          "text": "Safety &amp; Guidelines",
+          "family": "\"PingFang SC\"",
+          "weight": "400",
+          "fontSize": "16px",
+          "lineHeight": "normal"
+        }
+      },
+      "pass": true,
+      "elapsedMs": 4641
+    },
+    "source": {
+      "route": "subpackages/profile/open-source/open-source",
+      "mode": "source",
+      "level": "only actual changed font registration/glyph/layout and current license cards; no business suite",
+      "checks": [
+        {
+          "pass": true,
+          "label": "real current SDK supports Data URL",
+          "actual": {
+            "support": "supported",
+            "sdkVersion": "3.17.2",
+            "faces": [
+              {
+                "family": "Caveat",
+                "weight": "700",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "400",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "600",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "700",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "800",
+                "status": "loaded"
+              }
+            ]
+          },
+          "expected": "supported"
+        },
+        {
+          "pass": true,
+          "label": "five real wx.loadFontFace success callbacks",
+          "actual": [
+            {
+              "family": "Caveat",
+              "weight": "700",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "400",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "600",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "700",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "800",
+              "status": "loaded"
+            }
+          ],
+          "expected": "all loaded"
+        },
+        {
+          "pass": true,
+          "label": "actual expected family .intro-head text",
+          "actual": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "expected": "Plus Jakarta Sans"
+        },
+        {
+          "pass": true,
+          "label": "actual laid out text .intro-head text",
+          "actual": {
+            "width": 271,
+            "height": 30
+          },
+          "expected": "positive"
+        },
+        {
+          "pass": true,
+          "label": "actual expected family .dependency-title",
+          "actual": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "expected": "Plus Jakarta Sans"
+        },
+        {
+          "pass": true,
+          "label": "actual laid out text .dependency-title",
+          "actual": {
+            "width": 294.140625,
+            "height": 23
+          },
+          "expected": "positive"
+        },
+        {
+          "pass": true,
+          "label": "actual expected family .dependency-maker",
+          "actual": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "expected": "Plus Jakarta Sans"
+        },
+        {
+          "pass": true,
+          "label": "actual laid out text .dependency-maker",
+          "actual": {
+            "width": 294.140625,
+            "height": 19
+          },
+          "expected": "positive"
+        },
+        {
+          "pass": true,
+          "label": "actual expected family .license-badge",
+          "actual": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "expected": "Plus Jakarta Sans"
+        },
+        {
+          "pass": true,
+          "label": "actual laid out text .license-badge",
+          "actual": {
+            "width": 41.859375,
+            "height": 23
+          },
+          "expected": "positive"
+        },
+        {
+          "pass": true,
+          "label": "actual expected family .dependency-copyright",
+          "actual": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "expected": "Plus Jakarta Sans"
+        },
+        {
+          "pass": true,
+          "label": "actual laid out text .dependency-copyright",
+          "actual": {
+            "width": 344,
+            "height": 15
+          },
+          "expected": "positive"
+        },
+        {
+          "pass": true,
+          "label": "font header stays out of capsule",
+          "actual": {
+            "selector": ".pg10-header-title",
+            "offset": {
+              "left": 60,
+              "top": 72.5
+            },
+            "size": {
+              "width": 100,
+              "height": 23
+            },
+            "text": "开源许可与致谢",
+            "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+            "weight": "600",
+            "fontSize": "18px",
+            "lineHeight": "23px"
+          },
+          "expected": {
+            "capsuleLeft": 308
+          }
+        },
+        {
+          "pass": true,
+          "label": "true five dependencies plus two icons and two fonts",
+          "actual": 9,
+          "expected": 9
+        },
+        {
+          "pass": true,
+          "label": "two actual font OFL summaries",
+          "actual": [
+            {
+              "name": "Caveat",
+              "license": "OFL-1.1",
+              "offset": {
+                "left": 17,
+                "top": 1144
+              },
+              "size": {
+                "width": 368,
+                "height": 152
+              }
+            },
+            {
+              "name": "Plus Jakarta Sans",
+              "license": "OFL-1.1",
+              "offset": {
+                "left": 17,
+                "top": 1304
+              },
+              "size": {
+                "width": 368,
+                "height": 152
+              }
+            }
+          ],
+          "expected": 2
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-font-source-top-wave65-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "fonts": {
+        "support": "supported",
+        "sdkVersion": "3.17.2",
+        "faces": [
+          {
+            "family": "Caveat",
+            "weight": "700",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "600",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "700",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "800",
+            "status": "loaded"
+          }
+        ]
+      },
+      "native": {
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      "nodes": [
+        {
+          "selector": ".intro-head text",
+          "offset": {
+            "left": 97,
+            "top": 166
+          },
+          "size": {
+            "width": 271,
+            "height": 30
+          },
+          "text": "OPEN SOURCE SOFTWARE &amp; SPECIAL THANKS",
+          "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "weight": "700",
+          "fontSize": "11px",
+          "lineHeight": "15px"
+        },
+        {
+          "selector": ".dependency-title",
+          "offset": {
+            "left": 29,
+            "top": 365
+          },
+          "size": {
+            "width": 294.140625,
+            "height": 23
+          },
+          "text": "PostgreSQL 客户端 pg",
+          "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "weight": "600",
+          "fontSize": "18px",
+          "lineHeight": "23px"
+        },
+        {
+          "selector": ".dependency-maker",
+          "offset": {
+            "left": 29,
+            "top": 388
+          },
+          "size": {
+            "width": 294.140625,
+            "height": 19
+          },
+          "text": "Brian Carlson",
+          "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "weight": "400",
+          "fontSize": "13px",
+          "lineHeight": "19px"
+        },
+        {
+          "selector": ".license-badge",
+          "offset": {
+            "left": 331.140625,
+            "top": 365
+          },
+          "size": {
+            "width": 41.859375,
+            "height": 23
+          },
+          "text": "MIT",
+          "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "weight": "700",
+          "fontSize": "11px",
+          "lineHeight": "15px"
+        },
+        {
+          "selector": ".dependency-copyright",
+          "offset": {
+            "left": 29,
+            "top": 441
+          },
+          "size": {
+            "width": 344,
+            "height": 15
+          },
+          "text": "Copyright (c) 2010 - 2021 Brian Carlson",
+          "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "weight": "400",
+          "fontSize": "11px",
+          "lineHeight": "15px"
+        }
+      ],
+      "header": {
+        "title": {
+          "selector": ".pg10-header-title",
+          "offset": {
+            "left": 60,
+            "top": 72.5
+          },
+          "size": {
+            "width": 100,
+            "height": 23
+          },
+          "text": "开源许可与致谢",
+          "family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "weight": "600",
+          "fontSize": "18px",
+          "lineHeight": "23px"
+        },
+        "header": {
+          "selector": ".pg10-header",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 60
+          },
+          "text": "开源许可与致谢",
+          "family": "\"PingFang SC\"",
+          "weight": "400",
+          "fontSize": "16px",
+          "lineHeight": "normal"
+        }
+      },
+      "resources": [
+        {
+          "name": "PostgreSQL 客户端 pg",
+          "license": "MIT",
+          "offset": {
+            "left": 17,
+            "top": 353
+          },
+          "size": {
+            "width": 368,
+            "height": 115
+          }
+        },
+        {
+          "name": "PGlite",
+          "license": "Apache-2.0",
+          "offset": {
+            "left": 17,
+            "top": 476
+          },
+          "size": {
+            "width": 368,
+            "height": 96
+          }
+        },
+        {
+          "name": "TypeScript",
+          "license": "Apache-2.0",
+          "offset": {
+            "left": 17,
+            "top": 580
+          },
+          "size": {
+            "width": 368,
+            "height": 96
+          }
+        },
+        {
+          "name": "tsx",
+          "license": "MIT",
+          "offset": {
+            "left": 17,
+            "top": 684
+          },
+          "size": {
+            "width": 368,
+            "height": 96
+          }
+        },
+        {
+          "name": "qrcode-generator",
+          "license": "MIT",
+          "offset": {
+            "left": 17,
+            "top": 788
+          },
+          "size": {
+            "width": 368,
+            "height": 96
+          }
+        },
+        {
+          "name": "Material Symbols",
+          "license": "Apache-2.0",
+          "offset": {
+            "left": 17,
+            "top": 892
+          },
+          "size": {
+            "width": 368,
+            "height": 118
+          }
+        },
+        {
+          "name": "Phosphor Icons Web 2.0.3",
+          "license": "MIT",
+          "offset": {
+            "left": 17,
+            "top": 1018
+          },
+          "size": {
+            "width": 368,
+            "height": 118
+          }
+        },
+        {
+          "name": "Caveat",
+          "license": "OFL-1.1",
+          "offset": {
+            "left": 17,
+            "top": 1144
+          },
+          "size": {
+            "width": 368,
+            "height": 152
+          }
+        },
+        {
+          "name": "Plus Jakarta Sans",
+          "license": "OFL-1.1",
+          "offset": {
+            "left": 17,
+            "top": 1304
+          },
+          "size": {
+            "width": 368,
+            "height": 152
+          }
+        }
+      ],
+      "pass": false,
+      "failure": {
+        "phase": "actual-font-nodes",
+        "message": "timeout waiting for automator response",
+        "stack": "Error: timeout waiting for automator response\n    at Connection.onMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/miniprogram-automator@0.12.1/node_modules/miniprogram-automator/out/Connection.js:1:985)\n    at Transport.emit (node:events:509:28)\n    at WebSocket.<anonymous> (/private/tmp/project-irl-automator/node_modules/.pnpm/miniprogram-automator@0.12.1/node_modules/miniprogram-automator/out/Transport.js:1:220)\n    at WebSocket.onMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/event-target.js:120:16)\n    at WebSocket.emit (node:events:509:28)\n    at Receiver.receiverOnMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/websocket.js:807:20)\n    at Receiver.emit (node:events:509:28)\n    at Receiver.dataMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:448:14)\n    at Receiver.getData (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:377:17)\n    at Receiver.startLoop (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:158:22)"
+      },
+      "elapsedMs": 14687
+    },
+    "source-readiness-attempt": {
+      "scope": "only H3 resource count wrapping and remaining font copyright cards screenshot; prior15checks not rerun",
+      "checks": [],
+      "exceptions": [],
+      "screenshots": [],
+      "pass": false,
+      "failure": {
+        "phase": "source-count",
+        "message": "Cannot read properties of null (reading 'text')"
+      },
+      "elapsedMs": 3594
+    },
+    "source-remaining": {
+      "scope": "only H3 resource count wrapping and remaining font copyright cards screenshot; prior15checks not rerun",
+      "checks": [
+        {
+          "pass": true,
+          "label": "short accurate nine-resource badge",
+          "actual": "9 项资源",
+          "expected": "9 项资源"
+        },
+        {
+          "pass": true,
+          "label": "heading one native line after restoring short count",
+          "actual": {
+            "text": "引入的开源组件",
+            "offset": {
+              "left": 44,
+              "top": 303
+            },
+            "size": {
+              "width": 112,
+              "height": 21
+            },
+            "lineHeight": "21px"
+          },
+          "expected": "one line"
+        },
+        {
+          "pass": true,
+          "label": "exact two final font cards",
+          "actual": [
+            "Caveat",
+            "Plus Jakarta Sans"
+          ],
+          "expected": [
+            "Caveat",
+            "Plus Jakarta Sans"
+          ]
+        },
+        {
+          "pass": true,
+          "label": "accurate font copyright without clipping text",
+          "actual": [
+            "Copyright 2014 The Caveat Project Authors (https://github.com/googlefonts/caveat)",
+            "Copyright 2020 The Plus Jakarta Sans Project Authors (https://github.com/tokotype/PlusJakartaSans)"
+          ],
+          "expected": "official authors"
+        },
+        {
+          "pass": true,
+          "label": "both font cards visible below sticky header",
+          "actual": {
+            "first": {
+              "left": 17,
+              "top": 120
+            },
+            "second": {
+              "left": 17,
+              "top": 280
+            }
+          },
+          "expected": "both visible"
+        },
+        {
+          "pass": true,
+          "label": "exception events",
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "exceptions": [],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-font-source-top-wave65-2026-10-02.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-font-source-fonts-wave65-2026-10-02.png"
+      ],
+      "count": {
+        "c": {
+          "text": "9 项资源",
+          "offset": {
+            "left": 318.4140625,
+            "top": 304
+          },
+          "size": {
+            "width": 62.5859375,
+            "height": 19
+          }
+        },
+        "h": {
+          "text": "引入的开源组件",
+          "offset": {
+            "left": 44,
+            "top": 303
+          },
+          "size": {
+            "width": 112,
+            "height": 21
+          },
+          "lineHeight": "21px"
+        }
+      },
+      "fonts": [
+        {
+          "name": "Caveat",
+          "copyright": "Copyright 2014 The Caveat Project Authors (https://github.com/googlefonts/caveat)",
+          "copyrightSize": {
+            "width": 344,
+            "height": 30
+          },
+          "card": {
+            "left": 17,
+            "top": 1123
+          },
+          "size": {
+            "width": 368,
+            "height": 152
+          }
+        },
+        {
+          "name": "Plus Jakarta Sans",
+          "copyright": "Copyright 2020 The Plus Jakarta Sans Project Authors (https://github.com/tokotype/PlusJakartaSans)",
+          "copyrightSize": {
+            "width": 344,
+            "height": 30
+          },
+          "card": {
+            "left": 17,
+            "top": 1283
+          },
+          "size": {
+            "width": 368,
+            "height": 152
+          }
+        }
+      ],
+      "native": {
+        "pixelRatio": 3,
+        "safeArea": {
+          "top": 54,
+          "left": 0,
+          "right": 402,
+          "bottom": 840,
+          "width": 402,
+          "height": 786
+        },
+        "screenWidth": 402,
+        "screenHeight": 874,
+        "screenTop": 0,
+        "windowWidth": 402,
+        "windowHeight": 874,
+        "statusBarHeight": 54
+      },
+      "visible": {
+        "first": {
+          "left": 17,
+          "top": 120
+        },
+        "second": {
+          "left": 17,
+          "top": 280
+        }
+      },
+      "pass": true,
+      "elapsedMs": 5433
+    }
+  },
+  "fontInitializationVM": {
+    "status": "PASS",
+    "scenarioCount": 5,
+    "results": [
+      {
+        "name": "normal-success",
+        "support": "supported",
+        "sdkVersion": "3.17.3",
+        "fontCalls": 5,
+        "loaded": 5,
+        "failed": 0,
+        "loginStarted": 1,
+        "authIndependent": true
+      },
+      {
+        "name": "one-font-failure-isolated",
+        "support": "supported",
+        "sdkVersion": "3.17.3",
+        "fontCalls": 5,
+        "loaded": 4,
+        "failed": 1,
+        "loginStarted": 1,
+        "authIndependent": true
+      },
+      {
+        "name": "old-sdk-no-data-url",
+        "support": "unsupported",
+        "sdkVersion": "3.7.8",
+        "fontCalls": 0,
+        "loaded": 0,
+        "failed": 0,
+        "loginStarted": 1,
+        "authIndependent": true
+      },
+      {
+        "name": "missing-api-fallback",
+        "support": "unavailable",
+        "sdkVersion": "",
+        "fontCalls": 0,
+        "loaded": 0,
+        "failed": 0,
+        "loginStarted": 1,
+        "authIndependent": true
+      },
+      {
+        "name": "synchronous-font-exception-isolated",
+        "support": "supported",
+        "sdkVersion": "3.17.3",
+        "fontCalls": 5,
+        "loaded": 4,
+        "failed": 1,
+        "loginStarted": 1,
+        "authIndependent": true
+      }
+    ],
+    "scope": "Real App / loader / data module in VM; only external wx and login boundaries are simulated. Not WeChat glyph rendering."
+  },
+  "fontAssertionCount": 67,
+  "modalContractRegression": {
+    "file": "test/miniprogram-inspiration-modal-contract.test.ts",
+    "red": {
+      "pass": 9,
+      "fail": 6,
+      "exitCode": 1
+    },
+    "green": {
+      "pass": 15,
+      "fail": 0,
+      "exitCode": 0
+    },
+    "externalNativeCallbacksSimulated": true
+  },
+  "preview": {
+    "exitCode": 0,
+    "size": {
+      "total": 3054272,
+      "packages": [
+        {
+          "name": "TOTAL",
+          "size": 3054272
+        },
+        {
+          "name": "main",
+          "size": 2046014
+        },
+        {
+          "name": "/subpackages/activity/",
+          "size": 78943
+        },
+        {
+          "name": "/subpackages/profile/",
+          "size": 929315
+        }
+      ]
+    },
+    "mainLimitBytes": 2097152,
+    "remainingMainBytes": 51138
+  },
+  "images": [
+    {
+      "path": "docs/evidence/images/caper-font-about-top-wave65-2026-10-02.png",
+      "bytes": 213399,
+      "sha256": "34e418efc910a69508fd05b58dde6627bd3ad950d03abf57433de51ad02d5184",
+      "visuallyReviewed": true
+    },
+    {
+      "path": "docs/evidence/images/caper-font-guidelines-top-wave65-2026-10-02.png",
+      "bytes": 192695,
+      "sha256": "e5b779edc9f9d645ee2cedc5cb81b446f2374ee5d71353e8a822b56bb62a5d77",
+      "visuallyReviewed": true
+    },
+    {
+      "path": "docs/evidence/images/caper-font-home-feature-wave65-2026-10-02.png",
+      "bytes": 563060,
+      "sha256": "49e1ff4cc4da8fae4275ed8b8ebef46c8d5d0b8f8bae815492916e8eea832304",
+      "visuallyReviewed": true
+    },
+    {
+      "path": "docs/evidence/images/caper-font-home-top-wave65-2026-10-02.png",
+      "bytes": 407667,
+      "sha256": "a3856adc71b767ae93b891d17decb88c345a2222aba529667952c87d9e3384ec",
+      "visuallyReviewed": true
+    },
+    {
+      "path": "docs/evidence/images/caper-font-release-top-wave65-2026-10-02.png",
+      "bytes": 340650,
+      "sha256": "3eafb489f8d3c1fa27de20e1b2e7edc26dc33e47d3d5f135eb75dbf2f3b8b74a",
+      "visuallyReviewed": true
+    },
+    {
+      "path": "docs/evidence/images/caper-font-source-fonts-wave65-2026-10-02.png",
+      "bytes": 203335,
+      "sha256": "6cb64544fb7f0fe6906f43ae55a73f703688578b53b253f93f16740e500fda4e",
+      "visuallyReviewed": true
+    },
+    {
+      "path": "docs/evidence/images/caper-font-source-top-wave65-2026-10-02.png",
+      "bytes": 160165,
+      "sha256": "f2171e64940dae20c423e5c6f2fca9f016b0324364592fe00cc74a4affec93e5",
+      "visuallyReviewed": true
+    }
+  ],
+  "nativeComputerUse": {
+    "latestAttempt": "2026-10-02 after reLaunch home",
+    "result": "Mac locked and automatic unlock failed",
+    "pendingUserUnlock": true,
+    "finalHomeDiscoverModalCancelConfirmVerified": false
+  },
+  "boundaries": [
+    "All initial failed harness segments are retained, including selector timeout and page-readiness error. Only remaining source license-card checks were repeated.",
+    "No new business writes, registration, consent, deletion, report or publication.",
+    "Font success callbacks and screenshots do not prove physical-device or all 39 screens pixel parity.",
+    "No production AppID/HTTPS/subscription-message templates/physical device/human operations/three real controlled events acceptance."
+  ],
+  "releaseChecks": {
+    "stagedPaths": 40,
+    "frozenFontPathsMatched": 19,
+    "credentialScan": {
+      "exitCode": 0,
+      "textFiles": 1185,
+      "zipArchives": 1,
+      "binarySkipped": 556
+    },
+    "cachedDiffCheck": {
+      "fullExitCode": 2,
+      "onlyFindings": [
+        {
+          "path": "docs/licenses/caveat-OFL-1.1.txt",
+          "line": 21,
+          "reason": "Original official verbatim OFL trailing whitespace retained"
+        },
+        {
+          "path": "docs/licenses/plus-jakarta-sans-OFL-1.1.txt",
+          "line": 21,
+          "reason": "Original official verbatim OFL trailing whitespace retained"
+        }
+      ],
+      "allOtherCachedPathsExitCode": 0
+    }
+  }
+}

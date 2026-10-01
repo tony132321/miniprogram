@@ -79,3 +79,11 @@
 .release-actions { display: flex; width: 100%; gap: 16rpx; }
 .release-actions button { flex: 1; min-width: 0; margin: 0; padding: 28rpx 8rpx; border-radius: 999rpx; background: #fff; color: #1a1b1f; font-size: 26rpx; font-weight: 700; line-height: 36rpx; box-shadow: 0 2rpx 6rpx rgba(0,0,0,.06); }
 .release-actions button:first-child { color: #004cc8; }
+
+/* Only the source's explicit typography nodes, rather than its default body. */
+.release-page .pg10-header-title, .release-status, .whats-new, .release-title,
+.release-intro-note, .intro-highlight, .feature-kicker, .feature-title,
+.ability-pill, .photo-caption, .photo-label, .point-heading, .point-body,
+.triplet-item, .optimization-point, .release-foot, .release-actions button {
+  font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", sans-serif;
+}

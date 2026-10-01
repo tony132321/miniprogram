@@ -78,3 +78,6 @@
 .foot-dot { width:12rpx; height:12rpx; border-radius:50%; background:#c3c6d8; }
 .foot-status { font-size:24rpx; line-height:39rpx; }
 .foot-tagline { margin-top:8rpx; font-size:22rpx; line-height:35.75rpx; opacity:.8; }
+
+/* The supplied About body uses Plus Jakarta Sans; CJK keeps system fallback. */
+.about-page, .about-page button { font-family:"Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", sans-serif; }
