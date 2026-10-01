@@ -119,8 +119,13 @@ Page({
   goHome() { wx.switchTab({ url: '/pages/index/index' }); },
   goMessages() { wx.switchTab({ url: '/pages/messages/messages' }); },
   selectCategory(event) {
-    if (event?.currentTarget?.dataset?.name === '全部分类') {
+    const name = event?.currentTarget?.dataset?.name;
+    if (name === '全部分类') {
       this.setData({ availabilityMessage: '' });
+      return;
+    }
+    if (name === '附近分类' && typeof wx.pageScrollTo === 'function') {
+      wx.pageScrollTo({ selector: '#nearbySection', duration: 300 });
       return;
     }
     this.showUnavailable(event);
