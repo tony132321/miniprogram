@@ -259,9 +259,31 @@ export async function checkIn(db: Database, actor: string, eventId: string, expe
     if (!registered[0]) throw new AppError('NOT_REGISTERED', '只有已确认参与者可以签到', 403);
     if (!verifyCheckInToken(eventId, token, secret, now)) throw new AppError('INVALID_CHECKIN_TOKEN', '签到码已失效');
     const id = randomUUID();
-    const { rows: inserted } = await tx.query<{ id: string; event_id: string; user_id: string; evidence: string }>("INSERT INTO checkins(id,event_id,user_id,evidence,checked_at) VALUES($1,$2,$3,'SCAN',$4) ON CONFLICT(event_id,user_id) DO NOTHING RETURNING *", [id, eventId, actor, new Date(now).toISOString()]);
-    const row = inserted[0] ?? (await tx.query<{ id: string; event_id: string; user_id: string; evidence: string }>(
-      'SELECT id,event_id,user_id,evidence FROM checkins WHERE event_id=$1 AND user_id=$2', [eventId, actor])).rows[0]!;
+    const { rows: writes } = await tx.query<{ id: string | null; event_id: string | null;
+      user_id: string | null; evidence: string | null; in_window: boolean; token_current: boolean }>(`WITH write_time AS MATERIALIZED (
+        SELECT coalesce($4::timestamptz,clock_timestamp()) AS current_time
+      ), eligibility AS MATERIALIZED (
+        SELECT e.status IN ('CONFIRMED','IN_PROGRESS')
+          AND write_time.current_time >= (e.payload->>'startAt')::timestamptz - interval '30 minutes'
+          AND write_time.current_time <= (e.payload->>'endAt')::timestamptz + interval '30 minutes' AS in_window,
+          floor(extract(epoch FROM write_time.current_time)/60)::bigint=$5::bigint AS token_current
+        FROM events e CROSS JOIN write_time WHERE e.id=$2
+      ), inserted AS (
+        INSERT INTO checkins(id,event_id,user_id,evidence,checked_at)
+        SELECT $1,$2,$3,'SCAN',write_time.current_time FROM eligibility CROSS JOIN write_time
+        WHERE eligibility.in_window AND eligibility.token_current
+        ON CONFLICT(event_id,user_id) DO NOTHING RETURNING id,event_id,user_id,evidence
+      ) SELECT inserted.id,inserted.event_id,inserted.user_id,inserted.evidence,
+          eligibility.in_window,eligibility.token_current
+        FROM eligibility LEFT JOIN inserted ON true`,
+    [id, eventId, actor, at === undefined ? null : new Date(at).toISOString(), Math.floor(now / 60_000)]);
+    const write = writes[0];
+    if (!write?.in_window) throw new AppError('CHECKIN_CLOSED', '当前不在签到时间内');
+    if (!write.token_current) throw new AppError('INVALID_CHECKIN_TOKEN', '签到码已失效');
+    const row = write.id && write.evidence ? { id: write.id, evidence: write.evidence }
+      : (await tx.query<{ id: string; evidence: string }>(
+        'SELECT id,evidence FROM checkins WHERE event_id=$1 AND user_id=$2', [eventId, actor])).rows[0]!;
+    if (!row) throw new AppError('CHECKIN_CLOSED', '当前不在签到时间内');
     if (now >= start && event.status === 'CONFIRMED') {
       const { rows: started } = await tx.query<{ id: string }>(`UPDATE events
         SET status='IN_PROGRESS',recruiting=false,updated_at=now()
@@ -269,7 +291,7 @@ export async function checkIn(db: Database, actor: string, eventId: string, expe
         RETURNING id`, [eventId]);
       if (started.length) await audit(tx, actor, eventId, 'EVENT_STARTED');
     }
-    if (inserted.length) await audit(tx, actor, eventId, 'CHECK_IN');
+    if (write.id) await audit(tx, actor, eventId, 'CHECK_IN');
     return { id: row.id, eventId, userId: actor, evidence: row.evidence };
   });
 }
