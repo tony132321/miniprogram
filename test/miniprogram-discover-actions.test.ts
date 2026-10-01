@@ -89,7 +89,12 @@ test('a closed public-search entry leads to the real invitation field and keeps 
   assert.equal(scrolls[0]?.duration, 300);
   page.tokenChanged({ detail: { value: ' ABC 123 ' } });
   page.openInvite();
-  assert.deepEqual(routes, ['/pages/event/event?token=ABC%20123']);
+  assert.deepEqual(routes, [], 'malformed input stays in the invitation field');
+  assert.match(page.data.message, /32 位口令/);
+  page.tokenChanged({ detail: { value: 'A'.repeat(32) } });
+  page.openInvite();
+  assert.deepEqual(routes, ['/pages/event/event?token=' + 'A'.repeat(32)],
+    'well-formed input reaches the existing event route for server validation');
 });
 
 test('discovery scans only a plain invitation token and ignores a result after account switch', () => {

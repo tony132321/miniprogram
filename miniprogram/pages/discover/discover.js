@@ -21,6 +21,7 @@ const recommendationSets = [
   ]
 ];
 const categories = ['全部', '附近', '本周', '活动', '文艺', '美食', '职场', '兴趣', '生活', '公益'];
+function hasInvitationTokenFormat(token) { return /^[A-Za-z0-9_-]{32}$/.test(token); }
 function currentIdentity() {
   const token = wx.getStorageSync('sessionToken');
   return token
@@ -168,7 +169,7 @@ Page({
   async previewInvite() {
     if (this.clearStaleInvite()) return;
     const token = String(this.data.tokenInput || '').trim();
-    if (!/^[A-Za-z0-9_-]{32}$/.test(token))
+    if (!hasInvitationTokenFormat(token))
       return this.setData({ invitePreview: null, invitePreviewState: 'IDLE', message: '请输入活动邀请卡上的 32 位口令。' });
     const identity = currentIdentity();
     const generation = this._inviteGeneration = (this._inviteGeneration || 0) + 1;
@@ -207,8 +208,10 @@ Page({
   },
   openInvite() {
     if (this.clearStaleInvite()) return;
-    if (!this.data.tokenInput) return this.setData({ message: '请输入邀请口令' });
-    wx.navigateTo({ url: '/pages/event/event?token=' + encodeURIComponent(this.data.tokenInput) });
+    const token = String(this.data.tokenInput || '').trim();
+    if (!hasInvitationTokenFormat(token))
+      return this.setData({ message: '请输入活动邀请卡上的 32 位口令。' });
+    wx.navigateTo({ url: '/pages/event/event?token=' + encodeURIComponent(token) });
   },
   scanInviteQr() {
     this.clearStaleInvite();
@@ -222,7 +225,7 @@ Page({
             return this.setData({ message: '账号已切换，请重新扫码。' });
           }
           const token = typeof result?.result === 'string' ? result.result.trim() : '';
-          if (!/^[A-Za-z0-9_-]{32}$/.test(token))
+          if (!hasInvitationTokenFormat(token))
             return this.setData({ message: '这不是耍起 CAPER 的邀请码二维码，请扫描活动邀请卡。' });
           this._tokenIdentity = identity;
           this.setData({ tokenInput: token, message: '' });
