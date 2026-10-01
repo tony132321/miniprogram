@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=390, user-scalable=no, initial-scale=1.0, maximum-scale=1.0" name="viewport"/>
+<title>耍起 CAPER - 找局 · 发现</title>
+<!-- Tailwind CSS v3 CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              blue: '#1d64f2',
+              lime: '#c6ff00',
+              accent: '#a3e635',
+              dark: '#111827',
+              grayBg: '#f8fafc',
+              tagOrange: '#fff7ed',
+              tagOrangeText: '#ea580c',
+              tagGreen: '#f0fdf4',
+              tagGreenText: '#16a34a',
+              tagPurple: '#faf5ff',
+              tagPurpleText: '#9333ea',
+            }
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', '"PingFang SC"', '"Hiragino Sans GB"', '"Microsoft YaHei"', 'sans-serif'],
+            handwriting: ['"Caveat"', '"Segoe Print"', 'cursive']
+          }
+        }
+      }
+    }
+  </script>
+<!-- Phosphor Icons for iOS-style crisp social symbols -->
+<script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
+<!-- Style Block: Custom Layout & Utilities -->
+<style data-purpose="layout">
+    /* Custom scrollbar hiding for horizontal micro-feeds */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* Mobile app boundary simulator */
+    body {
+      background-color: #e5e7eb;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      -webkit-font-smoothing: antialiased;
+    }
+    .app-viewport {
+      width: 100%;
+      max-width: 390px;
+      min-height: 100vh;
+      background-color: #ffffff;
+      position: relative;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+      padding-bottom: 95px; /* space for fixed tab bar */
+      overflow-x: hidden;
+    }
+    .text-sticker {
+      font-family: 'Caveat', 'Segoe Print', cursive, sans-serif;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-900">
+<main class="app-viewport relative flex flex-col">
+<!-- BEGIN: TopStatusBar -->
+<!-- iOS Status Bar Simulation -->
+<section class="w-full pt-3 px-6 pb-2 flex justify-between items-center text-xs font-semibold tracking-tight text-slate-800 bg-white sticky top-0 z-40" data-purpose="status-bar">
+<span>9:41</span>
+<div class="flex items-center space-x-1.5 text-slate-800 text-[13px]">
+<i class="ph-bold ph-cellular-signal-full"></i>
+<i class="ph-bold ph-wifi-high"></i>
+<i class="ph-bold ph-battery-full text-base"></i>
+</div>
+</section>
+<!-- END: TopStatusBar -->
+<!-- BEGIN: MainHeader -->
+<!-- App Navigation Header & Brand Title -->
+<header class="px-4 pt-1 pb-3 bg-white border-b border-slate-50 relative">
+<div class="flex items-center justify-between">
+<!-- Logo and Brand name -->
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-brand-blue flex items-center justify-center text-white font-extrabold text-sm shadow-sm shadow-blue-300">
+            耍
+          </div>
+<div>
+<div class="flex items-baseline gap-1">
+<span class="font-black text-xl tracking-tight text-slate-900">耍起</span>
+<span class="font-extrabold text-xs text-brand-blue tracking-wider">CAPER</span>
+</div>
+</div>
+</div>
+<!-- Center Page Context -->
+<div class="flex flex-col items-center">
+<span class="font-bold text-base text-slate-900 leading-none tracking-tight">找局</span>
+<span class="text-[10px] text-slate-400 mt-0.5">发现身边有趣的人和活动</span>
+</div>
+<!-- Right action icons -->
+<div class="flex items-center space-x-3 text-slate-700">
+<button aria-label="搜索活动" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-100 transition-colors">
+<i class="ph-bold ph-magnifying-glass text-lg"></i>
+</button>
+<button aria-label="筛选选项" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-100 transition-colors">
+<i class="ph-bold ph-funnel-simple text-lg"></i>
+</button>
+</div>
+</div>
+<!-- Playful Floating Brand Sticker -->
+<div class="absolute -bottom-2.5 right-6 z-20 pointer-events-none transform rotate-3">
+<div class="bg-[#c6ff00] text-black px-2 py-0.5 rounded shadow-sm text-[10px] font-black uppercase tracking-tight flex items-center gap-0.5">
+<span>Good People More Plans ✦</span>
+</div>
+</div>
+</header>
+<!-- END: MainHeader -->
+<!-- BEGIN: FilterCategories -->
+<!-- Scrollable category pills -->
+<nav class="sticky top-[39px] z-30 bg-white/95 backdrop-blur-md pt-3 pb-2.5 px-3 border-b border-slate-100 overflow-x-auto no-scrollbar flex items-center gap-2">
+<button class="px-4 py-1.5 rounded-full text-xs font-bold bg-brand-blue text-white shadow-sm shrink-0">全部</button>
+<button class="px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 shrink-0">附近</button>
+<button class="px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 shrink-0">本周</button>
+<button class="px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 shrink-0">活动</button>
+<button class="px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 shrink-0">文艺</button>
+<button class="px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 shrink-0">美食</button>
+<button class="px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 shrink-0">职场</button>
+<button class="px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 shrink-0">兴趣</button>
+<button class="px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 shrink-0">生活</button>
+<button class="px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 shrink-0">公益</button>
+</nav>
+<!-- END: FilterCategories -->
+<!-- BEGIN: FeaturedEventsGrid -->
+<!-- 2-Column Grid of Curated Core Events -->
+<section class="px-3 pt-4 pb-2" data-purpose="featured-events">
+<div class="grid grid-cols-2 gap-3">
+<!-- Card 1: 城市漫步·滨江日落 -->
+<article class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col">
+<div class="relative h-44 w-full overflow-hidden"><img alt="城市漫步·滨江日落" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwc8fA8bd8tUDPk0gT1QfrMa8MnFfR5EUW_SR-Mieh7D1PVG27XCd10oMKIHBg9kSXd6iHFUdztXjn32O44nv08tOrRvy6c_3a3Ng8L2QuKUCSvAVVtzxIZfj9mC6Aae9dIdWYL7sQypzvdp6q0_4u05gU8TwicccEWX7vPFFFlKLaSrPqisMM55NsWJdCaa6Ka5YIdfqmn7-bO2z6jzTFPfpXCKBEDLEUvlnSytPRG8SHXC3dEDDbgw"/><div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/20 z-10"></div><div class="absolute top-2.5 left-2.5 z-20"><div class="text-white font-black text-xl leading-none uppercase tracking-tight">CITY<br/>WALK</div><div class="text-[#c6ff00] text-sticker font-bold text-xs mt-0.5 flex items-center gap-1">TOGETHER ☺</div></div><button class="absolute top-2.5 right-2.5 z-20 w-7 h-7 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white hover:text-rose-500 transition-colors"><i class="ph-bold ph-heart text-sm"></i></button><div class="absolute bottom-2 left-2 z-20 flex items-center gap-1"><span class="bg-black/60 backdrop-blur-md text-white text-[10px] px-1.5 py-0.5 rounded font-medium flex items-center gap-0.5"><i class="ph-fill ph-compass text-[9px] text-blue-400"></i> 城市</span><span class="bg-black/60 backdrop-blur-md text-slate-200 text-[10px] px-1.5 py-0.5 rounded">户外</span></div></div>
+<div class="p-2.5 flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-bold text-sm text-slate-900 leading-snug line-clamp-1">城市漫步 · 滨江日落</h3>
+<p class="text-[11px] text-slate-500 mt-1 line-clamp-1">一起看最美的上海黄昏，在江边认识新朋友</p>
+<div class="mt-2 space-y-0.5 text-[10px] text-slate-500 font-medium">
+<div class="flex items-center gap-1 text-slate-600">
+<i class="ph ph-calendar-blank text-slate-400"></i>
+<span>3月23日 (周六) 16:00</span>
+</div>
+<div class="flex items-center gap-1 text-slate-500">
+<i class="ph ph-map-pin text-slate-400"></i>
+<span>上海 · 徐汇滨江</span>
+</div>
+</div>
+</div>
+<!-- Avatars and Tag -->
+<div class="mt-3 pt-2 border-t border-slate-50 flex items-center justify-between">
+<div class="flex items-center">
+<div class="flex -space-x-1.5 overflow-hidden">
+<div class="inline-block h-4 w-4 rounded-full ring-1 ring-white bg-amber-400 text-[8px] font-bold text-center leading-4 text-white">L</div>
+<div class="inline-block h-4 w-4 rounded-full ring-1 ring-white bg-blue-500 text-[8px] font-bold text-center leading-4 text-white">K</div>
+<div class="inline-block h-4 w-4 rounded-full ring-1 ring-white bg-emerald-500 text-[8px] font-bold text-center leading-4 text-white">M</div>
+</div>
+<span class="text-[10px] text-slate-400 ml-1 font-medium">+12</span>
+</div>
+<span class="bg-amber-50 text-amber-600 text-[10px] font-semibold px-1.5 py-0.5 rounded">文艺</span>
+</div>
+</div>
+</article>
+<!-- Card 2: 周末篮球局 -->
+<article class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col">
+<div class="relative h-44 w-full overflow-hidden"><img alt="周末篮球局" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDp8g8grDP3AdvhNIVbo17l7VcnJ8PP1gmneaoM0msmHfkuU4QJwKmKj_HBVVKmDHHCElrdR7V0u10fmlvTgrpPbR0igABT_eGtiZ1fpZbYKJ7MG4XtUoy0Br5TaaDdyidJHzC9sb3Sg5J9oHxWDomPhAiznp_-OhuA4uZ8fbQi_d6rR_UWzK7J_lvVRw0i3oPpGB65j3_ze0bmQnseavAOLdZ3Fj2tAO1gyb2DC0C9NyfvK10-zseOIg"/><div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20 z-10"></div><div class="absolute top-2.5 left-2.5 z-20"><div class="text-[#c6ff00] text-xs font-black flex items-center gap-1">👑 BASKETBALL</div><div class="text-white font-black text-lg leading-tight uppercase">NEVER<br/>ALONE !</div></div><button class="absolute top-2.5 right-2.5 z-20 w-7 h-7 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white hover:text-rose-500 transition-colors"><i class="ph-bold ph-heart text-sm"></i></button><div class="absolute bottom-2 left-2 z-20 flex items-center gap-1"><span class="bg-black/60 backdrop-blur-md text-white text-[10px] px-1.5 py-0.5 rounded font-medium flex items-center gap-0.5"><i class="ph-fill ph-barbell text-[9px] text-brand-lime"></i> 运动</span><span class="bg-black/60 backdrop-blur-md text-slate-200 text-[10px] px-1.5 py-0.5 rounded">社交</span></div></div>
+<div class="p-2.5 flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-bold text-sm text-slate-900 leading-snug line-clamp-1">周末篮球局</h3>
+<p class="text-[11px] text-slate-500 mt-1 line-clamp-1">球场不止胜负，还有新朋友</p>
+<div class="mt-2 space-y-0.5 text-[10px] text-slate-500 font-medium">
+<div class="flex items-center gap-1 text-slate-600">
+<i class="ph ph-calendar-blank text-slate-400"></i>
+<span>3月24日 (周日) 14:00</span>
+</div>
+<div class="flex items-center gap-1 text-slate-500">
+<i class="ph ph-map-pin text-slate-400"></i>
+<span>上海 · 静安体育中心</span>
+</div>
+</div>
+</div>
+<div class="mt-3 pt-2 border-t border-slate-50 flex items-center justify-between">
+<div class="flex items-center">
+<div class="flex -space-x-1.5 overflow-hidden">
+<div class="inline-block h-4 w-4 rounded-full ring-1 ring-white bg-indigo-500 text-[8px] font-bold text-center leading-4 text-white">J</div>
+<div class="inline-block h-4 w-4 rounded-full ring-1 ring-white bg-rose-500 text-[8px] font-bold text-center leading-4 text-white">Y</div>
+</div>
+<span class="text-[10px] text-slate-400 ml-1 font-medium">+8</span>
+</div>
+<span class="bg-emerald-50 text-emerald-600 text-[10px] font-semibold px-1.5 py-0.5 rounded">活动</span>
+</div>
+</div>
+</article>
+<!-- Card 3: 咖啡聊天会 -->
+<article class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col">
+<div class="relative h-44 w-full overflow-hidden"><img alt="咖啡聊天会" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDp11yN0Opd8Y8IlKPhXcsBzarwmrn8awtfJPTQjdtomMHAKB2kL05ixCEWxGz5W6UPzCjRP2En79Vr59xCsTW_tB0-WFmH2gPz_i9Mlp0e86ZiWIUYDUtnCcpuqmB_8hqw9lphD5KWwVbMlj2KOLDwQVmzVHqjB3uVB3R9mt65cN7cT_JJ6orZX4QoTUHFR_2tf9QnB8Bcrb7ZfwGLRj5Q_w81Rd9TO0queC_aBMbYFQ4VDuqcJEkKQg"/><div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent z-10"></div><div class="absolute top-2.5 left-2.5 z-20"><div class="text-[#fde047] text-xs font-black uppercase tracking-wider">GOOD COFFEE</div><div class="text-white font-extrabold text-base leading-tight">BETTER<br/>PEOPLE</div></div><button class="absolute top-2.5 right-2.5 z-20 w-7 h-7 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white"><i class="ph-bold ph-heart text-sm"></i></button><div class="absolute bottom-2 left-2 z-20 flex items-center gap-1"><span class="bg-black/60 backdrop-blur-md text-white text-[10px] px-1.5 py-0.5 rounded font-medium flex items-center gap-0.5"><i class="ph-fill ph-fork-knife text-[9px] text-amber-400"></i> 美食</span><span class="bg-black/60 backdrop-blur-md text-slate-200 text-[10px] px-1.5 py-0.5 rounded">社交</span></div></div>
+<div class="p-2.5 flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-bold text-sm text-slate-900 leading-snug line-clamp-1">咖啡聊天会</h3>
+<p class="text-[11px] text-slate-500 mt-1 line-clamp-1">一杯好咖啡，遇见有趣的灵魂</p>
+<div class="mt-2 space-y-0.5 text-[10px] text-slate-500 font-medium">
+<div class="flex items-center gap-1 text-slate-600">
+<i class="ph ph-calendar-blank text-slate-400"></i>
+<span>3月22日 (周五) 19:00</span>
+</div>
+<div class="flex items-center gap-1 text-slate-500">
+<i class="ph ph-map-pin text-slate-400"></i>
+<span>上海 · 淮家咖啡馆</span>
+</div>
+</div>
+</div>
+<div class="mt-3 pt-2 border-t border-slate-50 flex items-center justify-between">
+<div class="flex items-center">
+<div class="flex -space-x-1.5 overflow-hidden">
+<div class="inline-block h-4 w-4 rounded-full ring-1 ring-white bg-purple-500 text-[8px] font-bold text-center leading-4 text-white">A</div>
+<div class="inline-block h-4 w-4 rounded-full ring-1 ring-white bg-teal-500 text-[8px] font-bold text-center leading-4 text-white">B</div>
+</div>
+<span class="text-[10px] text-slate-400 ml-1 font-medium">+6</span>
+</div>
+<span class="bg-orange-50 text-orange-600 text-[10px] font-semibold px-1.5 py-0.5 rounded">美食</span>
+</div>
+</div>
+</article>
+<!-- Card 4: 周五桌游局 -->
+<article class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden flex flex-col">
+<div class="relative h-44 w-full overflow-hidden"><img alt="周五桌游局" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWV-xFWBngI3teUS564gOZO5zDU8rjsDGS9Ku038zTLt1JME9mysOOZbZYsI4P83QSJpbMPt0Sj6l5H2xHHyjgh7edCxeaZ79eIDIHmBBV_n9G7kKIntoZwq5MXN-S_ysylkG6LD4kO_wozFW--HcJN62GWwuYq-_VHB8kcj1xE08-6G58JM-bLxhN5eRnm-tnOiB24lqFCYPx90L46sSxNPtylGr0cJFhhUbaCH9TJfal9r_L5Argew"/><div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent z-10"></div><div class="absolute top-2.5 left-2.5 z-20"><div class="text-[#38bdf8] text-xs font-black uppercase tracking-wider">BOARD GAME</div><div class="text-[#c6ff00] font-black text-sm">GOOD TIMES ☺</div></div><button class="absolute top-2.5 right-2.5 z-20 w-7 h-7 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white"><i class="ph-bold ph-heart text-sm"></i></button><div class="absolute bottom-2 left-2 z-20 flex items-center gap-1"><span class="bg-black/60 backdrop-blur-md text-white text-[10px] px-1.5 py-0.5 rounded font-medium flex items-center gap-0.5"><i class="ph-fill ph-game-controller text-[9px] text-purple-400"></i> 桌游</span><span class="bg-black/60 backdrop-blur-md text-slate-200 text-[10px] px-1.5 py-0.5 rounded">社交</span></div></div>
+<div class="p-2.5 flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-bold text-sm text-slate-900 leading-snug line-clamp-1">周五桌游局</h3>
+<p class="text-[11px] text-slate-500 mt-1 line-clamp-1">放下手机，回到真实的快乐</p>
+<div class="mt-2 space-y-0.5 text-[10px] text-slate-500 font-medium">
+<div class="flex items-center gap-1 text-slate-600">
+<i class="ph ph-calendar-blank text-slate-400"></i>
+<span>3月22日 (周五) 19:30</span>
+</div>
+<div class="flex items-center gap-1 text-slate-500">
+<i class="ph ph-map-pin text-slate-400"></i>
+<span>上海 · The COMMUNE</span>
+</div>
+</div>
+</div>
+<div class="mt-3 pt-2 border-t border-slate-50 flex items-center justify-between">
+<div class="flex items-center">
+<div class="flex -space-x-1.5 overflow-hidden">
+<div class="inline-block h-4 w-4 rounded-full ring-1 ring-white bg-pink-500 text-[8px] font-bold text-center leading-4 text-white">M</div>
+<div class="inline-block h-4 w-4 rounded-full ring-1 ring-white bg-sky-500 text-[8px] font-bold text-center leading-4 text-white">S</div>
+</div>
+<span class="text-[10px] text-slate-400 ml-1 font-medium">+10</span>
+</div>
+<span class="bg-amber-50 text-amber-600 text-[10px] font-semibold px-1.5 py-0.5 rounded">文艺</span>
+</div>
+</div>
+</article>
+</div>
+</section>
+<!-- END: FeaturedEventsGrid -->
+<!-- BEGIN: AIRecommendationSection -->
+<!-- AI 为你推荐 section with 3 horizontal cards -->
+<section class="mt-5 pt-2 pb-1 border-t-4 border-slate-100" data-purpose="ai-recommendations">
+<div class="px-4 flex items-center justify-between mb-3">
+<div class="flex items-center gap-1.5">
+<i class="ph-fill ph-sparkle text-brand-blue text-lg animate-pulse"></i>
+<h2 class="font-extrabold text-base text-slate-900 tracking-tight">AI 为你推荐</h2>
+<span class="text-[11px] text-slate-400 ml-1">基于你的兴趣和活动偏好</span>
+</div>
+<button class="text-xs text-brand-blue font-semibold flex items-center gap-0.5 hover:opacity-80">
+          换一批 <i class="ph-bold ph-arrows-clockwise text-xs"></i>
+</button>
+</div>
+<!-- 3 Horizontal Recommendation Cards -->
+<div class="px-4 flex space-x-3 overflow-x-auto no-scrollbar pb-2">
+<!-- Rec Card 1 -->
+<div class="w-[200px] shrink-0 bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden">
+<div class="relative h-28 overflow-hidden"><img alt="冲浪体验课" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtXZVHsjntEnWAhZG6lIUUKaf1TeBN4evJ61l1x0o8jNRiFHoQVao649xF9AQP-cXRaorPS8vvt9wtUcKIGut_jmxge9PQSl62gdtmVO8ozlhf8vR-n9fPHrH9_2peNuWV65byKbnB2IdJ-DaeNPKDH6lmvBU_yMmJqXYO7LcUe62md6JEFHU7eO-V2EgpPIstarm_TnPHpY03_ak8DmajZMR7jB4DL-KySwKCYpDRB1vvNrSpDUmG7w"/><div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div><button class="absolute top-2 right-2 z-20 w-6 h-6 rounded-full bg-black/40 flex items-center justify-center text-white"><i class="ph-bold ph-heart text-xs"></i></button></div>
+<div class="p-2.5">
+<h4 class="font-bold text-xs text-slate-900 line-clamp-1">冲浪体验课 · 新手友好</h4>
+<div class="mt-1 text-[10px] text-slate-500 space-y-0.5">
+<div class="flex items-center gap-1">
+<i class="ph ph-calendar-blank"></i> 3月24日 (周日) 10:00
+              </div>
+<div class="flex items-center gap-1">
+<i class="ph ph-map-pin"></i> 奉贤海湾
+              </div>
+</div>
+<div class="mt-2.5 flex items-center justify-between pt-1 border-t border-slate-50">
+<span class="text-[10px] text-slate-400">+8 报名</span>
+<span class="text-[9px] font-semibold text-emerald-600 bg-emerald-50 px-1 py-0.2 rounded">活动</span>
+</div>
+</div>
+</div>
+<!-- Rec Card 2 -->
+<div class="w-[200px] shrink-0 bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden">
+<div class="relative h-28 overflow-hidden"><img alt="春日露营" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANtNRVw3GWDRn91vtIk1sf6GErtWLcbhpWsUZ02JA0x5IW839ZhWqEaygsgF1WZz9aOVXIDw8X-IhXdY5MF1TgYvdcCcaBSTEa65zVQjSFdfnI_SlNmoaQGgYw2FWhzIBh05ubYHgKRzBWJAVCG7jjSNXaGvFhHKFkSVlj_-6IiK4XL55T-RRo7IkqcjDzFV3P2PAMhYw-_8GWPWmPMDqkl_cLNkq3DeSuGVpO5c5W8xkCqewVta0c0Q"/><div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div><button class="absolute top-2 right-2 z-20 w-6 h-6 rounded-full bg-black/40 flex items-center justify-center text-white"><i class="ph-bold ph-heart text-xs"></i></button></div>
+<div class="p-2.5">
+<h4 class="font-bold text-xs text-slate-900 line-clamp-1">春日露营 · 星空电影院</h4>
+<div class="mt-1 text-[10px] text-slate-500 space-y-0.5">
+<div class="flex items-center gap-1">
+<i class="ph ph-calendar-blank"></i> 3月23日 (周六) 18:00
+              </div>
+<div class="flex items-center gap-1">
+<i class="ph ph-map-pin"></i> 浦东滴水湖
+              </div>
+</div>
+<div class="mt-2.5 flex items-center justify-between pt-1 border-t border-slate-50">
+<span class="text-[10px] text-slate-400">+16 报名</span>
+<span class="text-[9px] font-semibold text-emerald-600 bg-emerald-50 px-1 py-0.2 rounded">户外</span>
+</div>
+</div>
+</div>
+<!-- Rec Card 3 -->
+<div class="w-[200px] shrink-0 bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden">
+<div class="relative h-28 overflow-hidden"><img alt="看展搭子" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCdNd7wutVmdSLy2WMhr9oiZvJxEWYNxsSi1l8uVDKLmrbOtgGXxETy0d4M6g2SgC0bqGVoqfYIk65kCP_MShhuwqzLRa8sNUSlZmDgik0_3fZ3WPd-dVicH5mzgou_8JLgy_NsxT2IcjBWDKxKZugGZrXs65sXBXTpE3bCiiRr9KiodQbsR40X3iLVX_72Eho28X7myJdLZFMn9EE9TOiMffTd1_PBScyPGPY4ktEkZ0yqxzoUl051w"/><div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div><button class="absolute top-2 right-2 z-20 w-6 h-6 rounded-full bg-black/40 flex items-center justify-center text-white"><i class="ph-bold ph-heart text-xs"></i></button></div>
+<div class="p-2.5">
+<h4 class="font-bold text-xs text-slate-900 line-clamp-1">看展搭子 · 浦美新展</h4>
+<div class="mt-1 text-[10px] text-slate-500 space-y-0.5">
+<div class="flex items-center gap-1">
+<i class="ph ph-calendar-blank"></i> 3月24日 (周日) 13:30
+              </div>
+<div class="flex items-center gap-1">
+<i class="ph ph-map-pin"></i> 浦东美术馆
+              </div>
+</div>
+<div class="mt-2.5 flex items-center justify-between pt-1 border-t border-slate-50">
+<span class="text-[10px] text-slate-400">+9 报名</span>
+<span class="text-[9px] font-semibold text-amber-600 bg-amber-50 px-1 py-0.2 rounded">文艺</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: AIRecommendationSection -->
+<!-- BEGIN: NearbyEventsSection -->
+<!-- 附近正在发生: Split layout map radar + dynamic list -->
+<section class="mt-5 px-4 pt-4 pb-2 border-t-4 border-slate-100" data-purpose="nearby-events">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-baseline gap-2">
+<div class="flex items-center gap-1 text-brand-blue font-extrabold text-base">
+<i class="ph-fill ph-map-pin"></i>
+<span>附近正在发生</span>
+</div>
+<span class="text-[11px] text-slate-400">发现你身边的精彩活动</span>
+</div>
+<a class="text-xs text-brand-blue font-semibold flex items-center" href="#more">
+          查看全部 <i class="ph-bold ph-caret-right text-xs"></i>
+</a>
+</div>
+<!-- Map Radar & Near List Container -->
+<div class="grid grid-cols-12 gap-3 items-stretch">
+<!-- Left: Visual Map Radar Preview -->
+<div class="col-span-5 rounded-2xl bg-emerald-50 border border-emerald-100 p-2.5 relative flex flex-col justify-between overflow-hidden">
+<!-- Simplified Vector Map Grid lines -->
+<div class="absolute inset-0 opacity-20 bg-[linear-gradient(to_right,#059669_1px,transparent_1px),linear-gradient(to_bottom,#059669_1px,transparent_1px)] bg-[size:14px_14px]"></div>
+<!-- Central Pulse Point (User) -->
+<div class="relative z-10 my-auto flex flex-col items-center justify-center py-5">
+<div class="relative flex items-center justify-center">
+<span class="animate-ping absolute inline-flex h-8 w-8 rounded-full bg-brand-blue opacity-40"></span>
+<div class="w-5 h-5 rounded-full bg-brand-blue border-2 border-white shadow-md flex items-center justify-center text-white text-[8px]">
+<i class="ph-fill ph-navigation-arrow"></i>
+</div>
+</div>
+<!-- Pin badges on map -->
+<div class="absolute -top-1 left-1 bg-white shadow-sm border border-slate-200 rounded-full px-1.5 py-0.5 text-[9px] font-bold text-slate-700 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> 飞盘
+            </div>
+<div class="absolute bottom-1 right-1 bg-white shadow-sm border border-slate-200 rounded-full px-1.5 py-0.5 text-[9px] font-bold text-slate-700 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> 音乐
+            </div>
+</div>
+<!-- Bottom Metric Indicator -->
+<div class="relative z-10 bg-white/90 backdrop-blur-md rounded-xl p-1.5 text-center shadow-xs">
+<p class="text-[10px] font-semibold text-slate-800">
+<span class="text-brand-blue font-extrabold">3km</span> 内有 <span class="text-brand-blue font-extrabold">12</span> 个活动
+            </p>
+</div>
+</div>
+<!-- Right: 3 Quick Event Items -->
+<div class="col-span-7 flex flex-col justify-between space-y-2"><div class="flex items-center gap-2 p-1.5 rounded-xl hover:bg-slate-50 transition-colors"><div class="w-12 h-12 rounded-lg shrink-0 overflow-hidden relative shadow-xs"><img alt="晚间飞盘局" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTHZkOKvd7z7nPhgQdwQJU6NKWayLtCdjDimcMDIEV7A3N6C4zZAMBVpRhbh0FLPOyFowZeYDuvNeQ4aaaOIj4L-yCiIiNuxCnwXyuZeky8EqnbiBNnayu9Dj7at3489StFFUQtGfI5HRpY4c3Ym9yAW9BJONoDIlRQHIJr3MZ-sfrWORsKAg-fcwoNGeqaeF1IDV5PqgGAFzIKjBx4Ifr0p2Y6ZaWTQWt8i4qg4RvF3ZDaFST--p5_A"/><div class="absolute inset-0 bg-black/20"></div></div><div class="flex-1 min-w-0"><div class="flex items-center justify-between"><h4 class="font-bold text-xs text-slate-900 truncate">晚间飞盘局</h4><span class="text-[9px] font-semibold text-emerald-600 bg-emerald-50 px-1 py-0.2 rounded">运动</span></div><p class="text-[10px] text-slate-400 mt-0.5">今天 19:00 · 1.2km</p><p class="text-[10px] text-slate-500 truncate"><i class="ph ph-map-pin text-[9px]"></i> 世纪公园</p></div></div><div class="flex items-center gap-2 p-1.5 rounded-xl hover:bg-slate-50 transition-colors"><div class="w-12 h-12 rounded-lg shrink-0 overflow-hidden relative shadow-xs"><img alt="小酒馆音乐夜" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWV-xFWBngI3teUS564gOZO5zDU8rjsDGS9Ku038zTLt1JME9mysOOZbZYsI4P83QSJpbMPt0Sj6l5H2xHHyjgh7edCxeaZ79eIDIHmBBV_n9G7kKIntoZwq5MXN-S_ysylkG6LD4kO_wozFW--HcJN62GWwuYq-_VHB8kcj1xE08-6G58JM-bLxhN5eRnm-tnOiB24lqFCYPx90L46sSxNPtylGr0cJFhhUbaCH9TJfal9r_L5Argew"/><div class="absolute inset-0 bg-black/20"></div></div><div class="flex-1 min-w-0"><div class="flex items-center justify-between"><h4 class="font-bold text-xs text-slate-900 truncate">小酒馆音乐夜</h4><span class="text-[9px] font-semibold text-purple-600 bg-purple-50 px-1 py-0.2 rounded">音乐</span></div><p class="text-[10px] text-slate-400 mt-0.5">今天 20:00 · 2.1km</p><p class="text-[10px] text-slate-500 truncate"><i class="ph ph-map-pin text-[9px]"></i> 大学路</p></div></div><div class="flex items-center gap-2 p-1.5 rounded-xl hover:bg-slate-50 transition-colors"><div class="w-12 h-12 rounded-lg shrink-0 overflow-hidden relative shadow-xs"><img alt="City walk · 武康路" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwc8fA8bd8tUDPk0gT1QfrMa8MnFfR5EUW_SR-Mieh7D1PVG27XCd10oMKIHBg9kSXd6iHFUdztXjn32O44nv08tOrRvy6c_3a3Ng8L2QuKUCSvAVVtzxIZfj9mC6Aae9dIdWYL7sQypzvdp6q0_4u05gU8TwicccEWX7vPFFFlKLaSrPqisMM55NsWJdCaa6Ka5YIdfqmn7-bO2z6jzTFPfpXCKBEDLEUvlnSytPRG8SHXC3dEDDbgw"/><div class="absolute inset-0 bg-black/20"></div></div><div class="flex-1 min-w-0"><div class="flex items-center justify-between"><h4 class="font-bold text-xs text-slate-900 truncate">City walk · 武康路</h4><span class="text-[9px] font-semibold text-amber-600 bg-amber-50 px-1 py-0.2 rounded">文艺</span></div><p class="text-[10px] text-slate-400 mt-0.5">明天 15:00 · 2.8km</p><p class="text-[10px] text-slate-500 truncate"><i class="ph ph-map-pin text-[9px]"></i> 武康路</p></div></div></div>
+</div>
+</section>
+<!-- END: NearbyEventsSection -->
+<!-- BEGIN: CampaignBanners -->
+<!-- Editorial Campaign Banners (Horizontal Scroll / Grid) -->
+<section class="mt-4 px-4 overflow-x-auto no-scrollbar flex space-x-2.5" data-purpose="campaign-topics">
+<!-- Banner 1: 女生友好 -->
+<div class="w-[145px] shrink-0 h-20 rounded-2xl bg-gradient-to-r from-pink-400 to-rose-400 text-white p-2.5 relative overflow-hidden flex flex-col justify-between">
+<div class="relative z-10">
+<span class="text-[9px] uppercase font-black tracking-wider bg-white/30 px-1 py-0.2 rounded">GIRLS SUPPORT</span>
+<h4 class="font-black text-sm tracking-tight leading-none mt-1">女生友好</h4>
+</div>
+<i class="ph-bold ph-sparkle text-3xl absolute -bottom-1 -right-1 text-white/30"></i>
+</div>
+<!-- Banner 2: 新手友好 -->
+<div class="w-[145px] shrink-0 h-20 rounded-2xl bg-gradient-to-r from-cyan-400 to-emerald-400 text-slate-950 p-2.5 relative overflow-hidden flex flex-col justify-between">
+<div class="relative z-10">
+<span class="text-[9px] uppercase font-black tracking-wider bg-black/10 px-1 py-0.2 rounded">NEW EXPLORER</span>
+<h4 class="font-black text-sm tracking-tight leading-none mt-1">新手友好</h4>
+</div>
+<i class="ph-bold ph-compass text-3xl absolute -bottom-1 -right-1 text-black/15"></i>
+</div>
+<!-- Banner 3: 今晚有空 -->
+<div class="w-[145px] shrink-0 h-20 rounded-2xl bg-gradient-to-r from-amber-300 to-[#c6ff00] text-slate-950 p-2.5 relative overflow-hidden flex flex-col justify-between">
+<div class="relative z-10">
+<span class="text-[9px] uppercase font-black tracking-wider bg-black/10 px-1 py-0.2 rounded">TONIGHT ?</span>
+<h4 class="font-black text-sm tracking-tight leading-none mt-1">今晚有空 ☾</h4>
+</div>
+<i class="ph-bold ph-moon-stars text-3xl absolute -bottom-1 -right-1 text-black/15"></i>
+</div>
+</section>
+<!-- END: CampaignBanners -->
+<!-- BEGIN: OrganizerRecommendations -->
+<!-- 活动主理人推荐 -->
+<section class="mt-5 px-4 pt-3 pb-1 border-t-4 border-slate-100" data-purpose="organizer-list">
+<div class="flex items-center justify-between mb-3">
+<div>
+<div class="flex items-center gap-1 font-extrabold text-base text-slate-900">
+<span class="text-amber-500">👑</span>
+<span>活动主理人推荐</span>
+</div>
+<p class="text-[11px] text-slate-400">这些有趣的人，正在组织好玩的活动</p>
+</div>
+<a class="text-xs text-brand-blue font-semibold flex items-center" href="#organizers">
+          查看全部 <i class="ph-bold ph-caret-right text-xs"></i>
+</a>
+</div>
+<!-- Horizontal Organizers Avatar Row -->
+<div class="flex space-x-4 overflow-x-auto no-scrollbar py-1">
+<!-- Organizer 1 -->
+<div class="flex flex-col items-center shrink-0 w-14 text-center">
+<div class="relative w-12 h-12 rounded-full ring-2 ring-brand-lime p-0.5">
+<div class="w-full h-full rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-sm">Lu</div>
+<span class="absolute bottom-0 right-0 w-4 h-4 bg-brand-blue text-white rounded-full flex items-center justify-center text-[9px] border-2 border-white">✓</span>
+</div>
+<span class="text-xs font-bold text-slate-800 mt-1 truncate w-full">Luna</span>
+<span class="text-[9px] text-slate-400 scale-90 -mt-0.5">城市探索</span>
+</div>
+<!-- Organizer 2 -->
+<div class="flex flex-col items-center shrink-0 w-14 text-center">
+<div class="relative w-12 h-12 rounded-full ring-2 ring-brand-blue p-0.5">
+<div class="w-full h-full rounded-full bg-amber-600 text-white flex items-center justify-center font-bold text-sm">Ken</div>
+<span class="absolute bottom-0 right-0 w-4 h-4 bg-brand-blue text-white rounded-full flex items-center justify-center text-[9px] border-2 border-white">✓</span>
+</div>
+<span class="text-xs font-bold text-slate-800 mt-1 truncate w-full">阿Ken</span>
+<span class="text-[9px] text-slate-400 scale-90 -mt-0.5">咖啡生活</span>
+</div>
+<!-- Organizer 3 -->
+<div class="flex flex-col items-center shrink-0 w-14 text-center">
+<div class="relative w-12 h-12 rounded-full ring-1 ring-slate-200 p-0.5">
+<div class="w-full h-full rounded-full bg-rose-500 text-white flex items-center justify-center font-bold text-sm">Mo</div>
+<span class="absolute bottom-0 right-0 w-4 h-4 bg-brand-blue text-white rounded-full flex items-center justify-center text-[9px] border-2 border-white">✓</span>
+</div>
+<span class="text-xs font-bold text-slate-800 mt-1 truncate w-full">Momo</span>
+<span class="text-[9px] text-slate-400 scale-90 -mt-0.5">桌游社交</span>
+</div>
+<!-- Organizer 4 -->
+<div class="flex flex-col items-center shrink-0 w-14 text-center">
+<div class="relative w-12 h-12 rounded-full ring-1 ring-slate-200 p-0.5">
+<div class="w-full h-full rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-sm">熊</div>
+<span class="absolute bottom-0 right-0 w-4 h-4 bg-brand-blue text-white rounded-full flex items-center justify-center text-[9px] border-2 border-white">✓</span>
+</div>
+<span class="text-xs font-bold text-slate-800 mt-1 truncate w-full">大熊</span>
+<span class="text-[9px] text-slate-400 scale-90 -mt-0.5">户外运动</span>
+</div>
+<!-- Organizer 5 -->
+<div class="flex flex-col items-center shrink-0 w-14 text-center">
+<div class="relative w-12 h-12 rounded-full ring-1 ring-slate-200 p-0.5">
+<div class="w-full h-full rounded-full bg-purple-600 text-white flex items-center justify-center font-bold text-sm">So</div>
+<span class="absolute bottom-0 right-0 w-4 h-4 bg-brand-blue text-white rounded-full flex items-center justify-center text-[9px] border-2 border-white">✓</span>
+</div>
+<span class="text-xs font-bold text-slate-800 mt-1 truncate w-full">Sophie</span>
+<span class="text-[9px] text-slate-400 scale-90 -mt-0.5">艺术策展</span>
+</div>
+<!-- Organizer 6 -->
+<div class="flex flex-col items-center shrink-0 w-14 text-center">
+<div class="relative w-12 h-12 rounded-full ring-1 ring-slate-200 p-0.5">
+<div class="w-full h-full rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm">咏</div>
+<span class="absolute bottom-0 right-0 w-4 h-4 bg-brand-blue text-white rounded-full flex items-center justify-center text-[9px] border-2 border-white">✓</span>
+</div>
+<span class="text-xs font-bold text-slate-800 mt-1 truncate w-full">咏森</span>
+<span class="text-[9px] text-slate-400 scale-90 -mt-0.5">美食探店</span>
+</div>
+<!-- Organizer 7 -->
+<div class="flex flex-col items-center shrink-0 w-14 text-center">
+<div class="relative w-12 h-12 rounded-full ring-1 ring-slate-200 p-0.5">
+<div class="w-full h-full rounded-full bg-teal-600 text-white flex items-center justify-center font-bold text-sm">To</div>
+<span class="absolute bottom-0 right-0 w-4 h-4 bg-brand-blue text-white rounded-full flex items-center justify-center text-[9px] border-2 border-white">✓</span>
+</div>
+<span class="text-xs font-bold text-slate-800 mt-1 truncate w-full">Toby</span>
+<span class="text-[9px] text-slate-400 scale-90 -mt-0.5">飞盘社群</span>
+</div>
+<!-- Organizer 8 -->
+<div class="flex flex-col items-center shrink-0 w-14 text-center">
+<div class="relative w-12 h-12 rounded-full ring-1 ring-slate-200 p-0.5">
+<div class="w-full h-full rounded-full bg-cyan-600 text-white flex items-center justify-center font-bold text-sm">Ci</div>
+<span class="absolute bottom-0 right-0 w-4 h-4 bg-brand-blue text-white rounded-full flex items-center justify-center text-[9px] border-2 border-white">✓</span>
+</div>
+<span class="text-xs font-bold text-slate-800 mt-1 truncate w-full">Cici</span>
+<span class="text-[9px] text-slate-400 scale-90 -mt-0.5">周末玩乐</span>
+</div>
+</div>
+</section>
+<!-- END: OrganizerRecommendations -->
+<!-- BEGIN: FriendsAttendingSection -->
+<!-- 朋友也参加了 -->
+<section class="mt-5 px-4 pt-3 pb-1 border-t-4 border-slate-100" data-purpose="friends-attending">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-baseline gap-2">
+<div class="flex items-center gap-1 font-extrabold text-base text-slate-900">
+<i class="ph-fill ph-users-three text-brand-blue"></i>
+<span>朋友也参加了</span>
+</div>
+<span class="text-[11px] text-slate-400">看看你的好友都在玩什么</span>
+</div>
+<a class="text-xs text-brand-blue font-semibold flex items-center" href="#friends">
+          查看全部 <i class="ph-bold ph-caret-right text-xs"></i>
+</a>
+</div>
+<!-- Friends 3 Cards Carousel / List -->
+<div class="flex space-x-3 overflow-x-auto no-scrollbar pb-1">
+<!-- Card 1 -->
+<div class="w-[200px] shrink-0 bg-slate-50 border border-slate-100 rounded-xl p-2.5">
+<div class="h-20 rounded-lg bg-emerald-900/80 mb-2 relative overflow-hidden flex items-center justify-center text-white">
+<span class="font-extrabold text-xs">日落骑行</span>
+</div>
+<h4 class="font-bold text-xs text-slate-900 flex items-center justify-between">
+            日落骑行 · 临江线 <i class="ph-bold ph-caret-right text-slate-400 text-[10px]"></i>
+</h4>
+<p class="text-[10px] text-slate-500 mt-0.5">3月23日 (周六) 17:00</p>
+<div class="mt-2 flex items-center text-[10px] text-slate-600">
+<div class="flex -space-x-1 mr-1.5">
+<span class="w-3.5 h-3.5 rounded-full bg-blue-500 text-white text-[7px] flex items-center justify-center">A</span>
+<span class="w-3.5 h-3.5 rounded-full bg-rose-500 text-white text-[7px] flex items-center justify-center">B</span>
+</div>
+<span>3 位好友参加</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="w-[200px] shrink-0 bg-slate-50 border border-slate-100 rounded-xl p-2.5">
+<div class="h-20 rounded-lg bg-indigo-950 mb-2 relative overflow-hidden flex items-center justify-center text-white">
+<span class="font-extrabold text-xs">LIVE MUSIC</span>
+</div>
+<h4 class="font-bold text-xs text-slate-900 flex items-center justify-between">
+            livehouse 音乐现场 <i class="ph-bold ph-caret-right text-slate-400 text-[10px]"></i>
+</h4>
+<p class="text-[10px] text-slate-500 mt-0.5">3月22日 (周五) 20:00</p>
+<div class="mt-2 flex items-center text-[10px] text-slate-600">
+<div class="flex -space-x-1 mr-1.5">
+<span class="w-3.5 h-3.5 rounded-full bg-amber-500 text-white text-[7px] flex items-center justify-center">C</span>
+<span class="w-3.5 h-3.5 rounded-full bg-purple-500 text-white text-[7px] flex items-center justify-center">D</span>
+</div>
+<span>2 位好友参加</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="w-[200px] shrink-0 bg-slate-50 border border-slate-100 rounded-xl p-2.5">
+<div class="h-20 rounded-lg bg-teal-900 mb-2 relative overflow-hidden flex items-center justify-center text-white">
+<span class="font-extrabold text-xs">周末徒步</span>
+</div>
+<h4 class="font-bold text-xs text-slate-900 flex items-center justify-between">
+            周末徒步 · 佘山 <i class="ph-bold ph-caret-right text-slate-400 text-[10px]"></i>
+</h4>
+<p class="text-[10px] text-slate-500 mt-0.5">3月24日 (周日) 08:30</p>
+<div class="mt-2 flex items-center text-[10px] text-slate-600">
+<div class="flex -space-x-1 mr-1.5">
+<span class="w-3.5 h-3.5 rounded-full bg-emerald-500 text-white text-[7px] flex items-center justify-center">E</span>
+<span class="w-3.5 h-3.5 rounded-full bg-cyan-500 text-white text-[7px] flex items-center justify-center">F</span>
+</div>
+<span>4 位好友参加</span>
+</div>
+</div>
+</div>
+</section>
+<!-- END: FriendsAttendingSection -->
+<!-- BEGIN: RealMomentsCollage -->
+<!-- 真实的人，真实的瞬间 (Photo Grid with Handwritten Stickers) -->
+<section class="mt-5 px-4 pt-3 pb-1 border-t-4 border-slate-100" data-purpose="social-moments">
+<div class="flex items-center justify-between mb-3">
+<div>
+<div class="flex items-center gap-1 font-extrabold text-base text-slate-900">
+<i class="ph-bold ph-camera text-brand-blue"></i>
+<span>真实的人，真实的瞬间</span>
+</div>
+<p class="text-[11px] text-slate-400">来自耍起 CAPER 社区的活动现场</p>
+</div>
+<a class="text-xs text-brand-blue font-semibold flex items-center" href="#gallery">
+          查看全部 <i class="ph-bold ph-caret-right text-xs"></i>
+</a>
+</div>
+<!-- Photo Collage Grid with Stickers -->
+<div class="grid grid-cols-3 gap-2"><div class="relative h-28 rounded-xl overflow-hidden flex items-center justify-center p-2"><img alt="Good People" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTHZkOKvd7z7nPhgQdwQJU6NKWayLtCdjDimcMDIEV7A3N6C4zZAMBVpRhbh0FLPOyFowZeYDuvNeQ4aaaOIj4L-yCiIiNuxCnwXyuZeky8EqnbiBNnayu9Dj7at3489StFFUQtGfI5HRpY4c3Ym9yAW9BJONoDIlRQHIJr3MZ-sfrWORsKAg-fcwoNGeqaeF1IDV5PqgGAFzIKjBx4Ifr0p2Y6ZaWTQWt8i4qg4RvF3ZDaFST--p5_A"/><div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent"></div><div class="relative z-10 text-white text-sticker font-bold text-center leading-tight"><span class="text-sm">Good People</span><br/><span class="text-[#c6ff00] text-xs">Brighter Days ☺</span></div></div><div class="relative h-28 rounded-xl overflow-hidden flex items-end justify-center p-2"><img alt="日落合影" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwc8fA8bd8tUDPk0gT1QfrMa8MnFfR5EUW_SR-Mieh7D1PVG27XCd10oMKIHBg9kSXd6iHFUdztXjn32O44nv08tOrRvy6c_3a3Ng8L2QuKUCSvAVVtzxIZfj9mC6Aae9dIdWYL7sQypzvdp6q0_4u05gU8TwicccEWX7vPFFFlKLaSrPqisMM55NsWJdCaa6Ka5YIdfqmn7-bO2z6jzTFPfpXCKBEDLEUvlnSytPRG8SHXC3dEDDbgw"/><div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div><span class="relative z-10 text-white text-[10px] font-bold bg-black/40 px-1.5 py-0.5 rounded backdrop-blur-sm">日落合影</span></div><div class="relative h-28 rounded-xl overflow-hidden flex items-center justify-center p-2"><img alt="Life is Better" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDp11yN0Opd8Y8IlKPhXcsBzarwmrn8awtfJPTQjdtomMHAKB2kL05ixCEWxGz5W6UPzCjRP2En79Vr59xCsTW_tB0-WFmH2gPz_i9Mlp0e86ZiWIUYDUtnCcpuqmB_8hqw9lphD5KWwVbMlj2KOLDwQVmzVHqjB3uVB3R9mt65cN7cT_JJ6orZX4QoTUHFR_2tf9QnB8Bcrb7ZfwGLRj5Q_w81Rd9TO0queC_aBMbYFQ4VDuqcJEkKQg"/><div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div><div class="relative z-10 text-center"><span class="text-[11px] text-pink-300 font-black tracking-tight leading-tight block uppercase">LIFE IS BETTER</span><span class="text-white text-xs font-bold font-handwriting">together ♡</span></div></div><div class="relative h-28 rounded-xl overflow-hidden flex items-end justify-center p-2"><img alt="露营夜话" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANtNRVw3GWDRn91vtIk1sf6GErtWLcbhpWsUZ02JA0x5IW839ZhWqEaygsgF1WZz9aOVXIDw8X-IhXdY5MF1TgYvdcCcaBSTEa65zVQjSFdfnI_SlNmoaQGgYw2FWhzIBh05ubYHgKRzBWJAVCG7jjSNXaGvFhHKFkSVlj_-6IiK4XL55T-RRo7IkqcjDzFV3P2PAMhYw-_8GWPWmPMDqkl_cLNkq3DeSuGVpO5c5W8xkCqewVta0c0Q"/><div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div><span class="relative z-10 text-white text-[10px] font-bold bg-black/40 px-1.5 py-0.5 rounded backdrop-blur-sm">星空露营</span></div><div class="relative h-28 rounded-xl overflow-hidden flex items-end justify-center p-2"><img alt="周五桌游" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWV-xFWBngI3teUS564gOZO5zDU8rjsDGS9Ku038zTLt1JME9mysOOZbZYsI4P83QSJpbMPt0Sj6l5H2xHHyjgh7edCxeaZ79eIDIHmBBV_n9G7kKIntoZwq5MXN-S_ysylkG6LD4kO_wozFW--HcJN62GWwuYq-_VHB8kcj1xE08-6G58JM-bLxhN5eRnm-tnOiB24lqFCYPx90L46sSxNPtylGr0cJFhhUbaCH9TJfal9r_L5Argew"/><div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div><span class="relative z-10 text-white text-[10px] font-bold bg-black/40 px-1.5 py-0.5 rounded backdrop-blur-sm">周五桌游</span></div><div class="relative h-28 rounded-xl overflow-hidden flex items-center justify-center p-2"><img alt="Same Vibes" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCdNd7wutVmdSLy2WMhr9oiZvJxEWYNxsSi1l8uVDKLmrbOtgGXxETy0d4M6g2SgC0bqGVoqfYIk65kCP_MShhuwqzLRa8sNUSlZmDgik0_3fZ3WPd-dVicH5mzgou_8JLgy_NsxT2IcjBWDKxKZugGZrXs65sXBXTpE3bCiiRr9KiodQbsR40X3iLVX_72Eho28X7myJdLZFMn9EE9TOiMffTd1_PBScyPGPY4ktEkZ0yqxzoUl051w"/><div class="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent"></div><div class="relative z-10 text-white text-sticker font-bold text-center leading-tight"><span class="text-xs text-[#c6ff00]">Same Vibes</span><br/><span class="text-xs">More Friends ⚡</span></div></div></div>
+</section>
+<!-- END: RealMomentsCollage -->
+<!-- BEGIN: UserTestimonials -->
+<!-- 大家都在说 (Social Proof Testimonials) -->
+<section class="mt-5 px-4 pt-3 pb-1 border-t-4 border-slate-100" data-purpose="user-reviews">
+<div class="flex items-baseline gap-2 mb-3">
+<div class="flex items-center gap-1 font-extrabold text-base text-slate-900">
+<i class="ph-fill ph-chat-circle-dots text-brand-blue"></i>
+<span>大家都在说</span>
+</div>
+<span class="text-[11px] text-slate-400">真实参与体验，来自耍起的小伙伴们</span>
+</div>
+<!-- Testimonial Cards Carousel -->
+<div class="flex space-x-3 overflow-x-auto no-scrollbar pb-1">
+<!-- Review 1 -->
+<div class="w-[240px] shrink-0 bg-slate-50 border border-slate-100 rounded-2xl p-3 flex flex-col justify-between">
+<div class="relative">
+<span class="text-3xl text-brand-blue/30 font-serif leading-none absolute -top-1 -left-1">“</span>
+<p class="text-xs text-slate-700 leading-relaxed pt-3 pl-3 font-medium">
+              在这里认识了很多有趣的朋友，周末再也不无聊了！
+            </p>
+</div>
+<div class="flex items-center gap-2 mt-3 pt-2 border-t border-slate-200/60">
+<div class="w-6 h-6 rounded-full bg-indigo-500 text-white text-[10px] font-bold flex items-center justify-center">息</div>
+<span class="text-xs font-bold text-slate-800">@小息爱生活</span>
+</div>
+</div>
+<!-- Review 2 -->
+<div class="w-[240px] shrink-0 bg-slate-50 border border-slate-100 rounded-2xl p-3 flex flex-col justify-between">
+<div class="relative">
+<span class="text-3xl text-brand-lime font-serif leading-none absolute -top-1 -left-1">“</span>
+<p class="text-xs text-slate-700 leading-relaxed pt-3 pl-3 font-medium">
+              第一次参加线下活动就遇到了同频的朋友，体验超棒！
+            </p>
+</div>
+<div class="flex items-center gap-2 mt-3 pt-2 border-t border-slate-200/60">
+<div class="w-6 h-6 rounded-full bg-amber-500 text-white text-[10px] font-bold flex items-center justify-center">N</div>
+<span class="text-xs font-bold text-slate-800">@Neo</span>
+</div>
+</div>
+<!-- Review 3 -->
+<div class="w-[240px] shrink-0 bg-slate-50 border border-slate-100 rounded-2xl p-3 flex flex-col justify-between">
+<div class="relative">
+<span class="text-3xl text-rose-300 font-serif leading-none absolute -top-1 -left-1">“</span>
+<p class="text-xs text-slate-700 leading-relaxed pt-3 pl-3 font-medium">
+              活动组织很用心，氛围轻松又有趣，已经成为我每周的期待！
+            </p>
+</div>
+<div class="flex items-center gap-2 mt-3 pt-2 border-t border-slate-200/60">
+<div class="w-6 h-6 rounded-full bg-pink-500 text-white text-[10px] font-bold flex items-center justify-center">S</div>
+<span class="text-xs font-bold text-slate-800">@Summer</span>
+</div>
+</div>
+</div>
+</section>
+<!-- END: UserTestimonials -->
+<!-- BEGIN: WeeklyFeaturedFeed -->
+<!-- 本周精选: Compact editorial mini cards -->
+<section class="mt-5 px-4 pt-3 pb-1 border-t-4 border-slate-100" data-purpose="weekly-curation">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-baseline gap-2">
+<div class="flex items-center gap-1 font-extrabold text-base text-slate-900">
+<span class="text-rose-500">🔥</span>
+<span>本周精选</span>
+</div>
+<span class="text-[11px] text-slate-400">编辑精选 · 不容错过</span>
+</div>
+<a class="text-xs text-brand-blue font-semibold flex items-center" href="#weekly">
+          查看全部 <i class="ph-bold ph-caret-right text-xs"></i>
+</a>
+</div>
+<div class="grid grid-cols-3 gap-2">
+<!-- Item 1 -->
+<div class="bg-white border border-slate-100 rounded-xl p-2 shadow-xs flex flex-col justify-between">
+<div class="h-16 rounded-lg bg-lime-900/60 mb-1.5 flex items-center justify-center text-white text-[10px] font-bold">野餐</div>
+<h5 class="font-bold text-[11px] text-slate-900 truncate">春日野餐派对</h5>
+<div class="flex items-center justify-between mt-1 text-[9px] text-slate-400">
+<span>3月23日</span>
+<span class="text-emerald-600 bg-emerald-50 px-1 rounded">户外</span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="bg-white border border-slate-100 rounded-xl p-2 shadow-xs flex flex-col justify-between">
+<div class="h-16 rounded-lg bg-purple-900/60 mb-1.5 flex items-center justify-center text-white text-[10px] font-bold">胶片</div>
+<h5 class="font-bold text-[11px] text-slate-900 truncate">胶片摄影扫街</h5>
+<div class="flex items-center justify-between mt-1 text-[9px] text-slate-400">
+<span>3月24日</span>
+<span class="text-purple-600 bg-purple-50 px-1 rounded">艺术</span>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="bg-white border border-slate-100 rounded-xl p-2 shadow-xs flex flex-col justify-between">
+<div class="h-16 rounded-lg bg-amber-900/60 mb-1.5 flex items-center justify-center text-white text-[10px] font-bold">烘焙</div>
+<h5 class="font-bold text-[11px] text-slate-900 truncate">烘焙体验课</h5>
+<div class="flex items-center justify-between mt-1 text-[9px] text-slate-400">
+<span>3月23日</span>
+<span class="text-amber-600 bg-amber-50 px-1 rounded">美食</span>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="bg-white border border-slate-100 rounded-xl p-2 shadow-xs flex flex-col justify-between">
+<div class="h-16 rounded-lg bg-blue-900/60 mb-1.5 flex items-center justify-center text-white text-[10px] font-bold">走读</div>
+<h5 class="font-bold text-[11px] text-slate-900 truncate">城市走读</h5>
+<div class="flex items-center justify-between mt-1 text-[9px] text-slate-400">
+<span>3月24日</span>
+<span class="text-blue-600 bg-blue-50 px-1 rounded">文化</span>
+</div>
+</div>
+<!-- Item 5 -->
+<div class="bg-white border border-slate-100 rounded-xl p-2 shadow-xs flex flex-col justify-between">
+<div class="h-16 rounded-lg bg-teal-900/60 mb-1.5 flex items-center justify-center text-white text-[10px] font-bold">徒步</div>
+<h5 class="font-bold text-[11px] text-slate-900 truncate">近郊徒步</h5>
+<div class="flex items-center justify-between mt-1 text-[9px] text-slate-400">
+<span>3月24日</span>
+<span class="text-emerald-600 bg-emerald-50 px-1 rounded">户外</span>
+</div>
+</div>
+<!-- Item 6 -->
+<div class="bg-white border border-slate-100 rounded-xl p-2 shadow-xs flex flex-col justify-between">
+<div class="h-16 rounded-lg bg-stone-900/60 mb-1.5 flex items-center justify-center text-white text-[10px] font-bold">咖啡</div>
+<h5 class="font-bold text-[11px] text-slate-900 truncate">小众咖啡馆</h5>
+<div class="flex items-center justify-between mt-1 text-[9px] text-slate-400">
+<span>3月23日</span>
+<span class="text-orange-600 bg-orange-50 px-1 rounded">美食</span>
+</div>
+</div>
+</div>
+</section>
+<!-- END: WeeklyFeaturedFeed -->
+<!-- BEGIN: CityWalkRoutes -->
+<!-- 城市路线 · City Walk -->
+<section class="mt-5 px-4 pt-3 pb-1 border-t-4 border-slate-100" data-purpose="city-walk-routes">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-baseline gap-2">
+<div class="flex items-center gap-1 font-extrabold text-base text-slate-900">
+<i class="ph-fill ph-compass text-purple-600"></i>
+<span>城市路线 · City Walk</span>
+</div>
+<span class="text-[11px] text-slate-400">用脚步丈量这座城市</span>
+</div>
+<a class="text-xs text-brand-blue font-semibold flex items-center" href="#routes">
+          查看全部 <i class="ph-bold ph-caret-right text-xs"></i>
+</a>
+</div>
+<div class="flex space-x-3 overflow-x-auto no-scrollbar pb-1"><div class="w-[220px] shrink-0 h-28 rounded-2xl p-3 text-white flex flex-col justify-between relative overflow-hidden"><img alt="外滩历史漫游线" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwc8fA8bd8tUDPk0gT1QfrMa8MnFfR5EUW_SR-Mieh7D1PVG27XCd10oMKIHBg9kSXd6iHFUdztXjn32O44nv08tOrRvy6c_3a3Ng8L2QuKUCSvAVVtzxIZfj9mC6Aae9dIdWYL7sQypzvdp6q0_4u05gU8TwicccEWX7vPFFFlKLaSrPqisMM55NsWJdCaa6Ka5YIdfqmn7-bO2z6jzTFPfpXCKBEDLEUvlnSytPRG8SHXC3dEDDbgw"/><div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/30"></div><div class="relative z-10"><span class="text-sticker text-amber-300 text-sm font-bold block">Classic Shanghai</span><h4 class="font-black text-sm">外滩历史漫游线</h4></div><div class="relative z-10 flex items-center gap-2 text-[10px] text-slate-200"><span><i class="ph ph-map-pin"></i> 8个地点</span><span>·</span><span>3.5km</span></div></div><div class="w-[220px] shrink-0 h-28 rounded-2xl p-3 text-white flex flex-col justify-between relative overflow-hidden"><img alt="法租界梧桐树下" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCdNd7wutVmdSLy2WMhr9oiZvJxEWYNxsSi1l8uVDKLmrbOtgGXxETy0d4M6g2SgC0bqGVoqfYIk65kCP_MShhuwqzLRa8sNUSlZmDgik0_3fZ3WPd-dVicH5mzgou_8JLgy_NsxT2IcjBWDKxKZugGZrXs65sXBXTpE3bCiiRr9KiodQbsR40X3iLVX_72Eho28X7myJdLZFMn9EE9TOiMffTd1_PBScyPGPY4ktEkZ0yqxzoUl051w"/><div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/30"></div><div class="relative z-10"><span class="text-sticker text-[#c6ff00] text-sm font-bold block">Wukang Road</span><h4 class="font-black text-sm">法租界梧桐树下</h4></div><div class="relative z-10 flex items-center gap-2 text-[10px] text-slate-200"><span><i class="ph ph-map-pin"></i> 6个地点</span><span>·</span><span>2.1km</span></div></div><div class="w-[220px] shrink-0 h-28 rounded-2xl p-3 text-white flex flex-col justify-between relative overflow-hidden"><img alt="滨江海岸线" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtXZVHsjntEnWAhZG6lIUUKaf1TeBN4evJ61l1x0o8jNRiFHoQVao649xF9AQP-cXRaorPS8vvt9wtUcKIGut_jmxge9PQSl62gdtmVO8ozlhf8vR-n9fPHrH9_2peNuWV65byKbnB2IdJ-DaeNPKDH6lmvBU_yMmJqXYO7LcUe62md6JEFHU7eO-V2EgpPIstarm_TnPHpY03_ak8DmajZMR7jB4DL-KySwKCYpDRB1vvNrSpDUmG7w"/><div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/30"></div><div class="relative z-10"><span class="text-sticker text-cyan-300 text-sm font-bold block">Coastal Sunset</span><h4 class="font-black text-sm">海湾日落冲浪线</h4></div><div class="relative z-10 flex items-center gap-2 text-[10px] text-slate-200"><span><i class="ph ph-map-pin"></i> 5个地点</span><span>·</span><span>4.2km</span></div></div></div>
+</section>
+<!-- END: CityWalkRoutes -->
+<!-- BEGIN: VenueRecommendations -->
+<!-- 你可能喜欢的场馆 -->
+<section class="mt-5 px-4 pt-3 pb-2 border-t-4 border-slate-100" data-purpose="popular-venues">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-baseline gap-2">
+<div class="flex items-center gap-1 font-extrabold text-base text-slate-900">
+<i class="ph-fill ph-buildings text-indigo-600"></i>
+<span>你可能喜欢的场馆</span>
+</div>
+<span class="text-[11px] text-slate-400">这些场地经常举办优质活动</span>
+</div>
+<a class="text-xs text-brand-blue font-semibold flex items-center" href="#venues">
+          查看全部 <i class="ph-bold ph-caret-right text-xs"></i>
+</a>
+</div>
+<div class="grid grid-cols-2 gap-2.5"><div class="bg-white border border-slate-100 rounded-xl overflow-hidden shadow-xs"><div class="h-20 relative overflow-hidden flex items-center justify-center text-white text-xs font-bold"><img alt="The COMMUNE" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWV-xFWBngI3teUS564gOZO5zDU8rjsDGS9Ku038zTLt1JME9mysOOZbZYsI4P83QSJpbMPt0Sj6l5H2xHHyjgh7edCxeaZ79eIDIHmBBV_n9G7kKIntoZwq5MXN-S_ysylkG6LD4kO_wozFW--HcJN62GWwuYq-_VHB8kcj1xE08-6G58JM-bLxhN5eRnm-tnOiB24lqFCYPx90L46sSxNPtylGr0cJFhhUbaCH9TJfal9r_L5Argew"/><div class="absolute inset-0 bg-black/40 flex items-center justify-center"><span class="font-black text-xs text-white">The COMMUNE</span></div></div><div class="p-2"><h5 class="font-bold text-xs text-slate-900 truncate">The COMMUNE</h5><p class="text-[10px] text-slate-400 mt-0.5"><i class="ph ph-map-pin"></i> 静安 · 1.2km</p></div></div><div class="bg-white border border-slate-100 rounded-xl overflow-hidden shadow-xs"><div class="h-20 relative overflow-hidden flex items-center justify-center text-white text-xs font-bold"><img alt="Manner Coffee" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDp11yN0Opd8Y8IlKPhXcsBzarwmrn8awtfJPTQjdtomMHAKB2kL05ixCEWxGz5W6UPzCjRP2En79Vr59xCsTW_tB0-WFmH2gPz_i9Mlp0e86ZiWIUYDUtnCcpuqmB_8hqw9lphD5KWwVbMlj2KOLDwQVmzVHqjB3uVB3R9mt65cN7cT_JJ6orZX4QoTUHFR_2tf9QnB8Bcrb7ZfwGLRj5Q_w81Rd9TO0queC_aBMbYFQ4VDuqcJEkKQg"/><div class="absolute inset-0 bg-black/40 flex items-center justify-center"><span class="font-black text-xs text-white">Manner Coffee</span></div></div><div class="p-2"><h5 class="font-bold text-xs text-slate-900 truncate">Manner Coffee</h5><p class="text-[10px] text-slate-400 mt-0.5"><i class="ph ph-map-pin"></i> 徐汇 · 1.8km</p></div></div><div class="bg-white border border-slate-100 rounded-xl overflow-hidden shadow-xs"><div class="h-20 relative overflow-hidden flex items-center justify-center text-white text-xs font-bold"><img alt="上海当代艺术博物馆" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCdNd7wutVmdSLy2WMhr9oiZvJxEWYNxsSi1l8uVDKLmrbOtgGXxETy0d4M6g2SgC0bqGVoqfYIk65kCP_MShhuwqzLRa8sNUSlZmDgik0_3fZ3WPd-dVicH5mzgou_8JLgy_NsxT2IcjBWDKxKZugGZrXs65sXBXTpE3bCiiRr9KiodQbsR40X3iLVX_72Eho28X7myJdLZFMn9EE9TOiMffTd1_PBScyPGPY4ktEkZ0yqxzoUl051w"/><div class="absolute inset-0 bg-black/40 flex items-center justify-center"><span class="font-black text-xs text-white">上海当代艺术博物馆</span></div></div><div class="p-2"><h5 class="font-bold text-xs text-slate-900 truncate">上海当代艺术博物馆</h5><p class="text-[10px] text-slate-400 mt-0.5"><i class="ph ph-map-pin"></i> 黄浦 · 3.2km</p></div></div><div class="bg-white border border-slate-100 rounded-xl overflow-hidden shadow-xs"><div class="h-20 relative overflow-hidden flex items-center justify-center text-white text-xs font-bold"><img alt="世纪公园" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTHZkOKvd7z7nPhgQdwQJU6NKWayLtCdjDimcMDIEV7A3N6C4zZAMBVpRhbh0FLPOyFowZeYDuvNeQ4aaaOIj4L-yCiIiNuxCnwXyuZeky8EqnbiBNnayu9Dj7at3489StFFUQtGfI5HRpY4c3Ym9yAW9BJONoDIlRQHIJr3MZ-sfrWORsKAg-fcwoNGeqaeF1IDV5PqgGAFzIKjBx4Ifr0p2Y6ZaWTQWt8i4qg4RvF3ZDaFST--p5_A"/><div class="absolute inset-0 bg-black/40 flex items-center justify-center"><span class="font-black text-xs text-white">世纪公园</span></div></div><div class="p-2"><h5 class="font-bold text-xs text-slate-900 truncate">世纪公园</h5><p class="text-[10px] text-slate-400 mt-0.5"><i class="ph ph-map-pin"></i> 浦东 · 5.1km</p></div></div></div>
+</section>
+<!-- END: VenueRecommendations -->
+<!-- BEGIN: FinalAICTA -->
+<!-- Large AI Interactive Bottom Banner -->
+<section class="mt-6 mx-3 mb-6" data-purpose="ai-cta-banner">
+<div class="rounded-3xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 p-4 text-white shadow-lg shadow-blue-200 relative overflow-hidden flex items-center justify-between">
+<!-- Left Cute Mascot Avatar Graphic -->
+<div class="flex items-center gap-3 relative z-10">
+<div class="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-2xl shadow-inner shrink-0">
+            🤖
+          </div>
+<div>
+<h4 class="font-black text-sm text-white tracking-tight">没找到合适的？让 AI 帮你找局</h4>
+<p class="text-[11px] text-blue-100 mt-0.5">告诉我你的想法，一句话生成专属活动推荐</p>
+</div>
+</div>
+<!-- Action arrow button -->
+<button aria-label="生成专属活动推荐" class="relative z-10 w-9 h-9 rounded-full bg-white text-brand-blue flex items-center justify-center shadow-md font-bold text-base hover:scale-105 transition-transform shrink-0 ml-2">
+<i class="ph-bold ph-arrow-right"></i>
+</button>
+<!-- Decorative background glow -->
+<div class="absolute -right-6 -bottom-6 w-24 h-24 rounded-full bg-white/10 blur-xl"></div>
+</div>
+</section>
+<!-- END: FinalAICTA -->
+<!-- BEGIN: FixedBottomNavigation -->
+<!-- iOS / Mini-Program Standard Tab Bar with Raised Center '+' Button -->
+<nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] bg-white/95 backdrop-blur-lg border-t border-slate-200 px-6 py-2 flex items-center justify-between z-50" data-purpose="bottom-nav">
+<!-- Tab 1: 首页 -->
+<a class="flex flex-col items-center text-slate-400 hover:text-slate-600" href="#home">
+<i class="ph ph-house text-xl"></i>
+<span class="text-[10px] mt-0.5 font-medium">首页</span>
+</a>
+<!-- Tab 2: 发现 (ACTIVE) -->
+<a class="flex flex-col items-center text-brand-blue font-bold" href="#discover">
+<i class="ph-fill ph-compass text-xl text-brand-blue"></i>
+<span class="text-[10px] mt-0.5">发现</span>
+</a>
+<!-- Tab 3: Raised Center Action Button (+) -->
+<div class="-mt-6 flex flex-col items-center">
+<button aria-label="发起活动" class="w-13 h-13 p-3.5 rounded-full bg-brand-blue text-white shadow-lg shadow-blue-500/40 flex items-center justify-center active:scale-95 transition-transform">
+<i class="ph-bold ph-plus text-2xl"></i>
+</button>
+</div>
+<!-- Tab 4: 消息 -->
+<a class="flex flex-col items-center text-slate-400 hover:text-slate-600" href="#messages">
+<div class="relative">
+<i class="ph ph-chat-teardrop-dots text-xl"></i>
+<span class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-rose-500"></span>
+</div>
+<span class="text-[10px] mt-0.5 font-medium">消息</span>
+</a>
+<!-- Tab 5: 我的 -->
+<a class="flex flex-col items-center text-slate-400 hover:text-slate-600" href="#profile">
+<i class="ph ph-user text-xl"></i>
+<span class="text-[10px] mt-0.5 font-medium">我的</span>
+</a>
+</nav>
+<!-- END: FixedBottomNavigation -->
+</main>
+</body></html>

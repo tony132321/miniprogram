@@ -1,36 +1,40 @@
-<view class="home-page {{stateView ? 'state-view' : ''}}">
+<view class="home-page {{stateView ? 'state-view' : 'ordinary-view'}}">
   <view class="home-status-shield" style="height: {{statusBarHeight}}px"></view>
   <view class="safe-area" style="height: {{statusBarHeight}}px"></view>
   <view class="home-header" style="top: {{statusBarHeight}}px; padding-right: {{headerPaddingRight}}">
     <view wx:if="{{!stateView}}" class="brand"><view class="brand-mark">⁂</view><view class="brand-word"><text class="brand-cn">耍起</text><text class="brand-en">CAPER</text></view></view>
     <view wx:else class="state-brand"><view class="state-brand-mark">✦</view><text>Home Feed</text></view>
-    <button wx:if="{{!stateView}}" class="city-chip" bindtap="goCity" aria-label="选择城市">📍 {{city}}⌄</button>
+    <button wx:if="{{!stateView}}" class="city-chip" bindtap="goCity" aria-label="选择城市"><text class="city-pin">📍</text><text>{{city}}</text><image class="city-chevron" src="./assets/city-chevron.svg" mode="aspectFit" aria-hidden="true"/></button>
     <view class="header-space"></view>
-    <button class="header-round" bindtap="goMessages" aria-label="查看消息"><view class="header-bell"></view><view wx:if="{{unreadTotal > 0}}" class="header-unread-dot"></view></button>
+    <button class="header-round" bindtap="goMessages" aria-label="查看消息"><image class="header-bell-image" src="./assets/notification-bell.svg" mode="aspectFit" aria-hidden="true"/><view wx:if="{{unreadTotal > 0}}" class="header-unread-dot"></view></button>
     <button class="header-avatar" bindtap="goProfile" aria-label="进入我的页面"><view class="avatar-glyph"></view></button>
   </view>
 
   <view class="home-main {{stateView ? 'state-main' : ''}}">
     <view wx:if="{{!stateView}}" class="caper-top">
+    <view class="home-reference-core">
     <view class="hero">
-      <view class="hero-sticker">Good People More Plans ☺</view>
+      <view class="hero-sticker"><view class="hero-sticker-dot"></view><text>Good People More Plans</text></view>
+      <view class="hero-content">
       <view class="hero-kicker">More People, Brighter Days ☺</view>
       <view class="hero-title">今晚想要什么？</view>
       <view class="hero-subtitle">一句话开始，本地助手整理活动草稿</view>
-      <view class="hero-search"><text class="hero-search-icon">✦</text><input class="hero-search-input" value="{{heroIdeaText}}" bindinput="heroIdeaInput" bindconfirm="submitHeroIdea" confirm-type="go" maxlength="300" placeholder="比如：周六和朋友打场羽毛球..." placeholder-style="color:#8f98a2" aria-label="输入活动想法"/><button class="hero-arrow" bindtap="submitHeroIdea" aria-label="用这句话开始构思">➜</button></view>
+      <view class="hero-search"><image class="hero-search-icon" src="./assets/microphone.svg" mode="aspectFit" aria-hidden="true"/><input class="hero-search-input" value="{{heroIdeaText}}" bindinput="heroIdeaInput" bindconfirm="submitHeroIdea" confirm-type="go" maxlength="300" placeholder="比如：周六和朋友打场羽毛球..." placeholder-style="color:#8f98a2" aria-label="输入活动想法"/><button class="hero-arrow" bindtap="submitHeroIdea" aria-label="用这句话开始构思"><image class="hero-arrow-image" src="./assets/idea-arrow.svg" mode="aspectFit" aria-hidden="true"/></button></view>
+      </view>
     </view>
 
-    <scroll-view class="category-strip" scroll-x="true" show-scrollbar="false"><view class="category-row"><button wx:for="{{categoryIdeas}}" wx:key="label" class="category-card" data-label="{{item.label}}" bindtap="openCategory" aria-label="查看{{item.label}}活动灵感"><view class="category-bubble {{item.tone}}">{{item.icon}}</view><text class="category-name">{{item.label}}</text></button></view></scroll-view>
+    <scroll-view class="category-strip" scroll-x="true" show-scrollbar="false"><view class="category-row"><button wx:for="{{categoryIdeas}}" wx:key="label" class="category-card" data-label="{{item.label}}" bindtap="openCategory" aria-label="查看{{item.label}}活动灵感"><view class="category-bubble {{item.tone}}">{{index === 2 ? '🍸' : item.icon}}</view><text class="category-name">{{item.label}}</text></button></view></scroll-view>
     <view wx:if="{{availabilityMessage}}" class="availability-message">{{availabilityMessage}}</view>
 
     <button wx:if="{{featuredItem}}" class="feature-card" data-id="{{featuredItem.id}}" bindtap="openEvent" aria-label="查看{{featuredItem.title}}活动详情">
-      <view class="feature-cover"><image class="feature-image" src="{{featuredItem.cover}}" mode="aspectFill" /><view class="feature-shade"></view><view class="feature-top"><text class="feature-badge">🏸 运动</text><text class="feature-top-arrow">›</text></view><view class="feature-poster"><text class="feature-display">{{featuredItem.posterWord}}</text><text class="feature-tagline">Same Game & New Friends</text></view></view>
-      <view class="feature-detail"><view class="feature-detail-head"><text class="feature-detail-title">{{featuredItem.title}}</text><text class="feature-status feature-status-{{featuredItem.status}}">{{featuredItem.statusLabel}}</text></view><view class="feature-detail-meta">▣　{{featuredItem.dateLabel}}</view><view class="feature-detail-meta">⌖　{{featuredItem.venueName || '场地信息请到活动详情查看'}}</view><view wx:if="{{featuredItem.capacityLabel}}" class="feature-attendance"><view class="feature-attendance-markers"><text>✦</text><text>✦</text><text>✦</text></view><text class="feature-attendance-count">{{featuredItem.capacityLabel}}</text></view><view class="feature-detail-foot {{featuredItem.capacityLabel ? 'feature-detail-foot-with-count' : ''}}"><text>配图仅作示意 · 以详情为准</text><text class="feature-detail-action">查看详情　→</text></view></view>
+      <view class="feature-cover"><image class="feature-image" src="{{featuredItem.cover}}" mode="aspectFill" /><view class="feature-shade"></view><view class="feature-top"><text class="feature-badge">🏸 运动</text><view class="feature-top-arrow"><image src="./assets/feature-chevron.svg" mode="aspectFit" aria-hidden="true"/></view></view><view class="feature-poster"><text class="feature-display">{{featuredItem.posterWord}}</text><text class="feature-tagline">Same Game & New Friends</text></view></view>
+      <view class="feature-detail"><view class="feature-detail-head"><text class="feature-detail-title">{{featuredItem.title}}</text><text class="feature-status feature-status-{{featuredItem.status}}">{{featuredItem.statusLabel}}</text></view><view class="feature-detail-facts"><view class="feature-detail-meta"><image src="./assets/calendar.svg" mode="aspectFit" aria-hidden="true"/><text>{{featuredItem.dateLabel}}</text></view><view class="feature-detail-meta"><image src="./assets/map-pin.svg" mode="aspectFit" aria-hidden="true"/><text>{{featuredItem.venueName || '场地信息请到活动详情查看'}}</text></view></view><view wx:if="{{featuredItem.capacityLabel}}" class="feature-attendance"><view class="feature-attendance-markers"><text>✦</text><text>✦</text><text>✦</text></view><text class="feature-attendance-count">{{featuredItem.capacityLabel}}</text></view><view class="feature-detail-foot {{featuredItem.capacityLabel ? 'feature-detail-foot-with-count' : ''}}"><text>配图仅作示意 · 以详情为准</text><text class="feature-detail-action">查看详情　→</text></view></view>
     </button>
     <button wx:else class="feature-card" bindtap="goCreate" aria-label="发起一场真实活动">
-      <view class="feature-cover"><image class="feature-image" src="/assets/stitch/caper_home_badminton.jpg" mode="aspectFill" /><view class="feature-shade"></view><view class="feature-top"><text class="feature-badge">🏸 发起灵感</text><text class="feature-top-arrow">›</text></view><view class="feature-poster"><text class="feature-display">BADMINTON TOGETHER</text><text class="feature-tagline">Same Game & New Friends</text></view></view>
-      <view class="feature-detail"><view class="feature-detail-head"><text class="feature-detail-title">让有趣的事，真的发生</text><text class="feature-status feature-status-idea">从想法开始</text></view><view class="feature-detail-meta">✦　发起你的第一场真实活动</view><view class="feature-detail-meta">时间、场地与规则由你填写并确认</view><view class="feature-detail-foot"><text>这是一张发起灵感卡</text><text class="feature-detail-action">去发起　→</text></view></view>
+      <view class="feature-cover"><image class="feature-image" src="/assets/stitch/caper_home_badminton.jpg" mode="aspectFill" /><view class="feature-shade"></view><view class="feature-top"><text class="feature-badge">🏸 发起灵感</text><view class="feature-top-arrow"><image src="./assets/feature-chevron.svg" mode="aspectFit" aria-hidden="true"/></view></view><view class="feature-poster"><text class="feature-display">BADMINTON TOGETHER</text><text class="feature-tagline">Same Game & New Friends</text></view></view>
+      <view class="feature-detail"><view class="feature-detail-head"><text class="feature-detail-title">让有趣的事，真的发生</text><text class="feature-status feature-status-idea">从想法开始</text></view><view class="feature-detail-facts"><view class="feature-detail-meta"><image src="./assets/calendar.svg" mode="aspectFit" aria-hidden="true"/><text>发起你的第一场真实活动</text></view><view class="feature-detail-meta"><image src="./assets/map-pin.svg" mode="aspectFit" aria-hidden="true"/><text>时间、场地与规则由你填写并确认</text></view></view><view class="feature-detail-foot"><text>这是一张发起灵感卡</text><text class="feature-detail-action">去发起　→</text></view></view>
     </button>
+    </view>
 
     <view class="section-heading"><view><text class="section-mark">✦</text><text>活动灵感</text></view><button class="section-link" bindtap="goCreate">去发起　›</button></view>
     <view class="inspiration-grid">

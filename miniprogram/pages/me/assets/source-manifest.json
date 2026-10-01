@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "task": "Wave64 Task3 me core",
+  "source": {
+    "directory": "caper_1",
+    "htmlSha256": "37088f60630a26b0c2711c9ef018076d3ede9128cf33e5b7bf399fb66217faf9",
+    "pngSha256": "8901eb5958e4ecb9a209d40992c0214e5e6b1d89b99a64b5eabea22df6bbb369",
+    "htmlSvgCount": 32,
+    "widthCssPx": 390
+  },
+  "normalization": "Preserve source child XML bytes, path coordinates and stroke attributes. Normalize only SVG root: remove Tailwind class, viewbox to viewBox, add xmlns and original CSS px width/height, resolve root currentColor to the source effective color. UTF-8 LF with one final LF.",
+  "assets": [
+    {
+      "file": "miniprogram/pages/me/assets/brand-play.svg",
+      "name": "brand-play",
+      "sourceSvgOrdinal": 1,
+      "sourceLineStart": 108,
+      "sourceLineEnd": 110,
+      "sourceOccurrences": [
+        {
+          "ordinal": 1,
+          "lineStart": 108,
+          "lineEnd": 110
+        }
+      ],
+      "sourceNode": "<svg class=\"w-4 h-4 text-brand-lime\" fill=\"currentColor\" viewbox=\"0 0 24 24\">\n<path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z\"></path>\n</svg>",
+      "sourceNodeSha256": "ef111aafad8a0cdb591049ac4ade25ab9154af7f1ba0b9ce8ea6b81f8c248842",
+      "resolvedCurrentColor": "#c6ff00",
+      "sourceCssSizePx": 16,
+      "sha256": "4bb07851610ea4a98f73fbc931850d04f895e80e9caa8930d67202055ea943fe"
+    },
+    {
+      "file": "miniprogram/pages/me/assets/settings.svg",
+      "name": "settings",
+      "sourceSvgOrdinal": 2,
+      "sourceLineStart": 122,
+      "sourceLineEnd": 125,
+      "sourceOccurrences": [
+        {
+          "ordinal": 2,
+          "lineStart": 122,
+          "lineEnd": 125
+        }
+      ],
+      "sourceNode": "<svg class=\"w-5 h-5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" viewbox=\"0 0 24 24\">\n<path d=\"M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n<path d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n</svg>",
+      "sourceNodeSha256": "f47acba6a94f856cbb7bf0e1dfd2ec2d4ec1092ddd7e7227c5922572bc450869",
+      "resolvedCurrentColor": "#334155",
+      "sourceCssSizePx": 20,
+      "sha256": "1b6f5d17074da1ce714b4d98939709f98e5e4b749afff06290b70211a464ad57"
+    },
+    {
+      "file": "miniprogram/pages/me/assets/scan.svg",
+      "name": "scan",
+      "sourceSvgOrdinal": 3,
+      "sourceLineStart": 128,
+      "sourceLineEnd": 131,
+      "sourceOccurrences": [
+        {
+          "ordinal": 3,
+          "lineStart": 128,
+          "lineEnd": 131
+        }
+      ],
+      "sourceNode": "<svg class=\"w-5 h-5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" viewbox=\"0 0 24 24\">\n<path d=\"M3 7V5a2 2 0 012-2h2m10 0h2a2 2 0 012 2v2m0 10v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n<path d=\"M7 12h10\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n</svg>",
+      "sourceNodeSha256": "697b6e488844b9a320b477e2d14717b14ff176870df59031dc4f1c4c62b174dd",
+      "resolvedCurrentColor": "#334155",
+      "sourceCssSizePx": 20,
+      "sha256": "0e935db4d22a403f92a09eb4dbbe6513f90961dadb20f4d47b03e2126859ca1d"
+    },
+    {
+      "file": "miniprogram/pages/me/assets/chevron-blue.svg",
+      "name": "chevron-blue",
+      "sourceSvgOrdinal": 4,
+      "sourceLineStart": 205,
+      "sourceLineEnd": 205,
+      "sourceOccurrences": [
+        {
+          "ordinal": 4,
+          "lineStart": 205,
+          "lineEnd": 205
+        },
+        {
+          "ordinal": 5,
+          "lineStart": 250,
+          "lineEnd": 250
+        },
+        {
+          "ordinal": 12,
+          "lineStart": 352,
+          "lineEnd": 352
+        }
+      ],
+      "sourceNode": "<svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewbox=\"0 0 24 24\"><path d=\"M9 5l7 7-7 7\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"></path></svg>",
+      "sourceNodeSha256": "7e8c1c017a3b54ae6b55761e123f8c3c162a08b56cd84cfba70a4c4f560279f0",
+      "resolvedCurrentColor": "#1d64f2",
+      "sourceCssSizePx": 14,
+      "sha256": "05d932abc55313a80d26445f3a961d60802ec60de8ba27b5a3f976bcacda5e0f"
+    },
+    {
+      "file": "miniprogram/pages/me/assets/privacy-reminder.svg",
+      "name": "privacy-reminder",
+      "sourceSvgOrdinal": 6,
+      "sourceLineStart": 283,
+      "sourceLineEnd": 283,
+      "sourceOccurrences": [
+        {
+          "ordinal": 6,
+          "lineStart": 283,
+          "lineEnd": 283
+        }
+      ],
+      "sourceNode": "<svg class=\"w-4 h-4\" fill=\"currentColor\" viewbox=\"0 0 24 24\"><path d=\"M12 2C6.48 2 2 6.48 2 12c0 1.82.49 3.53 1.34 5L2 22l5.25-1.31C8.69 21.43 10.29 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z\"></path></svg>",
+      "sourceNodeSha256": "0b6d68c13dce1868610c4cdc90aff24d7bcd699a841d940e69ba5804abf17ab3",
+      "resolvedCurrentColor": "#1d64f2",
+      "sourceCssSizePx": 16,
+      "sha256": "a7a19bbff5a29712131038d155db446a26748698e7c8691291bd416138f9c398"
+    },
+    {
+      "file": "miniprogram/pages/me/assets/privacy-invites.svg",
+      "name": "privacy-invites",
+      "sourceSvgOrdinal": 7,
+      "sourceLineStart": 300,
+      "sourceLineEnd": 300,
+      "sourceOccurrences": [
+        {
+          "ordinal": 7,
+          "lineStart": 300,
+          "lineEnd": 300
+        }
+      ],
+      "sourceNode": "<svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" viewbox=\"0 0 24 24\"><path d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\"></path><path d=\"M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z\"></path></svg>",
+      "sourceNodeSha256": "e72343ea7a8d5b48794bf71ef5d011d4ba819448554f7affc623b4eee6c0b248",
+      "resolvedCurrentColor": "#059669",
+      "sourceCssSizePx": 16,
+      "sha256": "347e0f24aa8a7277c4ef8ff8ecbc1454b71056d5b0ae4283fa799e1a8868d84e"
+    },
+    {
+      "file": "miniprogram/pages/me/assets/privacy-blocks.svg",
+      "name": "privacy-blocks",
+      "sourceSvgOrdinal": 10,
+      "sourceLineStart": 331,
+      "sourceLineEnd": 331,
+      "sourceOccurrences": [
+        {
+          "ordinal": 10,
+          "lineStart": 331,
+          "lineEnd": 331
+        }
+      ],
+      "sourceNode": "<svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" viewbox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><line x1=\"4.93\" x2=\"19.07\" y1=\"4.93\" y2=\"19.07\"></line></svg>",
+      "sourceNodeSha256": "65c30f10405c014ca733b9b3791feb332f1679ac1a140997749ec76ba666b636",
+      "resolvedCurrentColor": "#475569",
+      "sourceCssSizePx": 16,
+      "sha256": "316f62d5f19fd1e0789c2a2a6e7a23b1221c670be5299ec89a18e1d8eb539b4b"
+    },
+    {
+      "file": "miniprogram/pages/me/assets/chevron-muted.svg",
+      "name": "chevron-muted",
+      "sourceSvgOrdinal": 11,
+      "sourceLineStart": 337,
+      "sourceLineEnd": 337,
+      "sourceOccurrences": [
+        {
+          "ordinal": 11,
+          "lineStart": 337,
+          "lineEnd": 337
+        }
+      ],
+      "sourceNode": "<svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewbox=\"0 0 24 24\"><path d=\"M9 5l7 7-7 7\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"></path></svg>",
+      "sourceNodeSha256": "7e8c1c017a3b54ae6b55761e123f8c3c162a08b56cd84cfba70a4c4f560279f0",
+      "resolvedCurrentColor": "#94a3b8",
+      "sourceCssSizePx": 14,
+      "sha256": "e7d1e88552bf50d5a3c7f1e544cea2421cad607193545ef5496d122b2e306111"
+    }
+  ]
+}

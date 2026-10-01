@@ -1,0 +1,1540 @@
+{
+  "batch": "Wave64",
+  "executionDatesLocal": "2026-10-01 to 2026-10-02 Asia/Shanghai",
+  "baselineLocal": "d66bdba36e3028aff2e833d6aa9973be3713da37",
+  "baselineRemote": "bc344f90aff399345e0118cc638ee41b8b26f5cb",
+  "baselineTree": "8652ca9279bdbb5ec6a5d916464203192414ddf7",
+  "level": "changed-page source geometry and scoped simulator routes; not complete UI acceptance",
+  "fullSuitesRun": false,
+  "nativeComputerUse": "Mac locked; no new foreground evidence",
+  "runs": {
+    "home": {
+      "page": "home",
+      "route": "pages/index/index",
+      "level": "bounded changed core components only",
+      "checks": [
+        {
+          "label": "actual source header below native status",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "actual source header56px",
+          "pass": true,
+          "actual": 56,
+          "expected": 56
+        },
+        {
+          "label": "accepted header position",
+          "pass": true,
+          "actual": "sticky",
+          "expected": "sticky"
+        },
+        {
+          "label": "original header action32px",
+          "pass": true,
+          "actual": 32,
+          "expected": 32
+        },
+        {
+          "label": "original header actionheight32px",
+          "pass": true,
+          "actual": 32,
+          "expected": 32
+        },
+        {
+          "label": "actual native capsule clearance8px",
+          "pass": true,
+          "actual": 8,
+          "expected": 8
+        },
+        {
+          "label": "ordinary home source scope",
+          "pass": true,
+          "actual": false,
+          "expected": false
+        },
+        {
+          "label": "original hero padding20",
+          "pass": true,
+          "actual": "20px",
+          "expected": 20
+        },
+        {
+          "label": "original hero radius28",
+          "pass": true,
+          "actual": "28px",
+          "expected": 28
+        },
+        {
+          "label": "original hero title24",
+          "pass": true,
+          "actual": "24px",
+          "expected": 24
+        },
+        {
+          "label": "original kicker18",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18
+        },
+        {
+          "label": "original idea action32",
+          "pass": true,
+          "actual": 32,
+          "expected": 32
+        },
+        {
+          "label": "original brand28",
+          "pass": true,
+          "actual": 28,
+          "expected": 28
+        },
+        {
+          "label": "original feature cover224",
+          "pass": true,
+          "actual": 224,
+          "expected": 224
+        },
+        {
+          "label": "source core gutter16",
+          "pass": true,
+          "actual": 16,
+          "expected": 16
+        },
+        {
+          "label": "six actual categories",
+          "pass": true,
+          "actual": 6,
+          "expected": 6
+        },
+        {
+          "label": "original category48",
+          "pass": true,
+          "actual": 48,
+          "expected": 48
+        },
+        {
+          "label": "original categoryheight48",
+          "pass": true,
+          "actual": 48,
+          "expected": 48
+        },
+        {
+          "label": "actual category inside native width",
+          "pass": true,
+          "actual": {
+            "offset": {
+              "left": 20,
+              "top": 328
+            },
+            "size": {
+              "width": 48,
+              "height": 48
+            }
+          },
+          "expected": "within source gutters"
+        },
+        {
+          "label": "original category48",
+          "pass": true,
+          "actual": 48,
+          "expected": 48
+        },
+        {
+          "label": "original categoryheight48",
+          "pass": true,
+          "actual": 48,
+          "expected": 48
+        },
+        {
+          "label": "actual category inside native width",
+          "pass": true,
+          "actual": {
+            "offset": {
+              "left": 82.1015625,
+              "top": 328
+            },
+            "size": {
+              "width": 48,
+              "height": 48
+            }
+          },
+          "expected": "within source gutters"
+        },
+        {
+          "label": "original category48",
+          "pass": true,
+          "actual": 48,
+          "expected": 48
+        },
+        {
+          "label": "original categoryheight48",
+          "pass": true,
+          "actual": 48,
+          "expected": 48
+        },
+        {
+          "label": "actual category inside native width",
+          "pass": true,
+          "actual": {
+            "offset": {
+              "left": 144.203125,
+              "top": 328
+            },
+            "size": {
+              "width": 48,
+              "height": 48
+            }
+          },
+          "expected": "within source gutters"
+        },
+        {
+          "label": "original category48",
+          "pass": true,
+          "actual": 48,
+          "expected": 48
+        },
+        {
+          "label": "original categoryheight48",
+          "pass": true,
+          "actual": 48,
+          "expected": 48
+        },
+        {
+          "label": "actual category inside native width",
+          "pass": true,
+          "actual": {
+            "offset": {
+              "left": 208.0390625,
+              "top": 328
+            },
+            "size": {
+              "width": 48,
+              "height": 48
+            }
+          },
+          "expected": "within source gutters"
+        },
+        {
+          "label": "original category48",
+          "pass": true,
+          "actual": 48,
+          "expected": 48
+        },
+        {
+          "label": "original categoryheight48",
+          "pass": true,
+          "actual": 48,
+          "expected": 48
+        },
+        {
+          "label": "actual category inside native width",
+          "pass": true,
+          "actual": {
+            "offset": {
+              "left": 271.875,
+              "top": 328
+            },
+            "size": {
+              "width": 48,
+              "height": 48
+            }
+          },
+          "expected": "within source gutters"
+        },
+        {
+          "label": "original category48",
+          "pass": true,
+          "actual": 48,
+          "expected": 48
+        },
+        {
+          "label": "original categoryheight48",
+          "pass": true,
+          "actual": 48,
+          "expected": 48
+        },
+        {
+          "label": "actual category inside native width",
+          "pass": true,
+          "actual": {
+            "offset": {
+              "left": 333.9765625,
+              "top": 328
+            },
+            "size": {
+              "width": 48,
+              "height": 48
+            }
+          },
+          "expected": "within source gutters"
+        },
+        {
+          "label": "actual primary same current id",
+          "pass": true,
+          "actual": "02c295b8-10e0-4602-8d25-1dc0d801a5f1",
+          "expected": "02c295b8-10e0-4602-8d25-1dc0d801a5f1"
+        }
+      ],
+      "interactions": [
+        {
+          "label": "actual primary card",
+          "target": "pages/event/event",
+          "query": {
+            "id": "02c295b8-10e0-4602-8d25-1dc0d801a5f1"
+          }
+        },
+        {
+          "label": "source city chip",
+          "target": "pages/city/city",
+          "query": {}
+        },
+        {
+          "label": "source notification bell",
+          "target": "pages/messages/messages",
+          "query": {}
+        },
+        {
+          "label": "source truthful avatar route",
+          "target": "pages/me/me",
+          "query": {}
+        }
+      ],
+      "screenshots": [
+        "docs/evidence/images/caper-home-top-wave64-2026-10-01.png",
+        "docs/evidence/images/caper-home-feature-wave64-2026-10-01.png"
+      ],
+      "exceptions": [],
+      "native": {
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      "header": {
+        "h": {
+          "selector": ".home-header",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 56
+          },
+          "styles": {
+            "position": "sticky"
+          }
+        },
+        "actions": [
+          {
+            "offset": {
+              "left": 222,
+              "top": 66
+            },
+            "size": {
+              "width": 32,
+              "height": 32
+            }
+          }
+        ],
+        "last": {
+          "selector": ".header-avatar",
+          "offset": {
+            "left": 264,
+            "top": 64
+          },
+          "size": {
+            "width": 36,
+            "height": 36
+          },
+          "styles": {}
+        }
+      },
+      "categoryBoxes": [
+        {
+          "offset": {
+            "left": 20,
+            "top": 328
+          },
+          "size": {
+            "width": 48,
+            "height": 48
+          }
+        },
+        {
+          "offset": {
+            "left": 82.1015625,
+            "top": 328
+          },
+          "size": {
+            "width": 48,
+            "height": 48
+          }
+        },
+        {
+          "offset": {
+            "left": 144.203125,
+            "top": 328
+          },
+          "size": {
+            "width": 48,
+            "height": 48
+          }
+        },
+        {
+          "offset": {
+            "left": 208.0390625,
+            "top": 328
+          },
+          "size": {
+            "width": 48,
+            "height": 48
+          }
+        },
+        {
+          "offset": {
+            "left": 271.875,
+            "top": 328
+          },
+          "size": {
+            "width": 48,
+            "height": 48
+          }
+        },
+        {
+          "offset": {
+            "left": 333.9765625,
+            "top": 328
+          },
+          "size": {
+            "width": 48,
+            "height": 48
+          }
+        }
+      ],
+      "layout": {
+        "hero": {
+          "selector": ".hero",
+          "offset": {
+            "left": 16,
+            "top": 118
+          },
+          "size": {
+            "width": 370,
+            "height": 190
+          },
+          "styles": {
+            "padding-top": "20px",
+            "border-top-left-radius": "28px"
+          }
+        },
+        "title": {
+          "selector": ".hero-title",
+          "offset": {
+            "left": 37,
+            "top": 175
+          },
+          "size": {
+            "width": 328,
+            "height": 32
+          },
+          "styles": {
+            "font-size": "24px"
+          }
+        },
+        "kicker": {
+          "selector": ".hero-kicker",
+          "offset": {
+            "left": 36.4920539855957,
+            "top": 134.43609619140625
+          },
+          "size": {
+            "width": 329.015869140625,
+            "height": 45.1278076171875
+          },
+          "styles": {
+            "font-size": "18px"
+          }
+        },
+        "idea": {
+          "selector": ".hero-arrow",
+          "offset": {
+            "left": 326,
+            "top": 248
+          },
+          "size": {
+            "width": 32,
+            "height": 32
+          },
+          "styles": {}
+        },
+        "logo": {
+          "selector": ".brand-mark",
+          "offset": {
+            "left": 20,
+            "top": 68
+          },
+          "size": {
+            "width": 28,
+            "height": 28
+          },
+          "styles": {}
+        },
+        "cover": {
+          "selector": ".feature-cover",
+          "offset": {
+            "left": 17,
+            "top": 420
+          },
+          "size": {
+            "width": 368,
+            "height": 224
+          },
+          "styles": {}
+        },
+        "gutter": {
+          "selector": ".home-reference-core",
+          "offset": {
+            "left": 16,
+            "top": 110
+          },
+          "size": {
+            "width": 370,
+            "height": 728
+          },
+          "styles": {}
+        }
+      },
+      "primary": {
+        "id": "02c295b8-10e0-4602-8d25-1dc0d801a5f1",
+        "status": "CONFIRMED"
+      },
+      "pass": false,
+      "failure": {
+        "phase": "home-header-routes",
+        "message": "State timeout existing unsupported category reply",
+        "stack": "Error: State timeout existing unsupported category reply\n    at until (/private/tmp/caper-wave64-focused.cjs:7:121)\n    at async /private/tmp/caper-wave64-focused.cjs:20:422",
+        "currentRoute": "pages/index/index"
+      },
+      "elapsedMs": 27192
+    },
+    "discover": {
+      "page": "discover",
+      "route": "pages/discover/discover",
+      "level": "bounded changed core components only",
+      "checks": [
+        {
+          "label": "actual source header below native status",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "actual source header56px",
+          "pass": true,
+          "actual": 56,
+          "expected": 56
+        },
+        {
+          "label": "accepted header position",
+          "pass": true,
+          "actual": "relative",
+          "expected": "relative"
+        },
+        {
+          "label": "original header action32px",
+          "pass": true,
+          "actual": 32,
+          "expected": 32
+        },
+        {
+          "label": "original header actionheight32px",
+          "pass": true,
+          "actual": 32,
+          "expected": 32
+        },
+        {
+          "label": "original header action32px",
+          "pass": true,
+          "actual": 32,
+          "expected": 32
+        },
+        {
+          "label": "original header actionheight32px",
+          "pass": true,
+          "actual": 32,
+          "expected": 32
+        },
+        {
+          "label": "actual native capsule clearance8px",
+          "pass": true,
+          "actual": 8,
+          "expected": 8
+        },
+        {
+          "label": "original discover logo32",
+          "pass": true,
+          "actual": 32,
+          "expected": 32
+        },
+        {
+          "label": "original discover brand20",
+          "pass": true,
+          "actual": "20px",
+          "expected": 20
+        },
+        {
+          "label": "original discover CAPER12",
+          "pass": true,
+          "actual": "12px",
+          "expected": 12
+        },
+        {
+          "label": "original discover photo176",
+          "pass": true,
+          "actual": 176,
+          "expected": 176
+        },
+        {
+          "label": "original discover cardradius16",
+          "pass": true,
+          "actual": "16px",
+          "expected": 16
+        },
+        {
+          "label": "original discover cardtitle14",
+          "pass": true,
+          "actual": "14px",
+          "expected": 14
+        },
+        {
+          "label": "original categoryfont12",
+          "pass": true,
+          "actual": "12px",
+          "expected": 12
+        },
+        {
+          "label": "original source favorite28",
+          "pass": true,
+          "actual": 28,
+          "expected": 28
+        },
+        {
+          "label": "original Phosphor action18",
+          "pass": true,
+          "actual": 18,
+          "expected": 18
+        },
+        {
+          "label": "four actual original photo cards",
+          "pass": true,
+          "actual": 4,
+          "expected": 4
+        },
+        {
+          "label": "real source photos aspectFill",
+          "pass": true,
+          "actual": [
+            "aspectFill",
+            "aspectFill",
+            "aspectFill",
+            "aspectFill"
+          ],
+          "expected": "aspectFill"
+        },
+        {
+          "label": "actual nearby focus below restored category",
+          "pass": true,
+          "actual": {
+            "left": 0,
+            "top": 171
+          },
+          "expected": {
+            "stickyBottom": 161,
+            "max": 874
+          }
+        },
+        {
+          "label": "authorized current record sameid",
+          "pass": true,
+          "actual": "02c295b8-10e0-4602-8d25-1dc0d801a5f1",
+          "expected": "02c295b8-10e0-4602-8d25-1dc0d801a5f1"
+        },
+        {
+          "label": "current runtime exception events",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "interactions": [
+        {
+          "label": "actual search/favorite closed replies; all clears reply"
+        },
+        {
+          "label": "actual nearby city selector",
+          "target": "pages/city/city",
+          "query": {}
+        },
+        {
+          "label": "actual authorized nearby own record",
+          "target": "pages/event/event",
+          "query": {
+            "id": "02c295b8-10e0-4602-8d25-1dc0d801a5f1"
+          }
+        }
+      ],
+      "screenshots": [
+        "docs/evidence/images/caper-discover-top-wave64-2026-10-01.png",
+        "docs/evidence/images/caper-discover-nearby-wave64-2026-10-01.png"
+      ],
+      "exceptions": [],
+      "native": {
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      "header": {
+        "h": {
+          "selector": ".discover-nav",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 56
+          },
+          "styles": {
+            "position": "relative"
+          }
+        },
+        "actions": [
+          {
+            "offset": {
+              "left": 224,
+              "top": 61.5
+            },
+            "size": {
+              "width": 32,
+              "height": 32
+            }
+          },
+          {
+            "offset": {
+              "left": 268,
+              "top": 61.5
+            },
+            "size": {
+              "width": 32,
+              "height": 32
+            }
+          }
+        ],
+        "last": {
+          "selector": ".nav-actions",
+          "offset": {
+            "left": 224,
+            "top": 61.5
+          },
+          "size": {
+            "width": 76,
+            "height": 32
+          },
+          "styles": {}
+        }
+      },
+      "photos": [
+        {
+          "src": "/assets/stitch/caper_discover_citywalk.jpg",
+          "mode": "aspectFill"
+        },
+        {
+          "src": "/assets/stitch/caper_discover_basketball.jpg",
+          "mode": "aspectFill"
+        },
+        {
+          "src": "/assets/stitch/caper_discover_coffee.jpg",
+          "mode": "aspectFill"
+        },
+        {
+          "src": "/assets/stitch/caper_discover_boardgame.jpg",
+          "mode": "aspectFill"
+        }
+      ],
+      "layout": {
+        "logo": {
+          "selector": ".brand-mark",
+          "offset": {
+            "left": 16,
+            "top": 61.5
+          },
+          "size": {
+            "width": 32,
+            "height": 32
+          },
+          "styles": {}
+        },
+        "cn": {
+          "selector": ".brand-name",
+          "offset": {
+            "left": 56,
+            "top": 63.5
+          },
+          "size": {
+            "width": 39,
+            "height": 28
+          },
+          "styles": {
+            "font-size": "20px"
+          }
+        },
+        "en": {
+          "selector": ".brand-en",
+          "offset": {
+            "left": 99,
+            "top": 72.5
+          },
+          "size": {
+            "width": 45.046875,
+            "height": 16
+          },
+          "styles": {
+            "font-size": "12px"
+          }
+        },
+        "photo": {
+          "selector": ".featured-cover",
+          "offset": {
+            "left": 13,
+            "top": 178
+          },
+          "size": {
+            "width": 181,
+            "height": 176
+          },
+          "styles": {}
+        },
+        "card": {
+          "selector": ".featured-card",
+          "offset": {
+            "left": 12,
+            "top": 177
+          },
+          "size": {
+            "width": 183,
+            "height": 317.75
+          },
+          "styles": {
+            "border-top-left-radius": "16px"
+          }
+        },
+        "title": {
+          "selector": ".featured-title",
+          "offset": {
+            "left": 23,
+            "top": 364
+          },
+          "size": {
+            "width": 161,
+            "height": 19.25
+          },
+          "styles": {
+            "font-size": "14px"
+          }
+        },
+        "category": {
+          "selector": ".category",
+          "offset": {
+            "left": 12,
+            "top": 122
+          },
+          "size": {
+            "width": 56,
+            "height": 28
+          },
+          "styles": {
+            "font-size": "12px"
+          }
+        },
+        "favorite": {
+          "selector": ".featured-favorite",
+          "offset": {
+            "left": 156,
+            "top": 188
+          },
+          "size": {
+            "width": 28,
+            "height": 28
+          },
+          "styles": {}
+        },
+        "glyph": {
+          "selector": ".nav-actions image",
+          "offset": {
+            "left": 231,
+            "top": 68.5
+          },
+          "size": {
+            "width": 18,
+            "height": 18
+          },
+          "styles": {}
+        }
+      },
+      "nearby": {
+        "heading": {
+          "selector": "#nearbySection",
+          "offset": {
+            "left": 0,
+            "top": 171
+          },
+          "size": {
+            "width": 403,
+            "height": 33
+          },
+          "styles": {}
+        },
+        "bar": {
+          "selector": ".category-scroll",
+          "offset": {
+            "left": 0,
+            "top": 110
+          },
+          "size": {
+            "width": 403,
+            "height": 51
+          },
+          "styles": {}
+        }
+      },
+      "pass": true,
+      "elapsedMs": 8332
+    },
+    "me": {
+      "page": "me",
+      "route": "pages/me/me",
+      "level": "bounded changed core components only",
+      "checks": [
+        {
+          "label": "actual source header below native status",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "actual source header56px",
+          "pass": true,
+          "actual": 56,
+          "expected": 56
+        },
+        {
+          "label": "accepted header position",
+          "pass": true,
+          "actual": "sticky",
+          "expected": "sticky"
+        },
+        {
+          "label": "original header action32px",
+          "pass": true,
+          "actual": 32,
+          "expected": 32
+        },
+        {
+          "label": "original header actionheight32px",
+          "pass": true,
+          "actual": 32,
+          "expected": 32
+        },
+        {
+          "label": "original header action32px",
+          "pass": true,
+          "actual": 32,
+          "expected": 32
+        },
+        {
+          "label": "original header actionheight32px",
+          "pass": true,
+          "actual": 32,
+          "expected": 32
+        },
+        {
+          "label": "actual native capsule clearance8px",
+          "pass": true,
+          "actual": 8,
+          "expected": 8
+        },
+        {
+          "label": "original me brand28",
+          "pass": true,
+          "actual": 28,
+          "expected": 28
+        },
+        {
+          "label": "original me avatar64",
+          "pass": true,
+          "actual": 64,
+          "expected": 64
+        },
+        {
+          "label": "original me avatarborder2",
+          "pass": true,
+          "actual": "2px",
+          "expected": 2
+        },
+        {
+          "label": "original profilepadding16",
+          "pass": true,
+          "actual": "16px",
+          "expected": 16
+        },
+        {
+          "label": "original profileradius24",
+          "pass": true,
+          "actual": "24px",
+          "expected": 24
+        },
+        {
+          "label": "original me heading20",
+          "pass": true,
+          "actual": "20px",
+          "expected": 20
+        },
+        {
+          "label": "original stats18",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18
+        },
+        {
+          "label": "original badgepadding10",
+          "pass": true,
+          "actual": "10px",
+          "expected": 10
+        },
+        {
+          "label": "original badgeradius16",
+          "pass": true,
+          "actual": "16px",
+          "expected": 16
+        },
+        {
+          "label": "original emojibox40",
+          "pass": true,
+          "actual": 40,
+          "expected": 40
+        },
+        {
+          "label": "original emoji20",
+          "pass": true,
+          "actual": "20px",
+          "expected": 20
+        },
+        {
+          "label": "original privacyiconbox32",
+          "pass": true,
+          "actual": 32,
+          "expected": 32
+        },
+        {
+          "label": "original privacy title12",
+          "pass": true,
+          "actual": "12px",
+          "expected": 12
+        },
+        {
+          "label": "original own activity photo96",
+          "pass": true,
+          "actual": 96,
+          "expected": 96
+        },
+        {
+          "label": "no invented online status",
+          "pass": true,
+          "actual": false,
+          "expected": false
+        },
+        {
+          "label": "real interests focus query",
+          "pass": true,
+          "actual": "interests",
+          "expected": "interests"
+        },
+        {
+          "label": "real profile activity sameid",
+          "pass": true,
+          "actual": "02c295b8-10e0-4602-8d25-1dc0d801a5f1",
+          "expected": "02c295b8-10e0-4602-8d25-1dc0d801a5f1"
+        },
+        {
+          "label": "current runtime exception events",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "interactions": [
+        {
+          "label": "original settings icon real privacy route",
+          "target": "subpackages/profile/privacy-safety/privacy-safety",
+          "query": {}
+        },
+        {
+          "label": "original badge card real route",
+          "target": "subpackages/profile/badges/badges",
+          "query": {}
+        },
+        {
+          "label": "current interest explanation",
+          "target": "subpackages/profile/profile-edit/profile-edit",
+          "query": {
+            "focus": "interests"
+          }
+        },
+        {
+          "label": "actual own profile record",
+          "target": "pages/event/event",
+          "query": {
+            "id": "02c295b8-10e0-4602-8d25-1dc0d801a5f1"
+          }
+        }
+      ],
+      "screenshots": [
+        "docs/evidence/images/caper-me-top-wave64-2026-10-01.png",
+        "docs/evidence/images/caper-me-privacy-wave64-2026-10-01.png"
+      ],
+      "exceptions": [],
+      "native": {
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      "header": {
+        "h": {
+          "selector": ".me-core-header",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 56
+          },
+          "styles": {
+            "position": "sticky"
+          }
+        },
+        "actions": [
+          {
+            "offset": {
+              "left": 224,
+              "top": 66
+            },
+            "size": {
+              "width": 32,
+              "height": 32
+            }
+          },
+          {
+            "offset": {
+              "left": 268,
+              "top": 66
+            },
+            "size": {
+              "width": 32,
+              "height": 32
+            }
+          }
+        ],
+        "last": {
+          "selector": ".brand-actions",
+          "offset": {
+            "left": 224,
+            "top": 66
+          },
+          "size": {
+            "width": 76,
+            "height": 32
+          },
+          "styles": {}
+        }
+      },
+      "layout": {
+        "logo": {
+          "selector": ".brand-dot",
+          "offset": {
+            "left": 16,
+            "top": 68
+          },
+          "size": {
+            "width": 28,
+            "height": 28
+          },
+          "styles": {}
+        },
+        "avatar": {
+          "selector": ".avatar",
+          "offset": {
+            "left": 33,
+            "top": 135
+          },
+          "size": {
+            "width": 64,
+            "height": 64
+          },
+          "styles": {
+            "border-left-width": "2px"
+          }
+        },
+        "profile": {
+          "selector": ".me-core-profile",
+          "offset": {
+            "left": 16,
+            "top": 118
+          },
+          "size": {
+            "width": 370,
+            "height": 185.5
+          },
+          "styles": {
+            "padding-top": "16px",
+            "border-top-left-radius": "24px"
+          }
+        },
+        "title": {
+          "selector": ".hero-name",
+          "offset": {
+            "left": 111,
+            "top": 137
+          },
+          "size": {
+            "width": 178,
+            "height": 20
+          },
+          "styles": {
+            "font-size": "20px"
+          }
+        },
+        "stats": {
+          "selector": ".hero-stats text",
+          "offset": {
+            "left": 66.1875,
+            "top": 241.5
+          },
+          "size": {
+            "width": 11.625,
+            "height": 28
+          },
+          "styles": {
+            "font-size": "18px"
+          }
+        },
+        "badge": {
+          "selector": ".badge-tile",
+          "offset": {
+            "left": 16,
+            "top": 353.5
+          },
+          "size": {
+            "width": 86.5,
+            "height": 101.5
+          },
+          "styles": {
+            "padding-top": "10px",
+            "border-top-left-radius": "16px"
+          }
+        },
+        "emoji": {
+          "selector": ".badge-tile view",
+          "offset": {
+            "left": 39.25,
+            "top": 368.5
+          },
+          "size": {
+            "width": 40,
+            "height": 40
+          },
+          "styles": {
+            "font-size": "20px"
+          }
+        },
+        "privacy": {
+          "selector": ".privacy-icon",
+          "offset": {
+            "left": 31,
+            "top": 662.5
+          },
+          "size": {
+            "width": 32,
+            "height": 32
+          },
+          "styles": {}
+        },
+        "privacyTitle": {
+          "selector": ".privacy-copy view",
+          "offset": {
+            "left": 75,
+            "top": 655.5
+          },
+          "size": {
+            "width": 227,
+            "height": 16
+          },
+          "styles": {
+            "font-size": "12px"
+          }
+        },
+        "activity": {
+          "selector": ".activity-photo",
+          "offset": {
+            "left": 25,
+            "top": 968.5
+          },
+          "size": {
+            "width": 162,
+            "height": 96
+          },
+          "styles": {}
+        }
+      },
+      "actualProfile": {
+        "state": "READY",
+        "activityStats": {
+          "total": 3,
+          "hosted": 1,
+          "confirmed": 3
+        },
+        "consentLoadState": "READY",
+        "activityPreviewCount": 3
+      },
+      "unchangedScanBoundary": "Existing modal scan explanation handler retained; native confirmation not exercised while Mac locked.",
+      "unchangedConsentBoundary": "No consent/request/registration/delete submitted.",
+      "pass": true,
+      "elapsedMs": 18622
+    },
+    "final-actions": {
+      "scope": "only remaining home category/hero and me scan toolbar actions",
+      "checks": [
+        {
+          "label": "actual unsupported category honest modal request",
+          "pass": true,
+          "actual": {
+            "title": "活动灵感",
+            "content": "美食目前仅供灵感参考。当前只能发起羽毛球活动，是否前往发起？",
+            "confirmText": "发起羽毛球"
+          },
+          "expected": "current R1 guidance"
+        },
+        {
+          "label": "mock cancellation keeps current home",
+          "pass": true,
+          "actual": "pages/index/index",
+          "expected": "pages/index/index"
+        },
+        {
+          "label": "actual existing hero create destination",
+          "pass": true,
+          "actual": "pages/create/create",
+          "expected": "pages/create/create"
+        }
+      ],
+      "interactions": [
+        {
+          "label": "actual category tap, actual modal request; SDK cancel callback",
+          "nativeConfirmation": false
+        },
+        {
+          "label": "actual native text idea tap enters create; no save/publish submitted",
+          "target": "pages/create/create"
+        }
+      ],
+      "exceptions": [],
+      "modalConfirmation": "SDK callback mocked; not native confirmation",
+      "pass": false,
+      "failure": {
+        "phase": "me-scan",
+        "message": "timeout waiting for automator response",
+        "stack": "Error: timeout waiting for automator response\n    at Connection.onMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/miniprogram-automator@0.12.1/node_modules/miniprogram-automator/out/Connection.js:1:985)\n    at Transport.emit (node:events:509:28)\n    at WebSocket.<anonymous> (/private/tmp/project-irl-automator/node_modules/.pnpm/miniprogram-automator@0.12.1/node_modules/miniprogram-automator/out/Transport.js:1:220)\n    at WebSocket.onMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/event-target.js:120:16)\n    at WebSocket.emit (node:events:509:28)\n    at Receiver.receiverOnMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/websocket.js:807:20)\n    at Receiver.emit (node:events:509:28)\n    at Receiver.dataMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:448:14)\n    at Receiver.getData (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:377:17)\n    at Receiver.startLoop (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:158:22)"
+      },
+      "elapsedMs": 13797
+    },
+    "me-scan-only": {
+      "scope": "only me scan remaining action",
+      "checks": [
+        {
+          "pass": true,
+          "label": "two actual header controls",
+          "actual": 2,
+          "expected": 2
+        },
+        {
+          "pass": true,
+          "label": "existing scan handler confirmation destination",
+          "actual": "subpackages/activity/itinerary/itinerary",
+          "expected": "subpackages/activity/itinerary/itinerary"
+        },
+        {
+          "pass": true,
+          "label": "authorized actual itinerary records",
+          "actual": 2,
+          "expected": ">0"
+        },
+        {
+          "pass": true,
+          "label": "runtime exceptions",
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "interactions": [
+        {
+          "label": "actual scan toolbar tap with SDK confirm result object",
+          "target": "subpackages/activity/itinerary/itinerary",
+          "nativeConfirmation": false,
+          "loadState": "READY",
+          "total": 2
+        }
+      ],
+      "exceptions": [],
+      "modalConfirmation": "SDK result object; not native confirmation",
+      "pass": true,
+      "elapsedMs": 7844
+    }
+  },
+  "images": [
+    {
+      "path": "docs/evidence/images/caper-discover-nearby-wave64-2026-10-01.png",
+      "sha256": "71b3fc442ae6e3e2c10157f6acea64fe096ab26ad81838080288b2635fac09f2",
+      "bytes": 430460,
+      "redacted": false
+    },
+    {
+      "path": "docs/evidence/images/caper-discover-top-wave64-2026-10-01.png",
+      "sha256": "3e7a53c94c0d218a97d2f9b5ea0594ea165e4a4704492ca847c93671a90991e8",
+      "bytes": 561416,
+      "redacted": false
+    },
+    {
+      "path": "docs/evidence/images/caper-home-feature-wave64-2026-10-01.png",
+      "sha256": "dd41b4d8a3f1c11eccd8def74de58e47d3f6663ca829d789de8c9524fb3739d1",
+      "bytes": 568857,
+      "redacted": false
+    },
+    {
+      "path": "docs/evidence/images/caper-home-top-wave64-2026-10-01.png",
+      "sha256": "12c01f8437de8fa9fc4d9e830ad24e5e7b577c2b072ed6cfe4dfa6ec04c63e1f",
+      "bytes": 407958,
+      "redacted": false
+    },
+    {
+      "path": "docs/evidence/images/caper-me-privacy-wave64-2026-10-01.png",
+      "sha256": "f46194a3e12971c27f4c59da366c21420449cc4b7036f8383353785a79b2f1f0",
+      "bytes": 323000,
+      "redacted": false
+    },
+    {
+      "path": "docs/evidence/images/caper-me-top-wave64-2026-10-01.png",
+      "sha256": "8f98e9ea95b45b82aca6534173d40a1b68e329e3f66322b2baad5322392eac2a",
+      "bytes": 178140,
+      "redacted": false
+    }
+  ],
+  "interpretation": {
+    "homeInitial": "35 geometry/route checks passed before harness incorrectly expected page availabilityMessage instead of existing native showModal. Original pass=false preserved. No product business JS changed.",
+    "remainingHome": "3 remaining category/modal-cancel/idea-create checks passed in final-actions before SDK timeout at me-scan. Original pass=false preserved.",
+    "scanRetry": "Only remaining me scan retried using SDK result object instead of reentrant function callback; 4 checks passed. Native modal confirmation was not clicked.",
+    "aggregate": "90 successful scoped assertions across separate segments, 14 interaction records; no assertion failure or product repair caused by these harness issues. Not a full suite."
+  },
+  "preview": {
+    "exitCode": 0,
+    "size": {
+      "total": 2860136,
+      "packages": [
+        {
+          "name": "TOTAL",
+          "size": 2860136
+        },
+        {
+          "name": "main",
+          "size": 1854382
+        },
+        {
+          "name": "/subpackages/activity/",
+          "size": 78943
+        },
+        {
+          "name": "/subpackages/profile/",
+          "size": 926811
+        }
+      ]
+    }
+  }
+}
