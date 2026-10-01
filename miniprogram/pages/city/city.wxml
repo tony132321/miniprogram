@@ -2,7 +2,7 @@
   <view class="safe-area" style="height: {{statusBarHeight}}px"></view>
   <view class="city-nav">
     <button class="nav-back" bindtap="back" aria-label="返回">‹</button>
-    <text class="nav-title">Edit Profile</text>
+    <text class="nav-title">选择城市</text>
     <button class="nav-options" bindtap="showCityInfo" aria-label="城市选择说明">···</button>
     <button class="nav-profile" bindtap="goProfile" aria-label="前往我的页面">♙</button>
   </view>
