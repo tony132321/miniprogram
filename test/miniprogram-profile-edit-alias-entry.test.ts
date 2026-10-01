@@ -88,6 +88,19 @@ test('nickname entry distinguishes signed-out, empty and failed activity lists',
   assert.match(markup, /aliasLoadState === 'ERROR'/);
 });
 
+test('empty nickname activity list opens the actual activity record from its CTA', async () => {
+  const { page, navigations } = loadEdit({
+    developmentUser: 'host',
+    getEvents: async () => ({ items: [] })
+  });
+  await page.openAliasPicker();
+  assert.equal(page.data.aliasLoadState, 'EMPTY');
+  assert.match(markup, /aliasLoadState === 'EMPTY'[\s\S]*?<button bindtap="goActivities">查看我的活动/);
+  page.goActivities();
+  assert.deepEqual(navigations, ['/subpackages/profile/moments/moments?filter=all']);
+  assert.equal(page.data.aliasPickerOpen, false);
+});
+
 test('an old account response cannot restore or open its activity after account switch', async () => {
   let resolveOld!: (value: unknown) => void;
   const oldResponse = new Promise<unknown>(resolve => { resolveOld = resolve; });

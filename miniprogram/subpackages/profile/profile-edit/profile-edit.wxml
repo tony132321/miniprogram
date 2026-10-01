@@ -9,7 +9,7 @@
       <view class="alias-picker-heading"><view>选择我的活动</view><button bindtap="closeAliasPicker" aria-label="关闭活动选择">×</button></view>
       <view wx:if="{{aliasLoadState === 'LOADING'}}" class="alias-picker-note">正在加载我的活动…</view>
       <view wx:elif="{{aliasLoadState === 'UNAUTHENTICATED'}}" class="alias-picker-state"><view>请先登录，才能查看可设置昵称的活动。</view><button bindtap="goProfile">前往我的页面登录　›</button></view>
-      <view wx:elif="{{aliasLoadState === 'EMPTY'}}" class="alias-picker-state"><view>暂无可设置昵称的活动。主办方、已确认成员及候补中的成员可在对应活动内设置。</view><button bindtap="goProfile">查看我的活动　›</button></view>
+      <view wx:elif="{{aliasLoadState === 'EMPTY'}}" class="alias-picker-state"><view>暂无可设置昵称的活动。主办方、已确认成员及候补中的成员可在对应活动内设置。</view><button bindtap="goActivities">查看我的活动　›</button></view>
       <view wx:elif="{{aliasLoadState === 'ERROR'}}" class="alias-picker-state"><view>{{aliasError}}</view><button bindtap="openAliasPicker">重新加载　›</button></view>
       <view wx:elif="{{aliasLoadState === 'READY'}}" class="alias-picker-list"><button wx:for="{{aliasCandidates}}" wx:key="id" class="alias-activity" data-id="{{item.id}}" bindtap="goAliasActivity"><view><view class="alias-activity-title">{{item.title}}</view><view class="alias-activity-role">{{item.role}} · 在活动详情设置或撤回</view></view><text>›</text></button></view>
     </view>

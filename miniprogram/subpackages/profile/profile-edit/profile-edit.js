@@ -83,6 +83,11 @@ Page({
   },
   goCity() { this.setData({ moreOpen: false }); wx.navigateTo({ url: '/pages/city/city' }); },
   goProfile() { this.setData({ moreOpen: false }); wx.switchTab({ url: '/pages/me/me' }); },
+  goActivities() {
+    this.closeAliasPicker();
+    this.setData({ moreOpen: false });
+    wx.navigateTo({ url: '/subpackages/profile/moments/moments?filter=all' });
+  },
   goPrivacySafety() {
     this.setData({ moreOpen: false });
     wx.navigateTo({ url: '/subpackages/profile/privacy-safety/privacy-safety' });
