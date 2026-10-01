@@ -25,6 +25,7 @@ Page({
   onLoad() { this.setData({ statusBarHeight: statusBarHeight(), headerPaddingRight: headerPaddingRight() }); },
   async onShow() {
     const generation = this._generation = (this._generation || 0) + 1;
+    this._loadedIdentity = '';
     this.setData({ blocks: [], message: '', revokingId: '', moreOpen: false,
       headerPaddingRight: headerPaddingRight(), loadState: 'LOADING' });
     let actor = '';
@@ -36,6 +37,7 @@ Page({
       const result = await api.get('/me/blocks');
       if (generation !== this._generation || identity() !== actor) return;
       if (!Array.isArray(result?.items)) throw new Error('屏蔽记录格式错误，请重试');
+      this._loadedIdentity = actor;
       this.setData({ blocks: result.items, loadState: 'READY' });
     } catch (error) {
       if (generation === this._generation && (!actor || identity() === actor))
@@ -48,14 +50,22 @@ Page({
     const id = event.currentTarget.dataset.id;
     if (!id || this.data.loadState !== 'READY' || this.data.revokingId) return;
     const actor = identity();
+    if (!actor || actor !== this._loadedIdentity) return this.onShow();
     this.setData({ revokingId: id, message: '' });
     try {
       await api.post(`/me/blocks/${encodeURIComponent(id)}/revoke`, {});
-      if (identity() !== actor) return;
+      if (identity() !== actor) {
+        if (this._loadedIdentity === actor) await this.onShow();
+        return;
+      }
       await this.onShow();
       if (identity() === actor && this.data.loadState === 'READY') this.setData({ message: '已解除屏蔽。' });
     } catch (error) {
-      if (identity() === actor) this.setData({ message: error.message || '操作失败，请重试。' });
+      if (identity() !== actor) {
+        if (this._loadedIdentity === actor) await this.onShow();
+        return;
+      }
+      this.setData({ message: error.message || '操作失败，请重试。' });
     } finally {
       if (identity() === actor) this.setData({ revokingId: '' });
     }

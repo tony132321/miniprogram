@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
+import { cityModule } from './miniprogram-city-module.js';
 
 function loadPage(path: string, services: Record<string, unknown> = {}) {
   let page: Record<string, any> | undefined;
@@ -249,6 +250,7 @@ test('each PG10 subpage wires every visible interaction and has a return action'
       require(module: string) {
         if (module === '../navigation.js') return { backToProfile() {}, statusBarHeight() { return 24; } };
         if (module === '../../../utils/api.js') return { api: {} };
+        if (module === '../../../utils/city.js') return cityModule;
         if (module === '../../../config.js') return { developmentUser: '' };
         throw new Error(`unexpected require ${module}`);
       }
