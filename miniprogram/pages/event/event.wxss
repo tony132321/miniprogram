@@ -399,6 +399,10 @@ page{padding:0;background:#f5f6fa;color:#1b1e27;font-family:-apple-system,BlinkM
 .joined-ticket-row > text { width: 50rpx; height: 50rpx; border-radius: 16rpx; background: #edf3ff; color: #1d64f2; line-height: 50rpx; text-align: center; font-size: 29rpx; }
 .joined-ticket-row > view > view:first-child { color: #778194; font-size: 19rpx; }
 .joined-ticket-row > view > view:last-child { margin-top: 3rpx; font-size: 24rpx; font-weight: 750; line-height: 1.4; }
+.joined-ticket-venue { align-items: center; }
+.joined-ticket-venue > text { flex-shrink: 0; }
+.joined-ticket-venue .joined-ticket-row-main { flex: 1; min-width: 0; }
+.joined-success .joined-ticket-venue .joined-venue-copy { flex: none; width: auto; min-height: 68rpx; margin: 0; padding: 0 16rpx; border-radius: 50rpx; background: #f1f2f6; color: #25314a; font-size: 20rpx; }
 .joined-ticket-proof { margin-top: 20rpx; padding: 18rpx; border-radius: 19rpx; background: #f2f3f8; }
 .joined-ticket-proof > text { font-size: 22rpx; font-weight: 850; }
 .joined-ticket-proof > view { margin: 5rpx 0 10rpx; color: #64748b; font-size: 19rpx; line-height: 1.5; }

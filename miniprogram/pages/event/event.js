@@ -705,12 +705,35 @@ Page({
   },
   copyVenue() {
     const event = this.data.event;
-    if (!event || this.data.loadState !== 'READY') return;
-    const venue = [event.payload?.city, event.payload?.venueName].filter(Boolean).join(' · ');
-    if (!venue) return this.setData({ message: '当前活动尚未确认公共集合地点。' });
+    if (!event || this.data.loadState !== 'READY' || event.id !== this.data.id ||
+      (this.data.currentUser && this.data.currentUser !== currentIdentity())) return;
+    const venueName = typeof event.payload?.venueName === 'string' ? event.payload.venueName.trim() : '';
+    if (!venueName) return this.setData({ message: '当前活动尚未确认公共集合地点。' });
+    const city = typeof event.payload?.city === 'string' ? event.payload.city.trim() : '';
+    const venue = [city, venueName].filter(Boolean).join(' · ');
+    const actor = currentIdentity();
+    const eventId = event.id;
     wx.setClipboardData({ data: venue,
-      success: () => wx.showToast?.({ title: '集合地点已复制', icon: 'none' }),
-      fail: () => this.setData({ message: '复制地点失败，请稍后重试。' }) });
+      success: () => {
+        if (this.data.id === eventId && this.data.event?.id === eventId &&
+          actor === currentIdentity()) wx.showToast?.({ title: '集合地点已复制', icon: 'none' });
+      },
+      fail: () => {
+        if (this.data.id === eventId && this.data.event?.id === eventId &&
+          actor === currentIdentity()) this.setData({ message: '复制地点失败，请稍后重试。' });
+      } });
+  },
+  async copyJoinedVenue() {
+    const eventId = this.data.id;
+    const actor = currentIdentity();
+    if (!actor || !eventId || this.data.currentUser !== actor || this.data.loadState !== 'READY' ||
+      this.data.successState !== 'JOINED' || this.data.event?.id !== eventId ||
+      this.data.myRegistration?.status !== 'CONFIRMED') return;
+    const loaded = await this.refresh();
+    if (!loaded || actor !== currentIdentity() || this.data.currentUser !== actor ||
+      this.data.id !== eventId || this.data.event?.id !== eventId || this.data.loadState !== 'READY' ||
+      this.data.successState !== 'JOINED' || this.data.myRegistration?.status !== 'CONFIRMED') return;
+    this.copyVenue();
   },
   shareCurrentEvent() {
     if (this.data.isHost) return this.openShareCard();

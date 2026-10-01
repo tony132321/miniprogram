@@ -162,6 +162,7 @@ test('PG01 location and share controls use the current event and its real capabi
     },
     Page(definition: Record<string, any>) { page = definition; },
     wx: {
+      getStorageSync() { return ''; },
       setClipboardData({ data, success }: { data: string; success: () => void }) { copied.push(data); success(); },
       showToast() {},
       navigateTo({ url }: { url: string }) { routes.push(url); }
@@ -184,4 +185,235 @@ test('PG01 location and share controls use the current event and its real capabi
   page.shareCurrentEvent();
   assert.match(copied[1]!, /活动：周末羽毛球/);
   assert.equal(routes.length, 1);
+});
+
+test('PG05-S confirmed member copies the latest venue from the success card', async () => {
+  const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const successCard = markup.match(/<view wx:if="{{successState === 'JOINED'}}"[\s\S]*?<view class="joined-success-card joined-roster-card"/);
+  assert.ok(successCard);
+  assert.match(successCard[0], /class="joined-ticket-row joined-ticket-venue"[\s\S]*?bindtap="copyJoinedVenue"/);
+
+  let page: Record<string, any> | undefined;
+  const copied: string[] = [];
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: {} };
+      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
+      if (path === '../../config.js') return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: {
+      getStorageSync(key: string) { return key === 'devUser' ? 'member-1' : ''; },
+      setClipboardData({ data, success }: { data: string; success: () => void }) { copied.push(data); success(); },
+      showToast() {}
+    }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.setData({ id: 'event-1', loadState: 'READY', currentUser: 'member-1', successState: 'JOINED',
+    myRegistration: { status: 'CONFIRMED' }, event: { id: 'event-1', payload: { city: '上海', venueName: '旧场馆' } } });
+  page.refresh = async function () {
+    this.setData({ event: { id: 'event-1', payload: { city: '上海', venueName: '新场馆' } } });
+    return true;
+  };
+  await page.copyJoinedVenue();
+  assert.deepEqual(copied, ['上海 · 新场馆']);
+});
+
+test('PG05-S venue action rejects a stale identity, revoked seat and missing venue', async () => {
+  let actor = 'member-1';
+  let page: Record<string, any> | undefined;
+  const copied: string[] = [];
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: {} };
+      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
+      if (path === '../../config.js') return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: {
+      getStorageSync(key: string) { return key === 'devUser' ? actor : ''; },
+      setClipboardData({ data, success }: { data: string; success: () => void }) { copied.push(data); success(); },
+      showToast() {}
+    }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.setData({ id: 'event-1', loadState: 'READY', currentUser: 'member-1', successState: 'JOINED',
+    myRegistration: { status: 'CONFIRMED' }, event: { id: 'event-1', payload: { city: '上海', venueName: '旧场馆' } } });
+  page.refresh = async function () {
+    this.setData({ myRegistration: { status: 'WAITLISTED' }, successState: '' });
+    return true;
+  };
+  actor = 'member-2';
+  await page.copyJoinedVenue();
+  assert.deepEqual(copied, []);
+
+  actor = 'member-1';
+  await page.copyJoinedVenue();
+  assert.deepEqual(copied, []);
+
+  page.setData({ successState: 'JOINED', myRegistration: { status: 'CONFIRMED' },
+    event: { id: 'event-1', payload: { city: '上海', venueName: '旧场馆' } } });
+  page.refresh = async function () {
+    this.setData({ event: { id: 'event-1', payload: { city: '上海', venueName: '' } } });
+    return true;
+  };
+  await page.copyJoinedVenue();
+  assert.deepEqual(copied, []);
+  assert.equal(page.data.message, '当前活动尚未确认公共集合地点。');
+});
+
+test('venue clipboard completion does not show an old-account success toast', () => {
+  let actor = 'member-1';
+  let clipboardSuccess: (() => void) | undefined;
+  let page: Record<string, any> | undefined;
+  const toasts: string[] = [];
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: {} };
+      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
+      if (path === '../../config.js') return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: {
+      getStorageSync(key: string) { return key === 'devUser' ? actor : ''; },
+      setClipboardData({ success }: { success: () => void }) { clipboardSuccess = success; },
+      showToast({ title }: { title: string }) { toasts.push(title); }
+    }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.setData({ id: 'event-1', loadState: 'READY', currentUser: 'member-1',
+    event: { id: 'event-1', payload: { city: '上海', venueName: '公共球馆' } } });
+  page.copyVenue();
+  assert.ok(clipboardSuccess);
+  actor = 'member-2';
+  clipboardSuccess();
+  assert.deepEqual(toasts, []);
+
+  actor = '';
+  page.setData({ currentUser: '' });
+  page.copyVenue();
+  assert.ok(clipboardSuccess);
+  actor = 'member-3';
+  clipboardSuccess();
+  assert.deepEqual(toasts, [], 'anonymous copy completion must not toast after another account appears');
+});
+
+test('PG05-S venue action uses the real event refresh before copying or dismissing a revoked seat', async () => {
+  let registrationStatus = 'CONFIRMED';
+  let venueName = '新场馆';
+  let page: Record<string, any> | undefined;
+  const copied: string[] = [];
+  const liveEvent = () => ({ id: 'event-1', hostId: 'host-1', status: 'RECRUITING',
+    reviewStatus: 'APPROVED', recruiting: true, riskPaused: false, version: 2,
+    payload: { title: '周末羽毛球', visibility: 'INVITE', city: '上海', venueName,
+      startAt: '2026-10-05T10:00:00Z', endAt: '2026-10-05T12:00:00Z', feeMode: 'FREE',
+      maxParticipants: 8, minParticipants: 2 },
+    stats: { confirmed: 2, reserved: 0, requested: 0, waitlisted: 0, reconfirmRequired: 0 } });
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: { get: async (url: string) => {
+        if (url === '/me/registrations?eventId=event-1')
+          return { items: [{ event_id: 'event-1', status: registrationStatus }] };
+        if (url === '/events/event-1') return liveEvent();
+        if (url === '/system/safety') return { status: 'OPEN' };
+        if (url === '/events/event-1/aliases') return { items: [], notice: { version: 'v1', text: '昵称仅用于本场' } };
+        if (url.startsWith('/events/event-1/')) return { items: [] };
+        throw new Error(`unexpected GET ${url}`);
+      } } };
+      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
+      if (path === '../../config.js') return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: {
+      getStorageSync(key: string) { return key === 'devUser' ? 'member-1' : ''; },
+      setClipboardData({ data, success }: { data: string; success: () => void }) { copied.push(data); success(); },
+      showToast() {}
+    },
+    setTimeout, clearTimeout
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.setData({ id: 'event-1', loadState: 'READY', currentUser: 'member-1', successState: 'JOINED',
+    myRegistration: { status: 'CONFIRMED' }, event: { ...liveEvent(), payload: { ...liveEvent().payload, venueName: '旧场馆' } } });
+
+  await page.copyJoinedVenue();
+  assert.deepEqual(copied, ['上海 · 新场馆']);
+  assert.equal(page.data.successState, 'JOINED');
+
+  registrationStatus = 'WAITLISTED';
+  venueName = '改期后的场馆';
+  await page.copyJoinedVenue();
+  assert.deepEqual(copied, ['上海 · 新场馆']);
+  assert.equal(page.data.successState, '');
+  assert.equal(page.data.myRegistration.status, 'WAITLISTED');
+});
+
+test('PG05-S ignores an old A copy response after A to B to A account reloads', async () => {
+  let actor = 'member-A';
+  let registrationsRead = 0;
+  let resolveOldRegistration: ((value: Record<string, unknown>) => void) | undefined;
+  let signalOldStarted: (() => void) | undefined;
+  const oldStarted = new Promise<void>(resolve => { signalOldStarted = resolve; });
+  const oldRegistration = new Promise<Record<string, unknown>>(resolve => { resolveOldRegistration = resolve; });
+  const copied: string[] = [];
+  let page: Record<string, any> | undefined;
+  const liveEvent = () => ({ id: 'event-1', hostId: 'host-1', status: 'RECRUITING',
+    reviewStatus: 'APPROVED', recruiting: true, riskPaused: false, version: 2,
+    payload: { title: '周末羽毛球', visibility: 'INVITE', city: '上海', venueName: '本次场馆',
+      startAt: '2026-10-05T10:00:00Z', endAt: '2026-10-05T12:00:00Z', feeMode: 'FREE',
+      maxParticipants: 8, minParticipants: 2 },
+    stats: { confirmed: 2, reserved: 0, requested: 0, waitlisted: 0, reconfirmRequired: 0 } });
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: { get: async (url: string) => {
+        if (url === '/me/registrations?eventId=event-1') {
+          registrationsRead += 1;
+          if (registrationsRead === 1) { signalOldStarted?.(); return oldRegistration; }
+          return actor === 'member-B' ? { items: [] } :
+            { items: [{ event_id: 'event-1', status: 'CONFIRMED' }] };
+        }
+        if (url === '/events/event-1') {
+          if (actor === 'member-B') throw Object.assign(new Error('无权查看'), { code: 'FORBIDDEN' });
+          return liveEvent();
+        }
+        if (url === '/system/safety') return { status: 'OPEN' };
+        if (url === '/events/event-1/aliases') return { items: [], notice: { version: 'v1', text: '本场昵称提示' } };
+        if (url.startsWith('/events/event-1/')) return { items: [] };
+        throw new Error(`unexpected GET ${url}`);
+      } } };
+      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
+      if (path === '../../config.js') return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: {
+      getStorageSync(key: string) { return key === 'devUser' ? actor : ''; },
+      setClipboardData({ data, success }: { data: string; success: () => void }) { copied.push(data); success(); },
+      showToast() {}
+    },
+    setTimeout, clearTimeout
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.setData({ id: 'event-1', loadState: 'READY', currentUser: 'member-A', successState: 'JOINED',
+    myRegistration: { status: 'CONFIRMED' }, event: liveEvent() });
+
+  const oldCopy = page.copyJoinedVenue();
+  await oldStarted;
+  actor = 'member-B';
+  await page.refresh();
+  actor = 'member-A';
+  assert.equal(await page.refresh(), true);
+  assert.equal(page.data.successState, 'JOINED');
+  resolveOldRegistration?.({ items: [{ event_id: 'event-1', status: 'CONFIRMED' }] });
+  await oldCopy;
+  assert.deepEqual(copied, [], 'the first A click cannot act on an obsolete response');
+  assert.equal(page.data.currentUser, 'member-A');
 });
