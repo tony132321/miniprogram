@@ -616,6 +616,7 @@ Page({
   devInput(event) { this.setData({ devUser: event.detail.value.trim() }); },
   setDevUser() {
     if (!this.data.developmentMode) return this.setData({ message: '正式版本不支持测试身份' });
+    api.cancelLogin?.();
     this.clearPrivateData();
     this._privateActor = `dev:${this.data.devUser}`;
     wx.removeStorageSync('sessionToken'); wx.removeStorageSync('userId');

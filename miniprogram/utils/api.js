@@ -167,6 +167,7 @@ function createApi(platform, config) {
   return {
     get: path => path === '/me/events' ? listMyEvents() : call('GET', path),
     post: (path, data, key, requestOptions) => call('POST', path, data, key, requestOptions),
+    cancelLogin() { authGeneration++; },
     acknowledgeMutation(method, path, data) {
       const fingerprint = mutationFingerprint(currentMutationIdentity(), method, path, data);
       const key = uncertainMutations.get(fingerprint);
@@ -195,6 +196,8 @@ function createApi(platform, config) {
       return new Promise((resolve, reject) => platform.login({
         success: async ({ code }) => {
           try {
+            if (generation !== authGeneration || logoutInProgress)
+              throw Object.assign(new Error('登录已取消，请重试'), { code: 'LOGIN_CANCELLED' });
             const session = await call('POST', '/auth/wechat', { code });
             if (generation !== authGeneration || logoutInProgress)
               throw Object.assign(new Error('登录已取消，请重试'), { code: 'LOGIN_CANCELLED' });
