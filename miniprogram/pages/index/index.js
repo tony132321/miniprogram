@@ -288,6 +288,8 @@ Page({
         loadState: 'READY', errorCode: '', message: '' });
       if (detailedStateTabs.includes(this.data.activeTab))
         await this.enrichStateCards(this.data.activeTab, identity, generation, this._detailRequestId);
+      else if (!this.data.stateView && featuredItem)
+        await this.enrichFeaturedItem(featuredItem, identity, generation);
     } catch (error) {
       if (generation === this._loadGeneration && identity === currentIdentity())
         this.setData({ loadState: 'ERROR', errorCode: error.code || '', message: error.message || '活动列表加载失败' });
@@ -313,6 +315,8 @@ Page({
     if (typeof wx.pageScrollTo === 'function') wx.pageScrollTo({ scrollTop: 0, duration: 0 });
     if (this.data.loadState === 'READY' && detailedStateTabs.includes(key))
       await this.enrichStateCards(key, currentIdentity(), this._loadGeneration, requestId);
+    else if (this.data.loadState === 'READY' && key === 'attending' && this.data.featuredItem)
+      await this.enrichFeaturedItem(this.data.featuredItem, currentIdentity(), this._loadGeneration);
   },
   showAllOrganized() {
     return this.selectTab({ currentTarget: { dataset: { key: 'organized' } } });
@@ -337,6 +341,22 @@ Page({
         visibleItems: visibleForTab(updatedGroup, key, this.data.draftsOnly),
         items: this.data.items.map(item => enriched.get(item.id) || item) });
     }
+  },
+  async enrichFeaturedItem(item, identity, loadGeneration) {
+    if (!item?.id || !item.isHost || item.reviewStatus !== 'APPROVED' ||
+      !Number.isSafeInteger(item.version)) return;
+    try {
+      const event = await api.get('/events/' + encodeURIComponent(item.id));
+      if (currentIdentity() !== identity || this._loadGeneration !== loadGeneration ||
+        this.data.stateView || this.data.featuredItem?.id !== item.id) return;
+      if (event?.id !== item.id || event.status !== item.status || event.reviewStatus !== 'APPROVED' ||
+        !Number.isSafeInteger(event.version) || event.version < item.version ||
+        !Number.isSafeInteger(event.stats?.confirmed) || event.stats.confirmed < 0 ||
+        !Number.isSafeInteger(event.payload?.maxParticipants) || event.payload.maxParticipants < 1) return;
+      const enriched = withRealDetail(item, event, currentActorId());
+      if (enriched.capacityLabel)
+        this.setData({ featuredItem: { ...this.data.featuredItem, capacityLabel: enriched.capacityLabel } });
+    } catch (_) { /* Keep the authorized list card when its detail is unavailable. */ }
   },
   goCreate() { wx.switchTab({ url: '/pages/create/create' }); },
   heroIdeaInput(event) { this.setData({ heroIdeaText: String(event?.detail?.value || '').slice(0, 300) }); },

@@ -59,7 +59,14 @@ page { background: #f5f7fa; color: #172033; }
 .feature-status-CANCELLED,.feature-status-EXPIRED { background: #fff1f3; color: #b9435a; }
 .feature-status-idea { color: #1d64f2; background: #e9f1ff; }
 .feature-detail-meta { margin-top: 10rpx; color: #6d7785; font-size: 20rpx; line-height: 1.35; }
+.feature-attendance { display: flex; align-items: center; justify-content: space-between; gap: 12rpx; margin-top: 17rpx; padding-top: 13rpx; border-top: 1rpx solid #edf0f4; }
+.feature-attendance-markers { display: flex; flex: none; align-items: center; padding-left: 4rpx; }
+.feature-attendance-markers text { display: block; width: 28rpx; height: 28rpx; margin-left: -4rpx; border: 2rpx solid #fff; border-radius: 50%; background: #edf2f7; color: #6b7b8c; font-size: 14rpx; line-height: 28rpx; text-align: center; }
+.feature-attendance-markers text:nth-child(2) { background: #eaf5ec; color: #5b956a; }
+.feature-attendance-markers text:nth-child(3) { background: #f4eef8; color: #9774a7; }
+.feature-attendance-count { color: #6d7785; font-size: 18rpx; font-weight: 800; }
 .feature-detail-foot { display: flex; align-items: center; justify-content: space-between; gap: 10rpx; margin-top: 20rpx; padding-top: 13rpx; border-top: 1rpx solid #edf0f4; color: #97a0ad; font-size: 18rpx; }
+.feature-detail-foot-with-count { margin-top: 11rpx; padding-top: 0; border-top: 0; }
 .feature-detail-action { flex: none; color: #1d64f2; font-size: 20rpx; font-weight: 800; }
 .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 12rpx; margin: 30rpx 0 17rpx; font-size: 28rpx; font-weight: 850; }
 .section-heading > view { display: flex; align-items: center; gap: 9rpx; }
