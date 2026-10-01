@@ -7,11 +7,11 @@ test('PG06 host completion shortcut opens the existing form only when completion
   let page: Record<string, any> | undefined;
   const scrolls: Array<Record<string, any>> = [];
   const posts: Array<Record<string, any>> = [];
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { post: (...args: any[]) => posts.push({ args }) } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post: (...args: any[]) => posts.push({ args }) } };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -48,16 +48,16 @@ test('PG06 host completion shortcut opens the existing form only when completion
   page.openHostCompletion();
   assert.equal(scrolls.length, 1);
 
-  const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const markup = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
   assert.match(markup, /wx:if="{{canCompleteEvent}}"[^>]*bindtap="openHostCompletion"/);
   assert.match(markup, /id="hostCompletionForm"[^>]*wx:if="{{canCompleteEvent}}"/);
   assert.match(markup, /bindtap="cancelEvent"[^>]*>[^<]*<text>□<\/text>取消活动/);
 });
 
 test('PG06 completion notes keep native textareas compact and editable', () => {
-  const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const markup = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
   for (const id of ['completionAnomalyInput', 'completionVenueIssueInput'])
     assert.match(markup, new RegExp(`<textarea id="${id}"[^>]*class="host-completion-note"[^>]*bindinput="${id}"`));
-  const styles = readFileSync(new URL('../miniprogram/pages/event/event.wxss', import.meta.url), 'utf8');
+  const styles = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxss', import.meta.url), 'utf8');
   assert.match(styles, /\.event-section \.host-completion-note\s*\{[^}]*height:\s*116rpx;[^}]*min-height:\s*116rpx;/);
 });

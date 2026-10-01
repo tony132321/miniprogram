@@ -26,14 +26,14 @@ function mount(options: {
   let page: Record<string, any> | undefined;
   let token = 'token-a';
   const routes: string[] = [];
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(module: string) {
-      if (module === '../../utils/api.js') return { api: {
+      if ((module === '../../utils/api.js' || module === '../../../utils/api.js')) return { api: {
         get: options.get || (async () => ({ items: [] })),
         post: options.post || (async () => ({}))
       } };
-      if (module === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (module === '../../config.js') return { developmentUser: '' };
+      if ((module === '../../utils/checkin-qr.js' || module === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((module === '../../config.js' || module === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${module}`);
     },
     Page(definition: Record<string, any>) { page = definition; },

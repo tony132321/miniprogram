@@ -1,9 +1,11 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
+import { createRequire } from 'node:module';
 import { runInNewContext } from 'node:vm';
 import { cityModule } from './miniprogram-city-module.js';
 
+const requireModule = createRequire(import.meta.url);
 const app = JSON.parse(readFileSync(new URL('../miniprogram/app.json', import.meta.url), 'utf8')) as {
   pages: string[];
   subPackages?: Array<{ root: string; pages: string[] }>;
@@ -21,11 +23,13 @@ test('every WXML event binding has a page handler and every literal page navigat
     runInNewContext(source, {
       Page(definition: Record<string, unknown>) { page = definition; },
       require(path: string) {
+        if (path.endsWith('/utils/event-entry.js')) return requireModule('../miniprogram/utils/event-entry.js');
         if (path.endsWith('/config.js')) return { developmentUser: '' };
         if (path.endsWith('/utils/api.js')) return { api: {} };
         if (path.endsWith('/utils/city.js')) return cityModule;
         return new Proxy({}, { get: () => () => {} });
       },
+      getCurrentPages() { return []; },
       wx: {}, setTimeout, clearTimeout
     }, { filename: route });
     assert.ok(page, `${route} must register a Page`);

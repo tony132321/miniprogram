@@ -5,8 +5,8 @@ import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
 
 const require = createRequire(import.meta.url);
-const source = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
-const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+const source = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8');
+const markup = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
 const start = Date.parse('2026-10-01T12:00:00.000Z');
 const end = Date.parse('2026-10-01T14:00:00.000Z');
 
@@ -20,7 +20,7 @@ function eventPage(actor: 'host' | 'member' | 'helper', clock: { now: number }) 
     payload: { title: '受控羽毛球活动', startAt: new Date(start).toISOString(), endAt: new Date(end).toISOString(), feeMode: 'FREE' } };
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {
         async get(pathname: string) {
           if (pathname === '/events/event-1') return event;
           if (pathname === '/me/registrations?eventId=event-1') return { items: actor === 'member'
@@ -33,8 +33,8 @@ function eventPage(actor: 'host' | 'member' | 'helper', clock: { now: number }) 
         },
         async post(pathname: string) { posts.push(pathname); return { token: 'signed-token', expiresInSeconds: 30 }; }
       } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: actor };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: actor };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },

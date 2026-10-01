@@ -162,11 +162,11 @@ test('poster rechecks the server version before opening the exported image', asy
 test('published poster shortcut routes through the share page and the share page performs the live recheck', async () => {
   let eventPage: Record<string, any> | undefined;
   const routes: string[] = [];
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(path);
     },
     Page(definition: Record<string, any>) { eventPage = definition; },
@@ -183,7 +183,7 @@ test('published poster shortcut routes through the share page and the share page
   eventPage._inviteValidUntil = Date.now() + 60_000;
   eventPage.openShareCard({ currentTarget: { dataset: { poster: true } } });
   assert.deepEqual(routes, ['/subpackages/activity/share/share?id=event-1&poster=1']);
-  assert.match(readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8'),
+  assert.match(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8'),
     /id="publishedPosterButton"[^>]+bindtap="openShareCard"/);
   assert.match(readFileSync(new URL('../miniprogram/subpackages/activity/share/share.wxml', import.meta.url), 'utf8'),
     /bindtap="generatePoster"/);

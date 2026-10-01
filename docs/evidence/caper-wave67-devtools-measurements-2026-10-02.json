@@ -1,0 +1,1755 @@
+{
+  "scope": "Wave67 changed UI only, no full local or CI suite",
+  "cases": {
+    "caper-wave67-runtime-probe": {
+      "path": "pages/index/index",
+      "tabElements": 0,
+      "fonts": {
+        "support": "supported",
+        "sdkVersion": "3.17.2",
+        "faces": [
+          {
+            "family": "Caveat",
+            "weight": "700",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "600",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "700",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "800",
+            "status": "loaded"
+          },
+          {
+            "family": "Rubik Mono One",
+            "weight": "400",
+            "status": "loaded"
+          }
+        ]
+      },
+      "tab": {
+        "selected": 0,
+        "hidden": false
+      }
+    },
+    "caper-wave67-form-tabs-first": {
+      "scope": "Wave67 five actual tab lifecycle variants, FORM and draft REVIEW; no publication, no full suite",
+      "checks": [
+        {
+          "pass": true,
+          "label": "actual lifecycle selected index",
+          "actual": {
+            "selected": 0,
+            "hidden": false,
+            "route": "pages/index/index",
+            "geometry": [
+              {
+                "left": 0,
+                "right": 402,
+                "top": 784,
+                "bottom": 874,
+                "width": 402,
+                "height": "90px",
+                "max-width": "440px",
+                "padding-bottom": "34px",
+                "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif"
+              },
+              {
+                "left": 177,
+                "right": 225,
+                "top": 778.5,
+                "bottom": 826.5,
+                "width": "48px",
+                "height": "48px"
+              },
+              [
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(29, 100, 242)",
+                  "font-weight": "700"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(156, 163, 175)",
+                  "font-weight": "700"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(156, 163, 175)",
+                  "font-weight": "700"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(156, 163, 175)",
+                  "font-weight": "700"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "pass": true,
+          "label": "real tab visible index",
+          "actual": {
+            "selected": 0,
+            "hidden": false,
+            "route": "pages/index/index",
+            "geometry": [
+              {
+                "left": 0,
+                "right": 402,
+                "top": 784,
+                "bottom": 874,
+                "width": 402,
+                "height": "90px",
+                "max-width": "440px",
+                "padding-bottom": "34px",
+                "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif"
+              },
+              {
+                "left": 177,
+                "right": 225,
+                "top": 778.5,
+                "bottom": 826.5,
+                "width": "48px",
+                "height": "48px"
+              },
+              [
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(29, 100, 242)",
+                  "font-weight": "700"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(156, 163, 175)",
+                  "font-weight": "700"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(156, 163, 175)",
+                  "font-weight": "700"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(156, 163, 175)",
+                  "font-weight": "700"
+                }
+              ]
+            ]
+          }
+        }
+      ],
+      "actions": [
+        {
+          "action": "SDK switchTab, not a custom button tap",
+          "route": "pages/index/index"
+        }
+      ],
+      "metrics": [
+        {
+          "selected": 0,
+          "hidden": false,
+          "route": "pages/index/index",
+          "geometry": [
+            {
+              "left": 0,
+              "right": 402,
+              "top": 784,
+              "bottom": 874,
+              "width": 402,
+              "height": "90px",
+              "max-width": "440px",
+              "padding-bottom": "34px",
+              "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif"
+            },
+            {
+              "left": 177,
+              "right": 225,
+              "top": 778.5,
+              "bottom": 826.5,
+              "width": "48px",
+              "height": "48px"
+            },
+            [
+              {
+                "font-size": "10px",
+                "line-height": "15px",
+                "color": "rgb(29, 100, 242)",
+                "font-weight": "700"
+              },
+              {
+                "font-size": "10px",
+                "line-height": "15px",
+                "color": "rgb(156, 163, 175)",
+                "font-weight": "700"
+              },
+              {
+                "font-size": "10px",
+                "line-height": "15px",
+                "color": "rgb(156, 163, 175)",
+                "font-weight": "700"
+              },
+              {
+                "font-size": "10px",
+                "line-height": "15px",
+                "color": "rgb(156, 163, 175)",
+                "font-weight": "700"
+              }
+            ]
+          ]
+        }
+      ],
+      "screenshots": [],
+      "exceptions": [],
+      "pass": false,
+      "failure": {
+        "phase": "tab-lifecycle",
+        "message": "Timeout discover ready",
+        "stack": "Error: Timeout discover ready\n    at until (/private/tmp/caper-wave67-form-tabs.cjs:2:759)\n    at async /private/tmp/caper-wave67-form-tabs.cjs:3:673"
+      },
+      "elapsedMs": 18621
+    },
+    "caper-wave67-form-tabs-second": {
+      "scope": "Wave67 five actual tab lifecycle variants, FORM and draft REVIEW; no publication, no full suite",
+      "checks": [
+        {
+          "pass": true,
+          "label": "actual lifecycle selected discover",
+          "actual": {
+            "selected": 1,
+            "hidden": false,
+            "route": "pages/discover/discover",
+            "geometry": [
+              {
+                "left": 6,
+                "right": 396,
+                "top": 786,
+                "bottom": 874,
+                "width": 390,
+                "height": "88px",
+                "max-width": "390px",
+                "padding-bottom": "34px",
+                "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif"
+              },
+              {
+                "left": 175,
+                "right": 227,
+                "top": 775.5,
+                "bottom": 827.5,
+                "width": "52px",
+                "height": "52px"
+              },
+              [
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(148, 163, 184)",
+                  "font-weight": "500"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(29, 100, 242)",
+                  "font-weight": "700"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(148, 163, 184)",
+                  "font-weight": "500"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(148, 163, 184)",
+                  "font-weight": "500"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "pass": true,
+          "label": "real tab visible discover",
+          "actual": {
+            "selected": 1,
+            "hidden": false,
+            "route": "pages/discover/discover",
+            "geometry": [
+              {
+                "left": 6,
+                "right": 396,
+                "top": 786,
+                "bottom": 874,
+                "width": 390,
+                "height": "88px",
+                "max-width": "390px",
+                "padding-bottom": "34px",
+                "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif"
+              },
+              {
+                "left": 175,
+                "right": 227,
+                "top": 775.5,
+                "bottom": 827.5,
+                "width": "52px",
+                "height": "52px"
+              },
+              [
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(148, 163, 184)",
+                  "font-weight": "500"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(29, 100, 242)",
+                  "font-weight": "700"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(148, 163, 184)",
+                  "font-weight": "500"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(148, 163, 184)",
+                  "font-weight": "500"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "pass": true,
+          "label": "actual lifecycle selected create",
+          "actual": {
+            "selected": 2,
+            "hidden": true,
+            "route": "pages/create/create",
+            "createStage": "IDEA"
+          }
+        },
+        {
+          "pass": true,
+          "label": "IDEA hides real custom Tab",
+          "actual": {
+            "selected": 2,
+            "hidden": true,
+            "route": "pages/create/create",
+            "createStage": "IDEA"
+          }
+        },
+        {
+          "pass": true,
+          "label": "actual lifecycle selected messages",
+          "actual": {
+            "selected": 3,
+            "hidden": false,
+            "route": "pages/messages/messages",
+            "geometry": [
+              {
+                "left": 6,
+                "right": 396,
+                "top": 786,
+                "bottom": 874,
+                "width": 390,
+                "height": "88px",
+                "max-width": "390px",
+                "padding-bottom": "34px",
+                "font-family": "-apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", sans-serif"
+              },
+              {
+                "left": 177,
+                "right": 225,
+                "top": 781.5,
+                "bottom": 829.5,
+                "width": "48px",
+                "height": "48px"
+              },
+              [
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(148, 163, 184)",
+                  "font-weight": "500"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(148, 163, 184)",
+                  "font-weight": "500"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(29, 100, 242)",
+                  "font-weight": "700"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(148, 163, 184)",
+                  "font-weight": "500"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "pass": true,
+          "label": "real tab visible messages",
+          "actual": {
+            "selected": 3,
+            "hidden": false,
+            "route": "pages/messages/messages",
+            "geometry": [
+              {
+                "left": 6,
+                "right": 396,
+                "top": 786,
+                "bottom": 874,
+                "width": 390,
+                "height": "88px",
+                "max-width": "390px",
+                "padding-bottom": "34px",
+                "font-family": "-apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", sans-serif"
+              },
+              {
+                "left": 177,
+                "right": 225,
+                "top": 781.5,
+                "bottom": 829.5,
+                "width": "48px",
+                "height": "48px"
+              },
+              [
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(148, 163, 184)",
+                  "font-weight": "500"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(148, 163, 184)",
+                  "font-weight": "500"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(29, 100, 242)",
+                  "font-weight": "700"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(148, 163, 184)",
+                  "font-weight": "500"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "pass": true,
+          "label": "actual lifecycle selected me",
+          "actual": {
+            "selected": 4,
+            "hidden": false,
+            "route": "pages/me/me",
+            "geometry": [
+              {
+                "left": 6,
+                "right": 396,
+                "top": 790,
+                "bottom": 874,
+                "width": 390,
+                "height": "84px",
+                "max-width": "390px",
+                "padding-bottom": "34px",
+                "font-family": "-apple-system, \"system-ui\", \"SF Pro Text\", \"PingFang SC\", \"Helvetica Neue\", sans-serif"
+              },
+              {
+                "left": 177,
+                "right": 225,
+                "top": 783.5,
+                "bottom": 831.5,
+                "width": "48px",
+                "height": "48px"
+              },
+              [
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(148, 163, 184)",
+                  "font-weight": "500"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(148, 163, 184)",
+                  "font-weight": "500"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(148, 163, 184)",
+                  "font-weight": "500"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(29, 100, 242)",
+                  "font-weight": "700"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "pass": true,
+          "label": "real tab visible me",
+          "actual": {
+            "selected": 4,
+            "hidden": false,
+            "route": "pages/me/me",
+            "geometry": [
+              {
+                "left": 6,
+                "right": 396,
+                "top": 790,
+                "bottom": 874,
+                "width": 390,
+                "height": "84px",
+                "max-width": "390px",
+                "padding-bottom": "34px",
+                "font-family": "-apple-system, \"system-ui\", \"SF Pro Text\", \"PingFang SC\", \"Helvetica Neue\", sans-serif"
+              },
+              {
+                "left": 177,
+                "right": 225,
+                "top": 783.5,
+                "bottom": 831.5,
+                "width": "48px",
+                "height": "48px"
+              },
+              [
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(148, 163, 184)",
+                  "font-weight": "500"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(148, 163, 184)",
+                  "font-weight": "500"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(148, 163, 184)",
+                  "font-weight": "500"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(29, 100, 242)",
+                  "font-weight": "700"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "pass": true,
+          "label": "new FORM branch rendered",
+          "actual": true
+        },
+        {
+          "pass": true,
+          "label": "FORM real custom Tab visible",
+          "actual": {
+            "selected": 2,
+            "hidden": false,
+            "route": "pages/create/create",
+            "createStage": "FORM",
+            "geometry": [
+              {
+                "left": 0,
+                "right": 402,
+                "top": 776,
+                "bottom": 874,
+                "width": 402,
+                "height": "98px",
+                "max-width": "420px",
+                "padding-bottom": "34px",
+                "font-family": "-apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", sans-serif"
+              },
+              {
+                "left": 170.9921875,
+                "right": 230.9921875,
+                "top": 758,
+                "bottom": 818,
+                "width": "60px",
+                "height": "60px"
+              },
+              [
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(148, 163, 184)",
+                  "font-weight": "500"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(148, 163, 184)",
+                  "font-weight": "500"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(29, 100, 242)",
+                  "font-weight": "900"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(148, 163, 184)",
+                  "font-weight": "500"
+                },
+                {
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "color": "rgb(148, 163, 184)",
+                  "font-weight": "500"
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "pass": false,
+          "label": "real field handlers and quick date persisted",
+          "actual": {
+            "title": "Wave 67 定向 UI 草稿",
+            "startDate": "",
+            "hostParticipates": null
+          }
+        }
+      ],
+      "actions": [
+        {
+          "action": "SDK switchTab, not a custom button tap",
+          "route": "pages/discover/discover"
+        },
+        {
+          "action": "SDK switchTab, not a custom button tap",
+          "route": "pages/create/create"
+        },
+        {
+          "action": "SDK switchTab, not a custom button tap",
+          "route": "pages/messages/messages"
+        },
+        {
+          "action": "SDK switchTab, not a custom button tap",
+          "route": "pages/me/me"
+        }
+      ],
+      "metrics": [
+        {
+          "selected": 1,
+          "hidden": false,
+          "route": "pages/discover/discover",
+          "geometry": [
+            {
+              "left": 6,
+              "right": 396,
+              "top": 786,
+              "bottom": 874,
+              "width": 390,
+              "height": "88px",
+              "max-width": "390px",
+              "padding-bottom": "34px",
+              "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif"
+            },
+            {
+              "left": 175,
+              "right": 227,
+              "top": 775.5,
+              "bottom": 827.5,
+              "width": "52px",
+              "height": "52px"
+            },
+            [
+              {
+                "font-size": "10px",
+                "line-height": "15px",
+                "color": "rgb(148, 163, 184)",
+                "font-weight": "500"
+              },
+              {
+                "font-size": "10px",
+                "line-height": "15px",
+                "color": "rgb(29, 100, 242)",
+                "font-weight": "700"
+              },
+              {
+                "font-size": "10px",
+                "line-height": "15px",
+                "color": "rgb(148, 163, 184)",
+                "font-weight": "500"
+              },
+              {
+                "font-size": "10px",
+                "line-height": "15px",
+                "color": "rgb(148, 163, 184)",
+                "font-weight": "500"
+              }
+            ]
+          ]
+        },
+        {
+          "selected": 2,
+          "hidden": true,
+          "route": "pages/create/create",
+          "createStage": "IDEA"
+        },
+        {
+          "selected": 3,
+          "hidden": false,
+          "route": "pages/messages/messages",
+          "geometry": [
+            {
+              "left": 6,
+              "right": 396,
+              "top": 786,
+              "bottom": 874,
+              "width": 390,
+              "height": "88px",
+              "max-width": "390px",
+              "padding-bottom": "34px",
+              "font-family": "-apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", sans-serif"
+            },
+            {
+              "left": 177,
+              "right": 225,
+              "top": 781.5,
+              "bottom": 829.5,
+              "width": "48px",
+              "height": "48px"
+            },
+            [
+              {
+                "font-size": "10px",
+                "line-height": "15px",
+                "color": "rgb(148, 163, 184)",
+                "font-weight": "500"
+              },
+              {
+                "font-size": "10px",
+                "line-height": "15px",
+                "color": "rgb(148, 163, 184)",
+                "font-weight": "500"
+              },
+              {
+                "font-size": "10px",
+                "line-height": "15px",
+                "color": "rgb(29, 100, 242)",
+                "font-weight": "700"
+              },
+              {
+                "font-size": "10px",
+                "line-height": "15px",
+                "color": "rgb(148, 163, 184)",
+                "font-weight": "500"
+              }
+            ]
+          ]
+        },
+        {
+          "selected": 4,
+          "hidden": false,
+          "route": "pages/me/me",
+          "geometry": [
+            {
+              "left": 6,
+              "right": 396,
+              "top": 790,
+              "bottom": 874,
+              "width": 390,
+              "height": "84px",
+              "max-width": "390px",
+              "padding-bottom": "34px",
+              "font-family": "-apple-system, \"system-ui\", \"SF Pro Text\", \"PingFang SC\", \"Helvetica Neue\", sans-serif"
+            },
+            {
+              "left": 177,
+              "right": 225,
+              "top": 783.5,
+              "bottom": 831.5,
+              "width": "48px",
+              "height": "48px"
+            },
+            [
+              {
+                "font-size": "10px",
+                "line-height": "15px",
+                "color": "rgb(148, 163, 184)",
+                "font-weight": "500"
+              },
+              {
+                "font-size": "10px",
+                "line-height": "15px",
+                "color": "rgb(148, 163, 184)",
+                "font-weight": "500"
+              },
+              {
+                "font-size": "10px",
+                "line-height": "15px",
+                "color": "rgb(148, 163, 184)",
+                "font-weight": "500"
+              },
+              {
+                "font-size": "10px",
+                "line-height": "15px",
+                "color": "rgb(29, 100, 242)",
+                "font-weight": "700"
+              }
+            ]
+          ]
+        },
+        {
+          "selected": 2,
+          "hidden": false,
+          "route": "pages/create/create",
+          "createStage": "FORM",
+          "geometry": [
+            {
+              "left": 0,
+              "right": 402,
+              "top": 776,
+              "bottom": 874,
+              "width": 402,
+              "height": "98px",
+              "max-width": "420px",
+              "padding-bottom": "34px",
+              "font-family": "-apple-system, \"system-ui\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", sans-serif"
+            },
+            {
+              "left": 170.9921875,
+              "right": 230.9921875,
+              "top": 758,
+              "bottom": 818,
+              "width": "60px",
+              "height": "60px"
+            },
+            [
+              {
+                "font-size": "10px",
+                "line-height": "15px",
+                "color": "rgb(148, 163, 184)",
+                "font-weight": "500"
+              },
+              {
+                "font-size": "10px",
+                "line-height": "15px",
+                "color": "rgb(148, 163, 184)",
+                "font-weight": "500"
+              },
+              {
+                "font-size": "10px",
+                "line-height": "15px",
+                "color": "rgb(29, 100, 242)",
+                "font-weight": "900"
+              },
+              {
+                "font-size": "10px",
+                "line-height": "15px",
+                "color": "rgb(148, 163, 184)",
+                "font-weight": "500"
+              },
+              {
+                "font-size": "10px",
+                "line-height": "15px",
+                "color": "rgb(148, 163, 184)",
+                "font-weight": "500"
+              }
+            ]
+          ]
+        },
+        {
+          "selector": ".reference-form-header",
+          "offset": {
+            "left": 0,
+            "top": 0
+          },
+          "size": {
+            "width": 402,
+            "height": 107
+          },
+          "fontSize": "16px"
+        },
+        {
+          "selector": ".reference-form-nav",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 52
+          },
+          "fontSize": "16px"
+        },
+        {
+          "selector": ".form-actions",
+          "offset": {
+            "left": 0,
+            "top": 717
+          },
+          "size": {
+            "width": 402,
+            "height": 59
+          },
+          "fontSize": "16px"
+        },
+        {
+          "selector": ".form-intro-title",
+          "offset": {
+            "left": 20,
+            "top": 123
+          },
+          "size": {
+            "width": 228,
+            "height": 60
+          },
+          "fontSize": "24px"
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-form-top-wave67-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "pass": false,
+      "failure": {
+        "phase": "form-real-input",
+        "message": "real field handlers and quick date persisted",
+        "stack": "AssertionError [ERR_ASSERTION]: real field handlers and quick date persisted\n    at check (/private/tmp/caper-wave67-form-tabs.cjs:2:623)\n    at /private/tmp/caper-wave67-form-tabs.cjs:3:2226\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)"
+      },
+      "elapsedMs": 20707
+    },
+    "caper-wave67-form-remaining": {
+      "scope": "Wave67 five actual tab lifecycle variants, FORM and draft REVIEW; no publication, no full suite",
+      "checks": [
+        {
+          "pass": true,
+          "label": "real field handlers and quick date persisted",
+          "actual": {
+            "title": "Wave 67 定向 UI 草稿",
+            "startDate": "2026-10-03",
+            "hostParticipates": true
+          }
+        },
+        {
+          "pass": true,
+          "label": "REVIEW from actual API draft",
+          "actual": {
+            "draftId": "1f8f8ef9-4de9-4973-b020-bcd09c3aa3be",
+            "status": "DRAFT",
+            "title": "Wave 67 定向 UI 草稿"
+          }
+        },
+        {
+          "pass": true,
+          "label": "new REVIEW rendered",
+          "actual": true
+        },
+        {
+          "pass": true,
+          "label": "REVIEW hides actual tab",
+          "actual": {
+            "selected": 2,
+            "hidden": true,
+            "route": "pages/create/create",
+            "createStage": "REVIEW"
+          }
+        },
+        {
+          "pass": true,
+          "label": "review return keeps real draft",
+          "actual": "1f8f8ef9-4de9-4973-b020-bcd09c3aa3be"
+        },
+        {
+          "pass": true,
+          "label": "H3 actual tenth license and Rubik present",
+          "actual": "开源许可与致谢开源许可与致谢OPEN SOURCE SOFTWARE &amp; SPECIAL THANKSProject IRL 的构建离不开开源社区。以下列出当前工程直接使用的部分依赖、图标及字体资源；完整许可义务以发布时依赖清单及原许可文件为准。引入的开源组件10 项资源PostgreSQL 客户端 pgBri"
+        },
+        {
+          "pass": true,
+          "label": "six actual font success callbacks",
+          "actual": [
+            {
+              "family": "Caveat",
+              "weight": "700",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "400",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "600",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "700",
+              "status": "loaded"
+            },
+            {
+              "family": "Plus Jakarta Sans",
+              "weight": "800",
+              "status": "loaded"
+            },
+            {
+              "family": "Rubik Mono One",
+              "weight": "400",
+              "status": "loaded"
+            }
+          ]
+        },
+        {
+          "pass": true,
+          "label": "scoped runtime exceptions",
+          "actual": []
+        }
+      ],
+      "actions": [
+        {
+          "action": "actual FORM fields, generation button, actual draft API and REVIEW edit",
+          "draftId": "1f8f8ef9-4de9-4973-b020-bcd09c3aa3be",
+          "published": false
+        }
+      ],
+      "metrics": [
+        {
+          "selected": 2,
+          "hidden": true,
+          "route": "pages/create/create",
+          "createStage": "REVIEW"
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-draft-review-wave67-2026-10-02.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-font-license-wave67-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "actualDraft": {
+        "id": "1f8f8ef9-4de9-4973-b020-bcd09c3aa3be",
+        "status": "DRAFT",
+        "version": 1
+      },
+      "h3Text": "开源许可与致谢开源许可与致谢OPEN SOURCE SOFTWARE &amp; SPECIAL THANKSProject IRL 的构建离不开开源社区。以下列出当前工程直接使用的部分依赖、图标及字体资源；完整许可义务以发布时依赖清单及原许可文件为准。引入的开源组件10 项资源PostgreSQL 客户端 pgBrian CarlsonMIT支持服务端数据库连接与活动记录读取。Copyright (c) 2010 - 2021 Brian CarlsonPGliteElectricSQLApache-2.0用于本地开发和测试环境中的数据库。TypeScriptMicrosoftApache-2.0为工程提供类型检查与构建支持。tsx开发与测试工具MIT运行 TypeScript 开发脚本和测试。qrcode-generator二维码生成依赖MIT为当前工程中的二维码功能提供生成能力。Material SymbolsGoogleApache-2.0使用官方 Outlined 图标的本地 SVG 资源；许可正文已随工程保留。Phosphor Icons Web 2.0.3Phosphor IconsMIT发现页使用准确字形导出的本地 SVG；官方图形来源与许可正文随工程保留。CaveatImpallari TypeOFL-1.1用于首页及报名确认海报的固定英文手写文案；官方字体来源与完整许可随工程保留。Copyright 2014 The Caveat Project Authors (https://github.com/googlefonts/caveat)Plus Jakarta SansTokotypeOFL-1.1用于关于、相关说明及报名成功页的原稿英文与数字字形；中文保留系统回退。Copyright 2020 The Plus Jakarta Sans Project Authors (https://github.com/tokotype/PlusJakartaSans)Rubik Mono OneRubik ProjectOFL-1.1用于报名确认海报的固定英文标题；完整许可与官方字体来源随工程保留。Copyright 2015 The Rubik Project Authors (mail@hubertfischer.com)项目与特别致谢Special Acknowledgments测试与反馈感谢参与本地受控活动测试与反馈的协作者。设计参考设计参考来自 Project IRL 当前提供的 Stitch 开发包。项目与贡献记录可在仓库核对代码、依赖和最新状态；正式贡献者名单待发布。许可说明上列是依赖、图标与字体资源的许可标识摘要，不构成完整许可正文。各组件的版权与许可条款，以仓库中实际安装包及其原许可文件为准。项目仓库github.com/tony132321/miniprogram复制仓库地址Built with care for real-world connections.",
+      "pass": true,
+      "elapsedMs": 12295
+    },
+    "caper-wave67-registration-first": {
+      "scope": "Wave67 actual canonical invite migration, actual PG05 registration and PG05-S controls; one real synthetic registration",
+      "checks": [
+        {
+          "pass": false,
+          "label": "canonical invitation preserves token authorization and Unicode source",
+          "actual": {
+            "id": "0e51f241-3f63-439d-b59d-593549a61ac2",
+            "source": "Wave%252067%2520%25E6%259C%258B%25E5%258F%258B%25E5%2588%2586%25E4%25BA%25AB%2520%2526%2520%25E5%2585%25A5%25E5%258F%25A3"
+          }
+        }
+      ],
+      "actions": [],
+      "metrics": [],
+      "screenshots": [],
+      "exceptions": [],
+      "pass": false,
+      "failure": {
+        "phase": "canonical-invite",
+        "message": "canonical invitation preserves token authorization and Unicode source",
+        "stack": "AssertionError [ERR_ASSERTION]: canonical invitation preserves token authorization and Unicode source\n    at check (/private/tmp/caper-wave67-registration.cjs:3:650)\n    at /private/tmp/caper-wave67-registration.cjs:4:703\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)"
+      },
+      "elapsedMs": 9809
+    },
+    "caper-wave67-registration": {
+      "scope": "Wave67 actual canonical invite migration, actual PG05 registration and PG05-S controls; one real synthetic registration",
+      "checks": [
+        {
+          "pass": true,
+          "label": "canonical invitation preserves token authorization and Unicode source",
+          "actual": {
+            "id": "0e51f241-3f63-439d-b59d-593549a61ac2",
+            "source": "Wave%2067%20%E6%9C%8B%E5%8F%8B%E5%88%86%E4%BA%AB%20%26%20%E5%85%A5%E5%8F%A3"
+          }
+        },
+        {
+          "pass": true,
+          "label": "redirect replaces shim and preserves previous page",
+          "actual": [
+            "pages/me/me",
+            "subpackages/activity/event/event"
+          ]
+        },
+        {
+          "pass": true,
+          "label": "new PG05 replaces generic confirmation only for badminton",
+          "actual": true
+        },
+        {
+          "pass": true,
+          "label": "cancel has no confirmed seat"
+        },
+        {
+          "pass": true,
+          "label": "actual POST and server-read confirmed seat",
+          "actual": {
+            "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2",
+            "eventVersion": 2,
+            "registrationId": "92342bb6-4bfe-42e3-b47a-ac87696433a8",
+            "status": "CONFIRMED",
+            "acceptedVersion": 2,
+            "stats": {
+              "confirmed": 6,
+              "waitlisted": 0,
+              "reconfirmRequired": 0,
+              "requested": 0,
+              "reserved": 0
+            }
+          }
+        },
+        {
+          "pass": true,
+          "label": "new actual success view rendered",
+          "actual": true
+        },
+        {
+          "pass": true,
+          "label": "new venue button copies current real venue",
+          "actual": {
+            "length": 13,
+            "sha256": "2330c73f0761c5f07337f5f518db376bd031b8178b55ea10af8b6457c3301d00"
+          }
+        },
+        {
+          "pass": true,
+          "label": "new share control copies actual activity summary",
+          "actual": "0e51f241-3f63-439d-b59d-593549a61ac2"
+        },
+        {
+          "pass": true,
+          "label": "checkin retains activity and leaves success",
+          "actual": "0e51f241-3f63-439d-b59d-593549a61ac2"
+        },
+        {
+          "pass": true,
+          "label": "announcement retains same activity",
+          "actual": "0e51f241-3f63-439d-b59d-593549a61ac2"
+        },
+        {
+          "pass": true,
+          "label": "members retains activity",
+          "actual": "0e51f241-3f63-439d-b59d-593549a61ac2"
+        },
+        {
+          "pass": true,
+          "label": "details target",
+          "actual": true
+        },
+        {
+          "pass": true,
+          "label": "actual new seat appears in itinerary",
+          "actual": "0e51f241-3f63-439d-b59d-593549a61ac2"
+        },
+        {
+          "pass": true,
+          "label": "canonical section preserves source",
+          "actual": true
+        },
+        {
+          "pass": true,
+          "label": "old canonical deep link returns to original previous page",
+          "actual": true
+        },
+        {
+          "pass": true,
+          "label": "scoped runtime exceptions",
+          "actual": []
+        }
+      ],
+      "actions": [
+        {
+          "action": "actual final registration button and service readback",
+          "registration": {
+            "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2",
+            "eventVersion": 2,
+            "registrationId": "92342bb6-4bfe-42e3-b47a-ac87696433a8",
+            "status": "CONFIRMED",
+            "acceptedVersion": 2,
+            "stats": {
+              "confirmed": 6,
+              "waitlisted": 0,
+              "reconfirmRequired": 0,
+              "requested": 0,
+              "reserved": 0
+            }
+          }
+        },
+        {
+          "action": "calendar native supported; device permission and physical validation pending",
+          "executed": false
+        },
+        {
+          "action": "UI-only restore after fresh real CONFIRMED API; not a new registration",
+          "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2"
+        },
+        {
+          "action": "UI-only restore after fresh real CONFIRMED API; not a new registration",
+          "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2"
+        },
+        {
+          "action": "UI-only restore after fresh real CONFIRMED API; not a new registration",
+          "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2"
+        },
+        {
+          "action": "UI-only restore after fresh real CONFIRMED API; not a new registration",
+          "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2"
+        }
+      ],
+      "metrics": [
+        {
+          "selector": ".pg05-poster",
+          "offset": {
+            "left": 16,
+            "top": 111
+          },
+          "size": {
+            "width": 370,
+            "height": 305.25
+          },
+          "family": "-apple-system, \"system-ui\", \"SF Pro Text\", \"SF Pro Display\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "fontSize": "13px"
+        },
+        {
+          "selector": ".pg05-poster-headline",
+          "offset": {
+            "left": 103.52727508544922,
+            "top": 296.61199951171875
+          },
+          "size": {
+            "width": 194.9376220703125,
+            "height": 64.0260009765625
+          },
+          "family": "\"Rubik Mono One\", -apple-system, sans-serif",
+          "fontSize": "26px"
+        },
+        {
+          "selector": ".pg05-poster-note",
+          "offset": {
+            "left": 309.2607116699219,
+            "top": 129.5594482421875
+          },
+          "size": {
+            "width": 57.56451416015625,
+            "height": 35.881103515625
+          },
+          "family": "Caveat, cursive",
+          "fontSize": "11px"
+        },
+        {
+          "selector": ".pg05-footer",
+          "offset": {
+            "left": 0,
+            "top": 787
+          },
+          "size": {
+            "width": 402,
+            "height": 87
+          },
+          "family": "-apple-system, \"system-ui\", \"SF Pro Text\", \"SF Pro Display\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+          "fontSize": "13px"
+        },
+        {
+          "selector": ".pg05s-native-person",
+          "offset": {
+            "left": 256,
+            "top": 60
+          },
+          "size": {
+            "width": 44,
+            "height": 44
+          },
+          "family": "\"Plus Jakarta Sans\", sans-serif",
+          "fontSize": "18px"
+        },
+        {
+          "selector": ".pg05s-mark",
+          "offset": {
+            "left": 161,
+            "top": 134
+          },
+          "size": {
+            "width": 80,
+            "height": 80
+          },
+          "family": "\"Plus Jakarta Sans\", sans-serif",
+          "fontSize": "15px"
+        },
+        {
+          "selector": ".pg05s-success-title",
+          "offset": {
+            "left": 16,
+            "top": 234
+          },
+          "size": {
+            "width": 370,
+            "height": 28
+          },
+          "family": "\"Plus Jakarta Sans\", sans-serif",
+          "fontSize": "22px"
+        },
+        {
+          "selector": ".pg05s-ticket",
+          "offset": {
+            "left": 16,
+            "top": 336
+          },
+          "size": {
+            "width": 370,
+            "height": 453
+          },
+          "family": "\"Plus Jakarta Sans\", sans-serif",
+          "fontSize": "15px"
+        },
+        {
+          "selector": ".pg05s-footer",
+          "offset": {
+            "left": 0,
+            "top": 780
+          },
+          "size": {
+            "width": 402,
+            "height": 94
+          },
+          "family": "\"Plus Jakarta Sans\", sans-serif",
+          "fontSize": "15px"
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-registration-confirm-wave67-2026-10-02.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-registration-success-wave67-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "actualRegistration": {
+        "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2",
+        "eventVersion": 2,
+        "registrationId": "92342bb6-4bfe-42e3-b47a-ac87696433a8",
+        "status": "CONFIRMED",
+        "acceptedVersion": 2,
+        "stats": {
+          "confirmed": 6,
+          "waitlisted": 0,
+          "reconfirmRequired": 0,
+          "requested": 0,
+          "reserved": 0
+        }
+      },
+      "pass": true,
+      "elapsedMs": 32302
+    },
+    "caper-wave67-review-scroll-first": {
+      "scope": "Only fix of REVIEW inherited FORM scroll; reuse real synthetic draft",
+      "checks": [
+        {
+          "pass": true,
+          "label": "actual FORM below fold -> REVIEW scrollTop 0",
+          "before": {
+            "id": "",
+            "dataset": {},
+            "scrollLeft": 0,
+            "scrollTop": 700,
+            "scrollWidth": 402,
+            "scrollHeight": 3559
+          },
+          "after": {
+            "id": "",
+            "dataset": {},
+            "scrollLeft": 0,
+            "scrollTop": 0,
+            "scrollWidth": 402,
+            "scrollHeight": 1027
+          }
+        },
+        {
+          "pass": true,
+          "label": "actual first REVIEW banner visible below native header",
+          "offset": {
+            "left": 17,
+            "top": 110
+          },
+          "text": "发布前帮你检查活动信息 ✨本地规则建议仅供参考，所有细节由你最终确认。"
+        },
+        {
+          "pass": true,
+          "label": "new FORM profile button -> real me"
+        }
+      ],
+      "exceptions": [],
+      "before": {
+        "id": "",
+        "dataset": {},
+        "scrollLeft": 0,
+        "scrollTop": 700,
+        "scrollWidth": 402,
+        "scrollHeight": 3559
+      },
+      "after": {
+        "id": "",
+        "dataset": {},
+        "scrollLeft": 0,
+        "scrollTop": 0,
+        "scrollWidth": 402,
+        "scrollHeight": 1027
+      },
+      "screenshot": "/Users/tsb/Documents/小程序/docs/evidence/images/caper-draft-review-top-fixed-wave67-2026-10-02.png",
+      "actualDraft": "1f8f8ef9-4de9-4973-b020-bcd09c3aa3be",
+      "pass": false,
+      "failure": {
+        "message": "Timeout changed review scroll",
+        "stack": "Error: Timeout changed review scroll\n    at until (/private/tmp/caper-wave67-review-scroll.cjs:2:368)\n    at async /private/tmp/caper-wave67-review-scroll.cjs:3:2513"
+      }
+    },
+    "caper-wave67-header-remaining": {
+      "scope": "Only remaining new FORM drafts and brand buttons; no repeat scroll or profile checks",
+      "checks": [
+        {
+          "pass": true,
+          "label": "new FORM drafts button -> actual本人草稿 and same draft"
+        },
+        {
+          "pass": true,
+          "label": "new FORM brand back -> IDEA"
+        }
+      ],
+      "exceptions": [],
+      "pass": true
+    }
+  },
+  "successfulSDKAssertions": 41,
+  "failedHarnessSegments": 4,
+  "preview": {
+    "size": {
+      "total": 3233257,
+      "packages": [
+        {
+          "name": "TOTAL",
+          "size": 3233257
+        },
+        {
+          "name": "main",
+          "size": 1908773
+        },
+        {
+          "name": "/subpackages/activity/",
+          "size": 394650
+        },
+        {
+          "name": "/subpackages/profile/",
+          "size": 929834
+        }
+      ]
+    }
+  },
+  "migration": {
+    "originalFiles": [
+      {
+        "path": "assets/pg01-back.svg",
+        "bytes": 197,
+        "sha256": "936ba6e51e7ea41962e89cd2ed0f5607dad17f647d627f072a075ac2fca22c0e"
+      },
+      {
+        "path": "assets/pg01-calendar_today.svg",
+        "bytes": 321,
+        "sha256": "0eb35d52aa070a121f66242fb5dd7b2e0c402f5549b9737779bc8bb5a14f0aa3"
+      },
+      {
+        "path": "assets/pg01-chevron.svg",
+        "bytes": 194,
+        "sha256": "fe8209a2c13213904b8d7b5f93b6eb0770b0f4bd6f8be28157596fcd02a33630"
+      },
+      {
+        "path": "assets/pg01-crown.svg",
+        "bytes": 255,
+        "sha256": "fb9f9b76aa3ca4e1786cc35b2dd0b172e6f501391cb5cb11a4955a9ecb21d28b"
+      },
+      {
+        "path": "assets/pg01-groups.svg",
+        "bytes": 442,
+        "sha256": "7389b1e9b5ae187e889de57ecb9681c0aed5ed4db3ce003f2f753eb5e857bcbd"
+      },
+      {
+        "path": "assets/pg01-heart.svg",
+        "bytes": 303,
+        "sha256": "ee58caf97aa97c04358c66ff19147ea48b837b54d41dfbb8d50290bd917d9dc3"
+      },
+      {
+        "path": "assets/pg01-location_on.svg",
+        "bytes": 441,
+        "sha256": "09861c3bd72a72b766f76e539f03e19740a4a0591d68ebfa528a7fc94fbf6be2"
+      },
+      {
+        "path": "assets/pg01-money.svg",
+        "bytes": 351,
+        "sha256": "c1d837d2b54155fb586cdc88446fab690c313f38f9b815f22ffc834724d4cefc"
+      },
+      {
+        "path": "assets/pg01-more.svg",
+        "bytes": 202,
+        "sha256": "9620512c239026603281bb79f2de4e183065e223c2425cbd99fe08b572e19c3f"
+      },
+      {
+        "path": "assets/pg01-racket.svg",
+        "bytes": 501,
+        "sha256": "ceae95cb399998f7cc4c96fa6a395716941790562cf79f1ba65577263da585bd"
+      },
+      {
+        "path": "assets/pg01-seat-chevron.svg",
+        "bytes": 192,
+        "sha256": "34fa718a8348189039d09d4f0138353309b1cd6e8fde68451682dd16ccb744ee"
+      },
+      {
+        "path": "assets/pg01-share-dark.svg",
+        "bytes": 244,
+        "sha256": "46f9fecb2acd63c650e2f36ca1509deb662e6fda54ec53e4b7839f9a686ae122"
+      },
+      {
+        "path": "assets/pg01-share-white.svg",
+        "bytes": 244,
+        "sha256": "e8bb7afadf7fe8a663d6226140e2c8f1dbae5638bf88c640b302f60ce91941ae"
+      },
+      {
+        "path": "assets/pg01-track.svg",
+        "bytes": 341,
+        "sha256": "37e07bb5f4c1ee571765c5452cb212b089fd08971931430d0f7f6f2ebf2ab861"
+      },
+      {
+        "path": "assets/pg05-back.svg",
+        "bytes": 220,
+        "sha256": "fcf8e9658cab1dac7d3657febcd4ccf24a4a290efeeb004726f3b89def48d500"
+      },
+      {
+        "path": "assets/pg05-calendar.svg",
+        "bytes": 428,
+        "sha256": "e68bfb3ca725914459622892b17cdc972e7fc7de0ef861287dc76862982be16c"
+      },
+      {
+        "path": "assets/pg05-check.svg",
+        "bytes": 217,
+        "sha256": "1356bf136e677aa7a9c4ec8dd75fbeb94651f263550a52722a6f49127f154bd5"
+      },
+      {
+        "path": "assets/pg05-groups.svg",
+        "bytes": 465,
+        "sha256": "4d7144e0988be8fe478016e6d4ad0fe9f8db37a72cec66e2f766a7e2109d6f98"
+      },
+      {
+        "path": "assets/pg05-money.svg",
+        "bytes": 288,
+        "sha256": "ac02d8c16cd928eb40ff133cdfeb116e0997b054fa8450c4e40a79e98229c2d7"
+      },
+      {
+        "path": "assets/pg05-more.svg",
+        "bytes": 225,
+        "sha256": "ded6ef6e4079cbd7274213090123ddaa306e3ce5ac1dcc59192b3257d388c9bd"
+      },
+      {
+        "path": "assets/pg05-pin.svg",
+        "bytes": 400,
+        "sha256": "b478e0e270310d7a33f39cf3619037e02e7b70271b0e5d8c75056a479211e818"
+      },
+      {
+        "path": "assets/pg05-shuttle.svg",
+        "bytes": 289,
+        "sha256": "232a17d687332ed81598b838830e832b1a728135a4b3c7f3fbb5ae52959479c7"
+      },
+      {
+        "path": "assets/pg05s-arrow_forward.svg",
+        "bytes": 186,
+        "sha256": "947f6c7303589519540cabb6ef8ba09e3ffa3e841f541348fda045d6854c7031"
+      },
+      {
+        "path": "assets/pg05s-calendar_today.svg",
+        "bytes": 321,
+        "sha256": "41509ee59a21aadc07999f4548b268cbb4677a625e4587b8669a7d6aea6b70a0"
+      },
+      {
+        "path": "assets/pg05s-check_fill1.svg",
+        "bytes": 174,
+        "sha256": "6e9a6f4799b124417e754b5210e0d03420f65323bf3c84ce0ece2d5a8376dc51"
+      },
+      {
+        "path": "assets/pg05s-chevron_right.svg",
+        "bytes": 174,
+        "sha256": "f320fa0e4c76cd9e99353bb2632b578c5718fc73a5a3cdec3771f41df958ca1b"
+      },
+      {
+        "path": "assets/pg05s-edit_calendar.svg",
+        "bytes": 502,
+        "sha256": "29d45c6a7980034413a081f2f0960bc39defc0b398eb5248c4e572e6daf6ffcc"
+      },
+      {
+        "path": "assets/pg05s-forum.svg",
+        "bytes": 353,
+        "sha256": "de66c37c5898a450ba8f0f48ee09e139d724de902b03969b4941a79a448baf6c"
+      },
+      {
+        "path": "assets/pg05s-group.svg",
+        "bytes": 762,
+        "sha256": "2b233ae657912ae0ae2787dd08c4e24eb11fcaa1d9d296bcfd7bc2efee152146"
+      },
+      {
+        "path": "assets/pg05s-ios_share.svg",
+        "bytes": 333,
+        "sha256": "e16c63d3d15b8195c5cddf22c5face6c0f62865b8308783c81b92331337bed22"
+      },
+      {
+        "path": "assets/pg05s-location_on.svg",
+        "bytes": 441,
+        "sha256": "bb176877e344f00816c6e4fb28d981471f6c8d0a5d4e61eb46871bf7452ce1ae"
+      },
+      {
+        "path": "assets/pg05s-navigation.svg",
+        "bytes": 220,
+        "sha256": "4d540ef6634e8db4a3697301aeba7160dbe18fc6dba3f51445d3a4525cec9ace"
+      },
+      {
+        "path": "assets/pg05s-payments.svg",
+        "bytes": 510,
+        "sha256": "4d1f7a5000813bc38f546c28687b54776ce968df5a0c5fdf519d24731ef4518a"
+      },
+      {
+        "path": "assets/pg05s-sports_tennis.svg",
+        "bytes": 574,
+        "sha256": "7cb15d9ec3d6f39ca080b843318ae1237fe4fd3fc8d871ddaf9da9dc051d6289"
+      },
+      {
+        "path": "assets/pg05s-verified_user.svg",
+        "bytes": 337,
+        "sha256": "f6e627ed9325c0065390f22bb00ba6354eed4a9dd106351d7ff858cfe37eceef"
+      },
+      {
+        "path": "event.js",
+        "bytes": 104032,
+        "sha256": "7aba63388c13daae75f2485cf31bea5ab0bd7db1a1568e293a03b31240fd7605"
+      },
+      {
+        "path": "event.json",
+        "bytes": 69,
+        "sha256": "bf33dc7da099d240642a50fe3cf44cee01a2b282f70a80a313c79317c76ad10b"
+      },
+      {
+        "path": "event.wxml",
+        "bytes": 100072,
+        "sha256": "c2dd55c68a3123d9969c204df0d1e91ccca69e53dda4ae5c921a12041eeb9720"
+      },
+      {
+        "path": "event.wxss",
+        "bytes": 120006,
+        "sha256": "94049293bebaf3889760403fb43de4b0a3710f82de40d3d0655e54ef5074e6af"
+      }
+    ],
+    "exactInverseProofCount": 39,
+    "requireDepthChanges": 5,
+    "fixtureFilesAdapted": [
+      "test/event-caper-navigation.test.ts",
+      "test/invite-miniapp-refresh.test.ts",
+      "test/invite-miniapp-share.test.ts",
+      "test/miniprogram-caper-poster.test.ts",
+      "test/miniprogram-event-action-identity.test.ts",
+      "test/miniprogram-event-controls.test.ts",
+      "test/miniprogram-event-expense-interactions.test.ts",
+      "test/miniprogram-event-live-detail-layout.test.ts",
+      "test/miniprogram-event-post-refresh-race.test.ts",
+      "test/miniprogram-event-resilient-detail.test.ts",
+      "test/miniprogram-event-safety-clipboard-race.test.ts",
+      "test/miniprogram-event-screen-navigation.test.ts",
+      "test/miniprogram-event-session-isolation.test.ts",
+      "test/miniprogram-event-time-controls.test.ts",
+      "test/miniprogram-host-completion-shortcut.test.ts",
+      "test/miniprogram-outcome-notice-deeplink.test.ts",
+      "test/miniprogram-pg04s-published-shortcut.test.ts",
+      "test/miniprogram-pg06-host-announcement-shortcut.test.ts",
+      "test/miniprogram-pg09-expense-share.test.ts",
+      "test/miniprogram.test.ts",
+      "test/pg05-confirmation.test.ts"
+    ],
+    "oldCanonicalRoute": "pages/event/event",
+    "actualBusinessRoute": "subpackages/activity/event/event",
+    "registeredRoutes": 21,
+    "businessChanges": 0
+  },
+  "cloneEquality": {
+    "sourceFiles": 474,
+    "cloneFiles": 474,
+    "differences": 0
+  },
+  "currentChecks": {
+    "eventEntryFile": {
+      "pass": 7,
+      "fail": 0
+    },
+    "specifiedMigrationNamePattern": {
+      "pass": 7,
+      "fail": 0
+    }
+  },
+  "mainMarginBytes": 188379,
+  "nativeComputerUse": {
+    "status": "pending",
+    "reason": "Mac locked; manual unlock requested earlier, no native interaction claim"
+  },
+  "boundary": [
+    "original five tab taps inaccessible to SDK selector; actual SDK switchTab lifecycle only",
+    "registration first reached through actual POST and server CONFIRMED read; subsequent button-only view restorations after fresh real CONFIRMED are labelled",
+    "no publication, calendar write, device, real subscription or three human events",
+    "not all 39 screens pixel acceptance"
+  ]
+}

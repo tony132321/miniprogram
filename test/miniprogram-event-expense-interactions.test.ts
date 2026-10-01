@@ -12,9 +12,9 @@ function expensePage(ledgers: Ledger[], aliases: Array<{ id: string; displayName
   let page: Record<string, any> | undefined;
   let actor = 'host';
   let expenseReads = 0;
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async (route: string) => {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async (route: string) => {
         if (route === '/me/registrations?eventId=e1') return { items: confirmedMembers.includes(actor)
           ? [{ event_id: 'e1', status: 'CONFIRMED' }] : [] };
         if (route === '/events/e1') return { id: 'e1', hostId: 'host', version: 2, status: 'CONFIRMED',
@@ -25,11 +25,11 @@ function expensePage(ledgers: Ledger[], aliases: Array<{ id: string; displayName
         if (route === '/events/e1/expenses') { expenseReads++; return { items: ledgers }; }
         return { items: [] };
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../utils/sha256.js') return { sha256(value: string) {
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/sha256.js' || path === '../../../utils/sha256.js')) return { sha256(value: string) {
         return createHash('sha256').update(value).digest('hex');
       } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },

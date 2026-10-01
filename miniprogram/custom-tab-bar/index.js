@@ -1,13 +1,20 @@
 const tabs = [
-  { pagePath: '/pages/index/index', text: '首页', icon: '/assets/nav/home.svg', selectedIcon: '/assets/nav/home-active.svg' },
-  { pagePath: '/pages/discover/discover', text: '发现', icon: '/assets/nav/search.svg', selectedIcon: '/assets/nav/search-active.svg' },
-  { pagePath: '/pages/create/create', text: '发起', icon: '', selectedIcon: '' },
-  { pagePath: '/pages/messages/messages', text: '消息', icon: '/assets/nav/message.svg', selectedIcon: '/assets/nav/message-active.svg' },
-  { pagePath: '/pages/me/me', text: '我的', icon: '/assets/nav/profile.svg', selectedIcon: '/assets/nav/profile-active.svg' }
+  { pagePath: '/pages/index/index', text: '首页' },
+  { pagePath: '/pages/discover/discover', text: '发现' },
+  { pagePath: '/pages/create/create', text: '发起' },
+  { pagePath: '/pages/messages/messages', text: '消息' },
+  { pagePath: '/pages/me/me', text: '我的' }
 ];
+const icons = [
+  ['h-home', 'h-find', 'h-plus', 'h-msg', 'h-me'],
+  ['d-home', 'd-find', 'd-plus', 'd-msg', 'd-me'],
+  ['f-home', 'f-find', 'n-plus', 'f-msg', 'f-me'],
+  ['n-home', 'n-find', 'n-plus', 'n-msg', 'n-me'],
+  ['p-home', 'p-find', 'p-plus', 'p-msg', 'p-me']
+].map(row => row.map(name => '/assets/nav/' + name + '.svg'));
 
 Component({
-  data: { tabs, selected: 0, hidden: false },
+  data: { tabs, icons, selected: 0, hidden: false },
   attached() { this.syncSelected(); },
   pageLifetimes: { show() { this.syncSelected(); } },
   methods: {

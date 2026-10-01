@@ -2,8 +2,8 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 
-const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
-const styles = readFileSync(new URL('../miniprogram/pages/event/event.wxss', import.meta.url), 'utf8');
+const markup = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
+const styles = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxss', import.meta.url), 'utf8');
 
 test('badminton host and confirmed member detail presents the real title only on the cover', () => {
   assert.match(markup, /class="event-page[^\"]*event-live-host[^\"]*event-live-member/);

@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 import { test } from 'node:test';
 import { runInNewContext } from 'node:vm';
 
-const source = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
+const source = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8');
 const require = createRequire(import.meta.url);
 
 function eventPage(apiPost?: (path: string, body: Record<string, unknown>) => Promise<unknown>) {
@@ -14,9 +14,9 @@ function eventPage(apiPost?: (path: string, body: Record<string, unknown>) => Pr
   const storage = new Map<string, unknown>();
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { post: apiPost } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post: apiPost } };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -78,7 +78,7 @@ test('only an authorized organizer can enter the QR display mode', () => {
 
 test('pending review cancellation link focuses the live exit control only for its member and activity', async () => {
   const { page, scrolls } = eventPage();
-  const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const markup = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
   assert.match(markup, /id="leaveButton"[^>]*bindtap="leave"/);
   const live = { event: { id: 'e1', status: 'RECRUITING' }, loadState: 'READY',
     currentUser: 'host', isHost: false, myRegistration: { id: 'r1', event_id: 'e1', status: 'REQUESTED' } };
@@ -220,7 +220,7 @@ test('home host check-in link selects verifier only for a live organizer', async
 
 test('home organizer announcement link locates the real composer only for the current recruiting host', async () => {
   const { page, scrolls } = eventPage();
-  const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const markup = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
   assert.match(markup, /id="hostAnnouncementForm"[^>]*wx:if="{{event\.status === 'RECRUITING'/);
   assert.match(markup, /id="hostAnnouncementAnchor"[\s\S]*?id="hostAnnouncementForm"/,
     'the announcement deep link needs a scroll target above the sticky titlebar');
@@ -256,7 +256,7 @@ test('home organizer announcement link locates the real composer only for the cu
 test('history host repeat link locates the existing button only for a current completed safe event', async () => {
   const posts: string[] = [];
   const { page, scrolls } = eventPage(async path => { posts.push(path); return {}; });
-  const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const markup = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
   assert.match(markup, /id="hostRepeatAnchor"[\s\S]*?id="repeatDraftButton"[^>]*wx:if="{{safetyStatus === 'OPEN' && event\.status === 'COMPLETED'}}"/);
   page.refresh = async function () {
     this.setData({ loadState: 'READY', event: { id: 'e1', status: 'COMPLETED' },
@@ -289,7 +289,7 @@ test('history host repeat link locates the existing button only for a current co
 
 test('home feedback link locates the form or existing record only for confirmed members of completed events', async () => {
   const { page, scrolls } = eventPage();
-  const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const markup = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
   assert.match(markup, /id="feedbackForm"[^>]*wx:if="{{outcome && !isHost && myRegistration.status === 'CONFIRMED' && !outcome.myFeedbackSubmitted}}"/);
   assert.match(markup, /id="memberFeedbackCard"[^>]*wx:if="{{outcome && !isHost && myRegistration.status === 'CONFIRMED'}}"/,
     'an already submitted member needs a stable card anchor, without reopening the form');
@@ -350,7 +350,7 @@ test('home feedback link locates the form or existing record only for confirmed 
 
 test('profile alias link locates the form only when the same activity can edit its alias', async () => {
   const { page, scrolls } = eventPage();
-  const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const markup = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
   assert.ok(markup.includes('id="aliasForm" wx:if="{{canSetAlias}}"'),
     'the alias form needs a stable scroll target only when editing is available');
   page.refresh = async function () {

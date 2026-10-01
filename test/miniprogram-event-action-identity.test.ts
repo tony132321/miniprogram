@@ -12,9 +12,9 @@ function mount() {
   let token = 'first-token';
   let modal: Record<string, any> | undefined;
   const posts: Array<{ token: string; path: string; body: Record<string, unknown> }> = [];
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(module: string) {
-      if (module === '../../utils/api.js') return { api: {
+      if ((module === '../../utils/api.js' || module === '../../../utils/api.js')) return { api: {
         async get(path: string) {
           if (path === '/me/registrations?eventId=event-one') return { items: [] };
           if (path === '/events/event-one') return event;
@@ -27,8 +27,8 @@ function mount() {
           return { id: 'result' };
         }
       } };
-      if (module === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (module === '../../config.js') return { developmentUser: '' };
+      if ((module === '../../utils/checkin-qr.js' || module === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((module === '../../config.js' || module === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${module}`);
     },
     Page(definition: Record<string, any>) { page = definition; },

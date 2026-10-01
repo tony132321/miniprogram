@@ -40,9 +40,9 @@ function mountExpensePage(initialLedgers: Ledger[], initialActor = 'host') {
   const clipboardSuccess: Array<() => void> = [];
   let deferClipboardSuccess = false;
 
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async get(route: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async get(route: string) {
         if (route === '/me/registrations?eventId=e1') return { items: actor === 'member-b'
           ? [{ event_id: 'e1', status: 'CONFIRMED' }] : [] };
         if (route === '/events/e1') {
@@ -58,11 +58,11 @@ function mountExpensePage(initialLedgers: Ledger[], initialActor = 'host') {
         }
         return { items: [] };
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../utils/sha256.js') return { sha256(value: string) {
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/sha256.js' || path === '../../../utils/sha256.js')) return { sha256(value: string) {
         return createHash('sha256').update(value).digest('hex');
       } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },

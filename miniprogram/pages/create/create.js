@@ -26,6 +26,35 @@ function localDateTimeLabel(value) {
 function endFromDuration(date, time, minutes) {
   return localParts(new Date(Date.parse(iso(date, time)) + minutes * 60_000).toISOString());
 }
+// Wave67 display-only projection; existing editor/write fields remain authoritative.
+function referenceQuickDates(now = Date.now()) {
+  const today = new Date(now + 8 * 60 * 60_000);
+  const weekday = today.getUTCDay();
+  const saturday = (6 - weekday + 7) % 7;
+  const label = offset => {
+    const date = new Date(today.getTime() + offset * 24 * 60 * 60_000).toISOString().slice(0, 10);
+    return `${Number(date.slice(5, 7))}月${Number(date.slice(8, 10))}日`;
+  };
+  return { saturday: label(saturday), sunday: label((7 - weekday) % 7), nextWeekend: label(saturday + 7) };
+}
+function referenceReviewLabels(payload) {
+  const validStart = Number.isFinite(Date.parse(payload.startAt));
+  const validEnd = Number.isFinite(Date.parse(payload.endAt));
+  let date = '待确认', time = '待确认';
+  if (validStart) {
+    const start = localParts(payload.startAt);
+    const weekday = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][new Date(`${start.date}T00:00:00Z`).getUTCDay()];
+    date = `${start.date.slice(0, 4)}年 ${Number(start.date.slice(5, 7))}月${Number(start.date.slice(8, 10))}日 (${weekday})`;
+    if (validEnd) {
+      const end = localParts(payload.endAt);
+      time = start.date === end.date ? `${start.time} - ${end.time}` : `${start.time} - ${end.date} ${end.time}`;
+    }
+  }
+  return { referenceDate: date, referenceTime: time,
+    referenceFeeTitle: payload.feeMode === 'FREE' ? '免费' : 'AA 制',
+    referenceFeeNote: payload.feeMode === 'FREE' ? '无费用'
+      : Number.isSafeInteger(payload.feeCapFen) ? `每人上限 ¥${(payload.feeCapFen / 100).toFixed(2)}` : '上限待确认' };
+}
 const emptyForm = { title: '', city: '', venueName: '', skillLevel: '', minParticipants: '4', maxParticipants: '6',
   feeCapYuan: '50', cancellationRule: '开始前可退出' };
 const inspirationBatches = [
@@ -77,6 +106,7 @@ Page({
     ...emptyEditor(), visibilityLabels: ['仅邀请', '受控公开'], approvalLabels: ['自动接受', '逐一审批'],
     statusBarHeight: (wx.getWindowInfo?.() || wx.getSystemInfoSync?.() || {}).statusBarHeight || 0,
     headerActionInsets: headerActionInsets(),
+    referenceQuickDates: referenceQuickDates(),
     inspirations: inspirationBatches[0], inspirationBatch: 0
   },
   syncCreateTabBar(stage) {
@@ -136,6 +166,7 @@ Page({
     return true;
   },
   async onShow() {
+    this.setData({ referenceQuickDates: referenceQuickDates() });
     this.syncCreateTabBar(this.data.stage);
     this.stopSuggestion();
     const generation = this._loadGeneration = (this._loadGeneration || 0) + 1;
@@ -617,8 +648,9 @@ Page({
         registration: localDateTimeLabel(draft.payload.registrationDeadline),
         confirmation: localDateTimeLabel(draft.payload.confirmationDeadline),
         fee: draft.payload.feeMode === 'FREE' ? '免费'
-          : Number.isSafeInteger(draft.payload.feeCapFen) ? `AA 制 · 每人上限 ¥${(draft.payload.feeCapFen / 100).toFixed(2)}` : 'AA 制 · 上限待确认'
-      }, message: '' });
+          : Number.isSafeInteger(draft.payload.feeCapFen) ? `AA 制 · 每人上限 ¥${(draft.payload.feeCapFen / 100).toFixed(2)}` : 'AA 制 · 上限待确认',
+        ...referenceReviewLabels(draft.payload)
+      }, message: '' }, () => wx.pageScrollTo?.({ scrollTop: 0, duration: 0 }));
   },
   async confirmPublish() {
     const identity = currentIdentity();

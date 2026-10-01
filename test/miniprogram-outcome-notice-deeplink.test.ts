@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { runInNewContext } from 'node:vm';
 
-const eventSource = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
+const eventSource = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8');
 
 function mount(startingActor = 'host', actorAfterTick = startingActor) {
   let page: Record<string, any> | undefined;
@@ -12,9 +12,9 @@ function mount(startingActor = 'host', actorAfterTick = startingActor) {
   const posts: string[] = [];
   runInNewContext(eventSource, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async post(route: string) { posts.push(route); } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async post(route: string) { posts.push(route); } } };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },

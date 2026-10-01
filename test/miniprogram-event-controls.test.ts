@@ -5,17 +5,17 @@ import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
 
 const require = createRequire(import.meta.url);
-const source = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
-const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+const source = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8');
+const markup = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
 
 function pageWithApi(post: (path: string, body: Record<string, unknown>) => Promise<unknown>,
   get?: (path: string) => Promise<unknown>) {
   let page: Record<string, any> | undefined;
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { post, get } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'friend' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post, get } };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'friend' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },

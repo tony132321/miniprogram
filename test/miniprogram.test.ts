@@ -26,8 +26,8 @@ test('R1 discovery has no active public-search controls while invitation and cre
   const navigations: string[] = [];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/discover/discover.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
@@ -55,11 +55,11 @@ test('R1 discovery has no active public-search controls while invitation and cre
 
 test('event success state appears only after the server confirms the published event or registration', async () => {
   let page: Record<string, any> | undefined;
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -275,8 +275,8 @@ test('profile logout clears private content before entering the activity list', 
   const navigations: string[] = [];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { logout: async () => ({ ok: true }) } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { logout: async () => ({ ok: true }) } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -299,8 +299,8 @@ test('profile logout failure keeps private data visible and offers retry', async
   const navigations: string[] = [];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { logout: async () => { throw new Error('网络中断'); } } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { logout: async () => { throw new Error('网络中断'); } } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -325,12 +325,12 @@ test('profile export finishing after logout cannot copy former member data', asy
   const clipboard: string[] = [];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {
         post: async () => ({ path: '/privacy/exports/ticket' }),
         get: async () => { signalSnapshotRequested(); return snapshot; },
         logout: async () => ({ ok: true })
       } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -353,8 +353,8 @@ test('profile re-entry without a session removes private data before any fetch',
   let requests = 0;
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async () => { requests++; return { items: [] }; } } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async () => { requests++; return { items: [] }; } } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -381,11 +381,11 @@ test('event safety entry carries its event into the signed-in report form only f
   };
   let submittedReport: Record<string, any> | undefined;
   let eventPage: Record<string, any> | undefined;
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { eventPage = definition; }, getApp() { return { globalData }; }, wx
@@ -399,8 +399,8 @@ test('event safety entry carries its event into the signed-in report form only f
   let profile: Record<string, any> | undefined;
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { post: async (_path: string, body: Record<string, any>) => { submittedReport = body; } } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post: async (_path: string, body: Record<string, any>) => { submittedReport = body; } } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { profile = definition; }, getApp() { return { globalData }; }, wx
@@ -439,11 +439,11 @@ test('event safety entry carries its event into the signed-in report form only f
 test('member can copy current activity facts for a trusted contact without exposing invite credentials', () => {
   let copied = '';
   let page: Record<string, any> | undefined;
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -473,7 +473,7 @@ test('profile load failure offers a retry that restores live private data', asyn
   let requests = 0;
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async (route: string) => {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async (route: string) => {
         requests++;
         if (!online) throw Object.assign(new Error('网络中断'), { code: 'NETWORK_ERROR' });
         if (route.startsWith('/me/notifications')) return { items: [], total: 0, nextOffset: null };
@@ -481,7 +481,7 @@ test('profile load failure offers a retry that restores live private data', asyn
         if (route === '/me/similar-invites') return { granted: false };
         return { items: [] };
       } } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -516,7 +516,7 @@ test('profile shows honest external reminder states on initial and later notific
   ];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async (route: string) => {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async (route: string) => {
         if (route === '/me/notifications?offset=0') return { items: notices.slice(0, 4), total: notices.length,
           nextOffset: 4, snapshot: 'a'.repeat(32) };
         if (route.startsWith('/me/notifications?offset=4&snapshot=')) return { items: notices.slice(4),
@@ -525,7 +525,7 @@ test('profile shows honest external reminder states on initial and later notific
         if (route === '/me/similar-invites') return { granted: false };
         return { items: [] };
       } } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; }
@@ -562,8 +562,8 @@ test('production-style profile page cannot switch to a development identity', ()
   const source = readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8');
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -599,8 +599,8 @@ test('profile refreshes changed consent text after a stale-version denial', asyn
   };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -640,8 +640,8 @@ test('profile clears reconfirmation prompts after a successful fresh consent', a
   };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -675,8 +675,8 @@ test('profile page can load older notifications while retaining the full unread 
   const source = readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8');
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; }
@@ -710,8 +710,8 @@ test('profile page restarts notification paging after a notice changes', async (
   } };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; }
@@ -743,8 +743,8 @@ test('profile page does not claim notification reload succeeded after a follow-u
   } };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; }
@@ -762,8 +762,8 @@ test('switching local test identity clears the previous member’s notices befor
   const pending = new Promise(() => {});
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: () => pending } };
-      if (path === '../../config.js') return { developmentUser: 'old-member' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: () => pending } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'old-member' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -798,8 +798,8 @@ test('opening an account-wide notice does not navigate to a missing activity', a
   };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -827,7 +827,7 @@ test('failed detail navigation leaves a cancellation unread until the detail ope
   let status = 'QUEUED';
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { post: async (route: string) => {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post: async (route: string) => {
         openedRoutes.push(route);
         status = 'OPENED';
         return { status };
@@ -840,7 +840,7 @@ test('failed detail navigation leaves a cancellation unread until the detail ope
         if (route === '/me/similar-invites') return { granted: false };
         return { items: [] };
       } } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -883,8 +883,8 @@ test('activity list clears the previous identity and ignores a late old response
     ? oldResponse : Promise.resolve({ items: [{ id: 'new-event' }] }) };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/index/index.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: 'old-member' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'old-member' };
       if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
@@ -924,8 +924,8 @@ test('profile re-entry clears another identity’s private data before loading a
   } };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: 'old-member' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'old-member' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -959,8 +959,8 @@ test('creation page clears another identity’s draft and ignores its late edit 
   const api = { get: (path: string) => path === '/system/safety' ? Promise.resolve({ status: 'OPEN' }) : oldResponse };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: 'old-host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'old-host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -993,9 +993,9 @@ test('relative-date draft suggestion shows the full city-local date and weekday 
       endAt: 'USER_EXPLICIT', templateDurationMinutes: 'USER_EXPLICIT' }, unknown: [], draft: { id: 'model-draft', version: 1 } };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async post(_path: string, body: Record<string, unknown>) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async post(_path: string, body: Record<string, unknown>) {
         requests.push(body); return suggestion; } } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1028,8 +1028,8 @@ test('explicit duration survives a missing city until the host chooses a date', 
     unknown: ['具体日期时间', '城市'] };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async post() { return suggestion; } } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async post() { return suggestion; } } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1057,9 +1057,9 @@ test('a generated draft is labeled as unverified and still asks the host to conf
     fieldSources: { title: 'NEEDS_CONFIRMATION', venueName: 'NEEDS_CONFIRMATION' }, unknown: [] };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async post(_path: string, body: Record<string, unknown>) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async post(_path: string, body: Record<string, unknown>) {
         requestBody = body; return suggestion; } } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1085,8 +1085,8 @@ test('slow suggestion offers manual editing and ignores its late answer after th
   let nextTimer = 1;
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { post: () => response } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post: () => response } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1122,11 +1122,11 @@ test('a draft suggestion that never responds stops after 30 seconds and keeps th
   let requestTimeout: number | undefined;
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { post(_path: string, _body: unknown, _key: unknown, options: { timeoutMs?: number }) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post(_path: string, _body: unknown, _key: unknown, options: { timeoutMs?: number }) {
         requestTimeout = options?.timeoutMs;
         return response;
       } } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1172,8 +1172,8 @@ test('a suggestion retried after a local timeout reuses its request key until th
   const api = createApi(platform, { apiBase: 'https://example.test', developmentUser: 'host' });
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1204,8 +1204,8 @@ test('activity list loads after startup login establishes the real identity', as
   const ready = new Promise<void>(resolve => { finishLogin = resolve; });
   runInNewContext(readFileSync(new URL('../miniprogram/pages/index/index.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async () => ({ items: [{ id: 'member-event' }] }) } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async () => ({ items: [{ id: 'member-event' }] }) } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
@@ -1235,14 +1235,14 @@ test('activity list distinguishes load failure from empty results and retries in
   ];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/index/index.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async get(route: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async get(route: string) {
         if (route === '/me/notifications?offset=0') return { items: [], unreadTotal: 0 };
         assert.equal(route, '/me/events');
         reads++;
         if (reads === 1) throw new Error('网络不可用');
         return { items };
       } } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
@@ -1280,14 +1280,14 @@ test('activity list retry renews an expired real login before loading', async ()
   let logins = 0;
   runInNewContext(readFileSync(new URL('../miniprogram/pages/index/index.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {
         async get() {
           if (!token) throw Object.assign(new Error('登录已失效'), { code: 'UNAUTHENTICATED' });
           return { items: [] };
         },
         async login() { logins++; token = 'renewed'; }
       } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
@@ -1313,9 +1313,9 @@ test('creation page keeps the requested edit after startup login completes', asy
   const storage = new Map([['editDraftId', 'member-draft']]);
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async (url: string) => url === '/system/safety'
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async (url: string) => url === '/system/safety'
         ? { status: 'OPEN' } : { id: 'member-draft', status: 'DRAFT', payload: { title: '我的草稿' } } } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1341,13 +1341,13 @@ test('draft edit remains retryable after a failed read and clears handoff only a
   const storage = new Map([['editDraftId', 'draft-1']]);
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async get(url: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async get(url: string) {
         if (url === '/system/safety') return { status: 'OPEN' };
         reads++;
         if (reads === 1) throw new Error('网络不可用');
         return { id: 'draft-1', status: 'DRAFT', version: 2, payload: { title: '服务端草稿', city: '深圳' } };
       } } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1373,13 +1373,13 @@ test('event editor round-trips Shanghai wall time through UTC regardless of devi
   const startAt = '2027-01-02T12:00:00.000Z';
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async get(url: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async get(url: string) {
         if (url === '/system/safety') return { status: 'OPEN' };
         if (url === '/events/shanghai-draft') return { id: 'shanghai-draft', status: 'DRAFT', version: 2,
           payload: { title: '上海晚场', city: '上海', skillLevel: '中等水平', startAt, endAt: '2027-01-02T14:00:00.000Z' } };
         throw new Error(`unexpected request ${url}`);
       } } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1401,13 +1401,13 @@ test('repeat draft carries its prior duration to a newly chosen date without ove
   const storage = new Map([['editDraftId', 'repeat-draft']]);
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async get(url: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async get(url: string) {
         if (url === '/system/safety') return { status: 'OPEN' };
         if (url === '/events/repeat-draft') return { id: 'repeat-draft', status: 'DRAFT', version: 1,
           payload: { title: '下一场羽毛球', templateDurationMinutes: 150 } };
         throw new Error(`unexpected request ${url}`);
       } } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1439,12 +1439,12 @@ test('a saved spoken-duration draft keeps its stated fee on reload', async () =>
   const storage = new Map([['editDraftId', 'spoken-draft']]);
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async get(url: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async get(url: string) {
         if (url === '/events/spoken-draft') return { id: 'spoken-draft', status: 'DRAFT', version: 1,
           payload: { title: '球局', templateDurationMinutes: 180, feeMode: 'AA', feeCapFen: 5000 } };
         throw new Error(`unexpected request ${url}`);
       } } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1464,8 +1464,8 @@ test('host seat is undecided until the creator explicitly chooses yes or no', as
   let page: Record<string, any> | undefined;
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1492,11 +1492,11 @@ test('editing a confirmed venue clears the old statement and resends explicit co
   const requests: Array<{ path: string; body: Record<string, any> }> = [];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async post(requestPath: string, body: Record<string, any>) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async post(requestPath: string, body: Record<string, any>) {
         requests.push({ path: requestPath, body });
         return { material: true, affectedCount: 1, changes: [{ field: 'venueName', before: '旧场馆', after: '新场馆' }] };
       } } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1525,13 +1525,13 @@ test('reopening a saved draft preserves an explicit choice that the host does no
   const storage = new Map([['editDraftId', 'no-seat-draft']]);
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async get(url: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async get(url: string) {
         if (url === '/system/safety') return { status: 'OPEN' };
         if (url === '/events/no-seat-draft') return { id: 'no-seat-draft', status: 'DRAFT', version: 1,
           payload: { title: '六人场', hostParticipates: false } };
         throw new Error(`unexpected request ${url}`);
       } } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1551,11 +1551,11 @@ test('editor accepts a new account handoff when the target is bound to that acco
   const storage = new Map([['editDraftId', 'new-draft'], ['editTargetOwner', 'dev:new-host']]);
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async get(url: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async get(url: string) {
         return url === '/system/safety' ? { status: 'OPEN' }
           : { id: 'new-draft', status: 'DRAFT', version: 1, payload: { title: '新账号草稿' } };
       } } };
-      if (path === '../../config.js') return { developmentUser: 'old-host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'old-host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1578,7 +1578,7 @@ test('draft version conflict offers explicit reload without silently overwriting
   const storage = new Map<string, string>();
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {
         async post() { throw Object.assign(new Error('活动规则已更新'), { code: 'VERSION_CONFLICT' }); },
         async get(url: string) {
           if (url === '/system/safety') return { status: 'OPEN' };
@@ -1586,7 +1586,7 @@ test('draft version conflict offers explicit reload without silently overwriting
           return { id: 'draft-1', status: 'DRAFT', version: 3, payload: { title: '服务端新版', city: '深圳' } };
         }
       } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1617,11 +1617,11 @@ test('creation page shows the server stop and refuses a new draft before a write
   const writes: string[] = [];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {
         get: async (url: string) => url === '/system/safety' ? { status: 'CLOSED' } : {},
         post: async (url: string) => { writes.push(url); return {}; }
       } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1643,17 +1643,17 @@ test('creation page shows the server stop and refuses a new draft before a write
 
 test('activity page hides new seat actions but keeps the exit path during a global stop', async () => {
   let page: Record<string, any> | undefined;
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async (url: string) => {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async (url: string) => {
         if (url === '/system/safety') return { status: 'CLOSED' };
         if (url === '/events/e1') return { id: 'e1', hostId: 'host', status: 'RECRUITING', recruiting: true,
           version: 2, payload: { startAt: '2027-01-02T12:00:00Z', endAt: '2027-01-02T14:00:00Z' } };
         if (url === '/me/registrations?eventId=e1') return { items: [{ id: 'r1', event_id: 'e1', status: 'CONFIRMED' }] };
         return { items: [] };
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1664,7 +1664,7 @@ test('activity page hides new seat actions but keeps the exit path during a glob
   page.setData({ id: 'e1' });
   assert.equal(await page.refresh(), true);
   assert.equal(page.data.safetyStatus, 'CLOSED');
-  const wxml = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const wxml = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
   assert.match(wxml, /safetyStatus === 'OPEN'[^\n]*bindtap="openJoinConfirmation"/);
   assert.match(wxml, /bindtap="leave"/);
 });
@@ -1678,9 +1678,9 @@ test('invitation landing preserves a minimal summary and token across real login
     title: '周六羽毛球', payload: { title: '周六羽毛球', startAt: '2027-01-02T12:00:00Z',
       endAt: '2027-01-02T14:00:00Z', city: '深圳', venueName: '公共场馆', feeMode: 'AA',
       feeCapFen: 5000, cancellationRule: '开始前可退出', approvalMode: 'AUTO', skillLevel: '中等水平' } };
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {
         async get(url: string) {
           if (url === '/i/invite-1') return summary;
           if (url === '/events/e1') throw Object.assign(new Error('仅成员可看详情'), { code: 'FORBIDDEN' });
@@ -1693,8 +1693,8 @@ test('invitation landing preserves a minimal summary and token across real login
         },
         async login() { logins++; session = 'session'; }
       } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1739,7 +1739,7 @@ test('invitation landing preserves a minimal summary and token across real login
   await confirmed;
   assert.equal(joinPayloads[0]?.inviteToken, 'invite-1');
   assert.equal(joinPayloads[0]?.acceptedRules, true);
-  const wxml = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const wxml = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
   assert.match(wxml, /loadState === 'LOGIN_REQUIRED'.*retryLogin/s);
   assert.match(wxml, /bindtap="goToMyActivities"/);
   assert.match(wxml, /canJoin/);
@@ -1779,12 +1779,12 @@ test('event page does not render an unknown registration as not registered', asy
       throw new Error(`unexpected request ${path}`);
     }
   };
-  const source = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
+  const source = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8');
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'person-one' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'person-one' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1803,12 +1803,12 @@ test('event page does not render an unknown registration as not registered', asy
 
 test('event completion sends the host’s actual held choice and zero people when not held', async () => {
   let page: Record<string, any> | undefined;
-  const source = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
+  const source = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8');
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1841,7 +1841,7 @@ test('event completion sends the host’s actual held choice and zero people whe
   assert.equal(sent[1]?.held, true);
   assert.equal(sent[1]?.actualCount, 5);
   assert.equal(sent[1]?.issues.join('|'), '异常：签到网络中断|场地问题：入口临时关闭');
-  const wxml = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const wxml = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
   assert.match(wxml, /id="completionAnomalyInput"[^>]*bindinput="completionAnomalyInput"/);
   assert.match(wxml, /id="completionVenueIssueInput"[^>]*bindinput="completionVenueIssueInput"/);
 });
@@ -1849,12 +1849,12 @@ test('event completion sends the host’s actual held choice and zero people whe
 test('independent feedback requires both answers before recording willingness to repeat', async () => {
   let page: Record<string, any> | undefined;
   const sent: Record<string, any>[] = [];
-  const source = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
+  const source = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8');
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async post(_path: string, payload: Record<string, any>) { sent.push(payload); } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'p1' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async post(_path: string, payload: Record<string, any>) { sent.push(payload); } } };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'p1' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1902,12 +1902,12 @@ test('independent feedback requires both answers before recording willingness to
 
 test('AA page refuses an empty or malformed amount instead of recording zero', () => {
   let page: Record<string, any> | undefined;
-  const source = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
+  const source = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8');
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1934,15 +1934,15 @@ test('share card only uses a source after its intent has been committed', async 
   let page: Record<string, any> | undefined;
   let finishIntent: ((value: unknown) => void) | undefined;
   const requests: Record<string, any>[] = [];
-  const source = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
+  const source = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8');
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { post(path: string, body: unknown) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post(path: string, body: unknown) {
         requests.push({ path, body });
         return new Promise(resolve => { finishIntent = resolve; });
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1971,10 +1971,10 @@ test('share card only uses a source after its intent has been committed', async 
 test('returning to the event page refreshes its version and drops a stale share source', async () => {
   let page: Record<string, any> | undefined;
   let detailReads = 0;
-  const source = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
+  const source = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8');
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async get(path: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async get(path: string) {
         if (path === '/events/e1') {
           detailReads++;
           return { id: 'e1', hostId: 'host', status: 'RECRUITING', version: 3, inviteToken: 'invite-2', inviteRemainingMs: 60_000,
@@ -1984,8 +1984,8 @@ test('returning to the event page refreshes its version and drops a stale share 
         if (path === '/events/e1/share-metrics') return { shareIntents: 1, attributedOpens: 0 };
         return { items: [] };
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -2007,10 +2007,10 @@ test('returning to the event page refreshes its version and drops a stale share 
 test('event page follows current cohost grant while preserving own participation after revocation', async () => {
   let page: Record<string, any> | undefined;
   let granted = true;
-  const source = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
+  const source = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8');
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async get(path: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async get(path: string) {
         if (path === '/events/e1') return { id: 'e1', hostId: 'host', status: 'CONFIRMED', version: 2,
           cohostCapabilities: granted ? ['CHECKIN_MANAGE'] : [], payload: {
             startAt: new Date(Date.now() + 15 * 60_000).toISOString(),
@@ -2018,8 +2018,8 @@ test('event page follows current cohost grant while preserving own participation
         if (path === '/me/registrations?eventId=e1') return { items: [{ id: 'own-seat', event_id: 'e1', status: 'CONFIRMED' }] };
         return { items: [] };
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'helper' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'helper' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -2042,9 +2042,9 @@ test('event page follows current cohost grant while preserving own participation
 test('event page carries the current nickname display notice into a grant and prompts legacy reconfirmation', async () => {
   let page: Record<string, any> | undefined;
   const posts: Array<{ path: string; body: Record<string, unknown> }> = [];
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {
         async get(route: string) {
           if (route === '/events/e1') return { id: 'e1', hostId: 'host', status: 'RECRUITING', version: 2,
             recruiting: true, payload: {} };
@@ -2054,8 +2054,8 @@ test('event page carries the current nickname display notice into a grant and pr
         },
         async post(path: string, body: Record<string, unknown>) { posts.push({ path, body }); return {}; }
       } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -2079,11 +2079,11 @@ test('a check-in token arriving after the event page hides is not displayed or r
   const tokenResponse = new Promise(resolve => { finishToken = resolve; });
   let qrDraws = 0;
   let refreshTimers = 0;
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { post: () => tokenResponse } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() { qrDraws++; } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post: () => tokenResponse } };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() { qrDraws++; } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -2111,11 +2111,11 @@ test('an expired check-in token is hidden while its replacement is still loading
   let page: Record<string, any> | undefined;
   let finishToken!: (value: unknown) => void;
   const replacement = new Promise(resolve => { finishToken = resolve; });
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { post: () => replacement } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post: () => replacement } };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -2146,11 +2146,11 @@ test('a check-in token received after its remaining lifetime is never shown', as
   let now = 1_000;
   let qrDraws = 0;
   const timers: number[] = [];
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { post: () => tokenResponse } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() { qrDraws++; } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post: () => tokenResponse } };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() { qrDraws++; } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -2178,13 +2178,13 @@ test('a check-in token received after its remaining lifetime is never shown', as
 test('host page grants selected capabilities for this event and can revoke the returned grant', async () => {
   let page: Record<string, any> | undefined;
   const posts: Array<{ path: string; body: Record<string, any> }> = [];
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async post(path: string, body: Record<string, any>) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async post(path: string, body: Record<string, any>) {
         posts.push({ path, body }); return { id: 'grant-1', status: path.includes('revoke') ? 'REVOKED' : 'ACTIVE' };
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -2212,10 +2212,10 @@ test('a slow older event refresh cannot overwrite a newer response', async () =>
   let page: Record<string, any> | undefined;
   let finishOld: ((value: unknown) => void) | undefined;
   let detailReads = 0;
-  const source = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
+  const source = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8');
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get(path: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get(path: string) {
         if (path === '/events/e1') {
           detailReads++;
           if (detailReads === 1) return new Promise(resolve => { finishOld = resolve; });
@@ -2226,8 +2226,8 @@ test('a slow older event refresh cannot overwrite a newer response', async () =>
         if (path === '/events/e1/share-metrics') return Promise.resolve({ shareIntents: 0, attributedOpens: 0 });
         return Promise.resolve({ items: [] });
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -2251,11 +2251,11 @@ test('event page clears prior host controls before loading under another identit
   let currentUser = 'old-host';
   let finishDetail!: (value: unknown) => void;
   const detail = new Promise(resolve => { finishDetail = resolve; });
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: () => detail } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'old-host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: () => detail } };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'old-host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -2286,11 +2286,11 @@ test('event and profile block controls call the existing member routes', async (
   let profilePage: Record<string, any> | undefined;
   const posts: Array<{ path: string; body: Record<string, unknown> }> = [];
   const api = { async post(path: string, body: Record<string, unknown>) { posts.push({ path, body }); return {}; } };
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { eventPage = definition; },
@@ -2299,8 +2299,8 @@ test('event and profile block controls call the existing member routes', async (
   });
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { profilePage = definition; }, wx: {}
@@ -2330,8 +2330,8 @@ test('profile export obtains an owner-bound short-lived ticket before copying da
   };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -2349,8 +2349,8 @@ test('a deletion request receipt remains visible after the profile refresh and n
   const notice = '已收到注销或删除申请；尚未停用账号、删除资料或去标识。';
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { post: async () => ({ id: 'request-1', status: 'OPEN', notice }) } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post: async () => ({ id: 'request-1', status: 'OPEN', notice }) } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; }, wx: {}
@@ -2371,9 +2371,9 @@ test('event only reads protected sections for an eligible member or host', async
   let summaryVisibility: 'PUBLIC' | undefined;
   const requests: string[] = [];
   const protectedRoutes = ['/events/e1/content', '/events/e1/expenses', '/events/e1/manual-checkins', '/events/e1/checkins'];
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async (route: string) => {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async (route: string) => {
         requests.push(route);
         if (route === '/i/t') return { id: 'e1', status: 'RECRUITING', version: 2,
           payload: { title: '合成活动', ...(summaryVisibility ? { visibility: summaryVisibility } : {}),
@@ -2389,8 +2389,8 @@ test('event only reads protected sections for an eligible member or host', async
         if (route === '/events/e1/aliases') return { items: [], notice: { version: 'v1', text: '测试说明' } };
         return { items: [] };
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'visitor' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'visitor' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -2437,9 +2437,9 @@ test('event expense area distinguishes network failure, empty ledger, and forbid
   let mode: 'offline' | 'empty' | 'forbidden' = 'offline';
   let posts = 0;
   const ledgerPath = '/events/e1/expenses';
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { post: async () => { posts++; return {}; }, get: async (route: string) => {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post: async () => { posts++; return {}; }, get: async (route: string) => {
         if (route === '/events/e1') return { id: 'e1', hostId: 'host', version: 2, status: 'CONFIRMED',
           payload: { startAt: '2027-01-02T12:00:00Z', endAt: '2027-01-02T14:00:00Z', feeMode: 'AA' } };
         if (route === '/system/safety') return { status: 'OPEN' };
@@ -2450,8 +2450,8 @@ test('event expense area distinguishes network failure, empty ledger, and forbid
         }
         return { items: [] };
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'p1' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'p1' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -2475,7 +2475,7 @@ test('event expense area distinguishes network failure, empty ledger, and forbid
   mode = 'forbidden';
   assert.equal(await page.refresh(), true);
   assert.equal(page.data.expenseLoadState, 'FORBIDDEN');
-  const wxml = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const wxml = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
   assert.match(wxml, /expenseLoadState === 'ERROR'[^\n]*bindtap="refresh"/);
   assert.match(wxml, /expenseLoadState === 'EMPTY'/);
   assert.match(wxml, /expenseLoadState === 'FORBIDDEN'/);
@@ -2486,9 +2486,9 @@ test('event expense area distinguishes network failure, empty ledger, and forbid
 test('event attendance area does not hide failed reads as no check-ins', async () => {
   let page: Record<string, any> | undefined;
   let mode: 'offline' | 'manual-offline' | 'empty' | 'forbidden' = 'offline';
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async (route: string) => {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async (route: string) => {
         if (route === '/events/e1') return { id: 'e1', hostId: 'host', version: 2, status: 'CONFIRMED',
           payload: { startAt: '2027-01-02T12:00:00Z', endAt: '2027-01-02T14:00:00Z', feeMode: 'FREE' } };
         if (route === '/system/safety') return { status: 'OPEN' };
@@ -2501,8 +2501,8 @@ test('event attendance area does not hide failed reads as no check-ins', async (
         }
         return { items: [] };
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -2527,7 +2527,7 @@ test('event attendance area does not hide failed reads as no check-ins', async (
   mode = 'forbidden';
   assert.equal(await page.refresh(), true);
   assert.equal(page.data.attendanceLoadState, 'FORBIDDEN');
-  const wxml = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const wxml = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
   assert.match(wxml, /attendanceLoadState === 'ERROR'[^\n]*bindtap="refresh"/);
   assert.match(wxml, /attendanceLoadState === 'EMPTY'/);
   assert.match(wxml, /attendanceLoadState === 'FORBIDDEN'/);
@@ -2536,9 +2536,9 @@ test('event attendance area does not hide failed reads as no check-ins', async (
 test('event discussion area distinguishes failed reads from a genuinely empty discussion', async () => {
   let page: Record<string, any> | undefined;
   let mode: 'offline' | 'empty' | 'ready' | 'forbidden' = 'offline';
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async (route: string) => {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async (route: string) => {
         if (route === '/events/e1') return { id: 'e1', hostId: 'host', version: 2, status: 'CONFIRMED',
           payload: { startAt: '2027-01-02T12:00:00Z', endAt: '2027-01-02T14:00:00Z', feeMode: 'FREE' } };
         if (route === '/system/safety') return { status: 'OPEN' };
@@ -2550,8 +2550,8 @@ test('event discussion area distinguishes failed reads from a genuinely empty di
         }
         return { items: [] };
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -2575,7 +2575,7 @@ test('event discussion area distinguishes failed reads from a genuinely empty di
   assert.equal(await page.refresh(), true);
   assert.equal(page.data.contentLoadState, 'FORBIDDEN');
   assert.equal(page.data.content.length, 0);
-  const wxml = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const wxml = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
   assert.match(wxml, /contentLoadState === 'ERROR'[^\n]*bindtap="refresh"/);
   assert.match(wxml, /contentLoadState === 'EMPTY'/);
   assert.match(wxml, /contentLoadState === 'FORBIDDEN'/);
@@ -2584,9 +2584,9 @@ test('event discussion area distinguishes failed reads from a genuinely empty di
 test('completed event keeps outcome read failure visible so feedback can be retried', async () => {
   let page: Record<string, any> | undefined;
   let mode: 'offline' | 'ready' | 'forbidden' = 'offline';
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async (route: string) => {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async (route: string) => {
         if (route === '/events/e1') return { id: 'e1', hostId: 'host', version: 2, status: 'COMPLETED',
           payload: { startAt: '2026-01-02T12:00:00Z', endAt: '2026-01-02T14:00:00Z', feeMode: 'FREE' } };
         if (route === '/system/safety') return { status: 'OPEN' };
@@ -2599,8 +2599,8 @@ test('completed event keeps outcome read failure visible so feedback can be retr
         }
         return { items: [] };
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'p1' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'p1' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -2621,7 +2621,7 @@ test('completed event keeps outcome read failure visible so feedback can be retr
   assert.equal(await page.refresh(), true);
   assert.equal(page.data.outcomeLoadState, 'FORBIDDEN');
   assert.equal(page.data.outcome, null);
-  const wxml = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const wxml = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
   assert.match(wxml, /outcomeLoadState === 'ERROR'[^\n]*bindtap="refresh"/);
   assert.match(wxml, /outcomeLoadState === 'FORBIDDEN'/);
 });
@@ -2631,10 +2631,10 @@ test('profile offer decline sends the event version and refreshes the offer stat
   const calls: Array<{ path: string; body: Record<string, unknown> }> = [];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async post(route: string, body: Record<string, unknown>) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async post(route: string, body: Record<string, unknown>) {
         calls.push({ path: route, body }); return { status: 'DECLINED' };
       } } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; }, wx: {}

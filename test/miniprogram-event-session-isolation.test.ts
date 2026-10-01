@@ -10,16 +10,16 @@ const detail = { id: 'event-one', hostId: 'member', version: 3, status: 'RECRUIT
 function mount(readDetail: () => Promise<unknown>) {
   const storage = new Map([['sessionToken', 'token-first'], ['userId', 'member']]);
   let page: Record<string, any> | undefined;
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(module: string) {
-      if (module === '../../utils/api.js') return { api: { async get(route: string) {
+      if ((module === '../../utils/api.js' || module === '../../../utils/api.js')) return { api: { async get(route: string) {
         if (route === '/events/event-one') return readDetail();
         if (route === '/system/safety') return { status: 'OPEN' };
         if (route === '/events/event-one/aliases') return { items: [], notice: { version: 'v1', text: '说明' } };
         return { items: [] };
       } } };
-      if (module === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (module === '../../config.js') return { developmentUser: '' };
+      if ((module === '../../utils/checkin-qr.js' || module === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((module === '../../config.js' || module === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${module}`);
     },
     Page(definition: Record<string, any>) { page = definition; },

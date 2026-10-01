@@ -6,11 +6,11 @@ import test from 'node:test';
 test('a direct-linked event back button returns to a real app route when there is no prior page', () => {
   const navigations: string[] = [];
   let page: Record<string, any> | undefined;
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -27,11 +27,11 @@ test('a direct-linked event back button returns to a real app route when there i
 test('rejected activity content shortcut opens the real profile review form', () => {
   let page: Record<string, any> | undefined;
   const actions: string[] = [];
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(path);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -50,11 +50,11 @@ test('event more button offers a safety action before navigating to the report f
   let actionSheet: Record<string, any> | undefined;
   const routes: string[] = [];
   const globalData: Record<string, any> = {};
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -73,18 +73,18 @@ test('event more button offers a safety action before navigating to the report f
   actionSheet?.success({ tapIndex: 0 });
   assert.deepEqual(routes, ['/pages/me/me']);
   assert.equal(globalData.reportContext.eventId, 'event-1');
-  assert.match(readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8'),
+  assert.match(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8'),
     /event-nav-safety" bindtap="openEventActions"/);
 });
 
 test('host workbench opens the registered share card for the current event', () => {
   let page: Record<string, any> | undefined;
   const routes: string[] = [];
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -103,18 +103,18 @@ test('host workbench opens the registered share card for the current event', () 
   page.data.isHost = true;
   page.openShareCard();
   assert.deepEqual(routes, ['/subpackages/activity/share/share?id=event-1&share=1']);
-  assert.match(readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8'),
+  assert.match(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8'),
     /bindtap="openShareCard"/);
 });
 
 test('AA ledger presentation keeps each integer-cent share exact in yuan', () => {
   let format: ((fen: number) => string) | undefined;
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8') +
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8') +
     '\nglobalThis.__format = yuanFromFen;', {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page() {},
@@ -130,12 +130,12 @@ test('AA ledger presentation keeps each integer-cent share exact in yuan', () =>
 
 test('event header shows the current China-local time range without repeating a same-day date', () => {
   let display: ((event: Record<string, any>) => Record<string, any>) | undefined;
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8') +
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8') +
     '\nglobalThis.__display = eventDisplay;', {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page() {},
@@ -158,11 +158,11 @@ test('PG01 location and share controls use the current event and its real capabi
   let page: Record<string, any> | undefined;
   const copied: string[] = [];
   const routes: string[] = [];
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -194,18 +194,18 @@ test('PG01 location and share controls use the current event and its real capabi
 });
 
 test('PG05-S confirmed member copies the latest venue from the success card', async () => {
-  const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const markup = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
   const successCard = markup.match(/<view wx:if="{{successState === 'JOINED'}}"[\s\S]*?<view class="joined-success-card joined-roster-card"/);
   assert.ok(successCard);
   assert.match(successCard[0], /class="joined-ticket-row joined-ticket-venue"[\s\S]*?bindtap="copyJoinedVenue"/);
 
   let page: Record<string, any> | undefined;
   const copied: string[] = [];
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -231,11 +231,11 @@ test('PG05-S venue action rejects a stale identity, revoked seat and missing ven
   let actor = 'member-1';
   let page: Record<string, any> | undefined;
   const copied: string[] = [];
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -277,11 +277,11 @@ test('venue clipboard completion does not show an old-account success toast', ()
   let clipboardSuccess: (() => void) | undefined;
   let page: Record<string, any> | undefined;
   const toasts: string[] = [];
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -321,9 +321,9 @@ test('PG05-S venue action uses the real event refresh before copying or dismissi
       startAt: '2026-10-05T10:00:00Z', endAt: '2026-10-05T12:00:00Z', feeMode: 'FREE',
       maxParticipants: 8, minParticipants: 2 },
     stats: { confirmed: 2, reserved: 0, requested: 0, waitlisted: 0, reconfirmRequired: 0 } });
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async (url: string) => {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async (url: string) => {
         if (url === '/me/registrations?eventId=event-1')
           return { items: [{ event_id: 'event-1', status: registrationStatus }] };
         if (url === '/events/event-1') return liveEvent();
@@ -332,8 +332,8 @@ test('PG05-S venue action uses the real event refresh before copying or dismissi
         if (url.startsWith('/events/event-1/')) return { items: [] };
         throw new Error(`unexpected GET ${url}`);
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -376,9 +376,9 @@ test('PG05-S ignores an old A copy response after A to B to A account reloads', 
       startAt: '2026-10-05T10:00:00Z', endAt: '2026-10-05T12:00:00Z', feeMode: 'FREE',
       maxParticipants: 8, minParticipants: 2 },
     stats: { confirmed: 2, reserved: 0, requested: 0, waitlisted: 0, reconfirmRequired: 0 } });
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async (url: string) => {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async (url: string) => {
         if (url === '/me/registrations?eventId=event-1') {
           registrationsRead += 1;
           if (registrationsRead === 1) { signalOldStarted?.(); return oldRegistration; }
@@ -394,8 +394,8 @@ test('PG05-S ignores an old A copy response after A to B to A account reloads', 
         if (url.startsWith('/events/event-1/')) return { items: [] };
         throw new Error(`unexpected GET ${url}`);
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -446,9 +446,9 @@ function calendarHarness() {
     addPhoneCalendar(options: Record<string, any>) { calendarCalls.push(options); },
     showToast({ title }: { title: string }) { toasts.push(title); }
   };
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async (url: string) => {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async (url: string) => {
         if (url === '/me/registrations?eventId=event-1') {
           if (state.registrationWait) await state.registrationWait;
           return { items: [{ event_id: 'event-1', status: state.registrationStatus }] };
@@ -460,8 +460,8 @@ function calendarHarness() {
         if (url.startsWith('/events/event-1/')) return { items: [] };
         throw new Error(`unexpected GET ${url}`);
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -477,7 +477,7 @@ function calendarHarness() {
 }
 
 test('PG05-S calendar button writes the refreshed confirmed event to the phone calendar', async () => {
-  const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const markup = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
   const successCard = markup.match(/<view wx:if="{{successState === 'JOINED'}}"[\s\S]*?<view class="joined-success-card joined-roster-card"/);
   assert.ok(successCard);
   assert.match(successCard[0], /活动时间[\s\S]*?bindtap="addJoinedCalendar"[\s\S]*?场地地址/);

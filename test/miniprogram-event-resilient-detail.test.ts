@@ -4,8 +4,8 @@ import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { runInNewContext } from 'node:vm';
 
-const source = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
-const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+const source = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8');
+const markup = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
 const event = { id: 'e1', hostId: 'host', version: 2, status: 'CONFIRMED', recruiting: true,
   payload: { title: '周末羽毛球', visibility: 'INVITE', feeMode: 'FREE',
     startAt: '2027-03-22T11:00:00Z', endAt: '2027-03-22T13:00:00Z' } };
@@ -15,12 +15,12 @@ function pageWithReads(read: (route: string) => Promise<unknown>,
   let page: Record<string, any> | undefined;
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: read, post } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../utils/sha256.js') return { sha256(value: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: read, post } };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/sha256.js' || path === '../../../utils/sha256.js')) return { sha256(value: string) {
         return createHash('sha256').update(value).digest('hex');
       } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },

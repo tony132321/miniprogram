@@ -6,11 +6,11 @@ import { runInNewContext } from 'node:vm';
 test('event page refuses an invitation card while the current version awaits review', async () => {
   let page: Record<string, any> | undefined;
   let submittedIntents = 0;
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async post() { submittedIntents++; } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async post() { submittedIntents++; } } };
+      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
