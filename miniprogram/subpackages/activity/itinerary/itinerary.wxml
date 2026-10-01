@@ -1,5 +1,5 @@
 <view class="itinerary-page" style="padding-top: {{statusBarHeight}}px">
-  <view class="itinerary-header"><view class="header-title"><button class="back" bindtap="back" aria-label="返回">‹</button><text>我的行程</text></view><button class="profile-link" bindtap="goProfile" aria-label="我的页面">♙</button></view>
+  <view class="itinerary-header"><view class="header-title"><button class="back" bindtap="back" aria-label="返回">‹</button><text>我的行程</text></view><button class="profile-link" bindtap="goProfile" aria-label="我的页面"><view class="profile-glyph"></view></button></view>
   <view class="itinerary-content">
     <view class="intro-pill"><text class="intro-dot"></text>已参与与我组织的活动</view>
     <view class="intro-title">我的行程安排</view>

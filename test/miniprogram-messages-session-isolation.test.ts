@@ -75,6 +75,22 @@ test('a notice card from an earlier token cannot navigate or mark itself read', 
   assert.deepEqual(Array.from(page.data.items), [], 'the stale card is cleared on interaction');
 });
 
+test('the private-chat activity shortcut does not navigate after the session changes', async () => {
+  const { page, navigations, rotateSession } = mount({
+    async get() { return { items: [], total: 0, unreadTotal: 0 }; }
+  });
+  await page.onShow();
+  page.openPrivateChatPreview();
+  assert.equal(page.data.viewMode, 'CHAT_UNAVAILABLE');
+  rotateSession('second-session');
+
+  page.goMyActivities();
+
+  assert.deepEqual(navigations, []);
+  assert.equal(page.data.viewMode, 'INBOX');
+  assert.equal(page.data.message, '账号已切换，请返回后重新加载消息。');
+});
+
 test('an approval card from an earlier token cannot navigate or approve', async () => {
   const posts: string[] = [];
   const { page, navigations, rotateSession } = mount({

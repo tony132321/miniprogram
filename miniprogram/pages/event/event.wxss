@@ -80,7 +80,11 @@ page{padding:0;background:#f5f6fa;color:#1b1e27;font-family:-apple-system,BlinkM
 .section-intro { color: #64748b; font-size: 21rpx; }
 .success-panel { border-radius: 32rpx; background: linear-gradient(140deg,#f6f9ff,#fff 67%); }
 .success-mark { background: #24c767; color: #fff; box-shadow: 0 12rpx 32rpx rgba(36,199,103,.24); }
-.joined-success .success-mark:after { content: "YOU'RE IN!"; display: block; position: absolute; margin: -18rpx 0 0 78rpx; padding: 5rpx 9rpx; transform: rotate(9deg); border-radius: 25rpx; background: #c6ff00; color: #0f172a; font-size: 15rpx; line-height: 1.2; white-space: nowrap; }
+.joined-mark-wrap { position: relative; width: 260rpx; height: 150rpx; margin: 0 auto 17rpx; }
+.joined-mark-wrap .success-mark { position: absolute; top: 14rpx; left: 70rpx; margin: 0; }
+.joined-mark-lime, .joined-mark-play { position: absolute; display: block; width: max-content; padding: 6rpx 14rpx; border-radius: 60rpx; box-shadow: 0 7rpx 15rpx #17244b24; font-size: 18rpx; font-weight: 800; line-height: 1.2; white-space: nowrap; }
+.joined-mark-lime { top: 4rpx; right: 0; z-index: 1; transform: rotate(10deg); background: #d2f803; color: #172033; }
+.joined-mark-play { left: 0; bottom: 6rpx; z-index: 1; transform: rotate(-10deg); background: #ff2d55; color: #fff; }
 .joined-success .success-summary { background: linear-gradient(125deg,#1d64f2,#5d54d3); }
 .host-hero { position: relative; overflow: hidden; margin: 8rpx -4rpx 22rpx; padding: 25rpx 24rpx; min-height: 185rpx; border-radius: 26rpx; background: linear-gradient(130deg,#1467ff,#0f4fc8); color: #fff; box-shadow: 0 9rpx 20rpx rgba(29,100,242,.15); }
 .host-hero:after { content: "✦"; position: absolute; right: 20rpx; bottom: -31rpx; color: rgba(198,255,0,.38); font-size: 150rpx; }

@@ -501,6 +501,7 @@ Page({
   },
   goProfile() { wx.switchTab({ url: '/pages/me/me' }); },
   goMyActivities() {
+    if (this.clearPrivateAfterIdentityChange()) return;
     this.backToInbox();
     wx.navigateTo({ url: '/subpackages/profile/moments/moments?filter=all' });
   },

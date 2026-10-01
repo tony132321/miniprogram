@@ -101,6 +101,8 @@ test('recent conversations opens an honest private-chat preview with real exit p
   assert.deepEqual(reads, ['/me/notifications?offset=0'], 'preview does not fabricate or fetch conversation data');
   page.goMyActivities();
   assert.deepEqual(destinations, ['/subpackages/profile/moments/moments?filter=all']);
+  assert.equal(page.data.viewMode, 'INBOX');
+  assert.equal(bar.data.hidden, false);
   page.backToInbox();
   assert.equal(page.data.viewMode, 'INBOX');
   assert.equal(bar.data.hidden, false);
