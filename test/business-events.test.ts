@@ -8,7 +8,7 @@ import { reviewEvent } from '../src/event-review.ts';
 import { checkIn, confirmEvent, createCheckInToken, requestManualCheckIn, respondManualCheckIn,
   recordExpense, markExpenseShare } from '../src/lifecycle.ts';
 import { recordAttributedOpen, recordShareIntent, getShareMetrics } from '../src/sharing.ts';
-import { createReport } from '../src/operations.ts';
+import { assignReport, changeReportStatus, createReport } from '../src/operations.ts';
 import { recordSupportMinutes } from '../src/support-minutes.ts';
 import { openSyntheticPublicCoverage } from './helpers/public-coverage.ts';
 import { askCurrentFact, createContent, moderateContent } from '../src/collaboration.ts';
@@ -134,6 +134,46 @@ test('public review submission is not a publication event; approval emits once a
     assert.equal(rows.find(row => row.event_name === 'ACTIVITY_PUBLISHED')?.version, submitted.version);
     assert.equal(rows.find(row => row.event_name === 'ACTIVITY_PUBLISHED')?.source, 'OPS');
     assert.ok(rows.every(row => row.is_test));
+  } finally { await db.close(); }
+});
+
+test('activity report review and resolution emit one private event per committed state change', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', valid('INVITE'), 'report-events-draft');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'report-events-publish');
+    const report = await createReport(db, 'member-secret', { eventId: event.id, kind: 'OTHER',
+      description: '只留在受限工单内的私密举报正文' }, 'report-events-create');
+    await assignReport(db, 'operator:safety', report.id, 'operator:reviewer',
+      '已核对工单并分配独立处理人员', 'report-events-assign');
+    await changeReportStatus(db, 'operator:reviewer', report.id, 'IN_REVIEW', undefined,
+      'report-events-review');
+    await changeReportStatus(db, 'operator:reviewer', report.id, 'IN_REVIEW', undefined,
+      'report-events-review');
+    await changeReportStatus(db, 'operator:reviewer', report.id, 'RESOLVED',
+      '已核对事实并完成处理，原举报内容保留在受限工单', 'report-events-resolve');
+    await changeReportStatus(db, 'operator:reviewer', report.id, 'RESOLVED',
+      '已核对事实并完成处理，原举报内容保留在受限工单', 'report-events-resolve');
+
+    const { rows } = await db.query<BusinessEvent>(`SELECT * FROM business_events WHERE activity_id=$1
+      AND event_name IN ('CREATE_REPORT','REPORT_IN_REVIEW','REPORT_RESOLVED','OUTCOME_REVIEW')
+      ORDER BY occurred_at,event_uuid`, [event.id]);
+    assert.deepEqual(rows.map(row => row.event_name).sort(),
+      ['CREATE_REPORT','REPORT_IN_REVIEW','REPORT_RESOLVED']);
+    assert.ok(rows.every(row => row.activity_id === event.id && row.version === event.version &&
+      row.release === 'R1' && row.is_test && row.occurred_at &&
+      /^[a-f0-9]{64}$/.test(row.user_id_pseudonymous ?? '')));
+    assert.deepEqual(rows.map(row => row.source).sort(), ['API','OPS','OPS']);
+    const { rows: audits } = await db.query<{ id: string; detail: Record<string, unknown> }>(
+      `SELECT id,detail FROM audit WHERE event_id=$1 AND action='REPORT_STATUS' ORDER BY created_at,id`,
+      [event.id]);
+    assert.deepEqual(rows.filter(row => row.event_name !== 'CREATE_REPORT').map(row => row.event_uuid).sort(),
+      audits.map(row => row.id).sort());
+    assert.equal(JSON.stringify(rows).includes('私密举报正文'), false);
+    assert.equal(JSON.stringify(audits).includes('私密举报正文'), false);
+    const { rows: aggregateRows } = await db.query<{ event_name: string }>(
+      "SELECT event_name FROM system_business_events WHERE event_name LIKE 'REPORT_%'");
+    assert.deepEqual(aggregateRows, [], 'activity-scoped reports do not enter the unscoped aggregate stream');
   } finally { await db.close(); }
 });
 

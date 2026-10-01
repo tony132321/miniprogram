@@ -125,7 +125,8 @@ const migrations = [
   { version: 67, path: fileURLToPath(new URL('./migrations/0067_me_events_lookup_indexes.sql', import.meta.url)) },
   { version: 68, path: fileURLToPath(new URL('./migrations/0068_draft_business_events.sql', import.meta.url)) },
   { version: 69, path: fileURLToPath(new URL('./migrations/0069_notification_provider_accepted_business_event.sql', import.meta.url)) },
-  { version: 70, path: fileURLToPath(new URL('./migrations/0070_content_insert_clock.sql', import.meta.url)) }
+  { version: 70, path: fileURLToPath(new URL('./migrations/0070_content_insert_clock.sql', import.meta.url)) },
+  { version: 71, path: fileURLToPath(new URL('./migrations/0071_scoped_report_status_business_events.sql', import.meta.url)) }
 ];
 export const LATEST_SCHEMA_VERSION = migrations[migrations.length - 1]!.version;
 type MigrationExecutor = Queryable & { exec(sql: string): Promise<unknown> };
