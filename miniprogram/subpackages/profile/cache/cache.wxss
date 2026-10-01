@@ -44,4 +44,6 @@
 .storage-protection-icon { color: #2fbf66; font-size: 30rpx; font-weight: 800; line-height: 1.15; }
 .storage-refresh { width: 100%; height: 78rpx; margin: 0; border-radius: 44rpx; background: #2465ef; color: #fff; font-size: 25rpx; font-weight: 800; line-height: 78rpx; box-shadow: 0 11rpx 24rpx rgba(36, 101, 239, .16); }
 .storage-refresh::after { border: 0; }
-.storage-footer { color: #939aab; font-size: 19rpx; line-height: 1.5; text-align: center; margin: 18rpx 0 35rpx; }
+.storage-read-status { color: #7b8394; font-size: 20rpx; line-height: 1.5; text-align: center; margin: 18rpx 0 0; }
+.storage-read-status.error { color: #b13f54; }
+.storage-footer { color: #939aab; font-size: 19rpx; line-height: 1.5; text-align: center; margin: 10rpx 0 35rpx; }

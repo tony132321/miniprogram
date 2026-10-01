@@ -15,5 +15,7 @@
 
   <view class="storage-protection"><text class="storage-protection-icon">◇</text><text>当前没有经过验证的可清理分类。清空全部存储可能移除登录会话或草稿，因此此页不提供一键清理。</text></view>
   <button class="storage-refresh" bindtap="refreshStorage">重新读取设备存储</button>
+  <view wx:if="{{storageState === 'READY'}}" class="storage-read-status">◷ 本机最近读取时间：{{lastReadAt}}</view>
+  <view wx:elif="{{storageState === 'UNAVAILABLE'}}" class="storage-read-status error">本机存储读取失败，请稍后重试</view>
   <view class="storage-footer">数值来自微信原生接口，不代表可清理容量，也不等于服务端保存的数据。</view>
 </view>
