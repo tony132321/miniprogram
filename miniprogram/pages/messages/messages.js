@@ -503,6 +503,7 @@ Page({
     wx.navigateTo({ url: '/subpackages/profile/moments/moments?filter=all' });
   },
   goNotificationSettings() {
+    if (this.clearPrivateAfterIdentityChange()) return;
     wx.setStorageSync?.('irlProfileFocusIntent', 'notificationSettingsSection');
     wx.switchTab({ url: '/pages/me/me' });
   },
