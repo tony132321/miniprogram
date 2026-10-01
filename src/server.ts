@@ -920,7 +920,11 @@ export function createApp(db: Database, options: AppOptions) {
       const regMatch = path.match(/^\/registrations\/([^/]+)\/(cancel|approve|reconfirm|remove)$/);
       if (regMatch && method === 'POST') {
         const key = keyFrom(req); const body = await readJson(req); const version = versionFrom(body.expectedVersion);
-        if (regMatch[2] === 'cancel') return send(res, 200, await cancelRegistration(db, actor, regMatch[1]!, version, key));
+        if (regMatch[2] === 'cancel') {
+          if (body.expectedStatus !== undefined && body.expectedStatus !== 'REQUESTED')
+            throw new AppError('BAD_REQUEST', 'expectedStatus 仅支持 REQUESTED', 400);
+          return send(res, 200, await cancelRegistration(db, actor, regMatch[1]!, version, key, body.expectedStatus));
+        }
         if (regMatch[2] === 'approve') return send(res, 200, await approveRegistration(db, actor, regMatch[1]!, version, key));
         if (regMatch[2] === 'remove') return send(res, 200, await removeRegistration(db, actor, regMatch[1]!, version, body.reason, key));
         return send(res, 200, await reconfirm(db, actor, regMatch[1]!, version, key, options.clock?.()));

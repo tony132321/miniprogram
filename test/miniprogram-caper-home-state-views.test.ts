@@ -359,8 +359,9 @@ test('state cards deep-link current activity exit, check-in, feedback and repeat
   const { page, navigations, storage, requests } = makeHome({ organizer: listed }, {});
   await page.onShow();
   const byId = (id: string) => page.data.items.find((item: any) => item.id === id);
-  assert.equal(byId('pending-exit').shortcutAction, 'registrationSection');
-  assert.match(byId('pending-exit').shortcutLabel, /退出/);
+  assert.equal(byId('pending-exit').secondaryAction, 'pendingExit');
+  assert.equal(byId('pending-exit').secondaryLabel, '取消报名申请');
+  assert.equal(byId('pending-exit').shortcutAction, '');
   assert.equal(byId('started-pending').shortcutAction, '');
   assert.equal(byId('host-checkin').secondaryAction, 'checkinSection');
   assert.equal(byId('host-checkin').shortcutAction, '');
@@ -370,11 +371,11 @@ test('state cards deep-link current activity exit, check-in, feedback and repeat
   assert.equal(byId('host-repeat').primaryAction, 'hostRepeat');
   assert.equal(byId('host-repeat').shortcutAction, 'detailsSection');
   for (const [id, action] of [
-    ['pending-exit', 'registrationSection'], ['host-checkin', 'checkinSection'],
+    ['pending-exit', 'pendingExit'], ['host-checkin', 'checkinSection'],
     ['member-feedback', 'checkinSection'], ['host-repeat', 'detailsSection']
   ]) page.openCardAction({ currentTarget: { dataset: { id, action } } });
   assert.deepEqual(navigations, [
-    '/pages/event/event?id=pending-exit&section=registrationSection',
+    '/pages/event/event?id=pending-exit&section=registrationSection&entry=pendingExit',
     '/pages/event/event?id=host-checkin&section=checkinSection&entry=hostCheckin',
     '/pages/event/event?id=member-feedback&section=checkinSection&entry=memberFeedback',
     '/pages/event/event?id=host-repeat&section=detailsSection'

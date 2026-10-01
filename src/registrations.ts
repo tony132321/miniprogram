@@ -181,13 +181,21 @@ export async function expressInterest(db: Database, actor: string, eventId: stri
   });
 }
 
-export async function cancelRegistration(db: Database, actor: string, registrationId: string, expectedVersion: number, key: string): Promise<Registration> {
-  return command(db, actor, `cancel-registration:${registrationId}`, key, async tx => {
+export async function cancelRegistration(db: Database, actor: string, registrationId: string, expectedVersion: number,
+  key: string, expectedStatus?: 'REQUESTED'): Promise<Registration> {
+  if (expectedStatus !== undefined && expectedStatus !== 'REQUESTED')
+    throw new AppError('BAD_REQUEST', '仅支持按待审申请状态取消', 400);
+  const requestOnly = expectedStatus === 'REQUESTED';
+  return command(db, actor, `${requestOnly ? 'cancel-registration-request' : 'cancel-registration'}:${registrationId}`, key, async tx => {
     const { rows: found } = await tx.query<RegistrationRow>('SELECT * FROM registrations WHERE id=$1', [registrationId]);
-    const registration = found[0];
-    if (!registration) throw new AppError('NOT_FOUND', '报名不存在', 404);
-    const event = await lockEvent(tx, registration.event_id, expectedVersion);
+    if (!found[0]) throw new AppError('NOT_FOUND', '报名不存在', 404);
+    const event = await lockEvent(tx, found[0].event_id, expectedVersion);
+    const { rows: current } = await tx.query<RegistrationRow>('SELECT * FROM registrations WHERE id=$1 FOR UPDATE', [registrationId]);
+    const registration = current[0];
+    if (!registration || registration.event_id !== event.id) throw new AppError('NOT_FOUND', '报名不存在', 404);
     if (registration.user_id !== actor) throw new AppError('FORBIDDEN', '只能退出自己的报名', 403);
+    if (requestOnly && registration.status !== 'REQUESTED')
+      throw new AppError('REGISTRATION_CHANGED', '报名状态已变化，请重新核对后操作', 409);
     if (registration.status === 'CANCELLED') return convert(registration);
     if (await databaseNow(tx) >= Date.parse(event.payload.startAt!))
       throw new AppError('INVALID_STATE', '活动开始后不能按普通退出处理');
@@ -197,13 +205,20 @@ export async function cancelRegistration(db: Database, actor: string, registrati
     const released = ['CONFIRMED', 'RECONFIRM_REQUIRED', 'OFFERED'].includes(registration.status);
     if (registration.status === 'OFFERED') await tx.query("UPDATE offers SET status='CANCELLED' WHERE registration_id=$1 AND status='ACTIVE'", [registration.id]);
     const { rows } = await tx.query<RegistrationRow>(`UPDATE registrations SET status='CANCELLED',updated_at=now()
-      WHERE id=$1 AND EXISTS (SELECT 1 FROM events WHERE id=$2
-        AND (payload->>'startAt')::timestamptz>clock_timestamp()) RETURNING *`, [registration.id, event.id]);
-    if (!rows[0]) throw new AppError('INVALID_STATE', '活动开始后不能按普通退出处理');
+      WHERE id=$1 AND ($3::boolean=false OR status='REQUESTED') AND EXISTS (SELECT 1 FROM events WHERE id=$2
+        AND (payload->>'startAt')::timestamptz>clock_timestamp()) RETURNING *`, [registration.id, event.id, requestOnly]);
+    if (!rows[0]) throw requestOnly
+      ? new AppError('REGISTRATION_CHANGED', '报名状态已变化，请重新核对后操作', 409)
+      : new AppError('INVALID_STATE', '活动开始后不能按普通退出处理');
     if (released) await promote(tx, event);
     await audit(tx, actor, event.id, 'CANCEL_REGISTRATION');
     return convert(rows[0]!);
-  });
+  }, requestOnly ? async (tx, previous) => {
+    const { rows } = await tx.query<RegistrationRow>('SELECT * FROM registrations WHERE id=$1', [registrationId]);
+    if (previous.id !== registrationId || previous.userId !== actor || previous.status !== 'CANCELLED' ||
+      rows[0]?.user_id !== actor || rows[0]?.status !== 'CANCELLED')
+      throw new AppError('REGISTRATION_CHANGED', '报名状态已变化，请重新核对后操作', 409);
+  } : undefined);
 }
 
 export async function removeRegistration(db: Database, actor: string, registrationId: string, expectedVersion: number,

@@ -58,6 +58,60 @@ function databaseWithRealClock(db: Database, actualNow: () => number): Database 
   };
 }
 
+test('HTTP request-only cancellation rejects an approval crossing the event lock and separates replay keys', async () => {
+  let approveAfterInitialRead = false;
+  const f = await fixture(db => ({
+    ...db,
+    transaction: fn => db.transaction(tx => fn({
+      query: async <T extends Record<string, unknown> = Record<string, unknown>>(sql: string, params: unknown[] = []) => {
+        const result = await tx.query<T>(sql, params);
+        if (approveAfterInitialRead && sql === 'SELECT * FROM registrations WHERE id=$1') {
+          approveAfterInitialRead = false;
+          await tx.query("UPDATE registrations SET status='CONFIRMED' WHERE id=$1", [params[0]]);
+        }
+        return result;
+      }
+    }))
+  }));
+  try {
+    const draft = await createDraft(f.db, 'host', { ...input, approvalMode: 'MANUAL' }, 'request-exit-draft');
+    const event = await publishApprovedInvite(f.db, 'host', draft.id, draft.version, 'request-exit-publish');
+    const registration = await register(f.db, 'member', event.id, event.version, 'request-exit-join');
+    assert.equal(registration.status, 'REQUESTED');
+    const path = `/registrations/${registration.id}/cancel`;
+    const guardedBody = { expectedVersion: event.version, expectedStatus: 'REQUESTED' };
+    approveAfterInitialRead = true;
+    const stale = await f.request(path, 'member', 'POST', guardedBody, 'same-exit-key');
+    assert.equal(stale.status, 409);
+    assert.equal(stale.body.code, 'REGISTRATION_CHANGED');
+    assert.equal((await f.db.query<{ status: string }>('SELECT status FROM registrations WHERE id=$1',
+      [registration.id])).rows[0]?.status, 'REQUESTED', 'the synthetic in-transaction approval rolls back with the rejected exit');
+
+    await f.db.query("UPDATE registrations SET status='CONFIRMED' WHERE id=$1", [registration.id]);
+
+    const ordinary = await f.request(path, 'member', 'POST', { expectedVersion: event.version }, 'same-exit-key');
+    assert.equal(ordinary.status, 200, 'ordinary confirmed-seat exit remains available');
+    assert.equal(ordinary.body.status, 'CANCELLED');
+    const guardedReplay = await f.request(path, 'member', 'POST', guardedBody, 'same-exit-key');
+    assert.equal(guardedReplay.status, 409, 'ordinary exit result cannot replay as a request-only cancellation');
+
+    const next = await register(f.db, 'next-member', event.id, event.version, 'next-request-join');
+    assert.equal(next.status, 'REQUESTED');
+    const nextPath = `/registrations/${next.id}/cancel`;
+    const invalid = await f.request(nextPath, 'next-member', 'POST',
+      { expectedVersion: event.version, expectedStatus: 'CONFIRMED' }, 'invalid-status');
+    assert.equal(invalid.status, 400);
+    const conditional = await f.request(nextPath, 'next-member', 'POST', guardedBody, 'request-only-key');
+    assert.equal(conditional.status, 200);
+    assert.equal(conditional.body.status, 'CANCELLED');
+    assert.equal((await f.request(nextPath, 'next-member', 'POST', guardedBody, 'request-only-key')).status, 200,
+      'a successful conditional cancellation can be retried while the row remains cancelled');
+    await f.db.query("UPDATE registrations SET status='CONFIRMED' WHERE id=$1", [next.id]);
+    assert.equal((await f.request(nextPath, 'next-member', 'POST', guardedBody, 'request-only-key')).status, 409,
+      'an old conditional result cannot be replayed after the registration changes again');
+  } finally { await f.close(); }
+});
+
 test('development identity cannot be enabled in production', async () => {
   const db = await createDatabase();
   try { assert.throws(() => createApp(db, { environment: 'production', devAuth: true, checkInSecret: 'secret' }), /development identity/i); }

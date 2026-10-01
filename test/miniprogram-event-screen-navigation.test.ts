@@ -76,6 +76,117 @@ test('only an authorized organizer can enter the QR display mode', () => {
   assert.equal(page.data.checkInMode, 'participant');
 });
 
+test('pending review cancellation link focuses the live exit control only for its member and activity', async () => {
+  const { page, scrolls } = eventPage();
+  const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  assert.match(markup, /id="leaveButton"[^>]*bindtap="leave"/);
+  const live = { event: { id: 'e1', status: 'RECRUITING' }, loadState: 'READY',
+    currentUser: 'host', isHost: false, myRegistration: { id: 'r1', event_id: 'e1', status: 'REQUESTED' } };
+  page.refresh = async function () { this.setData(live); return true; };
+  await page.onLoad({ id: 'e1', section: 'registrationSection', entry: 'pendingExit' });
+  assert.equal(page.data.activeSection, 'registrationSection');
+  assert.equal(scrolls.at(-1)?.selector, '#leaveButton');
+
+  page.refresh = async function () { this.setData({ ...live, event: { id: 'e1', status: 'REVIEW_PENDING' } }); return true; };
+  scrolls.length = 0;
+  await page.onLoad({ id: 'e1', section: 'registrationSection', entry: 'pendingExit' });
+  assert.equal(scrolls.at(-1)?.selector, '#leaveButton', 'a pending review can still exit its request');
+
+  for (const changed of [
+    { event: { id: 'another', status: 'RECRUITING' } },
+    { currentUser: 'someone-else' },
+    { myRegistration: { id: 'r1', event_id: 'another', status: 'REQUESTED' } },
+    { myRegistration: { id: 'r1', status: 'CONFIRMED' } },
+    { event: { id: 'e1', status: 'IN_PROGRESS' } }
+  ]) {
+    page.refresh = async function () { this.setData({ ...live, ...changed }); return true; };
+    scrolls.length = 0;
+    await page.onLoad({ id: 'e1', section: 'registrationSection', entry: 'pendingExit' });
+    assert.notEqual(scrolls.at(-1)?.selector, '#leaveButton', 'stale or ineligible state must not focus exit');
+  }
+});
+
+test('pending request exit rechecks a newly approved seat before its first cancellation tap', async () => {
+  const posts: Array<{ path: string; body: Record<string, unknown> }> = [];
+  const { page, routes } = eventPage(async (path, body) => { posts.push({ path, body }); return { status: 'CANCELLED' }; });
+  let status = 'REQUESTED';
+  let refreshes = 0;
+  page.refresh = async function () {
+    refreshes++;
+    this.setData({ event: { id: 'e1', status: 'RECRUITING', version: 3 }, loadState: 'READY',
+      currentUser: 'host', isHost: false, registrationLabel: status === 'REQUESTED' ? '待主办方审核' : '已确认报名',
+      myRegistration: { id: 'r1', event_id: 'e1', status } });
+    return true;
+  };
+  await page.onLoad({ id: 'e1', section: 'registrationSection', entry: 'pendingExit' });
+  status = 'CONFIRMED';
+  await page.leave();
+  assert.equal(refreshes, 2, 'the exit tap must read the member status again');
+  assert.equal(posts.length, 0, 'the old request action cannot cancel a newly confirmed seat');
+  assert.equal(page.data.registrationLabel, '已确认报名');
+  assert.match(page.data.message, /状态已变化|状态已变更/);
+  assert.deepEqual(routes, []);
+
+  await page.leave();
+  assert.equal(posts.length, 0, 'a queued second tap must not cancel before the new state is reviewed');
+  await page.onLoad({ id: 'e1', section: 'registrationSection' });
+  await page.leave();
+  assert.equal(posts.length, 1, 'reopening the current activity provides a new explicit exit path');
+  assert.equal(posts[0]?.path, '/registrations/r1/cancel');
+  assert.equal(posts[0]?.body.expectedStatus, undefined);
+});
+
+test('pending request exit sends a conditional cancellation after a fresh unchanged read', async () => {
+  const posts: Array<{ path: string; body: Record<string, unknown> }> = [];
+  let status = 'REQUESTED';
+  const { page, routes } = eventPage(async (path, body) => {
+    posts.push({ path, body });
+    status = 'CANCELLED';
+    return { status };
+  });
+  page.refresh = async function () {
+    this.setData({ event: { id: 'e1', status: 'RECRUITING', version: 3 }, loadState: 'READY',
+      currentUser: 'host', isHost: false,
+      myRegistration: { id: 'r1', event_id: 'e1', status } });
+    return true;
+  };
+  await page.onLoad({ id: 'e1', section: 'registrationSection', entry: 'pendingExit' });
+  await page.leave();
+  assert.equal(posts.length, 1);
+  assert.equal(posts[0]?.path, '/registrations/r1/cancel');
+  assert.equal(posts[0]?.body.expectedStatus, 'REQUESTED');
+  assert.deepEqual(routes, ['/pages/index/index']);
+
+  status = 'CONFIRMED';
+  posts.length = 0;
+  routes.length = 0;
+  await page.onLoad({ id: 'e1', section: 'registrationSection', entry: 'pendingExit' });
+  await page.leave();
+  assert.equal(posts.length, 0, 'an application approved before the destination loads still needs a new decision');
+  assert.deepEqual(routes, []);
+});
+
+test('an approval between the final read and conditional POST leaves the new seat untouched in the UI', async () => {
+  let status = 'REQUESTED';
+  const { page, routes } = eventPage(async (_path, body) => {
+    assert.equal(body.expectedStatus, 'REQUESTED');
+    status = 'CONFIRMED';
+    throw Object.assign(new Error('报名状态已变化'), { code: 'REGISTRATION_CHANGED' });
+  });
+  page.refresh = async function () {
+    this.setData({ event: { id: 'e1', status: 'RECRUITING', version: 3 }, loadState: 'READY',
+      currentUser: 'host', isHost: false, registrationLabel: status === 'REQUESTED' ? '待主办方审核' : '已确认报名',
+      myRegistration: { id: 'r1', event_id: 'e1', status } });
+    return true;
+  };
+  await page.onLoad({ id: 'e1', section: 'registrationSection', entry: 'pendingExit' });
+  await page.leave();
+  assert.equal(page.data.myRegistration.status, 'CONFIRMED');
+  assert.equal(page.data.registrationLabel, '已确认报名');
+  assert.match(page.data.message, /状态已变化/);
+  assert.deepEqual(routes, []);
+});
+
 test('home host check-in link selects verifier only for a live organizer', async () => {
   const { page, scrolls } = eventPage();
   page.refresh = async function () {

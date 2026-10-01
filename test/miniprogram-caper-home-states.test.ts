@@ -68,6 +68,41 @@ test('pending, organized and history cards use only true list states and safe ac
   assert.equal(switches.pop(), '/pages/create/create');
 });
 
+test('a pending review card makes cancellation the second main action without cancelling on navigation', async () => {
+  const { page, storage, navigations } = loadHome();
+  await page.onShow();
+  const requested = page.data.pending.find((item: any) => item.id === 'requested');
+  assert.equal(requested.secondaryLabel, '取消报名申请');
+  assert.equal(requested.secondaryAction, 'pendingExit');
+  assert.equal(requested.shortcutAction, '', 'the card must not repeat its cancellation action below the button row');
+
+  page.openCardAction({ currentTarget: { dataset: { id: 'requested', action: 'pendingExit' } } });
+  assert.deepEqual(navigations, ['/pages/event/event?id=requested&section=registrationSection&entry=pendingExit']);
+  page.openCardAction({ currentTarget: { dataset: { id: 'offer', action: 'pendingExit' } } });
+  assert.equal(navigations.length, 1, 'a different registration state cannot forge the cancellation link');
+  storage.set('devUser', 'another-member');
+  page.openCardAction({ currentTarget: { dataset: { id: 'requested', action: 'pendingExit' } } });
+  assert.equal(navigations.length, 1, 'a stale account cannot use the old review card');
+});
+
+test('request cancellation remains reachable during activity review but is hidden after activity starts', async () => {
+  const { page, navigations } = loadHome([
+    { id: 'under-review', status: 'REVIEW_PENDING', title: '待复审羽毛球', isHost: false,
+      myRegistrationStatus: 'REQUESTED' },
+    { id: 'started', status: 'IN_PROGRESS', title: '已开始羽毛球', isHost: false,
+      myRegistrationStatus: 'REQUESTED' }
+  ]);
+  await page.onShow();
+  const reviewing = page.data.pending.find((item: any) => item.id === 'under-review');
+  const started = page.data.pending.find((item: any) => item.id === 'started');
+  assert.equal(reviewing.secondaryAction, 'pendingExit');
+  assert.equal(started.secondaryAction, 'detailsSection', 'do not advertise an exit control hidden after start');
+  page.openCardAction({ currentTarget: { dataset: { id: 'under-review', action: 'pendingExit' } } });
+  assert.deepEqual(navigations, ['/pages/event/event?id=under-review&section=registrationSection&entry=pendingExit']);
+  page.openCardAction({ currentTarget: { dataset: { id: 'started', action: 'pendingExit' } } });
+  assert.equal(navigations.length, 1);
+});
+
 test('home itinerary shortcut opens the registered real itinerary page', () => {
   const { page, navigations } = loadHome();
   page.goItinerary();

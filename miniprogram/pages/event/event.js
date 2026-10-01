@@ -231,9 +231,14 @@ Page({
   async onLoad(options) {
     this.feedbackRequestId = (this.feedbackRequestId || 0) + 1;
     this.feedbackUncertainRequest = null;
+    const pendingExitIntent = options.id && options.section === 'registrationSection' && options.entry === 'pendingExit'
+      ? { eventId: options.id, actor: '' } : null;
+    this.pendingExitIntent = pendingExitIntent;
     this.setData({ statusBarHeight: wx.getSystemInfoSync?.().statusBarHeight || 24,
       id: options.id || '', token: options.token || '', source: options.source || '', activeSection: 'detailsSection', sectionTitle: '活动详情', sectionSubtitle: '耍起 CAPER · 线下见面', checkInMode: 'participant', successState: '', feedbackSubmitting: false, feedbackUncertain: false });
     await getApp().globalData.ready;
+    if (pendingExitIntent && this.pendingExitIntent === pendingExitIntent)
+      pendingExitIntent.actor = currentIdentity();
     const loaded = await this.refresh();
     if (loaded && options.success === 'published' && this.data.isHost &&
       this.data.event?.id === options.id && this.data.event.status === 'RECRUITING' &&
@@ -265,8 +270,12 @@ Page({
         this.data.outcome.myFeedbackSubmitted ? '#memberFeedbackCard' : '#feedbackForm' : '';
       const aliasForm = sameEvent && options.section === 'registrationSection' && options.entry === 'alias' &&
         this.data.canSetAlias && this.data.aliasLoadState === 'READY';
+      const pendingExit = sameEvent && options.section === 'registrationSection' && options.entry === 'pendingExit' &&
+        this.data.currentUser === currentIdentity() && !this.data.isHost &&
+        this.data.myRegistration?.event_id === options.id && this.data.myRegistration.status === 'REQUESTED' &&
+        ['REVIEW_PENDING', 'RECRUITING', 'CONFIRMED'].includes(this.data.event.status);
       if (hostCheckin) this.setData({ checkInMode: 'host' });
-      this.scrollToSection(options.section, aliasForm ? '#aliasForm' : memberFeedbackAnchor ? memberFeedbackAnchor :
+      this.scrollToSection(options.section, pendingExit ? '#leaveButton' : aliasForm ? '#aliasForm' : memberFeedbackAnchor ? memberFeedbackAnchor :
         hostAnnouncement ? '#hostAnnouncementAnchor' : hostRepeat ? '#hostRepeatAnchor' :
           hostCompletion ? '#hostCompletionForm' : '');
     }
@@ -275,6 +284,7 @@ Page({
     this.checkInPageHidden = false;
     const actor = currentIdentity();
     if (this.data.currentUser && this.data.currentUser !== actor) {
+      this.pendingExitIntent = null;
       this.feedbackRequestId = (this.feedbackRequestId || 0) + 1;
       this.feedbackUncertainRequest = null;
       this.refreshId = (this.refreshId || 0) + 1;
@@ -844,6 +854,54 @@ Page({
   },
   interested() { this.action(`/events/${this.data.id}/interests`, { inviteToken: this.data.token }, '已记录待定意向，不占用名额'); },
   async leave() {
+    if (this.pendingExitChecking) return;
+    const intent = this.pendingExitIntent;
+    if (intent?.stateChanged)
+      return this.setData({ message: '报名状态已变化，请返回我的活动，重新打开活动并核对后操作。' });
+    if (intent) {
+      this.pendingExitChecking = true;
+      const actor = currentIdentity();
+      const eventId = intent.eventId;
+      const originalRegistrationId = this.data.myRegistration?.id;
+      const sameContext = () => this.pendingExitIntent === intent && actor === currentIdentity() &&
+        this.data.currentUser === actor && this.data.id === eventId && this.data.event?.id === eventId;
+      try {
+        if (!actor || intent.actor !== actor || !sameContext()) {
+          intent.stateChanged = true;
+          if (actor === currentIdentity()) this.setData({ message: '账号或活动已变化，请重新打开当前报名。' });
+          return;
+        }
+        const loaded = await this.refresh();
+        if (!sameContext() || !loaded) return;
+        const registration = this.data.myRegistration;
+        if (this.data.isHost || !registration || registration.id !== originalRegistrationId ||
+          registration.event_id !== eventId || registration.status !== 'REQUESTED' ||
+          !['REVIEW_PENDING', 'RECRUITING', 'CONFIRMED'].includes(this.data.event.status)) {
+          intent.stateChanged = true;
+          this.setData({ message: '报名状态已变化，请返回我的活动，重新打开活动并核对后操作。' });
+          return;
+        }
+        await api.post(`/registrations/${registration.id}/cancel`,
+          { expectedVersion: this.data.event.version, expectedStatus: 'REQUESTED' });
+        if (!sameContext()) return;
+        this.pendingExitIntent = null;
+        if (await this.refresh() && actor === currentIdentity() && this.data.id === eventId &&
+          this.data.myRegistration?.status === 'CANCELLED') {
+          this.setData({ message: '已退出本次活动' });
+          wx.switchTab({ url: '/pages/index/index' });
+        }
+      } catch (error) {
+        if (!sameContext()) return;
+        if (error.code === 'REGISTRATION_CHANGED') {
+          await this.refresh();
+          if (sameContext()) {
+            intent.stateChanged = true;
+            this.setData({ message: '报名状态已变化，请返回我的活动，重新打开活动并核对后操作。' });
+          }
+        } else this.setData({ message: error.message || '退出报名失败，请重试。' });
+      } finally { this.pendingExitChecking = false; }
+      return;
+    }
     if (!this.data.myRegistration) return;
     const result = await this.action(`/registrations/${this.data.myRegistration.id}/cancel`, {}, '已退出本次活动');
     if (result) wx.switchTab({ url: '/pages/index/index' });

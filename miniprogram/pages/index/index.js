@@ -151,6 +151,10 @@ function coverFor(title) {
   if (/桌游|游戏/.test(title)) return '/assets/stitch/caper_discover_boardgame.jpg';
   return '/assets/stitch/caper_home_badminton.jpg';
 }
+function requestExitAvailable(item) {
+  return !item.isHost && item.myRegistrationStatus === 'REQUESTED' &&
+    ['REVIEW_PENDING', 'RECRUITING', 'CONFIRMED'].includes(item.status);
+}
 function cardPresentation(item, group) {
   if (group === 'pending') {
     const notes = {
@@ -164,7 +168,8 @@ function cardPresentation(item, group) {
       primaryLabel: item.myRegistrationStatus === 'RECONFIRM_REQUIRED' ? '核对变更' :
         item.myRegistrationStatus === 'OFFERED' ? '确认或放弃补位' : '查看报名状态',
       primaryAction: item.myRegistrationStatus === 'OFFERED' ? 'offerNotifications' : 'registrationSection',
-      secondaryLabel: '查看活动规则', secondaryAction: 'detailsSection' };
+      secondaryLabel: requestExitAvailable(item) ? '取消报名申请' : '查看活动规则',
+      secondaryAction: requestExitAvailable(item) ? 'pendingExit' : 'detailsSection' };
   }
   if (group === 'organized') {
     const notes = {
@@ -204,6 +209,8 @@ function cardPresentation(item, group) {
     secondaryLabel: '', secondaryAction: '' };
 }
 function cardShortcut(item, group) {
+  if (group === 'pending' && requestExitAvailable(item))
+    return { shortcutLabel: '', shortcutAction: '' };
   if (group === 'pending' && ['RECRUITING', 'CONFIRMED'].includes(item.status) &&
     ['INTERESTED', 'REQUESTED', 'WAITLISTED', 'OFFERED', 'RECONFIRM_REQUIRED'].includes(item.myRegistrationStatus))
     return { shortcutLabel: '前往退出报名', shortcutAction: 'registrationSection' };
@@ -425,6 +432,11 @@ Page({
     if (action === 'hostRepeat') {
       if (!item.isHost || item.status !== 'COMPLETED') return;
       return this.openHostRepeat(item);
+    }
+    if (action === 'pendingExit') {
+      if (!requestExitAvailable(item)) return;
+      return wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) +
+        '&section=registrationSection&entry=pendingExit' });
     }
     if (!['detailsSection', 'registrationSection', 'hostSection', 'checkinSection', 'expenseSection'].includes(action)) return;
     if (action === 'hostSection' && !item.isHost) return;
