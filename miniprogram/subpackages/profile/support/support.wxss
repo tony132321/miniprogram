@@ -7,7 +7,7 @@
 .support-header .pg10-header-actions { display: flex; flex: none; align-items: center; gap: 6rpx; }
 .support-header .pg10-header-more, .support-header .pg10-header-avatar { display: block; flex: none; min-width: 0; margin: 0; padding: 0; border: 0; text-align: center; }
 .support-header .pg10-header-more { width: 88rpx; height: 88rpx; background: transparent; color: #171a24; line-height: 88rpx; font-size: 32rpx; font-weight: 800; }
-.support-header .pg10-header-avatar { width: 64rpx; height: 64rpx; border-radius: 50%; background: #064dca; color: #fff; line-height: 54rpx; font-size: 28rpx; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.support-header .pg10-header-avatar { width: 64rpx; height: 64rpx; border-radius: 50%; background: #004cc8; color: #fff; line-height: 54rpx; font-size: 28rpx; font-weight: 800; display: flex; align-items: center; justify-content: center; }
 .support-header .pg10-header-more::after, .support-header .pg10-header-avatar::after, .support-header .pg10-header-menu button::after { border: 0; }
 .support-header .pg10-header-menu { position: absolute; top: 104rpx; z-index: 12; width: 245rpx; padding: 8rpx; border: 1rpx solid #edf0f5; border-radius: 20rpx; background: #fff; box-shadow: 0 12rpx 30rpx rgba(15,23,42,.14); }
 .support-header .pg10-header-menu button { display: block; box-sizing: border-box; width: 100%; min-width: 0; margin: 0; padding: 13rpx 10rpx; border-bottom: 1rpx solid #edf0f5; border-radius: 0; background: transparent; color: #334155; text-align: left; line-height: 1.4; font-size: 20rpx; }
@@ -16,11 +16,6 @@
 .support-hero { position: relative; padding: 32rpx; background: linear-gradient(135deg, #e9f1ff 0%, #fff 56%, #f2f0ff 100%); overflow: hidden; }
 .support-hero-top { display: flex; align-items: flex-start; gap: 24rpx; }
 .assistant-mark { width: 96rpx; height: 96rpx; flex: none; border-radius: 50%; background: linear-gradient(145deg, #2468f1, #6158df); box-shadow: 0 9rpx 23rpx rgba(35, 96, 224, .23); display: flex; align-items: center; justify-content: center; }
-.assistant-face { width: 53rpx; height: 45rpx; border: 4rpx solid #fff; border-radius: 12rpx; position: relative; box-sizing: border-box; }
-.assistant-face::before { content: ''; position: absolute; left: 50%; top: -12rpx; width: 4rpx; height: 9rpx; background: #fff; transform: translateX(-50%); }
-.assistant-face::after { content: ''; position: absolute; left: 50%; top: -17rpx; width: 8rpx; height: 8rpx; border-radius: 50%; background: #fff; transform: translateX(-50%); }
-.assistant-eyes { height: 24rpx; display: flex; justify-content: space-evenly; align-items: center; color: #fff; line-height: 1; font-size: 19rpx; }
-.assistant-mouth { width: 19rpx; height: 3rpx; background: #fff; margin: 1rpx auto 0; border-radius: 2rpx; }
 .support-hero-copy { flex: 1; min-width: 0; }
 .support-hero-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 8rpx; color: #171a24; font-size: 29rpx; font-weight: 700; line-height: 1.35; }
 .support-unavailable { padding: 4rpx 10rpx; border-radius: 99rpx; background: #edf0f5; color: #68738a; font-size: 18rpx; font-weight: 700; white-space: nowrap; }
@@ -39,7 +34,7 @@
 .support-faq-item:last-child { margin-bottom: 0; }
 .support-faq-trigger { display: flex; align-items: center; justify-content: space-between; gap: 10rpx; width: 100%; margin: 0; padding: 24rpx; background: transparent; text-align: left; color: #1e2029; font-size: 30rpx; line-height: 42rpx; box-sizing: border-box; }
 .support-faq-trigger text:first-child { flex: 1; }
-.support-faq-chevron { flex: none; color: #7b8495; font-size: 31rpx; line-height: 1; transform: rotate(0deg); }
+.support-faq-chevron { width: 40rpx; height: 40rpx; flex: none; transform: rotate(0deg); }
 .support-faq-chevron.is-open { transform: rotate(180deg); }
 .support-faq-answer { padding: 0 24rpx 24rpx; color: #606a7c; font-size: 22rpx; line-height: 1.65; }
 .support-feedback-card { padding: 30rpx; }
@@ -75,3 +70,11 @@
 .support-faq-card, .support-feedback-card { padding: 32rpx; }
 .support-section-icon, .support-edit-icon { width: 40rpx; height: 40rpx; flex: none; border: 0; transform: none; }
 .support-send-icon { width: 40rpx; height: 40rpx; flex: none; }
+
+/* Source symbols retain official outlines; 375px maps 1px to 2rpx. */
+.support-status-cover { position: fixed; z-index: 20; top: 0; left: 0; right: 0; background: #faf8fe; pointer-events: none; }
+.support-header .support-back { width: 88rpx; height: 88rpx; flex: none; padding: 0; margin: 0; display: flex; align-items: center; justify-content: flex-start; }
+.support-header .pg10-header-more { display: flex; align-items: center; justify-content: center; }
+.support-back-icon { width: 48rpx; height: 48rpx; }
+.support-more-icon { width: 44rpx; height: 44rpx; }
+.support-assistant-icon { width: 52rpx; height: 52rpx; }

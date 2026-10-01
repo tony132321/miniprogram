@@ -1,12 +1,12 @@
 @import "../common.wxss";
 .moments-page { padding-left: 32rpx; padding-right: 32rpx; padding-bottom: calc(180rpx + env(safe-area-inset-bottom)); }
-.moments-status-backdrop { position: fixed; top: 0; left: 0; right: 0; z-index: 12; background: #faf9fd; }
+.moments-status-backdrop { position: fixed; top: 0; left: 0; right: 0; z-index: 12; background: #faf8fe; }
 .moments-page .pg10-header { position: sticky; z-index: 11; box-sizing: border-box; margin-left: -32rpx; margin-right: -32rpx; padding-left: 32rpx; height: 112rpx; }
 .moments-page .pg10-header-title { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-weight: 600; }
 .moments-header-actions { display: flex; flex: none; align-items: center; gap: 6rpx; }
 .moments-header-more,.moments-header-avatar { display: block; flex: none; margin: 0; padding: 0; border: 0; text-align: center; }
 .moments-header-more { width: 88rpx; height: 88rpx; background: transparent; color: #171a24; line-height: 88rpx; font-size: 32rpx; font-weight: 800; }
-.moments-header-avatar { width: 64rpx; height: 64rpx; border-radius: 50%; background: #064dca; color: #fff; line-height: 54rpx; font-size: 28rpx; font-weight: 800; }
+.moments-header-avatar { width: 64rpx; height: 64rpx; border-radius: 50%; background: #004cc8; color: #fff; line-height: 54rpx; font-size: 28rpx; font-weight: 800; }
 .moments-header-more::after,.moments-header-avatar::after,.moments-more-menu button::after { border: 0; }
 .moments-more-menu { position: absolute; top: 86rpx; z-index: 12; width: 245rpx; padding: 8rpx; border: 1rpx solid #edf0f5; border-radius: 20rpx; background: #fff; box-shadow: 0 12rpx 30rpx rgba(15,23,42,.14); }
 .moments-more-menu button { display: block; box-sizing: border-box; width: 100%; margin: 0; padding: 13rpx 10rpx; border-bottom: 1rpx solid #edf0f5; border-radius: 0; background: transparent; color: #334155; text-align: left; line-height: 1.4; font-size: 20rpx; }
@@ -66,9 +66,6 @@
 
 /* Reference dimensions use 375px = 750rpx; photo ratios adapt to viewport width. */
 .moments-page .pg10-header-title { font-size: 34rpx; line-height: 44rpx; }
-.profile-glyph { position: relative; display: block; width: 30rpx; height: 32rpx; margin: 16rpx auto 0; color: #fff; }
-.profile-glyph::before { content: ''; position: absolute; top: 0; left: 9rpx; width: 12rpx; height: 12rpx; border: 2rpx solid currentColor; border-radius: 50%; box-sizing: border-box; }
-.profile-glyph::after { content: ''; position: absolute; left: 3rpx; bottom: 1rpx; width: 24rpx; height: 13rpx; border: 2rpx solid currentColor; border-radius: 12rpx 12rpx 4rpx 4rpx; box-sizing: border-box; }
 .moments-more-menu { top: 104rpx; }
 .moments-filter-icon { display: inline-block; width: 32rpx; height: 32rpx; vertical-align: middle; margin-right: 12rpx; }
 .summary-icon,.privacy-icon { display: flex; align-items: center; justify-content: center; }
@@ -89,3 +86,13 @@
 .moment-card.boardgame .moment-photo-layout .photo-large { width: calc(50% - 4rpx); padding-top: calc(37.5% - 3rpx); }
 .moment-card.boardgame .moment-photo-layout .photo-small { padding-top: 75%; }
 .moment-card.boardgame .moment-photo-layout .photo-small.second { display: none; }
+
+/* Official Outlined symbols at reference 375px dimensions; page-local header. */
+.moments-page .pg10-back { display: flex; align-items: center; justify-content: flex-start; width: 88rpx; min-width: 88rpx; height: 88rpx; padding: 0; }
+.moments-back-icon { display: block; width: 48rpx; height: 48rpx; }
+.moments-header-more,.moments-header-avatar { display: flex; align-items: center; justify-content: center; }
+.moments-more-icon { display: block; width: 44rpx; height: 44rpx; }
+.profile-glyph { display: block; width: 36rpx; height: 36rpx; }
+.summary-state { display: flex; align-items: center; gap: 8rpx; }
+.summary-heart { display: block; flex: none; width: 28rpx; height: 28rpx; }
+.photo-overlay .photo-sport-icon { position: static; display: inline-block; width: 28rpx; height: 28rpx; margin-right: 6rpx; vertical-align: middle; }
