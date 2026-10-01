@@ -22,6 +22,24 @@ Page({
   goProfile() { this.setData({ moreOpen: false }); wx.switchTab({ url: '/pages/me/me' }); },
   goCache() { this.setData({ moreOpen: false }); wx.navigateTo({ url: '/subpackages/profile/cache/cache' }); },
   toggleTextSize() { this.setData({ largeText: !this.data.largeText }); },
+  goPermissions() {
+    this.setData({ moreOpen: false });
+    const fallback = () => wx.pageScrollTo({ selector: '#legalPermissionsSection', duration: 180 });
+    if (typeof wx.createSelectorQuery !== 'function') return fallback();
+    try {
+      const query = wx.createSelectorQuery();
+      query.select('#legalPermissionsSection').boundingClientRect();
+      query.selectViewport().scrollOffset();
+      query.exec(results => {
+        const [target, viewport] = results || [];
+        const windowWidth = Number(wx.getWindowInfo?.().windowWidth || wx.getSystemInfoSync?.().windowWidth || 375);
+        if (!Number.isFinite(target?.top) || !Number.isFinite(viewport?.scrollTop) ||
+          !Number.isFinite(windowWidth) || windowWidth <= 0) return fallback();
+        const headerOffset = this.data.statusBarHeight + 92 * windowWidth / 750 + 8;
+        wx.pageScrollTo({ scrollTop: Math.max(0, viewport.scrollTop + target.top - headerOffset), duration: 180 });
+      });
+    } catch (_) { fallback(); }
+  },
   goPrivacy() {
     this.setData({ moreOpen: false });
     getApp().globalData.profileFocus = 'privacySection';

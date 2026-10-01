@@ -21,8 +21,9 @@
 .legal-summary-kicker { color: #1d61ea; font-size: 17rpx; font-weight: 800; letter-spacing: 1rpx; }
 .legal-summary-title { color: #20242c; font-size: 25rpx; font-weight: 800; line-height: 1.4; }
 .legal-summary-copy { color: #697183; font-size: 20rpx; line-height: 1.55; margin-top: 12rpx; }
-.legal-tabs { display: flex; gap: 6rpx; padding: 7rpx; margin-bottom: 14rpx; border-radius: 16rpx; background: #f0eff4; }
-.legal-tab { min-width: 0; flex: 1; height: 55rpx; margin: 0; padding: 0 5rpx; border-radius: 12rpx; color: #505a6b; background: transparent; font-size: 19rpx; font-weight: 700; line-height: 55rpx; text-align: center; white-space: nowrap; box-sizing: border-box; }
+.legal-tabs { box-sizing: border-box; width: 100%; padding: 7rpx; margin-bottom: 14rpx; border-radius: 16rpx; background: #f0eff4; white-space: nowrap; }
+.legal-tab { display: inline-block; box-sizing: border-box; width: auto; min-width: 170rpx; height: 55rpx; margin: 0 6rpx 0 0; padding: 0 15rpx; border-radius: 12rpx; color: #505a6b; background: transparent; font-size: 19rpx; font-weight: 700; line-height: 55rpx; text-align: center; white-space: nowrap; }
+.legal-tab:last-child { margin-right: 0; }
 .legal-tab::after, .legal-pdf::after, .legal-privacy::after { border: 0; }
 .legal-tab.selected { color: #1a5fe8; background: #fff; box-shadow: 0 3rpx 10rpx rgba(40, 48, 85, .06); }
 .legal-tab.unavailable { color: #9da3b0; }
