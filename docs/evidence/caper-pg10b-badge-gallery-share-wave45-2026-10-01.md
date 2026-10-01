@@ -15,4 +15,4 @@
 | 聚焦回归 | `node --import tsx --test --test-concurrency=1 test/miniprogram-pg10b-badge-share-parity.test.ts test/pg10-profile-edit-badges-parity.test.ts`：**3/3 通过**；覆盖分享按钮与说明、精确分享路径、活动记录导航、既有未开放边界。视觉尺寸仅按 CSS 和参考图人工核对，不用照搬实现的断言代替视觉验收。 |
 | 静态检查 | `node node_modules/typescript/bin/tsc --noEmit`、`node --check miniprogram/subpackages/profile/badges/badges.js`、`git diff --check` 均退出 0。 |
 
-本轮未运行全量测试。为了不覆盖并行任务占用的微信开发者工具窗口，本轮没有改后模拟器截图或原生分享面板实点。因此卡片最终像素位置和实际分享面板仍需独占开发者工具时复核；定向测试验证的是页面绑定、分享元数据和导航逻辑，不证明分享消息已发送。
+本轮未运行全量测试。后续在隔离微信开发者工具 CLI `preview` 成功后，用合成账号打开勋章页并[保存改后截图](images/caper-pg10b-wave46-2026-10-01.png)：三列大卡和固定底部分享栏可见，页面自动化异常 **0**。同页回读 `onShareAppMessage` 返回带“勋章尚未开放”的 CAPER 标题和本概念页路径。原生分享面板的真实发送、朋友圈以及真机投递未验，截图也不代表同尺寸逐像素一致。

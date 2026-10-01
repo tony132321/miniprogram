@@ -14,4 +14,4 @@
 | 聚焦回归 | `node --import tsx --test --test-concurrency=1 test/miniprogram-pg10g-faq-routing.test.ts test/miniprogram-caper-profile-info-routes.test.ts`：**8/8 通过**；验证四项顺序、真实能力边界、第四项展开及精确发起路由，并覆盖相邻个人页信息路由。 |
 | 静态检查 | `node node_modules/typescript/bin/tsc --noEmit`、`node --check miniprogram/subpackages/profile/support/support.js`、`git diff --check` 均退出 0。 |
 
-本轮未运行全量测试，也未占用共享微信开发者工具，因此**没有本次 FAQ 展开与按钮的模拟器实点截图**。测试验证页面状态和目标路由，开发者工具中的最终字行排版与触控仍需独占窗口时复核。AI 客服、人工在线客服和普通反馈提交仍无 R1 服务接口，页面继续明确显示未开放。
+本轮未运行全量测试。后续在隔离微信开发者工具 CLI `preview` 成功后，合成账号打开帮助页，实际点击第四条 FAQ 展开，看到[四项问题和展开答案截图](images/caper-pg10g-faq-wave46-2026-10-01.png)；点击“发起受控活动”实际进入 `pages/create/create`，自动化异常 **0**。这是模拟器中的页面触控和路由证据，不是真机或全页逐像素验收。AI 客服、人工在线客服和普通反馈提交仍无 R1 服务接口，页面继续明确显示未开放。
