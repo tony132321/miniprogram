@@ -310,6 +310,11 @@ Page({
     wx.showToast?.({ title: `${name}暂未开放`, icon: 'none', duration: 2500 });
   },
   openCohostSetup() {
+    if (this._shownIdentity && this._shownIdentity !== currentIdentity()) {
+      this.stopSuggestion();
+      this.setEditorData({ ...emptyEditor(), message: '账号已切换，请重新输入活动信息。' });
+      return;
+    }
     const eventId = this.data.editingEvent?.id;
     if (eventId) return wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(eventId) + '&section=hostSection' });
     this.setData({ message: '发布活动后，在主办工作台从报名名单选择协办成员，并设置本场权限。' });
