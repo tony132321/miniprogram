@@ -329,6 +329,7 @@ Page({
   },
   onHide() {
     this.checkInPageHidden = true;
+    this.hostAnnouncementAttemptId = (this.hostAnnouncementAttemptId || 0) + 1;
     this.expenseShareAttemptId = (this.expenseShareAttemptId || 0) + 1;
     this.expenseShareSubmitting = false;
     this.calendarAttemptId = (this.calendarAttemptId || 0) + 1;
@@ -340,6 +341,7 @@ Page({
   },
   onUnload() {
     this.checkInPageHidden = true;
+    this.hostAnnouncementAttemptId = (this.hostAnnouncementAttemptId || 0) + 1;
     this.expenseShareAttemptId = (this.expenseShareAttemptId || 0) + 1;
     this.expenseShareSubmitting = false;
     this.calendarAttemptId = (this.calendarAttemptId || 0) + 1;
@@ -677,6 +679,27 @@ Page({
     const controls = this.updateTimedControls();
     if (this.data.loadState !== 'READY' || !controls.canCompleteEvent) return;
     this.scrollToSection('hostSection', '#hostCompletionForm');
+  },
+  async openHostAnnouncement() {
+    const attempt = this.hostAnnouncementAttemptId = (this.hostAnnouncementAttemptId || 0) + 1;
+    const id = this.data.id;
+    const actor = currentIdentity();
+    const actorId = currentActorId();
+    if (this.data.loadState !== 'READY' || !currentHostEvent(this)) {
+      this.setData({ message: '账号或活动已切换，请重新核对公告资格。' });
+      return;
+    }
+    const loaded = await this.refresh();
+    if (!loaded || attempt !== this.hostAnnouncementAttemptId || id !== this.data.id ||
+      actor !== currentIdentity() || actorId !== currentActorId()) return;
+    const event = this.data.event;
+    if (this.data.loadState !== 'READY' || !currentHostEvent(this) ||
+      !this.data.canManageAnnouncements || event.reviewStatus !== 'APPROVED' ||
+      !['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(event.status)) {
+      this.setData({ message: '当前活动不能发布公告，请查看活动最新状态。' });
+      return;
+    }
+    this.scrollToSection('hostSection', '#hostAnnouncementAnchor');
   },
   scrollToSection(id, targetSelector) {
     if (!sectionHeadings[id]) return;
