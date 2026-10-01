@@ -88,10 +88,15 @@ test('host workbench opens the registered share card for the current event', () 
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
-    wx: { navigateTo(options: { url: string }) { routes.push(options.url); } }
+    wx: {
+      getStorageSync(key: string) { return key === 'devUser' ? 'host' : ''; },
+      navigateTo(options: { url: string }) { routes.push(options.url); }
+    }
   });
   assert.ok(page);
   page.data.id = 'event-1';
+  page.data.currentUser = 'host';
+  page.data.event = { id: 'event-1', hostId: 'host' };
   page.data.isHost = false;
   page.openShareCard();
   assert.deepEqual(routes, []);
@@ -162,7 +167,7 @@ test('PG01 location and share controls use the current event and its real capabi
     },
     Page(definition: Record<string, any>) { page = definition; },
     wx: {
-      getStorageSync() { return ''; },
+      getStorageSync(key: string) { return key === 'devUser' ? 'host' : ''; },
       setClipboardData({ data, success }: { data: string; success: () => void }) { copied.push(data); success(); },
       showToast() {},
       navigateTo({ url }: { url: string }) { routes.push(url); }
@@ -172,7 +177,8 @@ test('PG01 location and share controls use the current event and its real capabi
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
   page.data.id = 'event-1';
   page.data.loadState = 'READY';
-  page.data.event = { id: 'event-1', payload: { title: '周末羽毛球',
+  page.data.currentUser = 'host';
+  page.data.event = { id: 'event-1', hostId: 'host', payload: { title: '周末羽毛球',
     city: '上海', venueName: '公共球馆', startAt: '2026-10-04T10:00:00Z',
     endAt: '2026-10-04T12:00:00Z' } };
   page.copyVenue();

@@ -11,10 +11,12 @@ function loadShare(overrides: Record<string, any> = {}) {
   let actor = 'host';
   let sessionToken = 'session';
   let devUser = '';
+  let safetyStatus = 'OPEN';
   let event = { id: 'event-1', hostId: 'host', version: 4, status: 'RECRUITING',
     reviewStatus: 'APPROVED', recruiting: true, riskPaused: false, inviteToken,
     payload: { title: '周六一起打羽毛球', startAt: '2027-03-22T06:00:00.000Z',
-      endAt: '2027-03-22T08:00:00.000Z', city: '上海', venueName: '公共羽毛球馆', minParticipants: 4 },
+      endAt: '2027-03-22T08:00:00.000Z', registrationDeadline: '2027-03-22T05:30:00.000Z',
+      city: '上海', venueName: '公共羽毛球馆', minParticipants: 4 },
     stats: { confirmed: 3 }, ...overrides };
   const posts: Array<{ path: string; body: Record<string, any> }> = [];
   const copied: string[] = [];
@@ -27,6 +29,7 @@ function loadShare(overrides: Record<string, any> = {}) {
   let getGate: Promise<void> | null = null;
   let releaseGet: (() => void) | null = null;
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/share/share.js', import.meta.url), 'utf8'), {
+    setTimeout, clearTimeout,
     require(path: string) {
       if (path === '../../../vendor/qrcode.js') return () => ({
         addData(value: string) { qrPayloads.push(value); },
@@ -40,7 +43,7 @@ function loadShare(overrides: Record<string, any> = {}) {
             if (getGate) await getGate;
             return event;
           }
-          if (url === '/system/safety') return { status: 'OPEN' };
+          if (url === '/system/safety') return { status: safetyStatus };
           throw new Error(`unexpected GET ${url}`);
         },
         async post(path: string, body: Record<string, any>) {
@@ -81,6 +84,7 @@ function loadShare(overrides: Record<string, any> = {}) {
     setActor(next: string) { actor = next; },
     setSession(next: string) { sessionToken = next; },
     setDevUser(next: string) { devUser = next; },
+    setSafetyStatus(next: string) { safetyStatus = next; },
     holdPosts() {
       postGate = new Promise<void>(resolve => { releasePost = resolve; });
       return () => { releasePost?.(); postGate = null; releasePost = null; };
@@ -102,7 +106,7 @@ test('share card hides the old private invitation immediately when the active ac
   assert.equal(page.data.display, null);
   assert.equal(page.data.shareSheetOpen, false);
   assert.equal(page.onShareAppMessage().path, '/pages/index/index');
-  page.copyInvite();
+  await page.copyInvite();
   assert.equal(copied.length, 0);
 });
 
@@ -114,7 +118,7 @@ test('a renewed session for the same host cannot reuse the old invite card or pr
   setSession('renewed-session');
   assert.equal(page.onShareAppMessage().path, '/pages/index/index');
   page.openShareSheet();
-  page.copyInvite();
+  await page.copyInvite();
   assert.equal(page.data.display, null);
   assert.equal(page.data.canShare, false);
   assert.equal(page.data.shareSheetOpen, false);
@@ -127,7 +131,7 @@ test('switching from a signed-in host to a developer host with the same ID clear
   setSession('');
   setDevUser('host');
   page.openShareSheet();
-  page.copyInvite();
+  await page.copyInvite();
   assert.equal(page.data.display, null);
   assert.equal(page.data.canShare, false);
   assert.equal(page.data.shareSheetOpen, false);
@@ -198,11 +202,120 @@ test('approved host invitation card uses live facts and a recorded source before
   assert.match(firstPost.body.sourceToken, /^[a-f0-9]{32}$/);
   assert.equal(page.onShareAppMessage().path,
     `/pages/event/event?token=${inviteToken}&source=${firstPost.body.sourceToken}`);
-  page.copyInvite();
+  await page.copyInvite();
   const copy = copied[0];
   assert.ok(copy);
   assert.ok(copy.includes(inviteToken));
   assert.match(copy, /首页输入邀请码/);
+});
+
+test('approved publication copy intent performs the safe invitation copy on entering the share card', async () => {
+  const { page, copied } = loadShare();
+  await page.onLoad({ id: 'event-1', copy: '1' });
+  assert.equal(page.data.canShare, true);
+  assert.equal(copied.length, 1);
+  const copy = copied[0];
+  assert.ok(copy);
+  assert.ok(copy.includes(inviteToken));
+  assert.equal(page.data.message, '真实邀请码与使用说明已复制。');
+});
+
+test('copying an invitation uses a newly rotated token from the server', async () => {
+  const { page, copied, setEvent } = loadShare();
+  await page.onLoad({ id: 'event-1' });
+  setEvent({ version: 5, inviteToken: rotatedInviteToken });
+  await page.copyInvite();
+  assert.equal(copied.length, 1);
+  const copy = copied[0];
+  assert.ok(copy);
+  assert.ok(copy.includes(rotatedInviteToken));
+  assert.ok(!copy.includes(inviteToken));
+  assert.equal(page.data.display.inviteToken, rotatedInviteToken);
+});
+
+test('copying an invitation stops after a safety closure despite a cached approved card', async () => {
+  const { page, copied, setSafetyStatus } = loadShare();
+  await page.onLoad({ id: 'event-1' });
+  setSafetyStatus('CLOSED');
+  await page.copyInvite();
+  assert.equal(copied.length, 0);
+  assert.equal(page.data.canShare, false);
+  assert.equal(page.data.display.inviteToken, '');
+});
+
+test('an expired registration deadline blocks a recruiting invite on entry and on final copy recheck', async () => {
+  const expiredDeadline = new Date(Date.now() - 1000).toISOString();
+  const initial = loadShare({ payload: { title: '周六一起打羽毛球',
+    startAt: '2027-03-22T06:00:00.000Z', endAt: '2027-03-22T08:00:00.000Z',
+    registrationDeadline: expiredDeadline, city: '上海', venueName: '公共羽毛球馆', minParticipants: 4 } });
+  await initial.page.onLoad({ id: 'event-1', copy: '1' });
+  assert.equal(initial.page.data.event.recruiting, true, 'the scheduled closure may be late');
+  assert.equal(initial.page.data.canShare, false);
+  assert.match(initial.page.data.shareReason, /报名.*截止/);
+  assert.equal(initial.page.data.display.inviteToken, '');
+  assert.equal(initial.copied.length, 0);
+  assert.equal(initial.qrPayloads.length, 0);
+
+  const current = loadShare();
+  await current.page.onLoad({ id: 'event-1' });
+  current.setEvent({ payload: { ...current.page.data.event.payload, registrationDeadline: expiredDeadline } });
+  await current.page.copyInvite();
+  assert.equal(current.page.data.event.recruiting, true);
+  assert.equal(current.page.data.canShare, false);
+  assert.equal(current.page.data.display.inviteToken, '');
+  assert.equal(current.copied.length, 0);
+});
+
+test('an open invitation card hides its token when the registration deadline arrives', async () => {
+  const soon = new Date(Date.now() + 300).toISOString();
+  const { page, copied } = loadShare({ payload: { title: '周六一起打羽毛球',
+    startAt: '2027-03-22T06:00:00.000Z', endAt: '2027-03-22T08:00:00.000Z',
+    registrationDeadline: soon, city: '上海', venueName: '公共羽毛球馆', minParticipants: 4 } });
+  await page.onLoad({ id: 'event-1' });
+  assert.equal(page.data.canShare, true);
+  await new Promise(resolve => setTimeout(resolve, 350));
+  assert.equal(page.data.event.recruiting, true);
+  assert.equal(page.data.canShare, false);
+  assert.equal(page.data.display.inviteToken, '');
+  assert.equal(copied.length, 0);
+  page.onUnload();
+});
+
+test('an account switch during final invitation recheck cannot copy the old host token', async () => {
+  const { page, copied, setActor, holdEventGet } = loadShare();
+  await page.onLoad({ id: 'event-1' });
+  const releaseGet = holdEventGet();
+  const copying = page.copyInvite();
+  setActor('different-account');
+  releaseGet();
+  await copying;
+  assert.equal(copied.length, 0);
+  assert.equal(page.data.canShare, false);
+  assert.equal(page.data.display, null);
+});
+
+test('a newer invitation refresh supersedes an older pending copy request', async () => {
+  const { page, copied, holdEventGet } = loadShare();
+  await page.onLoad({ id: 'event-1' });
+  const releaseGet = holdEventGet();
+  const copying = page.copyInvite();
+  const refreshed = page.refresh();
+  releaseGet();
+  await Promise.all([copying, refreshed]);
+  assert.equal(copied.length, 0);
+  assert.equal(page.data.canShare, true);
+});
+
+test('pending host can inspect share eligibility without displaying or copying an invite token', async () => {
+  const { page, copied, qrPayloads } = loadShare({ reviewStatus: 'PENDING', recruiting: false });
+  await page.onLoad({ id: 'event-1', copy: '1' });
+  assert.equal(page.data.loadState, 'READY');
+  assert.equal(page.data.canShare, false);
+  assert.match(page.data.shareReason, /尚未通过审核/);
+  assert.equal(page.data.display.inviteToken, '');
+  await page.copyInvite();
+  assert.equal(copied.length, 0);
+  assert.equal(qrPayloads.length, 0);
 });
 
 test('share page rejects non-host and stale invitation versions without showing a share action', async () => {
@@ -219,20 +332,20 @@ test('share page rejects non-host and stale invitation versions without showing 
   await page.refresh();
   assert.equal(page.data.canShare, false);
   await page.prepareShare();
-  page.copyInvite();
+  await page.copyInvite();
   assert.equal(posts.length, 1);
   assert.equal(copied.length, 0);
 });
 
 test('share preview artwork follows the event type when its title is generic or misleading', async () => {
   const badminton = loadShare({ payload: { title: '周末活动', type: 'badminton',
-    startAt: '2027-03-22T06:00:00.000Z', endAt: '2027-03-22T08:00:00.000Z',
+    startAt: '2027-03-22T06:00:00.000Z', endAt: '2027-03-22T08:00:00.000Z', registrationDeadline: '2027-03-22T05:30:00.000Z',
     city: '上海', venueName: '公共羽毛球馆', minParticipants: 4 } });
   await badminton.page.onLoad({ id: 'event-1' });
   assert.equal(badminton.page.data.display.cover, '/assets/stitch/caper_home_badminton.jpg');
 
   const coffee = loadShare({ payload: { title: '羽毛球赛后咖啡', type: 'coffee',
-    startAt: '2027-03-22T06:00:00.000Z', endAt: '2027-03-22T08:00:00.000Z',
+    startAt: '2027-03-22T06:00:00.000Z', endAt: '2027-03-22T08:00:00.000Z', registrationDeadline: '2027-03-22T05:30:00.000Z',
     city: '上海', venueName: '咖啡馆', minParticipants: 4 } });
   await coffee.page.onLoad({ id: 'event-1' });
   assert.equal(coffee.page.data.display.cover, '/assets/stitch/caper_discover_coffee.jpg');

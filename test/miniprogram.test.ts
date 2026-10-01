@@ -1912,12 +1912,12 @@ test('share card only uses a source after its intent has been committed', async 
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
-    wx: {}, setTimeout, clearTimeout
+    wx: { getStorageSync() { return ''; } }, setTimeout, clearTimeout
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
-  page.setData({ id: 'e1', isHost: true, event: { id: 'e1', version: 2, inviteToken: 'invite-1', recruiting: true, reviewStatus: 'APPROVED',
-    payload: { title: '羽毛球' } } });
+  page.setData({ id: 'e1', isHost: true, currentUser: 'host', safetyStatus: 'OPEN', event: { id: 'e1', hostId: 'host', version: 2, inviteToken: 'invite-1', recruiting: true, reviewStatus: 'APPROVED',
+    payload: { title: '羽毛球', registrationDeadline: '2027-03-22T05:30:00.000Z' } } });
   const pending = page.prepareShare();
   assert.equal(requests.length, 1);
   assert.equal(page.data.shareSourceToken, '');

@@ -14,14 +14,15 @@ test('event page refuses an invitation card while the current version awaits rev
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
-    wx: {}, setTimeout, clearTimeout
+    wx: { getStorageSync() { return ''; } }, setTimeout, clearTimeout
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
-  page.setData({ id: 'invite-1', isHost: true, shareSourceToken: 'stale-source', event: {
-    id: 'invite-1', version: 2, inviteToken: 'private-token', recruiting: true,
-    reviewStatus: 'PENDING', payload: { title: '待审活动' }
+  page.setData({ id: 'invite-1', isHost: true, currentUser: 'host', shareSourceToken: 'stale-source', event: {
+    id: 'invite-1', hostId: 'host', version: 2, inviteToken: 'private-token', recruiting: true,
+    reviewStatus: 'PENDING', payload: { title: '待审活动', registrationDeadline: '2027-03-22T05:30:00.000Z' }
   } });
+  page.setData({ safetyStatus: 'OPEN' });
   await page.prepareShare();
   assert.equal(submittedIntents, 0);
   assert.match(page.data.message, /不能生成分享卡/);

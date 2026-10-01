@@ -185,6 +185,17 @@ function timedEventControls(event, now, myStatus, isHost, canManageCheckins) {
     nextTimeBoundary: validTime ? [opens, end, closes + 1].filter(at => at > now).sort((a, b) => a - b)[0] : undefined
   };
 }
+function canCopyPublishedInvite(event, isHost, safetyStatus, now) {
+  const deadline = Date.parse(event?.payload?.registrationDeadline || '');
+  return Boolean(isHost && event?.inviteToken && event.reviewStatus === 'APPROVED' &&
+    event.recruiting && !event.riskPaused && safetyStatus === 'OPEN' &&
+    Number.isFinite(deadline) && now < deadline);
+}
+function currentHostEvent(page) {
+  return Boolean(page.data.isHost && page.data.id && page.data.event?.id === page.data.id &&
+    page.data.event.hostId === currentActorId() &&
+    page.data.currentUser && page.data.currentUser === currentIdentity());
+}
 function sectionAvailable(section, isHost, canApproveRegistration, canManageAnnouncements, canManageCheckins) {
   return ['detailsSection', 'registrationSection', 'contentSection', 'checkinSection', 'expenseSection'].includes(section) ||
     (section === 'hostSection' && isHost) ||
@@ -204,7 +215,7 @@ const sectionHeadings = {
   cohostCheckinSection: ['协办签到管理', '仅限本场授权']
 };
 Page({
-  data: { statusBarHeight: 24, id: '', token: '', source: '', activeSection: 'detailsSection', sectionTitle: '活动详情', sectionSubtitle: '耍起 CAPER · 线下见面', checkInMode: 'participant', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '',
+  data: { statusBarHeight: 24, id: '', token: '', source: '', activeSection: 'detailsSection', sectionTitle: '活动详情', sectionSubtitle: '耍起 CAPER · 线下见面', checkInMode: 'participant', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '', canCopyPublishedInvite: false,
     joinConfirmation: null, joinSubmitting: false,
     canJoin: false, canExpressInterest: false, canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
     canGenerateCheckInToken: false, canCompleteEvent: false, checkInWindowNotice: '', checkInAvailability: '', completionAvailability: '',
@@ -289,7 +300,7 @@ Page({
       this.feedbackUncertainRequest = null;
       this.refreshId = (this.refreshId || 0) + 1;
       this.clearCheckInToken();
-      this.setData({ token: '', source: '', activeSection: 'detailsSection', sectionTitle: '活动详情', sectionSubtitle: '耍起 CAPER · 线下见面', checkInMode: 'participant', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '',
+      this.setData({ token: '', source: '', activeSection: 'detailsSection', sectionTitle: '活动详情', sectionSubtitle: '耍起 CAPER · 线下见面', checkInMode: 'participant', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '', canCopyPublishedInvite: false,
         joinConfirmation: null, joinSubmitting: false,
         canJoin: false, canExpressInterest: false, canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
         canGenerateCheckInToken: false, canCompleteEvent: false, checkInWindowNotice: '', checkInAvailability: '', completionAvailability: '',
@@ -340,18 +351,23 @@ Page({
     this.timeBoundaryTimer = null;
   },
   updateTimedControls() {
-    const controls = timedEventControls(this.data.event, Date.now(), this.data.myRegistration?.status,
+    const now = Date.now();
+    const controls = timedEventControls(this.data.event, now, this.data.myRegistration?.status,
       this.data.isHost, this.data.canManageCheckins);
+    const canCopyInvite = canCopyPublishedInvite(this.data.event, this.data.isHost, this.data.safetyStatus, now);
+    const registrationDeadline = canCopyInvite ? Date.parse(this.data.event.payload.registrationDeadline) : Infinity;
+    const nextTimeBoundary = Math.min(controls.nextTimeBoundary || Infinity, registrationDeadline);
     if (!controls.canGenerateCheckInToken && this.data.displayedCheckInToken) this.clearCheckInToken();
     this.setData({ canCheckIn: controls.canCheckIn, canGenerateCheckInToken: controls.canGenerateCheckInToken,
+      canCopyPublishedInvite: canCopyInvite,
       canCompleteEvent: controls.canCompleteEvent, checkInWindowNotice: controls.checkInWindowNotice,
       checkInAvailability: controls.checkInAvailability, completionAvailability: controls.completionAvailability });
     this.clearTimeBoundaryTimer();
-    if (this.data.event && !this.checkInPageHidden && controls.nextTimeBoundary) {
+    if (this.data.event && !this.checkInPageHidden && Number.isFinite(nextTimeBoundary)) {
       const eventId = this.data.event.id;
       this.timeBoundaryTimer = setTimeout(() => {
         if (this.data.event?.id === eventId && !this.checkInPageHidden) this.updateTimedControls();
-      }, Math.max(1, Math.min(controls.nextTimeBoundary - Date.now(), 2_147_483_647)));
+      }, Math.max(1, Math.min(nextTimeBoundary - Date.now(), 2_147_483_647)));
       if (typeof this.timeBoundaryTimer?.unref === 'function') this.timeBoundaryTimer.unref();
     }
     return controls;
@@ -608,7 +624,7 @@ Page({
       if (refreshId !== this.refreshId || actor !== currentIdentity()) return false;
       const needsLogin = error.code === 'UNAUTHENTICATED' && summary && !config.developmentUser;
       this.setData({ event: null, display: null, registrationLabel: '未报名', inviteSummary: needsLogin ? summary : null,
-        loadState: needsLogin ? 'LOGIN_REQUIRED' : 'ERROR', canJoin: false, canExpressInterest: false,
+        loadState: needsLogin ? 'LOGIN_REQUIRED' : 'ERROR', canCopyPublishedInvite: false, canJoin: false, canExpressInterest: false,
         canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
         canGenerateCheckInToken: false, canCompleteEvent: false, checkInWindowNotice: '', checkInAvailability: '', completionAvailability: '',
         canApproveRegistration: false, canManageCheckins: false, canManageAnnouncements: false,
@@ -1220,25 +1236,37 @@ Page({
   async prepareShare() {
     const event = this.data.event;
     if (this.data.preparingShare) return;
-    if (!this.data.isHost || !event?.inviteToken || event.reviewStatus !== 'APPROVED' || !event.recruiting || event.riskPaused)
+    if (!currentHostEvent(this) || !canCopyPublishedInvite(event, this.data.isHost, this.data.safetyStatus, Date.now()))
       return this.setData({ message: '当前活动不能生成分享卡' });
     const sourceToken = newSourceToken();
     this.setData({ preparingShare: true, shareSourceToken: '' });
     try {
       await api.post(`/events/${this.data.id}/share-intents`, { expectedVersion: event.version, sourceToken });
       if (this.data.event?.id === event.id && this.data.event.version === event.version &&
-        this.data.event.inviteToken === event.inviteToken)
+        this.data.event.inviteToken === event.inviteToken &&
+        currentHostEvent(this) &&
+        canCopyPublishedInvite(this.data.event, this.data.isHost, this.data.safetyStatus, Date.now()))
         this.setData({ shareSourceToken: sourceToken, message: '分享卡已准备好，请点击工作台中的“微信分享”。' });
     } catch (error) { this.setData({ message: error.message || '分享卡准备失败' }); }
     finally { this.setData({ preparingShare: false }); }
   },
-  openShareCard() {
-    if (!this.data.isHost || !this.data.id) return;
-    wx.navigateTo({ url: '/subpackages/activity/share/share?id=' + encodeURIComponent(this.data.id) });
+  openShareCard(actionEvent) {
+    if (!currentHostEvent(this)) {
+      if (this.data.isHost) this.setData({ canCopyPublishedInvite: false, shareSourceToken: '',
+        message: '账号或活动已切换，请重新核对分享资格。' });
+      return;
+    }
+    const copy = actionEvent?.currentTarget?.dataset?.copy;
+    const copyIntent = copy === true || copy === 'true' || copy === 1 || copy === '1';
+    const canCopyInvite = canCopyPublishedInvite(this.data.event, this.data.isHost, this.data.safetyStatus, Date.now());
+    if (copyIntent && this.data.canCopyPublishedInvite !== canCopyInvite)
+      this.setData({ canCopyPublishedInvite: canCopyInvite });
+    wx.navigateTo({ url: '/subpackages/activity/share/share?id=' + encodeURIComponent(this.data.id) +
+      (copyIntent && canCopyInvite ? '&copy=1' : '') });
   },
   onShareAppMessage() {
-    if (!this.data.isHost || !this.data.event?.inviteToken || this.data.event.reviewStatus !== 'APPROVED' ||
-      !this.data.event.recruiting || this.data.event.riskPaused)
+    if (!currentHostEvent(this) ||
+      !canCopyPublishedInvite(this.data.event, this.data.isHost, this.data.safetyStatus, Date.now()))
       return { title: '活动详情', path: '/pages/index/index' };
     const source = this.data.shareSourceToken ? '&source=' + this.data.shareSourceToken : '';
     return { title: (this.data.event.aiSuggestionGenerated ? '【曾生成 AI 建议】' : '') + this.data.event.payload.title,
