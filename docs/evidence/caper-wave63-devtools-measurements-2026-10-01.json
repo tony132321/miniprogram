@@ -1,0 +1,1960 @@
+{
+  "date": "2026-10-01",
+  "scope": "three changed pages only; no full suite or CI",
+  "runs": [
+    {
+      "page": "city",
+      "route": "pages/city/city",
+      "level": "bounded changed-page WeChat DevTools checks",
+      "checks": [
+        {
+          "label": "top header actual status top",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "top source header56",
+          "pass": true,
+          "actual": 60,
+          "expected": 60.032000000000004
+        },
+        {
+          "label": "top header position",
+          "pass": true,
+          "actual": "sticky",
+          "expected": "sticky"
+        },
+        {
+          "label": "top source back44",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top source backheight44",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top source profile32",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "top source profileheight32",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "top actual capsule clearance",
+          "pass": true,
+          "actual": 8,
+          "expected": 8
+        },
+        {
+          "label": "top status cover top",
+          "pass": true,
+          "actual": 0,
+          "expected": 0
+        },
+        {
+          "label": "top status cover height",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "top noninteractive fixed cover",
+          "pass": true,
+          "actual": {
+            "position": "fixed",
+            "pointer-events": "none"
+          },
+          "expected": {
+            "position": "fixed",
+            "pointer-events": "none"
+          }
+        },
+        {
+          "label": "top source header title17",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "source search directly under header",
+          "pass": true,
+          "actual": 114,
+          "expected": 114.03200000000001
+        },
+        {
+          "label": "search sticky",
+          "pass": true,
+          "actual": "sticky",
+          "expected": "sticky"
+        },
+        {
+          "label": "search height44",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "search font15",
+          "pass": true,
+          "actual": "16px",
+          "expected": 16.080000000000002
+        },
+        {
+          "label": "popular height44",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "rail actual status plus144",
+          "pass": true,
+          "actual": 208,
+          "expected": 208.368
+        },
+        {
+          "label": "rail right4",
+          "pass": true,
+          "actual": "4px",
+          "expected": 4.288
+        },
+        {
+          "label": "rail outerpadding8",
+          "pass": true,
+          "actual": "8px",
+          "expected": 8.576
+        },
+        {
+          "label": "rail outerpadding4",
+          "pass": true,
+          "actual": "4px",
+          "expected": 4.288
+        },
+        {
+          "label": "rail letter20",
+          "pass": true,
+          "actual": 21,
+          "expected": 21.44
+        },
+        {
+          "label": "rail letterfont11",
+          "pass": true,
+          "actual": "11px",
+          "expected": 11.792000000000002
+        },
+        {
+          "label": "actual S heading below sticky search",
+          "pass": true,
+          "actual": {
+            "left": 17,
+            "top": 177
+          },
+          "expected": {
+            "minTop": 176,
+            "maxTop": 874
+          }
+        },
+        {
+          "label": "scrolled header actual status top",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "scrolled source header56",
+          "pass": true,
+          "actual": 60,
+          "expected": 60.032000000000004
+        },
+        {
+          "label": "scrolled header position",
+          "pass": true,
+          "actual": "sticky",
+          "expected": "sticky"
+        },
+        {
+          "label": "scrolled source back44",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled source backheight44",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled source profile32",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "scrolled source profileheight32",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "scrolled actual capsule clearance",
+          "pass": true,
+          "actual": 8,
+          "expected": 8
+        },
+        {
+          "label": "scrolled status cover top",
+          "pass": true,
+          "actual": 0,
+          "expected": 0
+        },
+        {
+          "label": "scrolled status cover height",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "scrolled noninteractive fixed cover",
+          "pass": true,
+          "actual": {
+            "position": "fixed",
+            "pointer-events": "none"
+          },
+          "expected": {
+            "position": "fixed",
+            "pointer-events": "none"
+          }
+        },
+        {
+          "label": "scrolled source header title17",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "real pinyin result",
+          "pass": true,
+          "actual": [
+            "北京"
+          ],
+          "expected": [
+            "北京"
+          ]
+        },
+        {
+          "label": "search removes rail",
+          "pass": true,
+          "actual": false,
+          "expected": false
+        },
+        {
+          "label": "real local selected city storage",
+          "pass": true,
+          "actual": "北京",
+          "expected": "北京"
+        },
+        {
+          "label": "runtime exceptions",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "interactions": [
+        {
+          "label": "native S letter jump with visible destination",
+          "selector": ".alphabet-pill button",
+          "indexText": "S"
+        },
+        {
+          "label": "actual manual city selection return",
+          "target": "pages/index/index",
+          "query": {}
+        },
+        {
+          "label": "native query/clear/focus/select",
+          "selectedCity": "北京"
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-city-top-wave63-2026-10-01.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-city-letter-wave63-2026-10-01.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-city-search-wave63-2026-10-01.png"
+      ],
+      "exceptions": [],
+      "native": {
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      "scale": 1.072,
+      "topHeader": {
+        "h": {
+          "selector": ".city-nav",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 60
+          },
+          "styles": {
+            "position": "sticky",
+            "padding-right": "102px"
+          }
+        },
+        "b": {
+          "selector": ".nav-back",
+          "offset": {
+            "left": 13,
+            "top": 60.5
+          },
+          "size": {
+            "width": 47,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "pr": {
+          "selector": ".nav-profile",
+          "offset": {
+            "left": 266,
+            "top": 67
+          },
+          "size": {
+            "width": 34,
+            "height": 34
+          },
+          "styles": {
+            "background-color": "rgb(0, 76, 200)"
+          }
+        },
+        "c": {
+          "selector": ".city-status",
+          "offset": {
+            "left": 0,
+            "top": 0
+          },
+          "size": {
+            "width": 402,
+            "height": 54
+          },
+          "styles": {
+            "position": "fixed",
+            "pointer-events": "none"
+          }
+        },
+        "t": {
+          "selector": ".nav-title",
+          "offset": {
+            "left": 68,
+            "top": 72.5
+          },
+          "size": {
+            "width": 139,
+            "height": 23
+          },
+          "styles": {
+            "font-size": "18px"
+          }
+        }
+      },
+      "layout": {
+        "search": {
+          "selector": ".city-search-sticky",
+          "offset": {
+            "left": 0,
+            "top": 114
+          },
+          "size": {
+            "width": 402,
+            "height": 59
+          },
+          "styles": {
+            "position": "sticky"
+          }
+        },
+        "input": {
+          "selector": ".search-input",
+          "offset": {
+            "left": 17,
+            "top": 118
+          },
+          "size": {
+            "width": 368,
+            "height": 47
+          },
+          "styles": {
+            "font-size": "16px"
+          }
+        },
+        "popular": {
+          "selector": ".popular",
+          "offset": {
+            "left": 17,
+            "top": 424
+          },
+          "size": {
+            "width": 82.5,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "rail": {
+          "selector": ".alphabet-rail",
+          "offset": {
+            "left": 360,
+            "top": 208
+          },
+          "size": {
+            "width": 38,
+            "height": 581
+          },
+          "styles": {
+            "position": "fixed",
+            "right": "4px",
+            "padding-top": "8px",
+            "padding-left": "4px"
+          }
+        },
+        "letter": {
+          "selector": ".alphabet-pill button",
+          "offset": {
+            "left": 368.5,
+            "top": 388
+          },
+          "size": {
+            "width": 21,
+            "height": 21
+          },
+          "styles": {
+            "font-size": "11px"
+          }
+        }
+      },
+      "scrolledHeader": {
+        "h": {
+          "selector": ".city-nav",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 60
+          },
+          "styles": {
+            "position": "sticky",
+            "padding-right": "102px"
+          }
+        },
+        "b": {
+          "selector": ".nav-back",
+          "offset": {
+            "left": 13,
+            "top": 60.5
+          },
+          "size": {
+            "width": 47,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "pr": {
+          "selector": ".nav-profile",
+          "offset": {
+            "left": 266,
+            "top": 67
+          },
+          "size": {
+            "width": 34,
+            "height": 34
+          },
+          "styles": {
+            "background-color": "rgb(0, 76, 200)"
+          }
+        },
+        "c": {
+          "selector": ".city-status",
+          "offset": {
+            "left": 0,
+            "top": 0
+          },
+          "size": {
+            "width": 402,
+            "height": 54
+          },
+          "styles": {
+            "position": "fixed",
+            "pointer-events": "none"
+          }
+        },
+        "t": {
+          "selector": ".nav-title",
+          "offset": {
+            "left": 68,
+            "top": 72.5
+          },
+          "size": {
+            "width": 139,
+            "height": 23
+          },
+          "styles": {
+            "font-size": "18px"
+          }
+        }
+      },
+      "actualSHeading": {
+        "selector": "#city-group-S",
+        "offset": {
+          "left": 17,
+          "top": 177
+        },
+        "size": {
+          "width": 368,
+          "height": 288
+        },
+        "styles": {}
+      },
+      "pass": true,
+      "elapsedMs": 8163
+    },
+    {
+      "page": "itinerary",
+      "route": "subpackages/activity/itinerary/itinerary",
+      "level": "bounded changed-page WeChat DevTools checks",
+      "checks": [
+        {
+          "label": "top header actual status top",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "top source header56",
+          "pass": true,
+          "actual": 60,
+          "expected": 60.032000000000004
+        },
+        {
+          "label": "top header position",
+          "pass": true,
+          "actual": "sticky",
+          "expected": "sticky"
+        },
+        {
+          "label": "top source back44",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top source backheight44",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top source profile32",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "top source profileheight32",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "top actual capsule clearance",
+          "pass": true,
+          "actual": 8,
+          "expected": 8
+        },
+        {
+          "label": "top status cover top",
+          "pass": true,
+          "actual": 0,
+          "expected": 0
+        },
+        {
+          "label": "top status cover height",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "top noninteractive fixed cover",
+          "pass": true,
+          "actual": {
+            "position": "fixed",
+            "pointer-events": "none"
+          },
+          "expected": {
+            "position": "fixed",
+            "pointer-events": "none"
+          }
+        },
+        {
+          "label": "top source header title17",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "actual authorized upcoming primary",
+          "pass": true,
+          "actual": true,
+          "expected": true
+        },
+        {
+          "label": "original cover176",
+          "pass": true,
+          "actual": 188,
+          "expected": 188.67200000000003
+        },
+        {
+          "label": "primary title20",
+          "pass": true,
+          "actual": "21px",
+          "expected": 21.44
+        },
+        {
+          "label": "primary titleline26",
+          "pass": true,
+          "actual": "27px",
+          "expected": 27.872
+        },
+        {
+          "label": "facts padding12",
+          "pass": true,
+          "actual": "12px",
+          "expected": 12.864
+        },
+        {
+          "label": "facts actual row gap10",
+          "pass": true,
+          "actual": 10,
+          "expected": 10.72
+        },
+        {
+          "label": "fact box28",
+          "pass": true,
+          "actual": 30,
+          "expected": 30.016000000000002
+        },
+        {
+          "label": "official factglyph18",
+          "pass": true,
+          "actual": 19,
+          "expected": 19.296
+        },
+        {
+          "label": "date supplemental11",
+          "pass": true,
+          "actual": "11px",
+          "expected": 11.792000000000002
+        },
+        {
+          "label": "other supplemental13",
+          "pass": true,
+          "actual": "13px",
+          "expected": 13.936
+        },
+        {
+          "label": "scrolled header actual status top",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "scrolled source header56",
+          "pass": true,
+          "actual": 60,
+          "expected": 60.032000000000004
+        },
+        {
+          "label": "scrolled header position",
+          "pass": true,
+          "actual": "sticky",
+          "expected": "sticky"
+        },
+        {
+          "label": "scrolled source back44",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled source backheight44",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled source profile32",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "scrolled source profileheight32",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "scrolled actual capsule clearance",
+          "pass": true,
+          "actual": 8,
+          "expected": 8
+        },
+        {
+          "label": "scrolled status cover top",
+          "pass": true,
+          "actual": 0,
+          "expected": 0
+        },
+        {
+          "label": "scrolled status cover height",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "scrolled noninteractive fixed cover",
+          "pass": true,
+          "actual": {
+            "position": "fixed",
+            "pointer-events": "none"
+          },
+          "expected": {
+            "position": "fixed",
+            "pointer-events": "none"
+          }
+        },
+        {
+          "label": "scrolled source header title17",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "truth box32",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "truth glyph20",
+          "pass": true,
+          "actual": 21,
+          "expected": 21.44
+        },
+        {
+          "label": "same current actual id and section",
+          "pass": true,
+          "actual": {
+            "id": "02c295b8-10e0-4602-8d25-1dc0d801a5f1",
+            "section": "detailsSection"
+          },
+          "expected": {
+            "id": "02c295b8-10e0-4602-8d25-1dc0d801a5f1",
+            "section": "detailsSection"
+          }
+        },
+        {
+          "label": "actual event destination READY",
+          "pass": true,
+          "actual": "READY",
+          "expected": "READY"
+        },
+        {
+          "label": "actual primary preserved after return",
+          "pass": true,
+          "actual": "02c295b8-10e0-4602-8d25-1dc0d801a5f1",
+          "expected": "02c295b8-10e0-4602-8d25-1dc0d801a5f1"
+        },
+        {
+          "label": "runtime exceptions",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "interactions": [
+        {
+          "label": "actual primary details",
+          "target": "pages/event/event",
+          "query": {
+            "id": "02c295b8-10e0-4602-8d25-1dc0d801a5f1",
+            "section": "detailsSection"
+          }
+        },
+        {
+          "label": "actual detail return and refreshed same primary",
+          "target": "subpackages/activity/itinerary/itinerary"
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-itinerary-top-wave63-2026-10-01.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-itinerary-bottom-wave63-2026-10-01.png"
+      ],
+      "exceptions": [],
+      "native": {
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      "scale": 1.072,
+      "topHeader": {
+        "h": {
+          "selector": ".itinerary-header",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 60
+          },
+          "styles": {
+            "position": "sticky",
+            "padding-right": "102px"
+          }
+        },
+        "b": {
+          "selector": ".back",
+          "offset": {
+            "left": 17,
+            "top": 60.5
+          },
+          "size": {
+            "width": 47,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "pr": {
+          "selector": ".profile-link",
+          "offset": {
+            "left": 266,
+            "top": 67
+          },
+          "size": {
+            "width": 34,
+            "height": 34
+          },
+          "styles": {
+            "background-color": "rgb(0, 76, 200)"
+          }
+        },
+        "c": {
+          "selector": ".status-bar-cover",
+          "offset": {
+            "left": 0,
+            "top": 0
+          },
+          "size": {
+            "width": 402,
+            "height": 54
+          },
+          "styles": {
+            "position": "fixed",
+            "pointer-events": "none"
+          }
+        },
+        "t": {
+          "selector": ".header-title",
+          "offset": {
+            "left": 17,
+            "top": 60.5
+          },
+          "size": {
+            "width": 122.28125,
+            "height": 47
+          },
+          "styles": {
+            "font-size": "18px"
+          }
+        }
+      },
+      "actualRecords": {
+        "total": 2,
+        "featured": {
+          "id": "02c295b8-10e0-4602-8d25-1dc0d801a5f1",
+          "status": "CONFIRMED",
+          "isHost": true,
+          "startAt": "2026-10-01T22:36:46.434Z",
+          "stateLabel": "已成局"
+        },
+        "later": [
+          {
+            "id": "97ed8055-27fb-484e-87a2-9986805fcae1",
+            "status": "RECRUITING",
+            "startAt": "2026-10-03T22:37:32.936Z",
+            "stateLabel": "已确认报名"
+          }
+        ]
+      },
+      "layout": {
+        "cover": {
+          "selector": ".featured-photo",
+          "offset": {
+            "left": 17,
+            "top": 225.5
+          },
+          "size": {
+            "width": 368,
+            "height": 188
+          },
+          "styles": {}
+        },
+        "title": {
+          "selector": ".featured-title",
+          "offset": {
+            "left": 34,
+            "top": 430.5
+          },
+          "size": {
+            "width": 334,
+            "height": 54
+          },
+          "styles": {
+            "font-size": "21px",
+            "line-height": "27px"
+          }
+        },
+        "facts": {
+          "selector": ".facts",
+          "offset": {
+            "left": 34,
+            "top": 519.5
+          },
+          "size": {
+            "width": 334,
+            "height": 148
+          },
+          "styles": {
+            "padding-top": "12px"
+          }
+        },
+        "icon": {
+          "selector": ".fact-icon",
+          "offset": {
+            "left": 46,
+            "top": 531.5
+          },
+          "size": {
+            "width": 30,
+            "height": 30
+          },
+          "styles": {}
+        },
+        "glyph": {
+          "selector": ".fact-icon image",
+          "offset": {
+            "left": 51.5,
+            "top": 537
+          },
+          "size": {
+            "width": 19,
+            "height": 19
+          },
+          "styles": {}
+        },
+        "date": {
+          "selector": ".fact-date-copy",
+          "offset": {
+            "left": 86,
+            "top": 548.5
+          },
+          "size": {
+            "width": 270,
+            "height": 15
+          },
+          "styles": {
+            "font-size": "11px"
+          }
+        },
+        "other": {
+          "selector": ".fact-copy",
+          "offset": {
+            "left": 86,
+            "top": 590.5
+          },
+          "size": {
+            "width": 270,
+            "height": 19
+          },
+          "styles": {
+            "font-size": "13px"
+          }
+        }
+      },
+      "laterRuntimeBoundary": "actual later rows available",
+      "scrolledHeader": {
+        "h": {
+          "selector": ".itinerary-header",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 60
+          },
+          "styles": {
+            "position": "sticky",
+            "padding-right": "102px"
+          }
+        },
+        "b": {
+          "selector": ".back",
+          "offset": {
+            "left": 17,
+            "top": 60.5
+          },
+          "size": {
+            "width": 47,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "pr": {
+          "selector": ".profile-link",
+          "offset": {
+            "left": 266,
+            "top": 67
+          },
+          "size": {
+            "width": 34,
+            "height": 34
+          },
+          "styles": {
+            "background-color": "rgb(0, 76, 200)"
+          }
+        },
+        "c": {
+          "selector": ".status-bar-cover",
+          "offset": {
+            "left": 0,
+            "top": 0
+          },
+          "size": {
+            "width": 402,
+            "height": 54
+          },
+          "styles": {
+            "position": "fixed",
+            "pointer-events": "none"
+          }
+        },
+        "t": {
+          "selector": ".header-title",
+          "offset": {
+            "left": 17,
+            "top": 60.5
+          },
+          "size": {
+            "width": 122.28125,
+            "height": 47
+          },
+          "styles": {
+            "font-size": "18px"
+          }
+        }
+      },
+      "pass": true,
+      "elapsedMs": 7069
+    },
+    {
+      "page": "share",
+      "route": "subpackages/activity/share/share",
+      "level": "bounded changed-page WeChat DevTools checks",
+      "checks": [
+        {
+          "label": "top header actual status top",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "top source header56",
+          "pass": true,
+          "actual": 60,
+          "expected": 60.032000000000004
+        },
+        {
+          "label": "top header position",
+          "pass": true,
+          "actual": "fixed",
+          "expected": "fixed"
+        },
+        {
+          "label": "top source back44",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top source backheight44",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top source profile32",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "top source profileheight32",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "top actual capsule clearance",
+          "pass": true,
+          "actual": 8,
+          "expected": 8
+        },
+        {
+          "label": "top status cover top",
+          "pass": true,
+          "actual": 0,
+          "expected": 0
+        },
+        {
+          "label": "top status cover height",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "top noninteractive fixed cover",
+          "pass": true,
+          "actual": {
+            "position": "fixed",
+            "pointer-events": "none"
+          },
+          "expected": {
+            "position": "fixed",
+            "pointer-events": "none"
+          }
+        },
+        {
+          "label": "top source header title17",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "expired actual invitation stays closed",
+          "pass": true,
+          "actual": {
+            "canShare": false,
+            "tokenPresent": false
+          },
+          "expected": false
+        },
+        {
+          "label": "closed hides actual QR and copy",
+          "pass": true,
+          "actual": {
+            "qr": false,
+            "copy": false
+          },
+          "expected": false
+        },
+        {
+          "label": "actual eligible32-character base64url invite",
+          "pass": true,
+          "actual": {
+            "tokenLength": 32
+          },
+          "expected": 32
+        },
+        {
+          "label": "ticket source title20",
+          "pass": true,
+          "actual": "21px",
+          "expected": 21.44
+        },
+        {
+          "label": "ticket stripe8",
+          "pass": true,
+          "actual": 8,
+          "expected": 8.576
+        },
+        {
+          "label": "ticket facts padding14",
+          "pass": true,
+          "actual": "15px",
+          "expected": 15.008000000000001
+        },
+        {
+          "label": "ticket fact box28",
+          "pass": true,
+          "actual": 30,
+          "expected": 30.016000000000002
+        },
+        {
+          "label": "ticket main fact15",
+          "pass": true,
+          "actual": "16px",
+          "expected": 16.080000000000002
+        },
+        {
+          "label": "ticket decorative notch28",
+          "pass": true,
+          "actual": 30,
+          "expected": 30.016000000000002
+        },
+        {
+          "label": "ticket notch half outside",
+          "pass": true,
+          "actual": "-15px",
+          "expected": -15.008000000000001
+        },
+        {
+          "label": "actual canvas160px",
+          "pass": true,
+          "actual": 160,
+          "expected": 160
+        },
+        {
+          "label": "actual canvasheight160px",
+          "pass": true,
+          "actual": 160,
+          "expected": 160
+        },
+        {
+          "label": "actual whiteframe184px",
+          "pass": true,
+          "actual": 184,
+          "expected": 184
+        },
+        {
+          "label": "actual whiteframeheight184px",
+          "pass": true,
+          "actual": 184,
+          "expected": 184
+        },
+        {
+          "label": "actual whiteframe padding12px",
+          "pass": true,
+          "actual": "12px",
+          "expected": 12
+        },
+        {
+          "label": "actual whiteframe radius16px",
+          "pass": true,
+          "actual": "16px",
+          "expected": 16
+        },
+        {
+          "label": "source invitekey18",
+          "pass": true,
+          "actual": 19,
+          "expected": 19.296
+        },
+        {
+          "label": "full available token box",
+          "pass": true,
+          "actual": 334,
+          "expected": 334
+        },
+        {
+          "label": "scrolled header actual status top",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "scrolled source header56",
+          "pass": true,
+          "actual": 60,
+          "expected": 60.032000000000004
+        },
+        {
+          "label": "scrolled header position",
+          "pass": true,
+          "actual": "fixed",
+          "expected": "fixed"
+        },
+        {
+          "label": "scrolled source back44",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled source backheight44",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled source profile32",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "scrolled source profileheight32",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "scrolled actual capsule clearance",
+          "pass": true,
+          "actual": 8,
+          "expected": 8
+        },
+        {
+          "label": "scrolled status cover top",
+          "pass": true,
+          "actual": 0,
+          "expected": 0
+        },
+        {
+          "label": "scrolled status cover height",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "scrolled noninteractive fixed cover",
+          "pass": true,
+          "actual": {
+            "position": "fixed",
+            "pointer-events": "none"
+          },
+          "expected": {
+            "position": "fixed",
+            "pointer-events": "none"
+          }
+        },
+        {
+          "label": "scrolled source header title17",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "actual160 screenshot pixels decode current invite",
+          "pass": true,
+          "actual": {
+            "crop": {
+              "height": 231,
+              "left": 174,
+              "screenshotScale": 1.4427860696517414,
+              "top": 193,
+              "width": 231
+            },
+            "cropped": true,
+            "currentInviteMatched": true,
+            "decoder": "macOS Vision VNDetectBarcodesRequest",
+            "imageHeight": 1260,
+            "imageWidth": 580,
+            "qrDecoded": 1,
+            "exitCode": 0
+          },
+          "expected": {
+            "currentInviteMatched": true,
+            "qrDecoded": 1
+          }
+        },
+        {
+          "label": "real current invite in actual clipboard",
+          "pass": true,
+          "actual": {
+            "matched": true,
+            "length": 103
+          },
+          "expected": {
+            "matched": true
+          }
+        },
+        {
+          "label": "real sheet current code layout",
+          "pass": true,
+          "actual": {
+            "width": 374,
+            "height": 43
+          },
+          "expected": "visible"
+        },
+        {
+          "label": "three current source info cards",
+          "pass": true,
+          "actual": 3,
+          "expected": 3
+        },
+        {
+          "label": "info sourcebox36",
+          "pass": true,
+          "actual": 38,
+          "expected": 38.592
+        },
+        {
+          "label": "info sourceglyph20",
+          "pass": true,
+          "actual": 21,
+          "expected": 21.44
+        },
+        {
+          "label": "info sourcetitle17",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "real share back current id",
+          "pass": true,
+          "actual": "0e51f241-3f63-439d-b59d-593549a61ac2",
+          "expected": "0e51f241-3f63-439d-b59d-593549a61ac2"
+        },
+        {
+          "label": "runtime exceptions",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "interactions": [
+        {
+          "label": "actual eligible invite copy; latest API gate and actual clipboard match",
+          "tokenPrinted": false
+        },
+        {
+          "label": "actual share sheet open and cancel; no native message sent"
+        },
+        {
+          "label": "actual eligible invite back to current event",
+          "target": "pages/event/event",
+          "query": {
+            "id": "0e51f241-3f63-439d-b59d-593549a61ac2"
+          }
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-share-top-redacted-wave63-2026-10-01.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-share-qr-redacted-wave63-2026-10-01.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-share-sheet-redacted-wave63-2026-10-01.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-share-closed-redacted-wave63-2026-10-01.png"
+      ],
+      "exceptions": [],
+      "native": {
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      "scale": 1.072,
+      "topHeader": {
+        "h": {
+          "selector": ".share-header",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 60
+          },
+          "styles": {
+            "position": "fixed",
+            "padding-right": "102px"
+          }
+        },
+        "b": {
+          "selector": ".header-back",
+          "offset": {
+            "left": 17,
+            "top": 60.5
+          },
+          "size": {
+            "width": 47,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "pr": {
+          "selector": ".header-profile",
+          "offset": {
+            "left": 266,
+            "top": 67
+          },
+          "size": {
+            "width": 34,
+            "height": 34
+          },
+          "styles": {
+            "background-color": "rgb(0, 76, 200)"
+          }
+        },
+        "c": {
+          "selector": ".share-status-cover",
+          "offset": {
+            "left": 0,
+            "top": 0
+          },
+          "size": {
+            "width": 402,
+            "height": 54
+          },
+          "styles": {
+            "position": "fixed",
+            "pointer-events": "none"
+          }
+        },
+        "t": {
+          "selector": ".header-title",
+          "offset": {
+            "left": 68,
+            "top": 72.5
+          },
+          "size": {
+            "width": 194,
+            "height": 23
+          },
+          "styles": {
+            "font-size": "18px"
+          }
+        }
+      },
+      "closedActual": {
+        "id": "02c295b8-10e0-4602-8d25-1dc0d801a5f1",
+        "status": "CONFIRMED",
+        "reason": "当前活动未开放邀请或邀请码已失效。"
+      },
+      "eligibleActual": {
+        "id": "0e51f241-3f63-439d-b59d-593549a61ac2",
+        "actor": "caper-pg05-host-20260930",
+        "status": "RECRUITING",
+        "reviewStatus": "APPROVED",
+        "remainingPositive": true
+      },
+      "layout": {
+        "title": {
+          "selector": ".ticket-title",
+          "offset": {
+            "left": 34,
+            "top": 291
+          },
+          "size": {
+            "width": 273,
+            "height": 54
+          },
+          "styles": {
+            "font-size": "21px"
+          }
+        },
+        "stripe": {
+          "selector": ".ticket-topline",
+          "offset": {
+            "left": 17,
+            "top": 220
+          },
+          "size": {
+            "width": 368,
+            "height": 8
+          },
+          "styles": {}
+        },
+        "fact": {
+          "selector": ".ticket-facts",
+          "offset": {
+            "left": 34,
+            "top": 394
+          },
+          "size": {
+            "width": 334,
+            "height": 144
+          },
+          "styles": {
+            "padding-top": "15px"
+          }
+        },
+        "box": {
+          "selector": ".fact-icon",
+          "offset": {
+            "left": 49,
+            "top": 422.5
+          },
+          "size": {
+            "width": 30,
+            "height": 30
+          },
+          "styles": {}
+        },
+        "value": {
+          "selector": ".fact-value",
+          "offset": {
+            "left": 89,
+            "top": 424
+          },
+          "size": {
+            "width": 264,
+            "height": 42
+          },
+          "styles": {
+            "font-size": "16px"
+          }
+        },
+        "notch": {
+          "selector": ".ticket-notch.left",
+          "offset": {
+            "left": 2,
+            "top": 545
+          },
+          "size": {
+            "width": 30,
+            "height": 30
+          },
+          "styles": {
+            "left": "-15px"
+          }
+        }
+      },
+      "scrolledHeader": {
+        "h": {
+          "selector": ".share-header",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 60
+          },
+          "styles": {
+            "position": "fixed",
+            "padding-right": "102px"
+          }
+        },
+        "b": {
+          "selector": ".header-back",
+          "offset": {
+            "left": 17,
+            "top": 60.5
+          },
+          "size": {
+            "width": 47,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "pr": {
+          "selector": ".header-profile",
+          "offset": {
+            "left": 266,
+            "top": 67
+          },
+          "size": {
+            "width": 34,
+            "height": 34
+          },
+          "styles": {
+            "background-color": "rgb(0, 76, 200)"
+          }
+        },
+        "c": {
+          "selector": ".share-status-cover",
+          "offset": {
+            "left": 0,
+            "top": 0
+          },
+          "size": {
+            "width": 402,
+            "height": 54
+          },
+          "styles": {
+            "position": "fixed",
+            "pointer-events": "none"
+          }
+        },
+        "t": {
+          "selector": ".header-title",
+          "offset": {
+            "left": 68,
+            "top": 72.5
+          },
+          "size": {
+            "width": 194,
+            "height": 23
+          },
+          "styles": {
+            "font-size": "18px"
+          }
+        }
+      },
+      "actualQrDecode": {
+        "crop": {
+          "height": 231,
+          "left": 174,
+          "screenshotScale": 1.4427860696517414,
+          "top": 193,
+          "width": 231
+        },
+        "cropped": true,
+        "currentInviteMatched": true,
+        "decoder": "macOS Vision VNDetectBarcodesRequest",
+        "imageHeight": 1260,
+        "imageWidth": 580,
+        "qrDecoded": 1,
+        "exitCode": 0
+      },
+      "qrGeometry": {
+        "canvas": {
+          "selector": ".invite-qr",
+          "offset": {
+            "left": 121,
+            "top": 134
+          },
+          "size": {
+            "width": 160,
+            "height": 160
+          },
+          "styles": {}
+        },
+        "frame": {
+          "selector": ".invite-qr-frame",
+          "offset": {
+            "left": 109,
+            "top": 122
+          },
+          "size": {
+            "width": 184,
+            "height": 184
+          },
+          "styles": {
+            "padding-top": "12px",
+            "border-top-left-radius": "16px"
+          }
+        },
+        "key": {
+          "selector": ".invite-key",
+          "offset": {
+            "left": 46,
+            "top": 368.5
+          },
+          "size": {
+            "width": 19,
+            "height": 19
+          },
+          "styles": {}
+        },
+        "token": {
+          "selector": ".invite-token",
+          "offset": {
+            "left": 34,
+            "top": 349
+          },
+          "size": {
+            "width": 334,
+            "height": 58
+          },
+          "styles": {}
+        },
+        "native": {
+          "id": "",
+          "dataset": {},
+          "left": 121,
+          "right": 281,
+          "top": 134,
+          "bottom": 294,
+          "width": 160,
+          "height": 160
+        }
+      },
+      "pass": true,
+      "elapsedMs": 18831,
+      "identityRestored": true
+    }
+  ],
+  "publicShareRedactions": [
+    {
+      "label": "top",
+      "sourcePrivate": "/private/tmp/caper-share-top-wave63-2026-10-01.png",
+      "published": "/Users/tsb/Documents/小程序/docs/evidence/images/caper-share-top-redacted-wave63-2026-10-01.png",
+      "redactions": [
+        [
+          157,
+          840,
+          425,
+          1106
+        ],
+        [
+          50,
+          1166,
+          531,
+          1249
+        ]
+      ],
+      "sha256": "103fbcff8d1ac6595252740f106f0c2cdb5e4b65516b95f556aeeab5107881eb"
+    },
+    {
+      "label": "qr",
+      "sourcePrivate": "/private/tmp/caper-share-qr-wave63-2026-10-01.png",
+      "published": "/Users/tsb/Documents/小程序/docs/evidence/images/caper-share-qr-redacted-wave63-2026-10-01.png",
+      "redactions": [
+        [
+          174,
+          193,
+          405,
+          424
+        ],
+        [
+          49,
+          503,
+          531,
+          588
+        ]
+      ],
+      "sha256": "ea014aac455a3f5292d8b4f8f9a77f6077c1325ac07cce59cdc8c4f2c93c3a72"
+    },
+    {
+      "label": "sheet",
+      "sourcePrivate": "/private/tmp/caper-share-sheet-wave63-2026-10-01.png",
+      "published": "/Users/tsb/Documents/小程序/docs/evidence/images/caper-share-sheet-redacted-wave63-2026-10-01.png",
+      "redactions": [
+        [
+          0,
+          146,
+          580,
+          310
+        ],
+        [
+          25,
+          983,
+          440,
+          1026
+        ]
+      ],
+      "sha256": "d018f4f4402f8d4251e8e1016b6156ea97b838b33e2e4907f3d215aef947790c"
+    },
+    {
+      "label": "closed",
+      "sourcePrivate": "/private/tmp/caper-share-closed-wave63-2026-10-01.png",
+      "published": "/Users/tsb/Documents/小程序/docs/evidence/images/caper-share-closed-redacted-wave63-2026-10-01.png",
+      "redactions": [],
+      "sha256": "25eb914b939185567e60626fed5a821b2c4b13c0363a71877798f5952a7a397b"
+    }
+  ],
+  "finalCli": {
+    "pass": true,
+    "exitCode": 0,
+    "preview": {
+      "size": {
+        "total": 2826936,
+        "packages": [
+          {
+            "name": "TOTAL",
+            "size": 2826936
+          },
+          {
+            "name": "main",
+            "size": 1821182
+          },
+          {
+            "name": "/subpackages/activity/",
+            "size": 78943
+          },
+          {
+            "name": "/subpackages/profile/",
+            "size": 926811
+          }
+        ]
+      }
+    }
+  },
+  "nativeComputerUse": {
+    "attempted": true,
+    "available": false,
+    "reason": "Tool reported Mac locked; unlock question pending",
+    "newFrontmostClicksVerified": false
+  }
+}

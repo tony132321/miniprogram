@@ -1,6 +1,16 @@
 const { api } = require('../../../utils/api.js');
 const config = require('../../../config.js');
 
+function headerPaddingRight() {
+  try {
+    const menu = wx.getMenuButtonBoundingClientRect?.();
+    const width = (wx.getWindowInfo?.() || wx.getSystemInfoSync?.() || {}).windowWidth;
+    if (Number.isFinite(menu?.left) && Number.isFinite(width) && menu.left >= 0 && menu.left < width)
+      return `${Math.ceil(width - menu.left + 8)}px`;
+  } catch (_) { /* Keep space for the native menu on older clients. */ }
+  return '112px';
+}
+
 function currentIdentity() {
   const token = wx.getStorageSync('sessionToken');
   if (token) return JSON.stringify(['user', token, wx.getStorageSync('userId')]);
@@ -59,9 +69,10 @@ function eligible(item, now) {
     (item.myRegistrationStatus === 'CONFIRMED' || item.isHost);
 }
 Page({
-  data: { statusBarHeight: 24, loadState: 'IDLE', message: '', featured: null, later: [], total: 0 },
-  onLoad() { this.setData({ statusBarHeight: wx.getSystemInfoSync?.().statusBarHeight || 24 }); },
-  async onShow() { return this.refresh(); },
+  data: { statusBarHeight: 24, headerPaddingRight: '112px', loadState: 'IDLE', message: '', featured: null, later: [], total: 0 },
+  onLoad() { this.setData({ statusBarHeight: wx.getSystemInfoSync?.().statusBarHeight || 24,
+    headerPaddingRight: headerPaddingRight() }); },
+  async onShow() { this.setData({ headerPaddingRight: headerPaddingRight() }); return this.refresh(); },
   onHide() { this._generation = (this._generation || 0) + 1; this._shownIdentity = null; },
   onUnload() { this._generation = (this._generation || 0) + 1; this._shownIdentity = null; },
   async onPullDownRefresh() { await this.refresh(); wx.stopPullDownRefresh?.(); },

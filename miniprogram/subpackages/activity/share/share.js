@@ -18,7 +18,7 @@ function paintInviteQr(token, context, left, top, size) {
   }
 }
 function drawInviteQr(token, context) {
-  paintInviteQr(token, context, 0, 0, 200);
+  paintInviteQr(token, context, 0, 0, 160);
   context.draw(false);
 }
 function posterTitleLines(title) {

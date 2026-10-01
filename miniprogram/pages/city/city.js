@@ -14,6 +14,16 @@ function groupsFor(list) {
   return groups;
 }
 
+function headerPaddingRight() {
+  try {
+    const menu = wx.getMenuButtonBoundingClientRect?.();
+    const width = (wx.getWindowInfo?.() || wx.getSystemInfoSync?.() || {}).windowWidth;
+    if (Number.isFinite(menu?.left) && Number.isFinite(width) && menu.left >= 0 && menu.left < width)
+      return `${Math.ceil(width - menu.left + 8)}px`;
+  } catch (_) { /* Keep space for the native menu on older clients. */ }
+  return '112px';
+}
+
 function statusBarHeight() {
   try {
     if (typeof wx.getSystemInfoSync === 'function') return wx.getSystemInfoSync().statusBarHeight || 20;
@@ -22,11 +32,11 @@ function statusBarHeight() {
 }
 
 Page({
-  data: { statusBarHeight: statusBarHeight(), currentCity: defaultCity, query: '',
+  data: { statusBarHeight: statusBarHeight(), headerPaddingRight: headerPaddingRight(), currentCity: defaultCity, query: '',
     visibleCities: cities, cityGroups: groupsFor(cities), letters: groupsFor(cities).map(group => group.letter),
     searchFocused: false, popularCities },
   onShow() {
-    this.setData({ currentCity: selectedCity(wx) });
+    this.setData({ currentCity: selectedCity(wx), headerPaddingRight: headerPaddingRight() });
   },
   search(event) {
     const query = String(event.detail.value || '').trim().toLowerCase();
@@ -47,7 +57,19 @@ Page({
   jumpToLetter(event) {
     const letter = event.currentTarget.dataset.letter;
     if (!this.data.letters.includes(letter)) return;
-    wx.pageScrollTo({ selector: '#city-group-' + letter, duration: 250 });
+    if (typeof wx.createSelectorQuery !== 'function') {
+      wx.pageScrollTo({ selector: '#city-group-' + letter, duration: 250 });
+      return;
+    }
+    const geometry = wx.createSelectorQuery();
+    geometry.select('#city-group-' + letter).boundingClientRect();
+    geometry.select('.city-search-sticky').boundingClientRect();
+    geometry.selectViewport().scrollOffset();
+    geometry.exec(([target, sticky, viewport]) => {
+      if (!Number.isFinite(target?.top) || !Number.isFinite(sticky?.bottom) ||
+          !Number.isFinite(viewport?.scrollTop)) return;
+      wx.pageScrollTo({ scrollTop: Math.max(0, viewport.scrollTop + target.top - sticky.bottom - 4), duration: 250 });
+    });
   },
   locationHint() {
     wx.showToast({ title: '请在列表中手动选择城市', icon: 'none' });

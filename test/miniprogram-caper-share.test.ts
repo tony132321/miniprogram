@@ -170,7 +170,7 @@ test('approved invitation card draws a QR containing only the current private in
   await page.onLoad({ id: 'event-1' });
   assert.deepEqual(qrPayloads, [inviteToken]);
   assert.deepEqual(qrCanvasIds, ['inviteQr']);
-  assert.deepEqual(qrFills[0], [0, 0, 200, 200], 'QR needs a white quiet zone');
+  assert.deepEqual(qrFills[0], [0, 0, 160, 160], 'QR needs a white quiet zone');
 
   setEvent({ version: 5, inviteToken: rotatedInviteToken });
   await page.refresh();

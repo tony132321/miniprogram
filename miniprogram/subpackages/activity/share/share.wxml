@@ -1,31 +1,59 @@
-<view class="share-page" style="padding-top: {{statusBarHeight}}px">
-  <view class="share-header" style="padding-right: {{headerPaddingRight}}"><button class="header-back" bindtap="back" aria-label="返回活动详情">‹</button><text class="header-title">活动分享卡片</text><button class="header-profile" bindtap="goProfile" aria-label="打开我的页面">♙</button></view>
+<view class="share-page" style="padding-top: calc({{statusBarHeight}}px + 112rpx)">
+  <view class="share-status-cover" style="height: {{statusBarHeight}}px" aria-hidden="true"></view>
+  <view class="share-header" style="top: {{statusBarHeight}}px; padding-right: {{headerPaddingRight}}">
+    <button class="header-back" bindtap="back" aria-label="返回活动详情"><image class="header-back-glyph" src="/subpackages/activity/share/assets/arrow_back_ios_new.svg" mode="aspectFit" aria-hidden="true" /></button>
+    <text class="header-title">活动分享卡片</text>
+    <button class="header-profile" bindtap="goProfile" aria-label="打开我的页面"><image class="header-profile-glyph" src="/subpackages/activity/share/assets/person.svg" mode="aspectFit" aria-hidden="true" /></button>
+  </view>
 
   <view wx:if="{{loadState === 'LOADING'}}" class="state-panel">正在核对活动与分享资格…</view>
   <view wx:if="{{loadState === 'ERROR' || loadState === 'FORBIDDEN' || loadState === 'UNAUTHENTICATED'}}" class="state-panel"><view>{{message}}</view><button wx:if="{{loadState === 'ERROR'}}" bindtap="refresh">重新加载</button><button wx:else bindtap="back">返回活动详情</button></view>
 
   <view wx:if="{{loadState === 'READY'}}" class="share-content">
     <canvas wx:if="{{canShare}}" class="invite-poster-canvas" canvas-id="invitePoster" style="width:360px;height:600px" aria-hidden="true" />
-    <view class="intro"><text class="intro-pill">{{canShare ? 'INVITE READY · 邀请已就绪' : 'INVITE STATUS · 邀请状态'}}</text><view class="intro-title">活动专属邀请卡</view><view class="intro-copy">{{canShare ? '邀请朋友查看活动，报名以当前规则和名额为准' : shareReason}}</view></view>
+    <view class="intro">
+      <view class="intro-pill"><image wx:if="{{canShare}}" class="intro-glyph" src="/subpackages/activity/share/assets/verified.svg" mode="aspectFit" aria-hidden="true" /><text>{{canShare ? 'INVITE READY · 邀请已就绪' : 'INVITE STATUS · 邀请状态'}}</text></view>
+      <view class="intro-title">活动专属邀请卡</view>
+      <view class="intro-copy">{{canShare ? '邀请朋友查看活动，报名以当前规则和名额为准' : shareReason}}</view>
+    </view>
 
-    <view class="ticket"><view class="ticket-topline"></view><view class="ticket-kicker"><text>✦　PROJECT IRL · EVENT INVITATION</text><text class="ticket-dot"></text></view>
-      <view class="ticket-body"><view class="ticket-title-row"><text class="ticket-title">{{display.title}}</text><text class="ticket-status">{{display.status}}</text></view>
-        <view class="ticket-facts"><view><text class="fact-icon">▣</text><view><text class="fact-label">活动时间</text><text class="fact-value">{{display.date}} – {{display.end}}</text></view></view><view><text class="fact-icon location">⌖</text><view><text class="fact-label">场地地址</text><text class="fact-value">{{display.location}}</text></view></view></view>
-        <view wx:if="{{display.confirmed !== null || display.minimum !== null}}" class="ticket-count"><text wx:if="{{display.confirmed !== null}}">已确认 {{display.confirmed}} 人</text><text wx:if="{{display.minimum !== null}}">最低成局 {{display.minimum}} 人</text></view>
+    <view class="ticket">
+      <view class="ticket-topline"></view>
+      <view class="ticket-kicker"><view class="ticket-kicker-label"><image class="ticket-kicker-glyph" src="/subpackages/activity/share/assets/sports_tennis_fill1.svg" mode="aspectFit" aria-hidden="true" /><text>PROJECT IRL · EVENT INVITATION</text></view><view class="ticket-dot"></view></view>
+      <view class="ticket-body">
+        <view class="ticket-title-row"><text class="ticket-title">{{display.title}}</text><text class="ticket-status">{{display.status}}</text></view>
+        <view wx:if="{{display.confirmed !== null || display.minimum !== null}}" class="ticket-count">
+          <view wx:if="{{display.confirmed !== null}}" class="count-capsule"><view class="count-dot"></view><text>已确认 {{display.confirmed}} 人</text></view>
+          <view wx:if="{{display.minimum !== null}}" class="count-capsule minimum"><text>最低成局 {{display.minimum}} 人</text></view>
+        </view>
+        <view class="ticket-facts">
+          <view class="fact-row"><view class="fact-icon"><image class="fact-glyph" src="/subpackages/activity/share/assets/calendar_today.svg" mode="aspectFit" aria-hidden="true" /></view><view class="fact-text"><text class="fact-label">活动时间</text><text class="fact-value">{{display.date}} – {{display.end}}</text></view></view>
+          <view class="fact-divider" aria-hidden="true"></view>
+          <view class="fact-row"><view class="fact-icon location"><image class="fact-glyph" src="/subpackages/activity/share/assets/location_on.svg" mode="aspectFit" aria-hidden="true" /></view><view class="fact-text"><text class="fact-label">场地地址</text><text class="fact-value">{{display.location}}</text></view></view>
+        </view>
       </view>
-      <view class="ticket-divider"></view>
-      <view wx:if="{{canShare}}" class="ticket-invite"><canvas class="invite-qr" canvas-id="inviteQr" style="width:200px;height:200px" aria-label="仅包含本场邀请码的二维码"/><view class="invite-label">扫码或输入真实邀请码</view><view class="invite-code">{{display.inviteToken}}</view><view class="invite-hint">好友可在耍起 CAPER 发现页扫码，或在首页输入此码查看活动；具体地点以活动详情为准。</view><button bindtap="copyInvite" class="invite-copy">复制邀请码　→</button></view>
+      <view class="ticket-divider" aria-hidden="true"><view class="ticket-notch left"></view><view class="ticket-tear"></view><view class="ticket-notch right"></view></view>
+      <view wx:if="{{canShare}}" class="ticket-invite">
+        <view class="invite-qr-frame"><canvas class="invite-qr" canvas-id="inviteQr" style="width:160px;height:160px" aria-label="仅包含本场邀请码的二维码" /></view>
+        <view class="invite-label">扫码或输入真实邀请码</view>
+        <view class="invite-token"><image class="invite-key" src="/subpackages/activity/share/assets/key.svg" mode="aspectFit" aria-hidden="true" /><view class="invite-code"><text>专属邀请码：</text><text user-select="true">{{display.inviteToken}}</text></view></view>
+        <view class="invite-hint">好友可在耍起 CAPER 发现页扫码，或在首页输入此码查看活动；具体地点以活动详情为准。</view>
+        <button bindtap="copyInvite" class="invite-copy">复制邀请码　→</button>
+      </view>
       <view wx:else class="ticket-invite unavailable"><view class="invite-symbol">⌁</view><view class="invite-label">当前邀请码不可分享</view><view class="invite-hint">请返回活动详情核对审核、招募和安全状态。</view></view>
     </view>
 
-    <view class="info-heading">邀请前请核对</view>
-    <view class="info-card"><text class="info-icon">✓</text><view><view>以活动当前状态为准</view><text>分享资格及邀请码由服务端实时核对。</text></view></view>
-    <view class="info-card"><text class="info-icon blue">♙</text><view><view>报名按规则处理</view><text>收到邀请不保证席位，具体审批与候补见活动详情。</text></view></view>
-    <view class="info-card"><text class="info-icon violet">▤</text><view><view>场地与费用请再确认</view><text>场地由主办方说明，费用和取消规则以活动详情为准。</text></view></view>
+    <view class="info-section">
+      <view class="info-heading">邀请前请核对</view>
+      <view class="info-card"><view class="info-icon"><image class="info-glyph" src="/subpackages/activity/share/assets/bolt_fill1.svg" mode="aspectFit" aria-hidden="true" /></view><view class="info-card-content"><view class="info-card-title">以活动当前状态为准</view><text class="info-card-copy">分享资格及邀请码由服务端实时核对。</text></view></view>
+      <view class="info-card"><view class="info-icon blue"><image class="info-glyph" src="/subpackages/activity/share/assets/groups_2_fill1.svg" mode="aspectFit" aria-hidden="true" /></view><view class="info-card-content"><view class="info-card-title">报名按规则处理</view><text class="info-card-copy">收到邀请不保证席位，具体审批与候补见活动详情。</text></view></view>
+      <view class="info-card"><view class="info-icon violet"><image class="info-glyph" src="/subpackages/activity/share/assets/receipt_long_fill1.svg" mode="aspectFit" aria-hidden="true" /></view><view class="info-card-content"><view class="info-card-title">场地与费用请再确认</view><text class="info-card-copy">场地由主办方说明，费用和取消规则以活动详情为准。</text></view></view>
+    </view>
 
     <button wx:if="{{canShare}}" class="share-main" bindtap="openShareSheet">分享活动邀请　↗</button>
     <button wx:else class="share-main disabled" bindtap="refresh">重新核对分享状态　↻</button>
     <view wx:if="{{message}}" class="share-message">{{message}}</view>
+    <view wx:if="{{canShare}}" class="poster-notice"><image class="poster-notice-glyph" src="/subpackages/activity/share/assets/photo_camera.svg" mode="aspectFit" aria-hidden="true" /><text>在分享选项生成并预览海报</text></view>
     <view class="share-foot">GOOD PEOPLE · REAL MEETUPS · BRIGHTER DAYS</view>
   </view>
 
