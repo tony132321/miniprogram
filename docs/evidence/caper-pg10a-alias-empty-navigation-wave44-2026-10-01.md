@@ -14,4 +14,8 @@
 | 修改后同文件 | **4/4 通过**；包含可设置昵称活动筛选、未登录／空态／错误分支、空态按钮跳转，以及账号切换后旧响应不能恢复活动。新增用例断言 WXML 绑定、精确目标路由与关闭弹层。 |
 | 静态检查 | `node node_modules/typescript/bin/tsc --noEmit`、`node --check miniprogram/subpackages/profile/profile-edit/profile-edit.js`、`git diff --check` 均退出 0。 |
 
-本轮遵循并行隔离要求，只做定向测试和静态检查，未运行全量测试，也未占用共享微信开发者工具 IDE，因此**没有该按钮的模拟器实点截图**。本条证据仅证明页面绑定和导航方法的定向行为；开发者工具里的实际触控仍待该页面独占窗口时补验。
+## 开发者工具补验
+
+- 在隔离小程序工程的微信开发者工具模拟器中，以合成的无活动账号 `caper-pg10a-empty-wave44` 打开资料页，实点“设置本场昵称”，确认弹层为无可设置活动的空态；再实点“查看我的活动”，实际到达 `subpackages/profile/moments/moments`，筛选为 `all`、列表为空。自动化采集的异常为 **0**，随后恢复主办账号首页。
+- [本场昵称空态截图](images/caper-pg10a-alias-empty-wave44-2026-10-01.png)；[跳转后的本人活动空态截图](images/caper-pg10a-activities-empty-wave44-2026-10-01.png)。使用开发者工具 CLI `preview` 后由小程序 Automator 实点，脚本在 `/private/tmp/project-irl-automator/home-profile-wave44-smoke.cjs`；该路径是本机验证脚本，不属于交付工程。
+- 这是合成账号的模拟器导航证据，不代表真机、微信正式登录或全页逐像素验收。本轮没有运行全量测试。
