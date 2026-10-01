@@ -131,6 +131,12 @@
 .gallery-orange { background: linear-gradient(135deg,#ff6a00,#f8ac52); }
 .gallery-green { background: linear-gradient(135deg,#12a883,#41caa7); }
 .gallery-violet { background: linear-gradient(135deg,#7a55ca,#b474df); }
+.messages-slogan { display:flex; align-items:center; justify-content:space-between; gap:12rpx; margin-top:23rpx; padding:19rpx 20rpx; border:1rpx solid #dbeafe; border-radius:22rpx; background:linear-gradient(90deg,#eff6ff,#eef2ff 55%,#f7fee7); box-shadow:0 5rpx 18rpx rgba(15,23,42,.035); }
+.messages-slogan-copy { flex:1; min-width:0; }
+.messages-slogan-copy>view { color:#1d64f2; font-size:23rpx; font-weight:900; line-height:1.4; }
+.messages-slogan-copy>text { display:block; margin-top:6rpx; color:#475569; font-size:17rpx; font-weight:550; line-height:1.4; }
+.messages-slogan-sticker { flex:none; padding:9rpx 11rpx; border-radius:6rpx; background:#fde047; color:#0f172a; font-size:15rpx; font-weight:900; line-height:1.15; text-align:center; transform:rotate(3deg); box-shadow:2rpx 5rpx 10rpx rgba(15,23,42,.09); }
+.messages-slogan-sticker text { display:block; }
 .settings-row { display: flex; align-items: center; justify-content: space-between; width: 100%; box-sizing: border-box; margin: 24rpx 0 0; padding: 23rpx 24rpx; background: #fff; color: #0f172a; text-align: left; font-size: 21rpx; font-weight: 800; line-height: 1.4; }
 .settings-row::after { border: 0; }
 .settings-row view { flex: 1; }
