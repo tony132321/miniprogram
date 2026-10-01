@@ -1,6 +1,8 @@
 import type { Database } from './db.ts';
 import { AppError } from './errors.ts';
 import { requireMember } from './collaboration.ts';
+import { reviewedContentSourceVersion } from './events.ts';
+import { actorReadableActivityContentSql } from './content-source-visibility.ts';
 import { parseAnnouncementFaq } from './announcement-faq.ts';
 import { minimizeAiContextText } from './ai-data-minimization.ts';
 
@@ -21,9 +23,12 @@ export async function buildAiEventContext(db: Database, actor: string, eventId: 
     if (locked[0]?.version !== event.version) throw new AppError('VERSION_CONFLICT', '活动规则已更新，请刷新', 409);
     const p = event.payload;
     const safe = (value: string | undefined) => value === undefined ? undefined : minimizeAiContextText(value) ?? undefined;
-    const { rows } = await tx.query<{ id: string; body: string }>(`SELECT id,body FROM activity_content
-      WHERE event_id=$1 AND event_version=$2 AND kind='ANNOUNCEMENT' AND status='APPROVED'
-      ORDER BY created_at DESC,id DESC LIMIT 10`, [eventId, event.visibleContentVersion ?? event.version]);
+    const sourceVersion = reviewedContentSourceVersion(event);
+    const { rows } = sourceVersion === null ? { rows: [] as Array<{ id: string; body: string }> } :
+      await tx.query<{ id: string; body: string }>(`SELECT c.id,c.body FROM activity_content c
+      WHERE c.event_id=$1 AND c.event_version=$2 AND c.kind='ANNOUNCEMENT' AND c.status='APPROVED'
+        AND ${actorReadableActivityContentSql('c', '$3')}
+      ORDER BY c.created_at DESC,c.id DESC LIMIT 10`, [eventId, sourceVersion, actor]);
     return { event: { id: event.id, version: event.version, status: event.status,
       ...(event.visibleContentVersion !== undefined ? { visibleContentVersion: event.visibleContentVersion } : {}),
       reviewStatus: event.reviewStatus, title: safe(p.title), startAt: p.startAt,
@@ -33,7 +38,7 @@ export async function buildAiEventContext(db: Database, actor: string, eventId: 
     announcements: rows.flatMap(row => {
       if (!parseAnnouncementFaq(row.body)) return [];
       const text = minimizeAiContextText(row.body);
-      return text === null ? [] : [{ sourceContentId: row.id, eventVersion: event.visibleContentVersion ?? event.version,
+      return text === null ? [] : [{ sourceContentId: row.id, eventVersion: sourceVersion!,
         trust: 'UNTRUSTED_CONTENT' as const, text }];
     }) };
   });

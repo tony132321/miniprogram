@@ -4,10 +4,43 @@ import { test } from 'node:test';
 import { mkdtemp, readFile, readdir, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { setTimeout as delay } from 'node:timers/promises';
 import { PGlite } from '@electric-sql/pglite';
 import { createDatabase, LATEST_SCHEMA_VERSION } from '../src/db.ts';
 import { getPilotMetrics } from '../src/metrics.ts';
 import { changeReportStatus, listReportResponseAlerts } from '../src/operations.ts';
+
+test('content creation time uses the insert clock across a later review boundary after upgrade', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'project-irl-content-clock-upgrade-'));
+  try {
+    const old = await createDatabase(directory);
+    try {
+      await old.query('ALTER TABLE activity_content ALTER COLUMN created_at SET DEFAULT now()');
+      await old.query('DELETE FROM schema_migrations WHERE version=70');
+    } finally { await old.close(); }
+
+    const upgraded = await createDatabase(directory);
+    try {
+      await upgraded.query("INSERT INTO events(id,host_id,status,version,payload) VALUES('content-clock','host','RECRUITING',2,'{}')");
+      const { began, boundary, inserted } = await upgraded.transaction(async tx => {
+        const began = (await tx.query<{ at: Date }>('SELECT transaction_timestamp() AS at')).rows[0]!.at;
+        await delay(25);
+        const boundary = (await tx.query<{ at: Date }>('SELECT clock_timestamp() AS at')).rows[0]!.at;
+        await delay(25);
+        const { rows } = await tx.query<{ created_at: Date }>(`INSERT INTO activity_content
+          (id,event_id,author_id,kind,body,event_version)
+          VALUES('content-clock-row','content-clock','host','QUESTION','跨边界内容',2)
+          RETURNING created_at`);
+        return { began, boundary, inserted: rows[0]!.created_at };
+      });
+      assert.ok(new Date(boundary).getTime() > new Date(began).getTime());
+      assert.ok(new Date(inserted).getTime() > new Date(boundary).getTime(),
+        'a transaction started before a review boundary must not backdate a later content insert');
+      assert.equal((await upgraded.query<{ version: number }>('SELECT max(version)::int AS version FROM schema_migrations'))
+        .rows[0]?.version, LATEST_SCHEMA_VERSION);
+    } finally { await upgraded.close(); }
+  } finally { await rm(directory, { recursive: true, force: true }); }
+});
 
 test('notification provider acceptance migration does not backfill old responses', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'project-irl-provider-events-upgrade-'));

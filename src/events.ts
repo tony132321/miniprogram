@@ -26,6 +26,12 @@ export interface EventRecord {
   venueEvidence?: { venueName: string; sourceType: 'HOST_STATEMENT'; phase: 'PUBLISH' | 'CHANGE' | 'FORMATION';
     recordedAt: string; expiresAt: string };
 }
+
+// Undefined means the current activity version is readable (host or approved
+// member view). Null means there is no trusted activity text for this member.
+export function reviewedContentSourceVersion(event: Pick<EventRecord, 'version' | 'visibleContentVersion'>): number | null {
+  return event.visibleContentVersion === undefined ? event.version : event.visibleContentVersion;
+}
 type EventRow = { id: string; host_id: string; status: string; version: number; payload: EventInput; recruiting: boolean; is_test: boolean;
   invite_token: string | null; updated_at: Date; review_status: string; review_reason: string | null };
 

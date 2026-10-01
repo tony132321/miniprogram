@@ -1,6 +1,8 @@
 import type { Database } from './db.ts';
 import { AppError } from './errors.ts';
 import { buildAiEventContext, type AiEventContext } from './ai-context.ts';
+import { reviewedContentSourceVersion } from './events.ts';
+import { actorReadableActivityContentSql } from './content-source-visibility.ts';
 import { answerFromCurrentEvent, askCurrentFact, currentApprovedAnswerBody,
   requireMember, type FactAnswer } from './collaboration.ts';
 import { parseAnnouncementFaq } from './announcement-faq.ts';
@@ -88,21 +90,24 @@ export async function askSemanticCurrentFact(db: Database, actor: string, eventI
     const stillCurrent = await db.transaction(async tx => {
       const { rows: locked } = await tx.query<{ version: number }>('SELECT version FROM events WHERE id=$1 FOR SHARE', [eventId]);
       const event = await requireMember(tx, actor, eventId);
-      const sourceVersion = event.visibleContentVersion ?? event.version;
+      const sourceVersion = reviewedContentSourceVersion(event);
       const replayVersion = prior.result!.source === 'UNKNOWN' ? event.version : sourceVersion;
       if (locked[0]?.version !== event.version || prior.result!.eventVersion !== replayVersion ||
         !['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(event.status)) return false;
+      if (prior.result!.source === 'UNKNOWN') return true;
+      if (sourceVersion === null) return false;
       if (prior.result!.source === 'APPROVED_ANSWER') {
-        const body = await currentApprovedAnswerBody(tx, eventId, sourceVersion, question, prior.result!.todoId);
+        const body = await currentApprovedAnswerBody(tx, eventId, sourceVersion, question, actor, prior.result!.todoId);
         const label = sourceVersion === event.version ? `当前版本 ${event.version}` : `已审核版本 ${sourceVersion}`;
         return body !== undefined && prior.result!.answer === `${label}，主办方已审核回答：${body}`;
       }
       if (prior.result!.source === 'CURRENT_EVENT')
         return answerFromCurrentEvent(question.trim(), event) === prior.result!.answer;
-      if (prior.result!.source !== 'APPROVED_ANNOUNCEMENT') return true;
-      const { rows } = await tx.query<{ body: string }>(`SELECT body FROM activity_content WHERE id=$1 AND event_id=$2
-        AND event_version=$3 AND kind='ANNOUNCEMENT' AND status='APPROVED'`,
-      [prior.result!.sourceContentId, eventId, sourceVersion]);
+      if (prior.result!.source !== 'APPROVED_ANNOUNCEMENT') return false;
+      const { rows } = await tx.query<{ body: string }>(`SELECT c.body FROM activity_content c WHERE c.id=$1 AND c.event_id=$2
+        AND c.event_version=$3 AND c.kind='ANNOUNCEMENT' AND c.status='APPROVED'
+        AND ${actorReadableActivityContentSql('c', '$4')}`,
+      [prior.result!.sourceContentId, eventId, sourceVersion, actor]);
       const faq = rows[0] && parseAnnouncementFaq(rows[0].body);
       const label = sourceVersion === event.version ? `当前版本 ${event.version}` : `已审核版本 ${sourceVersion}`;
       return !!faq && similarQuestion(question, faq.question) &&
@@ -124,18 +129,20 @@ export async function askSemanticCurrentFact(db: Database, actor: string, eventI
       // Content can be revoked or deidentified between the provider validation
       // and this write. Lock it before the event to match content writers.
       const { rows: source } = answer.source === 'APPROVED_ANNOUNCEMENT'
-        ? await tx.query<{ body: string }>(`SELECT body FROM activity_content WHERE id=$1 AND event_id=$2
-          AND event_version=$3 AND kind='ANNOUNCEMENT' AND status='APPROVED' FOR SHARE`,
-        [answer.sourceContentId, eventId, answer.eventVersion]) : { rows: [] as Array<{ body: string }> };
+        ? await tx.query<{ body: string }>(`SELECT c.body FROM activity_content c WHERE c.id=$1 AND c.event_id=$2
+          AND c.event_version=$3 AND c.kind='ANNOUNCEMENT' AND c.status='APPROVED'
+          AND ${actorReadableActivityContentSql('c', '$4')} FOR SHARE`,
+        [answer.sourceContentId, eventId, answer.eventVersion, actor]) : { rows: [] as Array<{ body: string }> };
       const approvedAnswerBody = answer.source === 'APPROVED_ANSWER'
-        ? await currentApprovedAnswerBody(tx, eventId, answer.eventVersion, question, answer.todoId, true) : undefined;
+        ? await currentApprovedAnswerBody(tx, eventId, answer.eventVersion, question, actor, answer.todoId, true) : undefined;
       const { rows: locked } = await tx.query<{ version: number }>('SELECT version FROM events WHERE id=$1 FOR SHARE NOWAIT', [eventId]);
       const current = await requireMember(tx, actor, eventId);
-      const sourceVersion = current.visibleContentVersion ?? current.version;
+      const sourceVersion = reviewedContentSourceVersion(current);
       const faq = source[0] && parseAnnouncementFaq(source[0].body);
       const label = sourceVersion === current.version ? `当前版本 ${current.version}` : `已审核版本 ${sourceVersion}`;
       const stale = locked[0]?.version !== current.version ||
         !['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(current.status) ||
+        (answer.source !== 'UNKNOWN' && sourceVersion === null) ||
         answer.eventVersion !== (answer.source === 'UNKNOWN' ? current.version : sourceVersion) ||
         (answer.source === 'CURRENT_EVENT' && answerFromCurrentEvent(question.trim(), current) !== answer.answer) ||
         (answer.source === 'APPROVED_ANNOUNCEMENT' && (
@@ -198,7 +205,7 @@ export async function askSemanticCurrentFact(db: Database, actor: string, eventI
       return await complete(await fallback(), costFen, costFen > 0 ? 'LOWER_BOUND' : 'UNKNOWN', [evidence], 'PROVIDER_ERROR');
     observedCostStatus = 'KNOWN';
     if (typeof candidate.sourceContentId !== 'string' || !candidate.sourceContentId ||
-      candidate.eventVersion !== (context.event.visibleContentVersion ?? context.event.version) ||
+      candidate.eventVersion !== reviewedContentSourceVersion(context.event) ||
       typeof candidate.confidence !== 'number' || !Number.isFinite(candidate.confidence) ||
       candidate.confidence < 0.9 || candidate.confidence > 1 ||
       !context.announcements.some(item => item.sourceContentId === candidate.sourceContentId))
@@ -209,14 +216,16 @@ export async function askSemanticCurrentFact(db: Database, actor: string, eventI
     await requireAiActorActive(tx, actor);
     const { rows: locked } = await tx.query<{ version: number }>('SELECT version FROM events WHERE id=$1 FOR SHARE', [eventId]);
     const event = await requireMember(tx, actor, eventId);
-    const sourceVersion = event.visibleContentVersion ?? event.version;
+    const sourceVersion = reviewedContentSourceVersion(event);
     if (locked[0]?.version !== context.event.version || event.version !== context.event.version ||
-      sourceVersion !== candidate.eventVersion || !['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(event.status)) return null;
+      sourceVersion === null || sourceVersion !== candidate.eventVersion ||
+      !['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(event.status)) return null;
     const { rows: pending } = await tx.query(`SELECT 1 FROM activity_fact_todos WHERE event_id=$1 AND event_version=$2
       AND requester_id=$3 AND question_text=$4 AND status='OPEN' LIMIT 1`, [eventId, event.version, actor, question.trim()]);
     if (pending.length) return null;
-    const { rows } = await tx.query<{ body: string }>(`SELECT body FROM activity_content WHERE id=$1 AND event_id=$2
-      AND event_version=$3 AND kind='ANNOUNCEMENT' AND status='APPROVED'`, [sourceContentId, eventId, sourceVersion]);
+    const { rows } = await tx.query<{ body: string }>(`SELECT c.body FROM activity_content c WHERE c.id=$1 AND c.event_id=$2
+      AND c.event_version=$3 AND c.kind='ANNOUNCEMENT' AND c.status='APPROVED'
+      AND ${actorReadableActivityContentSql('c', '$4')}`, [sourceContentId, eventId, sourceVersion, actor]);
     const faq = rows[0] && parseAnnouncementFaq(rows[0].body);
     if (!faq || !similarQuestion(question, faq.question)) return null;
     const label = sourceVersion === event.version ? `当前版本 ${event.version}` : `已审核版本 ${sourceVersion}`;
