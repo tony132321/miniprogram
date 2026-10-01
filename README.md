@@ -53,7 +53,7 @@ pnpm preflight:release
 
 第 48 版到第 49 版的通知契约升级，可先将**合成测试库**复制为另一个 `irl_r1_test_` 库，再对复制库设置 `IRL_PG_TEST_URL` 运行 `pnpm exec tsx scripts/verify-postgres-notification-upgrade.ts`。脚本只接受现有 schema 48 测试库，核对旧通知及状态不变、待发送记录的契约字段完成回填；不可对生产库运行。见[本机验证记录](docs/evidence/notification-delivery-contract-local-2026-09-28.md)。
 
-本机 HTTP 混合负载基线可对另一个全新空库运行 `IRL_PG_TEST_URL=postgresql://USER@127.0.0.1:PORT/irl_r1_test_NAME pnpm exec tsx scripts/benchmark-http.ts`。脚本以 20 RPS 持续 30 秒读取公开活动和本人活动、写入草稿，并报告错误数与 p50/p95/p99；仅用于本机验证，见 `docs/evidence/local-http-load-2026-09-25.md`。
+本机 HTTP 混合负载可对另一个全新空库运行 `IRL_PG_TEST_URL=postgresql://USER@127.0.0.1:PORT/irl_r1_test_NAME pnpm exec tsx scripts/benchmark-http.ts`。默认 `sample` 保留 20 个合成用户与 20 个会话；加入 `IRL_BENCHMARK_PROFILE=pilot` 切换至 10,000 个合成注册用户、500 个真实 Bearer 会话和每人一条本人种子草稿。两档均以 20 RPS 排程 600 次请求、测量至少 30 秒，组合为 70% 单场活动详情读、20% 本人活动列表读、10% 草稿写；种子准备和响应排空另计实际时间，每个 HTTP 请求及响应读取有 5 秒截止时间。pilot 逐请求轮转身份，要求 500 个身份实际获得成功响应，并核对本人列表包含该身份的种子草稿。输出实际用户／会话／活动／报名数量、各操作请求数量／错误／原始 p95、成功身份数、排程延迟、实测时长和吞吐；混合及每类接口的未舍入 p95 均≤800ms、零非预期失败、最大派发延迟≤50ms（一个请求间隔的脚本生成器容差，并非 PRD 新指标）及数据数量等门禁全部通过才退出 0。每次使用新的空库；结果仅代表本机短时合成负载，不能推算真实日活、99.5% 月可用性或目标部署性能。历史 sample 见 `docs/evidence/local-http-load-2026-09-25.md`，pilot 见 `docs/evidence/local-pilot-http-load-wave58-2026-10-01.md`。
 
 运营举报队列优先列出未结案安全类工单，再列其他未结案工单，支持每页 100 条继续加载；`SAFETY` 只是举报类别，不代表人工确认严重性或已提供响应时限。详见 [`docs/evidence/report-triage-2026-09-25.md`](docs/evidence/report-triage-2026-09-25.md)。
 

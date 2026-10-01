@@ -163,6 +163,8 @@
 - **E144**：[PostgreSQL 来源竞态探针](evidence/pg-ai-source-race-query-match-wave57-2026-10-01.md)：旧 CI SQL 匹配过时已修复，新空本机 PG 红绿验证五个竞争场景通过；远端修复后 CI 未验。
 - **E145**：[Wave 57 微信工具实点](evidence/caper-wave57-focused-devtools-2026-10-01.md)：恢复 Automator，补快捷日期、首卡自然日／个人按钮、PG11-C 正常及旧身份路线、PG10-C 分类清理与正常详情、AA 事前说明实点；完整源码 CLI 主包 1,794,924 B、异常 0。没有全量、真机或 39 屏逐像素验收。
 - **E146**：[旧 CI 邀请两项](evidence/ci-invite-fixture-alignment-wave57-2026-10-01.md)、[邀请与通知三项](evidence/ci-miniprogram-notice-invite-fixtures-wave57-2026-10-01.md)、[主办封面结构断言](evidence/pg02c-host-cover-test-binding-wave57-2026-10-01.md)：六项失败逐项本机红绿修复，仅对齐测试样本及结构匹配，保留格式、有效期、当前加载行与业务状态保护；整合类型检查通过，修复后的远端 CI 未验。
+- **E147**：[本地试点规模 HTTP 专项](evidence/local-pilot-http-load-wave58-2026-10-01.md)：10,000 合成用户／500 成功身份，600 次完整响应、错误 0、混合 p95 8.71 ms；调度和分端点门禁通过。仅后端本地合成证据，不提升 UI、真机或正式发布验收。
+- **E148**：[PG10-C／F／G 原稿尺寸差距](evidence/caper-pg10c-f-g-visual-gap-audit-wave58-2026-10-01.md)：只读核对字号、间距、卡片、FAQ 标签及三页人物图标，记录明确的待修值和现有按钮路径。审计没有修改 UI，下一批仍需修复与模拟器复拍。
 - **E33**：[首页、个人页与发布报名增量复验](evidence/caper-ui-wave2-wave3-2026-09-30.md)：首页铃铛／头像、编辑活动协办入口、PG10-C 真实活动卡、PG04-S 待审与通过状态、PG05 真实报名／待定意向及 PG05-S 成员深链经模拟器实点；全量本地 826/826。未声称已完成 39 屏同尺寸逐像素或真机验收。
 
 ## 当前真实数据／接口索引
