@@ -329,6 +329,8 @@ Page({
   },
   onHide() {
     this.checkInPageHidden = true;
+    this.expenseShareAttemptId = (this.expenseShareAttemptId || 0) + 1;
+    this.expenseShareSubmitting = false;
     this.calendarAttemptId = (this.calendarAttemptId || 0) + 1;
     this.calendarSubmitting = false;
     this.clearCheckInToken();
@@ -338,6 +340,8 @@ Page({
   },
   onUnload() {
     this.checkInPageHidden = true;
+    this.expenseShareAttemptId = (this.expenseShareAttemptId || 0) + 1;
+    this.expenseShareSubmitting = false;
     this.calendarAttemptId = (this.calendarAttemptId || 0) + 1;
     this.calendarSubmitting = false;
     this.clearCheckInToken();
@@ -676,7 +680,11 @@ Page({
   },
   scrollToSection(id, targetSelector) {
     if (!sectionHeadings[id]) return;
-    if (id !== this.data.activeSection) this.clearCheckInToken();
+    if (id !== this.data.activeSection) {
+      this.clearCheckInToken();
+      this.expenseShareAttemptId = (this.expenseShareAttemptId || 0) + 1;
+      this.expenseShareSubmitting = false;
+    }
     const [sectionTitle, sectionSubtitle] = sectionHeadings[id];
     this.setData({ activeSection: id, sectionTitle, sectionSubtitle }, () => {
       if (typeof wx.pageScrollTo === 'function') wx.pageScrollTo(targetSelector
@@ -831,8 +839,123 @@ Page({
     }
   },
   shareCurrentEvent() {
+    if (this.data.activeSection === 'expenseSection' && !this.data.successState &&
+      !this.data.joinConfirmation) return this.copyCurrentExpenseSummary();
     if (this.data.isHost) return this.openShareCard();
     this.copySafetyDetails();
+  },
+  async copyCurrentExpenseSummary() {
+    if (this.expenseShareSubmitting) return;
+    const eventId = this.data.id;
+    const actor = currentIdentity();
+    const actorId = currentActorId();
+    if (!actor || !actorId || !eventId || this.data.currentUser !== actor ||
+      this.data.event?.id !== eventId || this.data.loadState !== 'READY' ||
+      this.data.activeSection !== 'expenseSection' || this.data.successState ||
+      this.data.joinConfirmation) return;
+    const attempt = this.expenseShareAttemptId = (this.expenseShareAttemptId || 0) + 1;
+    this.expenseShareSubmitting = true;
+    const samePage = () => this.expenseShareAttemptId === attempt && actor === currentIdentity() &&
+      actorId === currentActorId() && this.data.currentUser === actor && this.data.id === eventId &&
+      this.data.event?.id === eventId && this.data.loadState === 'READY' &&
+      this.data.activeSection === 'expenseSection' && !this.data.successState &&
+      !this.data.joinConfirmation;
+    try {
+      const loaded = await this.refresh();
+      if (!loaded || !samePage()) return;
+      const refreshedEvent = this.data.event;
+      const refreshedId = this.refreshId;
+      if (!Number.isSafeInteger(refreshedEvent.version) || refreshedEvent.version < 1) {
+        this.setData({ message: '当前活动版本无效，请刷新后核对。' });
+        return;
+      }
+      if (this.data.event?.payload?.feeMode !== 'AA' || this.data.expenseLoadState !== 'READY') {
+        this.setData({ message: this.data.expenseLoadState === 'FORBIDDEN'
+          ? '当前账号无权查看费用记录。' : '当前没有可分享的 AA 费用记录，请刷新后核对。' });
+        return;
+      }
+      const isHost = this.data.isHost && this.data.event.hostId === actorId;
+      const isMember = !isHost && ['CONFIRMED', 'RECONFIRM_REQUIRED'].includes(this.data.myRegistration?.status);
+      if (!isHost && !isMember) {
+        this.setData({ message: '当前账号无权分享费用记录。' });
+        return;
+      }
+      const currentLedgers = this.data.expenses.filter(item => item.current === true);
+      const ledger = currentLedgers[0];
+      if (currentLedgers.length !== 1 || !ledger || typeof ledger.id !== 'string' || !ledger.id ||
+        ledger.status !== 'RECORD_ONLY' || !Number.isSafeInteger(ledger.revision) || ledger.revision < 1 ||
+        !Number.isSafeInteger(ledger.totalFen) || ledger.totalFen < 0 ||
+        !Array.isArray(ledger.shares) || ledger.shares.length < 1) {
+        this.setData({ message: '当前账本版本或金额无效，请刷新后核对。' });
+        return;
+      }
+      const title = typeof this.data.event.payload?.title === 'string'
+        ? this.data.event.payload.title.trim() : '';
+      if (!title) {
+        this.setData({ message: '当前活动名称无效，请刷新后核对。' });
+        return;
+      }
+      const latestEvent = await api.get(`/events/${encodeURIComponent(eventId)}`);
+      if (!samePage() || this.refreshId !== refreshedId || this.data.event !== refreshedEvent) return;
+      if (latestEvent?.id !== eventId || latestEvent.version !== refreshedEvent.version ||
+        latestEvent.status !== refreshedEvent.status || latestEvent.hostId !== refreshedEvent.hostId ||
+        latestEvent.payload?.feeMode !== 'AA' || latestEvent.payload?.title?.trim() !== title) {
+        this.setData({ message: '活动信息已变化，请刷新后核对费用记录。' });
+        return;
+      }
+      const lines = [`活动：${title}`, `当前 AA 费用记录 · 第 ${ledger.revision} 版 · 仅作记录`];
+      if (isHost) {
+        const uniqueUsers = new Set();
+        const validShares = ledger.shares.every(share => {
+          if (typeof share.userId !== 'string' || !share.userId || uniqueUsers.has(share.userId) ||
+            !Number.isSafeInteger(share.amountFen) || share.amountFen < 0) return false;
+          uniqueUsers.add(share.userId);
+          return true;
+        });
+        const shareTotal = ledger.shares.reduce((sum, share) => sum + share.amountFen, 0);
+        if (!validShares || !Number.isSafeInteger(shareTotal) || shareTotal !== ledger.totalFen) {
+          this.setData({ message: '当前账本金额不一致，请刷新后核对。' });
+          return;
+        }
+        lines.push(`总费用：${yuanFromFen(ledger.totalFen)}`, `参与份额：${ledger.shares.length} 人`);
+      } else {
+        const ownShares = ledger.shares.filter(share => share.userId === actorId);
+        const ownShare = ownShares[0];
+        if (ownShares.length !== 1 || !ownShare || !Number.isSafeInteger(ownShare.amountFen) ||
+          ownShare.amountFen < 0 || typeof ownShare.participantHandled !== 'boolean' ||
+          typeof ownShare.hostReceived !== 'boolean') {
+          this.setData({ message: '本人当前份额无效，请刷新后核对。' });
+          return;
+        }
+        lines.push(`我的份额：${yuanFromFen(ownShare.amountFen)}`,
+          ownShare.participantHandled ? '本人已处理' : '本人未记录',
+          ownShare.hostReceived ? '主办已收到' : '主办未记录');
+      }
+      lines.push('本摘要仅为 AA 费用记录，不代表付款或结清凭证。');
+      const ledgerId = ledger.id;
+      const ledgerRevision = ledger.revision;
+      const ledgerTotal = ledger.totalFen;
+      const stillCurrent = () => samePage() && this.refreshId === refreshedId &&
+        this.data.event === refreshedEvent && this.data.expenseLoadState === 'READY' &&
+        this.data.expenses.filter(item => item.current === true).length === 1 &&
+        this.data.expenses.some(item => item.current === true && item.id === ledgerId &&
+          item.revision === ledgerRevision && item.totalFen === ledgerTotal);
+      if (!stillCurrent()) return;
+      let completed = false;
+      const finish = (success) => {
+        if (completed) return;
+        completed = true;
+        if (stillCurrent()) this.setData({ message: success
+          ? '当前 AA 费用记录摘要已复制。' : '复制费用记录失败，请稍后重试。' });
+      };
+      const result = wx.setClipboardData({ data: lines.join('\n'),
+        success: () => finish(true), fail: () => finish(false) });
+      if (result && typeof result.catch === 'function') result.catch(() => finish(false));
+    } catch (error) {
+      if (samePage()) this.setData({ message: error.message || '费用记录暂不可用，请稍后重试。' });
+    } finally {
+      if (this.expenseShareAttemptId === attempt) this.expenseShareSubmitting = false;
+    }
   },
   async action(path, payload, successText) {
     try {
