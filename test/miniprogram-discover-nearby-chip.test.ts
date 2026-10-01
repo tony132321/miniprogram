@@ -47,7 +47,8 @@ test('the Nearby chip reaches the existing closed nearby section and city select
   assert.deepEqual(routes, ['/pages/city/city']);
 
   const markup = readFileSync(new URL('../miniprogram/pages/discover/discover.wxml', import.meta.url), 'utf8');
-  assert.match(markup, /id="nearbySection"[^>]*>[^<]*<view><text class="section-mark">⌖<\/text><text>附近正在发生<\/text>/);
+  assert.match(markup, /id="nearbySection"[^>]*>[^<]*<view><text class="section-mark">⌖<\/text>/);
+  assert.match(markup, /<text wx:else>附近正在发生<\/text>/);
   assert.match(markup, /item === '附近' \? '查看附近活动状态与城市选择'/);
   assert.match(markup, /附近活动待开放/);
 });

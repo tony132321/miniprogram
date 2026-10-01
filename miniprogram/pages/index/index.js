@@ -79,6 +79,13 @@ function dateRangeLabel(startAt, endAt) {
     startDate.getUTCMonth() === end.getUTCMonth() && startDate.getUTCDate() === end.getUTCDate()
     ? `${start} – ${endTime}` : `${start} – ${dateLabel(endAt)}`;
 }
+function historyPosterDateLabel(value, status) {
+  const statusLabel = { COMPLETED: '往期活动', CANCELLED: '已取消', EXPIRED: '已过期' }[status] || '历史记录';
+  const timestamp = Date.parse(value || '');
+  if (!Number.isFinite(timestamp)) return statusLabel;
+  const date = new Date(timestamp + 8 * 60 * 60_000);
+  return `${date.getUTCMonth() + 1} 月 ${date.getUTCDate()} 日 · ${statusLabel}`;
+}
 function pickFeaturedItem(items) {
   const now = Date.now();
   const available = items.filter(item => item.status === 'IN_PROGRESS' ||
@@ -137,6 +144,8 @@ function withRealDetail(item, event, actorId) {
     ...(item.isHost ? { statusLabel: hostStatusLabel(currentItem), cardLabel: hostStatusLabel(currentItem),
       coverStatusLabel, shareReady: hostRecruitmentReady(currentItem) } : {}),
     dateRangeLabel: dateRangeLabel(payload.startAt || item.startAt, payload.endAt),
+    historyPosterDateLabel: item.cardKind === 'history' ?
+      historyPosterDateLabel(payload.startAt || item.startAt, currentItem.status) : '',
     venueLabel: [payload.city, payload.venueName].filter(Boolean).join(' · ') || '地点请到活动详情查看',
     capacityLabel: Number.isFinite(confirmed) && Number.isFinite(capacity) && capacity > 0
       ? `已确认 ${confirmed} / 上限 ${capacity} 人` : '',
@@ -202,9 +211,14 @@ function cardPresentation(item, group) {
   if (group === 'history') {
     const notes = { COMPLETED: '活动已结束；结项与独立反馈请到详情页查看。',
       CANCELLED: '活动已取消；历史记录仍可查看。', EXPIRED: '活动已过期；历史记录仍可查看。' };
+    const historyStickerLabel = { COMPLETED: 'MEMORIES ✦ GREAT GAME',
+      CANCELLED: '往期记录 · 活动已取消', EXPIRED: '往期记录 · 活动已过期' };
+    const completed = item.status === 'COMPLETED';
     const memberFeedbackReady = item.status === 'COMPLETED' && !item.isHost &&
       item.myRegistrationStatus === 'CONFIRMED';
     return { cardKind: 'history', cardNote: notes[item.status] || '查看活动历史与当前记录。',
+      historyStickerLabel: historyStickerLabel[item.status] || '往期活动记录',
+      historyTone: completed ? 'celebration' : 'neutral', historyStateIcon: completed ? '✓' : 'i',
       primaryLabel: item.isHost && item.status === 'COMPLETED' ? '再来一局' :
         memberFeedbackReady ? '查看结项与反馈' : '查看活动记录',
       primaryAction: item.isHost && item.status === 'COMPLETED' ? 'hostRepeat' :
@@ -280,9 +294,11 @@ Page({
           statusLabel: item.isHost ? hostStatusLabel(item) : statusLabels[item.status] || item.status || '状态待确认',
           registrationLabel: registrationLabels[item.myRegistrationStatus] || '',
           cardLabel: group === 'organized' ? hostStatusLabel(item)
+            : group === 'history' ? statusLabels[item.status] || item.status || '状态待确认'
             : registrationLabels[item.myRegistrationStatus] ||
               (group === 'cohosting' ? '协办中' : statusLabels[item.status] || item.status || '状态待确认'),
           dateLabel: dateLabel(item.startAt), dateRangeLabel: dateRangeLabel(item.startAt, item.endAt),
+          historyPosterDateLabel: group === 'history' ? historyPosterDateLabel(item.startAt, item.status) : '',
           venueLabel: [item.city, item.venueName].filter(Boolean).join(' · ') || '地点请到活动详情查看',
           capacityLabel: '', hostCounts: null, shareReady: hostRecruitmentReady(item),
           posterWord: posterWord(item.title || ''), cover: coverFor(item.title || '') };

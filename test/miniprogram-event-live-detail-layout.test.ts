@@ -26,3 +26,24 @@ test('live detail uses factual schedule venue fee seat cards and a bounded autho
   assert.match(styles, /\.event-live-detail \.detail-member-preview-list\s*\{[^}]*display:\s*grid/);
   assert.doesNotMatch(markup, /真实头像|已核实地图|永久入场凭证/);
 });
+
+test('PG06 host status badge reserves green for live activity states', () => {
+  const expression = markup.match(/class="host-hero-status \{\{([^}]*)\}\}"/)?.[1];
+  assert.ok(expression, 'the host hero badge must derive its color class from current event status');
+  const badgeClass = new Function('event', `return (${expression})`) as
+    (event: { status: string }) => string;
+  for (const status of ['RECRUITING', 'CONFIRMED', 'IN_PROGRESS']) {
+    assert.equal(badgeClass({ status }), 'host-status-active', `${status} keeps the active color`);
+  }
+  for (const status of ['DRAFT', 'COMPLETED', 'EXPIRED', 'UNKNOWN']) {
+    assert.equal(badgeClass({ status }), 'host-status-neutral', `${status} must not look live`);
+  }
+  assert.equal(badgeClass({ status: 'CANCELLED' }), 'host-status-cancelled');
+  const base = styles.match(/\.host-section \.host-hero-status \{([^}]*)\}/)?.[1];
+  const active = styles.match(/\.host-section \.host-hero-status\.host-status-active \{([^}]*)\}/)?.[1];
+  const cancelled = styles.match(/\.host-section \.host-hero-status\.host-status-cancelled \{([^}]*)\}/)?.[1];
+  assert.ok(base && active && cancelled, 'each badge state has an explicit style');
+  assert.doesNotMatch(base, /background:\s*#34c759/i);
+  assert.match(active, /background:\s*#34c759/i);
+  assert.doesNotMatch(cancelled, /background:\s*#34c759/i);
+});

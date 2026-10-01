@@ -51,7 +51,19 @@ function endTimeLabel(startAt, endAt) {
 function locationLabel(city, venueName) {
   return [city, venueName].filter(value => typeof value === 'string' && value.trim()).join(' · ') || '地点待确认';
 }
+function matchesBrowsingCity(activityCity, browsingCity) {
+  return typeof activityCity === 'string' && activityCity.trim().replace(/市$/, '') === browsingCity;
+}
+function isCurrentPersonalEvent(item, now) {
+  if (!['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(item.status)) return false;
+  const endAt = Date.parse(item.endAt);
+  if (!Number.isFinite(endAt) || endAt <= now) return false;
+  if (item.isHost && item.status === 'RECRUITING' &&
+    !(item.reviewStatus === 'APPROVED' && item.recruiting === true)) return false;
+  return true;
+}
 function personalStatusLabel(item) {
+  if (!item.isHost && item.status === 'RECRUITING') return '待成局';
   if (item.isHost && item.status === 'RECRUITING' &&
     !(item.reviewStatus === 'APPROVED' && item.recruiting === true)) {
     if (item.reviewStatus === 'PENDING') return '待审核';
@@ -78,13 +90,14 @@ Page({
     city: defaultCity, categories, inspirationCards, recommendationCards: recommendationSets[0],
     recommendationSetIndex: 0, headerPaddingRight: headerPaddingRight(),
     discoveryEnabled: false, publicItems: [],
-    tokenInput: '', message: '', availabilityMessage: '', personalEvents: [], personalState: 'IDLE',
+    tokenInput: '', message: '', availabilityMessage: '', personalEvents: [], nearbyPersonalEvents: [], personalState: 'IDLE',
     invitePreview: null, invitePreviewState: 'IDLE'
   },
   async onShow() {
     const bar = this.getTabBar && this.getTabBar();
     if (bar) bar.setData({ selected: 1 });
-    this.setData({ city: selectedCity(wx) });
+    const city = selectedCity(wx);
+    this.setData({ city });
     const generation = this._personalGeneration = (this._personalGeneration || 0) + 1;
     const identity = currentIdentity();
     const staleInvite = Boolean(this.data.tokenInput && this._tokenIdentity !== identity) ||
@@ -95,7 +108,7 @@ Page({
     this._inviteGeneration = (this._inviteGeneration || 0) + 1;
     this._previewToken = '';
     this._previewIdentity = '';
-    this.setData({ personalEvents: [], personalState: 'LOADING', invitePreview: null, invitePreviewState: 'IDLE',
+    this.setData({ personalEvents: [], nearbyPersonalEvents: [], personalState: 'LOADING', invitePreview: null, invitePreviewState: 'IDLE',
       tokenInput: staleInvite ? '' : this.data.tokenInput, message: '' });
     const focusIdentity = wx.getStorageSync('irlDiscoverFocusInvite');
     if (focusIdentity) {
@@ -112,16 +125,21 @@ Page({
       const result = await api.get('/me/events');
       if (generation !== this._personalGeneration || identity !== currentIdentity()) return;
       if (!Array.isArray(result.items)) throw new Error('活动列表无效');
-      const personalEvents = result.items.filter(item => item?.id && !['DRAFT', 'REVIEW_PENDING'].includes(item.status))
-        .slice(0, 3).map(item => ({ id: item.id, title: item.title || '未命名活动',
+      const authorizedEvents = result.items.filter(item => item?.id && !['DRAFT', 'REVIEW_PENDING'].includes(item.status));
+      const summarize = item => ({ id: item.id, title: item.title || '未命名活动', city: item.city || '',
           statusLabel: personalStatusLabel(item), dateLabel: dateLabel(item.startAt),
           endTimeLabel: endTimeLabel(item.startAt, item.endAt), locationLabel: locationLabel(item.city, item.venueName),
-          isHost: Boolean(item.isHost), cover: coverFor(item.title || '') }));
+          isHost: Boolean(item.isHost), cover: coverFor(item.title || '') });
+      const personalEvents = authorizedEvents.slice(0, 3).map(summarize);
+      const now = Date.now();
+      const nearbyPersonalEvents = authorizedEvents
+        .filter(item => matchesBrowsingCity(item.city, city) && isCurrentPersonalEvent(item, now))
+        .slice(0, 3).map(summarize);
       this._shownIdentity = identity;
-      this.setData({ personalEvents, personalState: 'READY' });
+      this.setData({ personalEvents, nearbyPersonalEvents, personalState: 'READY' });
     } catch (_) {
       if (generation === this._personalGeneration && identity === currentIdentity())
-        this.setData({ personalEvents: [], personalState: 'ERROR' });
+        this.setData({ personalEvents: [], nearbyPersonalEvents: [], personalState: 'ERROR' });
     }
   },
   openCity() { wx.navigateTo({ url: '/pages/city/city' }); },
@@ -269,7 +287,7 @@ Page({
   openPersonalEvent(event) {
     const id = event?.currentTarget?.dataset?.id;
     if (!id || this._shownIdentity !== currentIdentity() ||
-      !this.data.personalEvents.some(item => item.id === id)) return;
+      !this.data.personalEvents.concat(this.data.nearbyPersonalEvents).some(item => item.id === id)) return;
     wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) });
   },
   goPersonalAll() { wx.navigateTo({ url: '/subpackages/profile/moments/moments?filter=all' }); },

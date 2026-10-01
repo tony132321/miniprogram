@@ -141,7 +141,9 @@ function present(items) {
 function displayed(items, filter, searchQuery = '') {
   const shown = items.map(item => ({ ...item, visible: visible(item, filter, searchQuery) }));
   const centerItems = shown.filter(item => item.visible);
+  const unreadItems = centerItems.filter(item => item.status !== 'OPENED');
   return { items: shown, centerItems, filteredCount: centerItems.length,
+    priorityItems: unreadItems.slice(0, 2), priorityCount: unreadItems.length,
     noticeGroups: groupSpecs.map(spec => ({ ...spec, items: shown.filter(item => item.visible && groupFor(item) === spec.key) })) };
 }
 function currentIdentity(developmentMode) {
@@ -154,7 +156,7 @@ function currentIdentity(developmentMode) {
 }
 function noticeEventId(value) { return value == null ? '' : String(value); }
 Page({
-  data: { statusBarHeight: 24, capsuleInset: 96, items: [], centerItems: [], noticeGroups: [], filteredCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
+  data: { statusBarHeight: 24, capsuleInset: 96, items: [], centerItems: [], noticeGroups: [], priorityItems: [], priorityCount: 0, filteredCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
     loadState: 'IDLE', loadingMore: false, markingAllRead: false, message: '',
     approvals: [], approvalTotal: 0, approvalNextOffset: null, approvalSnapshot: null, approvalLoadState: 'IDLE',
     approvingId: '', loadingMoreApprovals: false,
@@ -177,7 +179,7 @@ Page({
     const { hasSession, actor, key } = currentIdentity(this.data.developmentMode);
     if (this._identity !== key) {
       this._generation = (this._generation || 0) + 1;
-      this.setData({ items: [], centerItems: [], noticeGroups: [], filteredCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
+      this.setData({ items: [], centerItems: [], noticeGroups: [], priorityItems: [], priorityCount: 0, filteredCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
         loadingMore: false, markingAllRead: false, approvals: [], approvalTotal: 0,
         approvalNextOffset: null, approvalSnapshot: null, approvalLoadState: 'IDLE',
         approvingId: '', loadingMoreApprovals: false, viewMode: 'INBOX', filter: 'ALL',
@@ -318,7 +320,7 @@ Page({
     if (!this._identity || this._identity === currentIdentity(this.data.developmentMode).key) return false;
     this._generation = (this._generation || 0) + 1;
     this._approvalLoadId = (this._approvalLoadId || 0) + 1;
-    this.setData({ items: [], centerItems: [], noticeGroups: [], filteredCount: 0,
+    this.setData({ items: [], centerItems: [], noticeGroups: [], priorityItems: [], priorityCount: 0, filteredCount: 0,
       total: 0, unreadTotal: 0, nextOffset: null, snapshot: null, loadState: 'IDLE',
       loadingMore: false, markingAllRead: false,
       approvals: [], approvalTotal: 0, approvalNextOffset: null, approvalSnapshot: null,

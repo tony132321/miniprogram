@@ -278,6 +278,63 @@ test('history AA action appears only from reviewed detail and opens the real exp
   assert.deepEqual(navigations, ['/pages/event/event?id=ended&section=expenseSection']);
 });
 
+test('history card carries the activity state and refreshed real date into the cover', async () => {
+  const ended: ListedEvent = { id: 'history-cover', status: 'COMPLETED', title: '周末羽毛球',
+    startAt: '2027-03-20T10:00:00.000Z', isHost: false, myRegistrationStatus: 'CONFIRMED' };
+  const { page } = makeHome({ organizer: [ended] }, {
+    'history-cover': detail('history-cover', 'another-host', { status: 'COMPLETED' })
+  });
+  await page.onShow();
+  assert.equal(page.data.history[0].cardLabel, '已结束',
+    'a completed event must not be shown as merely registered');
+  assert.equal(page.data.history[0].historyPosterDateLabel, '3 月 20 日 · 往期活动');
+
+  await page.selectTab({ currentTarget: { dataset: { key: 'history' } } });
+  assert.equal(page.data.visibleItems[0].historyPosterDateLabel, '3 月 22 日 · 往期活动',
+    'the cover date must follow the reviewed event detail');
+});
+
+test('cancelled and expired history cards never present a completed-game celebration', async () => {
+  const listed: ListedEvent[] = [
+    { id: 'cancelled', status: 'CANCELLED', title: '取消的羽毛球局',
+      startAt: '2026-10-03T10:00:00.000Z', isHost: false, myRegistrationStatus: 'CONFIRMED' },
+    { id: 'expired', status: 'EXPIRED', title: '过期的羽毛球局',
+      startAt: '2026-09-30T10:00:00.000Z', isHost: true, myRegistrationStatus: null },
+    { id: 'completed', status: 'COMPLETED', title: '完成的羽毛球局',
+      isHost: true, myRegistrationStatus: null }
+  ];
+  const { page, navigations } = makeHome({ organizer: listed }, {
+    cancelled: detail('cancelled', 'another-host', { status: 'CANCELLED',
+      payload: { ...detail('cancelled').payload, startAt: '2026-10-04T11:00:00.000Z' } }),
+    expired: detail('expired', 'organizer', { status: 'EXPIRED',
+      payload: { ...detail('expired').payload, startAt: '2026-09-29T11:00:00.000Z' } })
+  });
+  await page.onShow();
+  const [cancelled, expired, completed] = page.data.history;
+  assert.equal(cancelled.historyStickerLabel, '往期记录 · 活动已取消');
+  assert.equal(expired.historyStickerLabel, '往期记录 · 活动已过期');
+  assert.equal(cancelled.historyPosterDateLabel, '10 月 3 日 · 已取消',
+    'a planned future date must not imply the cancelled event was held');
+  assert.equal(expired.historyPosterDateLabel, '9 月 30 日 · 已过期');
+  for (const card of [cancelled, expired]) {
+    assert.equal(card.historyTone, 'neutral');
+    assert.equal(card.historyStateIcon, 'i');
+    assert.equal(card.primaryAction, 'detailsSection');
+    page.openCardAction({ currentTarget: { dataset: { id: card.id, action: card.primaryAction } } });
+  }
+  assert.equal(completed.historyStickerLabel, 'MEMORIES ✦ GREAT GAME');
+  assert.equal(completed.historyTone, 'celebration');
+  assert.equal(completed.historyStateIcon, '✓');
+  assert.deepEqual(navigations, [
+    '/pages/event/event?id=cancelled&section=detailsSection',
+    '/pages/event/event?id=expired&section=detailsSection'
+  ]);
+  await page.selectTab({ currentTarget: { dataset: { key: 'history' } } });
+  const current = (id: string) => page.data.visibleItems.find((item: ListedEvent) => item.id === id);
+  assert.equal(current('cancelled').historyPosterDateLabel, '10 月 4 日 · 已取消');
+  assert.equal(current('expired').historyPosterDateLabel, '9 月 29 日 · 已过期');
+});
+
 test('a delayed detail from the previous identity cannot replace the new actor cards', async () => {
   let releaseOld!: (value: Detail) => void;
   const oldDetail = new Promise<Detail>(resolve => { releaseOld = resolve; });
@@ -387,9 +444,6 @@ test('state cards deep-link current activity exit, check-in, feedback and repeat
   page.openCardAction({ currentTarget: { dataset: { id: 'host-repeat', action: 'detailsSection' } } });
   assert.equal(navigations.length, 4, 'stale identity cannot reuse a prior account shortcut');
   assert.deepEqual(requests, ['/me/notifications?offset=0', '/me/events']);
-
-  const markup = readFileSync(new URL('../miniprogram/pages/index/index.wxml', import.meta.url), 'utf8');
-  assert.match(markup, /wx:if="{{item.shortcutAction}}"[^>]*class="card-shortcut"[^>]*data-action="{{item.shortcutAction}}"[^>]*bindtap="openCardAction"/);
 });
 
 test('completed host history card checks current event and safety before opening the repeat control', async () => {

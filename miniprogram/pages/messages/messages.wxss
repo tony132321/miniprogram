@@ -150,6 +150,28 @@
 .center-entry::after { border:0; }
 .conversation-jump { flex:none; width:39rpx; height:39rpx; margin:0; padding:0; border-radius:50%; background:#f1f5ff; color:#1d64f2; font-size:30rpx; line-height:39rpx; }
 .conversation-jump::after { border:0; }
+.priority-card { margin:0 0 18rpx; padding:15rpx 18rpx 3rpx; }
+.priority-heading { display:flex; align-items:center; justify-content:space-between; min-height:33rpx; padding:0 2rpx 5rpx; }
+.priority-heading-title { display:flex; align-items:center; gap:6rpx; color:#0f172a; font-size:21rpx; font-weight:850; }
+.priority-count { color:#ff3b30; font-size:18rpx; }
+.priority-heading button { margin:0; padding:0 3rpx; background:transparent; color:#94a3b8; font-size:17rpx; line-height:1.5; }
+.priority-heading button::after,.priority-row::after { border:0; }
+.priority-list { margin-top:2rpx; }
+.priority-row { display:flex; align-items:center; width:100%; box-sizing:border-box; gap:12rpx; min-height:81rpx; margin:0; padding:10rpx 2rpx; border-bottom:1rpx solid #f1f5f9; border-radius:0; background:transparent; color:#0f172a; text-align:left; line-height:1.3; }
+.priority-row:last-child { border-bottom:0; }
+.priority-icon { flex:none; width:55rpx; height:55rpx; border-radius:50%; background:#eaf1ff; color:#1d64f2; font-size:23rpx; font-weight:800; line-height:55rpx; text-align:center; }
+.priority-pink { background:#fff0f3; color:#e92b51; }
+.priority-violet { background:#f1efff; color:#6653dd; }
+.priority-lime { background:#f2fae7; color:#628400; }
+.priority-green { background:#eaf8ee; color:#16a34a; }
+.priority-gray { background:#f2f1f7; color:#6b7280; }
+.priority-copy { flex:1; min-width:0; }
+.priority-main { display:flex; align-items:center; gap:7rpx; min-width:0; }
+.priority-title { flex:none; max-width:38%; overflow:hidden; color:#0f172a; font-size:19rpx; font-weight:850; text-overflow:ellipsis; white-space:nowrap; }
+.priority-category { flex:none; max-width:32%; overflow:hidden; padding:3rpx 6rpx; border-radius:4rpx; background:#eff6ff; color:#1d64f2; font-size:14rpx; text-overflow:ellipsis; white-space:nowrap; }
+.priority-time { flex:1; overflow:hidden; color:#94a3b8; font-size:13rpx; text-align:right; text-overflow:ellipsis; white-space:nowrap; }
+.priority-summary { overflow:hidden; margin-top:4rpx; color:#64748b; font-size:17rpx; text-overflow:ellipsis; white-space:nowrap; }
+.priority-unread { flex:none; width:22rpx; height:22rpx; border-radius:50%; background:#ff3b30; color:#fff; font-size:14rpx; font-weight:850; line-height:22rpx; text-align:center; }
 
 /* Notification center uses the same authorized inbox and approval records. */
 .inbox-empty { display:flex; align-items:center; gap:19rpx; min-height:132rpx; box-sizing:border-box; padding:20rpx 23rpx; text-align:left; }

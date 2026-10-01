@@ -178,6 +178,7 @@ page { background: #f5f7fa; color: #172033; }
 .state-view .card-organized .cover-status { right: auto; left: 17rpx; background: #e9f9ed; color: #18813e; }
 .state-view .card-organized .cover-status-progress { max-width: calc(100% - 34rpx); box-sizing: border-box; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background: #20bb59; color: #fff; }
 .state-view .card-history .cover-status { background: #e9f9ed; color: #18813e; }
+.state-view .card-history .history-cover-status-neutral { background: #f1f2f5; color: #525d6c; }
 .cover-sticker { position: absolute; left: 17rpx; top: 17rpx; padding: 8rpx 13rpx; border-radius: 10rpx; color: #1b2518; background: #d2f803; font-size: 17rpx; font-weight: 850; transform: rotate(-3deg); }
 .cover-poster { position: absolute; left: 20rpx; right: 18rpx; bottom: 26rpx; display: flex; flex-direction: column; align-items: flex-start; color: #fff; text-align: left; }
 .cover-poster-word { max-width: 100%; font-size: 39rpx; font-style: italic; font-weight: 950; line-height: 1.04; letter-spacing: -2rpx; text-shadow: 0 3rpx 10rpx rgba(0,0,0,.48); }
@@ -205,8 +206,33 @@ page { background: #f5f7fa; color: #172033; }
 .state-view .card-organized .card-primary { background: #1d64f2; }
 .state-view .card-history .card-primary { background: #5856d6; }
 .state-view .card-history .card-primary.card-repeat { background: #1d64f2; box-shadow: 0 5rpx 14rpx rgba(29,100,242,.16); }
+.state-view .card-history .cover-wrap { height: 318rpx; }
+.state-view .card-history .cover-tint { background: linear-gradient(180deg,rgba(0,0,0,.12),transparent 37%,rgba(0,0,0,.72)); }
+.state-view .card-history .cover-sticker { max-width: calc(100% - 250rpx); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 18rpx; }
+.state-view .card-history .history-sticker-neutral { background: #f1f2f5; color: #384352; transform: none; }
+.history-cover-copy { position: absolute; left: 20rpx; right: 20rpx; bottom: 28rpx; display: flex; flex-direction: column; align-items: flex-start; min-width: 0; color: #fff; text-align: left; }
+.history-cover-copy.history-with-fee { right: 148rpx; }
+.history-cover-date { max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #d2f803; font-size: 19rpx; font-weight: 850; text-shadow: 0 2rpx 7rpx rgba(0,0,0,.55); }
+.history-cover-title { display: -webkit-box; max-width: 100%; margin-top: 5rpx; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; word-break: break-word; color: #fff; font-size: 32rpx; line-height: 1.25; font-weight: 850; text-shadow: 0 2rpx 8rpx rgba(0,0,0,.6); }
+.history-cover-fee { position: absolute; right: 17rpx; bottom: 32rpx; max-width: 120rpx; padding: 6rpx 10rpx; border-radius: 9rpx; background: rgba(255,255,255,.22); color: #fff; font-size: 18rpx; font-weight: 750; text-align: center; }
+.state-view .card-history .card-body { padding: 20rpx 22rpx 22rpx; }
+.history-facts { display: flex; align-items: flex-start; gap: 10rpx; color: #424655; font-size: 20rpx; line-height: 1.45; }
+.history-fact { display: flex; align-items: flex-start; min-width: 0; gap: 7rpx; }
+.history-fact-date { flex: 0 1 53%; }
+.history-fact-place { flex: 1; }
+.history-fact-icon { flex: none; color: #1d64f2; font-size: 21rpx; line-height: 1.3; }
+.history-fact-place .history-fact-icon { color: #5856d6; }
+.history-place-label { display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.state-view .card-history .history-state { margin-top: 16rpx; padding: 13rpx 15rpx; background: #f3f8eb; color: #31583d; }
+.state-view .card-history .history-state-neutral { background: #f4f5f7; color: #596577; }
+.state-view .card-history .history-state-neutral .state-icon { background: #728092; }
+.state-view .card-history .card-shortcut { min-height: 54rpx; margin-top: 12rpx; padding: 11rpx 17rpx; border-radius: 16rpx; background: #f4f3f8; color: #3d4552; }
+.state-view .card-history .card-actions { margin-top: 17rpx; }
+.state-view .card-history .card-actions button,.state-view .card-history .card-disabled { min-width: 0; min-height: 71rpx; padding: 13rpx 10rpx; border-radius: 23rpx; line-height: 43rpx; }
 .state-feed-foot { display: flex; flex-direction: column; align-items: center; padding: 32rpx 0 70rpx; color: #8d94a2; font-size: 21rpx; text-align: center; }
 .state-feed-foot view { width: 49rpx; height: 49rpx; margin-bottom: 10rpx; border-radius: 50%; color: #5856d6; background: #f1eff8; line-height: 49rpx; font-size: 25rpx; }
+.state-feed-history view { width: auto; height: 36rpx; margin-bottom: 12rpx; background: transparent; color: #ff2d55; font-size: 36rpx; line-height: 36rpx; }
+.state-feed-history .history-footer-quote { margin-bottom: 8rpx; color: #30394a; font-size: 25rpx; font-style: italic; font-weight: 750; line-height: 1.35; }
 
 /* CAPER long feed: original composition with illustrations separated from actual member data. */
 .home-long-section { margin-top: 30rpx; }
