@@ -18,6 +18,12 @@ function coverFor(title) {
 function shanghaiDayNumber(timestamp) {
   return Math.floor((timestamp + 8 * 60 * 60_000) / 86_400_000);
 }
+function hostRecruitmentLabel(item) {
+  if (item.reviewStatus === 'PENDING') return '待审核';
+  if (item.reviewStatus === 'REJECTED') return '审核未通过';
+  if (item.reviewStatus === 'APPROVED') return item.recruiting === true ? '招募中' : '招募暂停';
+  return '资格待核对';
+}
 function present(item, now) {
   const timestamp = Date.parse(item.startAt);
   const local = new Date(timestamp + 8 * 60 * 60_000);
@@ -43,7 +49,7 @@ function present(item, now) {
     countdown: item.status === 'IN_PROGRESS' ? '进行中' : days <= 0 ? '今天开始' :
       days === 1 ? '明天开始' : `约 ${days} 天后开始`,
     stateLabel: item.status === 'IN_PROGRESS' ? '进行中' : item.status === 'CONFIRMED' ? '已成局' :
-      item.isHost ? '我组织的 · 招募中' : '已确认报名' };
+      item.isHost ? '我组织的 · ' + hostRecruitmentLabel(item) : '已确认报名' };
 }
 function eligible(item, now) {
   const timestamp = Date.parse(item.startAt);

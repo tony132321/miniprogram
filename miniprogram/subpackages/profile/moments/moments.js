@@ -6,8 +6,18 @@ const filters = [
   { id: 'all', title: '全部精选', icon: '✧' }, { id: 'participated', title: '我参与的', icon: '♧' },
   { id: 'hosted', title: '我主办的', icon: '♛' }
 ];
-const statusLabels = { RECRUITING: '招募中', CONFIRMED: '已成局', IN_PROGRESS: '进行中',
+const statusLabels = { DRAFT: '草稿', REVIEW_PENDING: '待审核', RECRUITING: '招募中', CONFIRMED: '已成局', IN_PROGRESS: '进行中',
   COMPLETED: '已结束', CANCELLED: '已取消', EXPIRED: '未成局' };
+function activityStatusLabel(item) {
+  if (item.isHost && item.status === 'RECRUITING' &&
+    !(item.reviewStatus === 'APPROVED' && item.recruiting === true)) {
+    if (item.reviewStatus === 'PENDING') return '待审核';
+    if (item.reviewStatus === 'REJECTED') return '审核未通过';
+    if (item.reviewStatus === 'APPROVED') return '招募暂停';
+    return '资格待核对';
+  }
+  return statusLabels[item.status] || '状态待确认';
+}
 function currentIdentity() {
   const session = wx.getStorageSync('sessionToken');
   return session ? JSON.stringify(['user', wx.getStorageSync('userId') || '', session])
@@ -89,7 +99,7 @@ Page({
           id: item.id, title: item.title || '未命名活动', isHost: Boolean(item.isHost),
           myRegistrationStatus: item.myRegistrationStatus || '',
           venueName: item.venueName || '',
-          dateLabel: dateLabel(item.startAt), statusLabel: statusLabels[item.status] || '状态待确认',
+          dateLabel: dateLabel(item.startAt), statusLabel: activityStatusLabel(item),
           cover, sideCover, detailCover
         };
       });

@@ -61,6 +61,37 @@ test('discovery shows only current-account activities and routes their real IDs'
   assert.match(markup, /公开好友找局尚未开放/);
 });
 
+test('discovery labels a host activity awaiting review without advertising recruitment', async () => {
+  let page: Record<string, any> | undefined;
+  const routes: string[] = [];
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/discover/discover.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: { get: async () => ({ items: [
+        { id: 'awaiting-review', title: '本人待审羽毛球', status: 'RECRUITING',
+          reviewStatus: 'PENDING', recruiting: false, isHost: true,
+          startAt: '2099-03-22T11:00:00.000Z' },
+        { id: 'private-draft', title: '未发布的草稿', status: 'DRAFT', isHost: true }
+      ] }) } };
+      if (path === '../../config.js') return { developmentUser: 'host' };
+      if (path === '../../utils/city.js') return cityModule;
+      throw new Error(`unexpected require ${path}`);
+    },
+    getApp() { return { globalData: { ready: Promise.resolve() } }; },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: {
+      getStorageSync(key: string) { return key === 'devUser' ? 'host' : ''; },
+      navigateTo(options: { url: string }) { routes.push(options.url); }
+    }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  await page.onShow();
+  assert.deepEqual(Array.from(page.data.personalEvents, (item: { id: string }) => item.id), ['awaiting-review']);
+  assert.equal(page.data.personalEvents[0].statusLabel, '待审核');
+  page.openPersonalEvent({ currentTarget: { dataset: { id: 'awaiting-review' } } });
+  assert.deepEqual(routes, ['/pages/event/event?id=awaiting-review']);
+});
+
 test('invitation preview shows only a current token response and opens that invitation', async () => {
   let page: Record<string, any> | undefined;
   const storage = new Map<string, unknown>([['devUser', 'one']]);

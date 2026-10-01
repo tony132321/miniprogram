@@ -75,6 +75,28 @@ test('itinerary shows only real upcoming confirmed or hosted activities in time 
   assert.doesNotMatch(markup, /IRL-PASS|已自动同步|已锁定队友/);
 });
 
+test('itinerary keeps a host pending-review activity reachable without marking it recruiting', async () => {
+  const { page, navigations } = createPage(async route => {
+    assert.equal(route, '/me/events');
+    return { items: [{ id: 'awaiting-review', title: '本人待审羽毛球',
+      status: 'RECRUITING', reviewStatus: 'PENDING', recruiting: false, isHost: true,
+      startAt: '2099-03-22T11:00:00.000Z' }] };
+  });
+  await page.onShow();
+  assert.equal(page.data.featured.id, 'awaiting-review');
+  assert.equal(page.data.featured.stateLabel, '我组织的 · 待审核');
+  page.openEvent({ currentTarget: { dataset: { id: 'awaiting-review' } } });
+  assert.deepEqual(navigations, ['/pages/event/event?id=awaiting-review&section=detailsSection']);
+});
+
+test('itinerary does not claim recruitment when an approved host summary omits the recruiting flag', async () => {
+  const { page } = createPage(async () => ({ items: [{ id: 'missing-flag', title: '主办活动',
+    status: 'RECRUITING', reviewStatus: 'APPROVED', isHost: true,
+    startAt: '2099-03-22T11:00:00.000Z' }] }));
+  await page.onShow();
+  assert.equal(page.data.featured.stateLabel, '我组织的 · 招募暂停');
+});
+
 test('itinerary discards a late response from another identity', async () => {
   let resolveOld!: (value: unknown) => void;
   const oldResponse = new Promise(resolve => { resolveOld = resolve; });

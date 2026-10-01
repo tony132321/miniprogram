@@ -3,7 +3,8 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { runInNewContext } from 'node:vm';
 
-type EventRow = { id: string; title: string; status: string; isHost: boolean; myRegistrationStatus: string | null };
+type EventRow = { id: string; title: string; status: string; isHost: boolean; myRegistrationStatus: string | null;
+  reviewStatus?: string; recruiting?: boolean };
 
 function loadMoments(responses: Array<Promise<{ items: EventRow[] }> | { items: EventRow[] }>) {
   let page: Record<string, any> | undefined;
@@ -64,4 +65,22 @@ test('an activity card loaded by an earlier session cannot navigate after token 
   rotateSession('second-session');
   page.openActivity({ currentTarget: { dataset: { id: 'old-event' } } });
   assert.deepEqual(navigations, []);
+});
+
+test('moments labels pending host and draft cards by review state and keeps details reachable', async () => {
+  const pending: EventRow = { id: 'awaiting-review', title: '本人待审羽毛球',
+    status: 'RECRUITING', reviewStatus: 'PENDING', recruiting: false,
+    isHost: true, myRegistrationStatus: null };
+  const draft: EventRow = { id: 'private-draft', title: '本人草稿',
+    status: 'DRAFT', isHost: true, myRegistrationStatus: null };
+  const { page, navigations } = loadMoments([{ items: [pending, draft] }]);
+  await page.onShow();
+  assert.deepEqual(Array.from(page.data.visibleEvents, (item: EventRow) => item.id),
+    ['awaiting-review', 'private-draft']);
+  assert.equal(page.data.visibleEvents[0].statusLabel, '待审核');
+  assert.equal(page.data.visibleEvents[1].statusLabel, '草稿');
+  page.openActivity({ currentTarget: { dataset: { id: 'awaiting-review' } } });
+  page.openActivity({ currentTarget: { dataset: { id: 'private-draft' } } });
+  assert.deepEqual(navigations, ['/pages/event/event?id=awaiting-review',
+    '/pages/event/event?id=private-draft']);
 });

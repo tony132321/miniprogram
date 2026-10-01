@@ -51,6 +51,17 @@ function endTimeLabel(startAt, endAt) {
 function locationLabel(city, venueName) {
   return [city, venueName].filter(value => typeof value === 'string' && value.trim()).join(' · ') || '地点待确认';
 }
+function personalStatusLabel(item) {
+  if (item.isHost && item.status === 'RECRUITING' &&
+    !(item.reviewStatus === 'APPROVED' && item.recruiting === true)) {
+    if (item.reviewStatus === 'PENDING') return '待审核';
+    if (item.reviewStatus === 'REJECTED') return '审核未通过';
+    if (item.reviewStatus === 'APPROVED') return '招募暂停';
+    return '资格待核对';
+  }
+  return ({ RECRUITING: '招募中', CONFIRMED: '已成局', IN_PROGRESS: '进行中',
+    COMPLETED: '已结束', CANCELLED: '已取消', EXPIRED: '已过期' })[item.status] || '状态待确认';
+}
 function headerPaddingRight() {
   try {
     const menu = wx.getMenuButtonBoundingClientRect?.();
@@ -101,11 +112,9 @@ Page({
       const result = await api.get('/me/events');
       if (generation !== this._personalGeneration || identity !== currentIdentity()) return;
       if (!Array.isArray(result.items)) throw new Error('活动列表无效');
-      const labels = { RECRUITING: '招募中', CONFIRMED: '已成局', IN_PROGRESS: '进行中',
-        COMPLETED: '已结束', CANCELLED: '已取消', EXPIRED: '已过期' };
       const personalEvents = result.items.filter(item => item?.id && !['DRAFT', 'REVIEW_PENDING'].includes(item.status))
         .slice(0, 3).map(item => ({ id: item.id, title: item.title || '未命名活动',
-          statusLabel: labels[item.status] || '状态待确认', dateLabel: dateLabel(item.startAt),
+          statusLabel: personalStatusLabel(item), dateLabel: dateLabel(item.startAt),
           endTimeLabel: endTimeLabel(item.startAt, item.endAt), locationLabel: locationLabel(item.city, item.venueName),
           isHost: Boolean(item.isHost), cover: coverFor(item.title || '') }));
       this._shownIdentity = identity;
