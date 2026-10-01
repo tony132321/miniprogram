@@ -33,7 +33,7 @@ Page({
     const visibleCities = query ? searchableCities.filter(city => city.name.includes(query) ||
       city.province.includes(query) || city.pinyin.includes(query)) : cities;
     const cityGroups = groupsFor(visibleCities);
-    this.setData({ query, visibleCities, cityGroups, letters: cityGroups.map(group => group.letter), searchFocused: false });
+    this.setData({ query, visibleCities, cityGroups, letters: cityGroups.map(group => group.letter) });
   },
   clearSearch() { this.setData({ query: '', visibleCities: cities, cityGroups: groupsFor(cities),
     letters: groupsFor(cities).map(group => group.letter), searchFocused: true }); },
