@@ -213,6 +213,51 @@ test('invite rotation cannot commit if registration closes before token replacem
   } finally { await db.close(); }
 });
 
+test('host event detail omits an invite once either server-side expiry or registration closure has passed', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host-1', valid, 'invite-detail-draft');
+    const event = await publishApprovedInvite(db, 'host-1', draft.id, draft.version, 'invite-detail-publish');
+    const open = await getEvent(db, 'host-1', event.id);
+    assert.equal(open.inviteToken, event.inviteToken);
+    assert.ok(typeof open.inviteRemainingMs === 'number' && open.inviteRemainingMs > 0);
+
+    await db.query('UPDATE events SET invite_expires_at=clock_timestamp()-interval \'1 second\' WHERE id=$1', [event.id]);
+    const expiredInvite = await getEvent(db, 'host-1', event.id);
+    assert.equal(expiredInvite.inviteToken, undefined);
+    assert.equal(expiredInvite.inviteRemainingMs, 0);
+
+    await db.query(`UPDATE events SET invite_expires_at=clock_timestamp()+interval '1 day',
+      payload=jsonb_set(payload,'{registrationDeadline}',to_jsonb($2::text),true) WHERE id=$1`,
+      [event.id, new Date(Date.now() - 1000).toISOString()]);
+    const closedRegistration = await getEvent(db, 'host-1', event.id);
+    assert.equal(closedRegistration.inviteToken, undefined);
+    assert.equal(closedRegistration.inviteRemainingMs, 0);
+  } finally { await db.close(); }
+});
+
+test('event detail never pairs an old invite token with a newer server validity read', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host-1', valid, 'invite-race-draft');
+    const event = await publishApprovedInvite(db, 'host-1', draft.id, draft.version, 'invite-race-publish');
+    let rotated = false;
+    const racingReader = {
+      query: async <T extends Record<string, unknown> = Record<string, unknown>>(sql: string, params: unknown[] = []) => {
+        if (!rotated && sql.includes('AS remaining_ms')) {
+          rotated = true;
+          await db.query('UPDATE events SET invite_token=$2 WHERE id=$1', [event.id, 'replacement-invite-token']);
+        }
+        return db.query<T>(sql, params);
+      }
+    };
+    const viewed = await getEvent(racingReader, 'host-1', event.id);
+    assert.equal(rotated, true);
+    assert.equal(viewed.inviteToken, undefined);
+    assert.equal(viewed.inviteRemainingMs, 0);
+  } finally { await db.close(); }
+});
+
 test('publish replay returns the first result and stale version conflicts', async () => {
   const db = await createDatabase();
   try {

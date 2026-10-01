@@ -185,16 +185,64 @@ function timedEventControls(event, now, myStatus, isHost, canManageCheckins) {
     nextTimeBoundary: validTime ? [opens, end, closes + 1].filter(at => at > now).sort((a, b) => a - b)[0] : undefined
   };
 }
-function canCopyPublishedInvite(event, isHost, safetyStatus, now) {
+function canCopyPublishedInvite(event, isHost, safetyStatus, now, inviteValidUntil) {
   const deadline = Date.parse(event?.payload?.registrationDeadline || '');
   return Boolean(isHost && event?.inviteToken && event.reviewStatus === 'APPROVED' &&
     event.recruiting && !event.riskPaused && safetyStatus === 'OPEN' &&
+    typeof event.inviteRemainingMs === 'number' && Number.isFinite(event.inviteRemainingMs) &&
+    event.inviteRemainingMs > 0 && Number.isFinite(inviteValidUntil) && now < inviteValidUntil &&
     Number.isFinite(deadline) && now < deadline);
 }
 function currentHostEvent(page) {
   return Boolean(page.data.isHost && page.data.id && page.data.event?.id === page.data.id &&
     page.data.event.hostId === currentActorId() &&
     page.data.currentUser && page.data.currentUser === currentIdentity());
+}
+function actionContext(page) {
+  const actor = currentIdentity();
+  const { id, event, loadState, currentUser } = page.data;
+  if (loadState !== 'READY' || !id || event?.id !== id || !currentUser || currentUser !== actor)
+    return null;
+  return { actor, eventId: id, version: event.version };
+}
+function sameActionContext(page, context) {
+  const current = actionContext(page);
+  return Boolean(current && context && current.actor === context.actor &&
+    current.eventId === context.eventId && current.version === context.version);
+}
+function sameActionOwner(page, context) {
+  return Boolean(context && currentIdentity() === context.actor &&
+    page.data.currentUser === context.actor && page.data.id === context.eventId &&
+    page.data.event?.id === context.eventId);
+}
+function actionPathMatchesEvent(page, path, payload, eventId) {
+  const eventPath = /^\/events\/([^/]+)(?:\/|$)/.exec(path);
+  const registrationPath = /^\/registrations\/([^/]+)(?:\/|$)/.exec(path);
+  const manualPath = /^\/manual-checkins\/([^/]+)(?:\/|$)/.exec(path);
+  const expensePath = /^\/expenses\/([^/]+)\/shares\/([^/]+)$/.exec(path);
+  try {
+    if (eventPath) return decodeURIComponent(eventPath[1]) === eventId;
+    if (registrationPath) {
+      const id = decodeURIComponent(registrationPath[1]);
+      return [page.data.myRegistration, ...(page.data.registrations || [])].some(item =>
+        item?.id === id && (item.event_id === eventId || item.eventId === eventId));
+    }
+    if (manualPath) {
+      const id = decodeURIComponent(manualPath[1]);
+      return (page.data.manualCheckIns || []).some(item => item.id === id &&
+        (!item.eventId || item.eventId === eventId) && (!item.event_id || item.event_id === eventId));
+    }
+    if (expensePath) {
+      const ledgerId = decodeURIComponent(expensePath[1]);
+      const userId = decodeURIComponent(expensePath[2]);
+      return (page.data.expenses || []).some(ledger => ledger.id === ledgerId &&
+        ledger.eventId === eventId &&
+        ledger.shares?.some(share => share.userId === userId));
+    }
+    if (/^\/reservations\/[^/]+\/claim$/.test(path)) return payload?.expectedEventId === eventId;
+    return false;
+  }
+  catch (_) { return false; }
 }
 function sectionAvailable(section, isHost, canApproveRegistration, canManageAnnouncements, canManageCheckins) {
   return ['detailsSection', 'registrationSection', 'contentSection', 'checkinSection', 'expenseSection'].includes(section) ||
@@ -364,9 +412,11 @@ Page({
     const now = Date.now();
     const controls = timedEventControls(this.data.event, now, this.data.myRegistration?.status,
       this.data.isHost, this.data.canManageCheckins);
-    const canCopyInvite = canCopyPublishedInvite(this.data.event, this.data.isHost, this.data.safetyStatus, now);
+    const canCopyInvite = canCopyPublishedInvite(this.data.event, this.data.isHost,
+      this.data.safetyStatus, now, this._inviteValidUntil);
     const registrationDeadline = canCopyInvite ? Date.parse(this.data.event.payload.registrationDeadline) : Infinity;
-    const nextTimeBoundary = Math.min(controls.nextTimeBoundary || Infinity, registrationDeadline);
+    const inviteDeadline = canCopyInvite ? this._inviteValidUntil : Infinity;
+    const nextTimeBoundary = Math.min(controls.nextTimeBoundary || Infinity, registrationDeadline, inviteDeadline);
     if (!controls.canGenerateCheckInToken && this.data.displayedCheckInToken) this.clearCheckInToken();
     this.setData({ canCheckIn: controls.canCheckIn, canGenerateCheckInToken: controls.canGenerateCheckInToken,
       canCopyPublishedInvite: canCopyInvite,
@@ -387,8 +437,10 @@ Page({
     this.refreshId = refreshId;
     this.clearCheckInToken();
     this.clearTimeBoundaryTimer();
+    this._inviteValidUntil = 0;
+    const requestedAt = Date.now();
     const actor = currentIdentity();
-    this.setData({ loadState: 'LOADING' });
+    this.setData({ loadState: 'LOADING', canCopyPublishedInvite: false });
     let summary = null;
     try {
       if (this.data.token) {
@@ -478,8 +530,12 @@ Page({
       const canSetAlias = isHost || ['CONFIRMED', 'RECONFIRM_REQUIRED', 'WAITLISTED', 'OFFERED'].includes(myRegistration?.status);
       const displayPerson = eventPersonNames(id, actorId, event.hostId, aliases);
       const registrationSection = optionalItems(registrationRead, canReadRegistrations, '报名名单');
-      const registrations = registrationSection.items.map(item => ({ ...item,
-        displayName: displayPerson(item.user_id), statusLabel: statusText(item.status, 'registration') }));
+      const registrations = registrationSection.items.map(item => {
+        if ((item.event_id && item.event_id !== id) || (item.eventId && item.eventId !== id))
+          throw new Error('报名名单活动不符，请重试');
+        return { ...item, eventId: id,
+          displayName: displayPerson(item.user_id), statusLabel: statusText(item.status, 'registration') };
+      });
       const confirmedRoster = registrations.filter(item => item.status === 'CONFIRMED').map(item => ({ ...item,
         avatarGlyph: item.displayName === '我' ? '我' : '友' }));
       const memberCards = aliases.map(item => ({ ...item,
@@ -527,6 +583,8 @@ Page({
           typeof item.displayName === 'string').map(item => [item.id, item.displayName]));
         const hashAlias = consentedNames.size ? require('../../utils/sha256.js').sha256 : null;
         expenses = expenseSection.items.map(ledger => {
+          if ((ledger.event_id && ledger.event_id !== id) || (ledger.eventId && ledger.eventId !== id))
+            throw new Error('费用记录活动不符，请重试');
           const shares = (ledger.shares || []).map((share, index) => ({ ...share,
             displayName: share.userId === actorId ? '我的份额' :
               (hashAlias && consentedNames.get(hashAlias(`${id}:${share.userId}`).slice(0, 16))) || `参与者 ${index + 1}`,
@@ -539,7 +597,7 @@ Page({
               ? 'recorded' : share.participantHandled !== share.hostReceived ? 'review' : 'pending',
             canMarkHandled: Boolean(ledger.current && share.userId === actorId && !share.participantHandled),
             canMarkReceived: Boolean(ledger.current && isHost && !share.hostReceived) }));
-          return { ...ledger, statusLabel: statusText(ledger.status, 'expense'),
+          return { ...ledger, eventId: id, statusLabel: statusText(ledger.status, 'expense'),
             totalYuan: yuanFromFen(ledger.totalFen), shares,
             visibleShares: shares.slice(0, 4), membersExpanded: false, detailsOpen: false, sortByAmount: false };
         });
@@ -605,6 +663,10 @@ Page({
       const previous = this.data.event;
       const shareSourceToken = event.recruiting && !event.riskPaused && previous?.id === id && previous.version === event.version &&
         previous.inviteToken === event.inviteToken ? this.data.shareSourceToken : '';
+      const inviteRemainingMs = event.inviteRemainingMs;
+      this._inviteValidUntil = isHost && typeof inviteRemainingMs === 'number' &&
+        Number.isFinite(inviteRemainingMs) && inviteRemainingMs > 0 &&
+        Number.isFinite(requestedAt + inviteRemainingMs) ? requestedAt + inviteRemainingMs : 0;
       this.setData({ id, event, display: eventDisplay(event), inviteSummary: null, loadState: 'READY', isHost, canJoin, canExpressInterest,
         canUseCollaboration, canPostQuestion, canCheckIn: timedControls.canCheckIn,
         canGenerateCheckInToken: timedControls.canGenerateCheckInToken, canCompleteEvent: timedControls.canCompleteEvent,
@@ -632,6 +694,7 @@ Page({
       return true;
     } catch (error) {
       if (refreshId !== this.refreshId || actor !== currentIdentity()) return false;
+      this._inviteValidUntil = 0;
       const needsLogin = error.code === 'UNAUTHENTICATED' && summary && !config.developmentUser;
       this.setData({ event: null, display: null, registrationLabel: '未报名', inviteSummary: needsLogin ? summary : null,
         loadState: needsLogin ? 'LOGIN_REQUIRED' : 'ERROR', canCopyPublishedInvite: false, canJoin: false, canExpressInterest: false,
@@ -736,10 +799,23 @@ Page({
   },
   openEventActions() {
     if (typeof wx.showActionSheet !== 'function') return this.goToReport();
+    const context = actionContext(this);
+    const actor = currentIdentity();
+    const eventId = this.data.id;
+    const event = this.data.event;
+    const version = event?.version;
+    const owner = this.data.currentUser;
+    const loadState = this.data.loadState;
+    const refreshId = this.refreshId;
+    const stillCurrent = () => actor === currentIdentity() && this.data.id === eventId &&
+      this.data.event === event && this.data.event?.version === version &&
+      this.data.currentUser === owner && this.data.loadState === loadState &&
+      this.refreshId === refreshId;
     wx.showActionSheet({ itemList: ['举报与求助', '复制活动信息给可信任的人'],
       success: result => {
+        if (!stillCurrent()) return;
         if (result.tapIndex === 0) this.goToReport();
-        if (result.tapIndex === 1) this.copySafetyDetails();
+        if (result.tapIndex === 1 && sameActionContext(this, context)) this.copySafetyDetails();
       } });
   },
   goToReport() {
@@ -751,7 +827,13 @@ Page({
   },
   copySafetyDetails() {
     const event = this.data.event;
-    if (!event || this.data.loadState !== 'READY') return this.setData({ message: '活动信息尚未加载完成，请稍后重试。' });
+    if (!event || this.data.loadState !== 'READY') {
+      if (!this.data.currentUser || this.data.currentUser === currentIdentity())
+        this.setData({ message: '活动信息尚未加载完成，请稍后重试。' });
+      return;
+    }
+    const context = actionContext(this);
+    if (!context) return;
     const details = [
       `活动：${event.payload.title || '未命名活动'}`,
       `时间：${event.payload.startAt || '待定'} 至 ${event.payload.endAt || '待定'}`,
@@ -761,8 +843,14 @@ Page({
       '请以当前活动信息和主办方核实为准；遇到人身紧急危险，请先离开风险地点并联系当地应急服务。'
     ].join('\n');
     wx.setClipboardData({ data: details,
-      success: () => this.setData({ message: '活动信息已复制，请自行发给可信任的人。' }),
-      fail: () => this.setData({ message: '复制失败，请稍后重试。' }) });
+      success: () => {
+        if (sameActionContext(this, context) && this.data.event === event)
+          this.setData({ message: '活动信息已复制，请自行发给可信任的人。' });
+      },
+      fail: () => {
+        if (sameActionContext(this, context) && this.data.event === event)
+          this.setData({ message: '复制失败，请稍后重试。' });
+      } });
   },
   copyVenue() {
     const event = this.data.event;
@@ -980,12 +1068,23 @@ Page({
       if (this.expenseShareAttemptId === attempt) this.expenseShareSubmitting = false;
     }
   },
-  async action(path, payload, successText) {
+  async action(path, payload, successText, expectedContext) {
+    const context = expectedContext || actionContext(this);
+    if (!sameActionContext(this, context) || !actionPathMatchesEvent(this, path, payload, context.eventId)) {
+      if (this.data.currentUser === currentIdentity())
+        this.setData({ message: '账号或活动已变化，请刷新后重新操作。' });
+      return null;
+    }
     try {
-      const result = await api.post(path, { expectedVersion: this.data.event.version, ...payload });
-      if (await this.refresh()) this.setData({ message: successText });
+      const result = await api.post(path, { expectedVersion: context.version, ...payload });
+      if (!sameActionContext(this, context)) return null;
+      if (!await this.refresh() || !sameActionOwner(this, context)) return null;
+      this.setData({ message: successText });
       return result;
-    } catch (error) { this.setData({ message: error.message || '操作失败' }); return null; }
+    } catch (error) {
+      if (sameActionContext(this, context)) this.setData({ message: error.message || '操作失败' });
+      return null;
+    }
   },
   openJoinConfirmation() {
     if (this.data.loadState !== 'READY' || !this.data.canJoin || !this.data.event) return;
@@ -1143,48 +1242,65 @@ Page({
     cohostSelectedName: event.currentTarget.dataset.name || '所选参与者' }); },
   cohostCapabilitiesChanged(event) { this.setData({ selectedCohostCapabilities: event.detail.value }); },
   async grantCohost() {
-    if (!this.data.isHost || !this.data.event || !this.data.cohostUserId || !this.data.selectedCohostCapabilities.length)
+    const context = actionContext(this);
+    if (!context) return;
+    if (!this.data.isHost || !this.data.cohostUserId || !this.data.selectedCohostCapabilities.length)
       return this.setData({ message: '请先选择协办成员和至少一项能力' });
     try {
       const expiresAt = new Date(Date.parse(this.data.event.payload.endAt) + 48 * 60 * 60_000).toISOString();
-      await api.post(`/events/${encodeURIComponent(this.data.id)}/cohosts`, {
-        expectedVersion: this.data.event.version, userId: this.data.cohostUserId,
+      await api.post(`/events/${encodeURIComponent(context.eventId)}/cohosts`, {
+        expectedVersion: context.version, userId: this.data.cohostUserId,
         capabilities: this.data.selectedCohostCapabilities, expiresAt
       });
-      if (await this.refresh()) this.setData({ cohostUserId: '', cohostSelectedName: '', message: '本场协办权限已授予，可随时撤回。' });
-    } catch (error) { this.setData({ message: error.message || '授权失败' }); }
+      if (!sameActionContext(this, context)) return;
+      if (await this.refresh() && sameActionOwner(this, context))
+        this.setData({ cohostUserId: '', cohostSelectedName: '', message: '本场协办权限已授予，可随时撤回。' });
+    } catch (error) {
+      if (sameActionContext(this, context)) this.setData({ message: error.message || '授权失败' });
+    }
   },
   async revokeCohost(event) {
-    if (!this.data.isHost) return;
+    const context = actionContext(this);
+    if (!this.data.isHost || !context) return;
     const grantId = event.currentTarget.dataset.id;
     const decision = await new Promise(resolve => wx.showModal({ title: '撤回协办权限',
       content: '撤回后旧会话立即失去本场管理权限；该用户自己的报名仍保留。', success: resolve, fail: () => resolve({ confirm: false }) }));
-    if (!decision.confirm) return;
+    if (!decision.confirm || !sameActionContext(this, context)) return;
     try {
       await api.post(`/cohost-grants/${encodeURIComponent(grantId)}:revoke`, {});
-      if (await this.refresh()) this.setData({ message: '协办权限已撤回。' });
-    } catch (error) { this.setData({ message: error.message || '撤回失败' }); }
+      if (!sameActionContext(this, context)) return;
+      if (await this.refresh() && sameActionOwner(this, context)) this.setData({ message: '协办权限已撤回。' });
+    } catch (error) {
+      if (sameActionContext(this, context)) this.setData({ message: error.message || '撤回失败' });
+    }
   },
   removalReasonInput(event) { this.setData({ removalReason: event.detail.value }); },
   removeParticipant(event) {
+    const context = actionContext(this);
+    if (!context) return;
     const id = event.currentTarget.dataset.id; const userId = event.currentTarget.dataset.user;
     const reason = this.data.removalReason.trim();
     if (reason.length < 5) return this.setData({ message: '请先填写至少 5 字的活动内移除原因' });
     const displayName = this.data.registrations.find(item => item.id === id && item.user_id === userId)?.displayName || '所选参与者';
     wx.showModal({ title: '移除参与者', content: `将移除 ${displayName}，本人会看到原因并可申诉。原因：${reason}`, success: result => {
-      if (result.confirm) this.action(`/registrations/${id}/remove`, { reason }, '已移除参与者，原因仅本人及运营可见');
+      if (result.confirm) this.action(`/registrations/${id}/remove`, { reason }, '已移除参与者，原因仅本人及运营可见', context);
     } });
   },
   reconfirm() {
+    const context = actionContext(this);
+    const registrationId = this.data.myRegistration?.id;
+    if (!context || !registrationId) return;
     wx.showModal({ title: '确认新规则', content: `确认接受活动版本 ${this.data.reconfirmation?.toVersion} 的全部变更吗？`, success: result => {
-      if (result.confirm) this.action(`/registrations/${this.data.myRegistration.id}/reconfirm`, {}, '已确认新版本规则');
+      if (result.confirm) this.action(`/registrations/${registrationId}/reconfirm`, {}, '已确认新版本规则', context);
     } });
   },
   confirmEvent() { this.action(`/events/${this.data.id}/confirm`, {}, '主办方已确认成局'); },
   rotateInvite() { this.action(`/events/${this.data.id}/invite:rotate`, {}, '旧邀请已撤销，分享卡已更新'); },
   cancelEvent() {
+    const context = actionContext(this);
+    if (!context) return;
     wx.showModal({ title: '取消活动', content: '取消将通知已报名者，且不能继续招募。', success: result => {
-      if (result.confirm) this.action(`/events/${this.data.id}/cancel`, {}, '活动已取消');
+      if (result.confirm) this.action(`/events/${context.eventId}/cancel`, {}, '活动已取消', context);
     } });
   },
   async reserve() {
@@ -1195,21 +1311,19 @@ Page({
   claim() { this.action(`/reservations/${encodeURIComponent(this.data.reservationToken)}/claim`,
     { expectedEventId: this.data.event.id }, '已认领预留名额'); },
   async showCheckInToken() {
-    if (this.checkInPageHidden || !this.data.event || (!this.data.isHost && !this.data.canManageCheckins) ||
+    const context = actionContext(this);
+    if (this.checkInPageHidden || !context || (!this.data.isHost && !this.data.canManageCheckins) ||
       !this.updateTimedControls().canGenerateCheckInToken) return;
     const requestId = this.checkInRequestId = (this.checkInRequestId || 0) + 1;
-    const eventId = this.data.id;
-    const eventVersion = this.data.event.version;
-    const actor = currentIdentity();
     const stillCurrent = () => requestId === this.checkInRequestId && !this.checkInPageHidden &&
-      actor === currentIdentity() && this.data.id === eventId && this.data.event?.version === eventVersion &&
+      sameActionContext(this, context) &&
       (this.data.isHost || this.data.canManageCheckins) && timedEventControls(this.data.event, Date.now(),
         this.data.myRegistration?.status, this.data.isHost, this.data.canManageCheckins).canGenerateCheckInToken;
     clearTimeout(this.checkInRefreshTimer);
     if (this.data.displayedCheckInToken) this.setData({ displayedCheckInToken: '', checkInExpiresIn: 0 });
     try {
       const requestedAt = Date.now();
-      const result = await api.post(`/events/${eventId}/checkin-token`, { expectedVersion: eventVersion });
+      const result = await api.post(`/events/${context.eventId}/checkin-token`, { expectedVersion: context.version });
       if (!stillCurrent()) return;
       // The server's remaining lifetime was measured before the response crossed the network.
       const remainingMs = result.expiresInSeconds * 1000 - Math.max(0, Date.now() - requestedAt) - 1000;
@@ -1250,9 +1364,11 @@ Page({
     } });
   },
   requestManualCheckIn(event) {
+    const context = actionContext(this);
+    if (!context) return;
     const userId = event.currentTarget.dataset.user;
     wx.showModal({ title: '补记到场', content: '只会向本人发起确认；未经本人确认不计为到场。', success: result => {
-      if (result.confirm) this.action(`/events/${this.data.id}/manual-checkins`, { userId }, '已向参与者发起补记确认');
+      if (result.confirm) this.action(`/events/${context.eventId}/manual-checkins`, { userId }, '已向参与者发起补记确认', context);
     } });
   },
   respondManualCheckIn(event) {
@@ -1328,36 +1444,52 @@ Page({
   questionInput(event) { this.setData({ questionText: event.detail.value }); },
   aliasInput(event) { this.setData({ aliasInput: event.detail.value }); },
   async saveAlias() {
+    const context = actionContext(this);
+    if (!context) return;
     try {
       if (!this.data.aliasNoticeVersion) throw new Error('昵称展示说明暂不可用，请刷新后重试');
-      await api.post(`/events/${encodeURIComponent(this.data.id)}/aliases`, {
+      await api.post(`/events/${encodeURIComponent(context.eventId)}/aliases`, {
         displayName: this.data.aliasInput, granted: true, noticeVersion: this.data.aliasNoticeVersion });
-      await this.refresh(); this.setData({ message: '仅在本活动内展示的昵称已保存。' });
+      if (!sameActionContext(this, context)) return;
+      if (await this.refresh() && sameActionOwner(this, context))
+        this.setData({ message: '仅在本活动内展示的昵称已保存。' });
     } catch (error) {
+      if (!sameActionContext(this, context)) return;
       if (error.code === 'CONSENT_NOTICE_CHANGED') {
-        await this.refresh(); this.setData({ message: '昵称展示说明已更新，请阅读后重新确认。' });
+        if (await this.refresh() && sameActionOwner(this, context))
+          this.setData({ message: '昵称展示说明已更新，请阅读后重新确认。' });
       } else this.setData({ message: error.message });
     }
   },
   async revokeAlias() {
+    const context = actionContext(this);
+    if (!context) return;
     try {
-      await api.post(`/events/${encodeURIComponent(this.data.id)}/aliases`, { displayName: null, granted: false });
-      await this.refresh(); this.setData({ message: '已撤回本活动的昵称展示。' });
-    } catch (error) { this.setData({ message: error.message }); }
+      await api.post(`/events/${encodeURIComponent(context.eventId)}/aliases`, { displayName: null, granted: false });
+      if (!sameActionContext(this, context)) return;
+      if (await this.refresh() && sameActionOwner(this, context)) this.setData({ message: '已撤回本活动的昵称展示。' });
+    } catch (error) { if (sameActionContext(this, context)) this.setData({ message: error.message }); }
   },
   async blockMember(event) {
+    const context = actionContext(this);
+    if (!context) return;
     try {
-      await api.post(`/events/${encodeURIComponent(this.data.id)}/blocks`, { memberId: event.currentTarget.dataset.member });
-      await this.refresh(); this.setData({ message: '已屏蔽此成员；当前活动记录和安全举报入口仍可使用。可在“我的”中撤销。' });
-    } catch (error) { this.setData({ message: error.message }); }
+      await api.post(`/events/${encodeURIComponent(context.eventId)}/blocks`, { memberId: event.currentTarget.dataset.member });
+      if (!sameActionContext(this, context)) return;
+      if (await this.refresh() && sameActionOwner(this, context))
+        this.setData({ message: '已屏蔽此成员；当前活动记录和安全举报入口仍可使用。可在“我的”中撤销。' });
+    } catch (error) { if (sameActionContext(this, context)) this.setData({ message: error.message }); }
   },
   factQuestionInput(event) { this.setData({ factQuestionText: event.detail.value }); },
   async askFact() {
+    const context = actionContext(this);
+    if (!context) return;
     try {
-      const result = await api.post(`/events/${encodeURIComponent(this.data.id)}/facts:ask`, { question: this.data.factQuestionText });
-      await this.refresh();
-      this.setData({ factQuestionText: '', message: result.answer });
-    } catch (error) { this.setData({ message: error.message }); }
+      const result = await api.post(`/events/${encodeURIComponent(context.eventId)}/facts:ask`, { question: this.data.factQuestionText });
+      if (!sameActionContext(this, context)) return;
+      if (await this.refresh() && sameActionOwner(this, context))
+        this.setData({ factQuestionText: '', message: result.answer });
+    } catch (error) { if (sameActionContext(this, context)) this.setData({ message: error.message }); }
   },
   announcementInput(event) { this.setData({ announcementText: event.detail.value }); },
   answerInput(event) { this.setData({ answerText: event.detail.value }); },
@@ -1377,12 +1509,15 @@ Page({
     else this.setData({ answerInputFocus: true });
   },
   async submitContent(kind, body, parentId) {
+    const context = actionContext(this);
+    if (!context) return;
     try {
-      await api.post(`/events/${this.data.id}/content`, { kind, body, parentId });
-      await this.refresh();
-      this.setData({ message: '内容已提交，审核通过后其他成员可见。',
-        ...(kind === 'ANSWER' ? { answerQuestionId: '', answerQuestionLabel: '', answerText: '', answerInputFocus: false } : {}) });
-    } catch (error) { this.setData({ message: error.message || '提交失败' }); }
+      await api.post(`/events/${context.eventId}/content`, { kind, body, parentId });
+      if (!sameActionContext(this, context)) return;
+      if (await this.refresh() && sameActionOwner(this, context))
+        this.setData({ message: '内容已提交，审核通过后其他成员可见。',
+          ...(kind === 'ANSWER' ? { answerQuestionId: '', answerQuestionLabel: '', answerText: '', answerInputFocus: false } : {}) });
+    } catch (error) { if (sameActionContext(this, context)) this.setData({ message: error.message || '提交失败' }); }
   },
   askQuestion() { this.submitContent('QUESTION', this.data.questionText, null); },
   goToContentAppeal() {
@@ -1451,19 +1586,28 @@ Page({
   async prepareShare() {
     const event = this.data.event;
     if (this.data.preparingShare) return;
-    if (!currentHostEvent(this) || !canCopyPublishedInvite(event, this.data.isHost, this.data.safetyStatus, Date.now()))
+    if (!currentHostEvent(this) || !canCopyPublishedInvite(event, this.data.isHost,
+      this.data.safetyStatus, Date.now(), this._inviteValidUntil))
       return this.setData({ message: '当前活动不能生成分享卡' });
+    const context = actionContext(this);
+    if (!context) return;
+    const attempt = this.sharePrepareAttemptId = (this.sharePrepareAttemptId || 0) + 1;
+    const sameRequestOwner = () => attempt === this.sharePrepareAttemptId && sameActionOwner(this, context);
+    const sameRequestDetails = () => sameRequestOwner() && this.data.loadState === 'READY' &&
+      this.data.event?.version === event.version && this.data.event.inviteToken === event.inviteToken;
     const sourceToken = newSourceToken();
     this.setData({ preparingShare: true, shareSourceToken: '' });
     try {
       await api.post(`/events/${this.data.id}/share-intents`, { expectedVersion: event.version, sourceToken });
-      if (this.data.event?.id === event.id && this.data.event.version === event.version &&
-        this.data.event.inviteToken === event.inviteToken &&
-        currentHostEvent(this) &&
-        canCopyPublishedInvite(this.data.event, this.data.isHost, this.data.safetyStatus, Date.now()))
+      if (sameRequestDetails() && currentHostEvent(this) &&
+        canCopyPublishedInvite(this.data.event, this.data.isHost,
+          this.data.safetyStatus, Date.now(), this._inviteValidUntil))
         this.setData({ shareSourceToken: sourceToken, message: '分享卡已准备好，请点击工作台中的“微信分享”。' });
-    } catch (error) { this.setData({ message: error.message || '分享卡准备失败' }); }
-    finally { this.setData({ preparingShare: false }); }
+    } catch (error) {
+      if (sameRequestDetails()) this.setData({ message: error.message || '分享卡准备失败' });
+    } finally {
+      if (sameRequestOwner()) this.setData({ preparingShare: false });
+    }
   },
   openShareCard(actionEvent) {
     if (!currentHostEvent(this)) {
@@ -1475,15 +1619,18 @@ Page({
     const copyIntent = copy === true || copy === 'true' || copy === 1 || copy === '1';
     const poster = actionEvent?.currentTarget?.dataset?.poster;
     const posterIntent = poster === true || poster === 'true' || poster === 1 || poster === '1';
-    const canCopyInvite = canCopyPublishedInvite(this.data.event, this.data.isHost, this.data.safetyStatus, Date.now());
+    const canCopyInvite = canCopyPublishedInvite(this.data.event, this.data.isHost,
+      this.data.safetyStatus, Date.now(), this._inviteValidUntil);
     if ((copyIntent || posterIntent) && this.data.canCopyPublishedInvite !== canCopyInvite)
       this.setData({ canCopyPublishedInvite: canCopyInvite });
     wx.navigateTo({ url: '/subpackages/activity/share/share?id=' + encodeURIComponent(this.data.id) +
-      (copyIntent && canCopyInvite ? '&copy=1' : posterIntent && canCopyInvite ? '&poster=1' : '') });
+      (copyIntent && canCopyInvite ? '&copy=1' : posterIntent && canCopyInvite ? '&poster=1' :
+        !copyIntent && !posterIntent ? '&share=1' : '') });
   },
   onShareAppMessage() {
     if (!currentHostEvent(this) ||
-      !canCopyPublishedInvite(this.data.event, this.data.isHost, this.data.safetyStatus, Date.now()))
+      !canCopyPublishedInvite(this.data.event, this.data.isHost,
+        this.data.safetyStatus, Date.now(), this._inviteValidUntil))
       return { title: '活动详情', path: '/pages/index/index' };
     const source = this.data.shareSourceToken ? '&source=' + this.data.shareSourceToken : '';
     return { title: (this.data.event.aiSuggestionGenerated ? '【曾生成 AI 建议】' : '') + this.data.event.payload.title,

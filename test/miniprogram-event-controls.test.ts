@@ -35,11 +35,22 @@ function visibleControl(handlerOrId: string, context: Record<string, unknown>): 
   return Boolean(Function('state', `with (state) { return (${condition}); }`)(context));
 }
 
-test('reservation claim submits the event displayed on the page', async () => {
+test('reservation claim refuses a stale event when the page route points elsewhere', async () => {
   const calls: Array<{ path: string; body: Record<string, unknown> }> = [];
   const page = pageWithApi(async (path, body) => { calls.push({ path, body }); return { eventId: 'event-a', status: 'CONFIRMED' }; });
   page.refresh = async () => true;
-  page.setData({ id: 'event-b', reservationToken: 'token-b', event: { id: 'event-a', version: 4 } });
+  page.setData({ id: 'event-b', reservationToken: 'token-b', event: { id: 'event-a', version: 4 },
+    currentUser: 'friend', loadState: 'READY' });
+  await page.claim();
+  assert.equal(calls.length, 0);
+});
+
+test('reservation claim submits only the event displayed on the current route', async () => {
+  const calls: Array<{ path: string; body: Record<string, unknown> }> = [];
+  const page = pageWithApi(async (path, body) => { calls.push({ path, body }); return { eventId: 'event-a', status: 'CONFIRMED' }; });
+  page.refresh = async () => true;
+  page.setData({ id: 'event-a', reservationToken: 'token-b', event: { id: 'event-a', version: 4 },
+    currentUser: 'friend', loadState: 'READY' });
   await page.claim();
   assert.equal(calls.length, 1);
   assert.equal(calls[0]?.path, '/reservations/token-b/claim');

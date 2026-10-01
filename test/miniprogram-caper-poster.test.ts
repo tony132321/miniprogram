@@ -15,6 +15,7 @@ function loadPoster() {
   let canvasReady = true;
   let event = { id: 'event-1', hostId: 'host', version: 4, status: 'RECRUITING',
     reviewStatus: 'APPROVED', recruiting: true, riskPaused: false, inviteToken: firstToken,
+    inviteRemainingMs: 60_000,
     payload: { title: '周六羽毛球局', startAt: '2027-03-22T06:00:00.000Z',
       endAt: '2027-03-22T08:00:00.000Z', registrationDeadline: futureDeadline,
       city: '上海', minParticipants: 4 }, stats: { confirmed: 3 } };
@@ -177,7 +178,9 @@ test('published poster shortcut routes through the share page and the share page
   Object.assign(eventPage.data, { id: 'event-1', isHost: true, currentUser: 'host', safetyStatus: 'OPEN',
     event: { id: 'event-1', hostId: 'host', version: 4, status: 'RECRUITING',
       reviewStatus: 'APPROVED', recruiting: true, riskPaused: false, inviteToken: firstToken,
+      inviteRemainingMs: 60_000,
       payload: { title: '周六羽毛球局', registrationDeadline: futureDeadline } } });
+  eventPage._inviteValidUntil = Date.now() + 60_000;
   eventPage.openShareCard({ currentTarget: { dataset: { poster: true } } });
   assert.deepEqual(routes, ['/subpackages/activity/share/share?id=event-1&poster=1']);
   assert.match(readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8'),

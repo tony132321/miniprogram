@@ -13,7 +13,7 @@ function loadShare(overrides: Record<string, any> = {}) {
   let devUser = '';
   let safetyStatus = 'OPEN';
   let event = { id: 'event-1', hostId: 'host', version: 4, status: 'RECRUITING',
-    reviewStatus: 'APPROVED', recruiting: true, riskPaused: false, inviteToken,
+    reviewStatus: 'APPROVED', recruiting: true, riskPaused: false, inviteToken, inviteRemainingMs: 60_000,
     payload: { title: '周六一起打羽毛球', startAt: '2027-03-22T06:00:00.000Z',
       endAt: '2027-03-22T08:00:00.000Z', registrationDeadline: '2027-03-22T05:30:00.000Z',
       city: '上海', venueName: '公共羽毛球馆', minParticipants: 4 },
@@ -209,6 +209,30 @@ test('approved host invitation card uses live facts and a recorded source before
   assert.match(copy, /首页输入邀请码/);
 });
 
+test('published share shortcut opens the checked invitation choices without sending a native share', async () => {
+  const { page, posts } = loadShare();
+  await page.onLoad({ id: 'event-1', share: '1' });
+  assert.equal(page.data.loadState, 'READY');
+  assert.equal(page.data.canShare, true);
+  assert.equal(page.data.shareSheetOpen, true);
+  assert.equal(posts.length, 0, 'opening choices must not create a share intent');
+  assert.equal(page.onShareAppMessage().path, '/pages/index/index', 'native sharing still requires a user tap');
+  page.closeShareSheet();
+  assert.equal(page.data.shareSheetOpen, false);
+  await page.refresh();
+  assert.equal(page.data.shareSheetOpen, false, 'closing choices is not undone by refresh');
+});
+
+test('published share shortcut keeps choices closed when server share eligibility fails', async () => {
+  const { page, posts } = loadShare({ riskPaused: true });
+  await page.onLoad({ id: 'event-1', share: '1' });
+  assert.equal(page.data.loadState, 'READY');
+  assert.equal(page.data.canShare, false);
+  assert.equal(page.data.shareSheetOpen, false);
+  assert.equal(page.data.display.inviteToken, '');
+  assert.equal(posts.length, 0);
+});
+
 test('approved publication copy intent performs the safe invitation copy on entering the share card', async () => {
   const { page, copied } = loadShare();
   await page.onLoad({ id: 'event-1', copy: '1' });
@@ -266,6 +290,46 @@ test('an expired registration deadline blocks a recruiting invite on entry and o
   assert.equal(current.copied.length, 0);
 });
 
+test('server-expired invite is hidden on entry even while the device believes registration is open', async () => {
+  const { page, copied, qrPayloads } = loadShare({ inviteRemainingMs: 0 });
+  await page.onLoad({ id: 'event-1', copy: '1' });
+  assert.equal(page.data.canShare, false);
+  assert.equal(page.data.display.inviteToken, '');
+  assert.equal(page.data.event.inviteToken, undefined);
+  assert.equal(copied.length, 0);
+  assert.equal(qrPayloads.length, 0);
+});
+
+test('old event response without server invite validity cannot reveal or copy the token', async () => {
+  const { page, copied } = loadShare({ inviteRemainingMs: undefined });
+  await page.onLoad({ id: 'event-1', copy: '1' });
+  assert.equal(page.data.canShare, false);
+  assert.equal(page.data.display.inviteToken, '');
+  assert.equal(copied.length, 0);
+});
+
+test('copy refresh rejects a token whose server validity expired after card display', async () => {
+  const { page, copied, setEvent } = loadShare();
+  await page.onLoad({ id: 'event-1' });
+  setEvent({ inviteRemainingMs: 0 });
+  await page.copyInvite();
+  assert.equal(page.data.canShare, false);
+  assert.equal(page.data.display.inviteToken, '');
+  assert.equal(copied.length, 0);
+});
+
+test('a prepared share is withdrawn when the server validity interval elapses before native sharing', async () => {
+  const { page } = loadShare({ inviteRemainingMs: 50 });
+  await page.onLoad({ id: 'event-1' });
+  await page.prepareShare();
+  assert.match(page.onShareAppMessage().path, /token=/);
+  await new Promise(resolve => setTimeout(resolve, 75));
+  assert.equal(page.data.canShare, false);
+  assert.equal(page.data.display.inviteToken, '');
+  assert.equal(page.onShareAppMessage().path, '/pages/index/index');
+  page.onUnload();
+});
+
 test('an open invitation card hides its token when the registration deadline arrives', async () => {
   const soon = new Date(Date.now() + 300).toISOString();
   const { page, copied } = loadShare({ payload: { title: '周六一起打羽毛球',
@@ -304,6 +368,95 @@ test('a newer invitation refresh supersedes an older pending copy request', asyn
   await Promise.all([copying, refreshed]);
   assert.equal(copied.length, 0);
   assert.equal(page.data.canShare, true);
+});
+
+for (const lifecycle of ['onHide', 'onUnload'] as const) {
+  test(`${lifecycle} cancels a pending invite recheck before it can write the clipboard`, async () => {
+    const { page, copied, holdEventGet } = loadShare();
+    await page.onLoad({ id: 'event-1' });
+    await page.onShow();
+    const releaseGet = holdEventGet();
+    const copying = page.copyInvite();
+    page[lifecycle]();
+    releaseGet();
+    await copying;
+    assert.deepEqual(copied, []);
+    assert.equal(page.data.sourceToken, '');
+    assert.equal(page.onShareAppMessage().path, '/pages/index/index');
+    if (lifecycle === 'onHide') {
+      await page.onShow();
+      assert.equal(page.data.loadState, 'READY', 'returning to the card fetches current eligibility');
+      assert.equal(page.data.canShare, true);
+    }
+  });
+
+  test(`${lifecycle} cancels a pending share intent before it can reopen native sharing`, async () => {
+    const { page, holdPosts } = loadShare();
+    await page.onLoad({ id: 'event-1' });
+    await page.onShow();
+    const releasePost = holdPosts();
+    const preparing = page.prepareShare();
+    page[lifecycle]();
+    releasePost();
+    await preparing;
+    assert.equal(page.data.sourceToken, '');
+    assert.equal(page.data.preparingShare, false);
+    assert.notEqual(page.data.message, '分享邀请已准备好，请点击微信好友或群聊。');
+    assert.equal(page.onShareAppMessage().path, '/pages/index/index');
+  });
+}
+
+test('a prepared invitation stops exposing its share path when the card is hidden', async () => {
+  const { page } = loadShare();
+  await page.onLoad({ id: 'event-1' });
+  await page.prepareShare();
+  assert.match(page.onShareAppMessage().path, /token=/);
+  page.onHide();
+  assert.equal(page.data.canShare, false);
+  assert.equal(page.data.sourceToken, '');
+  assert.equal(page.data.display.inviteToken, '');
+  assert.equal(page.onShareAppMessage().path, '/pages/index/index');
+});
+
+test('the first show after a hidden card refreshes eligibility before sharing again', async () => {
+  const { page, setEvent } = loadShare();
+  await page.onLoad({ id: 'event-1' });
+  page.onHide();
+  setEvent({ version: 5, inviteToken: rotatedInviteToken });
+  await page.onShow();
+  assert.equal(page.data.loadState, 'READY');
+  assert.equal(page.data.canShare, true);
+  assert.equal(page.data.display.inviteToken, rotatedInviteToken);
+});
+
+test('a pending share intent cannot revive after the card is hidden and shown again', async () => {
+  const { page, holdPosts } = loadShare();
+  await page.onLoad({ id: 'event-1' });
+  await page.onShow();
+  const releasePost = holdPosts();
+  const preparing = page.prepareShare();
+  page.onHide();
+  await page.onShow();
+  releasePost();
+  await preparing;
+  assert.equal(page.data.loadState, 'READY');
+  assert.equal(page.data.canShare, true);
+  assert.equal(page.data.sourceToken, '');
+  assert.equal(page.onShareAppMessage().path, '/pages/index/index');
+});
+
+test('a pending poster eligibility refresh cannot render a private QR after the card is hidden', async () => {
+  const { page, qrPayloads, holdEventGet } = loadShare();
+  await page.onLoad({ id: 'event-1' });
+  const drawnBefore = qrPayloads.length;
+  const releaseGet = holdEventGet();
+  const generating = page.generatePoster();
+  page.onHide();
+  releaseGet();
+  await generating;
+  assert.equal(qrPayloads.length, drawnBefore);
+  assert.equal(page.data.posterPreparing, false);
+  assert.equal(page.data.display.inviteToken, '');
 });
 
 test('pending host can inspect share eligibility without displaying or copying an invite token', async () => {

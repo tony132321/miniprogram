@@ -102,7 +102,7 @@ test('host workbench opens the registered share card for the current event', () 
   assert.deepEqual(routes, []);
   page.data.isHost = true;
   page.openShareCard();
-  assert.deepEqual(routes, ['/subpackages/activity/share/share?id=event-1']);
+  assert.deepEqual(routes, ['/subpackages/activity/share/share?id=event-1&share=1']);
   assert.match(readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8'),
     /bindtap="openShareCard"/);
 });
@@ -185,7 +185,7 @@ test('PG01 location and share controls use the current event and its real capabi
   assert.equal(copied[0], '上海 · 公共球馆');
   page.data.isHost = true;
   page.shareCurrentEvent();
-  assert.deepEqual(routes, ['/subpackages/activity/share/share?id=event-1']);
+  assert.deepEqual(routes, ['/subpackages/activity/share/share?id=event-1&share=1']);
   page.data.isHost = false;
   page.data.hostAlias = '活动主办方';
   page.shareCurrentEvent();

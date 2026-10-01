@@ -442,11 +442,15 @@ test('member can copy current activity facts for a trusted contact without expos
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
-    wx: { setClipboardData({ data, success }: { data: string; success(): void }) { copied = data; success(); } }
+    wx: {
+      getStorageSync(key: string) { return key === 'devUser' ? 'member' : ''; },
+      setClipboardData({ data, success }: { data: string; success(): void }) { copied = data; success(); }
+    }
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
-  page.setData({ id: 'event-123', loadState: 'READY', hostAlias: '本场主办方', event: { inviteToken: 'private-invite-token',
+  page.setData({ id: 'event-123', loadState: 'READY', currentUser: 'member', hostAlias: '本场主办方',
+    event: { id: 'event-123', inviteToken: 'private-invite-token',
     payload: { title: '周末球局', startAt: '2026-10-03T12:00:00Z', endAt: '2026-10-03T14:00:00Z',
       city: '上海', venueName: '公共球馆' } } });
   page.copySafetyDetails();
@@ -1916,8 +1920,9 @@ test('share card only uses a source after its intent has been committed', async 
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
-  page.setData({ id: 'e1', isHost: true, currentUser: 'host', safetyStatus: 'OPEN', event: { id: 'e1', hostId: 'host', version: 2, inviteToken: 'invite-1', recruiting: true, reviewStatus: 'APPROVED',
+  page.setData({ id: 'e1', loadState: 'READY', isHost: true, currentUser: 'host', safetyStatus: 'OPEN', event: { id: 'e1', hostId: 'host', version: 2, inviteToken: 'invite-1', inviteRemainingMs: 60_000, recruiting: true, reviewStatus: 'APPROVED',
     payload: { title: '羽毛球', registrationDeadline: '2027-03-22T05:30:00.000Z' } } });
+  page._inviteValidUntil = Date.now() + 60_000;
   const pending = page.prepareShare();
   assert.equal(requests.length, 1);
   assert.equal(page.data.shareSourceToken, '');
@@ -1942,7 +1947,7 @@ test('returning to the event page refreshes its version and drops a stale share 
       if (path === '../../utils/api.js') return { api: { async get(path: string) {
         if (path === '/events/e1') {
           detailReads++;
-          return { id: 'e1', hostId: 'host', status: 'RECRUITING', version: 3, inviteToken: 'invite-2',
+          return { id: 'e1', hostId: 'host', status: 'RECRUITING', version: 3, inviteToken: 'invite-2', inviteRemainingMs: 60_000,
             recruiting: true, payload: {} };
         }
         if (path === '/me/registrations?eventId=e1') return { items: [] };
@@ -1966,6 +1971,7 @@ test('returning to the event page refreshes its version and drops a stale share 
   assert.equal(detailReads, 1);
   assert.equal(page.data.event.version, 3);
   assert.equal(page.data.shareSourceToken, '');
+  assert.ok(page._inviteValidUntil > Date.now());
 });
 
 test('event page follows current cohost grant while preserving own participation after revocation', async () => {
@@ -2059,7 +2065,7 @@ test('a check-in token arriving after the event page hides is not displayed or r
     Object.assign(this.data, patch);
     callback?.();
   };
-  page.setData({ id: 'e1', event: { id: 'e1', version: 2, status: 'CONFIRMED', payload: {
+  page.setData({ id: 'e1', currentUser: 'host', loadState: 'READY', event: { id: 'e1', version: 2, status: 'CONFIRMED', payload: {
     startAt: new Date(Date.now() + 15 * 60_000).toISOString(),
     endAt: new Date(Date.now() + 2 * 60 * 60_000).toISOString() } }, isHost: true });
   const pending = page.showCheckInToken();
@@ -2091,7 +2097,7 @@ test('an expired check-in token is hidden while its replacement is still loading
     Object.assign(this.data, patch);
     callback?.();
   };
-  page.setData({ id: 'e1', event: { id: 'e1', version: 2, status: 'CONFIRMED', payload: {
+  page.setData({ id: 'e1', currentUser: 'host', loadState: 'READY', event: { id: 'e1', version: 2, status: 'CONFIRMED', payload: {
     startAt: new Date(Date.now() + 15 * 60_000).toISOString(),
     endAt: new Date(Date.now() + 2 * 60 * 60_000).toISOString() } }, isHost: true,
     displayedCheckInToken: 'expired-token', checkInExpiresIn: 0 });
@@ -2127,7 +2133,7 @@ test('a check-in token received after its remaining lifetime is never shown', as
     Object.assign(this.data, patch);
     callback?.();
   };
-  page.setData({ id: 'e1', event: { id: 'e1', version: 2, status: 'CONFIRMED', payload: {
+  page.setData({ id: 'e1', currentUser: 'host', loadState: 'READY', event: { id: 'e1', version: 2, status: 'CONFIRMED', payload: {
     startAt: new Date(now + 15 * 60_000).toISOString(),
     endAt: new Date(now + 2 * 60 * 60_000).toISOString() } }, isHost: true });
   const pending = page.showCheckInToken();
@@ -2152,13 +2158,15 @@ test('host page grants selected capabilities for this event and can revoke the r
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
-    wx: { showModal(options: Record<string, any>) { options.success({ confirm: true }); } },
+    wx: { getStorageSync(key: string) { return key === 'devUser' ? 'host' : ''; },
+      showModal(options: Record<string, any>) { options.success({ confirm: true }); } },
     setTimeout, clearTimeout
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
   page.refresh = async () => true;
-  page.setData({ id: 'e1', event: { version: 3, payload: { endAt: '2027-01-02T14:00:00.000Z' } },
+  page.setData({ id: 'e1', currentUser: 'host', loadState: 'READY',
+    event: { id: 'e1', version: 3, payload: { endAt: '2027-01-02T14:00:00.000Z' } },
     isHost: true, cohostUserId: 'member-1', selectedCohostCapabilities: ['CHECKIN_MANAGE'] });
   await page.grantCohost();
   assert.equal(posts[0]?.path, '/events/e1/cohosts');
@@ -2255,7 +2263,9 @@ test('event and profile block controls call the existing member routes', async (
       if (path === '../../config.js') return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
-    Page(definition: Record<string, any>) { eventPage = definition; }, wx: {}, setTimeout, clearTimeout
+    Page(definition: Record<string, any>) { eventPage = definition; },
+    wx: { getStorageSync(key: string) { return key === 'sessionToken' ? 'token' : key === 'userId' ? 'host' : ''; } },
+    setTimeout, clearTimeout
   });
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
@@ -2270,7 +2280,8 @@ test('event and profile block controls call the existing member routes', async (
     page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
     page.refresh = async () => true;
   }
-  eventPage.data.id = 'event-1';
+  eventPage.setData({ id: 'event-1', currentUser: 'session:host:token', loadState: 'READY',
+    event: { id: 'event-1', version: 1 } });
   await eventPage.blockMember({ currentTarget: { dataset: { member: 'a'.repeat(16) } } });
   await profilePage.revokeBlock({ currentTarget: { dataset: { id: 'block-1' } } });
   assert.equal(posts[0]?.path, '/events/event-1/blocks');

@@ -31,8 +31,9 @@ function loadPublishedCopyShortcut() {
   page.data.currentUser = 'host';
   page.data.safetyStatus = 'OPEN';
   page.data.event = { id: 'event-1', hostId: 'host', version: 4, status: 'RECRUITING', reviewStatus: 'APPROVED',
-    recruiting: true, riskPaused: false, inviteToken: 'A'.repeat(32),
+    recruiting: true, riskPaused: false, inviteToken: 'A'.repeat(32), inviteRemainingMs: 60_000,
     payload: { title: '周六羽毛球局', registrationDeadline: '2027-03-22T05:30:00.000Z' } };
+  page._inviteValidUntil = Date.now() + 60_000;
   return { page, routes, posts, setActor(next: string) { actor = next; },
     setSession(next: string) { session = next; } };
 }
@@ -41,6 +42,12 @@ test('approved publication copy shortcut opens the same invite card with one-tap
   const { page, routes } = loadPublishedCopyShortcut();
   page.openShareCard({ currentTarget: { dataset: { copy: true } } });
   assert.deepEqual(routes, ['/subpackages/activity/share/share?id=event-1&copy=1']);
+});
+
+test('published share shortcut opens the invitation card with an explicit share intent', () => {
+  const { page, routes } = loadPublishedCopyShortcut();
+  page.openShareCard();
+  assert.deepEqual(routes, ['/subpackages/activity/share/share?id=event-1&share=1']);
 });
 
 test('published copy shortcut checks the deadline even when recruiting has not been closed', () => {
@@ -62,6 +69,26 @@ test('activity native share does not send a token after deadline or safety closu
 
   page.data.event.payload.registrationDeadline = '2027-03-22T05:30:00.000Z';
   page.data.safetyStatus = 'CLOSED';
+  assert.equal(page.onShareAppMessage().path, '/pages/index/index');
+});
+
+test('activity shortcuts stop using a cached invitation after its server validity window', async () => {
+  const { page, routes, posts } = loadPublishedCopyShortcut();
+  page._inviteValidUntil = Date.now() - 1;
+  page.openShareCard({ currentTarget: { dataset: { copy: true } } });
+  await page.prepareShare();
+  assert.deepEqual(routes, ['/subpackages/activity/share/share?id=event-1']);
+  assert.deepEqual(posts, []);
+  assert.equal(page.onShareAppMessage().path, '/pages/index/index');
+  assert.equal(page.data.canCopyPublishedInvite, false);
+});
+
+test('activity shortcuts fail closed when the server validity field was not loaded', async () => {
+  const { page, posts } = loadPublishedCopyShortcut();
+  page._inviteValidUntil = 0;
+  page.data.event.inviteRemainingMs = undefined;
+  await page.prepareShare();
+  assert.deepEqual(posts, []);
   assert.equal(page.onShareAppMessage().path, '/pages/index/index');
 });
 

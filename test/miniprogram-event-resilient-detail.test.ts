@@ -153,7 +153,7 @@ test('reply button sends the selected approved question ID and clears the compos
     posts.push({ route, body }); return { id: 'answer-1' };
   });
   page.refresh = async () => true;
-  page.setData({ event, isHost: true, loadState: 'READY',
+  page.setData({ event, isHost: true, loadState: 'READY', currentUser: 'host',
     content: [{ id: 'question-1', kind: 'QUESTION', status: 'APPROVED', body: '需要自带球拍吗？' }] });
   page.replyToQuestion({ currentTarget: { dataset: { id: 'question-1' } } });
   page.answerInput({ detail: { value: '请自带球拍。' } });

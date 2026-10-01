@@ -481,7 +481,7 @@ test('the unsure choice records interest without presenting a confirmed seat', a
     payload: { title: '周末羽毛球', startAt: '2027-01-02T12:00:00Z', endAt: '2027-01-02T14:00:00Z',
       city: '深圳', venueName: '测试球馆', maxParticipants: 6, feeMode: 'FREE', approvalMode: 'AUTO' },
     stats: { confirmed: 1 } };
-  page.setData({ event: liveEvent, id: 'e1', token: 'invite-token', canJoin: true,
+  page.setData({ event: liveEvent, id: 'e1', token: 'invite-token', currentUser: 'host', canJoin: true,
     canExpressInterest: true, isHost: false, successState: '' });
   page.refresh = async function () {
     this.setData({ loadState: 'READY', event: liveEvent, canJoin: !posted,

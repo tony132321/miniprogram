@@ -123,11 +123,20 @@ function registrationDeadlineReason(event, now) {
   if (now >= deadline) return '报名已截止，当前邀请码不可复制。';
   return '';
 }
-function shareReason(event, safetyStatus) {
+function serverInviteValidUntil(event, requestedAt) {
+  const remaining = event?.inviteRemainingMs;
+  if (typeof remaining !== 'number' || !Number.isFinite(remaining) || remaining <= 0) return 0;
+  return requestedAt + remaining;
+}
+function serverInviteRemainingMs(event, requestedAt) {
+  return Math.max(0, serverInviteValidUntil(event, requestedAt) - Date.now());
+}
+function shareReason(event, safetyStatus, remainingMs) {
   if (safetyStatus !== 'OPEN') return safetyStatus === 'CLOSED' ? '系统暂停新增邀请，请稍后查看。' : '暂时无法核对服务状态，请稍后重试。';
   if (event.reviewStatus !== 'APPROVED') return '活动内容尚未通过审核，暂不能分享邀请。';
   if (event.riskPaused) return '此活动已暂停招募，暂不能分享邀请。';
   if (!event.recruiting || !event.inviteToken) return '当前活动未开放邀请或邀请码已失效。';
+  if (!(remainingMs > 0)) return '当前邀请码已失效，请刷新活动后重试。';
   const deadlineReason = registrationDeadlineReason(event, Date.now());
   if (deadlineReason) return deadlineReason;
   return '';
@@ -140,8 +149,12 @@ Page({
     posterPreparing: false, shareSheetOpen: false },
   async onLoad(options) {
     this.hasShown = true;
+    this._pageVisible = true;
+    this._unloaded = false;
+    this._pageGeneration = (this._pageGeneration || 0) + 1;
     this._viewReady = false;
     this._posterIntent = options?.poster === '1';
+    this._shareIntent = options?.share === '1';
     this.setData({ id: typeof options?.id === 'string' ? options.id : '',
       statusBarHeight: wx.getSystemInfoSync?.().statusBarHeight || 24,
       headerPaddingRight: headerPaddingRight() });
@@ -149,25 +162,51 @@ Page({
     await this.refresh();
     if (options?.copy === '1' && this.data.loadState === 'READY' && this.data.canShare)
       await this.copyInvite();
+    else if (this._shareIntent) this.maybeOpenShareIntent();
     else await this.maybeGeneratePosterIntent();
+  },
+  maybeOpenShareIntent() {
+    if (!this._pageVisible || this._unloaded || !this._shareIntent) return;
+    this._shareIntent = false;
+    if (this.data.loadState === 'READY') this.openShareSheet();
   },
   onReady() {
     this._viewReady = true;
     return this.maybeGeneratePosterIntent();
   },
   async maybeGeneratePosterIntent() {
-    if (!this._viewReady || !this._posterIntent || this.data.loadState !== 'READY') return;
+    if (!this._pageVisible || this._unloaded || !this._viewReady || !this._posterIntent || this.data.loadState !== 'READY') return;
     this._posterIntent = false;
     if (this.data.canShare) await this.generatePoster();
   },
   async onShow() {
+    if (this._unloaded) return;
+    this._pageVisible = true;
     if (this.hasShown) { this.hasShown = false; return; }
+    const pageGeneration = this._pageGeneration;
     await getApp().globalData.ready;
+    if (!this._pageVisible || pageGeneration !== this._pageGeneration) return;
     await this.refresh();
   },
-  onHide() { this.cancelPoster(); this.clearInviteDeadlineTimer(); },
-  onUnload() { this.cancelPoster(); this.clearInviteDeadlineTimer(); },
+  onHide() { this.suspendSharing(false); },
+  onUnload() { this.suspendSharing(true); },
+  suspendSharing(unloaded) {
+    this._pageVisible = false;
+    this.hasShown = false;
+    if (unloaded) this._unloaded = true;
+    this._pageGeneration = (this._pageGeneration || 0) + 1;
+    this._loadGeneration = (this._loadGeneration || 0) + 1;
+    this._copyInFlight = false;
+    this._shareIntent = false;
+    this._posterIntent = false;
+    this.cancelPoster();
+    this.clearInviteDeadlineTimer();
+    this.setData({ event: this.data.event ? { ...this.data.event, inviteToken: undefined } : null,
+      display: this.data.display ? { ...this.data.display, inviteToken: '' } : null,
+      canShare: false, sourceToken: '', preparingShare: false, shareSheetOpen: false, message: '' });
+  },
   async refresh() {
+    if (!this._pageVisible || this._unloaded) return;
     this.clearInviteDeadlineTimer();
     const id = this.data.id;
     const actor = currentActor();
@@ -182,6 +221,7 @@ Page({
     if (!id) return this.setData({ loadState: 'ERROR', event: null, display: null, message: '缺少活动编号，请返回活动详情。' });
     if (!actor) return this.setData({ loadState: 'UNAUTHENTICATED', event: null, display: null, message: '请先登录主办账号。' });
     try {
+      const requestedAt = Date.now();
       const event = await api.get('/events/' + encodeURIComponent(id));
       if (generation !== this._loadGeneration) return;
       if (identity !== currentIdentity()) return this.clearIfAccountChanged();
@@ -196,7 +236,9 @@ Page({
       if (generation !== this._loadGeneration) return;
       if (identity !== currentIdentity()) return this.clearIfAccountChanged();
       const safetyStatus = ['OPEN', 'CLOSED'].includes(safety?.status) ? safety.status : 'UNKNOWN';
-      const reason = shareReason(event, safetyStatus);
+      const inviteValidUntil = serverInviteValidUntil(event, requestedAt);
+      const remainingMs = Math.max(0, inviteValidUntil - Date.now());
+      const reason = shareReason(event, safetyStatus, remainingMs);
       const payload = event.payload || {};
       const title = payload.title || '未命名活动';
       const confirmed = Number.isInteger(event.stats?.confirmed) ? event.stats.confirmed : null;
@@ -208,7 +250,9 @@ Page({
         confirmed, minimum, cover: coverFor(title, payload.type), inviteToken: reason ? '' : event.inviteToken };
       this._loadedActor = actor;
       this._loadedIdentity = identity;
-      this.setData({ event, display, canShare: !reason, shareReason: reason,
+      this._inviteValidUntil = reason ? 0 : inviteValidUntil;
+      this.setData({ event: reason ? { ...event, inviteToken: undefined } : event,
+        display, canShare: !reason, shareReason: reason,
         sourceToken: !reason && previousActor === actor && previousIdentity === identity && previous?.id === event.id &&
           previous.version === event.version && previous.inviteToken === event.inviteToken ? previousSource : '',
         loadState: 'READY', message: '' });
@@ -237,6 +281,7 @@ Page({
     this._loadGeneration = (this._loadGeneration || 0) + 1;
     this._loadedActor = null;
     this._loadedIdentity = null;
+    this.clearInviteDeadlineTimer();
     this.setData({ loadState: 'ERROR', event: null, display: null, canShare: false,
       sourceToken: '', shareSheetOpen: false, preparingShare: false,
       message: '账号已切换，请重新核对分享资格。' });
@@ -245,6 +290,18 @@ Page({
   clearInviteDeadlineTimer() {
     clearTimeout(this.inviteDeadlineTimer);
     this.inviteDeadlineTimer = null;
+    this._inviteValidUntil = 0;
+  },
+  currentInviteReason() {
+    const deadlineReason = registrationDeadlineReason(this.data.event, Date.now());
+    if (deadlineReason) return deadlineReason;
+    return this._inviteValidUntil > Date.now() ? '' : '当前邀请码已失效，请刷新活动后重试。';
+  },
+  closeInvite(reason) {
+    this.clearInviteDeadlineTimer();
+    this.setData({ event: this.data.event ? { ...this.data.event, inviteToken: undefined } : null,
+      canShare: false, shareReason: reason, sourceToken: '', shareSheetOpen: false,
+      display: this.data.display ? { ...this.data.display, inviteToken: '' } : null });
   },
   cancelPoster() {
     this._posterGeneration = (this._posterGeneration || 0) + 1;
@@ -253,26 +310,27 @@ Page({
   },
   scheduleInviteDeadline(event, generation, identity) {
     const deadline = Date.parse(event.payload?.registrationDeadline || '');
-    if (!Number.isFinite(deadline)) return;
+    if (!Number.isFinite(deadline) || !this._inviteValidUntil) return;
     this.inviteDeadlineTimer = setTimeout(() => {
       this.inviteDeadlineTimer = null;
       if (generation !== this._loadGeneration || this.data.event?.id !== event.id) return;
       if (identity !== currentIdentity()) return this.clearIfAccountChanged();
-      const reason = registrationDeadlineReason(this.data.event, Date.now());
-      if (reason) this.setData({ canShare: false, shareReason: reason, sourceToken: '', shareSheetOpen: false,
-        display: this.data.display ? { ...this.data.display, inviteToken: '' } : null });
+      const reason = this.currentInviteReason();
+      if (reason) this.closeInvite(reason);
       else this.scheduleInviteDeadline(event, generation, identity);
-    }, Math.max(1, Math.min(deadline - Date.now(), 2_147_483_647)));
+    }, Math.max(1, Math.min(deadline - Date.now(), this._inviteValidUntil - Date.now(), 2_147_483_647)));
     if (typeof this.inviteDeadlineTimer?.unref === 'function') this.inviteDeadlineTimer.unref();
   },
   openShareSheet() {
+    if (!this._pageVisible || this._unloaded) return;
     if (this.clearIfAccountChanged()) return;
+    if (this.data.canShare && this.currentInviteReason()) this.closeInvite(this.currentInviteReason());
     if (!this.data.canShare) return this.setData({ message: this.data.shareReason || '当前无法分享邀请。' });
     this.setData({ shareSheetOpen: true });
   },
   closeShareSheet() { this.setData({ shareSheetOpen: false }); },
   async generatePoster() {
-    if (this.clearIfAccountChanged() || this._posterInFlight) return;
+    if (!this._pageVisible || this._unloaded || this.clearIfAccountChanged() || this._posterInFlight) return;
     const id = this.data.id;
     const actor = currentActor();
     const identity = currentIdentity();
@@ -280,7 +338,8 @@ Page({
     this._posterInFlight = true;
     let loadGeneration;
     let snapshot;
-    const stillCurrent = () => posterGeneration === this._posterGeneration &&
+    const stillCurrent = () => this._pageVisible && !this._unloaded &&
+      posterGeneration === this._posterGeneration &&
       loadGeneration === this._loadGeneration && id === this.data.id &&
       identity === currentIdentity() && actor === currentActor() &&
       this._loadedIdentity === identity && this._loadedActor === actor &&
@@ -288,7 +347,7 @@ Page({
       this.data.event?.id === id && this.data.event.hostId === actor &&
       this.data.event.version === snapshot?.version &&
       this.data.event.inviteToken === snapshot?.inviteToken &&
-      !registrationDeadlineReason(this.data.event, Date.now());
+      !this.currentInviteReason();
     try {
       await this.refresh();
       loadGeneration = this._loadGeneration;
@@ -324,11 +383,13 @@ Page({
         } catch (_) { finish(new Error('海报绘制失败，请重试。')); }
       });
       if (!tempFilePath || !stillCurrent()) return;
+      const latestRequestedAt = Date.now();
       const latest = await api.get('/events/' + encodeURIComponent(id));
       const safety = await api.get('/system/safety').catch(() => ({ status: 'UNKNOWN' }));
       if (!stillCurrent()) return;
       if (latest?.id !== id || latest.hostId !== actor || latest.version !== snapshot.version ||
-        latest.inviteToken !== snapshot.inviteToken || shareReason(latest, safety?.status)) {
+        latest.inviteToken !== snapshot.inviteToken ||
+        shareReason(latest, safety?.status, serverInviteRemainingMs(latest, latestRequestedAt))) {
         await this.refresh();
         if (identity === currentIdentity() && this.data.id === id)
           this.setData({ message: '活动或邀请资格已变化，请重新生成海报。' });
@@ -350,7 +411,9 @@ Page({
     }
   },
   async prepareShare() {
-    if (this.clearIfAccountChanged()) return;
+    if (!this._pageVisible || this._unloaded || this.clearIfAccountChanged()) return;
+    const pageGeneration = this._pageGeneration;
+    if (this.data.canShare && this.currentInviteReason()) this.closeInvite(this.currentInviteReason());
     const event = this.data.event;
     const actor = currentActor();
     const identity = currentIdentity();
@@ -361,19 +424,27 @@ Page({
     this.setData({ preparingShare: true, sourceToken: '' });
     try {
       await api.post(`/events/${encodeURIComponent(event.id)}/share-intents`, { expectedVersion: event.version, sourceToken });
-      if (identity === currentIdentity() && this._loadedIdentity === identity && this.data.canShare &&
+      if (this._pageVisible && pageGeneration === this._pageGeneration &&
+        identity === currentIdentity() && this._loadedIdentity === identity && this.data.canShare &&
+        !this.currentInviteReason() &&
         this.data.event?.id === event.id && this.data.event.version === event.version &&
         this.data.event.inviteToken === event.inviteToken)
         this.setData({ sourceToken, message: '分享邀请已准备好，请点击微信好友或群聊。' });
-    } catch (error) { if (identity === currentIdentity()) this.setData({ message: error.message || '准备分享失败，请重试。' }); }
+    } catch (error) {
+      if (this._pageVisible && pageGeneration === this._pageGeneration && identity === currentIdentity())
+        this.setData({ message: error.message || '准备分享失败，请重试。' });
+    }
     finally {
-      if (identity !== currentIdentity()) this.clearIfAccountChanged();
-      else this.setData({ preparingShare: false });
+      if (this._pageVisible && pageGeneration === this._pageGeneration) {
+        if (identity !== currentIdentity()) this.clearIfAccountChanged();
+        else this.setData({ preparingShare: false });
+      }
     }
   },
   async copyInvite() {
-    if (this.clearIfAccountChanged()) return;
+    if (!this._pageVisible || this._unloaded || this.clearIfAccountChanged()) return;
     if (this._copyInFlight) return;
+    const pageGeneration = this._pageGeneration;
     const actor = currentActor();
     const identity = currentIdentity();
     const id = this.data.id;
@@ -383,17 +454,17 @@ Page({
     this._copyInFlight = true;
     try {
       await this.refresh();
+      if (!this._pageVisible || pageGeneration !== this._pageGeneration) return;
       if (identity !== currentIdentity() || actor !== currentActor()) {
         this.clearIfAccountChanged();
         return;
       }
       if (generation !== this._loadGeneration || this.data.id !== id) return;
       const event = this.data.event;
-      const deadlineReason = registrationDeadlineReason(event, Date.now());
+      const deadlineReason = this.currentInviteReason();
       if (deadlineReason && this.data.loadState === 'READY') {
-        this.setData({ canShare: false, shareReason: deadlineReason, sourceToken: '',
-          display: this.data.display ? { ...this.data.display, inviteToken: '' } : null,
-          message: deadlineReason });
+        this.closeInvite(deadlineReason);
+        this.setData({ message: deadlineReason });
         return;
       }
       if (this.data.loadState !== 'READY' || !this.data.canShare || !event?.inviteToken ||
@@ -408,6 +479,7 @@ Page({
       const token = event.inviteToken;
       await new Promise(resolve => wx.setClipboardData({ data,
         success: () => {
+          if (!this._pageVisible || pageGeneration !== this._pageGeneration) return resolve();
           if (identity !== currentIdentity()) this.clearIfAccountChanged();
           else if (generation === this._loadGeneration && this.data.event?.id === id &&
             this.data.event.version === version && this.data.event.inviteToken === token)
@@ -415,25 +487,28 @@ Page({
           resolve();
         },
         fail: () => {
+          if (!this._pageVisible || pageGeneration !== this._pageGeneration) return resolve();
           if (identity !== currentIdentity()) this.clearIfAccountChanged();
           else if (generation === this._loadGeneration) this.setData({ message: '复制失败，请重试。' });
           resolve();
         } }));
     } catch (_) {
+      if (!this._pageVisible || pageGeneration !== this._pageGeneration) return;
       if (identity !== currentIdentity()) this.clearIfAccountChanged();
       else if (generation === this._loadGeneration)
         this.setData({ message: '暂时无法复制，请重试。' });
-    } finally { this._copyInFlight = false; }
+    } finally { if (pageGeneration === this._pageGeneration) this._copyInFlight = false; }
   },
   back() {
     wx.navigateBack({ delta: 1, fail: () => wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(this.data.id) }) });
   },
   goProfile() { wx.switchTab({ url: '/pages/me/me' }); },
   onShareAppMessage() {
+    if (!this._pageVisible || this._unloaded) return { title: '活动详情', path: '/pages/index/index' };
     if (this.clearIfAccountChanged()) return { title: '活动详情', path: '/pages/index/index' };
     const event = this.data.event;
+    if (this.data.canShare && this.currentInviteReason()) this.closeInvite(this.currentInviteReason());
     if (!this.data.canShare || !this.data.sourceToken || !event?.inviteToken ||
-      registrationDeadlineReason(event, Date.now()) ||
       this._loadedActor !== currentActor() || this._loadedIdentity !== currentIdentity())
       return { title: '活动详情', path: '/pages/index/index' };
     return { title: (event.aiSuggestionGenerated ? '【曾生成 AI 建议】' : '') + this.data.display.title,

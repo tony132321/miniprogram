@@ -19,6 +19,8 @@ export interface EventInput {
 export interface EventRecord {
   id: string; hostId: string; status: string; version: number; payload: EventInput;
   recruiting: boolean; inviteToken?: string; updatedAt: string; reviewStatus: string; reviewReason?: string;
+  /** Host-only server-clock validity for the current invite, measured at event read. */
+  inviteRemainingMs?: number;
   aiSuggestionGenerated?: boolean;
   /** Present when an existing member sees a prior reviewed version; null means its text is unavailable. */
   visibleContentVersion?: number | null;
@@ -201,7 +203,19 @@ export async function getEvent(db: Queryable, actorId: string, id: string): Prom
       recordedAt: new Date(evidence[0].recorded_at).toISOString(),
       expiresAt: new Date(evidence[0].expires_at).toISOString() };
   }
-  if (row.host_id !== actorId) delete result.inviteToken;
+  if (row.host_id === actorId) {
+    const { rows: validity } = await db.query<{ version: number; invite_token: string | null; remaining_ms: number }>(`SELECT version,invite_token,CASE
+      WHEN status IN ('RECRUITING','CONFIRMED') AND recruiting=true AND review_status='APPROVED'
+        AND invite_token IS NOT NULL AND invite_expires_at IS NOT NULL
+        AND payload->>'registrationDeadline' IS NOT NULL
+      THEN GREATEST(0, EXTRACT(EPOCH FROM (
+        LEAST(invite_expires_at,(payload->>'registrationDeadline')::timestamptz)-clock_timestamp()
+      ))*1000)::double precision ELSE 0 END AS remaining_ms FROM events WHERE id=$1`, [id]);
+    const current = validity[0];
+    result.inviteRemainingMs = current?.version === row.version && current.invite_token === row.invite_token
+      ? Number(current.remaining_ms) : 0;
+    if (!(result.inviteRemainingMs > 0)) delete result.inviteToken;
+  } else delete result.inviteToken;
   if (row.host_id !== actorId) delete result.reviewReason;
   if (cohostCapabilities.length) result.cohostCapabilities = cohostCapabilities;
   result.aiSuggestionGenerated = await hasGeneratedAiSuggestion(db, id);
