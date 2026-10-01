@@ -128,17 +128,28 @@ export async function listMemberNotifications(db: Database, actor: string, offse
     if (offset > 0 && snapshot !== currentSnapshot)
       throw new AppError('QUEUE_CHANGED', '通知列表已变化，请从第一页刷新', 409);
     const { rows } = await tx.query(`SELECT n.id,n.event_id,n.kind,n.event_version,n.status,n.external_status,n.read_at,n.detail,n.created_at,
-      CASE WHEN n.kind='WAITLIST_OFFER' THEN EXISTS (SELECT 1 FROM offers o WHERE o.id=n.detail->>'offerId'
-        AND o.status='ACTIVE' AND o.expires_at>now()) AND NOT EXISTS
-        (SELECT 1 FROM event_safety_holds h WHERE h.event_id=n.event_id AND h.status='ACTIVE')
-        AND EXISTS (SELECT 1 FROM emergency_gate g WHERE g.id=1 AND g.status='OPEN')
-        AND EXISTS (SELECT 1 FROM events e WHERE e.id=n.event_id AND e.review_status='APPROVED'
+      CASE WHEN n.kind='WAITLIST_OFFER' THEN coalesce(offer_action.actionable,false) ELSE false END AS actionable,
+      CASE WHEN n.kind='WAITLIST_OFFER' THEN coalesce(offer_action.declinable,false) ELSE false END AS declinable
+      FROM notifications n LEFT JOIN LATERAL (
+        SELECT o.status='ACTIVE' AND o.expires_at>clock_timestamp()
+          AND r.status='OFFERED' AND e.version=n.event_version AS declinable,
+          o.status='ACTIVE' AND o.expires_at>clock_timestamp()
+          AND r.status='OFFERED' AND e.version=n.event_version
+          AND e.recruiting=true AND e.status IN ('RECRUITING','CONFIRMED')
+          AND clock_timestamp()<(e.payload->>'registrationDeadline')::timestamptz
+          AND e.review_status='APPROVED'
+          AND NOT EXISTS (SELECT 1 FROM event_safety_holds h
+            WHERE h.event_id=e.id AND h.status='ACTIVE')
+          AND EXISTS (SELECT 1 FROM emergency_gate g WHERE g.id=1 AND g.status='OPEN')
           AND (e.payload->>'visibility'<>'PUBLIC' OR
-          public_recruitment_covered((e.payload->>'startAt')::timestamptz,
-            (e.payload->>'endAt')::timestamptz))) ELSE false END AS actionable,
-      CASE WHEN n.kind='WAITLIST_OFFER' THEN EXISTS (SELECT 1 FROM offers o WHERE o.id=n.detail->>'offerId'
-        AND o.status='ACTIVE' AND o.expires_at>now()) ELSE false END AS declinable
-      FROM notifications n WHERE n.user_id=$1
+            (EXISTS (SELECT 1 FROM public_recruitment_gate g WHERE g.id=1 AND g.status='OPEN')
+              AND public_recruitment_covered((e.payload->>'startAt')::timestamptz,
+                (e.payload->>'endAt')::timestamptz))) AS actionable
+        FROM offers o JOIN registrations r ON r.id=o.registration_id
+          JOIN events e ON e.id=o.event_id
+        WHERE n.kind='WAITLIST_OFFER' AND o.id=n.detail->>'offerId'
+          AND o.event_id=n.event_id AND r.event_id=n.event_id AND r.user_id=n.user_id
+      ) offer_action ON true WHERE n.user_id=$1
       ORDER BY CASE WHEN n.read_at IS NULL THEN 0 ELSE 1 END,n.created_at DESC,n.id DESC
       LIMIT 100 OFFSET $2`, [actor, offset]);
     const total = totals[0]!.total;
