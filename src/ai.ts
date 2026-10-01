@@ -51,8 +51,9 @@ export function localDraftSuggestion(text: string, at = Date.now()): { aiStatus:
   const put = (key: keyof EventInput, value: EventInput[keyof EventInput]) => {
     Object.assign(fields, { [key]: value }); fieldSources[key] = 'USER_EXPLICIT';
   };
-  const city = text.match(/深圳|广州|上海|北京/);
-  if (city) { put('city', city[0]); put('timeZone', 'Asia/Shanghai'); fieldSources.timeZone = 'TEMPLATE_DEFAULT'; }
+  // Require a city or district boundary; street and venue names stay unresolved.
+  const city = text.match(/(深圳|广州|上海|北京|杭州|成都)(?:市)?(?:(?:(?![路街道巷弄社小])[\u4e00-\u9fff]){1,4}区)?(?=$|[\s，。；、,.!?！？:：·（）()“”]|打|约|组|办|踢|玩|练|参加|举办|的)/);
+  if (city) { put('city', city[1]!); put('timeZone', 'Asia/Shanghai'); fieldSources.timeZone = 'TEMPLATE_DEFAULT'; }
   if (text.includes('羽毛球')) fields.type = 'badminton';
   if (fields.type) fieldSources.type = 'USER_EXPLICIT';
   const level = text.match(/(新手|初级|中等|中级|进阶|高级)水平/);
