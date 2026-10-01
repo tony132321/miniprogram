@@ -247,7 +247,7 @@
 .center-reminder-actions,.center-approval-actions { display:flex; align-items:center; gap:10rpx; margin-top:17rpx; }
 .center-reminder-actions button { flex:1; min-width:0; margin:0; padding:11rpx 7rpx; border-radius:100rpx; font-size:20rpx; font-weight:800; line-height:1.5; white-space:nowrap; }
 .center-reminder-actions button::after,.center-approval-actions button::after,.center-inline-link::after,.center-status-link::after { border:0; }
-.center-reminder-actions .center-secondary { background:#e9f1ff; }
+.center-reminder-actions .center-secondary { flex:none; padding-right:16rpx; padding-left:16rpx; background:#e9f1ff; }
 .center-approval-card .center-card-icon { background:#fff0f3; color:#ef3462; }
 .center-approval-meta { display:flex; align-items:center; justify-content:space-between; gap:8rpx; margin-bottom:5rpx; color:#e92b51; font-size:17rpx; font-weight:800; }
 .center-approval-pill { flex:none; padding:3rpx 9rpx; border-radius:100rpx; background:#f1efff; color:#6653dd; font-size:16rpx; }

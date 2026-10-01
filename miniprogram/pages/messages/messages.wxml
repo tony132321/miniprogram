@@ -87,7 +87,7 @@
             </view>
             <view wx:if="{{notice.cardVariant === 'reminder'}}" class="center-reminder-thumb" aria-label="活动场景示意配图"><image class="center-reminder-thumb-photo" src="/assets/stitch/caper_home_badminton.jpg" mode="aspectFill"/><text class="center-reminder-thumb-label">示意配图</text></view>
           </view>
-          <view wx:if="{{notice.cardVariant === 'reminder'}}" class="center-reminder-actions"><button class="center-primary" data-id="{{notice.id}}" data-event-id="{{notice.event_id}}" data-kind="{{notice.kind}}" data-section="{{notice.actionSection}}" bindtap="openNotice">▣ {{notice.actionLabel}}</button><button wx:if="{{notice.event_id}}" class="center-secondary" data-id="{{notice.id}}" data-event-id="{{notice.event_id}}" data-kind="{{notice.kind}}" bindtap="openNotice">活动详情 ›</button></view>
+          <view wx:if="{{notice.cardVariant === 'reminder'}}" class="center-reminder-actions"><button class="center-primary" data-id="{{notice.id}}" data-event-id="{{notice.event_id}}" data-kind="{{notice.kind}}" data-section="{{notice.actionSection}}" bindtap="openNotice">▣ {{notice.actionLabel}}</button><button wx:if="{{notice.event_id}}" class="center-secondary" data-id="{{notice.id}}" data-event-id="{{notice.event_id}}" data-kind="{{notice.kind}}" bindtap="copyReminderVenue">复制地点</button></view>
           <view wx:if="{{notice.cardVariant === 'standard'}}" class="center-card-actions center-card-actions-right"><button class="center-primary" data-id="{{notice.id}}" data-event-id="{{notice.event_id}}" data-kind="{{notice.kind}}" data-section="{{notice.actionSection}}" bindtap="openNotice">{{notice.actionLabel}}</button></view>
         </view>
       </block></view>

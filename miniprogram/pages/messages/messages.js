@@ -191,7 +191,10 @@ Page({
     if (!actor) return this.setData({ loadState: 'UNAUTHENTICATED', message: '请先微信登录后查看本人消息。' });
     return this.refresh();
   },
-  onHide() { this.setTabBarHidden(false); },
+  onHide() {
+    this._venueCopyRequestId = (this._venueCopyRequestId || 0) + 1;
+    this.setTabBarHidden(false);
+  },
   setTabBarHidden(hidden) {
     const bar = this.getTabBar && this.getTabBar();
     if (bar) bar.setData({ hidden });
@@ -401,6 +404,49 @@ Page({
     const { eventId, isHost } = event.currentTarget.dataset;
     if (eventId) wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(eventId) +
       '&section=' + (isHost ? 'hostSection' : 'cohostApprovalSection') });
+  },
+  async copyReminderVenue(event) {
+    if (this.clearPrivateAfterIdentityChange() || this.data.loadState !== 'READY') return;
+    const { id, eventId, kind } = event.currentTarget.dataset;
+    const notice = this.data.items.find(item => id && String(item.id) === String(id) &&
+      item.kind === 'EVENT_REMINDER' && item.kind === kind &&
+      noticeEventId(item.event_id) === noticeEventId(eventId));
+    if (!notice || !eventId || !Number.isSafeInteger(notice.event_version)) return;
+    const identity = this._identity;
+    const generation = this._generation;
+    const requestId = this._venueCopyRequestId = (this._venueCopyRequestId || 0) + 1;
+    const stillCurrent = () => requestId === this._venueCopyRequestId &&
+      generation === this._generation && identity === this._identity &&
+      identity === currentIdentity(this.data.developmentMode).key &&
+      this.data.items.some(item => String(item.id) === String(id) && item.kind === kind &&
+        noticeEventId(item.event_id) === noticeEventId(eventId) &&
+        item.event_version === notice.event_version);
+    try {
+      const mine = await api.get('/me/registrations?eventId=' + encodeURIComponent(eventId));
+      if (!stillCurrent()) return;
+      if (!Array.isArray(mine?.items)) throw new Error('报名状态暂无法核对');
+      const confirmed = mine.items.some(item => item.event_id === eventId &&
+        item.status === 'CONFIRMED' && item.accepted_version === notice.event_version);
+      if (!confirmed) return this.setData({ message: '当前报名资格已变化，请打开活动详情核对。' });
+      const currentEvent = await api.get('/events/' + encodeURIComponent(eventId));
+      if (!stillCurrent()) return;
+      if (!currentEvent || currentEvent.id !== eventId ||
+        currentEvent.version !== notice.event_version ||
+        !['CONFIRMED', 'IN_PROGRESS'].includes(currentEvent.status) ||
+        !['APPROVED', 'NOT_REQUIRED'].includes(currentEvent.reviewStatus))
+        return this.setData({ message: '活动安排已更新，请打开详情核对最新地点。' });
+      const venueName = typeof currentEvent.payload?.venueName === 'string'
+        ? currentEvent.payload.venueName.trim() : '';
+      if (!venueName) return this.setData({ message: '当前活动尚未提供可复制的集合地点。' });
+      const city = typeof currentEvent.payload?.city === 'string'
+        ? currentEvent.payload.city.trim() : '';
+      if (!stillCurrent()) return;
+      wx.setClipboardData({ data: [city, venueName].filter(Boolean).join(' · '),
+        success: () => { if (stillCurrent()) wx.showToast?.({ title: '集合地点已复制', icon: 'none' }); },
+        fail: () => { if (stillCurrent()) this.setData({ message: '复制地点失败，请稍后重试。' }); } });
+    } catch (error) {
+      if (stillCurrent()) this.setData({ message: error.message || '地点核对失败，请打开活动详情重试。' });
+    }
   },
   async openNotice(event) {
     if (this.clearPrivateAfterIdentityChange()) return;

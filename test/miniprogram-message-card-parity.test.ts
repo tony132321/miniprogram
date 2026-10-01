@@ -51,10 +51,10 @@ test('reference card rhythm has kind-specific visual zones and keeps each action
   assert.match(markup, /class="center-reminder-thumb"/);
   assert.match(markup, /class="center-card-title">{{notice.title}}/);
   assert.match(markup, /class="center-card-kind">{{notice.categoryLabel}}/);
-  assert.match(markup, /class="center-reminder-actions"[\s\S]*?bindtap="openNotice"[\s\S]*?bindtap="openNotice"/);
+  assert.match(markup, /class="center-reminder-actions"[\s\S]*?bindtap="openNotice"[\s\S]*?bindtap="copyReminderVenue"[^>]*>复制地点/);
   assert.match(markup, /class="center-inline-link"[\s\S]*?bindtap="openNotice"/);
   assert.match(markup, /class="center-status-link"[\s\S]*?bindtap="openNotice"/);
-  assert.match(markup, /class="center-approval-actions"[\s\S]*?bindtap="viewApproval"[\s\S]*?bindtap="approveRequest"/);
+  assert.match(markup, /class="center-approval-actions"[\s\S]*?bindtap="approveRequest"[\s\S]*?bindtap="viewApproval"/);
   assert.doesNotMatch(markup, /(?:Alex|Momo|Luna|¥45|导航前往|去结算)/);
 });
 
