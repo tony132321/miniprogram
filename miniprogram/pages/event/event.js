@@ -329,6 +329,8 @@ Page({
   },
   onHide() {
     this.checkInPageHidden = true;
+    this.calendarAttemptId = (this.calendarAttemptId || 0) + 1;
+    this.calendarSubmitting = false;
     this.clearCheckInToken();
     this.clearTimeBoundaryTimer();
     this.closeJoinConfirmation();
@@ -336,6 +338,8 @@ Page({
   },
   onUnload() {
     this.checkInPageHidden = true;
+    this.calendarAttemptId = (this.calendarAttemptId || 0) + 1;
+    this.calendarSubmitting = false;
     this.clearCheckInToken();
     this.clearTimeBoundaryTimer();
     this.closeJoinConfirmation();
@@ -760,6 +764,71 @@ Page({
       this.data.id !== eventId || this.data.event?.id !== eventId || this.data.loadState !== 'READY' ||
       this.data.successState !== 'JOINED' || this.data.myRegistration?.status !== 'CONFIRMED') return;
     this.copyVenue();
+  },
+  async addJoinedCalendar() {
+    if (this.calendarSubmitting) return;
+    const eventId = this.data.id;
+    const actor = currentIdentity();
+    const eligible = () => actor && eventId && actor === currentIdentity() &&
+      this.data.currentUser === actor && this.data.id === eventId &&
+      this.data.event?.id === eventId && this.data.loadState === 'READY' &&
+      this.data.successState === 'JOINED' && this.data.myRegistration?.status === 'CONFIRMED';
+    if (!eligible()) return;
+    const attempt = this.calendarAttemptId = (this.calendarAttemptId || 0) + 1;
+    this.calendarSubmitting = true;
+    let submitted = false;
+    try {
+      const loaded = await this.refresh();
+      if (!loaded || !eligible() || this.calendarAttemptId !== attempt) return;
+      const event = this.data.event;
+      const title = typeof event.payload?.title === 'string' ? event.payload.title.trim() : '';
+      const start = Date.parse(event.payload?.startAt || '');
+      const end = Date.parse(event.payload?.endAt || '');
+      if (!title || !Number.isFinite(start) || !Number.isFinite(end) || end <= start || start <= Date.now()) {
+        this.setData({ message: '活动时间或名称已变化，请在详情页核对后重试添加日历。' });
+        return;
+      }
+      if (typeof wx.addPhoneCalendar !== 'function' ||
+        (typeof wx.canIUse === 'function' && !wx.canIUse('addPhoneCalendar'))) {
+        this.setData({ message: '当前微信版本不支持添加系统日历，可在我的行程查看活动。' });
+        return;
+      }
+      const city = typeof event.payload?.city === 'string' ? event.payload.city.trim() : '';
+      const venueName = typeof event.payload?.venueName === 'string' ? event.payload.venueName.trim() : '';
+      const location = [city, venueName].filter(Boolean).join(' · ');
+      const readyRefreshId = this.refreshId;
+      const stillCurrent = () => this.calendarAttemptId === attempt && this.refreshId === readyRefreshId &&
+        eligible() && this.data.event === event;
+      let completed = false;
+      const finish = () => {
+        if (completed) return false;
+        completed = true;
+        if (this.calendarAttemptId === attempt) this.calendarSubmitting = false;
+        return true;
+      };
+      const success = () => {
+        if (!finish() || !stillCurrent()) return;
+        if (typeof wx.showToast === 'function') wx.showToast({ title: '已添加到日历', icon: 'none' });
+        else this.setData({ message: '已添加到系统日历。' });
+      };
+      const fail = error => {
+        if (!finish() || !stillCurrent()) return;
+        const denied = /auth deny|authorize|permission|scope/i.test(error?.errMsg || '');
+        this.setData({ message: denied ? '未获得日历授权，请在微信设置中允许后重试。' :
+          '添加到系统日历失败，请稍后重试。' });
+      };
+      const result = wx.addPhoneCalendar({ title, startTime: Math.floor(start / 1000),
+        endTime: String(Math.floor(end / 1000)), location,
+        description: '活动时间和地点可能调整，请以小程序中的最新安排为准。',
+        success, fail });
+      submitted = true;
+      if (result && typeof result.catch === 'function') result.catch(fail);
+    } catch (error) {
+      if (eligible() && this.calendarAttemptId === attempt)
+        this.setData({ message: '添加到系统日历失败，请稍后重试。' });
+    } finally {
+      if (!submitted && this.calendarAttemptId === attempt) this.calendarSubmitting = false;
+    }
   },
   shareCurrentEvent() {
     if (this.data.isHost) return this.openShareCard();

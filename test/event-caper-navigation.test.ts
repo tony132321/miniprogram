@@ -423,3 +423,123 @@ test('PG05-S ignores an old A copy response after A to B to A account reloads', 
   assert.deepEqual(copied, [], 'the first A click cannot act on an obsolete response');
   assert.equal(page.data.currentUser, 'member-A');
 });
+
+function calendarHarness() {
+  const state = {
+    actor: 'member-1', registrationStatus: 'CONFIRMED', title: '更新后的羽毛球局',
+    startAt: '2027-10-05T10:00:00Z', endAt: '2027-10-05T12:00:00Z',
+    city: '上海', venueName: '新场馆', supported: true,
+    registrationWait: null as Promise<void> | null
+  };
+  const calendarCalls: Array<Record<string, any>> = [];
+  const toasts: string[] = [];
+  let page: Record<string, any> | undefined;
+  const liveEvent = () => ({ id: 'event-1', hostId: 'host-1', status: 'RECRUITING',
+    reviewStatus: 'APPROVED', recruiting: true, riskPaused: false, version: 3,
+    payload: { title: state.title, visibility: 'INVITE', city: state.city,
+      venueName: state.venueName, startAt: state.startAt, endAt: state.endAt,
+      feeMode: 'FREE', maxParticipants: 8, minParticipants: 2 },
+    stats: { confirmed: 2, reserved: 0, requested: 0, waitlisted: 0, reconfirmRequired: 0 } });
+  const nativeWx: Record<string, any> = {
+    getStorageSync(key: string) { return key === 'devUser' ? state.actor : ''; },
+    canIUse(name: string) { return name === 'addPhoneCalendar' && state.supported; },
+    addPhoneCalendar(options: Record<string, any>) { calendarCalls.push(options); },
+    showToast({ title }: { title: string }) { toasts.push(title); }
+  };
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if (path === '../../utils/api.js') return { api: { get: async (url: string) => {
+        if (url === '/me/registrations?eventId=event-1') {
+          if (state.registrationWait) await state.registrationWait;
+          return { items: [{ event_id: 'event-1', status: state.registrationStatus }] };
+        }
+        if (url === '/events/event-1') return liveEvent();
+        if (url === '/system/safety') return { status: 'OPEN' };
+        if (url === '/events/event-1/aliases')
+          return { items: [], notice: { version: 'v1', text: '本场昵称提示' } };
+        if (url.startsWith('/events/event-1/')) return { items: [] };
+        throw new Error(`unexpected GET ${url}`);
+      } } };
+      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
+      if (path === '../../config.js') return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: nativeWx, setTimeout, clearTimeout
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.setData({ id: 'event-1', loadState: 'READY', currentUser: 'member-1',
+    successState: 'JOINED', myRegistration: { status: 'CONFIRMED' },
+    event: { ...liveEvent(), payload: { ...liveEvent().payload,
+      title: '旧活动名', startAt: '2027-10-04T10:00:00Z', endAt: '2027-10-04T12:00:00Z' } } });
+  return { page, state, calendarCalls, toasts, nativeWx };
+}
+
+test('PG05-S calendar button writes the refreshed confirmed event to the phone calendar', async () => {
+  const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const successCard = markup.match(/<view wx:if="{{successState === 'JOINED'}}"[\s\S]*?<view class="joined-success-card joined-roster-card"/);
+  assert.ok(successCard);
+  assert.match(successCard[0], /活动时间[\s\S]*?bindtap="addJoinedCalendar"[\s\S]*?场地地址/);
+
+  const { page, state, calendarCalls, toasts } = calendarHarness();
+  await page.addJoinedCalendar();
+  assert.equal(calendarCalls.length, 1);
+  const call = calendarCalls[0]!;
+  assert.equal(call.title, state.title);
+  assert.equal(call.startTime, Math.floor(Date.parse(state.startAt) / 1000));
+  assert.equal(call.endTime, String(Math.floor(Date.parse(state.endAt) / 1000)));
+  assert.equal(call.location, '上海 · 新场馆');
+  assert.deepEqual(toasts, [], 'success must not be reported before the native API callback');
+  call.success({});
+  assert.match([...toasts, page.data.message].join(' '), /已添加|添加成功/);
+});
+
+test('PG05-S calendar action rejects a revoked seat or an account switch during refresh', async () => {
+  const revoked = calendarHarness();
+  revoked.state.registrationStatus = 'WAITLISTED';
+  await revoked.page.addJoinedCalendar();
+  assert.deepEqual(revoked.calendarCalls, []);
+  assert.equal(revoked.page.data.successState, '');
+
+  const switched = calendarHarness();
+  let releaseRegistration: (() => void) | undefined;
+  switched.state.registrationWait = new Promise(resolve => { releaseRegistration = resolve; });
+  const pending = switched.page.addJoinedCalendar();
+  switched.state.actor = 'member-2';
+  releaseRegistration?.();
+  await pending;
+  assert.deepEqual(switched.calendarCalls, []);
+});
+
+test('PG05-S calendar action declines invalid dates and unsupported native API', async () => {
+  const invalid = calendarHarness();
+  invalid.state.startAt = 'not-a-date';
+  await invalid.page.addJoinedCalendar();
+  assert.deepEqual(invalid.calendarCalls, []);
+  assert.match(invalid.page.data.message, /时间|日历/);
+
+  const unsupported = calendarHarness();
+  unsupported.state.supported = false;
+  await unsupported.page.addJoinedCalendar();
+  assert.deepEqual(unsupported.calendarCalls, []);
+  assert.match(unsupported.page.data.message, /不支持|日历/);
+});
+
+test('PG05-S calendar denial is visible and late native callbacks cannot report to another account', async () => {
+  const denied = calendarHarness();
+  await denied.page.addJoinedCalendar();
+  assert.equal(denied.calendarCalls.length, 1);
+  denied.calendarCalls[0]!.fail({ errMsg: 'addPhoneCalendar:fail auth deny' });
+  assert.deepEqual(denied.toasts, []);
+  assert.match(denied.page.data.message, /授权|日历|失败/);
+
+  const stale = calendarHarness();
+  await stale.page.addJoinedCalendar();
+  assert.equal(stale.calendarCalls.length, 1);
+  stale.state.actor = 'member-2';
+  stale.calendarCalls[0]!.success({});
+  stale.calendarCalls[0]!.fail({ errMsg: 'addPhoneCalendar:fail auth deny' });
+  assert.deepEqual(stale.toasts, []);
+  assert.equal(stale.page.data.message, '');
+});
