@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 64 64">
+<defs>
+<linearGradient gradientUnits="userSpaceOnUse" id="irlGradient" x1="8" x2="56" y1="20" y2="44">
+<stop offset="0%" stop-color="#1D64F2"></stop>
+<stop offset="60%" stop-color="#5856D6"></stop>
+<stop offset="100%" stop-color="#34C759"></stop>
+</linearGradient>
+<filter height="140%" id="sparkGlow" width="140%" x="-20%" y="-20%">
+<feGaussianBlur result="blur" stdDeviation="2"></feGaussianBlur>
+<feComposite in="SourceGraphic" in2="blur" operator="over"></feComposite>
+</filter>
+</defs>
+<!-- Stylized Mobius / Infinity loop representing IRL connections -->
+<path d="M20 22C14 22 10 26.5 10 32C10 37.5 14 42 20 42C26.5 42 30 36 32 32C34 28 37.5 22 44 22C50 22 54 26.5 54 32C54 37.5 50 42 44 42C37.5 42 34 36 32 32C30 28 26.5 22 20 22Z" stroke="url(#irlGradient)" stroke-linecap="round" stroke-linejoin="round" stroke-width="5.5"></path>
+<!-- Badminton / Spark Joy Asterisk in Vibrant Lime -->
+<circle cx="32" cy="18" fill="#D2F803" r="3.5" stroke="#1D64F2" stroke-width="1.5"></circle>
+<path d="M32 10V14M26 12L28.5 15M38 12L35.5 15" stroke="#1D64F2" stroke-linecap="round" stroke-width="2"></path>
+</svg>

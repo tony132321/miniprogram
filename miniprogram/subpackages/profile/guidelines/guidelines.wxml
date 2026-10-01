@@ -1,10 +1,59 @@
 <view class="pg10-page guidelines-page" style="padding-top: {{statusBarHeight}}px">
-  <view class="pg10-header guidelines-header" style="padding-right: {{headerPaddingRight}}; top: {{statusBarHeight}}px"><button class="pg10-back" bindtap="back" aria-label="返回">‹</button><view class="pg10-header-title">Safety & Guidelines</view><view class="pg10-header-actions"><button class="pg10-header-share" open-type="share" aria-label="分享社区引导与线下社交守则"><view class="pg10-header-share-icon"><text>↑</text></view></button><button class="pg10-header-more" bindtap="toggleMore" aria-label="更多页面入口" aria-expanded="{{moreOpen}}">···</button><button class="pg10-header-avatar" bindtap="goProfile" aria-label="返回我的页面">人</button></view><view wx:if="{{moreOpen}}" class="pg10-header-menu" style="right: {{headerPaddingRight}}"><button bindtap="goAbout">关于 Project IRL　›</button><button bindtap="goProfile">我的页面　›</button></view></view>
-  <view class="pg10-card charter-hero"><view class="charter-mark">♡<view>✓</view></view><view class="charter-kicker">● IRL CHARTER · 纯粹相遇</view><view class="charter-title">在真实世界，纯粹相遇</view><view class="charter-subtitle">Project IRL 希望与参与者一起营造真诚、守时、友善且充满包容的线下社群环境。</view><view class="charter-values"><view>守时<text>尊重时间</text></view><view>友善<text>尊重边界</text></view><view>透明<text>费用清晰</text></view></view></view>
-  <view class="pg10-card guideline-card"><view class="guideline-head"><view class="pg10-icon">◷</view><view><view>守时与契约精神</view><text>Punctuality & Reliability</text></view><text class="head-tag pink">核心底线</text></view><view class="guideline-body"><view><text>▣</text><view><view class="rule-title">拒绝无故爽约</view>主办方与参与者应核对活动时间和规则；如不能参加，请依活动规则及时取消。</view></view><view><text>⌁</text><view><view class="rule-title">重要变更再确认</view>场地、时间等重大变更应按当前流程重新告知和确认。</view></view></view></view>
-  <view class="pg10-card guideline-card"><view class="guideline-head"><view class="pg10-icon violet">♧</view><view><view>友善、包容与边界感</view><text>Inclusivity & Boundaries</text></view><text class="head-tag violet-tag">社交边界</text></view><view class="guideline-body"><view><text>♧</text><view><view class="rule-title">尊重多元差异</view>经验、水平和背景不同的人，仍应得到平等尊重。</view></view><view><text>⊘</text><view><view class="rule-title">零容忍骚扰与强推</view>未经同意不得索取或传播联系方式、照片与私密信息。</view></view></view></view>
-  <view class="pg10-card guideline-card"><view class="guideline-head"><view class="pg10-icon green">▤</view><view><view>透明、合理的费用 AA</view><text>Fair & Clear Accounting</text></view><text class="head-tag green-tag">财务守信</text></view><view class="guideline-body"><view><text>◎</text><view><view class="rule-title">费用明细公开</view>报名时明确费用模式和每人上限；额外费用应在活动内说明。</view></view><view><text>ϟ</text><view><view class="rule-title">双方标记仅作记录</view>费用页的标记不是平台收付款或交易凭证。</view></view></view></view>
-  <view class="pg10-card guideline-card"><view class="guideline-head"><view class="pg10-icon lime">▧</view><view><view>肖像权与记录边界</view><text>Respect for Privacy & Photos</text></view></view><view class="guideline-body"><view><text>✓</text><view>拍摄和传播他人影像前应取得本人同意；活动相册尚未开放。</view></view><view><text>♢</text><view>平台提供举报、屏蔽及本人数据请求入口，保护个人边界。</view></view></view></view>
-  <view class="pg10-card guideline-quote"><view>“把有趣的人聚在真实世界，用真实守护彼此的善意。”</view><text>— Project IRL 当前社区引导</text><button bindtap="goReport">需要帮助？前往举报与求助　›</button></view>
-  <view class="guidelines-foot">以上为当前使用引导；正式社区协议仍需审核与发布</view>
+  <view class="guidelines-status-cover" style="height: {{statusBarHeight}}px"></view>
+  <view class="pg10-header guidelines-header" style="padding-right: {{headerPaddingRight}}; top: {{statusBarHeight}}px">
+    <button class="pg10-back" bindtap="back" aria-label="返回"><image class="header-back-symbol" src="assets/arrow_back_ios_new.svg" mode="aspectFit" aria-hidden="true" /></button>
+    <view class="pg10-header-title"><text decode="{{true}}">Safety &amp; Guidelines</text></view>
+    <view class="pg10-header-actions">
+      <button class="pg10-header-share" open-type="share" aria-label="分享社区引导与线下社交守则"><image class="header-action-symbol" src="assets/ios_share.svg" mode="aspectFit" aria-hidden="true" /></button>
+      <button class="pg10-header-more" bindtap="toggleMore" aria-label="更多页面入口" aria-expanded="{{moreOpen}}"><image class="header-action-symbol" src="assets/more_horiz.svg" mode="aspectFit" aria-hidden="true" /></button>
+      <button class="pg10-header-avatar" bindtap="goProfile" aria-label="返回我的页面"><image class="header-avatar-symbol" src="assets/person.svg" mode="aspectFit" aria-hidden="true" /></button>
+    </view>
+    <view wx:if="{{moreOpen}}" class="pg10-header-menu" style="right: {{headerPaddingRight}}"><button bindtap="goAbout">关于 Project IRL　›</button><button bindtap="goProfile">我的页面　›</button></view>
+  </view>
+  <view class="pg10-card charter-hero">
+    <view class="charter-orb charter-orb-cool"></view><view class="charter-orb charter-orb-pink"></view>
+    <view class="charter-intro">
+      <view class="charter-mark"><image class="charter-handshake" src="assets/handshake.svg" mode="aspectFit" aria-hidden="true" /><view class="charter-heart"><image src="assets/favorite.svg" mode="aspectFit" aria-hidden="true" /></view></view>
+      <view class="charter-kicker"><view class="charter-kicker-dot"></view><text>IRL CHARTER · 纯粹相遇</text></view>
+      <view class="charter-title">在真实世界，纯粹相遇</view>
+      <view class="charter-subtitle">Project IRL 希望与参与者一起营造真诚、守时、友善且充满包容的线下社群环境。</view>
+    </view>
+    <view class="charter-values"><view>守时<text>尊重时间</text></view><view>友善<text>尊重边界</text></view><view>透明<text>费用清晰</text></view></view>
+  </view>
+  <view class="pg10-card guideline-card">
+    <view class="guideline-head"><view class="pg10-icon guideline-icon "><image src="assets/schedule.svg" mode="aspectFit" aria-hidden="true" /></view><view class="guideline-heading"><view>守时与契约精神</view><text decode="{{true}}">Punctuality &amp; Reliability</text></view><text class="head-tag pink">核心底线</text></view>
+    <view class="guideline-body">
+      <view class="rule-row"><view class="rule-dot blue-dot"><image src="assets/event_busy.svg" mode="aspectFit" aria-hidden="true" /></view><view class="rule-copy"><view class="rule-title">拒绝无故爽约</view><view>主办方与参与者应核对活动时间和规则；如不能参加，请依活动规则及时取消。</view></view></view>
+      <view class="rule-divider"></view>
+      <view class="rule-row"><view class="rule-dot pink-dot"><image src="assets/gavel.svg" mode="aspectFit" aria-hidden="true" /></view><view class="rule-copy"><view class="rule-title">重要变更再确认</view><view>场地、时间等重大变更应按当前流程重新告知和确认。</view></view></view>
+    </view>
+  </view>
+  <view class="pg10-card guideline-card">
+    <view class="guideline-head"><view class="pg10-icon guideline-icon violet"><image src="assets/diversity_3.svg" mode="aspectFit" aria-hidden="true" /></view><view class="guideline-heading"><view>友善、包容与边界感</view><text decode="{{true}}">Inclusivity &amp; Boundaries</text></view><text class="head-tag violet-tag">社交边界</text></view>
+    <view class="guideline-body">
+      <view class="rule-row"><view class="rule-dot violet-dot"><image src="assets/hearing.svg" mode="aspectFit" aria-hidden="true" /></view><view class="rule-copy"><view class="rule-title">尊重多元差异</view><view>经验、水平和背景不同的人，仍应得到平等尊重。</view></view></view>
+      <view class="rule-divider"></view>
+      <view class="rule-row"><view class="rule-dot error-dot"><image src="assets/block.svg" mode="aspectFit" aria-hidden="true" /></view><view class="rule-copy"><view class="rule-title error-title">零容忍骚扰与强推</view><view>未经同意不得索取或传播联系方式、照片与私密信息。</view></view></view>
+    </view>
+  </view>
+  <view class="pg10-card guideline-card">
+    <view class="guideline-head"><view class="pg10-icon guideline-icon green"><image src="assets/receipt_long.svg" mode="aspectFit" aria-hidden="true" /></view><view class="guideline-heading"><view>透明、合理的费用 AA</view><text decode="{{true}}">Fair &amp; Clear Accounting</text></view><text class="head-tag green-tag">财务守信</text></view>
+    <view class="guideline-body">
+      <view class="rule-row"><view class="rule-dot green-dot"><image src="assets/visibility.svg" mode="aspectFit" aria-hidden="true" /></view><view class="rule-copy"><view class="rule-title">费用明细公开</view><view>报名时明确费用模式和每人上限；额外费用应在活动内说明。</view></view></view>
+      <view class="rule-divider"></view>
+      <view class="rule-row"><view class="rule-dot green-dot"><image src="assets/bolt.svg" mode="aspectFit" aria-hidden="true" /></view><view class="rule-copy"><view class="rule-title">双方标记仅作记录</view><view>费用页的标记不是平台收付款或交易凭证。</view></view></view>
+    </view>
+  </view>
+  <view class="pg10-card guideline-card">
+    <view class="guideline-head"><view class="pg10-icon guideline-icon lime"><image src="assets/photo_camera_front.svg" mode="aspectFit" aria-hidden="true" /></view><view class="guideline-heading"><view>肖像权与记录边界</view><text decode="{{true}}">Respect for Privacy &amp; Photos</text></view></view>
+    <view class="guideline-body privacy-body">
+      <view class="rule-row"><image class="privacy-symbol" src="assets/check_circle.svg" mode="aspectFit" aria-hidden="true" /><view class="rule-copy">拍摄和传播他人影像前应取得本人同意；活动相册尚未开放。</view></view>
+      <view class="rule-row"><image class="privacy-symbol" src="assets/privacy_tip.svg" mode="aspectFit" aria-hidden="true" /><view class="rule-copy">平台提供举报、屏蔽及本人数据请求入口，保护个人边界。</view></view>
+    </view>
+  </view>
+  <view class="pg10-card guideline-quote">
+    <view class="quote-row"><image class="quote-symbol" src="assets/format_quote.svg" mode="aspectFit" aria-hidden="true" /><view class="quote-copy"><view>“把有趣的人聚在真实世界，用真实守护彼此的善意。”</view><text>— Project IRL 当前社区引导</text></view></view>
+    <button class="guidelines-report" bindtap="goReport"><view class="report-check"><image src="assets/check.svg" mode="aspectFit" aria-hidden="true" /></view><text>需要帮助？前往举报与求助</text><text class="report-chevron">›</text></button>
+  </view>
+  <view class="guidelines-foot"><image src="assets/shield.svg" mode="aspectFit" aria-hidden="true" /><text>以上为当前使用引导；正式社区协议仍需审核与发布</text></view>
 </view>

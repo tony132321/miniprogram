@@ -1,0 +1,202 @@
+{
+  "assets": {
+    "arrow_back_ios_new.svg": {
+      "assetSha256": "b4d72b3ef91399480f63d49489df5b8ff1b26436974b423b3c60d11b103ff854",
+      "change": "SVG root fill only; glyph paths unchanged",
+      "color": "#1a1b1f",
+      "fill": 0,
+      "sourceSha256": "24883e73bfab266fa35e91ae4f014c72ad858c4d7ab0ee51a9a171616dacd43f",
+      "sourceUrl": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/arrow_back_ios_new/materialsymbolsoutlined/arrow_back_ios_new_24px.svg",
+      "symbol": "arrow_back_ios_new"
+    },
+    "block.svg": {
+      "assetSha256": "0da31eff7890157ecb2eb9f1f330bc396478a72a02b994696766d229ec575ae6",
+      "change": "SVG root fill only; glyph paths unchanged",
+      "color": "#ba1a1a",
+      "fill": 0,
+      "sourceSha256": "51573b77765b23ea750d8a03dcf0eda5ad7885a711da763861cc1f2895e155fe",
+      "sourceUrl": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/block/materialsymbolsoutlined/block_24px.svg",
+      "symbol": "block"
+    },
+    "bolt.svg": {
+      "assetSha256": "4f11fb368f2973299e84dba21126f86ac730070ce5f73cf494da6dd1b4c0e18d",
+      "change": "SVG root fill only; glyph paths unchanged",
+      "color": "#34C759",
+      "fill": 0,
+      "sourceSha256": "efc632df3302b78537d07d8fd674a66cb911b132515cd4f84c6a6a995ecff8e7",
+      "sourceUrl": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/bolt/materialsymbolsoutlined/bolt_24px.svg",
+      "symbol": "bolt"
+    },
+    "check.svg": {
+      "assetSha256": "6db18814561155b57d4a71238cdafaf95bae08f4018739526171f786ff856e87",
+      "change": "SVG root fill only; glyph paths unchanged",
+      "color": "#ffffff",
+      "fill": 1,
+      "sourceSha256": "01edd53418816632be08e9565b8ca40d9028c230a8a67baaf4b8a1de20db00e6",
+      "sourceUrl": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/check/materialsymbolsoutlined/check_fill1_24px.svg",
+      "symbol": "check"
+    },
+    "check_circle.svg": {
+      "assetSha256": "6f50cce60dbdbb7d9fa4657e97bb4d591312ab12b07ca59e86c50bf7d9f57066",
+      "change": "SVG root fill only; glyph paths unchanged",
+      "color": "#004cc8",
+      "fill": 0,
+      "sourceSha256": "42bf0950bc12ecf7952a8c3be86e0131f225095a7dc6c824a659a13df442e373",
+      "sourceUrl": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/check_circle/materialsymbolsoutlined/check_circle_24px.svg",
+      "symbol": "check_circle"
+    },
+    "diversity_3.svg": {
+      "assetSha256": "254d6abd352c681dfc19d764d0c82c51fa7e16ca9db5bed3ed7d3aa15768bb2c",
+      "change": "SVG root fill only; glyph paths unchanged",
+      "color": "#5856D6",
+      "fill": 0,
+      "sourceSha256": "39c7066751095c2a5bf89ce5974aa1c109a47d24edfaafee1834cd6530d6b68d",
+      "sourceUrl": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/diversity_3/materialsymbolsoutlined/diversity_3_24px.svg",
+      "symbol": "diversity_3"
+    },
+    "event_busy.svg": {
+      "assetSha256": "63bbce43845ae64d5425120255216caa1f4e933dc86184dd33bd6a895a85eea1",
+      "change": "SVG root fill only; glyph paths unchanged",
+      "color": "#004cc8",
+      "fill": 0,
+      "sourceSha256": "a32b93b546824b752017359fa047785a554d5844f6ff182f08811036584f03d7",
+      "sourceUrl": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/event_busy/materialsymbolsoutlined/event_busy_24px.svg",
+      "symbol": "event_busy"
+    },
+    "favorite.svg": {
+      "assetSha256": "1a58f7a504c4d156c5c3eb5a1a716640708d1bf11747ab6507e110669e3560c9",
+      "change": "SVG root fill only; glyph paths unchanged",
+      "color": "#ffffff",
+      "fill": 1,
+      "sourceSha256": "9cdbf13de19a1674c2a22ce290cc5b678596ec54654c4614b810a69fffdd21d1",
+      "sourceUrl": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/favorite/materialsymbolsoutlined/favorite_fill1_24px.svg",
+      "symbol": "favorite"
+    },
+    "format_quote.svg": {
+      "assetSha256": "3e8e8488712dcf0adb748e81d35c3667fe5b2232fc8e3cd12044a7b33b89a4d6",
+      "change": "SVG root fill only; glyph paths unchanged",
+      "color": "#5856D6",
+      "fill": 0,
+      "sourceSha256": "9179e24a83127b46c116d16412e924f9ba546df4dfd247a19af3c8ce7082ddb6",
+      "sourceUrl": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/format_quote/materialsymbolsoutlined/format_quote_24px.svg",
+      "symbol": "format_quote"
+    },
+    "gavel.svg": {
+      "assetSha256": "927103e091a9b7421e1e1dc6adbb46f49bdf730b7738dd3f3a56a289318e1926",
+      "change": "SVG root fill only; glyph paths unchanged",
+      "color": "#FF2D55",
+      "fill": 0,
+      "sourceSha256": "71adf8ecaa51321ac9fd2d0c6c9716bf055bee4ce5742a1a9227a91f2320ba1c",
+      "sourceUrl": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/gavel/materialsymbolsoutlined/gavel_24px.svg",
+      "symbol": "gavel"
+    },
+    "handshake.svg": {
+      "assetSha256": "5eb987496ce88696752566d193fe5dc58b9e5be307a93b803cc1a410ba93e8e1",
+      "change": "SVG root fill only; glyph paths unchanged",
+      "color": "#ffffff",
+      "fill": 1,
+      "sourceSha256": "f5673e18a6ab5762c6e7d30a11e460e4fe01296f54528b7f030cc3dcc8f1c536",
+      "sourceUrl": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/handshake/materialsymbolsoutlined/handshake_fill1_24px.svg",
+      "symbol": "handshake"
+    },
+    "hearing.svg": {
+      "assetSha256": "20c5c015b8d231447cf32b4390e94e89e3a5742019bd8ac2f358e9a188c4ad4f",
+      "change": "SVG root fill only; glyph paths unchanged",
+      "color": "#5856D6",
+      "fill": 0,
+      "sourceSha256": "8ff15df90623da82a7f42f140bc4afb177b2d51458fc6bd30def9caf7677376f",
+      "sourceUrl": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/hearing/materialsymbolsoutlined/hearing_24px.svg",
+      "symbol": "hearing"
+    },
+    "ios_share.svg": {
+      "assetSha256": "6c3a103aa10a003359f1e5caab07b6f4d3e5e54d86863872e5789a88b64b511f",
+      "change": "SVG root fill only; glyph paths unchanged",
+      "color": "#424655",
+      "fill": 0,
+      "sourceSha256": "a3709b2a5ee59f4d7614828ce631baece0c4314639bcbc4bf8e56066b89ee070",
+      "sourceUrl": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/ios_share/materialsymbolsoutlined/ios_share_24px.svg",
+      "symbol": "ios_share"
+    },
+    "more_horiz.svg": {
+      "assetSha256": "0ddad076ae957d75bfde46ec8d44959603e0982584656894bb616f91018c33b2",
+      "change": "SVG root fill only; glyph paths unchanged",
+      "color": "#424655",
+      "fill": 0,
+      "sourceSha256": "498ade89fbbdd4f4ab9b90bb49bae4cc6b2dc0ff0f019b6b051ac641a7bd5872",
+      "sourceUrl": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/more_horiz/materialsymbolsoutlined/more_horiz_24px.svg",
+      "symbol": "more_horiz"
+    },
+    "person.svg": {
+      "assetSha256": "d66a89fc9036f18a31f3804ee7b19f52a7954e31cc1cbfbd9b98f206a8299d6f",
+      "change": "SVG root fill only; glyph paths unchanged",
+      "color": "#ffffff",
+      "fill": 0,
+      "sourceSha256": "42f1c6f70aaea6be1bce078d1bd3bdc027a343943827443fe3ea46320b9dac96",
+      "sourceUrl": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/person/materialsymbolsoutlined/person_24px.svg",
+      "symbol": "person"
+    },
+    "photo_camera_front.svg": {
+      "assetSha256": "2a5d67a55d6462012cb1065481801961458d44393c419d62ed655dd361262ac7",
+      "change": "SVG root fill only; glyph paths unchanged",
+      "color": "#4d5d00",
+      "fill": 0,
+      "sourceSha256": "2925766800436ba5ba0f2070f2ab86444a5e493843b8db3b10abf032561d677c",
+      "sourceUrl": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/photo_camera_front/materialsymbolsoutlined/photo_camera_front_24px.svg",
+      "symbol": "photo_camera_front"
+    },
+    "privacy_tip.svg": {
+      "assetSha256": "b672752e835acc4b0ead17da568f5d360c6a32937e605f6a929cf69a6849a592",
+      "change": "SVG root fill only; glyph paths unchanged",
+      "color": "#004cc8",
+      "fill": 0,
+      "sourceSha256": "07010f8f94b350d35694a1c835c261223ad84e74ab6e5c74852c4874ae8d7c21",
+      "sourceUrl": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/privacy_tip/materialsymbolsoutlined/privacy_tip_24px.svg",
+      "symbol": "privacy_tip"
+    },
+    "receipt_long.svg": {
+      "assetSha256": "dfae002485b8bd35616b83e8d9dcde2df803115de2b4ebad7fea7017b8f77852",
+      "change": "SVG root fill only; glyph paths unchanged",
+      "color": "#34C759",
+      "fill": 0,
+      "sourceSha256": "03ac9b0db2cf67cdb561a10403e6bda20b54b72fbeb1e16bcb86ea9f7f3189de",
+      "sourceUrl": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/receipt_long/materialsymbolsoutlined/receipt_long_24px.svg",
+      "symbol": "receipt_long"
+    },
+    "schedule.svg": {
+      "assetSha256": "c70cf4562111b1be6b41a6777809f53e0b84844dca652d6af3069bb8958d5a58",
+      "change": "SVG root fill only; glyph paths unchanged",
+      "color": "#004cc8",
+      "fill": 0,
+      "sourceSha256": "6b6606472e4d807e4b2afc8cd667a48fa634341d44487580a7b350f8dd790170",
+      "sourceUrl": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/schedule/materialsymbolsoutlined/schedule_24px.svg",
+      "symbol": "schedule"
+    },
+    "shield.svg": {
+      "assetSha256": "bd5deaa35d8695f41707c8f8bebfc9b8c1a3d0bc6f965866ec86a4333fc70ad8",
+      "change": "SVG root fill only; glyph paths unchanged",
+      "color": "#424655",
+      "fill": 0,
+      "sourceSha256": "06e04825326fb2bfa5ca911f8d9379da8b09bc36b3f04b371ddaebee71bd3f8f",
+      "sourceUrl": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/shield/materialsymbolsoutlined/shield_24px.svg",
+      "symbol": "shield"
+    },
+    "visibility.svg": {
+      "assetSha256": "206368e13abad1f5ec2865307958cb55e36e5a4da9cd70dd5ac395607ef09f38",
+      "change": "SVG root fill only; glyph paths unchanged",
+      "color": "#34C759",
+      "fill": 0,
+      "sourceSha256": "07f07478fc58500ce05000c3b123cb95de57aad9b106b9cfa58720528ea09bd7",
+      "sourceUrl": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/visibility/materialsymbolsoutlined/visibility_24px.svg",
+      "symbol": "visibility"
+    }
+  },
+  "commit": "bd8cb85bd4bad964fe6918f79665bb40c3a8efef",
+  "license": "Apache-2.0",
+  "repository": "https://github.com/google/material-design-icons",
+  "sourceAxes": {
+    "grade": 0,
+    "opticalSize": 24,
+    "style": "outlined",
+    "weight": 400
+  }
+}

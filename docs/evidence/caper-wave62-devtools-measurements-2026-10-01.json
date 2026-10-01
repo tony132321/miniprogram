@@ -1,0 +1,2592 @@
+{
+  "checkedAt": "2026-10-01T14:12:34.175491+00:00",
+  "baseline": {
+    "localCommit": "8cdd5647c859b92abfc1fc17052c4119f8a14aa9",
+    "githubCommit": "0f4400bbba12643fd6be14ef872a045bb944475f",
+    "tree": "482aaf9b70dd7d128a61d5c501d020d49a7c71cb"
+  },
+  "scope": "4 changed public information pages; no full suites",
+  "routes": [
+    {
+      "page": "about",
+      "route": "pages/about/about",
+      "level": "bounded changed-page WeChat DevTools checks",
+      "checks": [
+        {
+          "label": "top status cover top",
+          "pass": true,
+          "actual": 0,
+          "expected": 0
+        },
+        {
+          "label": "top native status cover height",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "top status cover noninteractive",
+          "pass": true,
+          "actual": {
+            "position": "fixed",
+            "pointer-events": "none"
+          },
+          "expected": {
+            "position": "fixed",
+            "pointer-events": "none"
+          }
+        },
+        {
+          "label": "top sticky top",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "top header source56px",
+          "pass": true,
+          "actual": 60,
+          "expected": 60.032000000000004
+        },
+        {
+          "label": "top sticky position",
+          "pass": true,
+          "actual": "sticky",
+          "expected": "sticky"
+        },
+        {
+          "label": "top back hit width44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top back hit height44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top more hit width44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top more hit height44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top avatar32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "top avatar height32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "top capsule clearance",
+          "pass": true,
+          "actual": 8,
+          "expected": 8
+        },
+        {
+          "label": "top original avatar blue",
+          "pass": true,
+          "actual": "rgb(0, 76, 200)",
+          "expected": "#004cc8"
+        },
+        {
+          "label": "top source gutter16px",
+          "pass": true,
+          "actual": "17px",
+          "expected": 17.152
+        },
+        {
+          "label": "top title17px",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "top actual header glyph count",
+          "pass": true,
+          "actual": 3,
+          "expected": 3
+        },
+        {
+          "label": "source logo box96px",
+          "pass": true,
+          "actual": 102,
+          "expected": 102.912
+        },
+        {
+          "label": "source logo height96px",
+          "pass": true,
+          "actual": 102,
+          "expected": 102.912
+        },
+        {
+          "label": "source SVG display56px",
+          "pass": true,
+          "actual": 60,
+          "expected": 60.032000000000004
+        },
+        {
+          "label": "source brand28px",
+          "pass": true,
+          "actual": "30px",
+          "expected": 30.016000000000002
+        },
+        {
+          "label": "About notes count",
+          "pass": true,
+          "actual": 3,
+          "expected": 3
+        },
+        {
+          "label": "About text native decode enabled",
+          "pass": true,
+          "actual": "true",
+          "expected": true
+        },
+        {
+          "label": "native page actually scrolled",
+          "pass": true,
+          "actual": 469,
+          "expected": ">0"
+        },
+        {
+          "label": "scrolled status cover top",
+          "pass": true,
+          "actual": 0,
+          "expected": 0
+        },
+        {
+          "label": "scrolled native status cover height",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "scrolled status cover noninteractive",
+          "pass": true,
+          "actual": {
+            "position": "fixed",
+            "pointer-events": "none"
+          },
+          "expected": {
+            "position": "fixed",
+            "pointer-events": "none"
+          }
+        },
+        {
+          "label": "scrolled sticky top",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "scrolled header source56px",
+          "pass": true,
+          "actual": 60,
+          "expected": 60.032000000000004
+        },
+        {
+          "label": "scrolled sticky position",
+          "pass": true,
+          "actual": "sticky",
+          "expected": "sticky"
+        },
+        {
+          "label": "scrolled back hit width44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled back hit height44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled more hit width44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled more hit height44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled avatar32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "scrolled avatar height32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "scrolled capsule clearance",
+          "pass": true,
+          "actual": 8,
+          "expected": 8
+        },
+        {
+          "label": "scrolled original avatar blue",
+          "pass": true,
+          "actual": "rgb(0, 76, 200)",
+          "expected": "#004cc8"
+        },
+        {
+          "label": "scrolled source gutter16px",
+          "pass": true,
+          "actual": "17px",
+          "expected": 17.152
+        },
+        {
+          "label": "scrolled title17px",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "scrolled actual header glyph count",
+          "pass": true,
+          "actual": 3,
+          "expected": 3
+        },
+        {
+          "label": "three actual About navigation buttons",
+          "pass": true,
+          "actual": 3,
+          "expected": 3
+        },
+        {
+          "label": "child back layout ready",
+          "pass": true,
+          "actual": {
+            "selector": ".pg10-back",
+            "offset": {
+              "left": 13,
+              "top": 60.5
+            },
+            "size": {
+              "width": 47,
+              "height": 47
+            },
+            "styles": {}
+          },
+          "expected": "visible touch box"
+        },
+        {
+          "label": "three actual About navigation buttons",
+          "pass": true,
+          "actual": 3,
+          "expected": 3
+        },
+        {
+          "label": "child back layout ready",
+          "pass": true,
+          "actual": {
+            "selector": ".pg10-back",
+            "offset": {
+              "left": 13,
+              "top": 60.5
+            },
+            "size": {
+              "width": 47,
+              "height": 47
+            },
+            "styles": {}
+          },
+          "expected": "visible touch box"
+        },
+        {
+          "label": "three actual About navigation buttons",
+          "pass": true,
+          "actual": 3,
+          "expected": 3
+        },
+        {
+          "label": "child back layout ready",
+          "pass": true,
+          "actual": {
+            "selector": ".pg10-back",
+            "offset": {
+              "left": 13,
+              "top": 60.5
+            },
+            "size": {
+              "width": 47,
+              "height": 47
+            },
+            "styles": {}
+          },
+          "expected": "visible touch box"
+        },
+        {
+          "label": "runtime exceptions",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "interactions": [
+        {
+          "label": "more menu opens/closes",
+          "enabled": true
+        },
+        {
+          "label": "actual release-notes card",
+          "selector": ".action-list button",
+          "index": 0,
+          "target": "subpackages/profile/release-notes/release-notes"
+        },
+        {
+          "label": "release-notes actual back",
+          "target": "pages/about/about"
+        },
+        {
+          "label": "actual guidelines card",
+          "selector": ".action-list button",
+          "index": 1,
+          "target": "subpackages/profile/guidelines/guidelines"
+        },
+        {
+          "label": "guidelines actual back",
+          "target": "pages/about/about"
+        },
+        {
+          "label": "actual open-source card",
+          "selector": ".action-list button",
+          "index": 2,
+          "target": "subpackages/profile/open-source/open-source"
+        },
+        {
+          "label": "open-source actual back",
+          "target": "pages/about/about"
+        },
+        {
+          "label": "real back fallback",
+          "selector": ".about-back",
+          "target": "pages/me/me",
+          "query": {}
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-about-top-wave62-2026-10-01.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-about-bottom-wave62-2026-10-01.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-about-menu-wave62-2026-10-01.png"
+      ],
+      "exceptions": [],
+      "native": {
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      "scale": 1.072,
+      "topHeader": {
+        "h": {
+          "selector": ".about-header",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 60
+          },
+          "styles": {
+            "position": "sticky",
+            "padding-right": "102px"
+          }
+        },
+        "b": {
+          "selector": ".about-back",
+          "offset": {
+            "left": 13,
+            "top": 60.5
+          },
+          "size": {
+            "width": 47,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "av": {
+          "selector": ".about-header-avatar",
+          "offset": {
+            "left": 266,
+            "top": 67
+          },
+          "size": {
+            "width": 34,
+            "height": 34
+          },
+          "styles": {
+            "background-color": "rgb(0, 76, 200)"
+          }
+        },
+        "mo": {
+          "selector": ".about-header-more",
+          "offset": {
+            "left": 215,
+            "top": 60.5
+          },
+          "size": {
+            "width": 47,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "pg": {
+          "selector": ".about-page",
+          "offset": {
+            "left": 0,
+            "top": 0
+          },
+          "size": {
+            "width": 402,
+            "height": 1343
+          },
+          "styles": {
+            "padding-left": "17px",
+            "padding-right": "17px"
+          }
+        },
+        "title": {
+          "selector": ".about-header-title",
+          "offset": {
+            "left": 68,
+            "top": 72.5
+          },
+          "size": {
+            "width": 139,
+            "height": 23
+          },
+          "styles": {
+            "font-size": "18px"
+          }
+        },
+        "images": [
+          {
+            "src": "./assets/arrow_back_ios_new.svg",
+            "size": {
+              "width": 25,
+              "height": 25
+            }
+          },
+          {
+            "src": "./assets/more_horiz.svg",
+            "size": {
+              "width": 23,
+              "height": 23
+            }
+          },
+          {
+            "src": "./assets/person.svg",
+            "size": {
+              "width": 19,
+              "height": 19
+            }
+          }
+        ]
+      },
+      "logo": {
+        "src": "./assets/infinity-spark.svg",
+        "size": {
+          "width": 60,
+          "height": 60
+        }
+      },
+      "rawAboutSubtitle": "Open Source Software &amp; Frameworks",
+      "actualScrollTop": 469,
+      "scrolledHeader": {
+        "h": {
+          "selector": ".about-header",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 60
+          },
+          "styles": {
+            "position": "sticky",
+            "padding-right": "102px"
+          }
+        },
+        "b": {
+          "selector": ".about-back",
+          "offset": {
+            "left": 13,
+            "top": 60.5
+          },
+          "size": {
+            "width": 47,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "av": {
+          "selector": ".about-header-avatar",
+          "offset": {
+            "left": 266,
+            "top": 67
+          },
+          "size": {
+            "width": 34,
+            "height": 34
+          },
+          "styles": {
+            "background-color": "rgb(0, 76, 200)"
+          }
+        },
+        "mo": {
+          "selector": ".about-header-more",
+          "offset": {
+            "left": 215,
+            "top": 60.5
+          },
+          "size": {
+            "width": 47,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "pg": {
+          "selector": ".about-page",
+          "offset": {
+            "left": 0,
+            "top": -469
+          },
+          "size": {
+            "width": 402,
+            "height": 1343
+          },
+          "styles": {
+            "padding-left": "17px",
+            "padding-right": "17px"
+          }
+        },
+        "title": {
+          "selector": ".about-header-title",
+          "offset": {
+            "left": 68,
+            "top": 72.5
+          },
+          "size": {
+            "width": 139,
+            "height": 23
+          },
+          "styles": {
+            "font-size": "18px"
+          }
+        },
+        "images": [
+          {
+            "src": "./assets/arrow_back_ios_new.svg",
+            "size": {
+              "width": 25,
+              "height": 25
+            }
+          },
+          {
+            "src": "./assets/more_horiz.svg",
+            "size": {
+              "width": 23,
+              "height": 23
+            }
+          },
+          {
+            "src": "./assets/person.svg",
+            "size": {
+              "width": 19,
+              "height": 19
+            }
+          }
+        ]
+      },
+      "pass": true,
+      "elapsedMs": 30582
+    },
+    {
+      "page": "release-notes",
+      "route": "subpackages/profile/release-notes/release-notes",
+      "level": "bounded changed-page WeChat DevTools checks",
+      "checks": [
+        {
+          "label": "top status cover top",
+          "pass": true,
+          "actual": 0,
+          "expected": 0
+        },
+        {
+          "label": "top native status cover height",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "top status cover noninteractive",
+          "pass": true,
+          "actual": {
+            "position": "fixed",
+            "pointer-events": "none"
+          },
+          "expected": {
+            "position": "fixed",
+            "pointer-events": "none"
+          }
+        },
+        {
+          "label": "top sticky top",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "top header source56px",
+          "pass": true,
+          "actual": 60,
+          "expected": 60.032000000000004
+        },
+        {
+          "label": "top sticky position",
+          "pass": true,
+          "actual": "sticky",
+          "expected": "sticky"
+        },
+        {
+          "label": "top back hit width44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top back hit height44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top more hit width44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top more hit height44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top avatar32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "top avatar height32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "top capsule clearance",
+          "pass": true,
+          "actual": 8,
+          "expected": 8
+        },
+        {
+          "label": "top original avatar blue",
+          "pass": true,
+          "actual": "rgb(0, 76, 200)",
+          "expected": "#004cc8"
+        },
+        {
+          "label": "top source gutter16px",
+          "pass": true,
+          "actual": "17px",
+          "expected": 17.152
+        },
+        {
+          "label": "top title17px",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "top actual header glyph count",
+          "pass": true,
+          "actual": 4,
+          "expected": 4
+        },
+        {
+          "label": "top share44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top shareheight44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top read-only sharepath",
+          "pass": true,
+          "actual": "/subpackages/profile/release-notes/release-notes",
+          "expected": "/subpackages/profile/release-notes/release-notes"
+        },
+        {
+          "label": "source hero22px",
+          "pass": true,
+          "actual": "23px",
+          "expected": 23.584000000000003
+        },
+        {
+          "label": "original photo144px",
+          "pass": true,
+          "actual": 154,
+          "expected": 154.368
+        },
+        {
+          "label": "two source photos",
+          "pass": true,
+          "actual": 2,
+          "expected": 2
+        },
+        {
+          "label": "original photos aspectFill",
+          "pass": true,
+          "actual": [
+            {
+              "src": "assets/reference-scene-1.jpg",
+              "mode": "aspectFill"
+            },
+            {
+              "src": "assets/reference-scene-2.jpg",
+              "mode": "aspectFill"
+            }
+          ],
+          "expected": "aspectFill"
+        },
+        {
+          "label": "native page actually scrolled",
+          "pass": true,
+          "actual": 1348.5,
+          "expected": ">0"
+        },
+        {
+          "label": "scrolled status cover top",
+          "pass": true,
+          "actual": 0,
+          "expected": 0
+        },
+        {
+          "label": "scrolled native status cover height",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "scrolled status cover noninteractive",
+          "pass": true,
+          "actual": {
+            "position": "fixed",
+            "pointer-events": "none"
+          },
+          "expected": {
+            "position": "fixed",
+            "pointer-events": "none"
+          }
+        },
+        {
+          "label": "scrolled sticky top",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "scrolled header source56px",
+          "pass": true,
+          "actual": 60,
+          "expected": 60.032000000000004
+        },
+        {
+          "label": "scrolled sticky position",
+          "pass": true,
+          "actual": "sticky",
+          "expected": "sticky"
+        },
+        {
+          "label": "scrolled back hit width44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled back hit height44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled more hit width44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled more hit height44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled avatar32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "scrolled avatar height32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "scrolled capsule clearance",
+          "pass": true,
+          "actual": 8,
+          "expected": 8
+        },
+        {
+          "label": "scrolled original avatar blue",
+          "pass": true,
+          "actual": "rgb(0, 76, 200)",
+          "expected": "#004cc8"
+        },
+        {
+          "label": "scrolled source gutter16px",
+          "pass": true,
+          "actual": "17px",
+          "expected": 17.152
+        },
+        {
+          "label": "scrolled title17px",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "scrolled actual header glyph count",
+          "pass": true,
+          "actual": 4,
+          "expected": 4
+        },
+        {
+          "label": "scrolled share44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled shareheight44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled read-only sharepath",
+          "pass": true,
+          "actual": "/subpackages/profile/release-notes/release-notes",
+          "expected": "/subpackages/profile/release-notes/release-notes"
+        },
+        {
+          "label": "two current release footer actions",
+          "pass": true,
+          "actual": 2,
+          "expected": 2
+        },
+        {
+          "label": "runtime exceptions",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "interactions": [
+        {
+          "label": "more menu opens/closes",
+          "enabled": true
+        },
+        {
+          "label": "current own activities",
+          "target": "subpackages/profile/moments/moments",
+          "query": {
+            "filter": "all"
+          }
+        },
+        {
+          "label": "real create tab",
+          "target": "pages/create/create",
+          "query": {}
+        },
+        {
+          "label": "real back fallback",
+          "selector": ".pg10-back",
+          "target": "pages/me/me",
+          "query": {}
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-release-top-wave62-2026-10-01.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-release-bottom-wave62-2026-10-01.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-release-menu-wave62-2026-10-01.png"
+      ],
+      "exceptions": [],
+      "native": {
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      "scale": 1.072,
+      "shareMetadata": {
+        "title": "Project IRL · 当前功能与版本说明",
+        "path": "/subpackages/profile/release-notes/release-notes"
+      },
+      "topHeader": {
+        "h": {
+          "selector": ".release-header",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 60
+          },
+          "styles": {
+            "position": "sticky",
+            "padding-right": "102px"
+          }
+        },
+        "b": {
+          "selector": ".pg10-back",
+          "offset": {
+            "left": 13,
+            "top": 60.5
+          },
+          "size": {
+            "width": 47,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "av": {
+          "selector": ".pg10-header-avatar",
+          "offset": {
+            "left": 266,
+            "top": 67
+          },
+          "size": {
+            "width": 34,
+            "height": 34
+          },
+          "styles": {
+            "background-color": "rgb(0, 76, 200)"
+          }
+        },
+        "mo": {
+          "selector": ".pg10-header-more",
+          "offset": {
+            "left": 211,
+            "top": 60.5
+          },
+          "size": {
+            "width": 47,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "pg": {
+          "selector": ".release-page",
+          "offset": {
+            "left": 0,
+            "top": 0
+          },
+          "size": {
+            "width": 402,
+            "height": 2222.5
+          },
+          "styles": {
+            "padding-left": "17px",
+            "padding-right": "17px"
+          }
+        },
+        "title": {
+          "selector": ".pg10-header-title",
+          "offset": {
+            "left": 60,
+            "top": 72.5
+          },
+          "size": {
+            "width": 100,
+            "height": 23
+          },
+          "styles": {
+            "font-size": "18px"
+          }
+        },
+        "images": [
+          {
+            "src": "assets/back.svg",
+            "size": {
+              "width": 25,
+              "height": 25
+            }
+          },
+          {
+            "src": "assets/share.svg",
+            "size": {
+              "width": 23,
+              "height": 23
+            }
+          },
+          {
+            "src": "assets/more.svg",
+            "size": {
+              "width": 23,
+              "height": 23
+            }
+          },
+          {
+            "src": "assets/person.svg",
+            "size": {
+              "width": 19,
+              "height": 19
+            }
+          }
+        ]
+      },
+      "photos": [
+        {
+          "src": "assets/reference-scene-1.jpg",
+          "mode": "aspectFill"
+        },
+        {
+          "src": "assets/reference-scene-2.jpg",
+          "mode": "aspectFill"
+        }
+      ],
+      "actualScrollTop": 1348.5,
+      "scrolledHeader": {
+        "h": {
+          "selector": ".release-header",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 60
+          },
+          "styles": {
+            "position": "sticky",
+            "padding-right": "102px"
+          }
+        },
+        "b": {
+          "selector": ".pg10-back",
+          "offset": {
+            "left": 13,
+            "top": 60.5
+          },
+          "size": {
+            "width": 47,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "av": {
+          "selector": ".pg10-header-avatar",
+          "offset": {
+            "left": 266,
+            "top": 67
+          },
+          "size": {
+            "width": 34,
+            "height": 34
+          },
+          "styles": {
+            "background-color": "rgb(0, 76, 200)"
+          }
+        },
+        "mo": {
+          "selector": ".pg10-header-more",
+          "offset": {
+            "left": 211,
+            "top": 60.5
+          },
+          "size": {
+            "width": 47,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "pg": {
+          "selector": ".release-page",
+          "offset": {
+            "left": 0,
+            "top": -1348.5
+          },
+          "size": {
+            "width": 402,
+            "height": 2222.5
+          },
+          "styles": {
+            "padding-left": "17px",
+            "padding-right": "17px"
+          }
+        },
+        "title": {
+          "selector": ".pg10-header-title",
+          "offset": {
+            "left": 60,
+            "top": 72.5
+          },
+          "size": {
+            "width": 100,
+            "height": 23
+          },
+          "styles": {
+            "font-size": "18px"
+          }
+        },
+        "images": [
+          {
+            "src": "assets/back.svg",
+            "size": {
+              "width": 25,
+              "height": 25
+            }
+          },
+          {
+            "src": "assets/share.svg",
+            "size": {
+              "width": 23,
+              "height": 23
+            }
+          },
+          {
+            "src": "assets/more.svg",
+            "size": {
+              "width": 23,
+              "height": 23
+            }
+          },
+          {
+            "src": "assets/person.svg",
+            "size": {
+              "width": 19,
+              "height": 19
+            }
+          }
+        ]
+      },
+      "actualActivityCount": 3,
+      "pass": true,
+      "elapsedMs": 15903
+    },
+    {
+      "page": "guidelines",
+      "route": "subpackages/profile/guidelines/guidelines",
+      "level": "bounded changed-page WeChat DevTools checks",
+      "checks": [
+        {
+          "label": "top status cover top",
+          "pass": true,
+          "actual": 0,
+          "expected": 0
+        },
+        {
+          "label": "top native status cover height",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "top status cover noninteractive",
+          "pass": true,
+          "actual": {
+            "position": "fixed",
+            "pointer-events": "none"
+          },
+          "expected": {
+            "position": "fixed",
+            "pointer-events": "none"
+          }
+        },
+        {
+          "label": "top sticky top",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "top header source56px",
+          "pass": true,
+          "actual": 60,
+          "expected": 60.032000000000004
+        },
+        {
+          "label": "top sticky position",
+          "pass": true,
+          "actual": "sticky",
+          "expected": "sticky"
+        },
+        {
+          "label": "top back hit width44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top back hit height44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top more hit width44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top more hit height44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top avatar32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "top avatar height32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "top capsule clearance",
+          "pass": true,
+          "actual": 8,
+          "expected": 8
+        },
+        {
+          "label": "top original avatar blue",
+          "pass": true,
+          "actual": "rgb(0, 76, 200)",
+          "expected": "#004cc8"
+        },
+        {
+          "label": "top source gutter16px",
+          "pass": true,
+          "actual": "17px",
+          "expected": 17.152
+        },
+        {
+          "label": "top title17px",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "top actual header glyph count",
+          "pass": true,
+          "actual": 4,
+          "expected": 4
+        },
+        {
+          "label": "top share44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top shareheight44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top read-only sharepath",
+          "pass": true,
+          "actual": "/subpackages/profile/guidelines/guidelines",
+          "expected": "/subpackages/profile/guidelines/guidelines"
+        },
+        {
+          "label": "source hero64px circle",
+          "pass": true,
+          "actual": 68,
+          "expected": 68.608
+        },
+        {
+          "label": "source FILL1 handshake32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "source hero title22px",
+          "pass": true,
+          "actual": "23px",
+          "expected": 23.584000000000003
+        },
+        {
+          "label": "native page actually scrolled",
+          "pass": true,
+          "actual": 850,
+          "expected": ">0"
+        },
+        {
+          "label": "scrolled status cover top",
+          "pass": true,
+          "actual": 0,
+          "expected": 0
+        },
+        {
+          "label": "scrolled native status cover height",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "scrolled status cover noninteractive",
+          "pass": true,
+          "actual": {
+            "position": "fixed",
+            "pointer-events": "none"
+          },
+          "expected": {
+            "position": "fixed",
+            "pointer-events": "none"
+          }
+        },
+        {
+          "label": "scrolled sticky top",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "scrolled header source56px",
+          "pass": true,
+          "actual": 60,
+          "expected": 60.032000000000004
+        },
+        {
+          "label": "scrolled sticky position",
+          "pass": true,
+          "actual": "sticky",
+          "expected": "sticky"
+        },
+        {
+          "label": "scrolled back hit width44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled back hit height44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled more hit width44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled more hit height44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled avatar32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "scrolled avatar height32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "scrolled capsule clearance",
+          "pass": true,
+          "actual": 8,
+          "expected": 8
+        },
+        {
+          "label": "scrolled original avatar blue",
+          "pass": true,
+          "actual": "rgb(0, 76, 200)",
+          "expected": "#004cc8"
+        },
+        {
+          "label": "scrolled source gutter16px",
+          "pass": true,
+          "actual": "17px",
+          "expected": 17.152
+        },
+        {
+          "label": "scrolled title17px",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "scrolled actual header glyph count",
+          "pass": true,
+          "actual": 4,
+          "expected": 4
+        },
+        {
+          "label": "scrolled share44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled shareheight44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled read-only sharepath",
+          "pass": true,
+          "actual": "/subpackages/profile/guidelines/guidelines",
+          "expected": "/subpackages/profile/guidelines/guidelines"
+        },
+        {
+          "label": "report focus visible",
+          "pass": true,
+          "actual": {
+            "selector": "#reportSection",
+            "offset": {
+              "left": 18,
+              "top": 129.6171875
+            },
+            "size": {
+              "width": 366,
+              "height": 16.5
+            },
+            "styles": {}
+          },
+          "expected": "visible"
+        },
+        {
+          "label": "runtime exceptions",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "interactions": [
+        {
+          "label": "more menu opens/closes",
+          "enabled": true
+        },
+        {
+          "label": "current report request target",
+          "selector": ".guidelines-report",
+          "target": "pages/me/me",
+          "query": {}
+        },
+        {
+          "label": "real back fallback",
+          "selector": ".pg10-back",
+          "target": "pages/me/me",
+          "query": {}
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-guidelines-top-wave62-2026-10-01.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-guidelines-bottom-wave62-2026-10-01.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-guidelines-menu-wave62-2026-10-01.png"
+      ],
+      "exceptions": [],
+      "native": {
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      "scale": 1.072,
+      "shareMetadata": {
+        "title": "Project IRL · 社区引导与线下社交守则",
+        "path": "/subpackages/profile/guidelines/guidelines"
+      },
+      "topHeader": {
+        "h": {
+          "selector": ".guidelines-header",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 60
+          },
+          "styles": {
+            "position": "sticky",
+            "padding-right": "102px"
+          }
+        },
+        "b": {
+          "selector": ".pg10-back",
+          "offset": {
+            "left": 13,
+            "top": 60.5
+          },
+          "size": {
+            "width": 47,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "av": {
+          "selector": ".pg10-header-avatar",
+          "offset": {
+            "left": 266,
+            "top": 67
+          },
+          "size": {
+            "width": 34,
+            "height": 34
+          },
+          "styles": {
+            "background-color": "rgb(0, 76, 200)"
+          }
+        },
+        "mo": {
+          "selector": ".pg10-header-more",
+          "offset": {
+            "left": 211,
+            "top": 60.5
+          },
+          "size": {
+            "width": 47,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "pg": {
+          "selector": ".guidelines-page",
+          "offset": {
+            "left": 0,
+            "top": 0
+          },
+          "size": {
+            "width": 402,
+            "height": 1724
+          },
+          "styles": {
+            "padding-left": "17px",
+            "padding-right": "17px"
+          }
+        },
+        "title": {
+          "selector": ".pg10-header-title",
+          "offset": {
+            "left": 60,
+            "top": 72.5
+          },
+          "size": {
+            "width": 100,
+            "height": 23
+          },
+          "styles": {
+            "font-size": "18px"
+          }
+        },
+        "images": [
+          {
+            "src": "assets/arrow_back_ios_new.svg",
+            "size": {
+              "width": 25,
+              "height": 25
+            }
+          },
+          {
+            "src": "assets/ios_share.svg",
+            "size": {
+              "width": 23,
+              "height": 23
+            }
+          },
+          {
+            "src": "assets/more_horiz.svg",
+            "size": {
+              "width": 23,
+              "height": 23
+            }
+          },
+          {
+            "src": "assets/person.svg",
+            "size": {
+              "width": 19,
+              "height": 19
+            }
+          }
+        ]
+      },
+      "actualScrollTop": 850,
+      "scrolledHeader": {
+        "h": {
+          "selector": ".guidelines-header",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 60
+          },
+          "styles": {
+            "position": "sticky",
+            "padding-right": "102px"
+          }
+        },
+        "b": {
+          "selector": ".pg10-back",
+          "offset": {
+            "left": 13,
+            "top": 60.5
+          },
+          "size": {
+            "width": 47,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "av": {
+          "selector": ".pg10-header-avatar",
+          "offset": {
+            "left": 266,
+            "top": 67
+          },
+          "size": {
+            "width": 34,
+            "height": 34
+          },
+          "styles": {
+            "background-color": "rgb(0, 76, 200)"
+          }
+        },
+        "mo": {
+          "selector": ".pg10-header-more",
+          "offset": {
+            "left": 211,
+            "top": 60.5
+          },
+          "size": {
+            "width": 47,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "pg": {
+          "selector": ".guidelines-page",
+          "offset": {
+            "left": 0,
+            "top": -850
+          },
+          "size": {
+            "width": 402,
+            "height": 1724
+          },
+          "styles": {
+            "padding-left": "17px",
+            "padding-right": "17px"
+          }
+        },
+        "title": {
+          "selector": ".pg10-header-title",
+          "offset": {
+            "left": 60,
+            "top": 72.5
+          },
+          "size": {
+            "width": 100,
+            "height": 23
+          },
+          "styles": {
+            "font-size": "18px"
+          }
+        },
+        "images": [
+          {
+            "src": "assets/arrow_back_ios_new.svg",
+            "size": {
+              "width": 25,
+              "height": 25
+            }
+          },
+          {
+            "src": "assets/ios_share.svg",
+            "size": {
+              "width": 23,
+              "height": 23
+            }
+          },
+          {
+            "src": "assets/more_horiz.svg",
+            "size": {
+              "width": 23,
+              "height": 23
+            }
+          },
+          {
+            "src": "assets/person.svg",
+            "size": {
+              "width": 19,
+              "height": 19
+            }
+          }
+        ]
+      },
+      "reportFocus": {
+        "selector": "#reportSection",
+        "offset": {
+          "left": 18,
+          "top": 129.6171875
+        },
+        "size": {
+          "width": 366,
+          "height": 16.5
+        },
+        "styles": {}
+      },
+      "pass": true,
+      "elapsedMs": 11416
+    },
+    {
+      "page": "open-source",
+      "route": "subpackages/profile/open-source/open-source",
+      "level": "bounded changed-page WeChat DevTools checks",
+      "checks": [
+        {
+          "label": "top status cover top",
+          "pass": true,
+          "actual": 0,
+          "expected": 0
+        },
+        {
+          "label": "top native status cover height",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "top status cover noninteractive",
+          "pass": true,
+          "actual": {
+            "position": "fixed",
+            "pointer-events": "none"
+          },
+          "expected": {
+            "position": "fixed",
+            "pointer-events": "none"
+          }
+        },
+        {
+          "label": "top sticky top",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "top header source56px",
+          "pass": true,
+          "actual": 60,
+          "expected": 60.032000000000004
+        },
+        {
+          "label": "top sticky position",
+          "pass": true,
+          "actual": "sticky",
+          "expected": "sticky"
+        },
+        {
+          "label": "top back hit width44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top back hit height44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top more hit width44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top more hit height44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top avatar32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "top avatar height32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "top capsule clearance",
+          "pass": true,
+          "actual": 8,
+          "expected": 8
+        },
+        {
+          "label": "top original avatar blue",
+          "pass": true,
+          "actual": "rgb(0, 76, 200)",
+          "expected": "#004cc8"
+        },
+        {
+          "label": "top source gutter16px",
+          "pass": true,
+          "actual": "17px",
+          "expected": 17.152
+        },
+        {
+          "label": "top title17px",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "top actual header glyph count",
+          "pass": true,
+          "actual": 4,
+          "expected": 4
+        },
+        {
+          "label": "top share44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top shareheight44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "top read-only sharepath",
+          "pass": true,
+          "actual": "/subpackages/profile/open-source/open-source",
+          "expected": "/subpackages/profile/open-source/open-source"
+        },
+        {
+          "label": "source codebox48px",
+          "pass": true,
+          "actual": 51,
+          "expected": 51.456
+        },
+        {
+          "label": "actual pg attribution",
+          "pass": true,
+          "actual": "Brian Carlson",
+          "expected": "Brian Carlson"
+        },
+        {
+          "label": "Open-source text native decode enabled",
+          "pass": true,
+          "actual": "true",
+          "expected": true
+        },
+        {
+          "label": "native page actually scrolled",
+          "pass": true,
+          "actual": 828,
+          "expected": ">0"
+        },
+        {
+          "label": "scrolled status cover top",
+          "pass": true,
+          "actual": 0,
+          "expected": 0
+        },
+        {
+          "label": "scrolled native status cover height",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "scrolled status cover noninteractive",
+          "pass": true,
+          "actual": {
+            "position": "fixed",
+            "pointer-events": "none"
+          },
+          "expected": {
+            "position": "fixed",
+            "pointer-events": "none"
+          }
+        },
+        {
+          "label": "scrolled sticky top",
+          "pass": true,
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "label": "scrolled header source56px",
+          "pass": true,
+          "actual": 60,
+          "expected": 60.032000000000004
+        },
+        {
+          "label": "scrolled sticky position",
+          "pass": true,
+          "actual": "sticky",
+          "expected": "sticky"
+        },
+        {
+          "label": "scrolled back hit width44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled back hit height44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled more hit width44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled more hit height44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled avatar32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "scrolled avatar height32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "scrolled capsule clearance",
+          "pass": true,
+          "actual": 8,
+          "expected": 8
+        },
+        {
+          "label": "scrolled original avatar blue",
+          "pass": true,
+          "actual": "rgb(0, 76, 200)",
+          "expected": "#004cc8"
+        },
+        {
+          "label": "scrolled source gutter16px",
+          "pass": true,
+          "actual": "17px",
+          "expected": 17.152
+        },
+        {
+          "label": "scrolled title17px",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "scrolled actual header glyph count",
+          "pass": true,
+          "actual": 4,
+          "expected": 4
+        },
+        {
+          "label": "scrolled share44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled shareheight44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "scrolled read-only sharepath",
+          "pass": true,
+          "actual": "/subpackages/profile/open-source/open-source",
+          "expected": "/subpackages/profile/open-source/open-source"
+        },
+        {
+          "label": "actual copied repository URL",
+          "pass": true,
+          "actual": "https://github.com/tony132321/miniprogram",
+          "expected": "https://github.com/tony132321/miniprogram"
+        },
+        {
+          "label": "runtime exceptions",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "interactions": [
+        {
+          "label": "more menu opens/closes",
+          "enabled": true
+        },
+        {
+          "label": "actual public repository copy",
+          "message": "仓库地址已复制。",
+          "clipboard": "https://github.com/tony132321/miniprogram"
+        },
+        {
+          "label": "real back fallback",
+          "selector": ".pg10-back",
+          "target": "pages/me/me",
+          "query": {}
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-source-top-wave62-2026-10-01.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-source-bottom-wave62-2026-10-01.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-source-menu-wave62-2026-10-01.png"
+      ],
+      "exceptions": [],
+      "native": {
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      "scale": 1.072,
+      "shareMetadata": {
+        "title": "Project IRL · 开源许可与致谢",
+        "path": "/subpackages/profile/open-source/open-source"
+      },
+      "topHeader": {
+        "h": {
+          "selector": ".source-header",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 60
+          },
+          "styles": {
+            "position": "sticky",
+            "padding-right": "102px"
+          }
+        },
+        "b": {
+          "selector": ".pg10-back",
+          "offset": {
+            "left": 13,
+            "top": 60.5
+          },
+          "size": {
+            "width": 47,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "av": {
+          "selector": ".pg10-header-avatar",
+          "offset": {
+            "left": 266,
+            "top": 67
+          },
+          "size": {
+            "width": 34,
+            "height": 34
+          },
+          "styles": {
+            "background-color": "rgb(0, 76, 200)"
+          }
+        },
+        "mo": {
+          "selector": ".pg10-header-more",
+          "offset": {
+            "left": 211,
+            "top": 60.5
+          },
+          "size": {
+            "width": 47,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "pg": {
+          "selector": ".source-page",
+          "offset": {
+            "left": 0,
+            "top": 0
+          },
+          "size": {
+            "width": 402,
+            "height": 1702
+          },
+          "styles": {
+            "padding-left": "17px",
+            "padding-right": "17px"
+          }
+        },
+        "title": {
+          "selector": ".pg10-header-title",
+          "offset": {
+            "left": 60,
+            "top": 72.5
+          },
+          "size": {
+            "width": 100,
+            "height": 23
+          },
+          "styles": {
+            "font-size": "18px"
+          }
+        },
+        "images": [
+          {
+            "src": "./assets/arrow_back_ios_new.svg",
+            "size": {
+              "width": 25,
+              "height": 25
+            }
+          },
+          {
+            "src": "./assets/ios_share.svg",
+            "size": {
+              "width": 23,
+              "height": 23
+            }
+          },
+          {
+            "src": "./assets/more_horiz.svg",
+            "size": {
+              "width": 23,
+              "height": 23
+            }
+          },
+          {
+            "src": "./assets/person.svg",
+            "size": {
+              "width": 19,
+              "height": 19
+            }
+          }
+        ]
+      },
+      "rawOpenSourceSubtitle": "OPEN SOURCE SOFTWARE &amp; SPECIAL THANKS",
+      "actualScrollTop": 828,
+      "scrolledHeader": {
+        "h": {
+          "selector": ".source-header",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 60
+          },
+          "styles": {
+            "position": "sticky",
+            "padding-right": "102px"
+          }
+        },
+        "b": {
+          "selector": ".pg10-back",
+          "offset": {
+            "left": 13,
+            "top": 60.5
+          },
+          "size": {
+            "width": 47,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "av": {
+          "selector": ".pg10-header-avatar",
+          "offset": {
+            "left": 266,
+            "top": 67
+          },
+          "size": {
+            "width": 34,
+            "height": 34
+          },
+          "styles": {
+            "background-color": "rgb(0, 76, 200)"
+          }
+        },
+        "mo": {
+          "selector": ".pg10-header-more",
+          "offset": {
+            "left": 211,
+            "top": 60.5
+          },
+          "size": {
+            "width": 47,
+            "height": 47
+          },
+          "styles": {}
+        },
+        "pg": {
+          "selector": ".source-page",
+          "offset": {
+            "left": 0,
+            "top": -828
+          },
+          "size": {
+            "width": 402,
+            "height": 1702
+          },
+          "styles": {
+            "padding-left": "17px",
+            "padding-right": "17px"
+          }
+        },
+        "title": {
+          "selector": ".pg10-header-title",
+          "offset": {
+            "left": 60,
+            "top": 72.5
+          },
+          "size": {
+            "width": 100,
+            "height": 23
+          },
+          "styles": {
+            "font-size": "18px"
+          }
+        },
+        "images": [
+          {
+            "src": "./assets/arrow_back_ios_new.svg",
+            "size": {
+              "width": 25,
+              "height": 25
+            }
+          },
+          {
+            "src": "./assets/ios_share.svg",
+            "size": {
+              "width": 23,
+              "height": 23
+            }
+          },
+          {
+            "src": "./assets/more_horiz.svg",
+            "size": {
+              "width": 23,
+              "height": 23
+            }
+          },
+          {
+            "src": "./assets/person.svg",
+            "size": {
+              "width": 19,
+              "height": 19
+            }
+          }
+        ]
+      },
+      "pass": true,
+      "elapsedMs": 12804
+    }
+  ],
+  "finalGuidelinesTextCorrection": {
+    "page": "guidelines",
+    "level": "final text decode and header-only correction check",
+    "checks": [
+      {
+        "label": "four source English subtitles",
+        "pass": true,
+        "actual": 4
+      },
+      {
+        "label": "subtitle 0 native decode",
+        "pass": true,
+        "actual": "true"
+      },
+      {
+        "label": "subtitle 1 native decode",
+        "pass": true,
+        "actual": "true"
+      },
+      {
+        "label": "subtitle 2 native decode",
+        "pass": true,
+        "actual": "true"
+      },
+      {
+        "label": "subtitle 3 native decode",
+        "pass": true,
+        "actual": "true"
+      },
+      {
+        "label": "header native decode",
+        "pass": true,
+        "actual": "true"
+      },
+      {
+        "label": "final top sticky top",
+        "pass": true,
+        "actual": 54
+      },
+      {
+        "label": "final top 56px header",
+        "pass": true,
+        "actual": 60
+      },
+      {
+        "label": "final bottom sticky top",
+        "pass": true,
+        "actual": 54
+      },
+      {
+        "label": "final bottom 56px header",
+        "pass": true,
+        "actual": 60
+      },
+      {
+        "label": "runtime exceptions",
+        "pass": true,
+        "actual": []
+      }
+    ],
+    "exceptions": [],
+    "screenshots": [
+      "/Users/tsb/Documents/小程序/docs/evidence/images/caper-guidelines-top-wave62-2026-10-01.png",
+      "/Users/tsb/Documents/小程序/docs/evidence/images/caper-guidelines-bottom-wave62-2026-10-01.png",
+      "/Users/tsb/Documents/小程序/docs/evidence/images/caper-guidelines-menu-wave62-2026-10-01.png"
+    ],
+    "native": {
+      "window": {
+        "pixelRatio": 3,
+        "safeArea": {
+          "top": 54,
+          "left": 0,
+          "right": 402,
+          "bottom": 840,
+          "width": 402,
+          "height": 786
+        },
+        "screenWidth": 402,
+        "screenHeight": 874,
+        "screenTop": 0,
+        "windowWidth": 402,
+        "windowHeight": 874,
+        "statusBarHeight": 54
+      },
+      "sdk": "3.17.2"
+    },
+    "pass": true,
+    "elapsedMs": 7098
+  },
+  "nativeComputerUse": {
+    "app": "微信开发者工具",
+    "appVersion": "2.02.2609231 RC",
+    "libraryObserved": "3.17.3",
+    "project": "/Users/tsb/Documents/小程序",
+    "observedLocalTime": "2026-10-01 22:07–22:09 Asia/Shanghai",
+    "routeWalkthrough": [
+      "pages/index/index → pages/about/about",
+      "about → release-notes → about",
+      "about → guidelines → about",
+      "about → open-source → about"
+    ],
+    "finalVisibleRoute": "pages/about/about",
+    "visibleAmpersandsCorrect": true,
+    "debuggerErrors": 0,
+    "lastDebuggerWarnings": 19,
+    "warningNotes": [
+      "getSystemInfoSync deprecation repeated per route",
+      "auto hot reload",
+      "worker reportRealtimeAction not support",
+      "tool preload/domain-validation warnings"
+    ],
+    "boundary": "native screenshot/AX and reversible taps only; not physical device or native share delivery"
+  },
+  "externalAcceptance": "formal AppID / HTTPS domain / subscription templates / physical device / human operations / 3 controlled real activities unavailable",
+  "finalCliPreview": {
+    "exitCode": 0,
+    "size": {
+      "total": 2775089,
+      "packages": [
+        {
+          "name": "TOTAL",
+          "size": 2775089
+        },
+        {
+          "name": "main",
+          "size": 1790440
+        },
+        {
+          "name": "/subpackages/activity/",
+          "size": 58437
+        },
+        {
+          "name": "/subpackages/profile/",
+          "size": 926212
+        }
+      ]
+    },
+    "firstAttempt": "Stopped owned CLI client after >5 minutes without completion; no pass claimed; bounded retry completed."
+  }
+}
