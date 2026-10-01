@@ -243,6 +243,7 @@ Page({
       sectionAvailable(options.section, this.data.isHost, this.data.canApproveRegistration,
         this.data.canManageAnnouncements, this.data.canManageCheckins)) {
       if (typeof wx.nextTick === 'function') await new Promise(resolve => wx.nextTick(resolve));
+      if (this.data.currentUser && this.data.currentUser !== currentIdentity()) return;
       const sameEvent = Boolean(options.id && this.data.event?.id === options.id);
       const hostCheckin = sameEvent && options.section === 'checkinSection' && options.entry === 'hostCheckin' &&
         this.data.isHost && this.data.canManageCheckins &&
@@ -250,7 +251,13 @@ Page({
       const hostAnnouncement = sameEvent && options.section === 'hostSection' && options.entry === 'hostAnnouncement' &&
         this.data.isHost && this.data.canManageAnnouncements && this.data.event.status === 'RECRUITING' &&
         this.data.event.reviewStatus === 'APPROVED' && this.data.event.recruiting === true;
+      const hostRepeat = sameEvent && options.section === 'hostSection' && options.entry === 'hostRepeat' &&
+        this.data.isHost && this.data.event.status === 'COMPLETED' && this.data.safetyStatus === 'OPEN';
+      const hostCompletion = sameEvent && options.section === 'hostSection' && options.entry === 'hostCompletion' &&
+        this.data.isHost && this.data.currentUser && this.data.currentUser === currentIdentity() &&
+        this.updateTimedControls().canCompleteEvent;
       const memberFeedback = sameEvent && options.section === 'checkinSection' && options.entry === 'memberFeedback' &&
+        this.data.currentUser && this.data.currentUser === currentIdentity() &&
         this.data.event.status === 'COMPLETED' && !this.data.isHost &&
         this.data.myRegistration?.status === 'CONFIRMED' && this.data.outcomeLoadState === 'READY' &&
         this.data.outcome && !this.data.outcome.myFeedbackSubmitted;
@@ -258,7 +265,8 @@ Page({
         this.data.canSetAlias && this.data.aliasLoadState === 'READY';
       if (hostCheckin) this.setData({ checkInMode: 'host' });
       this.scrollToSection(options.section, aliasForm ? '#aliasForm' : memberFeedback ? '#feedbackForm' :
-        hostAnnouncement ? '#hostAnnouncementAnchor' : '');
+        hostAnnouncement ? '#hostAnnouncementAnchor' : hostRepeat ? '#hostRepeatAnchor' :
+          hostCompletion ? '#hostCompletionForm' : '');
     }
   },
   async onShow() {

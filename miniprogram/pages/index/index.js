@@ -108,8 +108,10 @@ function withRealDetail(item, event, actorId) {
     (!Number.isSafeInteger(event.version) || event.version < item.version)) return item;
   const currentItem = item.isHost ? { ...item, status: event.status, reviewStatus: event.reviewStatus,
     recruiting: event.recruiting, version: event.version } : item;
-  const currentPresentation = item.isHost && item.cardKind === 'organized' ?
-    cardPresentation(currentItem, 'organized') : null;
+  const currentPresentation = item.isHost && ['organized', 'history'].includes(item.cardKind) ?
+    cardPresentation(currentItem, item.cardKind) : null;
+  const currentShortcut = item.isHost && item.cardKind === 'history' ?
+    cardShortcut(currentItem, 'history') : null;
   const payload = event.payload;
   const confirmed = Number(event.stats?.confirmed);
   const capacity = Number(payload.maxParticipants);
@@ -125,6 +127,7 @@ function withRealDetail(item, event, actorId) {
   return {
     ...currentItem,
     ...(currentPresentation || {}),
+    ...(currentShortcut || {}),
     ...(item.isHost ? { statusLabel: hostStatusLabel(currentItem), cardLabel: hostStatusLabel(currentItem),
       shareReady: hostRecruitmentReady(currentItem) } : {}),
     dateRangeLabel: dateRangeLabel(payload.startAt || item.startAt, payload.endAt),
@@ -188,8 +191,9 @@ function cardPresentation(item, group) {
     const notes = { COMPLETED: '活动已结束；结项与独立反馈请到详情页查看。',
       CANCELLED: '活动已取消；历史记录仍可查看。', EXPIRED: '活动已过期；历史记录仍可查看。' };
     return { cardKind: 'history', cardNote: notes[item.status] || '查看活动历史与当前记录。',
-      primaryLabel: item.status === 'COMPLETED' ? (item.isHost ? '查看结项与再约' : '查看结项与反馈') : '查看活动记录',
-      primaryAction: 'detailsSection', secondaryLabel: '', secondaryAction: '' };
+      primaryLabel: item.status === 'COMPLETED' ? (item.isHost ? '再来一局' : '查看结项与反馈') : '查看活动记录',
+      primaryAction: item.isHost && item.status === 'COMPLETED' ? 'hostRepeat' : 'detailsSection',
+      secondaryLabel: '', secondaryAction: '' };
   }
   return { cardKind: group, cardNote: group === 'cohosting' ? '你是本场协办；权限与任务以活动详情为准。' :
     '查看活动详情与最新安排。', primaryLabel: '查看活动', primaryAction: 'detailsSection',
@@ -200,7 +204,7 @@ function cardShortcut(item, group) {
     ['INTERESTED', 'REQUESTED', 'WAITLISTED', 'OFFERED', 'RECONFIRM_REQUIRED'].includes(item.myRegistrationStatus))
     return { shortcutLabel: '前往退出报名', shortcutAction: 'registrationSection' };
   if (group === 'history' && item.status === 'COMPLETED') {
-    if (item.isHost) return { shortcutLabel: '查看再约一场', shortcutAction: 'hostSection' };
+    if (item.isHost) return { shortcutLabel: '查看活动详情', shortcutAction: 'detailsSection' };
     if (item.myRegistrationStatus === 'CONFIRMED')
       return { shortcutLabel: '查看或填写反馈', shortcutAction: 'checkinSection' };
   }
@@ -414,6 +418,10 @@ Page({
       return wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) +
         '&section=hostSection&entry=hostAnnouncement' });
     }
+    if (action === 'hostRepeat') {
+      if (!item.isHost || item.status !== 'COMPLETED') return;
+      return this.openHostRepeat(item);
+    }
     if (!['detailsSection', 'registrationSection', 'hostSection', 'checkinSection', 'expenseSection'].includes(action)) return;
     if (action === 'hostSection' && !item.isHost) return;
     let entry = '';
@@ -424,6 +432,45 @@ Page({
     }
     wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) + '&section=' + action +
       (entry ? '&entry=' + entry : '') });
+  },
+  async openHostRepeat(item) {
+    if (this._repeatOpening) return;
+    this._repeatOpening = true;
+    const identity = currentIdentity();
+    const actorId = currentActorId();
+    const loadGeneration = this._loadGeneration;
+    const detailRequestId = this._detailRequestId;
+    try {
+      const [event, safety] = await Promise.all([
+        api.get('/events/' + encodeURIComponent(item.id)), api.get('/system/safety')
+      ]);
+      if (identity !== currentIdentity() || this._shownIdentity !== identity ||
+        loadGeneration !== this._loadGeneration || detailRequestId !== this._detailRequestId) return;
+      const current = this.data.items.find(candidate => candidate.id === item.id);
+      if (!current?.isHost || current.status !== 'COMPLETED' || current.primaryAction !== 'hostRepeat' ||
+        event?.id !== item.id || event.hostId !== actorId || event.status !== 'COMPLETED' ||
+        !Number.isSafeInteger(event.version) ||
+        (Number.isSafeInteger(current.version) && event.version < current.version) ||
+        safety?.status !== 'OPEN') {
+        const notice = safety?.status === 'CLOSED' ?
+          '当前暂停创建新活动，请稍后重试。' : '活动状态已变化，请刷新后查看详情。';
+        this.setData({ availabilityMessage: notice });
+        wx.showToast?.({ title: notice, icon: 'none' });
+        return;
+      }
+      this.setData({ availabilityMessage: '' });
+      wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(item.id) +
+        '&section=hostSection&entry=hostRepeat' });
+    } catch (_) {
+      if (identity === currentIdentity() && this._shownIdentity === identity &&
+        loadGeneration === this._loadGeneration && detailRequestId === this._detailRequestId) {
+        const notice = '暂时无法核对活动与安全状态，请稍后重试。';
+        this.setData({ availabilityMessage: notice });
+        wx.showToast?.({ title: notice, icon: 'none' });
+      }
+    } finally {
+      this._repeatOpening = false;
+    }
   },
   openHostShare(event) {
     const id = event?.currentTarget?.dataset?.id;

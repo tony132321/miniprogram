@@ -142,6 +142,40 @@ test('home organizer announcement link locates the real composer only for the cu
   }
 });
 
+test('history host repeat link locates the existing button only for a current completed safe event', async () => {
+  const posts: string[] = [];
+  const { page, scrolls } = eventPage(async path => { posts.push(path); return {}; });
+  const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  assert.match(markup, /id="hostRepeatAnchor"[\s\S]*?id="repeatDraftButton"[^>]*wx:if="{{safetyStatus === 'OPEN' && event\.status === 'COMPLETED'}}"/);
+  page.refresh = async function () {
+    this.setData({ loadState: 'READY', event: { id: 'e1', status: 'COMPLETED' },
+      isHost: true, safetyStatus: 'OPEN' });
+    return true;
+  };
+  await page.onLoad({ id: 'e1', section: 'hostSection', entry: 'hostRepeat' });
+  assert.equal(page.data.activeSection, 'hostSection');
+  assert.equal(scrolls[0]?.selector, '#hostRepeatAnchor');
+  assert.deepEqual(posts, [], 'a deep link only reveals the repeat button');
+
+  for (const state of [
+    { id: 'e1', status: 'IN_PROGRESS', host: true, safety: 'OPEN' },
+    { id: 'e1', status: 'COMPLETED', host: false, safety: 'OPEN' },
+    { id: 'e1', status: 'COMPLETED', host: true, safety: 'CLOSED' },
+    { id: 'e1', status: 'COMPLETED', host: true, safety: 'UNKNOWN' },
+    { id: 'e2', status: 'COMPLETED', host: true, safety: 'OPEN' }
+  ]) {
+    page.refresh = async function () {
+      this.setData({ loadState: 'READY', event: { id: state.id, status: state.status },
+        isHost: state.host, safetyStatus: state.safety });
+      return true;
+    };
+    scrolls.length = 0;
+    await page.onLoad({ id: 'e1', section: 'hostSection', entry: 'hostRepeat' });
+    assert.equal(scrolls[0]?.selector, undefined, `ineligible ${JSON.stringify(state)} stays on the overview`);
+    assert.deepEqual(posts, []);
+  }
+});
+
 test('home feedback link locates the form only for confirmed members of completed events', async () => {
   const { page, scrolls } = eventPage();
   const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
@@ -149,7 +183,7 @@ test('home feedback link locates the form only for confirmed members of complete
   page.refresh = async function () {
     this.setData({ loadState: 'READY', event: { id: 'e1', status: 'COMPLETED' },
       isHost: false, myRegistration: { status: 'CONFIRMED' },
-      outcome: { myFeedbackSubmitted: false }, outcomeLoadState: 'READY' });
+      outcome: { myFeedbackSubmitted: false }, outcomeLoadState: 'READY', currentUser: 'host' });
     return true;
   };
   await page.onLoad({ id: 'e1', section: 'checkinSection', entry: 'memberFeedback' });
@@ -162,12 +196,16 @@ test('home feedback link locates the form only for confirmed members of complete
     { status: 'IN_PROGRESS', host: false, registration: 'CONFIRMED', submitted: false },
     { status: 'COMPLETED', host: false, registration: 'REQUESTED', submitted: false },
     { status: 'COMPLETED', host: true, registration: 'CONFIRMED', submitted: false },
-    { status: 'COMPLETED', host: false, registration: 'CONFIRMED', submitted: true }
-  ]) {
+    { status: 'COMPLETED', host: false, registration: 'CONFIRMED', submitted: true },
+    { status: 'COMPLETED', host: false, registration: 'CONFIRMED', submitted: false, evidence: 'ERROR' },
+    { status: 'COMPLETED', host: false, registration: 'CONFIRMED', submitted: false, actor: '' }
+  ] as Array<{ status: string; host: boolean; registration: string; submitted: boolean;
+    evidence?: string; actor?: string }>) {
     page.refresh = async function () {
       this.setData({ loadState: 'READY', event: { id: 'e1', status: state.status },
         isHost: state.host, myRegistration: { status: state.registration },
-        outcome: { myFeedbackSubmitted: state.submitted }, outcomeLoadState: 'READY' });
+        outcome: { myFeedbackSubmitted: state.submitted }, outcomeLoadState: state.evidence || 'READY',
+        currentUser: state.actor === undefined ? 'host' : state.actor });
       return true;
     };
     scrolls.length = 0;
@@ -175,6 +213,16 @@ test('home feedback link locates the form only for confirmed members of complete
     assert.equal(scrolls.length, 1);
     assert.equal(scrolls[0]?.scrollTop, 0, `ineligible ${JSON.stringify(state)} stays on section overview`);
   }
+
+  page.refresh = async function () {
+    this.setData({ loadState: 'READY', event: { id: 'different-event', status: 'COMPLETED' },
+      isHost: false, myRegistration: { status: 'CONFIRMED' },
+      outcome: { myFeedbackSubmitted: false }, outcomeLoadState: 'READY', currentUser: 'host' });
+    return true;
+  };
+  scrolls.length = 0;
+  await page.onLoad({ id: 'e1', section: 'checkinSection', entry: 'memberFeedback' });
+  assert.equal(scrolls[0]?.scrollTop, 0, 'a mismatched activity stays on the section overview');
 });
 
 test('profile alias link locates the form only when the same activity can edit its alias', async () => {

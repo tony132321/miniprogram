@@ -25,7 +25,7 @@ function detail(id: string, hostId = 'organizer', overrides: Partial<Detail> = {
 }
 
 function makeHome(lists: Record<string, ListedEvent[]>,
-  details: Record<string, Detail | Promise<Detail>>) {
+  details: Record<string, Detail | Promise<Detail>>, safetyStatus = 'OPEN') {
   let page: Record<string, any> | undefined;
   const storage = new Map<string, unknown>([['devUser', 'organizer']]);
   const requests: string[] = [];
@@ -38,6 +38,7 @@ function makeHome(lists: Record<string, ListedEvent[]>,
       if (path === '../../utils/api.js') return { api: { get: async (route: string) => {
         requests.push(route);
         if (route === '/me/events') return { items: lists[String(storage.get('devUser'))] || [] };
+        if (route === '/system/safety') return { status: safetyStatus };
         if (route === '/me/notifications?offset=0')
           return { items: [], total: 0, unreadTotal: 0, nextOffset: null, snapshot: 'test-snapshot' };
         const result = details[route.slice('/events/'.length)];
@@ -329,27 +330,82 @@ test('state cards deep-link current activity exit, check-in, feedback and repeat
   assert.equal(byId('host-checkin').shortcutAction, '');
   assert.equal(byId('member-feedback').shortcutAction, 'checkinSection');
   assert.equal(byId('interest-only').shortcutAction, '');
-  assert.equal(byId('host-repeat').shortcutAction, 'hostSection');
+  assert.equal(byId('host-repeat').primaryLabel, '再来一局');
+  assert.equal(byId('host-repeat').primaryAction, 'hostRepeat');
+  assert.equal(byId('host-repeat').shortcutAction, 'detailsSection');
   for (const [id, action] of [
     ['pending-exit', 'registrationSection'], ['host-checkin', 'checkinSection'],
-    ['member-feedback', 'checkinSection'], ['host-repeat', 'hostSection']
+    ['member-feedback', 'checkinSection'], ['host-repeat', 'detailsSection']
   ]) page.openCardAction({ currentTarget: { dataset: { id, action } } });
   assert.deepEqual(navigations, [
     '/pages/event/event?id=pending-exit&section=registrationSection',
     '/pages/event/event?id=host-checkin&section=checkinSection&entry=hostCheckin',
     '/pages/event/event?id=member-feedback&section=checkinSection&entry=memberFeedback',
-    '/pages/event/event?id=host-repeat&section=hostSection'
+    '/pages/event/event?id=host-repeat&section=detailsSection'
   ]);
   page.openCardAction({ currentTarget: { dataset: { id: 'interest-only', action: 'checkinSection' } } });
   page.openCardAction({ currentTarget: { dataset: { id: 'started-pending', action: 'checkinSection' } } });
   assert.equal(navigations.length, 4, 'missing shortcuts cannot be forged');
   storage.set('devUser', 'another-account');
-  page.openCardAction({ currentTarget: { dataset: { id: 'host-repeat', action: 'hostSection' } } });
+  page.openCardAction({ currentTarget: { dataset: { id: 'host-repeat', action: 'detailsSection' } } });
   assert.equal(navigations.length, 4, 'stale identity cannot reuse a prior account shortcut');
   assert.deepEqual(requests, ['/me/notifications?offset=0', '/me/events']);
 
   const markup = readFileSync(new URL('../miniprogram/pages/index/index.wxml', import.meta.url), 'utf8');
   assert.match(markup, /wx:if="{{item.shortcutAction}}"[^>]*class="card-shortcut"[^>]*data-action="{{item.shortcutAction}}"[^>]*bindtap="openCardAction"/);
+});
+
+test('completed host history card checks current event and safety before opening the repeat control', async () => {
+  const hosted: ListedEvent = { id: 'completed-host', status: 'COMPLETED', title: '已结束的羽毛球',
+    isHost: true, myRegistrationStatus: null, version: 4 };
+  const { page, requests, navigations } = makeHome({ organizer: [hosted] }, {
+    'completed-host': detail('completed-host', 'organizer', { status: 'COMPLETED', version: 4 })
+  });
+  await page.onShow();
+  const card = page.data.history[0];
+  assert.equal(card.primaryLabel, '再来一局');
+  assert.equal(card.primaryAction, 'hostRepeat');
+  assert.equal(card.shortcutLabel, '查看活动详情');
+  assert.equal(card.shortcutAction, 'detailsSection');
+  await page.openCardAction({ currentTarget: { dataset: { id: hosted.id, action: card.primaryAction } } });
+  assert.ok(requests.includes('/events/completed-host'));
+  assert.ok(requests.includes('/system/safety'));
+  assert.deepEqual(navigations, ['/pages/event/event?id=completed-host&section=hostSection&entry=hostRepeat']);
+  assert.ok(requests.every(route => !route.includes('/repeat')), 'the card tap must not create a draft');
+});
+
+test('history repeat card fails closed when safety, event state, host, or version changes', async () => {
+  const hosted: ListedEvent = { id: 'history-repeat', status: 'COMPLETED', title: '已结束的羽毛球',
+    isHost: true, myRegistrationStatus: null, version: 4 };
+  for (const scenario of [
+    { event: detail('history-repeat', 'organizer', { status: 'COMPLETED', version: 4 }), safety: 'CLOSED' },
+    { event: detail('history-repeat', 'organizer', { status: 'IN_PROGRESS', version: 5 }), safety: 'OPEN' },
+    { event: detail('history-repeat', 'another-host', { status: 'COMPLETED', version: 4 }), safety: 'OPEN' },
+    { event: detail('history-repeat', 'organizer', { status: 'COMPLETED', version: 3 }), safety: 'OPEN' }
+  ]) {
+    const { page, navigations } = makeHome({ organizer: [hosted] }, { 'history-repeat': scenario.event }, scenario.safety);
+    await page.onShow();
+    await page.openCardAction({ currentTarget: { dataset: { id: hosted.id, action: 'hostRepeat' } } });
+    assert.deepEqual(navigations, [], `ineligible ${JSON.stringify(scenario)} must not open repeat`);
+  }
+});
+
+test('old history repeat tap cannot navigate after account A to B to A reloads', async () => {
+  const hosted: ListedEvent = { id: 'repeat-after-switch', status: 'COMPLETED', title: '已结束的羽毛球',
+    isHost: true, myRegistrationStatus: null, version: 4 };
+  let releaseDetail!: (value: Detail) => void;
+  const delayedDetail = new Promise<Detail>(resolve => { releaseDetail = resolve; });
+  const { page, storage, navigations } = makeHome({ organizer: [hosted], 'another-account': [] },
+    { 'repeat-after-switch': delayedDetail });
+  await page.onShow();
+  const oldTap = page.openCardAction({ currentTarget: { dataset: { id: hosted.id, action: 'hostRepeat' } } });
+  storage.set('devUser', 'another-account');
+  await page.onShow();
+  storage.set('devUser', 'organizer');
+  await page.onShow();
+  releaseDetail(detail(hosted.id, 'organizer', { status: 'COMPLETED', version: 4 }));
+  await oldTap;
+  assert.deepEqual(navigations, [], 'a previous page generation must not open a new route');
 });
 
 test('cover click opens only a current account event from the loaded list', async () => {

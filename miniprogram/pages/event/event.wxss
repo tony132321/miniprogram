@@ -469,6 +469,7 @@ page{padding:0;background:#f5f6fa;color:#1b1e27;font-family:-apple-system,BlinkM
 .host-section .formation-card { margin: 15rpx 0; }
 .host-work-block { margin: 17rpx 0; padding: 21rpx; border-radius: 25rpx; background: #fff; box-shadow: 0 5rpx 14rpx #2b23520d; }
 .host-announcement-anchor { position: relative; top: -230rpx; height: 1rpx; margin-bottom: -1rpx; opacity: 0; pointer-events: none; }
+.host-repeat-anchor { position: relative; top: -230rpx; height: 1rpx; margin-bottom: -1rpx; opacity: 0; pointer-events: none; }
 .host-work-title { display: flex; justify-content: space-between; align-items: center; gap: 10rpx; margin-bottom: 12rpx; color: #1a1b1f; font-size: 26rpx; font-weight: 850; }
 .host-work-title text { color: #778195; font-size: 18rpx; font-weight: 600; text-align: right; }
 .host-work-block input, .host-work-block textarea { background: #f6f6fa; border-color: #edeef5; }

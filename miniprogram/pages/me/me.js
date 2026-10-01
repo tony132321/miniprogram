@@ -14,6 +14,13 @@ const appealOutcomeLabels = { UPHOLD: '维持原结论', OVERTURN: '复核改判
 const privacyKindLabels = { EXPORT: '导出本人数据', DELETE: '注销或删除申请', CORRECT: '更正本人数据' };
 const reportKindLabels = { SAFETY: '安全举报', CONTENT: '内容举报', ATTENDANCE: '到场争议', OTHER: '问题反馈' };
 const contentKindLabels = { ANNOUNCEMENT: '活动公告', QUESTION: '活动提问', ANSWER: '主办方回复' };
+const eventNoticeSections = {
+  MATERIAL_CHANGE: 'registrationSection',
+  EVENT_REMINDER: 'checkinSection',
+  MANUAL_CHECKIN_REQUEST: 'checkinSection',
+  EVENT_OUTCOME_REVIEW: 'checkinSection',
+  EVENT_OUTCOME_DUE: 'hostSection'
+};
 const defaultEventReminderNotice = '允许发送活动提醒；站内通知始终可查看，外部消息是否可用以实际服务配置为准。';
 const defaultSimilarInvitesNotice = '允许旧活动主办方在结项后看到自己的活动内身份并将自己列入类似活动邀请候选；不会自动发送邀请。';
 const profileConsentRecoveryKey = 'irlProfileConsentRecoveryV1';
@@ -705,17 +712,28 @@ Page({
   async openNotice(event) {
     const current = beginProfileAction(this, 'openNotice');
     if (!current) return;
-    const id = event.currentTarget.dataset.id; const eventId = event.currentTarget.dataset.event;
-    const kind = event.currentTarget.dataset.kind;
+    const { id: tappedId, event: tappedEventId, kind: tappedKind } = event.currentTarget.dataset;
+    if (!tappedId || this.data.notificationLoadState !== 'READY' || this.data.loadState === 'LOADING') return;
+    const notice = this.data.notifications.find(item => String(item.id) === String(tappedId) &&
+      item.kind === tappedKind && String(item.event_id ?? '') === String(tappedEventId ?? ''));
+    if (!notice) return;
+    const { id, event_id: eventId, kind } = notice;
     const profileRecordSection = profileRecordSectionByNoticeKind[kind];
+    if (['EVENT_OUTCOME_DUE', 'EVENT_OUTCOME_REVIEW'].includes(kind) && !eventId)
+      return this.setData({ message: '活动信息缺失，请刷新后重试。' });
     try {
       if (eventId && !profileRecordSection) {
+        const targetSection = eventNoticeSections[kind];
         await new Promise((resolve, reject) => wx.navigateTo({
-          url: '/pages/event/event?id=' + encodeURIComponent(eventId), success: resolve, fail: reject
+          url: '/pages/event/event?id=' + encodeURIComponent(eventId) +
+            (targetSection ? '&section=' + targetSection : '') +
+            (kind === 'EVENT_OUTCOME_DUE' ? '&entry=hostCompletion' :
+              kind === 'EVENT_OUTCOME_REVIEW' ? '&entry=memberFeedback' : ''),
+          success: resolve, fail: reject
         }));
       }
       if (!current()) return;
-      await api.post(`/me/notifications/${id}/open`, {});
+      await api.post(`/me/notifications/${encodeURIComponent(id)}/open`, {});
       if (!current()) return;
       if (profileRecordSection) {
         const refreshing = this.refresh();

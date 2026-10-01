@@ -271,6 +271,7 @@
     <input id="expenseTotalYuan" wx:if="{{event.payload.feeMode === 'AA'}}" type="digit" placeholder="本场总费用（元）" value="{{totalYuan}}" bindinput="yuanInput" />
     <button id="recordExpenseButton" wx:if="{{event.payload.feeMode === 'AA'}}" disabled="{{expenseLoadState !== 'READY' && expenseLoadState !== 'EMPTY'}}" bindtap="expense">{{expenseLoadState === 'READY' ? '修订 AA 分摊（旧确认仅存历史）' : expenseLoadState === 'EMPTY' ? '记录 AA 分摊' : '费用记录暂不可用'}}</button>
     <view class="muted">费用记录不代表平台付款或收款凭证。</view>
+    <view id="hostRepeatAnchor" wx:if="{{safetyStatus === 'OPEN' && event.status === 'COMPLETED'}}" class="host-repeat-anchor"></view>
     <button id="repeatDraftButton" wx:if="{{safetyStatus === 'OPEN' && event.status === 'COMPLETED'}}" bindtap="repeat">再约一场草稿</button>
     <view wx:if="{{repeatCandidatesLoadState === 'ERROR'}}" class="error">{{repeatCandidatesError}} <button bindtap="refresh">重新加载可邀请成员</button></view>
     <view wx:if="{{event.status === 'COMPLETED'}}">允许类似活动邀请的旧成员：{{repeatCandidateNames}}。生成草稿不会自动邀请。</view>

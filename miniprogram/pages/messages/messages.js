@@ -404,18 +404,23 @@ Page({
   },
   async openNotice(event) {
     if (this.clearPrivateAfterIdentityChange()) return;
-    const { id, eventId, kind, section } = event.currentTarget.dataset;
-    if (!id || !kind || !this.data.items.some(item =>
-      String(item.id) === String(id) && item.kind === kind &&
-      noticeEventId(item.event_id) === noticeEventId(eventId))) return;
+    const { id: tappedId, eventId: tappedEventId, kind: tappedKind } = event.currentTarget.dataset;
+    const notice = this.data.items.find(item =>
+      tappedId && String(item.id) === String(tappedId) && item.kind === tappedKind &&
+      noticeEventId(item.event_id) === noticeEventId(tappedEventId));
+    if (!notice) return;
+    const { id, event_id: eventId, kind } = notice;
     if (this._identity !== undefined && currentIdentity(this.data.developmentMode).key !== this._identity) return;
-    if (kind === 'MATERIAL_CHANGE' && !eventId) return;
+    if (['MATERIAL_CHANGE', 'EVENT_OUTCOME_DUE', 'EVENT_OUTCOME_REVIEW'].includes(kind) && !eventId) return;
     const profileFocus = profileFocusByKind[kind];
     const identity = this._identity;
     let generation = this._generation;
     const stillCurrent = () => generation === this._generation && (identity === undefined ||
       (identity === this._identity && identity === currentIdentity(this.data.developmentMode).key));
-    const targetSection = kind === 'MATERIAL_CHANGE' ? 'registrationSection' : section;
+    const targetSection = kind === 'MATERIAL_CHANGE' ? 'registrationSection' :
+      kind === 'EVENT_OUTCOME_DUE' ? 'hostSection' :
+        ['EVENT_REMINDER', 'MANUAL_CHECKIN_REQUEST', 'EVENT_OUTCOME_REVIEW'].includes(kind) ? 'checkinSection' :
+          kind === 'EVENT_CONFIRMED' ? 'detailsSection' : notice.actionSection || '';
     try {
       if (profileFocus) {
         wx.setStorageSync?.('irlProfileFocusIntent', profileFocus);
@@ -429,7 +434,9 @@ Page({
         await new Promise((resolve, reject) => wx.navigateTo({
           url: '/pages/event/event?id=' + encodeURIComponent(eventId) +
             ((kind === 'MATERIAL_CHANGE' || ['checkinSection', 'expenseSection', 'detailsSection', 'hostSection'].includes(targetSection))
-              ? '&section=' + targetSection : ''),
+              ? '&section=' + targetSection : '') +
+            (kind === 'EVENT_OUTCOME_DUE' ? '&entry=hostCompletion' :
+              kind === 'EVENT_OUTCOME_REVIEW' ? '&entry=memberFeedback' : ''),
           success: resolve, fail: reject
         }));
       }

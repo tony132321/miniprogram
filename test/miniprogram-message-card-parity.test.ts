@@ -80,7 +80,7 @@ test('update, formation and outcome actions open the matching event section befo
     kind: id === 'MATERIAL_CHANGE_INBOX' ? 'MATERIAL_CHANGE' : id, event_id: 'event-1' }));
   for (const [kind, section] of [['MATERIAL_CHANGE', 'detailsSection'],
     ['EVENT_CONFIRMED', 'detailsSection'], ['EVENT_OUTCOME_DUE', 'hostSection'],
-    ['EVENT_OUTCOME_REVIEW', 'checkinSection']]) await page.openNotice({
+    ['EVENT_OUTCOME_REVIEW', 'hostSection']]) await page.openNotice({
     currentTarget: { dataset: { id: kind, eventId: 'event-1', kind, section } }
   });
   await page.openNotice({ currentTarget: { dataset: {
@@ -89,8 +89,8 @@ test('update, formation and outcome actions open the matching event section befo
   assert.deepEqual(actions, [
     '/pages/event/event?id=event-1&section=registrationSection', '/me/notifications/MATERIAL_CHANGE/open',
     '/pages/event/event?id=event-1&section=detailsSection', '/me/notifications/EVENT_CONFIRMED/open',
-    '/pages/event/event?id=event-1&section=hostSection', '/me/notifications/EVENT_OUTCOME_DUE/open',
-    '/pages/event/event?id=event-1&section=checkinSection', '/me/notifications/EVENT_OUTCOME_REVIEW/open',
+    '/pages/event/event?id=event-1&section=hostSection&entry=hostCompletion', '/me/notifications/EVENT_OUTCOME_DUE/open',
+    '/pages/event/event?id=event-1&section=checkinSection&entry=memberFeedback', '/me/notifications/EVENT_OUTCOME_REVIEW/open',
     '/pages/event/event?id=event-1&section=registrationSection', '/me/notifications/MATERIAL_CHANGE_INBOX/open'
   ]);
 });

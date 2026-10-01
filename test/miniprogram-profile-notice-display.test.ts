@@ -5,7 +5,8 @@ import { runInNewContext } from 'node:vm';
 
 const source = readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8');
 
-function mount(notifications: Record<string, any>[], activities: Record<string, any>[]) {
+function mount(notifications: Record<string, any>[], activities: Record<string, any>[], navigationFails = false,
+  storage: Record<string, string> = { devUser: 'member' }) {
   let page: Record<string, any> | undefined;
   const requests: string[] = [];
   const actions: string[] = [];
@@ -35,15 +36,18 @@ function mount(notifications: Record<string, any>[], activities: Record<string, 
     },
     Page(definition: Record<string, any>) { page = definition; },
     wx: {
-      navigateTo({ url, success }: { url: string; success: () => void }) {
-        actions.push(url); success();
+      getStorageSync(key: string) { return storage[key] || ''; },
+      navigateTo({ url, success, fail }: { url: string; success: () => void; fail: (error: Error) => void }) {
+        actions.push(url);
+        if (navigationFails) fail(new Error('navigation failed'));
+        else success();
       },
       pageScrollTo({ selector }: { selector: string }) { scrolls.push(selector); }
     }
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
-  return { page, requests, actions, scrolls };
+  return { page, requests, actions, scrolls, storage };
 }
 
 test('profile notices show Chinese labels and a real member event title without exposing its UUID', async () => {
@@ -65,8 +69,137 @@ test('profile notices show Chinese labels and a real member event title without 
     id: notice.id, event: notice.event_id, kind: notice.kind
   } } });
   assert.deepEqual(actions, [
-    `/pages/event/event?id=${eventId}`, '/me/notifications/notice-1/open'
+    `/pages/event/event?id=${eventId}&section=checkinSection`, '/me/notifications/notice-1/open'
   ]);
+});
+
+test('profile material-change notice opens the current registration rules before marking read', async () => {
+  const eventId = 'changed-event';
+  const { page, actions } = mount([{
+    id: 'change-notice', event_id: eventId, kind: 'MATERIAL_CHANGE', status: 'IN_APP',
+    external_status: 'UNAVAILABLE', detail: {}
+  }], [{ id: eventId, title: '规则更新的羽球局', status: 'RECRUITING' }]);
+  await page.refresh();
+  await page.openNotice({ currentTarget: { dataset: {
+    id: 'change-notice', event: eventId, kind: 'MATERIAL_CHANGE'
+  } } });
+  assert.deepEqual(actions, [
+    `/pages/event/event?id=${eventId}&section=registrationSection`,
+    '/me/notifications/change-notice/open'
+  ]);
+});
+
+test('profile outcome-due notice opens the current host completion form before marking read', async () => {
+  const eventId = 'finished-event';
+  const { page, actions } = mount([{
+    id: 'outcome-due', event_id: eventId, kind: 'EVENT_OUTCOME_DUE', status: 'IN_APP',
+    external_status: 'NOT_REQUESTED', detail: {}
+  }], [{ id: eventId, title: '周六羽毛球', status: 'IN_PROGRESS' }]);
+  await page.refresh();
+  await page.openNotice({ currentTarget: { dataset: {
+    id: 'outcome-due', event: eventId, kind: 'EVENT_OUTCOME_DUE'
+  } } });
+  assert.deepEqual(actions, [
+    `/pages/event/event?id=${eventId}&section=hostSection&entry=hostCompletion`,
+    '/me/notifications/outcome-due/open'
+  ]);
+});
+
+test('profile outcome-due notice requires its event and leaves failed navigation unread', async () => {
+  const eventId = 'finished-event';
+  const notice = { id: 'outcome-due', event_id: eventId, kind: 'EVENT_OUTCOME_DUE',
+    status: 'IN_APP', external_status: 'NOT_REQUESTED', detail: {} };
+  const missingEvent = mount([{ ...notice, event_id: null }], []);
+  await missingEvent.page.refresh();
+  await missingEvent.page.openNotice({ currentTarget: { dataset: {
+    id: notice.id, event: '', kind: notice.kind
+  } } });
+  assert.deepEqual(missingEvent.actions, []);
+
+  const failedNavigation = mount([notice], [], true);
+  await failedNavigation.page.refresh();
+  await failedNavigation.page.openNotice({ currentTarget: { dataset: {
+    id: notice.id, event: eventId, kind: notice.kind
+  } } });
+  assert.deepEqual(failedNavigation.actions, [
+    `/pages/event/event?id=${eventId}&section=hostSection&entry=hostCompletion`
+  ]);
+});
+
+test('profile outcome-review notice opens the eligible member feedback section before marking read', async () => {
+  const eventId = 'completed-event';
+  const { page, actions } = mount([{
+    id: 'review-notice', event_id: eventId, kind: 'EVENT_OUTCOME_REVIEW', status: 'IN_APP',
+    external_status: 'NOT_REQUESTED', detail: {}
+  }], [{ id: eventId, title: '周日桌游', status: 'COMPLETED' }]);
+  await page.refresh();
+  await page.openNotice({ currentTarget: { dataset: {
+    id: 'review-notice', event: eventId, kind: 'EVENT_OUTCOME_REVIEW'
+  } } });
+  assert.deepEqual(actions, [
+    `/pages/event/event?id=${eventId}&section=checkinSection&entry=memberFeedback`,
+    '/me/notifications/review-notice/open'
+  ]);
+});
+
+test('profile rejects forged or stale notice rows and accepts only a loaded page for the same identity', async () => {
+  const notices = [
+    { id: 'notice/one', event_id: 'event-A', kind: 'EVENT_OUTCOME_DUE', status: 'IN_APP', detail: {} },
+    { id: 'notice-two', event_id: 'event-B', kind: 'EVENT_OUTCOME_REVIEW', status: 'IN_APP', detail: {} }
+  ];
+  const { page, actions, storage } = mount(notices, []);
+  await page.refresh();
+  page.setData({ loadState: 'LOADING' });
+  await page.openNotice({ currentTarget: { dataset: {
+    id: 'notice/one', event: 'event-A', kind: 'EVENT_OUTCOME_DUE'
+  } } });
+  page.setData({ loadState: 'READY' });
+  for (const dataset of [
+    { id: 'notice/one', event: 'event-B', kind: 'EVENT_OUTCOME_DUE' },
+    { id: 'notice/one', event: 'event-A', kind: 'EVENT_OUTCOME_REVIEW' },
+    { id: 'forged', event: 'event-A', kind: 'EVENT_OUTCOME_DUE' },
+    { id: 'notice-two', event: 'event-B', kind: 'EVENT_OUTCOME_REVIEW' }
+  ]) await page.openNotice({ currentTarget: { dataset } });
+  assert.deepEqual(actions, [], 'forged and not-yet-loaded rows do not navigate or mark read');
+
+  await page.loadMoreNotifications();
+  await page.openNotice({ currentTarget: { dataset: {
+    id: 'notice-two', event: 'event-B', kind: 'EVENT_OUTCOME_REVIEW'
+  } } });
+  assert.deepEqual(actions, [
+    '/pages/event/event?id=event-B&section=checkinSection&entry=memberFeedback',
+    '/me/notifications/notice-two/open'
+  ]);
+
+  storage.devUser = 'other-member';
+  await page.openNotice({ currentTarget: { dataset: {
+    id: 'notice/one', event: 'event-A', kind: 'EVENT_OUTCOME_DUE'
+  } } });
+  assert.equal(page.data.notifications.length, 0, 'identity switch clears the loaded private rows');
+  assert.equal(actions.length, 2);
+
+  storage.devUser = 'member';
+  await page.refresh();
+  await page.openNotice({ currentTarget: { dataset: {
+    id: 'notice/one', event: 'event-A', kind: 'EVENT_OUTCOME_DUE'
+  } } });
+  assert.deepEqual(actions.slice(2), [
+    '/pages/event/event?id=event-A&section=hostSection&entry=hostCompletion',
+    '/me/notifications/notice%2Fone/open'
+  ]);
+});
+
+test('profile notice remains unread when its action destination cannot open', async () => {
+  const eventId = 'changed-event';
+  const { page, actions } = mount([{
+    id: 'change-notice', event_id: eventId, kind: 'MATERIAL_CHANGE', status: 'IN_APP',
+    external_status: 'UNAVAILABLE', detail: {}
+  }], [], true);
+  await page.refresh();
+  await page.openNotice({ currentTarget: { dataset: {
+    id: 'change-notice', event: eventId, kind: 'MATERIAL_CHANGE'
+  } } });
+  assert.deepEqual(actions, [`/pages/event/event?id=${eventId}&section=registrationSection`]);
 });
 
 test('later profile notices use a neutral event context when no member event title is available', async () => {

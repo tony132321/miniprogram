@@ -196,6 +196,7 @@ page { background: #f5f7fa; color: #172033; }
 .state-view .card-pending .card-primary { background: #1d64f2; }
 .state-view .card-organized .card-primary { background: #1d64f2; }
 .state-view .card-history .card-primary { background: #5856d6; }
+.state-view .card-history .card-primary.card-repeat { background: #1d64f2; box-shadow: 0 5rpx 14rpx rgba(29,100,242,.16); }
 .state-feed-foot { display: flex; flex-direction: column; align-items: center; padding: 32rpx 0 70rpx; color: #8d94a2; font-size: 21rpx; text-align: center; }
 .state-feed-foot view { width: 49rpx; height: 49rpx; margin-bottom: 10rpx; border-radius: 50%; color: #5856d6; background: #f1eff8; line-height: 49rpx; font-size: 25rpx; }
 
