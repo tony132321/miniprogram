@@ -75,3 +75,89 @@
 .badge-detail-category { margin-top: 4rpx; color: #667085; text-align: center; font-size: 20rpx; }
 .badge-detail-notice { margin-top: 24rpx; padding: 20rpx; border-radius: 18rpx; background: #f5f6fa; color: #555f72; font-size: 21rpx; line-height: 1.55; }
 .badge-detail-activities { width: 100%; margin: 24rpx 0 0; border-radius: 38rpx; background: #2164f0; color: #fff; line-height: 2.4; font-size: 23rpx; font-weight: 700; }
+
+/* Wave60: source tokens at 375px; closed-service copy may grow naturally. */
+.badge-page { padding-left: 32rpx; padding-right: 32rpx; background: #faf8fe; color: #1a1b1f; font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif; }
+.badge-page .pg10-header { height: 112rpx; margin-left: -32rpx; margin-right: -32rpx; margin-bottom: 0; padding-left: 32rpx; background: rgba(250,248,254,.85); }
+.badge-page .pg10-back { width: 88rpx; min-width: 88rpx; min-height: 88rpx; display: flex; align-items: center; }
+.badge-page .pg10-header-title { font-size: 34rpx; line-height: 44rpx; font-weight: 600; }
+.badge-header-actions { gap: 8rpx; }
+.badge-header-more { width: 88rpx; height: 88rpx; display: flex; align-items: center; justify-content: center; }
+.badge-header-avatar { width: 64rpx; height: 64rpx; background: #004cc8; display: flex; align-items: center; justify-content: center; }
+.badge-header-menu { top: 104rpx; }
+.badge-status { margin: 8rpx 0 16rpx; font-size: 26rpx; line-height: 32rpx; font-weight: 600; color: #424655; }
+.muted-dot { width: 16rpx; height: 16rpx; }
+.status-pill { background: #F3FEE7; color: #4d5d00; padding: 4rpx 16rpx; font-size: 22rpx; line-height: 28rpx; }
+.badge-summary { position: relative; padding: 32rpx; margin-bottom: 32rpx; border-radius: 32rpx; background: linear-gradient(135deg,#F2F1FD,#FFFFFF 50%,#EBF2FE); }
+.summary-top { gap: 24rpx; }
+.badge-orb { box-sizing: border-box; width: 160rpx; height: 160rpx; padding: 8rpx; border-radius: 32rpx; background: linear-gradient(135deg,#1D64F2,#4c4aca,#5856D6); }
+.badge-orb-inner { width: 100%; height: 100%; border-radius: 24rpx; background: rgba(255,255,255,.2); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.badge-orb text { font-size: 22rpx; line-height: 28rpx; }
+.summary-title { display: flex; flex-wrap: wrap; align-items: center; gap: 12rpx; font-size: 40rpx; line-height: 52rpx; font-weight: 700; color: #1a1b1f; }
+.summary-title text { padding: 4rpx 16rpx; font-size: 22rpx; line-height: 28rpx; color: #1D64F2; background: #EBF2FE; font-weight: 700; }
+.summary-description { margin-top: 4rpx; font-size: 26rpx; line-height: 36rpx; color: #424655; }
+.summary-next { display: flex; align-items: flex-start; gap: 8rpx; margin-top: 8rpx; font-size: 22rpx; line-height: 28rpx; color: #004cc8; font-weight: 600; }
+.xp-card { margin-top: 24rpx; padding: 16rpx; border-radius: 24rpx; }
+.xp-row { font-size: 22rpx; line-height: 28rpx; font-weight: 700; color: #424655; }
+.xp-label { display: flex; align-items: center; gap: 8rpx; }
+.xp-track { box-sizing: border-box; height: 20rpx; padding: 4rpx; margin: 12rpx 0; background: #efedf3; }
+.xp-note { font-size: 22rpx; line-height: 28rpx; font-weight: 700; color: #737687; }
+.showcase { padding: 24rpx; margin-bottom: 32rpx; border-radius: 32rpx; }
+.showcase-head { gap: 8rpx; font-size: 34rpx; line-height: 44rpx; font-weight: 600; }
+.showcase-heading { display: flex; align-items: center; gap: 12rpx; }
+.showcase-head text { padding: 4rpx 16rpx; font-size: 22rpx; line-height: 28rpx; background: #e9e7ed; color: #424655; }
+.showcase-slots { gap: 24rpx; margin-top: 16rpx; }
+.showcase-slot { padding: 16rpx; border-radius: 24rpx; font-size: 22rpx; line-height: 28rpx; color: #737687; }
+.slot-icon { width: 80rpx; height: 80rpx; margin-bottom: 8rpx; display: flex; align-items: center; justify-content: center; background: #e3e2e7; }
+.badge-tabs { padding: 8rpx 0; margin-bottom: 24rpx; }
+.badge-tab { padding: 12rpx 28rpx; margin-right: 8rpx; font-size: 26rpx; line-height: 32rpx; font-weight: 600; color: #424655; }
+.badge-tab.selected { background: #004cc8; }
+.badge-grid { gap: 24rpx; align-items: stretch; }
+.badge-cell { position: relative; width: calc((100% - 48rpx) / 3); min-height: 0; padding: 16rpx; border-radius: 32rpx; color: #1a1b1f; }
+.badge-icon-frame { position: relative; width: 112rpx; height: 112rpx; margin: 24rpx auto 16rpx; display: flex; align-items: center; justify-content: center; }
+.badge-circle { position: relative; width: 96rpx; height: 96rpx; margin: 0; border-radius: 32rpx; display: flex; align-items: center; justify-content: center; }
+.badge-halo { position: absolute; inset: 0; border-radius: 50%; filter: blur(16rpx); opacity: .3; background: #EBF2FE; }
+.badge-halo.amber { background: linear-gradient(45deg,#fbbf24,#fef08a); }
+.badge-halo.violet { background: linear-gradient(45deg,#5856D6,#f9a8d4); }
+.badge-halo.lime { background: #D2F803; opacity: .4; }
+.badge-halo.pink { background: #FFF0F3; opacity: .8; }
+.badge-halo.orange { background: #fed7aa; opacity: .4; }
+.badge-halo.coffee { background: #fef08a; opacity: .4; }
+.badge-halo.muted { display: none; }
+.badge-circle.amber,.badge-detail-icon.amber { background: linear-gradient(135deg,#fcd34d,#fbbf24,#eab308); }
+.badge-circle.violet,.badge-detail-icon.violet { background: linear-gradient(135deg,#5856D6,#4c4aca,#4f46e5); }
+.badge-circle.lime,.badge-detail-icon.lime { background: linear-gradient(135deg,#a3e635,#D2F803,#34d399); }
+.badge-circle.pink,.badge-detail-icon.pink { background: linear-gradient(135deg,#f472b6,#FF2D55,#f43f5e); }
+.badge-circle.orange,.badge-detail-icon.orange { background: linear-gradient(135deg,#fbbf24,#fb923c,#fb7185); }
+.badge-circle.coffee,.badge-detail-icon.coffee { background: linear-gradient(135deg,#ca8a04,#d97706,#854d0e); }
+.badge-circle.blue,.badge-detail-icon.blue { background: linear-gradient(135deg,#22d3ee,#1D64F2,#2563eb); }
+.badge-circle.muted,.badge-detail-icon.muted { background: #e3e2e7; }
+.badge-cell.locked { background: #f4f3f8; opacity: .75; box-shadow: none; color: #424655; }
+.badge-lock { position: absolute; top: 16rpx; right: 16rpx; width: 32rpx; height: 32rpx; }
+.badge-title { white-space: normal; overflow: visible; font-size: 30rpx; line-height: 40rpx; font-weight: 600; }
+.badge-cell text { white-space: normal; overflow: visible; margin-top: 4rpx; font-size: 22rpx; line-height: 28rpx; font-weight: 700; color: #737687; }
+.badge-bottom-bar { padding: 16rpx 32rpx calc(16rpx + env(safe-area-inset-bottom)); background: linear-gradient(180deg,rgba(250,248,254,0),#faf8fe 24%,#faf8fe); }
+.badge-share-action { min-height: 112rpx; gap: 16rpx; font-size: 34rpx; line-height: 44rpx; font-weight: 600; background: linear-gradient(90deg,#1D64F2,#4c4aca,#5856D6); }
+.badge-detail-sheet { max-height: 85vh; overflow-y: auto; padding: 32rpx 32rpx calc(32rpx + env(safe-area-inset-bottom)); border-radius: 48rpx 48rpx 0 0; }
+.badge-detail-handle { width: 80rpx; height: 8rpx; margin-bottom: 24rpx; background: #dbd9df; }
+.badge-detail-icon { width: 160rpx; height: 160rpx; border-radius: 32rpx; display: flex; align-items: center; justify-content: center; }
+.badge-detail-title { margin-top: 16rpx; font-size: 40rpx; line-height: 52rpx; font-weight: 700; }
+.badge-detail-category { font-size: 26rpx; line-height: 32rpx; font-weight: 600; }
+.badge-detail-notice { font-size: 30rpx; line-height: 42rpx; color: #424655; }
+.material-icon { display: block; width: 48rpx; height: 48rpx; flex: none; }
+.header-more-icon { width: 44rpx; height: 44rpx; margin: auto; }
+.header-person-icon,.showcase-symbol { width: 36rpx; height: 36rpx; }
+.orb-symbol { width: 72rpx; height: 72rpx; }
+.next-symbol { width: 30rpx; height: 30rpx; }
+.xp-symbol { width: 26rpx; height: 26rpx; }
+.slot-symbol { width: 40rpx; height: 40rpx; }
+.badge-symbol { width: 56rpx; height: 56rpx; }
+.detail-symbol { width: 88rpx; height: 88rpx; }
+.badge-detail-close { display: flex; align-items: center; justify-content: center; }
+
+.badge-icon-frame.featured { margin-top: 8rpx; }
+.badge-symbol.quick { width: 60rpx; height: 60rpx; }
+.badge-symbol.coffee,.badge-symbol.night,.badge-symbol.crowd { width: 52rpx; height: 52rpx; }
+
+/* Native safe area stays opaque while source-like header sticks below it. */
+.badge-status-cover { position: fixed; z-index: 20; top: 0; left: 0; right: 0; background: #faf8fe; pointer-events: none; }

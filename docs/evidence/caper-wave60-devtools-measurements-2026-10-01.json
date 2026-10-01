@@ -1,0 +1,3034 @@
+{
+  "evidenceLevel": "local WeChat Developer Tools CLI and Automator with test AppID and synthetic development actor; no native CUA foreground or physical-device proof",
+  "sourceBaseLocalCommit": "c567ed095a3baed0432dd250c27f06e5b2a935e8",
+  "fullSuiteRun": false,
+  "screens": {
+    "A": {
+      "scope": "profile-edit",
+      "route": "/subpackages/profile/profile-edit/profile-edit",
+      "source": "Wave60 PG10-A/B reference tokens",
+      "checks": [
+        {
+          "label": "closed avatar/gender/interests",
+          "count": 11,
+          "disabled": true,
+          "inert": true
+        },
+        {
+          "label": "alias picker open/cancel",
+          "state": "READY",
+          "identityEdit": false
+        },
+        {
+          "label": "actual alias candidate",
+          "selector": ".alias-activity[data-id=\"02c295b8-10e0-4602-8d25-1dc0d801a5f1\"]",
+          "target": "pages/event/event",
+          "query": {
+            "id": "02c295b8-10e0-4602-8d25-1dc0d801a5f1",
+            "section": "registrationSection",
+            "entry": "alias"
+          }
+        },
+        {
+          "label": "alias back first reaches event summary",
+          "eventId": "02c295b8-10e0-4602-8d25-1dc0d801a5f1",
+          "activeSection": "detailsSection"
+        },
+        {
+          "label": "alias destination back",
+          "selector": ".event-back",
+          "target": "subpackages/profile/profile-edit/profile-edit",
+          "query": {}
+        },
+        {
+          "label": "browse city picker",
+          "selector": ".city-row",
+          "target": "pages/city/city",
+          "query": {}
+        },
+        {
+          "label": "city cancel",
+          "selector": ".nav-back",
+          "target": "subpackages/profile/profile-edit/profile-edit",
+          "query": {}
+        },
+        {
+          "label": "city cancelled without selection",
+          "city": "上海"
+        },
+        {
+          "label": "menu privacy safety",
+          "target": "subpackages/profile/privacy-safety/privacy-safety",
+          "query": {}
+        },
+        {
+          "label": "menu legal",
+          "target": "subpackages/profile/legal/legal",
+          "query": {}
+        },
+        {
+          "label": "menu profile",
+          "target": "pages/me/me",
+          "query": {}
+        },
+        {
+          "label": "header avatar",
+          "selector": ".edit-header-avatar",
+          "target": "pages/me/me",
+          "query": {}
+        },
+        {
+          "label": "account settings",
+          "selector": ".settings-link",
+          "target": "pages/me/me",
+          "query": {}
+        },
+        {
+          "label": "account privacy request entry",
+          "selector": ".deletion-note",
+          "target": "pages/me/me",
+          "query": {}
+        },
+        {
+          "label": "back fallback",
+          "selector": ".pg10-back",
+          "target": "pages/me/me",
+          "query": {}
+        }
+      ],
+      "exceptions": [],
+      "window": {
+        "pixelRatio": 3,
+        "safeArea": {
+          "top": 54,
+          "left": 0,
+          "right": 402,
+          "bottom": 840,
+          "width": 402,
+          "height": 786
+        },
+        "screenWidth": 402,
+        "screenHeight": 874,
+        "screenTop": 0,
+        "windowWidth": 402,
+        "windowHeight": 874,
+        "statusBarHeight": 54
+      },
+      "scale": 1.072,
+      "geometry": {
+        "header": {
+          "size": {
+            "width": 402,
+            "height": 60
+          },
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "font": "16px",
+          "line": "normal",
+          "radius": "0px",
+          "text": "Edit Profile"
+        },
+        "title": {
+          "size": {
+            "width": 155,
+            "height": 23
+          },
+          "offset": {
+            "left": 60,
+            "top": 72.5
+          },
+          "font": "18px",
+          "line": "23px",
+          "radius": "0px",
+          "text": "Edit Profile"
+        },
+        "avatar": {
+          "size": {
+            "width": 34,
+            "height": 34
+          },
+          "offset": {
+            "left": 266,
+            "top": 67
+          },
+          "font": "18px",
+          "line": "46px",
+          "radius": "50%",
+          "text": ""
+        },
+        "identity": {
+          "size": {
+            "width": 102,
+            "height": 102
+          },
+          "offset": {
+            "left": 150,
+            "top": 177
+          },
+          "font": "16px",
+          "line": "normal",
+          "radius": "50%",
+          "text": ""
+        },
+        "identityIcon": {
+          "size": {
+            "width": 51,
+            "height": 51
+          },
+          "offset": {
+            "left": 175.5,
+            "top": 202.5
+          },
+          "font": "16px",
+          "line": "normal",
+          "radius": "0px",
+          "text": ""
+        },
+        "camera": {
+          "size": {
+            "width": 34,
+            "height": 34
+          },
+          "offset": {
+            "left": 215,
+            "top": 242
+          },
+          "font": "18px",
+          "line": "46px",
+          "radius": "50%",
+          "text": ""
+        },
+        "save": {
+          "size": {
+            "width": 110,
+            "height": 29
+          },
+          "offset": {
+            "left": 275,
+            "top": 122.5
+          },
+          "font": "13px",
+          "line": "17px",
+          "radius": "21px",
+          "text": "保存待开放"
+        },
+        "fieldHeading": {
+          "size": {
+            "width": 344,
+            "height": 17
+          },
+          "offset": {
+            "left": 29,
+            "top": 364
+          },
+          "font": "13px",
+          "line": "17px",
+          "radius": "0px",
+          "text": "昵称 活动内昵称可单独设置"
+        },
+        "nickname": {
+          "size": {
+            "width": 344,
+            "height": 31
+          },
+          "offset": {
+            "left": 29,
+            "top": 385
+          },
+          "font": "18px",
+          "line": "23px",
+          "radius": "8px",
+          "text": "全局昵称暂未开放 "
+        },
+        "card": {
+          "size": {
+            "width": 368,
+            "height": 417.1953125
+          },
+          "offset": {
+            "left": 17,
+            "top": 352
+          },
+          "font": "16px",
+          "line": "normal",
+          "radius": "12px",
+          "text": "昵称 活动内昵称可单独设置全局昵称暂未开放 设置本场昵称仅在选定活动内展示，需本人确认›性别 性别选择待开放女男保密个性签名 / 组局宣言 暂不可编辑把相遇带回真实世界示意文案 · 未保存为个人资料我的浏览城市上海 · 仅在本机用于浏览"
+        },
+        "gender": {
+          "size": {
+            "width": 109.3359375,
+            "height": 29
+          },
+          "offset": {
+            "left": 33,
+            "top": 520.1953125
+          },
+          "font": "13px",
+          "line": "17px",
+          "radius": "4px",
+          "text": "女"
+        },
+        "bio": {
+          "size": {
+            "width": 344,
+            "height": 99
+          },
+          "offset": {
+            "left": 29,
+            "top": 592.1953125
+          },
+          "font": "16px",
+          "line": "26px",
+          "radius": "8px",
+          "text": "把相遇带回真实世界示意文案 · 未保存为个人资料"
+        },
+        "cityIcon": {
+          "size": {
+            "width": 34,
+            "height": 34
+          },
+          "offset": {
+            "left": 29,
+            "top": 713.1953125
+          },
+          "font": "18px",
+          "line": "normal",
+          "radius": "50%",
+          "text": ""
+        },
+        "sectionHeading": {
+          "size": {
+            "width": 344,
+            "height": 23
+          },
+          "offset": {
+            "left": 29,
+            "top": 798.1953125
+          },
+          "font": "18px",
+          "line": "23px",
+          "radius": "0px",
+          "text": "兴趣标签 设计示意添加"
+        },
+        "interest": {
+          "size": {
+            "width": 82,
+            "height": 29
+          },
+          "offset": {
+            "left": 29,
+            "top": 838.1953125
+          },
+          "font": "13px",
+          "line": "17px",
+          "radius": "18px",
+          "text": "羽毛球"
+        },
+        "certificate": {
+          "size": {
+            "width": 170,
+            "height": 57.5
+          },
+          "offset": {
+            "left": 29,
+            "top": 1082.1953125
+          },
+          "font": "16px",
+          "line": "normal",
+          "radius": "8px",
+          "text": "羽毛球水平未认证"
+        },
+        "certificateIcon": {
+          "size": {
+            "width": 30,
+            "height": 30
+          },
+          "offset": {
+            "left": 39,
+            "top": 1095.9453125
+          },
+          "font": "16px",
+          "line": "normal",
+          "radius": "50%",
+          "text": ""
+        },
+        "alias": {
+          "size": {
+            "width": 344,
+            "height": 53.1953125
+          },
+          "offset": {
+            "left": 29,
+            "top": 424
+          },
+          "font": "18px",
+          "line": "46px",
+          "radius": "9px",
+          "text": "设置本场昵称仅在选定活动内展示，需本人确认›"
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        },
+        "capsuleClearance": 8,
+        "stickyHeader": {
+          "size": {
+            "width": 402,
+            "height": 60
+          },
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "font": "16px",
+          "line": "normal",
+          "radius": "0px",
+          "text": "Edit Profile"
+        }
+      },
+      "aliasPicker": {
+        "state": "READY",
+        "error": "",
+        "candidates": [
+          {
+            "id": "02c295b8-10e0-4602-8d25-1dc0d801a5f1",
+            "title": "CAPER 合成验收 · PG09 五行 AA 账本 · r1-mun9ag9u",
+            "role": "主办方"
+          },
+          {
+            "id": "97ed8055-27fb-484e-87a2-9986805fcae1",
+            "title": "CAPER 合成验收 · PG02_b 有效候补 OFFERED · r1-mun9ag9u",
+            "role": "当前活动成员"
+          },
+          {
+            "id": "f3175aaf-e4cf-480a-9153-abf015c3c34f",
+            "title": "CAPER 合成验收 · PG02_d 历史 AA 活动 · r1-mun9ag9u",
+            "role": "当前活动成员"
+          }
+        ]
+      },
+      "aliasDestination": {
+        "eventId": "02c295b8-10e0-4602-8d25-1dc0d801a5f1",
+        "activeSection": "registrationSection",
+        "aliasLoadState": "READY",
+        "canSetAlias": true,
+        "nicknameChanged": false
+      },
+      "settingsLanding": {
+        "loadState": "READY",
+        "focusIntent": "account landing"
+      },
+      "privacyFocus": {
+        "loadState": "READY",
+        "advancedOpen": true
+      },
+      "status": "PASS",
+      "syntheticDevelopmentActor": "caper-r1-actor-20260930",
+      "identityAndBrowseCityPreserved": true,
+      "capturedIntermediateScreenshotCount": 5,
+      "finalScreenshots": [
+        "docs/evidence/images/caper-profile-edit-top-wave60-2026-10-01.png",
+        "docs/evidence/images/caper-profile-edit-scroll-wave60-2026-10-01.png"
+      ]
+    },
+    "B": {
+      "scope": "badges",
+      "route": "/subpackages/profile/badges/badges",
+      "source": "Wave60 PG10-A/B reference tokens",
+      "checks": [
+        {
+          "label": "share payload inspected",
+          "realShareInvoked": false
+        },
+        {
+          "label": "category all",
+          "ids": [
+            "badminton",
+            "host",
+            "quick",
+            "partner",
+            "walk",
+            "coffee",
+            "first",
+            "night",
+            "crowd"
+          ]
+        },
+        {
+          "label": "category sports",
+          "ids": [
+            "badminton",
+            "walk"
+          ]
+        },
+        {
+          "label": "category social",
+          "ids": [
+            "partner",
+            "first",
+            "crowd"
+          ]
+        },
+        {
+          "label": "category organizer",
+          "ids": [
+            "host",
+            "quick",
+            "night"
+          ]
+        },
+        {
+          "label": "category explorer",
+          "ids": [
+            "coffee"
+          ]
+        },
+        {
+          "label": "featured and muted concept details",
+          "buttonClose": true,
+          "backdropClose": true
+        },
+        {
+          "label": "detail real activity records",
+          "selector": ".badge-detail-activities",
+          "target": "subpackages/profile/moments/moments",
+          "query": {
+            "filter": "all"
+          }
+        },
+        {
+          "label": "real activity records",
+          "selector": ".badge-activities-link",
+          "target": "subpackages/profile/moments/moments",
+          "query": {
+            "filter": "all"
+          }
+        },
+        {
+          "label": "menu privacy",
+          "target": "subpackages/profile/privacy-safety/privacy-safety",
+          "query": {}
+        },
+        {
+          "label": "menu records",
+          "target": "subpackages/profile/moments/moments",
+          "query": {
+            "filter": "all"
+          }
+        },
+        {
+          "label": "menu profile",
+          "target": "pages/me/me",
+          "query": {}
+        },
+        {
+          "label": "header avatar",
+          "selector": ".badge-header-avatar",
+          "target": "pages/me/me",
+          "query": {}
+        },
+        {
+          "label": "back fallback",
+          "selector": ".pg10-back",
+          "target": "pages/me/me",
+          "query": {}
+        }
+      ],
+      "exceptions": [],
+      "window": {
+        "pixelRatio": 3,
+        "safeArea": {
+          "top": 54,
+          "left": 0,
+          "right": 402,
+          "bottom": 840,
+          "width": 402,
+          "height": 786
+        },
+        "screenWidth": 402,
+        "screenHeight": 874,
+        "screenTop": 0,
+        "windowWidth": 402,
+        "windowHeight": 874,
+        "statusBarHeight": 54
+      },
+      "scale": 1.072,
+      "geometry": {
+        "header": {
+          "size": {
+            "width": 402,
+            "height": 60
+          },
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "font": "16px",
+          "line": "normal",
+          "radius": "0px",
+          "text": "Edit Profile"
+        },
+        "title": {
+          "size": {
+            "width": 151,
+            "height": 23
+          },
+          "offset": {
+            "left": 64,
+            "top": 72.5
+          },
+          "font": "18px",
+          "line": "23px",
+          "radius": "0px",
+          "text": "Edit Profile"
+        },
+        "avatar": {
+          "size": {
+            "width": 34,
+            "height": 34
+          },
+          "offset": {
+            "left": 266,
+            "top": 67
+          },
+          "font": "15px",
+          "line": "28px",
+          "radius": "50%",
+          "text": ""
+        },
+        "summary": {
+          "size": {
+            "width": 368,
+            "height": 199
+          },
+          "offset": {
+            "left": 17,
+            "top": 145
+          },
+          "font": "16px",
+          "line": "normal",
+          "radius": "17px",
+          "text": "—成长印记 真实经历勋章、等级与经验值尚未接入真实活动记录可在下方查看当前经验值待开放不会根据未经核验的数据授予称号"
+        },
+        "orb": {
+          "size": {
+            "width": 85,
+            "height": 85
+          },
+          "offset": {
+            "left": 34,
+            "top": 162
+          },
+          "font": "16px",
+          "line": "normal",
+          "radius": "17px",
+          "text": "—"
+        },
+        "summaryTitle": {
+          "size": {
+            "width": 237,
+            "height": 27
+          },
+          "offset": {
+            "left": 131,
+            "top": 170.5
+          },
+          "font": "21px",
+          "line": "27px",
+          "radius": "0px",
+          "text": "成长印记 真实经历"
+        },
+        "summaryDescription": {
+          "size": {
+            "width": 237,
+            "height": 19
+          },
+          "offset": {
+            "left": 131,
+            "top": 199.5
+          },
+          "font": "13px",
+          "line": "19px",
+          "radius": "0px",
+          "text": "勋章、等级与经验值尚未接入"
+        },
+        "xpTrack": {
+          "size": {
+            "width": 318,
+            "height": 10
+          },
+          "offset": {
+            "left": 42,
+            "top": 288
+          },
+          "font": "16px",
+          "line": "normal",
+          "radius": "6px",
+          "text": ""
+        },
+        "showcase": {
+          "size": {
+            "width": 368,
+            "height": 132
+          },
+          "offset": {
+            "left": 17,
+            "top": 361
+          },
+          "font": "16px",
+          "line": "normal",
+          "radius": "17px",
+          "text": "主页展示位佩戴未开放暂不可佩戴暂不可佩戴暂不可佩戴暂不可佩戴"
+        },
+        "showcaseHeading": {
+          "size": {
+            "width": 344,
+            "height": 23
+          },
+          "offset": {
+            "left": 29,
+            "top": 373
+          },
+          "font": "18px",
+          "line": "23px",
+          "radius": "0px",
+          "text": "主页展示位佩戴未开放"
+        },
+        "slot": {
+          "size": {
+            "width": 77,
+            "height": 77
+          },
+          "offset": {
+            "left": 29,
+            "top": 404
+          },
+          "font": "11px",
+          "line": "15px",
+          "radius": "12px",
+          "text": "暂不可佩戴"
+        },
+        "slotIcon": {
+          "size": {
+            "width": 42,
+            "height": 42
+          },
+          "offset": {
+            "left": 46.5,
+            "top": 412
+          },
+          "font": "17px",
+          "line": "27px",
+          "radius": "50%",
+          "text": ""
+        },
+        "tab": {
+          "size": {
+            "width": 56,
+            "height": 29
+          },
+          "offset": {
+            "left": 17,
+            "top": 514
+          },
+          "font": "13px",
+          "line": "17px",
+          "radius": "19px",
+          "text": "全部"
+        },
+        "grid": {
+          "size": {
+            "width": 368,
+            "height": 418
+          },
+          "offset": {
+            "left": 17,
+            "top": 563
+          },
+          "font": "16px",
+          "line": "normal",
+          "radius": "0px",
+          "text": "羽球常胜运动活动 · 待开放靠谱局长组织活动 · 待开放秒速成局组织活动 · 待开放神仙搭子社交活动 · 待开放滨江漫步家运动活动 · 待开放咖啡探索家探索活动 · 待开放首局破冰者社交活动 · 待开放夜猫子局长组织活动 · 待开放百人呼应社交活动 · 待开放"
+        },
+        "card": {
+          "size": {
+            "width": 114.328125,
+            "height": 126
+          },
+          "offset": {
+            "left": 17,
+            "top": 563
+          },
+          "font": "18px",
+          "line": "24.3px",
+          "radius": "17px",
+          "text": "羽球常胜运动活动 · 待开放"
+        },
+        "circle": {
+          "size": {
+            "width": 51,
+            "height": 51
+          },
+          "offset": {
+            "left": 48.6640625,
+            "top": 579.5
+          },
+          "font": "26px",
+          "line": "52px",
+          "radius": "17px",
+          "text": ""
+        },
+        "badgeTitle": {
+          "size": {
+            "width": 98.328125,
+            "height": 21
+          },
+          "offset": {
+            "left": 25,
+            "top": 643
+          },
+          "font": "16px",
+          "line": "21px",
+          "radius": "0px",
+          "text": "羽球常胜"
+        },
+        "share": {
+          "size": {
+            "width": 368,
+            "height": 60
+          },
+          "offset": {
+            "left": 17,
+            "top": 772
+          },
+          "font": "18px",
+          "line": "23px",
+          "radius": "25px",
+          "text": "分享勋章墙概念预览"
+        },
+        "bottom": {
+          "size": {
+            "width": 402,
+            "height": 126.5
+          },
+          "offset": {
+            "left": 0,
+            "top": 747.5
+          },
+          "font": "16px",
+          "line": "normal",
+          "radius": "0px",
+          "text": "概念预览 · 勋章与佩戴尚未开放分享勋章墙概念预览"
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        },
+        "capsuleClearance": 8,
+        "slots": [
+          {
+            "size": {
+              "width": 77,
+              "height": 77
+            },
+            "offset": {
+              "left": 29,
+              "top": 404
+            },
+            "font": "11px",
+            "line": "15px",
+            "radius": "12px",
+            "text": "暂不可佩戴"
+          },
+          {
+            "size": {
+              "width": 77,
+              "height": 77
+            },
+            "offset": {
+              "left": 118,
+              "top": 404
+            },
+            "font": "11px",
+            "line": "15px",
+            "radius": "12px",
+            "text": "暂不可佩戴"
+          },
+          {
+            "size": {
+              "width": 77,
+              "height": 77
+            },
+            "offset": {
+              "left": 207,
+              "top": 404
+            },
+            "font": "11px",
+            "line": "15px",
+            "radius": "12px",
+            "text": "暂不可佩戴"
+          },
+          {
+            "size": {
+              "width": 77,
+              "height": 77
+            },
+            "offset": {
+              "left": 296,
+              "top": 404
+            },
+            "font": "11px",
+            "line": "15px",
+            "radius": "12px",
+            "text": "暂不可佩戴"
+          }
+        ]
+      },
+      "concept": {
+        "awardState": "UNAVAILABLE",
+        "badgeStatus": "勋章系统尚未启用待开放",
+        "shareNote": "概念预览 · 勋章与佩戴尚未开放",
+        "wearableSlots": false
+      },
+      "sharePayload": {
+        "title": "耍起 CAPER · 勋章墙概念预览（勋章尚未开放）",
+        "path": "/subpackages/profile/badges/badges"
+      },
+      "detail": {
+        "sheet": {
+          "size": {
+            "width": 402,
+            "height": 361.796875
+          },
+          "offset": {
+            "left": 0,
+            "top": 512.203125
+          },
+          "font": "16px",
+          "line": "normal",
+          "radius": "25px",
+          "text": "羽球常胜运动活动 · 概念预览这枚勋章尚未授予任何人。评定、佩戴与单枚勋章分享尚未开放；本页只可分享概念预览，不代表你的活动已被认证。查看我的真实活动记录　›"
+        },
+        "icon": {
+          "size": {
+            "width": 85,
+            "height": 85
+          },
+          "offset": {
+            "left": 158.5,
+            "top": 545.203125
+          },
+          "font": "29px",
+          "line": "54px",
+          "radius": "17px",
+          "text": ""
+        },
+        "title": {
+          "size": {
+            "width": 368,
+            "height": 27
+          },
+          "offset": {
+            "left": 17,
+            "top": 638.203125
+          },
+          "font": "21px",
+          "line": "27px",
+          "radius": "0px",
+          "text": "羽球常胜"
+        },
+        "notice": {
+          "size": {
+            "width": 368,
+            "height": 86
+          },
+          "offset": {
+            "left": 17,
+            "top": 696.203125
+          },
+          "font": "16px",
+          "line": "22px",
+          "radius": "9px",
+          "text": "这枚勋章尚未授予任何人。评定、佩戴与单枚勋章分享尚未开放；本页只可分享概念预览，不代表你的活动已被认证。"
+        }
+      },
+      "status": "PASS",
+      "syntheticDevelopmentActor": "caper-r1-actor-20260930",
+      "identityAndBrowseCityPreserved": true,
+      "capturedIntermediateScreenshotCount": 3,
+      "finalScreenshots": [
+        "docs/evidence/images/caper-badges-top-wave60-2026-10-01.png",
+        "docs/evidence/images/caper-badges-scroll-wave60-2026-10-01.png"
+      ]
+    },
+    "D": {
+      "scope": "privacy-safety",
+      "route": "subpackages/profile/privacy-safety/privacy-safety",
+      "evidenceLevel": "local DevTools UI only",
+      "checkedAt": "2026-10-01T09:45:17.257Z",
+      "geometry": {
+        "header": {
+          "header": {
+            "selector": ".privacy-header",
+            "size": {
+              "width": 402,
+              "height": 60
+            },
+            "offset": {
+              "left": 0,
+              "top": 54
+            },
+            "text": "隐私与安全",
+            "styles": {
+              "font-size": "16px",
+              "line-height": "normal",
+              "position": "sticky",
+              "padding-right": "102px",
+              "background-color": "rgba(250, 248, 254, 0.85)"
+            }
+          },
+          "title": {
+            "selector": ".pg10-header-title",
+            "size": {
+              "width": 139,
+              "height": 23
+            },
+            "offset": {
+              "left": 68,
+              "top": 72.5
+            },
+            "text": "隐私与安全",
+            "styles": {
+              "font-size": "18px",
+              "line-height": "23px"
+            }
+          },
+          "back": {
+            "selector": ".pg10-back",
+            "size": {
+              "width": 47,
+              "height": 47
+            },
+            "offset": {
+              "left": 13,
+              "top": 60.5
+            },
+            "text": "",
+            "styles": {
+              "font-size": "25px",
+              "line-height": "35px"
+            }
+          },
+          "more": {
+            "selector": ".privacy-header-more",
+            "size": {
+              "width": 47,
+              "height": 47
+            },
+            "offset": {
+              "left": 215,
+              "top": 60.5
+            },
+            "text": "",
+            "styles": {
+              "font-size": "17px",
+              "line-height": "28px"
+            }
+          },
+          "avatar": {
+            "selector": ".privacy-header-avatar",
+            "size": {
+              "width": 34,
+              "height": 34
+            },
+            "offset": {
+              "left": 266,
+              "top": 67
+            },
+            "text": "",
+            "styles": {
+              "font-size": "15px",
+              "line-height": "28px"
+            }
+          }
+        },
+        "privacy": {
+          "hero": {
+            "selector": ".privacy-intro",
+            "size": {
+              "width": 368,
+              "height": 167.375
+            },
+            "offset": {
+              "left": 17,
+              "top": 126
+            },
+            "text": "关于黑名单机制由你管理的活动边界在共同活动的成员昵称列表中，双方不会互相显示。结项后的类似活动邀请候选名单会排除已屏蔽关系。你可在下方撤回屏蔽；违规或安全问题请另行举报。",
+            "styles": {
+              "font-size": "16px",
+              "line-height": "normal",
+              "padding-top": "17px",
+              "padding-left": "17px",
+              "border-radius": "12px"
+            }
+          },
+          "heroSymbol": {
+            "selector": ".intro-symbol",
+            "size": {
+              "width": 42,
+              "height": 42
+            },
+            "offset": {
+              "left": 34,
+              "top": 143
+            },
+            "text": "",
+            "styles": {
+              "font-size": "22px",
+              "line-height": "normal"
+            }
+          },
+          "heroGlyph": {
+            "selector": ".intro-symbol image",
+            "size": {
+              "width": 23,
+              "height": 23
+            },
+            "offset": {
+              "left": 43.5,
+              "top": 152.5
+            },
+            "text": "",
+            "styles": {
+              "font-size": "22px",
+              "line-height": "normal"
+            }
+          },
+          "heroTitle": {
+            "selector": ".intro-title",
+            "size": {
+              "width": 119,
+              "height": 23
+            },
+            "offset": {
+              "left": 84,
+              "top": 145
+            },
+            "text": "关于黑名单机制",
+            "styles": {
+              "font-size": "18px",
+              "line-height": "23px"
+            }
+          },
+          "heroSubtitle": {
+            "selector": ".intro-subtitle",
+            "size": {
+              "width": 119,
+              "height": 15
+            },
+            "offset": {
+              "left": 84,
+              "top": 168
+            },
+            "text": "由你管理的活动边界",
+            "styles": {
+              "font-size": "11px",
+              "line-height": "15px"
+            }
+          },
+          "points": {
+            "selector": ".privacy-points > view",
+            "size": {
+              "width": 330,
+              "height": 21.125
+            },
+            "offset": {
+              "left": 38,
+              "top": 197
+            },
+            "text": "在共同活动的成员昵称列表中，双方不会互相显示。",
+            "styles": {
+              "font-size": "13px",
+              "line-height": "21.125px"
+            }
+          },
+          "dot": {
+            "selector": ".point-dot",
+            "size": {
+              "width": 6,
+              "height": 6
+            },
+            "offset": {
+              "left": 38,
+              "top": 205
+            },
+            "text": "",
+            "styles": {
+              "font-size": "9px",
+              "line-height": "18.9px"
+            }
+          },
+          "heading": {
+            "selector": ".block-section-heading > view",
+            "size": {
+              "width": 117.3984375,
+              "height": 23
+            },
+            "offset": {
+              "left": 21,
+              "top": 310.375
+            },
+            "text": "已屏蔽成员0",
+            "styles": {
+              "font-size": "18px",
+              "line-height": "23px"
+            }
+          },
+          "count": {
+            "selector": ".block-count",
+            "size": {
+              "width": 23.3984375,
+              "height": 19
+            },
+            "offset": {
+              "left": 115,
+              "top": 312.375
+            },
+            "text": "0",
+            "styles": {
+              "font-size": "11px",
+              "line-height": "15px"
+            }
+          },
+          "report": {
+            "selector": ".help-card",
+            "size": {
+              "width": 368,
+              "height": 60
+            },
+            "offset": {
+              "left": 17,
+              "top": 577.375
+            },
+            "text": "遇到违规、诈骗或不文明行为？前往举报与求助",
+            "styles": {
+              "font-size": "18px",
+              "line-height": "25.2px",
+              "padding-top": "12px",
+              "padding-left": "12px",
+              "border-radius": "12px"
+            }
+          },
+          "reportIcon": {
+            "selector": ".help-icon",
+            "size": {
+              "width": 34,
+              "height": 34
+            },
+            "offset": {
+              "left": 29,
+              "top": 590.375
+            },
+            "text": "",
+            "styles": {
+              "font-size": "18px",
+              "line-height": "35px"
+            }
+          },
+          "reportGlyph": {
+            "selector": ".help-icon image",
+            "size": {
+              "width": 19,
+              "height": 19
+            },
+            "offset": {
+              "left": 36.5,
+              "top": 597.875
+            },
+            "text": "",
+            "styles": {
+              "font-size": "18px",
+              "line-height": "35px"
+            }
+          },
+          "reportCopy": {
+            "selector": ".help-copy",
+            "size": {
+              "width": 302,
+              "height": 36
+            },
+            "offset": {
+              "left": 71,
+              "top": 589.375
+            },
+            "text": "遇到违规、诈骗或不文明行为？前往举报与求助",
+            "styles": {
+              "font-size": "13px",
+              "line-height": "19px"
+            }
+          },
+          "reportLink": {
+            "selector": ".help-link",
+            "size": {
+              "width": 302,
+              "height": 17
+            },
+            "offset": {
+              "left": 71,
+              "top": 608.375
+            },
+            "text": "前往举报与求助",
+            "styles": {
+              "font-size": "13px",
+              "line-height": "17px"
+            }
+          },
+          "foot": {
+            "selector": ".privacy-foot",
+            "size": {
+              "width": 364,
+              "height": 15
+            },
+            "offset": {
+              "left": 19,
+              "top": 652.375
+            },
+            "text": "屏蔽仅按当前服务规则生效；紧急人身危险请联系当地应急服务。",
+            "styles": {
+              "font-size": "11px",
+              "line-height": "15px"
+            }
+          }
+        },
+        "empty": {
+          "container": {
+            "selector": ".block-empty",
+            "size": {
+              "width": 368,
+              "height": 206
+            },
+            "offset": {
+              "left": 17,
+              "top": 341.375
+            },
+            "text": "暂无屏蔽记录活动内成员的屏蔽记录会显示在这里。",
+            "styles": {
+              "font-size": "13px",
+              "line-height": "19px"
+            }
+          },
+          "symbol": {
+            "selector": ".empty-symbol",
+            "size": {
+              "width": 68,
+              "height": 68
+            },
+            "offset": {
+              "left": 167,
+              "top": 383.375
+            },
+            "text": "",
+            "styles": {
+              "font-size": "25px",
+              "line-height": "19px"
+            }
+          },
+          "glyph": {
+            "selector": ".empty-symbol image",
+            "size": {
+              "width": 34,
+              "height": 34
+            },
+            "offset": {
+              "left": 184,
+              "top": 400.375
+            },
+            "text": "",
+            "styles": {
+              "font-size": "25px",
+              "line-height": "19px"
+            }
+          },
+          "title": {
+            "selector": ".empty-title",
+            "size": {
+              "width": 334,
+              "height": 23
+            },
+            "offset": {
+              "left": 34,
+              "top": 459.375
+            },
+            "text": "暂无屏蔽记录",
+            "styles": {
+              "font-size": "18px",
+              "line-height": "23px"
+            }
+          },
+          "copy": {
+            "selector": ".state-copy",
+            "size": {
+              "width": 334,
+              "height": 19
+            },
+            "offset": {
+              "left": 34,
+              "top": 486.375
+            },
+            "text": "活动内成员的屏蔽记录会显示在这里。",
+            "styles": {
+              "font-size": "13px",
+              "line-height": "19px"
+            }
+          }
+        }
+      },
+      "assertions": [
+        {
+          "label": "header 56px at reference width",
+          "pass": true,
+          "actual": 60,
+          "expected": 60.032000000000004
+        },
+        {
+          "label": "header title 17px",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "back hit area 44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "menu hit area 44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "avatar 32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "actual header sticky",
+          "pass": true,
+          "actual": "sticky",
+          "expected": "sticky"
+        },
+        {
+          "label": "avatar clears native capsule",
+          "pass": true,
+          "actual": 300,
+          "expected": 308
+        },
+        {
+          "label": "native capsule reservation",
+          "pass": true,
+          "actual": "102px",
+          "expected": 102
+        },
+        {
+          "label": "hero padding 16px",
+          "pass": true,
+          "actual": "17px",
+          "expected": 17.152
+        },
+        {
+          "label": "hero radius 12px",
+          "pass": true,
+          "actual": "12px",
+          "expected": 12.864
+        },
+        {
+          "label": "hero shield circle 40px",
+          "pass": true,
+          "actual": 42,
+          "expected": 42.88
+        },
+        {
+          "label": "hero glyph 22px",
+          "pass": true,
+          "actual": 23,
+          "expected": 23.584000000000003
+        },
+        {
+          "label": "hero heading 17px",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "hero subtitle 11px",
+          "pass": true,
+          "actual": "11px",
+          "expected": 11.792000000000002
+        },
+        {
+          "label": "privacy bullet text 13px",
+          "pass": true,
+          "actual": "13px",
+          "expected": 13.936
+        },
+        {
+          "label": "bullet dot 6px",
+          "pass": true,
+          "actual": 6,
+          "expected": 6.432
+        },
+        {
+          "label": "blocked heading 17px",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "blocked count 11px",
+          "pass": true,
+          "actual": "11px",
+          "expected": 11.792000000000002
+        },
+        {
+          "label": "report padding 12px",
+          "pass": true,
+          "actual": "12px",
+          "expected": 12.864
+        },
+        {
+          "label": "report radius 12px",
+          "pass": true,
+          "actual": "12px",
+          "expected": 12.864
+        },
+        {
+          "label": "report circle 32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "exact report glyph 18px",
+          "pass": true,
+          "actual": 19,
+          "expected": 19.296
+        },
+        {
+          "label": "report body 13px",
+          "pass": true,
+          "actual": "13px",
+          "expected": 13.936
+        },
+        {
+          "label": "report link 13px",
+          "pass": true,
+          "actual": "13px",
+          "expected": 13.936
+        },
+        {
+          "label": "empty circle 64px",
+          "pass": true,
+          "actual": 68,
+          "expected": 68.608
+        },
+        {
+          "label": "empty glyph 32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "empty title 17px",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "empty body 13px",
+          "pass": true,
+          "actual": "13px",
+          "expected": 13.936
+        },
+        {
+          "label": "runtime exceptions",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "interactions": [
+        {
+          "label": "menu legal",
+          "source": "subpackages/profile/privacy-safety/privacy-safety",
+          "target": "subpackages/profile/legal/legal",
+          "menuIndex": 0
+        },
+        {
+          "label": "menu legal back to source",
+          "source": "subpackages/profile/legal/legal",
+          "target": "subpackages/profile/privacy-safety/privacy-safety"
+        },
+        {
+          "label": "menu support",
+          "source": "subpackages/profile/privacy-safety/privacy-safety",
+          "target": "subpackages/profile/support/support",
+          "menuIndex": 1
+        },
+        {
+          "label": "menu support back to source",
+          "source": "subpackages/profile/support/support",
+          "target": "subpackages/profile/privacy-safety/privacy-safety"
+        },
+        {
+          "label": "menu my page",
+          "source": "subpackages/profile/privacy-safety/privacy-safety",
+          "target": "pages/me/me",
+          "menuIndex": 2
+        },
+        {
+          "label": "avatar",
+          "source": "subpackages/profile/privacy-safety/privacy-safety",
+          "target": "pages/me/me"
+        },
+        {
+          "label": "back fallback",
+          "source": "subpackages/profile/privacy-safety/privacy-safety",
+          "target": "pages/me/me"
+        },
+        {
+          "label": "report CTA",
+          "source": "subpackages/profile/privacy-safety/privacy-safety",
+          "target": "pages/me/me"
+        },
+        {
+          "label": "report CTA",
+          "focusId": "reportSection",
+          "advancedOpen": true,
+          "loadState": "READY",
+          "section": {
+            "selector": "#reportSection",
+            "size": {
+              "width": 366,
+              "height": 16.5
+            },
+            "offset": {
+              "left": 18,
+              "top": 129.6171875
+            },
+            "text": "举报与求助",
+            "styles": {
+              "font-size": "12px",
+              "line-height": "normal"
+            }
+          },
+          "scrollTop": 3479,
+          "reportEventId": ""
+        }
+      ],
+      "screenshots": [
+        "docs/evidence/images/caper-pg10d-reference-wave60-2026-10-01.png",
+        "docs/evidence/images/caper-pg10d-report-wave60-2026-10-01.png",
+        "docs/evidence/images/caper-pg10d-reportSection-wave60-2026-10-01.png"
+      ],
+      "exceptions": [],
+      "failures": [],
+      "window": {
+        "pixelRatio": 3,
+        "safeArea": {
+          "top": 54,
+          "left": 0,
+          "right": 402,
+          "bottom": 840,
+          "width": 402,
+          "height": 786
+        },
+        "screenWidth": 402,
+        "screenHeight": 874,
+        "screenTop": 0,
+        "windowWidth": 402,
+        "windowHeight": 874,
+        "statusBarHeight": 54
+      },
+      "referenceScale": 1.072,
+      "native": {
+        "menu": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        },
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        }
+      },
+      "privacyState": {
+        "loadState": "READY",
+        "blockCount": 0,
+        "message": ""
+      },
+      "rowEvidence": "No live records: row geometry and revoke action untested; no records synthesized.",
+      "pass": true,
+      "elapsedMs": 30309
+    },
+    "E": {
+      "scope": "legal",
+      "route": "subpackages/profile/legal/legal",
+      "evidenceLevel": "local DevTools UI only",
+      "checkedAt": "2026-10-01T09:49:38.640Z",
+      "geometry": {
+        "header": {
+          "header": {
+            "selector": ".legal-header",
+            "size": {
+              "width": 402,
+              "height": 60
+            },
+            "offset": {
+              "left": 0,
+              "top": 54
+            },
+            "text": "隐私与使用说明",
+            "styles": {
+              "font-size": "16px",
+              "line-height": "normal",
+              "position": "sticky",
+              "padding-right": "102px",
+              "background-color": "rgba(250, 248, 254, 0.85)"
+            }
+          },
+          "title": {
+            "selector": ".pg10-header-title",
+            "size": {
+              "width": 147,
+              "height": 23
+            },
+            "offset": {
+              "left": 64,
+              "top": 72.5
+            },
+            "text": "隐私与使用说明",
+            "styles": {
+              "font-size": "18px",
+              "line-height": "23px"
+            }
+          },
+          "back": {
+            "selector": ".legal-back",
+            "size": {
+              "width": 47,
+              "height": 47
+            },
+            "offset": {
+              "left": 17,
+              "top": 60.5
+            },
+            "text": "",
+            "styles": {
+              "font-size": "25px",
+              "line-height": "35px"
+            }
+          },
+          "more": {
+            "selector": ".profile-header-more",
+            "size": {
+              "width": 47,
+              "height": 47
+            },
+            "offset": {
+              "left": 211,
+              "top": 60.5
+            },
+            "text": "",
+            "styles": {
+              "font-size": "17px",
+              "line-height": "28px"
+            }
+          },
+          "avatar": {
+            "selector": ".profile-header-avatar",
+            "size": {
+              "width": 34,
+              "height": 34
+            },
+            "offset": {
+              "left": 266,
+              "top": 67
+            },
+            "text": "",
+            "styles": {
+              "font-size": "15px",
+              "line-height": "28px"
+            }
+          }
+        },
+        "legal": {
+          "meta": {
+            "selector": ".legal-meta",
+            "size": {
+              "width": 368,
+              "height": 54
+            },
+            "offset": {
+              "left": 17,
+              "top": 114
+            },
+            "text": "当前服务说明正式协议待核定",
+            "styles": {
+              "font-size": "16px",
+              "line-height": "normal"
+            }
+          },
+          "chip": {
+            "selector": ".legal-meta-chip",
+            "size": {
+              "width": 82,
+              "height": 19
+            },
+            "offset": {
+              "left": 17,
+              "top": 133.5
+            },
+            "text": "当前服务说明",
+            "styles": {
+              "font-size": "11px",
+              "line-height": "15px"
+            }
+          },
+          "pending": {
+            "selector": ".legal-meta-pending",
+            "size": {
+              "width": 93,
+              "height": 19
+            },
+            "offset": {
+              "left": 103,
+              "top": 133.5
+            },
+            "text": "正式协议待核定",
+            "styles": {
+              "font-size": "11px",
+              "line-height": "15px"
+            }
+          },
+          "aa": {
+            "selector": ".legal-text-size",
+            "size": {
+              "width": 34,
+              "height": 34
+            },
+            "offset": {
+              "left": 313,
+              "top": 126
+            },
+            "text": "",
+            "styles": {
+              "font-size": "18px",
+              "line-height": "46px"
+            }
+          },
+          "share": {
+            "selector": ".legal-meta-share",
+            "size": {
+              "width": 34,
+              "height": 34
+            },
+            "offset": {
+              "left": 351,
+              "top": 126
+            },
+            "text": "",
+            "styles": {
+              "font-size": "18px",
+              "line-height": "46px"
+            }
+          },
+          "summary": {
+            "selector": ".legal-summary",
+            "size": {
+              "width": 368,
+              "height": 141
+            },
+            "offset": {
+              "left": 17,
+              "top": 168
+            },
+            "text": "正式生效日期待核定当前工程说明隐私与使用摘要以下归纳当前小程序已实现的规则和本人数据入口。正式协议版本、运营主体和第三方清单待核定后发布。",
+            "styles": {
+              "font-size": "16px",
+              "line-height": "normal",
+              "padding-left": "12px",
+              "border-radius": "12px"
+            }
+          },
+          "document": {
+            "selector": ".legal-document-meta",
+            "size": {
+              "width": 344,
+              "height": 17
+            },
+            "offset": {
+              "left": 29,
+              "top": 180
+            },
+            "text": "正式生效日期待核定当前工程说明",
+            "styles": {
+              "font-size": "13px",
+              "line-height": "17px"
+            }
+          },
+          "status": {
+            "selector": ".legal-document-status",
+            "size": {
+              "width": 66,
+              "height": 15
+            },
+            "offset": {
+              "left": 307,
+              "top": 181
+            },
+            "text": "当前工程说明",
+            "styles": {
+              "font-size": "11px",
+              "line-height": "15px"
+            }
+          },
+          "schedule": {
+            "selector": ".legal-schedule-icon",
+            "size": {
+              "width": 17,
+              "height": 17
+            },
+            "offset": {
+              "left": 29,
+              "top": 180
+            },
+            "text": "",
+            "styles": {
+              "font-size": "13px",
+              "line-height": "17px"
+            }
+          },
+          "digest": {
+            "selector": ".legal-summary-digest",
+            "size": {
+              "width": 344,
+              "height": 92
+            },
+            "offset": {
+              "left": 29,
+              "top": 205
+            },
+            "text": "隐私与使用摘要以下归纳当前小程序已实现的规则和本人数据入口。正式协议版本、运营主体和第三方清单待核定后发布。",
+            "styles": {
+              "font-size": "16px",
+              "line-height": "normal",
+              "padding-left": "8px"
+            }
+          },
+          "shield": {
+            "selector": ".legal-shield",
+            "size": {
+              "width": 30,
+              "height": 30
+            },
+            "offset": {
+              "left": 37,
+              "top": 236
+            },
+            "text": "",
+            "styles": {
+              "font-size": "16px",
+              "line-height": "normal"
+            }
+          },
+          "digestGlyph": {
+            "selector": ".legal-digest-icon",
+            "size": {
+              "width": 17,
+              "height": 17
+            },
+            "offset": {
+              "left": 43.5,
+              "top": 242.5
+            },
+            "text": "",
+            "styles": {
+              "font-size": "16px",
+              "line-height": "normal"
+            }
+          },
+          "summaryTitle": {
+            "selector": ".legal-summary-title",
+            "size": {
+              "width": 290,
+              "height": 17
+            },
+            "offset": {
+              "left": 75,
+              "top": 213
+            },
+            "text": "隐私与使用摘要",
+            "styles": {
+              "font-size": "13px",
+              "line-height": "17px"
+            }
+          },
+          "summaryCopy": {
+            "selector": ".legal-summary-copy",
+            "size": {
+              "width": 290,
+              "height": 57
+            },
+            "offset": {
+              "left": 75,
+              "top": 232
+            },
+            "text": "以下归纳当前小程序已实现的规则和本人数据入口。正式协议版本、运营主体和第三方清单待核定后发布。",
+            "styles": {
+              "font-size": "13px",
+              "line-height": "19px"
+            }
+          },
+          "tabs": {
+            "selector": ".legal-tabs",
+            "size": {
+              "width": 368,
+              "height": 37
+            },
+            "offset": {
+              "left": 17,
+              "top": 321
+            },
+            "text": "当前服务说明社区公约第三方清单未发布权限使用说明",
+            "styles": {
+              "font-size": "16px",
+              "line-height": "normal"
+            }
+          },
+          "tab": {
+            "selector": ".legal-tab",
+            "size": {
+              "width": 102,
+              "height": 29
+            },
+            "offset": {
+              "left": 21,
+              "top": 325
+            },
+            "text": "当前服务说明",
+            "styles": {
+              "font-size": "13px",
+              "line-height": "17px"
+            }
+          },
+          "section": {
+            "selector": ".legal-section",
+            "size": {
+              "width": 368,
+              "height": 228
+            },
+            "offset": {
+              "left": 17,
+              "top": 370
+            },
+            "text": "1真实社交与组局边界当前规则活动以邀请和权限校验为基础。请以活动页当前状态为准；遇到违规或安全问题，可在“我的”提交举报工单并查看进度。屏蔽记录由本人管理；活动内成员昵称仅在当前授权范围内展示。",
+            "styles": {
+              "font-size": "16px",
+              "line-height": "normal",
+              "padding-left": "17px",
+              "border-radius": "12px"
+            }
+          },
+          "number": {
+            "selector": ".legal-number",
+            "size": {
+              "width": 34,
+              "height": 34
+            },
+            "offset": {
+              "left": 34,
+              "top": 387
+            },
+            "text": "1",
+            "styles": {
+              "font-size": "18px",
+              "line-height": "34px"
+            }
+          },
+          "title": {
+            "selector": ".legal-section-title",
+            "size": {
+              "width": 224,
+              "height": 28
+            },
+            "offset": {
+              "left": 76,
+              "top": 387
+            },
+            "text": "真实社交与组局边界",
+            "styles": {
+              "font-size": "18px",
+              "line-height": "23px"
+            }
+          },
+          "body": {
+            "selector": ".legal-section-copy",
+            "size": {
+              "width": 334,
+              "height": 78
+            },
+            "offset": {
+              "left": 34,
+              "top": 429
+            },
+            "text": "活动以邀请和权限校验为基础。请以活动页当前状态为准；遇到违规或安全问题，可在“我的”提交举报工单并查看进度。",
+            "styles": {
+              "font-size": "16px",
+              "line-height": "26px"
+            }
+          },
+          "info": {
+            "selector": ".legal-info-box",
+            "size": {
+              "width": 334,
+              "height": 62
+            },
+            "offset": {
+              "left": 34,
+              "top": 519
+            },
+            "text": "屏蔽记录由本人管理；活动内成员昵称仅在当前授权范围内展示。",
+            "styles": {
+              "font-size": "13px",
+              "line-height": "19px",
+              "padding-left": "12px"
+            }
+          },
+          "infoGlyph": {
+            "selector": ".legal-info-icon",
+            "size": {
+              "width": 19,
+              "height": 19
+            },
+            "offset": {
+              "left": 46,
+              "top": 533
+            },
+            "text": "",
+            "styles": {
+              "font-size": "13px",
+              "line-height": "19px"
+            }
+          },
+          "label": {
+            "selector": ".legal-label",
+            "size": {
+              "width": 60,
+              "height": 19
+            },
+            "offset": {
+              "left": 308,
+              "top": 387
+            },
+            "text": "当前规则",
+            "styles": {
+              "font-size": "11px",
+              "line-height": "15px"
+            }
+          },
+          "request": {
+            "selector": ".legal-request",
+            "size": {
+              "width": 368,
+              "height": 97
+            },
+            "offset": {
+              "left": 17,
+              "top": 1873
+            },
+            "text": "隐私请求处理本人请求和办理状态可在“我的”页面查看。正式联系方式与响应时限尚未公布。",
+            "styles": {
+              "font-size": "16px",
+              "line-height": "normal",
+              "padding-left": "17px"
+            }
+          },
+          "requestIcon": {
+            "selector": ".legal-request-icon",
+            "size": {
+              "width": 42,
+              "height": 42
+            },
+            "offset": {
+              "left": 34,
+              "top": 1890
+            },
+            "text": "",
+            "styles": {
+              "font-size": "16px",
+              "line-height": "normal"
+            }
+          },
+          "requestGlyph": {
+            "selector": ".legal-request-shield",
+            "size": {
+              "width": 21,
+              "height": 21
+            },
+            "offset": {
+              "left": 44.5,
+              "top": 1900.5
+            },
+            "text": "",
+            "styles": {
+              "font-size": "16px",
+              "line-height": "normal"
+            }
+          },
+          "requestTitle": {
+            "selector": ".legal-request-title",
+            "size": {
+              "width": 284,
+              "height": 23
+            },
+            "offset": {
+              "left": 84,
+              "top": 1890
+            },
+            "text": "隐私请求处理",
+            "styles": {
+              "font-size": "18px",
+              "line-height": "23px"
+            }
+          },
+          "requestCopy": {
+            "selector": ".legal-request-copy",
+            "size": {
+              "width": 284,
+              "height": 38
+            },
+            "offset": {
+              "left": 84,
+              "top": 1915
+            },
+            "text": "本人请求和办理状态可在“我的”页面查看。正式联系方式与响应时限尚未公布。",
+            "styles": {
+              "font-size": "13px",
+              "line-height": "19px"
+            }
+          },
+          "footer": {
+            "selector": ".legal-actions",
+            "size": {
+              "width": 402,
+              "height": 142
+            },
+            "offset": {
+              "left": 0,
+              "top": 732
+            },
+            "text": "PDF 协议未发布管理账号与隐私请求当前页面不记录正式协议的确认或同意状态。",
+            "styles": {
+              "font-size": "16px",
+              "line-height": "normal",
+              "position": "sticky",
+              "padding-left": "17px",
+              "bottom": "0px"
+            }
+          },
+          "pdf": {
+            "selector": ".legal-pdf",
+            "size": {
+              "width": 180,
+              "height": 51
+            },
+            "offset": {
+              "left": 17,
+              "top": 749
+            },
+            "text": "PDF 协议未发布",
+            "styles": {
+              "font-size": "16px",
+              "line-height": "21px"
+            }
+          },
+          "primary": {
+            "selector": ".legal-privacy",
+            "size": {
+              "width": 180,
+              "height": 51
+            },
+            "offset": {
+              "left": 205,
+              "top": 749
+            },
+            "text": "管理账号与隐私请求",
+            "styles": {
+              "font-size": "16px",
+              "line-height": "21px"
+            }
+          },
+          "foot": {
+            "selector": ".legal-foot",
+            "size": {
+              "width": 368,
+              "height": 19
+            },
+            "offset": {
+              "left": 17,
+              "top": 804
+            },
+            "text": "当前页面不记录正式协议的确认或同意状态。",
+            "styles": {
+              "font-size": "11px",
+              "line-height": "15px"
+            }
+          }
+        },
+        "footerAtBottom": {
+          "selector": ".legal-actions",
+          "size": {
+            "width": 402,
+            "height": 142
+          },
+          "offset": {
+            "left": 0,
+            "top": 732
+          },
+          "text": "PDF 协议未发布管理账号与隐私请求当前页面不记录正式协议的确认或同意状态。",
+          "styles": {
+            "font-size": "16px",
+            "line-height": "normal",
+            "position": "sticky",
+            "bottom": "0px"
+          }
+        }
+      },
+      "assertions": [
+        {
+          "label": "header 56px at reference width",
+          "pass": true,
+          "actual": 60,
+          "expected": 60.032000000000004
+        },
+        {
+          "label": "header title 17px",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "back hit area 44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "menu hit area 44px",
+          "pass": true,
+          "actual": 47,
+          "expected": 47.168000000000006
+        },
+        {
+          "label": "avatar 32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "actual header sticky",
+          "pass": true,
+          "actual": "sticky",
+          "expected": "sticky"
+        },
+        {
+          "label": "avatar clears native capsule",
+          "pass": true,
+          "actual": 300,
+          "expected": 308
+        },
+        {
+          "label": "native capsule reservation",
+          "pass": true,
+          "actual": "102px",
+          "expected": 102
+        },
+        {
+          "label": "chip reference font 11px",
+          "pass": true,
+          "actual": "11px",
+          "expected": 11.792000000000002
+        },
+        {
+          "label": "pending reference font 11px",
+          "pass": true,
+          "actual": "11px",
+          "expected": 11.792000000000002
+        },
+        {
+          "label": "document reference font 13px",
+          "pass": true,
+          "actual": "13px",
+          "expected": 13.936
+        },
+        {
+          "label": "status reference font 11px",
+          "pass": true,
+          "actual": "11px",
+          "expected": 11.792000000000002
+        },
+        {
+          "label": "summaryTitle reference font 13px",
+          "pass": true,
+          "actual": "13px",
+          "expected": 13.936
+        },
+        {
+          "label": "summaryCopy reference font 13px",
+          "pass": true,
+          "actual": "13px",
+          "expected": 13.936
+        },
+        {
+          "label": "tab reference font 13px",
+          "pass": true,
+          "actual": "13px",
+          "expected": 13.936
+        },
+        {
+          "label": "number reference font 17px",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "title reference font 17px",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "body reference font 15px",
+          "pass": true,
+          "actual": "16px",
+          "expected": 16.080000000000002
+        },
+        {
+          "label": "info reference font 13px",
+          "pass": true,
+          "actual": "13px",
+          "expected": 13.936
+        },
+        {
+          "label": "label reference font 11px",
+          "pass": true,
+          "actual": "11px",
+          "expected": 11.792000000000002
+        },
+        {
+          "label": "requestTitle reference font 17px",
+          "pass": true,
+          "actual": "18px",
+          "expected": 18.224
+        },
+        {
+          "label": "requestCopy reference font 13px",
+          "pass": true,
+          "actual": "13px",
+          "expected": 13.936
+        },
+        {
+          "label": "pdf reference font 15px",
+          "pass": true,
+          "actual": "16px",
+          "expected": 16.080000000000002
+        },
+        {
+          "label": "primary reference font 15px",
+          "pass": true,
+          "actual": "16px",
+          "expected": 16.080000000000002
+        },
+        {
+          "label": "foot reference font 11px",
+          "pass": true,
+          "actual": "11px",
+          "expected": 11.792000000000002
+        },
+        {
+          "label": "aa reference width 32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "share reference width 32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "schedule reference width 16px",
+          "pass": true,
+          "actual": 17,
+          "expected": 17.152
+        },
+        {
+          "label": "shield reference width 28px",
+          "pass": true,
+          "actual": 30,
+          "expected": 30.016000000000002
+        },
+        {
+          "label": "digestGlyph reference width 16px",
+          "pass": true,
+          "actual": 17,
+          "expected": 17.152
+        },
+        {
+          "label": "number reference width 32px",
+          "pass": true,
+          "actual": 34,
+          "expected": 34.304
+        },
+        {
+          "label": "infoGlyph reference width 18px",
+          "pass": true,
+          "actual": 19,
+          "expected": 19.296
+        },
+        {
+          "label": "requestIcon reference width 40px",
+          "pass": true,
+          "actual": 42,
+          "expected": 42.88
+        },
+        {
+          "label": "requestGlyph reference width 20px",
+          "pass": true,
+          "actual": 21,
+          "expected": 21.44
+        },
+        {
+          "label": "summary pad 12px",
+          "pass": true,
+          "actual": "12px",
+          "expected": 12.864
+        },
+        {
+          "label": "digest pad 8px",
+          "pass": true,
+          "actual": "8px",
+          "expected": 8.576
+        },
+        {
+          "label": "section pad 16px",
+          "pass": true,
+          "actual": "17px",
+          "expected": 17.152
+        },
+        {
+          "label": "section radius 12px",
+          "pass": true,
+          "actual": "12px",
+          "expected": 12.864
+        },
+        {
+          "label": "info pad 12px",
+          "pass": true,
+          "actual": "12px",
+          "expected": 12.864
+        },
+        {
+          "label": "request pad 16px",
+          "pass": true,
+          "actual": "17px",
+          "expected": 17.152
+        },
+        {
+          "label": "PDF footer height 48px",
+          "pass": true,
+          "actual": 51,
+          "expected": 51.456
+        },
+        {
+          "label": "privacy footer height 48px",
+          "pass": true,
+          "actual": 51,
+          "expected": 51.456
+        },
+        {
+          "label": "footer sticky",
+          "pass": true,
+          "actual": "sticky",
+          "expected": "sticky"
+        },
+        {
+          "label": "Aa large body 16.2px",
+          "pass": true,
+          "actual": "17px",
+          "expected": 17.3664
+        },
+        {
+          "label": "Aa large summary 16.2px",
+          "pass": true,
+          "actual": "17px",
+          "expected": 17.3664
+        },
+        {
+          "label": "permissions section clears actual sticky header (native scroll may clamp)",
+          "pass": true,
+          "actual": 409.5,
+          "expected": ">= 121"
+        },
+        {
+          "label": "runtime exceptions",
+          "pass": true,
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "interactions": [
+        {
+          "label": "Aa measured and reverted",
+          "baseline": {
+            "selector": ".legal-section-copy",
+            "size": {
+              "width": 334,
+              "height": 78
+            },
+            "offset": {
+              "left": 34,
+              "top": 429
+            },
+            "text": "活动以邀请和权限校验为基础。请以活动页当前状态为准；遇到违规或安全问题，可在“我的”提交举报工单并查看进度。",
+            "styles": {
+              "font-size": "16px",
+              "line-height": "26px"
+            }
+          },
+          "baselineSummary": {
+            "selector": ".legal-summary-copy",
+            "size": {
+              "width": 290,
+              "height": 57
+            },
+            "offset": {
+              "left": 75,
+              "top": 232
+            },
+            "text": "以下归纳当前小程序已实现的规则和本人数据入口。正式协议版本、运营主体和第三方清单待核定后发布。",
+            "styles": {
+              "font-size": "13px",
+              "line-height": "19px"
+            }
+          },
+          "larger": {
+            "selector": ".legal-section-copy",
+            "size": {
+              "width": 334,
+              "height": 86.6953125
+            },
+            "offset": {
+              "left": 34,
+              "top": 458.6953125
+            },
+            "text": "活动以邀请和权限校验为基础。请以活动页当前状态为准；遇到违规或安全问题，可在“我的”提交举报工单并查看进度。",
+            "styles": {
+              "font-size": "17px",
+              "line-height": "28.9px"
+            }
+          },
+          "largerSummary": {
+            "selector": ".legal-summary-copy",
+            "size": {
+              "width": 290,
+              "height": 86.6953125
+            },
+            "offset": {
+              "left": 75,
+              "top": 232
+            },
+            "text": "以下归纳当前小程序已实现的规则和本人数据入口。正式协议版本、运营主体和第三方清单待核定后发布。",
+            "styles": {
+              "font-size": "17px",
+              "line-height": "28.9px"
+            }
+          },
+          "restored": {
+            "selector": ".legal-section-copy",
+            "size": {
+              "width": 334,
+              "height": 78
+            },
+            "offset": {
+              "left": 34,
+              "top": 429
+            },
+            "text": "活动以邀请和权限校验为基础。请以活动页当前状态为准；遇到违规或安全问题，可在“我的”提交举报工单并查看进度。",
+            "styles": {
+              "font-size": "16px",
+              "line-height": "26px"
+            }
+          }
+        },
+        {
+          "label": "third party list unpublished",
+          "disabled": true,
+          "routeUnchanged": true,
+          "scrollUnchanged": true
+        },
+        {
+          "label": "permissions tab",
+          "tabIndex": 3,
+          "horizontalScroll": 60,
+          "before": 0,
+          "after": 1206.5,
+          "header": {
+            "selector": ".legal-header",
+            "size": {
+              "width": 402,
+              "height": 60
+            },
+            "offset": {
+              "left": 0,
+              "top": 54
+            },
+            "text": "隐私与使用说明",
+            "styles": {
+              "font-size": "16px",
+              "line-height": "normal"
+            }
+          },
+          "target": {
+            "selector": "#legalPermissionsSection",
+            "size": {
+              "width": 368,
+              "height": 369
+            },
+            "offset": {
+              "left": 17,
+              "top": 409.5
+            },
+            "text": "6当前设备能力使用工程说明以下仅说明当前小程序的按需调用时机；正式权限清单仍待审核发布。相机扫码：只有你主动点击邀请码或签到码的扫码入口时，才调用微信扫码能力。手机日历：本人报名确认后，主动点击“加日历”才请求写入当前活动的时间与地点；活动后续变更不会自动同步。浏览城市：你在城市页手动选择浏览城市；当前不调用设备定位。",
+            "styles": {
+              "font-size": "16px",
+              "line-height": "normal"
+            }
+          },
+          "heading": {
+            "selector": "#legalPermissionsSection .legal-section-title",
+            "size": {
+              "width": 224,
+              "height": 28
+            },
+            "offset": {
+              "left": 76,
+              "top": 359.5
+            },
+            "text": "当前设备能力使用",
+            "styles": {
+              "font-size": "18px",
+              "line-height": "23px"
+            }
+          },
+          "nativeScrollClamped": true
+        },
+        {
+          "label": "PDF unpublished",
+          "disabled": true,
+          "routeUnchanged": true,
+          "scrollUnchanged": true
+        },
+        {
+          "label": "share handler route read only",
+          "response": {
+            "title": "Project IRL · 当前服务与隐私说明",
+            "path": "/subpackages/profile/legal/legal"
+          },
+          "nativeShareInvoked": false
+        },
+        {
+          "label": "privacy request CTA",
+          "source": "subpackages/profile/legal/legal",
+          "target": "pages/me/me"
+        },
+        {
+          "label": "privacy request CTA",
+          "focusId": "privacySection",
+          "advancedOpen": true,
+          "loadState": "READY",
+          "section": {
+            "selector": "#privacySection",
+            "size": {
+              "width": 366,
+              "height": 16.5
+            },
+            "offset": {
+              "left": 18,
+              "top": 130.125
+            },
+            "text": "个人信息请求",
+            "styles": {
+              "font-size": "12px",
+              "line-height": "normal"
+            }
+          },
+          "scrollTop": 3261
+        },
+        {
+          "label": "community tab",
+          "target": "subpackages/profile/guidelines/guidelines"
+        },
+        {
+          "label": "community tab back",
+          "source": "subpackages/profile/guidelines/guidelines",
+          "target": "subpackages/profile/legal/legal"
+        },
+        {
+          "label": "menu guidelines",
+          "source": "subpackages/profile/legal/legal",
+          "target": "subpackages/profile/guidelines/guidelines",
+          "menuIndex": 0
+        },
+        {
+          "label": "menu guidelines back to source",
+          "source": "subpackages/profile/guidelines/guidelines",
+          "target": "subpackages/profile/legal/legal"
+        },
+        {
+          "label": "menu cache",
+          "source": "subpackages/profile/legal/legal",
+          "target": "subpackages/profile/cache/cache",
+          "menuIndex": 1
+        },
+        {
+          "label": "menu cache back to source",
+          "source": "subpackages/profile/cache/cache",
+          "target": "subpackages/profile/legal/legal"
+        },
+        {
+          "label": "menu my page",
+          "source": "subpackages/profile/legal/legal",
+          "target": "pages/me/me",
+          "menuIndex": 2
+        },
+        {
+          "label": "avatar",
+          "source": "subpackages/profile/legal/legal",
+          "target": "pages/me/me"
+        },
+        {
+          "label": "back fallback",
+          "source": "subpackages/profile/legal/legal",
+          "target": "pages/me/me"
+        }
+      ],
+      "screenshots": [
+        "docs/evidence/images/caper-pg10e-reference-wave60-2026-10-01.png",
+        "docs/evidence/images/caper-pg10e-large-text-wave60-2026-10-01.png",
+        "docs/evidence/images/caper-pg10e-permissions-wave60-2026-10-01.png",
+        "docs/evidence/images/caper-pg10e-footer-wave60-2026-10-01.png",
+        "docs/evidence/images/caper-pg10e-privacySection-wave60-2026-10-01.png"
+      ],
+      "exceptions": [],
+      "failures": [],
+      "window": {
+        "pixelRatio": 3,
+        "safeArea": {
+          "top": 54,
+          "left": 0,
+          "right": 402,
+          "bottom": 840,
+          "width": 402,
+          "height": 786
+        },
+        "screenWidth": 402,
+        "screenHeight": 874,
+        "screenTop": 0,
+        "windowWidth": 402,
+        "windowHeight": 874,
+        "statusBarHeight": 54
+      },
+      "referenceScale": 1.072,
+      "native": {
+        "menu": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        },
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        }
+      },
+      "tabs": [
+        "当前服务说明",
+        "社区公约",
+        "第三方清单未发布",
+        "权限使用说明"
+      ],
+      "pass": true,
+      "elapsedMs": 43498
+    }
+  },
+  "finalABStatusArea": {
+    "rows": [
+      {
+        "name": "profile-edit",
+        "cover": {
+          "size": {
+            "width": 402,
+            "height": 54
+          },
+          "offset": {
+            "left": 0,
+            "top": 0
+          }
+        },
+        "headerAfterScroll": {
+          "left": 0,
+          "top": 54
+        },
+        "menuToggled": true,
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      {
+        "name": "badges",
+        "cover": {
+          "size": {
+            "width": 402,
+            "height": 54
+          },
+          "offset": {
+            "left": 0,
+            "top": 0
+          }
+        },
+        "headerAfterScroll": {
+          "left": 0,
+          "top": 54
+        },
+        "menuToggled": true,
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      }
+    ],
+    "exceptions": []
+  },
+  "finalCliPackage": {
+    "size": {
+      "total": 2607681,
+      "packages": [
+        {
+          "name": "TOTAL",
+          "size": 2607681
+        },
+        {
+          "name": "main",
+          "size": 1796999
+        },
+        {
+          "name": "/subpackages/activity/",
+          "size": 60293
+        },
+        {
+          "name": "/subpackages/profile/",
+          "size": 750389
+        }
+      ]
+    }
+  }
+}

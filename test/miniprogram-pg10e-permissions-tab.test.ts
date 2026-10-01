@@ -29,7 +29,7 @@ test('PG10-E permissions tab reaches a truthful in-page explanation without publ
   assert.match(markup, /报名确认[^<]*加日历/);
   assert.match(markup, /手动选择[^<]*浏览城市/);
   assert.match(markup, /class="legal-tab unavailable" disabled="{{true}}">第三方清单未发布<\/button>/);
-  assert.match(markup, /class="legal-pdf" disabled="{{true}}">PDF 协议未发布<\/button>/);
+  assert.match(markup, /class="legal-pdf" disabled="{{true}}">\s*<image[^>]+\/?>\s*<text>PDF 协议未发布<\/text><\/button>/);
   assert.doesNotMatch(markup, /合规文档 V4\.2|已通过安全认证|已知悉并确认/);
 
   page.goPermissions();
@@ -64,5 +64,5 @@ test('permissions jump leaves the target heading visible below the sticky header
   assert.ok(page);
   page.setData = function (patch: Record<string, unknown>) { Object.assign(this.data, patch); };
   page.goPermissions();
-  assert.deepEqual(scrollCalls, [{ scrollTop: 522, duration: 180 }]);
+  assert.deepEqual(scrollCalls, [{ scrollTop: 512, duration: 180 }]);
 });

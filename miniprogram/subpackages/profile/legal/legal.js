@@ -35,7 +35,7 @@ Page({
         const windowWidth = Number(wx.getWindowInfo?.().windowWidth || wx.getSystemInfoSync?.().windowWidth || 375);
         if (!Number.isFinite(target?.top) || !Number.isFinite(viewport?.scrollTop) ||
           !Number.isFinite(windowWidth) || windowWidth <= 0) return fallback();
-        const headerOffset = this.data.statusBarHeight + 92 * windowWidth / 750 + 8;
+        const headerOffset = this.data.statusBarHeight + 112 * windowWidth / 750 + 8;
         wx.pageScrollTo({ scrollTop: Math.max(0, viewport.scrollTop + target.top - headerOffset), duration: 180 });
       });
     } catch (_) { fallback(); }

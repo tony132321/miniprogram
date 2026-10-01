@@ -27,7 +27,7 @@ function loadBadges() {
 
 test('PG10-B primary CTA shares an honest badge concept preview while records remain reachable', () => {
   const { page, navigations } = loadBadges();
-  assert.match(markup, /<button[^>]+open-type="share"[^>]*>[^<]*<text[^>]*>[^<]*<\/text><text>分享勋章墙概念预览<\/text>/);
+  assert.match(markup, /<button[^>]+open-type="share"[^>]*>\s*<image[^>]*\/>\s*<text>分享勋章墙概念预览<\/text>/);
   assert.match(markup, /bindtap="goActivities"[^>]*>查看我的真实活动记录/);
   assert.match(markup, /单枚勋章分享尚未开放/);
   assert.doesNotMatch(markup, /分享勋章墙到朋友圈|已解锁\s*14|已获\s*\d+\s*枚/);

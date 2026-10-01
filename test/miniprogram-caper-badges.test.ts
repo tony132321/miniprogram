@@ -25,7 +25,7 @@ test('a planned badge opens an honest detail sheet and its activity action reach
   assert.equal(page.data.headerPaddingRight, '104px');
 
   page.selectCategory({ currentTarget: { dataset: { category: 'sports' } } });
-  assert.equal(page.data.visibleBadges.length, 1);
+  assert.deepEqual(Array.from(page.data.visibleBadges, (badge: any) => badge.id), ['badminton', 'walk']);
   page.openBadge({ currentTarget: { dataset: { id: 'badminton' } } });
   assert.equal(page.data.selectedBadge.title, '羽球常胜');
   page.closeBadge();

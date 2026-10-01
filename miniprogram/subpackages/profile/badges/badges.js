@@ -2,19 +2,19 @@ const { backToProfile, statusBarHeight } = require('../navigation.js');
 
 // These are design concepts, not earned awards. No badge-award API exists in R1.
 const plannedBadges = [
-  { id: 'badminton', title: '羽球常胜', note: '运动活动', icon: '⌕', color: 'amber', category: 'sports' },
-  { id: 'host', title: '靠谱局长', note: '组织活动', icon: '✦', color: 'violet', category: 'organizer' },
-  { id: 'quick', title: '秒速成局', note: '组织活动', icon: 'ϟ', color: 'lime', category: 'organizer' },
-  { id: 'partner', title: '神仙搭子', note: '社交活动', icon: '♡', color: 'pink', category: 'social' },
-  { id: 'walk', title: '城市漫步家', note: '探索活动', icon: '♧', color: 'orange', category: 'explorer' },
-  { id: 'coffee', title: '咖啡探索家', note: '探索活动', icon: '☕', color: 'coffee', category: 'explorer' },
-  { id: 'first', title: '首局破冰者', note: '组织活动', icon: '✧', color: 'blue', category: 'organizer' },
-  { id: 'night', title: '夜猫子局长', note: '组织活动', icon: '☾', color: 'muted', category: 'organizer' },
-  { id: 'crowd', title: '百人呼应', note: '社交活动', icon: '♢', color: 'muted', category: 'social' }
+  { id: 'badminton', title: '羽球常胜', note: '运动活动', icon: '/subpackages/profile/badges/assets/badminton.svg', color: 'amber', category: 'sports' },
+  { id: 'host', title: '靠谱局长', note: '组织活动', icon: '/subpackages/profile/badges/assets/host.svg', color: 'violet', category: 'organizer' },
+  { id: 'quick', title: '秒速成局', note: '组织活动', icon: '/subpackages/profile/badges/assets/quick.svg', color: 'lime', category: 'organizer' },
+  { id: 'partner', title: '神仙搭子', note: '社交活动', icon: '/subpackages/profile/badges/assets/partner.svg', color: 'pink', category: 'social' },
+  { id: 'walk', title: '滨江漫步家', note: '运动活动', icon: '/subpackages/profile/badges/assets/walk.svg', color: 'orange', category: 'sports' },
+  { id: 'coffee', title: '咖啡探索家', note: '探索活动', icon: '/subpackages/profile/badges/assets/coffee.svg', color: 'coffee', category: 'explorer' },
+  { id: 'first', title: '首局破冰者', note: '社交活动', icon: '/subpackages/profile/badges/assets/first.svg', color: 'blue', category: 'social' },
+  { id: 'night', title: '夜猫子局长', note: '组织活动', icon: '/subpackages/profile/badges/assets/night.svg', color: 'muted', category: 'organizer' },
+  { id: 'crowd', title: '百人呼应', note: '社交活动', icon: '/subpackages/profile/badges/assets/crowd.svg', color: 'muted', category: 'social' }
 ];
 const categories = [
   { id: 'all', title: '全部' }, { id: 'sports', title: '运动狂热' },
-  { id: 'social', title: '社交达人' }, { id: 'organizer', title: '靠谱组织' },
+  { id: 'social', title: '社交达人' }, { id: 'organizer', title: '靠谱组织者' },
   { id: 'explorer', title: '探索家' }
 ];
 function headerPaddingRight() {
