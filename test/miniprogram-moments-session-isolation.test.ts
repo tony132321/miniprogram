@@ -65,6 +65,50 @@ test('an activity card loaded by an earlier session cannot navigate after token 
   rotateSession('second-session');
   page.openActivity({ currentTarget: { dataset: { id: 'old-event' } } });
   assert.deepEqual(navigations, []);
+  assert.deepEqual(Array.from(page.data.events), [], 'the old card cache is cleared on interaction');
+  assert.deepEqual(Array.from(page.data.visibleEvents), [], 'the old card is no longer visible');
+  assert.equal(page.data.loadState, 'ERROR');
+  assert.match(page.data.message, /账号已切换/);
+});
+
+test('filtering activity records after token rotation clears the old cache until the current session reloads', async () => {
+  const { page, navigations, rotateSession } = loadMoments([{ items: [oldEvent] }, { items: [newEvent] }]);
+  await page.onShow();
+  page.selectFilter({ currentTarget: { dataset: { filter: 'participated' } } });
+  assert.equal(page.data.visibleEvents.length, 0);
+  rotateSession('second-session');
+
+  page.selectFilter({ currentTarget: { dataset: { filter: 'hosted' } } });
+
+  assert.deepEqual(Array.from(page.data.events), [], 'filtering must not rebuild cards from the old session');
+  assert.deepEqual(Array.from(page.data.visibleEvents), []);
+  assert.equal(page.data.loadState, 'ERROR');
+  assert.match(page.data.message, /账号已切换/);
+  page.showAllActivities();
+  page.openActivity({ currentTarget: { dataset: { id: 'old-event' } } });
+  assert.deepEqual(navigations, []);
+
+  await page.onShow();
+  assert.equal(page.data.loadState, 'READY');
+  assert.deepEqual(Array.from(page.data.visibleEvents, (item: EventRow) => item.id), ['new-event']);
+  page.selectFilter({ currentTarget: { dataset: { filter: 'all' } } });
+  page.openActivity({ currentTarget: { dataset: { id: 'new-event' } } });
+  assert.deepEqual(navigations, ['/pages/event/event?id=new-event']);
+});
+
+test('the show-all shortcut clears cached activity records after logout', async () => {
+  const { page, rotateSession } = loadMoments([{ items: [oldEvent] }]);
+  await page.onShow();
+  page.selectFilter({ currentTarget: { dataset: { filter: 'participated' } } });
+  assert.equal(page.data.visibleEvents.length, 0);
+  rotateSession('');
+
+  page.showAllActivities();
+
+  assert.deepEqual(Array.from(page.data.events), [], 'logout clears the old cache before returning to All');
+  assert.deepEqual(Array.from(page.data.visibleEvents), []);
+  assert.equal(page.data.loadState, 'ERROR');
+  assert.match(page.data.message, /账号已切换/);
 });
 
 test('moments labels pending host and draft cards by review state and keeps details reachable', async () => {

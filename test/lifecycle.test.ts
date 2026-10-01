@@ -338,7 +338,7 @@ test('material edit rolls back if its new confirmation deadline passes before th
   } finally { await db.close(); }
 });
 
-test('changing registration deadline keeps the invitation expiry aligned with the current activity', async () => {
+test('changing registration deadline aligns stored invite expiry and hides the paused invitation', async () => {
   const db = await createDatabase();
   try {
     const event = await published(db);
@@ -348,9 +348,13 @@ test('changing registration deadline keeps the invitation expiry aligned with th
       const changed = await changeApprovedInvite(db, 'host', event.id, version,
         { registrationDeadline: deadline }, `invite-deadline-change-${index}`);
       version = changed.version;
-      assert.equal(changed.inviteToken, event.inviteToken);
-      const { rows } = await db.query<{ invite_expires_at: Date }>(
-        'SELECT invite_expires_at FROM events WHERE id=$1', [event.id]);
+      assert.equal(changed.reviewStatus, 'APPROVED');
+      assert.equal(changed.recruiting, false);
+      assert.equal(changed.inviteToken, undefined, 'a material change keeps invitations hidden while recruitment is paused');
+      assert.equal(changed.inviteRemainingMs, 0);
+      const { rows } = await db.query<{ invite_token: string; invite_expires_at: Date }>(
+        'SELECT invite_token,invite_expires_at FROM events WHERE id=$1', [event.id]);
+      assert.equal(rows[0]!.invite_token, event.inviteToken);
       assert.equal(new Date(rows[0]!.invite_expires_at).toISOString(), deadline);
     }
   } finally { await db.close(); }

@@ -53,12 +53,24 @@ test('PG02-C organizer cover shows the verified recruitment gap, and ready card 
   await page.onShow();
   const recruiting = page.data.visibleItems.find((item: any) => item.id === 'recruiting');
   const ready = page.data.visibleItems.find((item: any) => item.id === 'ready');
+  assert.equal(recruiting.cardKind, 'organized');
   assert.equal(recruiting.hostCounts.gap, 2);
   assert.equal(recruiting.coverStatusLabel, '招募中 · 还差2人成局');
+  assert.equal(ready.cardKind, 'organized');
+  assert.equal(ready.coverStatusLabel, '');
+  assert.equal(ready.cardLabel, '已成局');
   assert.equal(ready.primaryLabel, '管理活动');
   assert.equal(ready.primaryAction, 'hostSection');
   const markup = readFileSync(new URL('../miniprogram/pages/index/index.wxml', import.meta.url), 'utf8');
-  assert.match(markup, /class="cover-status \{\{item\.coverStatusLabel \? 'cover-status-progress' : ''}}">\{\{item\.coverStatusLabel \|\| item\.cardLabel}}/);
+  const coverStatus = markup.match(/<view\b[^>]*\bclass="(cover-status(?:\s+[^"]*)?)"[^>]*>([^<]*)<\/view>/);
+  assert.ok(coverStatus, 'the activity cover must render a status badge');
+  const [, badgeClasses, badgeContent] = coverStatus;
+  assert.ok(typeof badgeClasses === 'string' && typeof badgeContent === 'string',
+    'the status badge must expose both its class binding and its label binding');
+  assert.match(badgeClasses, /\{\{item\.coverStatusLabel \? 'cover-status-progress' : ''}}/,
+    'the verified recruitment gap must select the progress badge class');
+  assert.equal(badgeContent.trim(), '{{item.coverStatusLabel || item.cardLabel}}',
+    'the same badge must fall back to the real event state when no recruitment gap is available');
   page.openCardAction({ currentTarget: { dataset: { id: 'ready', action: ready.primaryAction } } });
   assert.deepEqual(routes, ['/pages/event/event?id=ready&section=hostSection']);
 });

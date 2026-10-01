@@ -110,6 +110,13 @@ Page({
     }
   },
   onHide() { this.setData({ moreOpen: false }); },
+  clearPrivateAfterIdentityChange() {
+    if (!this._identity || this._identity === currentIdentity()) return false;
+    this._generation = (this._generation || 0) + 1;
+    this.setData({ events: [], visibleEvents: [], activeFilter: 'all', moreOpen: false,
+      loadState: 'ERROR', message: '账号已切换，请重新加载活动记录。' });
+    return true;
+  },
   back: backToProfile,
   toggleMore() { this.setData({ moreOpen: !this.data.moreOpen }); },
   goProfile() {
@@ -121,11 +128,13 @@ Page({
     wx.navigateTo({ url: '/subpackages/profile/privacy-safety/privacy-safety' });
   },
   selectFilter(event) {
+    if (this.clearPrivateAfterIdentityChange()) return;
     const filter = event?.currentTarget?.dataset?.filter;
     if (!filters.some(item => item.id === filter)) return;
     this.setData({ activeFilter: filter, visibleEvents: visibleEvents(this.data.events, filter) });
   },
   openActivity(event) {
+    if (this.clearPrivateAfterIdentityChange()) return;
     const id = event?.currentTarget?.dataset?.id;
     if (!id || this._identity !== currentIdentity() ||
       !this.data.visibleEvents.some(item => item.id === id)) return;
@@ -133,6 +142,7 @@ Page({
   },
   refresh() { return this.onShow(); },
   showAllActivities() {
+    if (this.clearPrivateAfterIdentityChange()) return;
     if (this.data.loadState !== 'READY' || !this.data.events.length ||
       this._identity !== currentIdentity()) return;
     this.setData({ activeFilter: 'all', visibleEvents: this.data.events });

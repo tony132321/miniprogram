@@ -33,6 +33,17 @@ const provider: SemanticFactProvider = {
       usage: { inputTokens: 10, outputTokens: 3 }, receipt: { status: 'ACCEPTED', reference: 'synthetic-pg-race' } } })
 };
 
+function isApprovedAnnouncementSourceLock(sql: string): boolean {
+  // Identify the final source read even when its access fence separates approval from the lock.
+  const query = sql.replace(/\s+/g, ' ').trim();
+  return query.startsWith('SELECT c.body FROM activity_content c WHERE ') &&
+    /\bc\.id\s*=\s*\$1\b/.test(query) && /\bc\.event_id\s*=\s*\$2\b/.test(query) &&
+    /\bc\.event_version\s*=\s*\$3\b/.test(query) &&
+    /\bc\.kind\s*=\s*'ANNOUNCEMENT'/.test(query) && /\bc\.status\s*=\s*'APPROVED'/.test(query) &&
+    /\bc\.author_id\s*=\s*\$4\b/.test(query) && /\be\.host_id\s*=\s*\$4\b/.test(query) &&
+    query.includes('FROM event_review_decisions d') && /\bFOR SHARE$/.test(query);
+}
+
 async function waitForLock(pid: number): Promise<void> {
   for (let attempt = 0; attempt < 200; attempt++) {
     const { rows } = await writerPool.query<{ waiting: boolean }>(
@@ -94,7 +105,7 @@ async function verifyPrivacyLockOrder(eventId: string, contentId: string): Promi
     transaction: fn => db.transaction(tx => fn({ query: async <T extends Record<string, unknown>>(
       sql: string, params: unknown[] = []) => {
       const result = await tx.query<T>(sql, params);
-      if (!intercepted && sql.includes("kind='ANNOUNCEMENT' AND status='APPROVED' FOR SHARE")) {
+      if (!intercepted && isApprovedAnnouncementSourceLock(sql)) {
         intercepted = true;
         signalContentLock();
         await readReleased;
@@ -176,7 +187,7 @@ try {
   const announcement = await createContent(db, 'pg_host', event.id, 'ANNOUNCEMENT',
     '问：需要自带球拍吗？\n答：请自带球拍。', null, 'pg-announcement');
   await moderateContent(db, 'operator:reviewer', announcement.id, 'APPROVED', 'pg-announcement-approve');
-  await verifyLock('approvedAnnouncement', sql => sql.includes("kind='ANNOUNCEMENT' AND status='APPROVED' FOR SHARE"),
+  await verifyLock('approvedAnnouncement', isApprovedAnnouncementSourceLock,
     raceDb => askSemanticCurrentFact(raceDb, 'pg_member', event.id, '要自带球拍吗？', 'pg-announcement-key', provider,
       { budgetFen: 10, environment: 'test' }),
     "UPDATE activity_content SET body='[已移除的个人内容]' WHERE id=$1", [announcement.id],

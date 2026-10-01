@@ -44,8 +44,13 @@ test('R1 discovery has no active public-search controls while invitation and cre
   assert.equal(page.chooseCategory, undefined);
   page.tokenChanged({ detail: { value: ' abc123 ' } });
   page.openInvite();
+  assert.deepEqual(navigations, [], 'an invalid short token stays on discovery');
+  assert.match(page.data.message, /32 位口令/);
+  const inviteToken = '0123456789abcdefghijklmnopqrstuv';
+  page.tokenChanged({ detail: { value: ` ${inviteToken} ` } });
+  page.openInvite();
   page.goCreate();
-  assert.deepEqual(navigations, ['/pages/event/event?token=abc123', '/pages/create/create']);
+  assert.deepEqual(navigations, [`/pages/event/event?token=${inviteToken}`, '/pages/create/create']);
 });
 
 test('event success state appears only after the server confirms the published event or registration', async () => {
@@ -779,10 +784,13 @@ test('switching local test identity clears the previous member’s notices befor
 test('opening an account-wide notice does not navigate to a missing activity', async () => {
   let page: Record<string, any> | undefined;
   const navigations: string[] = [];
+  const openedRoutes: string[] = [];
+  const notice = { id: 'public-pause', kind: 'PUBLIC_RECRUITMENT_CLOSED', event_id: null,
+    status: 'IN_APP', external_status: 'NOT_REQUESTED', detail: {} };
   const api = {
-    async post() { return { status: 'OPENED' }; },
+    async post(path: string) { openedRoutes.push(path); notice.status = 'OPENED'; return { status: notice.status }; },
     async get(path: string) {
-      if (path === '/me/notifications?offset=0') return { items: [], total: 0, nextOffset: null, snapshot: 'a'.repeat(32) };
+      if (path === '/me/notifications?offset=0') return { items: [notice], total: 1, nextOffset: null, snapshot: 'a'.repeat(32) };
       if (path === '/me/consents') return { eventReminder: false };
       if (path === '/me/similar-invites') return { granted: false };
       return { items: [] };
@@ -795,12 +803,20 @@ test('opening an account-wide notice does not navigate to a missing activity', a
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
-    wx: { navigateTo({ url }: { url: string }) { navigations.push(url); } }
+    wx: {
+      getStorageSync(key: string) { return key === 'sessionToken' ? 'notice-session' : key === 'userId' ? 'member' : ''; },
+      navigateTo({ url }: { url: string }) { navigations.push(url); }
+    }
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  assert.equal(await page.refresh(), true);
+  assert.equal(page.data.notificationLoadState, 'READY');
+  assert.equal(page.data.notifications[0].id, 'public-pause');
   await page.openNotice({ currentTarget: { dataset: { id: 'public-pause', kind: 'PUBLIC_RECRUITMENT_CLOSED' } } });
   assert.deepEqual(navigations, []);
+  assert.deepEqual(openedRoutes, ['/me/notifications/public-pause/open']);
+  assert.equal(page.data.notifications[0].status, 'OPENED');
   assert.match(page.data.message, /通知已打开/);
 });
 
@@ -815,15 +831,29 @@ test('failed detail navigation leaves a cancellation unread until the detail ope
         openedRoutes.push(route);
         status = 'OPENED';
         return { status };
+      }, get: async (route: string) => {
+        if (route === '/me/notifications?offset=0') return { items: [{
+          id: 'cancel-notice', event_id: 'cancelled/event', kind: 'EVENT_CANCELLED', status,
+          external_status: 'NOT_REQUESTED', detail: {}
+        }], total: 1, nextOffset: null, snapshot: 'a'.repeat(32) };
+        if (route === '/me/consents') return { eventReminder: false };
+        if (route === '/me/similar-invites') return { granted: false };
+        return { items: [] };
       } } };
       if (path === '../../config.js') return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
-    wx: { navigateTo(options: Record<string, any>) { navigation = options; } }
+    wx: {
+      getStorageSync(key: string) { return key === 'sessionToken' ? 'notice-session' : key === 'userId' ? 'member' : ''; },
+      navigateTo(options: Record<string, any>) { navigation = options; }
+    }
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  assert.equal(await page.refresh(), true);
+  assert.equal(page.data.notificationLoadState, 'READY');
+  assert.equal(page.data.notifications[0].id, 'cancel-notice');
   const notice = { currentTarget: { dataset: { id: 'cancel-notice', event: 'cancelled/event', kind: 'EVENT_CANCELLED' } } };
 
   const failedOpen = page.openNotice(notice);

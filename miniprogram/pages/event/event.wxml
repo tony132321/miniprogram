@@ -192,7 +192,7 @@
     </view>
     <button wx:if="{{ledger.shares.length > 4}}" class="expense-members-toggle" data-ledger="{{ledger.id}}" bindtap="toggleExpenseMembers">{{ledger.membersExpanded ? '收起成员 ⌃' : '展开全部成员 (' + ledger.shares.length + ') ⌄'}}</button>
   </view>
-  <view class="expense-record-note"><text>ⓘ</text><view>本页只记录分摊与双方处理状态，不涉及平台支付或资金托管。双方记录不一致时请线下核对；整数分尾差以各人实际行金额为准；修订后需重新确认。</view></view>
+  <view class="expense-record-note"><text>ⓘ</text><view>费用按记录时已确认成员人数等分，精确到分；无法均分的余下几分按固定成员顺序逐人分配，分到尾差的成员各多分摊 0.01 元，各人份额合计等于总费用。个人金额以当前账单的分摊明细为准。本页只记录分摊与双方处理状态，不涉及平台支付或资金托管；双方记录不一致时请线下核对，修订后需重新确认。</view></view>
   </view>
   <view id="hostSection" class="event-section host-section {{activeSection !== 'hostSection' ? 'section-hidden' : ''}}" wx:if="{{isHost}}">
     <view class="host-hero"><image class="host-hero-photo" src="{{display.isBadminton ? '/assets/stitch/caper_home_badminton.jpg' : '/assets/stitch/caper_home_shanghai.jpg'}}" mode="aspectFill"/><view class="host-hero-shade"></view><view class="host-hero-head"><view class="host-hero-title">{{display.title}}</view><view class="host-hero-status {{event.status === 'RECRUITING' || event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS' ? 'host-status-active' : event.status === 'CANCELLED' ? 'host-status-cancelled' : 'host-status-neutral'}}">{{display.status}}</view></view><view class="host-hero-bottom"><view class="host-hero-facts"><view class="host-hero-detail">▣ {{display.date}} – {{display.end}}</view><view class="host-hero-detail">⌖ {{display.location}}</view></view><view class="host-hero-sticker"><text>{{display.isBadminton ? 'Play More' : 'Good People'}}</text><text>{{display.isBadminton ? 'Meet Cool People' : 'Great Plans'}}</text></view></view></view>
@@ -270,6 +270,7 @@
     </view>
     <view class="host-work-block"><view class="host-work-title">AA 记录与再约一场</view>
     <input id="expenseTotalYuan" wx:if="{{event.payload.feeMode === 'AA'}}" type="digit" placeholder="本场总费用（元）" value="{{totalYuan}}" bindinput="yuanInput" />
+    <view wx:if="{{event.payload.feeMode === 'AA'}}" class="muted">费用按记录时已确认成员人数等分，精确到分；无法均分的余下几分按固定成员顺序逐人分配，分到尾差的成员各多分摊 0.01 元，各人份额合计等于总费用。个人金额以当前账单的分摊明细为准。</view>
     <button id="recordExpenseButton" wx:if="{{event.payload.feeMode === 'AA'}}" disabled="{{expenseLoadState !== 'READY' && expenseLoadState !== 'EMPTY'}}" bindtap="expense">{{expenseLoadState === 'READY' ? '修订 AA 分摊（旧确认仅存历史）' : expenseLoadState === 'EMPTY' ? '记录 AA 分摊' : '费用记录暂不可用'}}</button>
     <view class="muted">费用记录不代表平台付款或收款凭证。</view>
     <view id="hostRepeatAnchor" wx:if="{{safetyStatus === 'OPEN' && event.status === 'COMPLETED'}}" class="host-repeat-anchor"></view>

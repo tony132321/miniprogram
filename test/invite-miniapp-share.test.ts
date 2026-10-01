@@ -18,10 +18,12 @@ test('event page refuses an invitation card while the current version awaits rev
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
-  page.setData({ id: 'invite-1', isHost: true, currentUser: 'host', shareSourceToken: 'stale-source', event: {
-    id: 'invite-1', hostId: 'host', version: 2, inviteToken: 'private-token', recruiting: true,
+  page.setData({ id: 'invite-1', isHost: true, currentUser: 'host', loadState: 'READY', shareSourceToken: 'stale-source', event: {
+    id: 'invite-1', hostId: 'host', version: 2, status: 'RECRUITING', inviteToken: 'private-token',
+    inviteRemainingMs: 60_000, recruiting: true,
     reviewStatus: 'PENDING', payload: { title: '待审活动', registrationDeadline: '2027-03-22T05:30:00.000Z' }
   } });
+  page._inviteValidUntil = Date.now() + 60_000;
   page.setData({ safetyStatus: 'OPEN' });
   await page.prepareShare();
   assert.equal(submittedIntents, 0);
