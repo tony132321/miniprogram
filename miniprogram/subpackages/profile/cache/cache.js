@@ -16,7 +16,7 @@ function localReadTimestamp() {
 }
 Page({
   data: { statusBarHeight: 24, headerPaddingRight: '112px', moreOpen: false,
-    storageSize: '', storageLimit: '', usagePercent: 0, storageState: 'IDLE', lastReadAt: '' },
+    storageSize: '', storageSizeNumber: '', storageLimit: '', usagePercent: 0, storageState: 'IDLE', lastReadAt: '' },
   onLoad() { this.setData({ statusBarHeight: statusBarHeight(), headerPaddingRight: headerPaddingRight() }); },
   onShow() { this.setData({ headerPaddingRight: headerPaddingRight() }); this.refreshStorage(); },
   onHide() { this.setData({ moreOpen: false }); },
@@ -29,10 +29,11 @@ Page({
       const size = Number(info.currentSize);
       const limit = Number(info.limitSize);
       if (!Number.isFinite(size) || size < 0 || !Number.isFinite(limit) || limit <= 0) throw new Error('invalid storage statistics');
-      this.setData({ storageSize: (size / 1024).toFixed(2) + ' MB', storageLimit: (limit / 1024).toFixed(2) + ' MB',
+      const storageSizeNumber = (size / 1024).toFixed(2);
+      this.setData({ storageSize: storageSizeNumber + ' MB', storageSizeNumber, storageLimit: (limit / 1024).toFixed(2) + ' MB',
         usagePercent: Math.min(100, Math.max(0, Math.round(size / limit * 100))), storageState: 'READY',
         lastReadAt: localReadTimestamp() });
-    } catch { this.setData({ storageSize: '', storageLimit: '', usagePercent: 0, storageState: 'UNAVAILABLE', lastReadAt: '' }); }
+    } catch { this.setData({ storageSize: '', storageSizeNumber: '', storageLimit: '', usagePercent: 0, storageState: 'UNAVAILABLE', lastReadAt: '' }); }
   },
   goPrivacy() {
     this.setData({ moreOpen: false });

@@ -1,45 +1,45 @@
 @import "../common.wxss";
-.moments-page { padding-left: 24rpx; padding-right: 24rpx; padding-bottom: calc(180rpx + env(safe-area-inset-bottom)); }
+.moments-page { padding-left: 32rpx; padding-right: 32rpx; padding-bottom: calc(180rpx + env(safe-area-inset-bottom)); }
 .moments-status-backdrop { position: fixed; top: 0; left: 0; right: 0; z-index: 12; background: #faf9fd; }
-.moments-page .pg10-header { position: sticky; z-index: 11; box-sizing: border-box; margin-left: -24rpx; margin-right: -24rpx; padding-left: 25rpx; height: 92rpx; }
+.moments-page .pg10-header { position: sticky; z-index: 11; box-sizing: border-box; margin-left: -32rpx; margin-right: -32rpx; padding-left: 32rpx; height: 112rpx; }
 .moments-page .pg10-header-title { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-weight: 600; }
 .moments-header-actions { display: flex; flex: none; align-items: center; gap: 6rpx; }
 .moments-header-more,.moments-header-avatar { display: block; flex: none; margin: 0; padding: 0; border: 0; text-align: center; }
-.moments-header-more { width: 48rpx; height: 54rpx; background: transparent; color: #171a24; line-height: 54rpx; font-size: 32rpx; font-weight: 800; }
-.moments-header-avatar { width: 54rpx; height: 54rpx; border-radius: 50%; background: #064dca; color: #fff; line-height: 54rpx; font-size: 28rpx; font-weight: 800; }
+.moments-header-more { width: 88rpx; height: 88rpx; background: transparent; color: #171a24; line-height: 88rpx; font-size: 32rpx; font-weight: 800; }
+.moments-header-avatar { width: 64rpx; height: 64rpx; border-radius: 50%; background: #064dca; color: #fff; line-height: 54rpx; font-size: 28rpx; font-weight: 800; }
 .moments-header-more::after,.moments-header-avatar::after,.moments-more-menu button::after { border: 0; }
 .moments-more-menu { position: absolute; top: 86rpx; z-index: 12; width: 245rpx; padding: 8rpx; border: 1rpx solid #edf0f5; border-radius: 20rpx; background: #fff; box-shadow: 0 12rpx 30rpx rgba(15,23,42,.14); }
 .moments-more-menu button { display: block; box-sizing: border-box; width: 100%; margin: 0; padding: 13rpx 10rpx; border-bottom: 1rpx solid #edf0f5; border-radius: 0; background: transparent; color: #334155; text-align: left; line-height: 1.4; font-size: 20rpx; }
 .moments-more-menu button:last-child { border-bottom: 0; }
 .moments-filters { white-space: nowrap; padding-bottom: 14rpx; }
-.moments-filter { display: inline-block; width: auto; margin: 0 8rpx 0 0; padding: 10rpx 21rpx; border-radius: 35rpx; background: #eeeef5; color: #3d4657; font-size: 21rpx; font-weight: 650; line-height: 1.5; }
+.moments-filter { display: inline-block; vertical-align: top; width: auto; margin: 0 8rpx 0 0; padding: 12rpx 28rpx; border-radius: 35rpx; background: #eeeef5; color: #3d4657; font-size: 26rpx; font-weight: 600; line-height: 32rpx; }
 .moments-filter::after,.moment-footer button::after,.privacy-banner button::after,.moments-state button::after { border: 0; }
 .moments-filter.active { background: #2164f0; color: white; }
 .moments-filter-icon { margin-right: 8rpx; font-size: 24rpx; line-height: 1; }
 .moments-filter.disabled-filter { color: #959aaa; }
-.moments-summary { display: flex; align-items: center; gap: 15rpx; box-sizing: border-box; min-height: 160rpx; padding: 19rpx; margin-bottom: 21rpx; border-radius: 24rpx; background: linear-gradient(115deg,#eaf2ff,#f7f0ff 68%,#fbf5d8); }
-.summary-icon { flex: none; width: 55rpx; height: 55rpx; border-radius: 50%; background: #fff; color: #1f63ec; line-height: 55rpx; text-align: center; font-size: 27rpx; }
+.moments-summary { display: flex; align-items: center; gap: 15rpx; box-sizing: border-box; min-height: 160rpx; padding: 24rpx; margin-bottom: 21rpx; border-radius: 24rpx; background: linear-gradient(115deg,#eaf2ff,#f7f0ff 68%,#fbf5d8); }
+.summary-icon { flex: none; width: 80rpx; height: 80rpx; border-radius: 50%; background: #fff; color: #1f63ec; line-height: 55rpx; text-align: center; font-size: 27rpx; }
 .summary-copy { flex: 1; min-width: 0; }
 .summary-heading { display: flex; align-items: center; gap: 8rpx; }
-.summary-title { font-size: 25rpx; font-weight: 750; }
+.summary-title { font-size: 34rpx; line-height: 44rpx; font-weight: 600; }
 .summary-badge { border-radius: 14rpx; padding: 1rpx 8rpx; background: #d2f803; color: #1a1b1f; font-size: 16rpx; font-weight: 800; }
-.summary-note { color: #596579; font-size: 19rpx; line-height: 1.35; }
+.summary-note { color: #596579; font-size: 26rpx; line-height: 36rpx; }
 .summary-state { flex: none; border-radius: 24rpx; padding: 6rpx 12rpx; background: rgba(255,255,255,.86); color: #db315b; font-size: 17rpx; font-weight: 700; }
 .moments-state { padding: 80rpx 20rpx; margin-bottom: 20rpx; border-radius: 28rpx; background: #fff; color: #7a8496; text-align: center; font-size: 23rpx; }
 .moments-state button { display: inline-block; width: auto; margin: 15rpx 0 0; padding: 0; background: transparent; color: #1d64f2; font-size: 22rpx; }
-.moment-card { margin-bottom: 23rpx; padding: 20rpx; border-radius: 28rpx; background: #fff; box-shadow: 0 5rpx 16rpx rgba(48,55,104,.04); }
+.moment-card { margin-bottom: 23rpx; padding: 24rpx; border-radius: 24rpx; background: #fff; box-shadow: 0 5rpx 16rpx rgba(48,55,104,.04); }
 .moment-card-head { display: flex; align-items: center; gap: 13rpx; margin-bottom: 18rpx; }
-.moment-symbol { width: 52rpx; height: 52rpx; border-radius: 50%; flex: none; background: #f2f1fd; color: #5856d6; line-height: 52rpx; text-align: center; font-size: 26rpx; }
+.moment-symbol { width: 64rpx; height: 64rpx; border-radius: 50%; flex: none; background: #f2f1fd; color: #5856d6; line-height: 64rpx; text-align: center; font-size: 26rpx; }
 .moment-title-wrap { flex: 1; min-width: 0; }
-.moment-title { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #141922; font-size: 26rpx; font-weight: 750; }
-.moment-meta { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #626d80; font-size: 19rpx; }
+.moment-title { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #141922; font-size: 34rpx; line-height: 44rpx; font-weight: 600; }
+.moment-meta { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #626d80; font-size: 26rpx; line-height: 36rpx; }
 .moment-pack-unavailable { flex: none; border-radius: 22rpx; padding: 5rpx 10rpx; background: #ebf2fe; color: #1d64f2; font-size: 17rpx; font-weight: 700; }
-.moment-photo-layout { display: flex; align-items: flex-start; gap: 7rpx; box-sizing: border-box; width: 100%; margin: 0; padding: 0; border: 0; background: transparent; text-align: left; line-height: normal; }
+.moment-photo-layout { display: flex; align-items: flex-start; gap: 8rpx; box-sizing: border-box; width: 100%; margin: 0; padding: 0; border: 0; background: transparent; text-align: left; line-height: normal; }
 .moment-photo-layout::after { border: 0; }
 .photo-large,.photo-small { position: relative; overflow: hidden; border-radius: 16rpx; background: #dce8fc; }
-.photo-large { flex: none; width: 66%; height: 550rpx; }
-.photo-stack { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: 7rpx; }
-.photo-small { width: 100%; height: 228rpx; }
+.photo-large { flex: none; width: calc(66.666667% - 5.333333rpx); height: 0; padding-top: calc(83.333333% - 6.666667rpx); }
+.photo-stack { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: 8rpx; }
+.photo-small { width: 100%; height: 0; padding-top: 100%; }
 .photo-large image,.photo-small image { display: block; width: 100%; height: 100%; }
 .photo-overlay { position: absolute; top: 14rpx; left: 14rpx; max-width: 90%; border-radius: 20rpx; padding: 6rpx 11rpx; background: rgba(15,23,42,.76); color: #fff; }
 .photo-overlay text { display: inline; font-size: 18rpx; font-weight: 750; line-height: 1.45; }
@@ -60,6 +60,32 @@
 .moments-privacy-note { padding: 17rpx 4rpx 8rpx; color: #737c8e; font-size: 19rpx; line-height: 1.5; }
 .moments-privacy-note button { display: inline-block; width: auto; margin: 0 0 0 5rpx; padding: 0; border: 0; background: transparent; color: #5856d6; font-size: 19rpx; line-height: 1.5; }
 .moments-privacy-note button::after { border: 0; }
-.moments-action { position: fixed; left: 24rpx; right: 24rpx; bottom: calc(18rpx + env(safe-area-inset-bottom)); z-index: 9; display: flex; align-items: center; justify-content: center; gap: 12rpx; box-sizing: border-box; width: auto; margin: 0; line-height: 2.8; }
+.moments-action { position: fixed; left: 32rpx; right: 32rpx; bottom: calc(18rpx + env(safe-area-inset-bottom)); z-index: 9; display: flex; align-items: center; justify-content: center; gap: 12rpx; box-sizing: border-box; width: auto; margin: 0; height: 104rpx; padding: 0 24rpx; font-size: 30rpx; line-height: 40rpx; }
 .moments-action-icon { font-size: 30rpx; }
 .moments-action-tag { border-radius: 15rpx; padding: 2rpx 8rpx; background: #d2f803; color: #1a1b1f; font-size: 17rpx; line-height: 1.6; }
+
+/* Reference dimensions use 375px = 750rpx; photo ratios adapt to viewport width. */
+.moments-page .pg10-header-title { font-size: 34rpx; line-height: 44rpx; }
+.profile-glyph { position: relative; display: block; width: 30rpx; height: 32rpx; margin: 16rpx auto 0; color: #fff; }
+.profile-glyph::before { content: ''; position: absolute; top: 0; left: 9rpx; width: 12rpx; height: 12rpx; border: 2rpx solid currentColor; border-radius: 50%; box-sizing: border-box; }
+.profile-glyph::after { content: ''; position: absolute; left: 3rpx; bottom: 1rpx; width: 24rpx; height: 13rpx; border: 2rpx solid currentColor; border-radius: 12rpx 12rpx 4rpx 4rpx; box-sizing: border-box; }
+.moments-more-menu { top: 104rpx; }
+.moments-filter-icon { display: inline-block; width: 32rpx; height: 32rpx; vertical-align: middle; margin-right: 12rpx; }
+.summary-icon,.privacy-icon { display: flex; align-items: center; justify-content: center; }
+.summary-icon image,.privacy-icon image { width: 44rpx; height: 44rpx; }
+.summary-heading { flex-wrap: wrap; }
+.moments-summary { position: relative; align-items: flex-start; gap: 20rpx; padding-bottom: 62rpx; }
+.summary-state { position: absolute; right: 24rpx; bottom: 16rpx; font-size: 22rpx; line-height: 28rpx; }
+.moment-pack-unavailable { display: flex; align-items: center; gap: 4rpx; font-size: 22rpx; line-height: 28rpx; }
+.pack-icon { width: 28rpx; height: 28rpx; }
+.photo-large image,.photo-small image { position: absolute; top: 0; left: 0; }
+.moment-footer-mark { width: 36rpx; height: 36rpx; flex: none; }
+.moments-action-icon { width: 40rpx; height: 40rpx; flex: none; }
+.moment-symbol.picnic { background: #fff0f3; }
+.moment-symbol.boardgame { background: #ebf9f0; }
+.moment-card.picnic .moment-photo-layout .photo-large { width: calc(33.333333% - 5.333333rpx); padding-top: calc(44.444444% - 7.111111rpx); }
+.moment-card.picnic .moment-photo-layout .photo-stack { flex-direction: row; }
+.moment-card.picnic .moment-photo-layout .photo-small { flex: 1; width: 0; padding-top: calc(66.666667% - 5.333333rpx); }
+.moment-card.boardgame .moment-photo-layout .photo-large { width: calc(50% - 4rpx); padding-top: calc(37.5% - 3rpx); }
+.moment-card.boardgame .moment-photo-layout .photo-small { padding-top: 75%; }
+.moment-card.boardgame .moment-photo-layout .photo-small.second { display: none; }

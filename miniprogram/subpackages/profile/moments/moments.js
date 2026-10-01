@@ -3,8 +3,8 @@ const config = require('../../../config.js');
 const { backToProfile, statusBarHeight } = require('../navigation.js');
 
 const filters = [
-  { id: 'all', title: '全部精选', icon: '✧' }, { id: 'participated', title: '我参与的', icon: '♧' },
-  { id: 'hosted', title: '我主办的', icon: '♛' }
+  { id: 'all', title: '全部精选', icon: './assets/sparkles.svg', activeIcon: './assets/sparkles-white.svg' }, { id: 'participated', title: '我参与的', icon: './assets/groups.svg', activeIcon: './assets/groups-white.svg' },
+  { id: 'hosted', title: '我主办的', icon: './assets/crown.svg', activeIcon: './assets/crown-white.svg' }
 ];
 const statusLabels = { DRAFT: '草稿', REVIEW_PENDING: '待审核', RECRUITING: '招募中', CONFIRMED: '已成局', IN_PROGRESS: '进行中',
   COMPLETED: '已结束', CANCELLED: '已取消', EXPIRED: '未成局' };
@@ -40,17 +40,22 @@ function headerPaddingRight() {
 }
 function eventIllustrations(item) {
   const title = item.title || '';
-  if (item.type === 'badminton' || /羽毛球/.test(title)) return [
-    '/assets/stitch/pg01_badminton_player.jpg', '/assets/stitch/itinerary_badminton.jpg',
-    '/assets/stitch/caper_home_badminton.jpg'
+  const knownType = ['badminton', 'picnic', 'boardgame'].includes(item.type) ? item.type : '';
+  if (knownType === 'badminton' || (!knownType && /羽毛球/.test(title))) return [
+    '/subpackages/profile/moments/assets/badminton-smash.jpg', '/subpackages/profile/moments/assets/badminton-friends.jpg',
+    '/subpackages/profile/moments/assets/badminton-score.jpg'
+  ];
+  if (knownType === 'picnic' || (!knownType && /野餐/.test(title))) return [
+    '/subpackages/profile/moments/assets/picnic-toast.jpg', '/subpackages/profile/moments/assets/picnic-blanket.jpg',
+    '/subpackages/profile/moments/assets/picnic-friends.jpg'
+  ];
+  if (knownType === 'boardgame' || /桌游|游戏/.test(title)) return [
+    '/subpackages/profile/moments/assets/boardgame-strategy.jpg', '/subpackages/profile/moments/assets/boardgame-friends.jpg',
+    '/subpackages/profile/moments/assets/boardgame-friends.jpg'
   ];
   if (/咖啡|聊天|创业/.test(title)) return [
     '/assets/stitch/caper_discover_coffee.jpg', '/assets/stitch/caper_home_dinner.jpg',
     '/assets/stitch/caper_discover_boardgame.jpg'
-  ];
-  if (/桌游|游戏/.test(title)) return [
-    '/assets/stitch/caper_discover_boardgame.jpg', '/assets/stitch/caper_home_dinner.jpg',
-    '/assets/stitch/caper_discover_coffee.jpg'
   ];
   if (/徒步|露营|登山/.test(title)) return [
     '/assets/stitch/caper_home_hiking.jpg', '/assets/stitch/caper_discover_camping.jpg',
@@ -60,8 +65,8 @@ function eventIllustrations(item) {
     '/assets/stitch/caper_discover_art.jpg', '/assets/stitch/caper_discover_citywalk.jpg',
     '/assets/stitch/caper_discover_coffee.jpg'
   ];
-  return ['/assets/stitch/pg01_badminton_player.jpg', '/assets/stitch/itinerary_badminton.jpg',
-    '/assets/stitch/caper_home_badminton.jpg'];
+  return ['/subpackages/profile/moments/assets/badminton-smash.jpg', '/subpackages/profile/moments/assets/badminton-friends.jpg',
+    '/subpackages/profile/moments/assets/badminton-score.jpg'];
 }
 function visibleEvents(events, filter) {
   if (filter === 'hosted') return events.filter(item => item.isHost);
@@ -100,6 +105,8 @@ Page({
           myRegistrationStatus: item.myRegistrationStatus || '',
           venueName: item.venueName || '',
           dateLabel: dateLabel(item.startAt), statusLabel: activityStatusLabel(item),
+          illustrationKind: cover.includes("/picnic-") ? "picnic" : cover.includes("/boardgame-") ? "boardgame" : "badminton",
+          symbol: cover.includes("/picnic-") ? "🧺" : cover.includes("/boardgame-") ? "🎲" : "🏸",
           cover, sideCover, detailCover
         };
       });

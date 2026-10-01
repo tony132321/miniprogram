@@ -107,7 +107,7 @@ test('moments waits for startup identity and includes a host who really joined i
   await loading;
   assert.deepEqual(calls, ['/me/events']);
   assert.equal(page.data.loadState, 'READY');
-  assert.equal(page.data.events[0].cover, '/assets/stitch/pg01_badminton_player.jpg');
+  assert.equal(page.data.events[0].cover, '/subpackages/profile/moments/assets/badminton-smash.jpg');
   page.selectFilter({ currentTarget: { dataset: { filter: 'participated' } } });
   assert.deepEqual(Array.from(page.data.visibleEvents, (event: any) => event.id), ['host-and-player', 'joined']);
   page.openActivity({ currentTarget: { dataset: { id: 'host-and-player' } } });

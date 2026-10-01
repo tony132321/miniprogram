@@ -165,6 +165,8 @@
 - **E146**：[旧 CI 邀请两项](evidence/ci-invite-fixture-alignment-wave57-2026-10-01.md)、[邀请与通知三项](evidence/ci-miniprogram-notice-invite-fixtures-wave57-2026-10-01.md)、[主办封面结构断言](evidence/pg02c-host-cover-test-binding-wave57-2026-10-01.md)：六项失败逐项本机红绿修复，仅对齐测试样本及结构匹配，保留格式、有效期、当前加载行与业务状态保护；整合类型检查通过，修复后的远端 CI 未验。
 - **E147**：[本地试点规模 HTTP 专项](evidence/local-pilot-http-load-wave58-2026-10-01.md)：10,000 合成用户／500 成功身份，600 次完整响应、错误 0、混合 p95 8.71 ms；调度和分端点门禁通过。仅后端本地合成证据，不提升 UI、真机或正式发布验收。
 - **E148**：[PG10-C／F／G 原稿尺寸差距](evidence/caper-pg10c-f-g-visual-gap-audit-wave58-2026-10-01.md)：只读核对字号、间距、卡片、FAQ 标签及三页人物图标，记录明确的待修值和现有按钮路径。审计没有修改 UI，下一批仍需修复与模拟器复拍。
+- **E149**：[Wave 59 三页原稿修复及实点](evidence/caper-wave59-focused-devtools-2026-10-01.md)：PG10-C 原图／字级／比例／CTA、PG10-F 真读数层级与刷新、PG10-G FAQ／标签／表单几何已并行接入；独立复核四项和编译实测三项修正后，三页路线脚本退出 0、异常 0，原生胶囊避让 8px。CLI 主包 1,796,999 B；本地轮廓图标仍是近似字形，非全 39 屏逐像素、真机或正式验收。
+- **E150**：[PG10-A／B](evidence/caper-pg10a-b-visual-gap-audit-wave60-2026-10-01.md)、[PG10-D／E](evidence/caper-pg10d-e-visual-gap-audit-wave60-2026-10-01.md)下一批只读差距：顶栏、字号、图形、卡片、勋章三列间距、协议页签／操作栏待修；只写审计，没有修改这些页面或提升其验收状态。
 - **E33**：[首页、个人页与发布报名增量复验](evidence/caper-ui-wave2-wave3-2026-09-30.md)：首页铃铛／头像、编辑活动协办入口、PG10-C 真实活动卡、PG04-S 待审与通过状态、PG05 真实报名／待定意向及 PG05-S 成员深链经模拟器实点；全量本地 826/826。未声称已完成 39 屏同尺寸逐像素或真机验收。
 
 ## 当前真实数据／接口索引
