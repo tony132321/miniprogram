@@ -78,10 +78,11 @@ test('message detail marks a notice opened only after event navigation succeeds'
   page.data.items = [{ id: 'notice', kind: 'EVENT_REMINDER', event_id: 'event-1' }];
   const event = { currentTarget: { dataset: { id: 'notice', eventId: 'event-1', kind: 'EVENT_REMINDER' } } };
   await page.openNotice(event);
-  assert.deepEqual(order, ['/pages/event/event?id=event-1']);
+  assert.deepEqual(order, ['/pages/event/event?id=event-1&section=checkinSection']);
   failNavigation = false;
   await page.openNotice(event);
-  assert.deepEqual(order, ['/pages/event/event?id=event-1', '/pages/event/event?id=event-1',
+  assert.deepEqual(order, ['/pages/event/event?id=event-1&section=checkinSection',
+    '/pages/event/event?id=event-1&section=checkinSection',
     '/me/notifications/notice/open']);
 });
 
@@ -207,7 +208,7 @@ test('ordinary event and profile notices reject old-account cards and mismatched
   await page.openNotice({ currentTarget: { dataset: {
     id: 'profile-second', kind: 'REPORT_RESOLVED_UNSCOPED', eventId: ''
   } } });
-  assert.deepEqual(actions, ['/pages/event/event?id=event-second', '/me/notifications/shared/open',
+  assert.deepEqual(actions, ['/pages/event/event?id=event-second&section=checkinSection', '/me/notifications/shared/open',
     '/pages/me/me', '/me/notifications/profile-second/open']);
 });
 
