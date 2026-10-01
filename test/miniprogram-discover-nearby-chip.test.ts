@@ -8,6 +8,7 @@ test('the Nearby chip reaches the existing closed nearby section and city select
   let page: Record<string, any> | undefined;
   const scrolls: Array<Record<string, unknown>> = [];
   const routes: string[] = [];
+  const selectors: string[] = [];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/discover/discover.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if (path === '../../utils/api.js') return { api: {} };
@@ -17,6 +18,15 @@ test('the Nearby chip reaches the existing closed nearby section and city select
     },
     Page(definition: Record<string, any>) { page = definition; },
     wx: {
+      createSelectorQuery() {
+        return {
+          select(selector: string) { selectors.push(selector); return { boundingClientRect() {} }; },
+          selectViewport() { return { scrollOffset() {} }; },
+          exec(callback: (result: unknown[]) => void) {
+            callback([{ top: 1050 }, { bottom: 132 }, { scrollTop: 0 }]);
+          }
+        };
+      },
       pageScrollTo(options: Record<string, unknown>) { scrolls.push(options); },
       navigateTo({ url }: { url: string }) { routes.push(url); }
     }
@@ -25,8 +35,11 @@ test('the Nearby chip reaches the existing closed nearby section and city select
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
 
   page.selectCategory({ currentTarget: { dataset: { name: '附近分类' } } });
+  assert.deepEqual(selectors, ['#nearbySection', '.category-scroll']);
   assert.equal(scrolls.length, 1);
-  assert.equal(scrolls[0]?.selector, '#nearbySection');
+  assert.equal(scrolls[0]?.scrollTop, 908,
+    'target heading sits below the sticky category bar instead of behind it');
+  assert.equal(scrolls[0]?.selector, undefined);
   assert.equal(scrolls[0]?.duration, 300);
   assert.equal(page.data.discoveryEnabled, false);
   assert.deepEqual(Array.from(page.data.publicItems), []);

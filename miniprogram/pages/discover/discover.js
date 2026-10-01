@@ -124,11 +124,25 @@ Page({
       this.setData({ availabilityMessage: '' });
       return;
     }
-    if (name === '附近分类' && typeof wx.pageScrollTo === 'function') {
-      wx.pageScrollTo({ selector: '#nearbySection', duration: 300 });
-      return;
-    }
+    if (name === '附近分类') return this.scrollToNearby(event);
     this.showUnavailable(event);
+  },
+  scrollToNearby(event) {
+    if (typeof wx.pageScrollTo !== 'function' || typeof wx.createSelectorQuery !== 'function')
+      return this.showUnavailable(event);
+    try {
+      const query = wx.createSelectorQuery();
+      query.select('#nearbySection').boundingClientRect();
+      query.select('.category-scroll').boundingClientRect();
+      query.selectViewport().scrollOffset();
+      query.exec(results => {
+        const [target, category, viewport] = results || [];
+        if (!Number.isFinite(target?.top) || !Number.isFinite(category?.bottom) ||
+          !Number.isFinite(viewport?.scrollTop)) return this.showUnavailable(event);
+        wx.pageScrollTo({ scrollTop: Math.max(0, Math.round(viewport.scrollTop + target.top - category.bottom - 10)),
+          duration: 300 });
+      });
+    } catch (_) { this.showUnavailable(event); }
   },
   showUnavailable(event) {
     const name = event?.currentTarget?.dataset?.name;
