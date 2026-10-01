@@ -1450,11 +1450,13 @@ Page({
     }
     const copy = actionEvent?.currentTarget?.dataset?.copy;
     const copyIntent = copy === true || copy === 'true' || copy === 1 || copy === '1';
+    const poster = actionEvent?.currentTarget?.dataset?.poster;
+    const posterIntent = poster === true || poster === 'true' || poster === 1 || poster === '1';
     const canCopyInvite = canCopyPublishedInvite(this.data.event, this.data.isHost, this.data.safetyStatus, Date.now());
-    if (copyIntent && this.data.canCopyPublishedInvite !== canCopyInvite)
+    if ((copyIntent || posterIntent) && this.data.canCopyPublishedInvite !== canCopyInvite)
       this.setData({ canCopyPublishedInvite: canCopyInvite });
     wx.navigateTo({ url: '/subpackages/activity/share/share?id=' + encodeURIComponent(this.data.id) +
-      (copyIntent && canCopyInvite ? '&copy=1' : '') });
+      (copyIntent && canCopyInvite ? '&copy=1' : posterIntent && canCopyInvite ? '&poster=1' : '') });
   },
   onShareAppMessage() {
     if (!currentHostEvent(this) ||

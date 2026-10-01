@@ -5,6 +5,7 @@
   <view wx:if="{{loadState === 'ERROR' || loadState === 'FORBIDDEN' || loadState === 'UNAUTHENTICATED'}}" class="state-panel"><view>{{message}}</view><button wx:if="{{loadState === 'ERROR'}}" bindtap="refresh">重新加载</button><button wx:else bindtap="back">返回活动详情</button></view>
 
   <view wx:if="{{loadState === 'READY'}}" class="share-content">
+    <canvas wx:if="{{canShare}}" class="invite-poster-canvas" canvas-id="invitePoster" style="width:360px;height:600px" aria-hidden="true" />
     <view class="intro"><text class="intro-pill">{{canShare ? 'INVITE READY · 邀请已就绪' : 'INVITE STATUS · 邀请状态'}}</text><view class="intro-title">活动专属邀请卡</view><view class="intro-copy">{{canShare ? '邀请朋友查看活动，报名以当前规则和名额为准' : shareReason}}</view></view>
 
     <view class="ticket"><view class="ticket-topline"></view><view class="ticket-kicker"><text>✦　PROJECT IRL · EVENT INVITATION</text><text class="ticket-dot"></text></view>
@@ -32,13 +33,13 @@
     <view class="sheet-preview"><view class="sheet-preview-art"><image src="{{display.cover}}" mode="aspectFill" aria-label="活动类型示意图" /><text>示意图</text></view><view class="sheet-preview-details"><view class="sheet-preview-heading"><view class="sheet-preview-title">{{display.title}}</view><text class="sheet-preview-status {{display.status === '招募中' || display.status === '已成局' ? 'active' : ''}}">{{display.status}}</text></view><text class="sheet-preview-date">{{display.date}} – {{display.end}}</text><view wx:if="{{display.confirmed !== null || display.minimum !== null}}" class="sheet-preview-count"><text wx:if="{{display.confirmed !== null}}">已确认 {{display.confirmed}} 人</text><text wx:if="{{display.minimum !== null}}">最低成局 {{display.minimum}} 人</text></view></view></view>
     <view class="sheet-actions">
       <button wx:if="{{sourceToken}}" class="sheet-action" open-type="share" aria-label="通过微信分享给好友"><text class="action-recommend">推荐</text><view class="action-icon green"><image class="action-glyph" src="/subpackages/activity/share/icons/chat.svg" mode="aspectFit" aria-hidden="true" /></view><text>微信好友</text></button><button wx:else class="sheet-action" bindtap="prepareShare" disabled="{{preparingShare}}" aria-label="准备微信分享"><text class="action-recommend">推荐</text><view class="action-icon green"><image class="action-glyph" src="/subpackages/activity/share/icons/chat.svg" mode="aspectFit" aria-hidden="true" /></view><text>{{preparingShare ? '准备中' : '准备微信分享'}}</text></button>
-      <view class="sheet-action inactive" aria-label="海报功能待开放"><view class="action-icon orange"><image class="action-glyph" src="/subpackages/activity/share/icons/poster.svg" mode="aspectFit" aria-hidden="true" /></view><text>海报待开放</text></view>
+      <button id="generatePosterButton" class="sheet-action" bindtap="generatePoster" disabled="{{posterPreparing}}" aria-label="生成并预览活动海报"><view class="action-icon orange"><image class="action-glyph" src="/subpackages/activity/share/icons/poster.svg" mode="aspectFit" aria-hidden="true" /></view><text>{{posterPreparing ? '生成中' : '生成海报'}}</text></button>
       <button wx:if="{{sourceToken}}" class="sheet-action" open-type="share" aria-label="在微信中选择群聊分享"><view class="action-icon blue"><image class="action-glyph" src="/subpackages/activity/share/icons/group.svg" mode="aspectFit" aria-hidden="true" /></view><text>选择群聊</text></button><view wx:else class="sheet-action inactive" aria-label="先准备分享才能选择群聊"><view class="action-icon blue"><image class="action-glyph" src="/subpackages/activity/share/icons/group.svg" mode="aspectFit" aria-hidden="true" /></view><text>先准备分享</text></view>
       <button class="sheet-action" bindtap="copyInvite" aria-label="复制活动邀请码"><view class="action-icon gray"><image class="action-glyph" src="/subpackages/activity/share/icons/copy.svg" mode="aspectFit" aria-hidden="true" /></view><text>复制邀请码</text></button>
     </view>
     <view class="sheet-code"><view><text>专属邀请码</text><text>{{display.inviteToken}}</text></view><button bindtap="copyInvite">复制文案</button></view>
     <view wx:if="{{message}}" class="sheet-feedback">{{message}}</view>
-    <view class="sheet-note">微信好友与群聊会打开同一个微信分享选择器；当前没有可复制的 HTTPS 链接或可保存海报。</view>
+    <view class="sheet-note">海报在本机生成并打开图片预览；二维码与分享资格会重新核对。当前没有可复制的 HTTPS 链接。</view>
     <button class="sheet-cancel" bindtap="closeShareSheet">取消</button>
   </view></view>
 </view>

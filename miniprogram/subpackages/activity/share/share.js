@@ -2,22 +2,73 @@ const { api } = require('../../../utils/api.js');
 const config = require('../../../config.js');
 const qrcode = require('../../../vendor/qrcode.js');
 
-function drawInviteQr(token, context) {
-  const size = 200;
+function paintInviteQr(token, context, left, top, size) {
   const qr = qrcode(0, 'M');
   qr.addData(token);
   qr.make();
   const count = qr.getModuleCount();
   const unit = size / (count + 8);
   context.setFillStyle('#fff');
-  context.fillRect(0, 0, size, size);
+  context.fillRect(left, top, size, size);
   context.setFillStyle('#111');
   for (let y = 0; y < count; y++) for (let x = 0; x < count; x++) {
-    if (qr.isDark(y, x)) context.fillRect(Math.floor((x + 4) * unit), Math.floor((y + 4) * unit),
+    if (qr.isDark(y, x)) context.fillRect(left + Math.floor((x + 4) * unit), top + Math.floor((y + 4) * unit),
       Math.ceil((x + 5) * unit) - Math.floor((x + 4) * unit),
       Math.ceil((y + 5) * unit) - Math.floor((y + 4) * unit));
   }
+}
+function drawInviteQr(token, context) {
+  paintInviteQr(token, context, 0, 0, 200);
   context.draw(false);
+}
+function posterTitleLines(title) {
+  const chars = Array.from(String(title || '线下活动'));
+  return [chars.slice(0, 15).join(''), chars.length > 15 ? chars.slice(15, 29).join('') + (chars.length > 29 ? '…' : '') : ''];
+}
+function drawInvitePoster(token, display, context, onDrawn) {
+  context.setFillStyle('#faf8fe');
+  context.fillRect(0, 0, 360, 600);
+  context.setFillStyle('#1d64f2');
+  context.fillRect(0, 0, 360, 147);
+  context.setFillStyle('#fff');
+  context.setFontSize(15);
+  context.fillText('CAPER · 线下见面', 24, 36);
+  const [firstLine, secondLine] = posterTitleLines(display.title);
+  context.setFontSize(24);
+  context.fillText(firstLine, 24, 82);
+  if (secondLine) context.fillText(secondLine, 24, 116);
+  context.setFillStyle('#172033');
+  context.setFontSize(18);
+  context.fillText(display.status, 24, 185);
+  context.setFontSize(14);
+  context.fillText(display.date, 24, 214);
+  context.fillText(display.location, 24, 241);
+  paintInviteQr(token, context, 80, 279, 200);
+  context.setFillStyle('#172033');
+  context.setFontSize(17);
+  context.fillText('扫码查看活动', 124, 513);
+  context.setFillStyle('#6b7280');
+  context.setFontSize(12);
+  context.fillText('报名与席位以当前活动详情为准', 74, 541);
+  context.fillText('具体地点、费用请在活动详情核对', 72, 561);
+  context.draw(false, onDrawn);
+}
+async function waitForPosterCanvas(page) {
+  if (typeof wx.createSelectorQuery !== 'function') return true;
+  for (let attempt = 0; attempt < 10; attempt++) {
+    const bounds = await new Promise(resolve => {
+      const timer = setTimeout(() => resolve(null), 400);
+      try {
+        wx.createSelectorQuery().in(page).select('.invite-poster-canvas').boundingClientRect(value => {
+          clearTimeout(timer);
+          resolve(value);
+        }).exec();
+      } catch (_) { clearTimeout(timer); resolve(null); }
+    });
+    if (bounds?.width >= 300 && bounds?.height >= 500) return true;
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+  return false;
 }
 
 function currentActor() {
@@ -85,9 +136,12 @@ function shareReason(event, safetyStatus) {
 Page({
   data: { id: '', event: null, display: null, loadState: 'IDLE', message: '',
     statusBarHeight: 24, headerPaddingRight: headerPaddingRight(),
-    canShare: false, shareReason: '', sourceToken: '', preparingShare: false, shareSheetOpen: false },
+    canShare: false, shareReason: '', sourceToken: '', preparingShare: false,
+    posterPreparing: false, shareSheetOpen: false },
   async onLoad(options) {
     this.hasShown = true;
+    this._viewReady = false;
+    this._posterIntent = options?.poster === '1';
     this.setData({ id: typeof options?.id === 'string' ? options.id : '',
       statusBarHeight: wx.getSystemInfoSync?.().statusBarHeight || 24,
       headerPaddingRight: headerPaddingRight() });
@@ -95,14 +149,24 @@ Page({
     await this.refresh();
     if (options?.copy === '1' && this.data.loadState === 'READY' && this.data.canShare)
       await this.copyInvite();
+    else await this.maybeGeneratePosterIntent();
+  },
+  onReady() {
+    this._viewReady = true;
+    return this.maybeGeneratePosterIntent();
+  },
+  async maybeGeneratePosterIntent() {
+    if (!this._viewReady || !this._posterIntent || this.data.loadState !== 'READY') return;
+    this._posterIntent = false;
+    if (this.data.canShare) await this.generatePoster();
   },
   async onShow() {
     if (this.hasShown) { this.hasShown = false; return; }
     await getApp().globalData.ready;
     await this.refresh();
   },
-  onHide() { this.clearInviteDeadlineTimer(); },
-  onUnload() { this.clearInviteDeadlineTimer(); },
+  onHide() { this.cancelPoster(); this.clearInviteDeadlineTimer(); },
+  onUnload() { this.cancelPoster(); this.clearInviteDeadlineTimer(); },
   async refresh() {
     this.clearInviteDeadlineTimer();
     const id = this.data.id;
@@ -169,6 +233,7 @@ Page({
   },
   clearIfAccountChanged() {
     if (this._loadedIdentity === currentIdentity()) return false;
+    this.cancelPoster();
     this._loadGeneration = (this._loadGeneration || 0) + 1;
     this._loadedActor = null;
     this._loadedIdentity = null;
@@ -180,6 +245,11 @@ Page({
   clearInviteDeadlineTimer() {
     clearTimeout(this.inviteDeadlineTimer);
     this.inviteDeadlineTimer = null;
+  },
+  cancelPoster() {
+    this._posterGeneration = (this._posterGeneration || 0) + 1;
+    this._posterInFlight = false;
+    if (this.data.posterPreparing) this.setData({ posterPreparing: false });
   },
   scheduleInviteDeadline(event, generation, identity) {
     const deadline = Date.parse(event.payload?.registrationDeadline || '');
@@ -201,6 +271,84 @@ Page({
     this.setData({ shareSheetOpen: true });
   },
   closeShareSheet() { this.setData({ shareSheetOpen: false }); },
+  async generatePoster() {
+    if (this.clearIfAccountChanged() || this._posterInFlight) return;
+    const id = this.data.id;
+    const actor = currentActor();
+    const identity = currentIdentity();
+    const posterGeneration = this._posterGeneration = (this._posterGeneration || 0) + 1;
+    this._posterInFlight = true;
+    let loadGeneration;
+    let snapshot;
+    const stillCurrent = () => posterGeneration === this._posterGeneration &&
+      loadGeneration === this._loadGeneration && id === this.data.id &&
+      identity === currentIdentity() && actor === currentActor() &&
+      this._loadedIdentity === identity && this._loadedActor === actor &&
+      this.data.loadState === 'READY' && this.data.canShare &&
+      this.data.event?.id === id && this.data.event.hostId === actor &&
+      this.data.event.version === snapshot?.version &&
+      this.data.event.inviteToken === snapshot?.inviteToken &&
+      !registrationDeadlineReason(this.data.event, Date.now());
+    try {
+      await this.refresh();
+      loadGeneration = this._loadGeneration;
+      snapshot = this.data.event;
+      if (!stillCurrent() || !snapshot?.inviteToken) {
+        if (identity !== currentIdentity()) this.clearIfAccountChanged();
+        else if (posterGeneration === this._posterGeneration && this.data.loadState === 'READY')
+          this.setData({ message: this.data.shareReason || '当前无法生成活动海报。' });
+        return;
+      }
+      this.setData({ posterPreparing: true, message: '' });
+      await new Promise(resolve => typeof wx.nextTick === 'function' ? wx.nextTick(resolve) : resolve());
+      if (!stillCurrent()) return;
+      if (!await waitForPosterCanvas(this)) throw new Error('海报画布尚未就绪，请重试。');
+      if (!stillCurrent()) return;
+      const tempFilePath = await new Promise((resolve, reject) => {
+        const timer = setTimeout(() => reject(new Error('海报生成超时，请重试。')), 8000);
+        const finish = (error, path) => {
+          clearTimeout(timer);
+          if (error) reject(error);
+          else resolve(path || '');
+        };
+        try {
+          const context = wx.createCanvasContext('invitePoster', this);
+          drawInvitePoster(snapshot.inviteToken, this.data.display, context, () => {
+            if (!stillCurrent()) return finish(null, '');
+            try {
+              wx.canvasToTempFilePath({ canvasId: 'invitePoster', fileType: 'png',
+                success: result => finish(null, result?.tempFilePath),
+                fail: () => finish(new Error('海报图片导出失败，请重试。')) }, this);
+            } catch (_) { finish(new Error('海报图片导出失败，请重试。')); }
+          });
+        } catch (_) { finish(new Error('海报绘制失败，请重试。')); }
+      });
+      if (!tempFilePath || !stillCurrent()) return;
+      const latest = await api.get('/events/' + encodeURIComponent(id));
+      const safety = await api.get('/system/safety').catch(() => ({ status: 'UNKNOWN' }));
+      if (!stillCurrent()) return;
+      if (latest?.id !== id || latest.hostId !== actor || latest.version !== snapshot.version ||
+        latest.inviteToken !== snapshot.inviteToken || shareReason(latest, safety?.status)) {
+        await this.refresh();
+        if (identity === currentIdentity() && this.data.id === id)
+          this.setData({ message: '活动或邀请资格已变化，请重新生成海报。' });
+        return;
+      }
+      wx.previewImage({ urls: [tempFilePath], current: tempFilePath,
+        fail: () => {
+          if (stillCurrent()) this.setData({ message: '海报预览失败，请重试。' });
+        } });
+    } catch (error) {
+      if (identity !== currentIdentity()) this.clearIfAccountChanged();
+      else if (posterGeneration === this._posterGeneration)
+        this.setData({ message: error.message || '海报生成失败，请重试。' });
+    } finally {
+      if (posterGeneration === this._posterGeneration) {
+        this._posterInFlight = false;
+        this.setData({ posterPreparing: false });
+      }
+    }
+  },
   async prepareShare() {
     if (this.clearIfAccountChanged()) return;
     const event = this.data.event;
