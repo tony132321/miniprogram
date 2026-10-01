@@ -124,12 +124,18 @@ function withRealDetail(item, event, actorId) {
       requested: Number(event.stats.requested) || 0,
       gap: Math.max(0, minParticipants - confirmed)
     } : null;
+  const registrationDeadline = Date.parse(payload.registrationDeadline || '');
+  const coverStatusLabel = hostRecruitmentReady(currentItem) && Number.isSafeInteger(event.version) &&
+    Number.isSafeInteger(event.stats?.confirmed) && event.stats.confirmed >= 0 &&
+    Number.isSafeInteger(payload.minParticipants) && payload.minParticipants > event.stats.confirmed &&
+    Number.isFinite(registrationDeadline) && Date.now() < registrationDeadline
+    ? `招募中 · 还差${payload.minParticipants - event.stats.confirmed}人成局` : '';
   return {
     ...currentItem,
     ...(currentPresentation || {}),
     ...(currentShortcut || {}),
     ...(item.isHost ? { statusLabel: hostStatusLabel(currentItem), cardLabel: hostStatusLabel(currentItem),
-      shareReady: hostRecruitmentReady(currentItem) } : {}),
+      coverStatusLabel, shareReady: hostRecruitmentReady(currentItem) } : {}),
     dateRangeLabel: dateRangeLabel(payload.startAt || item.startAt, payload.endAt),
     venueLabel: [payload.city, payload.venueName].filter(Boolean).join(' · ') || '地点请到活动详情查看',
     capacityLabel: Number.isFinite(confirmed) && Number.isFinite(capacity) && capacity > 0
@@ -187,7 +193,8 @@ function cardPresentation(item, group) {
           item.reviewStatus === 'APPROVED' ? '当前已暂停招募，请到活动详情核对状态。' :
             '正在核对活动审核与招募资格。' : '';
     return { cardKind: 'organized', cardNote: recruitingNote || notes[item.status] || '主办信息以活动当前版本为准。',
-      primaryLabel: item.status === 'DRAFT' ? '继续编辑草稿' : '主办工作台',
+      primaryLabel: item.status === 'DRAFT' ? '继续编辑草稿' :
+        ['CONFIRMED', 'IN_PROGRESS'].includes(item.status) ? '管理活动' : '主办工作台',
       primaryAction: item.status === 'DRAFT' ? 'editDraft' : 'hostSection',
       secondaryLabel: announcementReady ? '发公告' : hostCheckinReady ? '签到核销码' : '查看活动',
       secondaryAction: announcementReady ? 'hostAnnouncement' : hostCheckinReady ? 'checkinSection' : 'detailsSection' };
@@ -343,14 +350,17 @@ Page({
     }
   },
   async enrichFeaturedItem(item, identity, loadGeneration) {
-    if (!item?.id || !item.isHost || item.reviewStatus !== 'APPROVED' ||
-      !Number.isSafeInteger(item.version)) return;
+    if (!item?.id || !item.isHost ||
+      (item.reviewStatus != null && item.reviewStatus !== 'APPROVED') ||
+      (item.version != null && !Number.isSafeInteger(item.version))) return;
     try {
       const event = await api.get('/events/' + encodeURIComponent(item.id));
       if (currentIdentity() !== identity || this._loadGeneration !== loadGeneration ||
         this.data.stateView || this.data.featuredItem?.id !== item.id) return;
-      if (event?.id !== item.id || event.status !== item.status || event.reviewStatus !== 'APPROVED' ||
-        !Number.isSafeInteger(event.version) || event.version < item.version ||
+      if (event?.id !== item.id || event.hostId !== currentActorId() ||
+        event.status !== item.status || event.reviewStatus !== 'APPROVED' ||
+        !Number.isSafeInteger(event.version) ||
+        (Number.isSafeInteger(item.version) && event.version < item.version) ||
         !Number.isSafeInteger(event.stats?.confirmed) || event.stats.confirmed < 0 ||
         !Number.isSafeInteger(event.payload?.maxParticipants) || event.payload.maxParticipants < 1) return;
       const enriched = withRealDetail(item, event, currentActorId());

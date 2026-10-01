@@ -176,6 +176,7 @@ page { background: #f5f7fa; color: #172033; }
 .state-view .cover-tint { background: linear-gradient(180deg,rgba(0,0,0,.18),transparent 38%,rgba(0,0,0,.7)); }
 .state-view .cover-status { left: auto; right: 17rpx; top: 17rpx; padding: 8rpx 16rpx; font-size: 18rpx; box-shadow: 0 3rpx 11rpx rgba(0,0,0,.13); }
 .state-view .card-organized .cover-status { right: auto; left: 17rpx; background: #e9f9ed; color: #18813e; }
+.state-view .card-organized .cover-status-progress { max-width: calc(100% - 34rpx); box-sizing: border-box; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background: #20bb59; color: #fff; }
 .state-view .card-history .cover-status { background: #e9f9ed; color: #18813e; }
 .cover-sticker { position: absolute; left: 17rpx; top: 17rpx; padding: 8rpx 13rpx; border-radius: 10rpx; color: #1b2518; background: #d2f803; font-size: 17rpx; font-weight: 850; transform: rotate(-3deg); }
 .cover-poster { position: absolute; left: 20rpx; right: 18rpx; bottom: 26rpx; display: flex; flex-direction: column; align-items: flex-start; color: #fff; text-align: left; }

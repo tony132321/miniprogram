@@ -62,6 +62,15 @@ test('home feature shows the authorized confirmed count and stays one detail tap
   assert.deepEqual(routes, ['/pages/event/event?id=event-1']);
 });
 
+test('home feature reads the real host summary shape before showing a verified count', async () => {
+  const summary = { ...listed, status: 'IN_PROGRESS', reviewStatus: undefined, version: undefined };
+  const currentDetail = { ...detail, status: 'IN_PROGRESS', version: 7 };
+  const { page, requests } = loadHome({ item: summary, event: currentDetail });
+  await page.onShow();
+  assert.ok(requests.includes('/events/event-1'), 'host summary can omit review and version');
+  assert.equal(page.data.featuredItem.capacityLabel, '已确认 3 / 上限 8 人');
+});
+
 test('home feature keeps count hidden for pending review, invalid facts, and failed detail reads', async () => {
   const pending = loadHome({ item: { ...listed, reviewStatus: 'PENDING' } });
   await pending.page.onShow();
@@ -72,11 +81,6 @@ test('home feature keeps count hidden for pending review, invalid facts, and fai
   await member.page.onShow();
   assert.equal(member.page.data.featuredItem.capacityLabel, '');
   assert.ok(!member.requests.includes('/events/event-1'), 'member home keeps its existing list-only request boundary');
-
-  const noVersion = loadHome({ item: { ...listed, version: undefined } });
-  await noVersion.page.onShow();
-  assert.equal(noVersion.page.data.featuredItem.capacityLabel, '');
-  assert.ok(!noVersion.requests.includes('/events/event-1'));
 
   const invalid = loadHome({ event: { ...detail, stats: { ...detail.stats, confirmed: '3' } } });
   await invalid.page.onShow();
