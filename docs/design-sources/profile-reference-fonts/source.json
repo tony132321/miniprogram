@@ -1,0 +1,67 @@
+{
+  "scope": "Wave68 Jakarta normal500 and four Material Symbols back glyph600",
+  "sources": [
+    {
+      "name": "plusjakarta-500",
+      "cssURL": "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans%3Awght%40500&display=swap",
+      "cssSHA256": "30e792ecef6f02953db177b070f88e16e6d618758db26b37a67e43de936d7673",
+      "userAgent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11",
+      "records": [
+        {
+          "file": "plusjakarta-500-0.woff",
+          "bytes": 29728,
+          "sha256": "1ed396140566c054e9330fbddc30fbc479f674fd3bc2ecc237b2255ba7d2c7f4",
+          "url": "https://fonts.gstatic.com/s/plusjakartasans/v12/LDIbaomQNQcsA88c7O9yZ4KMCoOg4IA6-91aHEjcWuA_m07NSQ.woff",
+          "declaration": "\n  font-family: 'Plus Jakarta Sans';\n  font-style: normal;\n  font-weight: 500;\n  font-display: swap;\n  src: url(https://fonts.gstatic.com/s/plusjakartasans/v12/LDIbaomQNQcsA88c7O9yZ4KMCoOg4IA6-91aHEjcWuA_m07NSQ.woff) format('woff');\n",
+          "headers": {
+            "Content-Type": "font/woff",
+            "Access-Control-Allow-Origin": "*"
+          }
+        }
+      ]
+    },
+    {
+      "name": "material-profile-back-variable",
+      "cssURL": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined%3Awght%2CFILL%40100..700%2C0..1&display=swap&icon_names=arrow_back_ios_new",
+      "cssSHA256": "ad1e70a4cddb1d48340fc465e84288d3af76e1a45b31bb9a7effda585a77eccc",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+      "records": [
+        {
+          "file": "material-profile-back-variable-0.woff2",
+          "bytes": 1644,
+          "sha256": "ac70d99ac50b14eb11c967b0a69dc509681d2817cd9df7128f848bbabc03759f",
+          "url": "https://fonts.gstatic.com/l/font?kit=kJEPBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzBwG-RpA6RzaxHMPdY40KH8nGzv3fzfVJO1USv9luNrHretFyNrONNucMs7P8J7FoCNaE&skey=b8dc2088854b122f&v=v374",
+          "declaration": "\n  font-family: 'Material Symbols Outlined';\n  font-style: normal;\n  font-weight: 100 700;\n  font-display: swap;\n  src: url(https://fonts.gstatic.com/l/font?kit=kJEPBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzBwG-RpA6RzaxHMPdY40KH8nGzv3fzfVJO1USv9luNrHretFyNrONNucMs7P8J7FoCNaE&skey=b8dc2088854b122f&v=v374) format('woff2');\n",
+          "headers": {
+            "Content-Type": "font/woff2",
+            "Access-Control-Allow-Origin": "*"
+          }
+        }
+      ]
+    }
+  ],
+  "nodeBrotliBridge": "FontTools 4.60.2 reader uses Node built-in zlib.brotliDecompressSync; no dependency installed",
+  "profileSourceFolder": "/private/tmp/irl-stitch-original/stitch_design_system_generator/",
+  "sourcePages": [
+    "pg10_a_edit_profile",
+    "pg10_b_social_badges",
+    "pg10_c",
+    "pg10_d"
+  ],
+  "materialSourceRule": "All four source headers use arrow_back_ios_new 24px font-semibold. Last Material CSS link overrides prior equivalent face: FILL0..1/wght100..700, fixed24/GRAD0. Instance is wght600,FILL0; preserve original outline with Y flip for SVG. Parent text-on-surface=#1a1b1f.",
+  "licenseReuse": {
+    "Plus Jakarta Sans": "docs/licenses/plus-jakarta-sans-OFL-1.1.txt",
+    "Material Symbols": "docs/licenses/material-symbols-Apache-2.0.txt"
+  },
+  "note": "Downloaded CSS/WOFF/WOFF2 are unchanged official server responses. New font is same family license. SVG derived exactly from glyph instance, no coordinate rounding.",
+  "materialSVG": {
+    "file": "profile-back-wght600.svg",
+    "bytes": 266,
+    "sha256": "efeb362fc20c3e3a66fb6dc7be585f6ea7db8e9983609c44e148ef76807c3b24",
+    "fill": "#1a1b1f",
+    "coordinateRounding": false
+  },
+  "registeredFamily": "Caper Jakarta Profile 500",
+  "sourceFamily": "Plus Jakarta Sans",
+  "familyAliasReason": "Only A bio-heading text and C moment-venue request this official500 face. Other source pages that requested only400/600/700/800 retain original nearest-face matching."
+}

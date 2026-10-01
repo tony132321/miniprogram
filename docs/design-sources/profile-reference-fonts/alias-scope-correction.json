@@ -1,0 +1,9 @@
+{
+  "beforeSHA256": "41284603a66d75bef587fc40a68df86cd1b0daf119d7694c653531abae57294e",
+  "afterSHA256": "8cd1ac18d092175c22daaa5c80749251707f6b16f82d1550263b5aef875bda41",
+  "newBytes": 232987,
+  "rawDeltaAgainstHEAD": 39731,
+  "oneAliasChangeOnly": true,
+  "expectedSource500Alias": "Caper Jakarta Profile 500",
+  "official500DataChanged": false
+}

@@ -1,0 +1,12 @@
+{
+  "oldBytes": 193256,
+  "newBytes": 232979,
+  "rawDelta": 39723,
+  "oldSHA256": "486de055ed7ecb35f165fcac8546c9cd916fc21a563b09803f59693c3c7ec7c8",
+  "newSHA256": "41284603a66d75bef587fc40a68df86cd1b0daf119d7694c653531abae57294e",
+  "insertSHA256": "172b10b4883388083743518c3a6f091802337007b011f54b1707ff937ef2d03d",
+  "inverseEqual": true,
+  "weight500Bytes": 29728,
+  "weight500Base64Bytes": 39640,
+  "additionalChange": "provenance comment adds profile-reference-fonts"
+}

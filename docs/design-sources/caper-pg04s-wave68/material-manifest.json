@@ -1,0 +1,498 @@
+{
+  "style": "outlined",
+  "axes": {
+    "opsz": 24,
+    "wght": 400,
+    "GRAD": 0
+  },
+  "sourceClassWeight": "normal 400; original spans have no explicit weight utility",
+  "license": "Apache-2.0",
+  "assets": {
+    "pg04s-close.svg": {
+      "symbol": "close",
+      "glyphName": "uniE14C",
+      "unicode": [
+        "U+E14C",
+        "U+E5CD"
+      ],
+      "ligatureGlyphSequence": [
+        "c",
+        "l",
+        "o",
+        "s",
+        "e"
+      ],
+      "displayPx": 22,
+      "color": "#424655",
+      "FILL": 0,
+      "path": "M256 -200 200 -256 424 -480 200 -704 256 -760 480 -536 704 -760 760 -704 536 -480 760 -256 704 -200 480 -424Z",
+      "bytes": 231,
+      "sha256": "3512de5ac7010c150cfd2a7a134b0053cb0dee3544242328ab9f417f00261673",
+      "export": "SVGPathPen transform(1,0,0,-1,0,0), no outline edits",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg04s-close.svg"
+    },
+    "pg04s-person.svg": {
+      "symbol": "person",
+      "glyphName": "uniE7FD",
+      "unicode": [
+        "U+E7FD",
+        "U+E7FF",
+        "U+E8A6",
+        "U+F0D3"
+      ],
+      "ligatureGlyphSequence": [
+        "p",
+        "e",
+        "r",
+        "s",
+        "o",
+        "n"
+      ],
+      "displayPx": 18,
+      "color": "#FFFFFF",
+      "FILL": 0,
+      "path": "M480.0 -480.0Q414 -480 367.0 -527.0Q320 -574 320.0 -640.0Q320 -706 367.0 -753.0Q414 -800 480.0 -800.0Q546 -800 593.0 -753.0Q640 -706 640.0 -640.0Q640 -574 593.0 -527.0Q546 -480 480.0 -480.0ZM160 -160V-272Q160 -306 177.5 -334.5Q195 -363 224 -378Q286 -409 350.0 -424.5Q414 -440 480 -440Q546 -440 610.0 -424.5Q674 -409 736 -378Q765 -363 782.5 -334.5Q800 -306 800 -272V-160ZM240 -240H720V-272Q720 -283 714.5 -292.0Q709 -301 700 -306Q646 -333 591.0 -346.5Q536 -360 480 -360Q424 -360 369.0 -346.5Q314 -333 260 -306Q251 -301 245.5 -292.0Q240 -283 240 -272ZM480.0 -560.0Q513 -560 536.5 -583.5Q560 -607 560.0 -640.0Q560 -673 536.5 -696.5Q513 -720 480.0 -720.0Q447 -720 423.5 -696.5Q400 -673 400.0 -640.0Q400 -607 423.5 -583.5Q447 -560 480.0 -560.0ZM480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0ZM480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Z",
+      "bytes": 1221,
+      "sha256": "dcd82b18c2b73881bc3e4abdf254f92647dfb16ae06b669f7dece7579f6eba73",
+      "export": "SVGPathPen transform(1,0,0,-1,0,0), no outline edits",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg04s-person.svg"
+    },
+    "pg04s-check_circle_fill1.svg": {
+      "symbol": "check_circle",
+      "glyphName": "uniE86C",
+      "unicode": [
+        "U+E86C"
+      ],
+      "ligatureGlyphSequence": [
+        "c",
+        "h",
+        "e",
+        "c",
+        "k",
+        "underscore",
+        "c",
+        "i",
+        "r",
+        "c",
+        "l",
+        "e"
+      ],
+      "displayPx": 36,
+      "color": "#34C759",
+      "FILL": 1,
+      "path": "M424 -296 706 -578 650 -634 424 -408 310 -522 254 -466ZM480 -80Q397 -80 324.0 -111.5Q251 -143 197.0 -197.0Q143 -251 111.5 -324.0Q80 -397 80 -480Q80 -563 111.5 -636.0Q143 -709 197.0 -763.0Q251 -817 324.0 -848.5Q397 -880 480 -880Q563 -880 636.0 -848.5Q709 -817 763.0 -763.0Q817 -709 848.5 -636.0Q880 -563 880 -480Q880 -397 848.5 -324.0Q817 -251 763.0 -197.0Q709 -143 636.0 -111.5Q563 -80 480 -80ZM480 -160Q614 -160 707.0 -253.0Q800 -346 800 -480Q800 -614 707.0 -707.0Q614 -800 480 -800Q346 -800 253.0 -707.0Q160 -614 160 -480Q160 -346 253.0 -253.0Q346 -160 480 -160ZM480 -160Q346 -160 253.0 -253.0Q160 -346 160 -480Q160 -614 253.0 -707.0Q346 -800 480 -800Q614 -800 707.0 -707.0Q800 -614 800 -480Q800 -346 707.0 -253.0Q614 -160 480 -160Z",
+      "bytes": 856,
+      "sha256": "ab977649e865c7047d84bf477c341114fe10fba356750388d30adf769f0da3b2",
+      "export": "SVGPathPen transform(1,0,0,-1,0,0), no outline edits",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg04s-check_circle_fill1.svg"
+    },
+    "pg04s-celebration.svg": {
+      "symbol": "celebration",
+      "glyphName": "uniEA65",
+      "unicode": [
+        "U+EA65"
+      ],
+      "ligatureGlyphSequence": [
+        "c",
+        "e",
+        "l",
+        "e",
+        "b",
+        "r",
+        "a",
+        "t",
+        "i",
+        "o",
+        "n"
+      ],
+      "displayPx": 14,
+      "color": "#5856D6",
+      "FILL": 0,
+      "path": "M80 -80 280 -640 640 -280ZM212 -212 494 -312 312 -494ZM582 -458 540 -500 764 -724Q796 -756 841.0 -756.0Q886 -756 918 -724L942 -700L900 -658L876 -682Q862 -696 841.0 -696.0Q820 -696 806 -682ZM422 -618 380 -660 404 -684Q418 -698 418.0 -718.0Q418 -738 404 -752L378 -778L420 -820L446 -794Q478 -762 478.0 -718.0Q478 -674 446 -642ZM502 -538 460 -580 604 -724Q618 -738 618.0 -759.0Q618 -780 604 -794L540 -858L582 -900L646 -836Q678 -804 678.0 -759.0Q678 -714 646 -682ZM662 -378 620 -420 684 -484Q716 -516 761.0 -516.0Q806 -516 838 -484L902 -420L860 -378L796 -442Q782 -456 761.0 -456.0Q740 -456 726 -442ZM212 -212Z",
+      "bytes": 726,
+      "sha256": "cf5e29b2d83ac5a8a11865eb93cc0900d35ba3999fa282bac8e776b600a475ed",
+      "export": "SVGPathPen transform(1,0,0,-1,0,0), no outline edits",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg04s-celebration.svg"
+    },
+    "pg04s-calendar_today.svg": {
+      "symbol": "calendar_today",
+      "glyphName": "uniE935",
+      "unicode": [
+        "U+E935"
+      ],
+      "ligatureGlyphSequence": [
+        "c",
+        "a",
+        "l",
+        "e",
+        "n",
+        "d",
+        "a",
+        "r",
+        "underscore",
+        "t",
+        "o",
+        "d",
+        "a",
+        "y"
+      ],
+      "displayPx": 16,
+      "color": "#1D64F2",
+      "FILL": 0,
+      "path": "M200 -80Q167 -80 143.5 -103.5Q120 -127 120 -160V-720Q120 -753 143.5 -776.5Q167 -800 200 -800H240V-880H320V-800H640V-880H720V-800H760Q793 -800 816.5 -776.5Q840 -753 840 -720V-160Q840 -127 816.5 -103.5Q793 -80 760 -80ZM200 -160H760Q760 -160 760.0 -160.0Q760 -160 760 -160V-560H200V-160Q200 -160 200.0 -160.0Q200 -160 200 -160ZM200 -640H760V-720Q760 -720 760.0 -720.0Q760 -720 760 -720H200Q200 -720 200.0 -720.0Q200 -720 200 -720ZM200 -640V-720Q200 -720 200.0 -720.0Q200 -720 200 -720Q200 -720 200.0 -720.0Q200 -720 200 -720V-640Z",
+      "bytes": 649,
+      "sha256": "01250c1bde0d8f1cf5876f932e9993e4b7e52f722aca80d819b82605bda0db19",
+      "export": "SVGPathPen transform(1,0,0,-1,0,0), no outline edits",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg04s-calendar_today.svg"
+    },
+    "pg04s-location_on.svg": {
+      "symbol": "location_on",
+      "glyphName": "uniE0C8",
+      "unicode": [
+        "U+E0C8",
+        "U+E55F",
+        "U+E8B4",
+        "U+F00F",
+        "U+F1DB"
+      ],
+      "ligatureGlyphSequence": [
+        "l",
+        "o",
+        "c",
+        "a",
+        "t",
+        "i",
+        "o",
+        "n",
+        "underscore",
+        "o",
+        "n"
+      ],
+      "displayPx": 16,
+      "color": "#5856D6",
+      "FILL": 0,
+      "path": "M480.0 -480.0Q513 -480 536.5 -503.5Q560 -527 560.0 -560.0Q560 -593 536.5 -616.5Q513 -640 480.0 -640.0Q447 -640 423.5 -616.5Q400 -593 400.0 -560.0Q400 -527 423.5 -503.5Q447 -480 480.0 -480.0ZM480 -186Q602 -298 661.0 -389.5Q720 -481 720 -552Q720 -661 650.5 -730.5Q581 -800 480.0 -800.0Q379 -800 309.5 -730.5Q240 -661 240 -552Q240 -481 299.0 -389.5Q358 -298 480 -186ZM480 -80Q319 -217 239.5 -334.5Q160 -452 160 -552Q160 -702 256.5 -791.0Q353 -880 480 -880Q607 -880 703.5 -791.0Q800 -702 800 -552Q800 -452 720.5 -334.5Q641 -217 480 -80ZM480 -560Q480 -560 480.0 -560.0Q480 -560 480 -560Q480 -560 480.0 -560.0Q480 -560 480.0 -560.0Q480 -560 480.0 -560.0Q480 -560 480 -560Q480 -560 480.0 -560.0Q480 -560 480 -560Z",
+      "bytes": 828,
+      "sha256": "764a729c10b30b4f9f281c6992ba878f135fc69d7d8fa8e1ab80dee7c259d259",
+      "export": "SVGPathPen transform(1,0,0,-1,0,0), no outline edits",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg04s-location_on.svg"
+    },
+    "pg04s-person_add.svg": {
+      "symbol": "person_add",
+      "glyphName": "uniE7FE",
+      "unicode": [
+        "U+E7FE",
+        "U+EA4D"
+      ],
+      "ligatureGlyphSequence": [
+        "p",
+        "e",
+        "r",
+        "s",
+        "o",
+        "n",
+        "underscore",
+        "a",
+        "d",
+        "d"
+      ],
+      "displayPx": 16,
+      "color": "#737687",
+      "FILL": 0,
+      "path": "M720 -400V-520H600V-600H720V-720H800V-600H920V-520H800V-400ZM360.0 -480.0Q294 -480 247.0 -527.0Q200 -574 200.0 -640.0Q200 -706 247.0 -753.0Q294 -800 360.0 -800.0Q426 -800 473.0 -753.0Q520 -706 520.0 -640.0Q520 -574 473.0 -527.0Q426 -480 360.0 -480.0ZM40 -160V-272Q40 -306 57.5 -334.5Q75 -363 104 -378Q166 -409 230.0 -424.5Q294 -440 360 -440Q426 -440 490.0 -424.5Q554 -409 616 -378Q645 -363 662.5 -334.5Q680 -306 680 -272V-160ZM120 -240H600V-272Q600 -283 594.5 -292.0Q589 -301 580 -306Q526 -333 471.0 -346.5Q416 -360 360 -360Q304 -360 249.0 -346.5Q194 -333 140 -306Q131 -301 125.5 -292.0Q120 -283 120 -272ZM360.0 -560.0Q393 -560 416.5 -583.5Q440 -607 440.0 -640.0Q440 -673 416.5 -696.5Q393 -720 360.0 -720.0Q327 -720 303.5 -696.5Q280 -673 280.0 -640.0Q280 -607 303.5 -583.5Q327 -560 360.0 -560.0ZM360.0 -640.0Q360 -640 360.0 -640.0Q360 -640 360.0 -640.0Q360 -640 360.0 -640.0Q360 -640 360.0 -640.0Q360 -640 360.0 -640.0Q360 -640 360.0 -640.0Q360 -640 360.0 -640.0Q360 -640 360.0 -640.0ZM360 -240Q360 -240 360.0 -240.0Q360 -240 360 -240Q360 -240 360.0 -240.0Q360 -240 360 -240Q360 -240 360.0 -240.0Q360 -240 360 -240Q360 -240 360.0 -240.0Q360 -240 360 -240Z",
+      "bytes": 1277,
+      "sha256": "c5a0ab529fbfa3b3458ac0a6808cd236d16dbfb707362db27712500f7c6b7ac8",
+      "export": "SVGPathPen transform(1,0,0,-1,0,0), no outline edits",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg04s-person_add.svg"
+    },
+    "pg04s-group_add.svg": {
+      "symbol": "group_add",
+      "glyphName": "uniE7F0",
+      "unicode": [
+        "U+E7F0"
+      ],
+      "ligatureGlyphSequence": [
+        "g",
+        "r",
+        "o",
+        "u",
+        "p",
+        "underscore",
+        "a",
+        "d",
+        "d"
+      ],
+      "displayPx": 18,
+      "color": "#1D64F2",
+      "FILL": 0,
+      "path": "M500 -482Q529 -514 544.5 -555.0Q560 -596 560 -640Q560 -684 544.5 -725.0Q529 -766 500 -798Q500 -798 500.0 -798.0Q500 -798 500 -798Q560 -790 600.0 -745.0Q640 -700 640 -640Q640 -580 600.0 -535.0Q560 -490 500 -482Q500 -482 500.0 -482.0Q500 -482 500 -482ZM720 -160V-280Q720 -316 704.0 -348.5Q688 -381 662 -406Q713 -388 756.5 -359.5Q800 -331 800 -280V-160ZM800 -440V-520H720V-600H800V-680H880V-600H960V-520H880V-440ZM320.0 -480.0Q254 -480 207.0 -527.0Q160 -574 160.0 -640.0Q160 -706 207.0 -753.0Q254 -800 320.0 -800.0Q386 -800 433.0 -753.0Q480 -706 480.0 -640.0Q480 -574 433.0 -527.0Q386 -480 320.0 -480.0ZM0 -160V-272Q0 -306 17.5 -334.5Q35 -363 64 -378Q126 -409 190.0 -424.5Q254 -440 320 -440Q386 -440 450.0 -424.5Q514 -409 576 -378Q605 -363 622.5 -334.5Q640 -306 640 -272V-160ZM320 -560Q353 -560 376.5 -583.5Q400 -607 400 -640Q400 -673 376.5 -696.5Q353 -720 320 -720Q287 -720 263.5 -696.5Q240 -673 240 -640Q240 -607 263.5 -583.5Q287 -560 320 -560ZM80 -240H560V-272Q560 -283 554.5 -292.0Q549 -301 540 -306Q486 -333 431.0 -346.5Q376 -360 320 -360Q264 -360 209.0 -346.5Q154 -333 100 -306Q91 -301 85.5 -292.0Q80 -283 80 -272ZM320 -640Q320 -640 320.0 -640.0Q320 -640 320 -640Q320 -640 320.0 -640.0Q320 -640 320 -640Q320 -640 320.0 -640.0Q320 -640 320 -640Q320 -640 320.0 -640.0Q320 -640 320 -640ZM320 -240Q320 -240 320.0 -240.0Q320 -240 320 -240Q320 -240 320.0 -240.0Q320 -240 320 -240Q320 -240 320.0 -240.0Q320 -240 320 -240Q320 -240 320.0 -240.0Q320 -240 320 -240Z",
+      "bytes": 1579,
+      "sha256": "adb20fbf1168f49d7e71c2f9f8cbe95bf80ceacc68e535951f3c6a016d3a3c2c",
+      "export": "SVGPathPen transform(1,0,0,-1,0,0), no outline edits",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg04s-group_add.svg"
+    },
+    "pg04s-chat.svg": {
+      "symbol": "chat",
+      "glyphName": "uniE0B7",
+      "unicode": [
+        "U+E0B7",
+        "U+E0C9"
+      ],
+      "ligatureGlyphSequence": [
+        "c",
+        "h",
+        "a",
+        "t"
+      ],
+      "displayPx": 24,
+      "color": "#07C160",
+      "FILL": 0,
+      "path": "M240 -400H560V-480H240ZM240 -520H720V-600H240ZM240 -640H720V-720H240ZM80 -80V-800Q80 -833 103.5 -856.5Q127 -880 160 -880H800Q833 -880 856.5 -856.5Q880 -833 880 -800V-320Q880 -287 856.5 -263.5Q833 -240 800 -240H240ZM206 -320H800Q800 -320 800.0 -320.0Q800 -320 800 -320V-800Q800 -800 800.0 -800.0Q800 -800 800 -800H160Q160 -800 160.0 -800.0Q160 -800 160 -800V-275ZM160 -320V-800Q160 -800 160.0 -800.0Q160 -800 160 -800Q160 -800 160.0 -800.0Q160 -800 160 -800V-320Q160 -320 160.0 -320.0Q160 -320 160 -320Z",
+      "bytes": 624,
+      "sha256": "0e7591f5b931801e0bd28f211f6cf88ea215559e0e01efca4d99e2698c6e0b32",
+      "export": "SVGPathPen transform(1,0,0,-1,0,0), no outline edits",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg04s-chat.svg"
+    },
+    "pg04s-photo_camera_back.svg": {
+      "symbol": "photo_camera_back",
+      "glyphName": "uniEF68",
+      "unicode": [
+        "U+EF68"
+      ],
+      "ligatureGlyphSequence": [
+        "p",
+        "h",
+        "o",
+        "t",
+        "o",
+        "underscore",
+        "c",
+        "a",
+        "m",
+        "e",
+        "r",
+        "a",
+        "underscore",
+        "b",
+        "a",
+        "c",
+        "k"
+      ],
+      "displayPx": 24,
+      "color": "#5856D6",
+      "FILL": 0,
+      "path": "M240 -280H720L570 -480L450 -320L360 -440ZM160 -120Q127 -120 103.5 -143.5Q80 -167 80 -200V-680Q80 -713 103.5 -736.5Q127 -760 160 -760H286L360 -840H600L674 -760H800Q833 -760 856.5 -736.5Q880 -713 880 -680V-200Q880 -167 856.5 -143.5Q833 -120 800 -120ZM160 -200H800Q800 -200 800.0 -200.0Q800 -200 800 -200V-680Q800 -680 800.0 -680.0Q800 -680 800 -680H638L565 -760H395L322 -680H160Q160 -680 160.0 -680.0Q160 -680 160 -680V-200Q160 -200 160.0 -200.0Q160 -200 160 -200ZM480 -440Q480 -440 480.0 -440.0Q480 -440 480 -440Q480 -440 480.0 -440.0Q480 -440 480 -440Q480 -440 480.0 -440.0Q480 -440 480 -440Q480 -440 480.0 -440.0Q480 -440 480 -440Z",
+      "bytes": 754,
+      "sha256": "cd733a6e05aaf6fcd4fca3fc73c6167ee269219b294e828a662f615cf6578188",
+      "export": "SVGPathPen transform(1,0,0,-1,0,0), no outline edits",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg04s-photo_camera_back.svg"
+    },
+    "pg04s-link.svg": {
+      "symbol": "link",
+      "glyphName": "uniE157",
+      "unicode": [
+        "U+E157",
+        "U+E250"
+      ],
+      "ligatureGlyphSequence": [
+        "l",
+        "i",
+        "n",
+        "k"
+      ],
+      "displayPx": 24,
+      "color": "#1D64F2",
+      "FILL": 0,
+      "path": "M440 -280H280Q197 -280 138.5 -338.5Q80 -397 80.0 -480.0Q80 -563 138.5 -621.5Q197 -680 280 -680H440V-600H280Q230 -600 195.0 -565.0Q160 -530 160.0 -480.0Q160 -430 195.0 -395.0Q230 -360 280 -360H440ZM320 -440V-520H640V-440ZM520 -280V-360H680Q730 -360 765.0 -395.0Q800 -430 800.0 -480.0Q800 -530 765.0 -565.0Q730 -600 680 -600H520V-680H680Q763 -680 821.5 -621.5Q880 -563 880.0 -480.0Q880 -397 821.5 -338.5Q763 -280 680 -280Z",
+      "bytes": 542,
+      "sha256": "adac660f968d4ecd36d83073405204834b3aa39b01abb38baf69a1e1abeca774",
+      "export": "SVGPathPen transform(1,0,0,-1,0,0), no outline edits",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg04s-link.svg"
+    },
+    "pg04s-diversity_3.svg": {
+      "symbol": "diversity_3",
+      "glyphName": "uniF8D9",
+      "unicode": [
+        "U+F8D9"
+      ],
+      "ligatureGlyphSequence": [
+        "d",
+        "i",
+        "v",
+        "e",
+        "r",
+        "s",
+        "i",
+        "t",
+        "y",
+        "underscore",
+        "three"
+      ],
+      "displayPx": 24,
+      "color": "#647700",
+      "FILL": 0,
+      "path": "M40 -160V-320Q40 -354 63.5 -377.0Q87 -400 120 -400H251Q271 -400 289.0 -390.0Q307 -380 318 -363Q347 -324 389.5 -302.0Q432 -280 480 -280Q529 -280 571.5 -302.0Q614 -324 642 -363Q655 -380 672.5 -390.0Q690 -400 709 -400H840Q874 -400 897.0 -377.0Q920 -354 920 -320V-160H640V-251Q605 -226 564.5 -213.0Q524 -200 480 -200Q437 -200 396.0 -213.5Q355 -227 320 -252V-160ZM480 -320Q442 -320 408.0 -337.5Q374 -355 351 -386Q334 -411 308.5 -425.5Q283 -440 253 -440Q275 -477 346.0 -498.5Q417 -520 480 -520Q543 -520 614.0 -498.5Q685 -477 707 -440Q678 -440 652.0 -425.5Q626 -411 609 -386Q587 -354 553.0 -337.0Q519 -320 480 -320ZM160 -440Q110 -440 75.0 -475.0Q40 -510 40 -560Q40 -611 75.0 -645.5Q110 -680 160 -680Q211 -680 245.5 -645.5Q280 -611 280 -560Q280 -510 245.5 -475.0Q211 -440 160 -440ZM800 -440Q750 -440 715.0 -475.0Q680 -510 680 -560Q680 -611 715.0 -645.5Q750 -680 800 -680Q851 -680 885.5 -645.5Q920 -611 920 -560Q920 -510 885.5 -475.0Q851 -440 800 -440ZM480 -560Q430 -560 395.0 -595.0Q360 -630 360 -680Q360 -731 395.0 -765.5Q430 -800 480 -800Q531 -800 565.5 -765.5Q600 -731 600 -680Q600 -630 565.5 -595.0Q531 -560 480 -560Z",
+      "bytes": 1235,
+      "sha256": "cc4cf1197e01524190f51b6d33e93aa3bcda5b89b8baf37fe957cfd87f932789",
+      "export": "SVGPathPen transform(1,0,0,-1,0,0), no outline edits",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg04s-diversity_3.svg"
+    },
+    "pg04s-auto_awesome.svg": {
+      "symbol": "auto_awesome",
+      "glyphName": "uniE65F",
+      "unicode": [
+        "U+E65F"
+      ],
+      "ligatureGlyphSequence": [
+        "a",
+        "u",
+        "t",
+        "o",
+        "underscore",
+        "a",
+        "w",
+        "e",
+        "s",
+        "o",
+        "m",
+        "e"
+      ],
+      "displayPx": 18,
+      "color": "#FFFFFF",
+      "FILL": 0,
+      "path": "M760 -600 710 -710 600 -760 710 -810 760 -920 810 -810 920 -760 810 -710ZM760 -40 710 -150 600 -200 710 -250 760 -360 810 -250 920 -200 810 -150ZM360 -160 260 -380 40 -480 260 -580 360 -800 460 -580 680 -480 460 -380ZM360 -354 400 -440 486 -480 400 -520 360 -606 320 -520 234 -480 320 -440ZM360 -480Z",
+      "bytes": 422,
+      "sha256": "ece7add2f6e03892adaff32371d513607126cf4e07a93be752ad0745704fbff0",
+      "export": "SVGPathPen transform(1,0,0,-1,0,0), no outline edits",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg04s-auto_awesome.svg"
+    },
+    "pg04s-arrow_forward.svg": {
+      "symbol": "arrow_forward",
+      "glyphName": "uniE5C8",
+      "unicode": [
+        "U+E5C8"
+      ],
+      "ligatureGlyphSequence": [
+        "a",
+        "r",
+        "r",
+        "o",
+        "w",
+        "underscore",
+        "f",
+        "o",
+        "r",
+        "w",
+        "a",
+        "r",
+        "d"
+      ],
+      "displayPx": 20,
+      "color": "#FFFFFF",
+      "FILL": 0,
+      "path": "M647 -440H160V-520H647L423 -744L480 -800L800 -480L480 -160L423 -216Z",
+      "bytes": 190,
+      "sha256": "58c33e26c605a304e92df1ced891706a342c62c52bd506388c8776f53b7cbd9e",
+      "export": "SVGPathPen transform(1,0,0,-1,0,0), no outline edits",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg04s-arrow_forward.svg"
+    },
+    "pg04s-visibility.svg": {
+      "symbol": "visibility",
+      "glyphName": "uniE417",
+      "unicode": [
+        "U+E417",
+        "U+E8F4"
+      ],
+      "ligatureGlyphSequence": [
+        "v",
+        "i",
+        "s",
+        "i",
+        "b",
+        "i",
+        "l",
+        "i",
+        "t",
+        "y"
+      ],
+      "displayPx": 20,
+      "color": "#424655",
+      "FILL": 0,
+      "path": "M480.0 -320.0Q555 -320 607.5 -372.5Q660 -425 660.0 -500.0Q660 -575 607.5 -627.5Q555 -680 480.0 -680.0Q405 -680 352.5 -627.5Q300 -575 300.0 -500.0Q300 -425 352.5 -372.5Q405 -320 480.0 -320.0ZM480.0 -392.0Q435 -392 403.5 -423.5Q372 -455 372.0 -500.0Q372 -545 403.5 -576.5Q435 -608 480.0 -608.0Q525 -608 556.5 -576.5Q588 -545 588.0 -500.0Q588 -455 556.5 -423.5Q525 -392 480.0 -392.0ZM40 -500Q94 -637 214.0 -718.5Q334 -800 480.0 -800.0Q626 -800 746.0 -718.5Q866 -637 920 -500Q866 -363 746.0 -281.5Q626 -200 480.0 -200.0Q334 -200 214.0 -281.5Q94 -363 40 -500ZM480 -500Q480 -500 480.0 -500.0Q480 -500 480.0 -500.0Q480 -500 480.0 -500.0Q480 -500 480 -500Q480 -500 480.0 -500.0Q480 -500 480.0 -500.0Q480 -500 480.0 -500.0Q480 -500 480 -500ZM832 -500Q782 -601 687.5 -660.5Q593 -720 480.0 -720.0Q367 -720 272.5 -660.5Q178 -601 128 -500Q178 -399 272.5 -339.5Q367 -280 480.0 -280.0Q593 -280 687.5 -339.5Q782 -399 832 -500Z",
+      "bytes": 1032,
+      "sha256": "518731bd837cd5e42efd6157f58990d446ad89daf518bd7a68648ebc3b2173b3",
+      "export": "SVGPathPen transform(1,0,0,-1,0,0), no outline edits",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg04s-visibility.svg"
+    },
+    "pg04s-check_circle_fill0.svg": {
+      "symbol": "check_circle",
+      "glyphName": "uniE86C",
+      "unicode": [
+        "U+E86C"
+      ],
+      "ligatureGlyphSequence": [
+        "c",
+        "h",
+        "e",
+        "c",
+        "k",
+        "underscore",
+        "c",
+        "i",
+        "r",
+        "c",
+        "l",
+        "e"
+      ],
+      "displayPx": 36,
+      "color": "#34C759",
+      "FILL": 0,
+      "path": "M424 -296 706 -578 650 -634 424 -408 310 -522 254 -466ZM480 -80Q397 -80 324.0 -111.5Q251 -143 197.0 -197.0Q143 -251 111.5 -324.0Q80 -397 80 -480Q80 -563 111.5 -636.0Q143 -709 197.0 -763.0Q251 -817 324.0 -848.5Q397 -880 480 -880Q563 -880 636.0 -848.5Q709 -817 763.0 -763.0Q817 -709 848.5 -636.0Q880 -563 880 -480Q880 -397 848.5 -324.0Q817 -251 763.0 -197.0Q709 -143 636.0 -111.5Q563 -80 480 -80ZM480 -160Q614 -160 707.0 -253.0Q800 -346 800 -480Q800 -614 707.0 -707.0Q614 -800 480 -800Q346 -800 253.0 -707.0Q160 -614 160 -480Q160 -346 253.0 -253.0Q346 -160 480 -160ZM480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Z",
+      "bytes": 856,
+      "sha256": "a4b04b9903d61e6c90cf012bdba7c6a0bc8ebc35c4b1fea4b97284a0afb1ceb6",
+      "export": "SVGPathPen transform(1,0,0,-1,0,0), no outline edits",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg04s-check_circle_fill0.svg",
+      "sourceResolution": "Supplied full PNG outline circle/green tick wins over HTML:17 inline FILL1; root explicit 1:1 appearance authorization",
+      "singleOverrideProof": "success-mark-png-override.json"
+    }
+  },
+  "fontSources": {
+    "0": {
+      "cssUrl": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_forward,auto_awesome,calendar_today,celebration,chat,close,diversity_3,group_add,link,location_on,person,person_add,photo_camera_back,visibility",
+      "cssBytes": 682,
+      "cssSha256": "373d0b88eb88929bdefc365ee236d182dd3855a127f845025635a1457855b841",
+      "fontUrl": "https://fonts.gstatic.com/l/font?kit=kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY43zj-jCxv3fzvRNU22ZXGJpEpjC_1v-p_4MrImHCIJIZrDCvHOemdcJI80FOurF9-dOV9sW9D-I3cSFCBNDtTy_3ve7T6x7jJwkAZ3eSFM6-ijm1xuSPwmTvub2CFh4&skey=b8dc2088854b122f&v=v374",
+      "fontBytes": 6396,
+      "fontSha256": "e45b289adaff380d9c916844948e16e337dbe71f6a55a5b097d130063285c981",
+      "fontVersion": "Version 2.972",
+      "axes": {
+        "opsz": 24,
+        "wght": 400,
+        "FILL": 0,
+        "GRAD": 0
+      }
+    },
+    "1": {
+      "cssUrl": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0&icon_names=check_circle",
+      "cssBytes": 630,
+      "cssSha256": "8c30d9a47b8c6fe1a186c7fd8433247f3d45c1b780b79e3937409c1764743169",
+      "fontUrl": "https://fonts.gstatic.com/l/font?kit=kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzazHD_dY43zj-jCxv3fzvRNU22ZXGJpEpjC_1v-p_4MrImHCIJIZrDCvHOemddIkz0VEsL507d7438SHC9Y&skey=b8dc2088854b122f&v=v374",
+      "fontBytes": 2368,
+      "fontSha256": "32bdb46b428598f5b62851d453339ac4317c98c0f6932e0a562d2a1bc458e40a",
+      "fontVersion": "Version 2.972",
+      "axes": {
+        "opsz": 24,
+        "wght": 400,
+        "FILL": 1,
+        "GRAD": 0
+      }
+    }
+  },
+  "originalSecondFaceProof": "docs/design-sources/caper-pg04s-wave68/second-font-proof.json",
+  "licensePath": "docs/licenses/material-symbols-Apache-2.0.txt",
+  "activePNGMarkOverride": {
+    "resource": "pg04s-check_circle_fill0.svg",
+    "retainedHTMLHistoryResource": "pg04s-check_circle_fill1.svg",
+    "proof": "success-mark-png-override.json"
+  }
+}
