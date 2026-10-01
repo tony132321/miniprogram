@@ -260,11 +260,13 @@ Page({
         this.data.currentUser && this.data.currentUser === currentIdentity() &&
         this.data.event.status === 'COMPLETED' && !this.data.isHost &&
         this.data.myRegistration?.status === 'CONFIRMED' && this.data.outcomeLoadState === 'READY' &&
-        this.data.outcome && !this.data.outcome.myFeedbackSubmitted;
+        this.data.outcome;
+      const memberFeedbackAnchor = memberFeedback ?
+        this.data.outcome.myFeedbackSubmitted ? '#memberFeedbackCard' : '#feedbackForm' : '';
       const aliasForm = sameEvent && options.section === 'registrationSection' && options.entry === 'alias' &&
         this.data.canSetAlias && this.data.aliasLoadState === 'READY';
       if (hostCheckin) this.setData({ checkInMode: 'host' });
-      this.scrollToSection(options.section, aliasForm ? '#aliasForm' : memberFeedback ? '#feedbackForm' :
+      this.scrollToSection(options.section, aliasForm ? '#aliasForm' : memberFeedbackAnchor ? memberFeedbackAnchor :
         hostAnnouncement ? '#hostAnnouncementAnchor' : hostRepeat ? '#hostRepeatAnchor' :
           hostCompletion ? '#hostCompletionForm' : '');
     }

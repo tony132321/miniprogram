@@ -190,9 +190,13 @@ function cardPresentation(item, group) {
   if (group === 'history') {
     const notes = { COMPLETED: '活动已结束；结项与独立反馈请到详情页查看。',
       CANCELLED: '活动已取消；历史记录仍可查看。', EXPIRED: '活动已过期；历史记录仍可查看。' };
+    const memberFeedbackReady = item.status === 'COMPLETED' && !item.isHost &&
+      item.myRegistrationStatus === 'CONFIRMED';
     return { cardKind: 'history', cardNote: notes[item.status] || '查看活动历史与当前记录。',
-      primaryLabel: item.status === 'COMPLETED' ? (item.isHost ? '再来一局' : '查看结项与反馈') : '查看活动记录',
-      primaryAction: item.isHost && item.status === 'COMPLETED' ? 'hostRepeat' : 'detailsSection',
+      primaryLabel: item.isHost && item.status === 'COMPLETED' ? '再来一局' :
+        memberFeedbackReady ? '查看结项与反馈' : '查看活动记录',
+      primaryAction: item.isHost && item.status === 'COMPLETED' ? 'hostRepeat' :
+        memberFeedbackReady ? 'checkinSection' : 'detailsSection',
       secondaryLabel: '', secondaryAction: '' };
   }
   return { cardKind: group, cardNote: group === 'cohosting' ? '你是本场协办；权限与任务以活动详情为准。' :
@@ -425,7 +429,8 @@ Page({
     if (!['detailsSection', 'registrationSection', 'hostSection', 'checkinSection', 'expenseSection'].includes(action)) return;
     if (action === 'hostSection' && !item.isHost) return;
     let entry = '';
-    if (action === 'checkinSection' && [item.secondaryAction, item.shortcutAction].includes(action)) {
+    if (action === 'checkinSection' &&
+      [item.primaryAction, item.secondaryAction, item.shortcutAction].includes(action)) {
       if (item.isHost && ['CONFIRMED', 'IN_PROGRESS'].includes(item.status)) entry = 'hostCheckin';
       else if (!item.isHost && item.status === 'COMPLETED' && item.myRegistrationStatus === 'CONFIRMED')
         entry = 'memberFeedback';

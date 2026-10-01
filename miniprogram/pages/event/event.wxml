@@ -134,7 +134,7 @@
   <view wx:if="{{outcome && isHost}}" wx:for="{{outcome.issues}}" wx:key="*this" class="item">{{item}}</view>
   <view wx:if="{{outcomeLoadState === 'FORBIDDEN'}}" class="muted">当前无权查看结项证据。</view>
   <view wx:if="{{outcomeLoadState === 'ERROR'}}" class="error">{{outcomeError}} <button id="outcomeRetryButton" bindtap="refresh">重新加载结项证据</button></view>
-  <view wx:if="{{outcome && !isHost && myRegistration.status === 'CONFIRMED'}}" class="feedback-card">
+  <view id="memberFeedbackCard" wx:if="{{outcome && !isHost && myRegistration.status === 'CONFIRMED'}}" class="feedback-card">
     <view class="feedback-card-header"><view><view class="feedback-card-title">活动结束啦！</view><view class="feedback-card-question">这次活动有顺利举行吗？</view></view><view class="feedback-celebration" aria-hidden="true">✦</view></view>
     <view id="feedbackForm" wx:if="{{outcome && !isHost && myRegistration.status === 'CONFIRMED' && !outcome.myFeedbackSubmitted}}">
       <radio-group id="feedbackHeldGroup" class="feedback-choice-grid" bindchange="setFeedbackHeld">

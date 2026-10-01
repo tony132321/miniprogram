@@ -176,10 +176,12 @@ test('history host repeat link locates the existing button only for a current co
   }
 });
 
-test('home feedback link locates the form only for confirmed members of completed events', async () => {
+test('home feedback link locates the form or existing record only for confirmed members of completed events', async () => {
   const { page, scrolls } = eventPage();
   const markup = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
   assert.match(markup, /id="feedbackForm"[^>]*wx:if="{{outcome && !isHost && myRegistration.status === 'CONFIRMED' && !outcome.myFeedbackSubmitted}}"/);
+  assert.match(markup, /id="memberFeedbackCard"[^>]*wx:if="{{outcome && !isHost && myRegistration.status === 'CONFIRMED'}}"/,
+    'an already submitted member needs a stable card anchor, without reopening the form');
   page.refresh = async function () {
     this.setData({ loadState: 'READY', event: { id: 'e1', status: 'COMPLETED' },
       isHost: false, myRegistration: { status: 'CONFIRMED' },
@@ -192,11 +194,21 @@ test('home feedback link locates the form only for confirmed members of complete
   assert.equal(scrolls[0]?.selector, '#feedbackForm');
   assert.equal(scrolls[0]?.duration, 0);
 
+  page.refresh = async function () {
+    this.setData({ loadState: 'READY', event: { id: 'e1', status: 'COMPLETED' },
+      isHost: false, myRegistration: { status: 'CONFIRMED' },
+      outcome: { myFeedbackSubmitted: true }, outcomeLoadState: 'READY', currentUser: 'host' });
+    return true;
+  };
+  scrolls.length = 0;
+  await page.onLoad({ id: 'e1', section: 'checkinSection', entry: 'memberFeedback' });
+  assert.equal(page.data.activeSection, 'checkinSection');
+  assert.equal(scrolls[0]?.selector, '#memberFeedbackCard');
+
   for (const state of [
     { status: 'IN_PROGRESS', host: false, registration: 'CONFIRMED', submitted: false },
     { status: 'COMPLETED', host: false, registration: 'REQUESTED', submitted: false },
     { status: 'COMPLETED', host: true, registration: 'CONFIRMED', submitted: false },
-    { status: 'COMPLETED', host: false, registration: 'CONFIRMED', submitted: true },
     { status: 'COMPLETED', host: false, registration: 'CONFIRMED', submitted: false, evidence: 'ERROR' },
     { status: 'COMPLETED', host: false, registration: 'CONFIRMED', submitted: false, actor: '' }
   ] as Array<{ status: string; host: boolean; registration: string; submitted: boolean;

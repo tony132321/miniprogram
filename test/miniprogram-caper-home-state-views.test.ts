@@ -311,6 +311,42 @@ test('an offered seat identifies its event for fresh profile offer controls with
     JSON.stringify({ eventId: 'offer', owner: 'dev:organizer' }));
 });
 
+test('completed member history primary action reaches feedback while other historical identities stay on details', async () => {
+  const listed: ListedEvent[] = [
+    { id: 'confirmed-member', status: 'COMPLETED', title: '已参加的羽毛球',
+      isHost: false, myRegistrationStatus: 'CONFIRMED' },
+    { id: 'interested-member', status: 'COMPLETED', title: '仅关注的羽毛球',
+      isHost: false, myRegistrationStatus: 'INTERESTED' }
+  ];
+  const { page, navigations, storage } = makeHome({ organizer: listed }, {});
+  await page.onShow();
+  const confirmed = page.data.history.find((item: ListedEvent) => item.id === 'confirmed-member');
+  const interested = page.data.history.find((item: ListedEvent) => item.id === 'interested-member');
+  assert.equal(confirmed.primaryLabel, '查看结项与反馈');
+  assert.equal(confirmed.primaryAction, 'checkinSection');
+  assert.equal(interested.primaryLabel, '查看活动记录');
+  assert.equal(interested.primaryAction, 'detailsSection');
+
+  page.openCardAction({ currentTarget: { dataset: { id: confirmed.id, action: confirmed.primaryAction } } });
+  page.openCardAction({ currentTarget: { dataset: { id: interested.id, action: 'checkinSection' } } });
+  page.openCardAction({ currentTarget: { dataset: { id: interested.id, action: interested.primaryAction } } });
+  assert.deepEqual(navigations, [
+    '/pages/event/event?id=confirmed-member&section=checkinSection&entry=memberFeedback',
+    '/pages/event/event?id=interested-member&section=detailsSection'
+  ]);
+
+  const currentConfirmed = page.data.items.find((item: ListedEvent) => item.id === confirmed.id);
+  currentConfirmed.shortcutAction = '';
+  page.openCardAction({ currentTarget: { dataset: { id: confirmed.id, action: confirmed.primaryAction } } });
+  assert.equal(navigations.at(-1),
+    '/pages/event/event?id=confirmed-member&section=checkinSection&entry=memberFeedback',
+    'the primary action must carry its feedback focus even without a separate shortcut');
+
+  storage.set('devUser', 'another-account');
+  page.openCardAction({ currentTarget: { dataset: { id: confirmed.id, action: confirmed.primaryAction } } });
+  assert.equal(navigations.length, 3, 'an old account cannot replay its history card action');
+});
+
 test('state cards deep-link current activity exit, check-in, feedback and repeat controls without writing business state', async () => {
   const listed: ListedEvent[] = [
     { id: 'pending-exit', status: 'RECRUITING', title: '待审批的局', isHost: false, myRegistrationStatus: 'REQUESTED' },
