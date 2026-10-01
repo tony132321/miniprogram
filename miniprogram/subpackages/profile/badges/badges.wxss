@@ -1,5 +1,5 @@
 @import "../common.wxss";
-.badge-page { padding-left: 30rpx; padding-right: 30rpx; }
+.badge-page { padding-left: 30rpx; padding-right: 30rpx; padding-bottom: calc(180rpx + env(safe-area-inset-bottom)); }
 .badge-page .pg10-header { position: sticky; z-index: 11; box-sizing: border-box; margin-left: -30rpx; margin-right: -30rpx; padding-left: 28rpx; height: 92rpx; }
 .badge-page .pg10-header-title { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-weight: 600; }
 .badge-header-actions { display: flex; flex: none; align-items: center; gap: 6rpx; }
@@ -38,8 +38,8 @@
 .badge-tab::after,.badge-cell::after { border: 0; }
 .badge-tab.selected { background: #054cc9; color: white; }
 .badge-grid { display: flex; flex-wrap: wrap; gap: 15rpx; }
-.badge-cell { box-sizing: border-box; width: calc((100% - 30rpx) / 3); margin: 0; padding: 16rpx 5rpx 14rpx; border-radius: 25rpx; background: #fff; text-align: center; color: #171a23; line-height: 1.35; }
-.badge-circle { width: 86rpx; height: 86rpx; margin: 0 auto 13rpx; border-radius: 27rpx; background: #e9f1ff; color: #225ee8; font-size: 45rpx; line-height: 86rpx; box-shadow: 0 9rpx 20rpx rgba(64,82,118,.10); }
+.badge-cell { box-sizing: border-box; width: calc((100% - 30rpx) / 3); min-height: 226rpx; margin: 0; padding: 30rpx 6rpx 21rpx; border-radius: 27rpx; background: #fff; text-align: center; color: #171a23; line-height: 1.35; box-shadow: 0 4rpx 18rpx rgba(40,48,85,.035); }
+.badge-circle { width: 98rpx; height: 98rpx; margin: 0 auto 17rpx; border-radius: 29rpx; background: #e9f1ff; color: #225ee8; font-size: 49rpx; line-height: 98rpx; box-shadow: 0 9rpx 20rpx rgba(64,82,118,.10); }
 .badge-circle.amber { background: linear-gradient(135deg,#ffd148,#ffaf14); color: white; }
 .badge-circle.violet { background: linear-gradient(135deg,#7069df,#433bc8); color: white; }
 .badge-circle.lime { background: linear-gradient(135deg,#d2f803,#94c700); color: #253000; }
@@ -48,9 +48,14 @@
 .badge-circle.coffee { background: linear-gradient(135deg,#d69c0a,#a76504); color: white; }
 .badge-circle.blue { background: linear-gradient(135deg,#24b7fa,#205ff0); color: white; }
 .badge-circle.muted { background: #e6e5ed; color: #a2a8b7; box-shadow: none; }
-.badge-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 22rpx; font-weight: 700; }
+.badge-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 24rpx; font-weight: 700; }
 .badge-cell text { display: block; color: #838a9b; font-size: 17rpx; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.badge-action { margin-top: 70rpx; }
+.badge-activities-link { display: block; width: 100%; margin: 26rpx 0 0; padding: 16rpx; background: transparent; color: #175beb; font-size: 22rpx; font-weight: 700; line-height: 1.5; text-align: center; }
+.badge-activities-link::after,.badge-share-action::after { border: 0; }
+.badge-bottom-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 15; box-sizing: border-box; padding: 14rpx 30rpx calc(18rpx + env(safe-area-inset-bottom)); background: linear-gradient(180deg,rgba(248,247,252,0),#f8f7fc 24%,#f8f7fc); }
+.badge-share-note { margin-bottom: 8rpx; color: #747b8b; text-align: center; font-size: 18rpx; }
+.badge-share-action { display: flex; align-items: center; justify-content: center; gap: 13rpx; width: 100%; min-height: 90rpx; margin: 0; padding: 0 20rpx; border-radius: 48rpx; background: linear-gradient(105deg,#1764f6,#6356d9); color: #fff; font-size: 27rpx; font-weight: 750; box-shadow: 0 12rpx 27rpx rgba(43,91,218,.22); }
+.badge-share-icon { font-size: 31rpx; }
 .badge-detail-backdrop { position: fixed; inset: 0; z-index: 20; background: rgba(13,20,41,.45); }
 .badge-detail-sheet { position: fixed; z-index: 21; left: 0; right: 0; bottom: 0; box-sizing: border-box; padding: 11rpx 32rpx 45rpx; border-radius: 36rpx 36rpx 0 0; background: #fff; box-shadow: 0 -12rpx 35rpx rgba(13,20,41,.13); }
 .badge-detail-handle { width: 72rpx; height: 7rpx; margin: 0 auto 23rpx; border-radius: 8rpx; background: #d5d8e2; }

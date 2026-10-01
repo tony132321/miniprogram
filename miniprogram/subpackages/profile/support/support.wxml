@@ -25,7 +25,7 @@
     <view class="support-faq-list">
       <view wx:for="{{questions}}" wx:key="title" class="support-faq-item">
         <button class="support-faq-trigger" data-index="{{index}}" bindtap="toggleFaq" aria-label="{{item.title}}，{{openIndex === index ? '收起' : '展开'}}"><text>{{item.title}}</text><text class="support-faq-chevron {{openIndex === index ? 'is-open' : ''}}">⌄</text></button>
-        <view wx:if="{{openIndex === index}}" class="support-faq-answer">{{item.answer}}</view>
+        <view wx:if="{{openIndex === index}}" class="support-faq-answer"><view>{{item.answer}}</view><button wx:if="{{item.action === 'create'}}" class="support-tag support-report-tag" style="margin-top: 14rpx;" bindtap="goCreate">发起受控活动　›</button></view>
       </view>
     </view>
   </view>

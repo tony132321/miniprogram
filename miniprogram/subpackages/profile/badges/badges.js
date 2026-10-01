@@ -59,5 +59,9 @@ Page({
   goActivities() {
     this.setData({ selectedBadge: null, moreOpen: false });
     wx.navigateTo({ url: '/subpackages/profile/moments/moments?filter=all' });
+  },
+  onShareAppMessage() {
+    return { title: '耍起 CAPER · 勋章墙概念预览（勋章尚未开放）',
+      path: '/subpackages/profile/badges/badges' };
   }
 });
