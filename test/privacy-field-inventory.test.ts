@@ -78,11 +78,17 @@ test('post-deidentification inventory retains only the deleted person’s hosted
     await db.query("INSERT INTO users(id,wechat_openid) VALUES('p1','p1-private'),('p2','p2-private')");
     const owned = await createDraft(db, 'p1', { title: 'p1 private host text' }, 'inventory-owned');
     const other = await createDraft(db, 'p2', { title: 'p2 private host text' }, 'inventory-other');
-    await createDraft(db, 'p2', { title: 'p2 second private host text' }, 'inventory-other-second');
+    const unrelated = await createDraft(db, 'p2', { title: 'p2 second private host text' }, 'inventory-other-second');
     await db.query("INSERT INTO event_versions(event_id,version,payload) VALUES($1,1,'{\"title\":\"p1 history\"}'),($2,1,'{\"title\":\"p2 history\"}')",
       [owned.id, other.id]);
     await db.query("INSERT INTO registrations(id,event_id,user_id,status) VALUES('p1-other-event',$1,'p1','CONFIRMED')", [other.id]);
     await db.query("INSERT INTO activity_content(id,event_id,author_id,kind,body) VALUES('p1-other-content',$1,'p1','QUESTION','p1 private member text')", [other.id]);
+    await db.query(`INSERT INTO jobs(id,kind,event_id,due_at,payload)
+      VALUES('p1-host-job','FORMATION_DEADLINE',$1,now()+interval '2 days','{"version":1}'::jsonb),
+        ('p1-member-event-job','FORMATION_DEADLINE',$2,now()+interval '2 days','{"version":1}'::jsonb),
+        ('unrelated-host-job','FORMATION_DEADLINE',$3,now()+interval '2 days','{"version":1}'::jsonb),
+        ('p1-direct-job','PUBLIC_GATE_NOTICE',NULL,now()+interval '2 days','{"userId":"p1"}'::jsonb)`,
+    [owned.id, other.id, unrelated.id]);
     const request = await createPrivacyRequest(db, 'p1', { kind: 'DELETE' }, 'inventory-delete-p1');
     await db.query("INSERT INTO privacy_requests(id,user_id,kind) VALUES('p2-host-delete','p2','DELETE')");
     const before = await getPrivacyRequestImpact(db, 'operator:privacy', request.id);
@@ -92,6 +98,8 @@ test('post-deidentification inventory retains only the deleted person’s hosted
     assert.equal(before.counts.authoredContent, 1);
     assert.equal(before.counts.hostedEventStatusHistory, 1);
     assert.equal(before.fieldInventory.fields.find(x => x.table === 'event_status_history' && x.column === 'event_id')?.populatedRows, 1);
+    assert.equal(before.fieldInventory.fields.find(x => x.table === 'jobs' && x.column === 'payload')?.populatedRows, 2);
+    assert.equal(before.fieldInventory.fields.find(x => x.table === 'jobs' && x.column === 'event_id')?.populatedRows, 1);
 
     await executePrivacyDeletionWithMarker(db, new FileDeletionMarkerStore(join(root, 'markers.jsonl')),
       'operator:privacy', request.id, syntheticPolicy);
@@ -107,7 +115,11 @@ test('post-deidentification inventory retains only the deleted person’s hosted
     assert.equal(after.fieldInventory.fields.find(x => x.table === 'event_versions' && x.column === 'payload')?.populatedRows, 1);
     assert.equal(after.fieldInventory.fields.find(x => x.table === 'registrations' && x.column === 'user_id')?.populatedRows, 1);
     assert.equal(after.fieldInventory.fields.find(x => x.table === 'event_status_history' && x.column === 'event_id')?.populatedRows, 1);
+    assert.equal(after.fieldInventory.fields.find(x => x.table === 'jobs' && x.column === 'payload')?.populatedRows, 2);
+    assert.equal(after.fieldInventory.fields.find(x => x.table === 'jobs' && x.column === 'event_id')?.populatedRows, 1);
     assert.equal(otherHost.fieldInventory.fields.find(x => x.table === 'event_status_history' && x.column === 'event_id')?.populatedRows, 2);
+    assert.equal(otherHost.fieldInventory.fields.find(x => x.table === 'jobs' && x.column === 'payload')?.populatedRows, 2);
+    assert.equal(otherHost.fieldInventory.fields.find(x => x.table === 'jobs' && x.column === 'event_id')?.populatedRows, 2);
     assert.deepEqual(dryRun.fieldInventory, after.fieldInventory);
     assert.doesNotMatch(JSON.stringify(after), /p1 private|p2 private|p1 history|p2 history/);
   } finally { await db.close(); await rm(root, { recursive: true, force: true }); }

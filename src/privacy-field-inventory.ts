@@ -162,8 +162,10 @@ const groups: Group[] = [
   { table: 'privacy_quarantine', from: 'privacy_quarantine t',
     where: 'EXISTS (SELECT 1 FROM privacy_requests p WHERE p.id=t.request_id AND p.user_id=$1)', ownerLink: 'deletion_request',
     fields: [...fields('JSON', 'payload')] },
-  { table: 'jobs', from: 'jobs t', where: "t.payload->>'userId'=$1", ownerLink: 'payload_userId_only',
-    fields: [...fields('JSON', 'payload')] },
+  { table: 'jobs', from: 'jobs t',
+    where: `(t.payload->>'userId'=$1 OR EXISTS (SELECT 1 FROM events e WHERE e.id=t.event_id
+      AND ${historicallyHosted('e')}))`, ownerLink: 'payload_userId_or_historically_hosted_event',
+    fields: [...fields('JSON', 'payload'), ...fields('DIRECT_IDENTIFIER', 'event_id')] },
   { table: 'business_events', from: 'business_events t',
     where: 'EXISTS (SELECT 1 FROM audit a WHERE a.id=t.event_uuid AND a.actor_id=$1)', ownerLink: 'actor_audit',
     fields: [...fields('DIRECT_IDENTIFIER', 'user_id_pseudonymous')] }
