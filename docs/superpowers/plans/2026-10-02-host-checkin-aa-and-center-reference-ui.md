@@ -7,6 +7,7 @@
 1. 活动owner仅 `subpackages/activity/event/event.wxml`／`.wxss`、新准确页面asset与独占source/evidence：PG06 hostSection、PG08 checkinSection及完成态反馈、PG09 expenseSection。复用 `/private/tmp/caper-wave69-activity-prep/` 已准备28变体及旧准确glyph；完整读原HTML／PNG与既有gap audit，源 px／颜色／字体／贴纸／背景按实际来源，JS／JSON和其他旧scopes精确保护。不在此批扩PG07。
 2. 消息owner仅 `pages/messages/messages.wxml`／`.wxss`、准确asset与独占source/evidence：PG02-N1作为既有CENTER的卡片版布局，Alex作为已有CHAT_UNAVAILABLE关闭态。N2紧凑版的独立入口尚未有产品契约；保留其审计，不自行加入切换器或把N1／N2算两个已验屏。INBOX Wave66、新旧全部JS／JSON及真实19 CENTER／4 CHAT动作保留。
 3. 独立只读owner完成PG08字重范围边界及后续PG07／首页条件态来源盘点，不改任何产品。PG08两黑体文字保留CSS900、复用已存在真实800face；官方900当前不可用，不能新增冒充900的二进制，也不能把历史PNG合成当实测。
+4. root在上述三个代理工作期间并行恢复PG06-S分享弹层，仅独占 `subpackages/activity/share/share.wxml`／`.wxss`、准确新sheet assets和来源证据；原`_3`卡、JS／JSON精确保护。现有资格重核、真实邀请码／分享准备／海报导出复用；没有HTTPS链接或实际投递证据。source专用400 glyph与source px样式，不新增字体／依赖。独立只读owner随后审查该scope和消息scope。
 
 ## 真实能力要求
 

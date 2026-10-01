@@ -1,0 +1,1919 @@
+{
+  "scope": "one bounded static source / resource / binding / protection check, no business tests or SDK",
+  "checks": [
+    {
+      "name": "inverse presence PG06 badminton overview and exact generic fallback",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "inverse presence PG09 AA reference and exact free/generic fallback",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "inverse presence PG08 reference and exact legacy fallback",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "inverse presence root scope classes",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "inverse presence native header fallback exclusion",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "full WXML inverse is baseline bytes",
+      "pass": true,
+      "details": "06741c8056566a32f33f356ce65f9aabfcb2164d950a6c288c28e2ec48f0fdf3"
+    },
+    {
+      "name": "old CSS prefix bytes preserved",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "event.js unchanged vs baseline and immutable archive",
+      "pass": true,
+      "details": {
+        "bytes": 104047,
+        "sha256": "ccb5b5fede066ba0533b82cb564e816cc3d45ca96778a0d25ac5286d3c11a4bd"
+      }
+    },
+    {
+      "name": "event.json unchanged vs baseline and immutable archive",
+      "pass": true,
+      "details": {
+        "bytes": 69,
+        "sha256": "bf33dc7da099d240642a50fe3cf44cee01a2b282f70a80a313c79317c76ad10b"
+      }
+    },
+    {
+      "name": "all preexisting event assets immutable",
+      "pass": true,
+      "details": 51
+    },
+    {
+      "name": "WXML tag nesting",
+      "pass": true,
+      "details": {
+        "unclosed": [],
+        "errors": []
+      }
+    },
+    {
+      "name": "all WXML bindings resolve existing JS methods",
+      "pass": true,
+      "details": {
+        "count": 224,
+        "unique": 78,
+        "missing": []
+      }
+    },
+    {
+      "name": "native business binding contract PG08 reference and exact legacy fallback",
+      "pass": true,
+      "details": {
+        "oldControls": 20,
+        "sourceControls": 20,
+        "lost": [],
+        "unexpected": []
+      }
+    },
+    {
+      "name": "native business binding contract PG09 AA reference and exact free/generic fallback",
+      "pass": true,
+      "details": {
+        "oldControls": 7,
+        "sourceControls": 8,
+        "lost": [],
+        "unexpected": []
+      }
+    },
+    {
+      "name": "native business binding contract PG06 badminton overview and exact generic fallback",
+      "pass": true,
+      "details": {
+        "oldControls": 7,
+        "sourceControls": 7,
+        "lost": [],
+        "unexpected": []
+      }
+    },
+    {
+      "name": "resource ./assets/pg01-back.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg01-calendar_today.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg01-chevron.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg01-crown.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg01-groups.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg01-heart.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg01-location_on.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg01-money.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg01-more.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg01-racket.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg01-seat-chevron.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg01-share-dark.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg01-share-white.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg01-track.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg04s-arrow_forward.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg04s-auto_awesome.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg04s-calendar_today.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg04s-celebration.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg04s-chat.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg04s-check_circle_fill0.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg04s-check_circle_fill1.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg04s-close.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg04s-diversity_3.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg04s-group_add.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg04s-link.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg04s-location_on.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg04s-person.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg04s-person_add.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg04s-photo_camera_back.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg04s-visibility.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg05-back.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg05-calendar.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg05-check.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg05-groups.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg05-money.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg05-more.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg05-pin.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg05-shuttle.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg05s-arrow_forward.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg05s-calendar_today.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg05s-check_fill1.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg05s-chevron_right.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg05s-edit_calendar.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg05s-forum.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg05s-group.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg05s-ios_share.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg05s-location_on.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg05s-navigation.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg05s-payments.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg05s-sports_tennis.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/pg05s-verified_user.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-arrow_back_ios_new-w400-f0-1a1b1f.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-calendar_today-w400-f0-ffffff-a80.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-celebration-w400-f0-ff2d55.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-check-w400-f0-34c759.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-check_circle-w400-f0-737687.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-check_circle-w700-f0-34c759.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-chevron_right-w400-f0-424655.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-chevron_right-w400-f0-ffffff-a90.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-group-w400-f0-ffffff-a80.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-info-w400-f0-004cc8.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-ios_share-w400-f0-1d64f2.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-ios_share-w400-f0-424655.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-keyboard_arrow_down-w400-f0-424655.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-keyboard_arrow_down-w400-f0-4c4aca.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-keyboard_arrow_up-w400-f0-4c4aca.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-lightbulb-w400-f1-ffffff.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-location_on-w400-f0-ffffff-a80.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-more_horiz-w400-f0-1a1b1f.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-receipt_long-w400-f0-ffffff-a80.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-send-w400-f0-004cc8.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-sentiment_dissatisfied-w400-f0-737687.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-sentiment_dissatisfied-w700-f0-34c759.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-sentiment_neutral-w400-f0-737687.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-sentiment_neutral-w700-f0-5856d6.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-star-w700-f0-181e00.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-stop_circle-w400-f0-ff2d55.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-sync-w400-f0-1d64f2.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-task_alt-w400-f0-737687.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource ./assets/w69-task_alt-w700-f0-5856d6.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource /assets/stitch/caper_home_badminton.jpg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource /assets/stitch/caper_home_shanghai.jpg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource /assets/stitch/itinerary_badminton.jpg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource /assets/stitch/pg01_badminton_player.jpg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource /assets/stitch/pg04s_badminton.jpg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource /assets/stitch/pg08_checkin_rooftop.jpg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource /assets/stitch/pg09_expense_rooftop.jpg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource /pages/create/assets/back.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "resource /pages/create/assets/person.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG arrow_back_ios_new-w400-f0-1a1b1f.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG calendar_today-w400-f0-ffffff-a80.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG celebration-w400-f0-ff2d55.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG check-w400-f0-34c759.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG check_circle-w400-f0-737687.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG check_circle-w700-f0-34c759.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG chevron_right-w400-f0-424655.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG chevron_right-w400-f0-ffffff-a90.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG group-w400-f0-ffffff-a80.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG info-w400-f0-004cc8.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG ios_share-w400-f0-1d64f2.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG ios_share-w400-f0-424655.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG keyboard_arrow_down-w400-f0-424655.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG keyboard_arrow_down-w400-f0-4c4aca.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG keyboard_arrow_up-w400-f0-4c4aca.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG lightbulb-w400-f1-ffffff.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG location_on-w400-f0-ffffff-a80.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG more_horiz-w400-f0-1a1b1f.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG receipt_long-w400-f0-ffffff-a80.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG send-w400-f0-004cc8.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG sentiment_dissatisfied-w400-f0-737687.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG sentiment_dissatisfied-w700-f0-34c759.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG sentiment_neutral-w400-f0-737687.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG sentiment_neutral-w700-f0-5856d6.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG star-w700-f0-181e00.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG stop_circle-w400-f0-ff2d55.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG sync-w400-f0-1d64f2.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG task_alt-w400-f0-737687.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "official full-face SVG task_alt-w700-f0-5856d6.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "old exact outline reuse pg04s-person.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "old exact outline reuse pg04s-auto_awesome.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "old exact outline reuse pg04s-check_circle_fill1.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "old exact outline reuse pg04s-check_circle_fill0.svg",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "new CSS uses literal px without rpx",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "no forbidden profile500 alias / global font declaration",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "PG08 CSS900 retained",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "live encoder canvas unchanged 240px",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "no illustrative QR / invented people / payment labels in new reference branches",
+      "pass": true,
+      "details": null
+    }
+  ],
+  "passed": 142,
+  "protectedAssets": [
+    {
+      "path": "pg01-share-dark.svg",
+      "sha256": "46f9fecb2acd63c650e2f36ca1509deb662e6fda54ec53e4b7839f9a686ae122",
+      "same": true
+    },
+    {
+      "path": "pg01-track.svg",
+      "sha256": "37e07bb5f4c1ee571765c5452cb212b089fd08971931430d0f7f6f2ebf2ab861",
+      "same": true
+    },
+    {
+      "path": "pg05s-verified_user.svg",
+      "sha256": "f6e627ed9325c0065390f22bb00ba6354eed4a9dd106351d7ff858cfe37eceef",
+      "same": true
+    },
+    {
+      "path": "pg05-back.svg",
+      "sha256": "fcf8e9658cab1dac7d3657febcd4ccf24a4a290efeeb004726f3b89def48d500",
+      "same": true
+    },
+    {
+      "path": "pg01-share-white.svg",
+      "sha256": "e8bb7afadf7fe8a663d6226140e2c8f1dbae5638bf88c640b302f60ce91941ae",
+      "same": true
+    },
+    {
+      "path": "pg01-racket.svg",
+      "sha256": "ceae95cb399998f7cc4c96fa6a395716941790562cf79f1ba65577263da585bd",
+      "same": true
+    },
+    {
+      "path": "pg05-more.svg",
+      "sha256": "ded6ef6e4079cbd7274213090123ddaa306e3ce5ac1dcc59192b3257d388c9bd",
+      "same": true
+    },
+    {
+      "path": "pg05s-sports_tennis.svg",
+      "sha256": "7cb15d9ec3d6f39ca080b843318ae1237fe4fd3fc8d871ddaf9da9dc051d6289",
+      "same": true
+    },
+    {
+      "path": "pg05s-navigation.svg",
+      "sha256": "4d540ef6634e8db4a3697301aeba7160dbe18fc6dba3f51445d3a4525cec9ace",
+      "same": true
+    },
+    {
+      "path": "pg04s-person_add.svg",
+      "sha256": "c5a0ab529fbfa3b3458ac0a6808cd236d16dbfb707362db27712500f7c6b7ac8",
+      "same": true
+    },
+    {
+      "path": "pg05s-location_on.svg",
+      "sha256": "bb176877e344f00816c6e4fb28d981471f6c8d0a5d4e61eb46871bf7452ce1ae",
+      "same": true
+    },
+    {
+      "path": "pg05s-check_fill1.svg",
+      "sha256": "6e9a6f4799b124417e754b5210e0d03420f65323bf3c84ce0ece2d5a8376dc51",
+      "same": true
+    },
+    {
+      "path": "pg04s-group_add.svg",
+      "sha256": "adb20fbf1168f49d7e71c2f9f8cbe95bf80ceacc68e535951f3c6a016d3a3c2c",
+      "same": true
+    },
+    {
+      "path": "pg05-groups.svg",
+      "sha256": "4d7144e0988be8fe478016e6d4ad0fe9f8db37a72cec66e2f766a7e2109d6f98",
+      "same": true
+    },
+    {
+      "path": "pg05-pin.svg",
+      "sha256": "b478e0e270310d7a33f39cf3619037e02e7b70271b0e5d8c75056a479211e818",
+      "same": true
+    },
+    {
+      "path": "pg05s-arrow_forward.svg",
+      "sha256": "947f6c7303589519540cabb6ef8ba09e3ffa3e841f541348fda045d6854c7031",
+      "same": true
+    },
+    {
+      "path": "pg04s-link.svg",
+      "sha256": "adac660f968d4ecd36d83073405204834b3aa39b01abb38baf69a1e1abeca774",
+      "same": true
+    },
+    {
+      "path": "pg04s-check_circle_fill0.svg",
+      "sha256": "a4b04b9903d61e6c90cf012bdba7c6a0bc8ebc35c4b1fea4b97284a0afb1ceb6",
+      "same": true
+    },
+    {
+      "path": "pg04s-check_circle_fill1.svg",
+      "sha256": "ab977649e865c7047d84bf477c341114fe10fba356750388d30adf769f0da3b2",
+      "same": true
+    },
+    {
+      "path": "pg05-money.svg",
+      "sha256": "ac02d8c16cd928eb40ff133cdfeb116e0997b054fa8450c4e40a79e98229c2d7",
+      "same": true
+    },
+    {
+      "path": "pg04s-celebration.svg",
+      "sha256": "cf5e29b2d83ac5a8a11865eb93cc0900d35ba3999fa282bac8e776b600a475ed",
+      "same": true
+    },
+    {
+      "path": "pg05-shuttle.svg",
+      "sha256": "232a17d687332ed81598b838830e832b1a728135a4b3c7f3fbb5ae52959479c7",
+      "same": true
+    },
+    {
+      "path": "pg04s-location_on.svg",
+      "sha256": "764a729c10b30b4f9f281c6992ba878f135fc69d7d8fa8e1ab80dee7c259d259",
+      "same": true
+    },
+    {
+      "path": "pg05s-payments.svg",
+      "sha256": "4d1f7a5000813bc38f546c28687b54776ce968df5a0c5fdf519d24731ef4518a",
+      "same": true
+    },
+    {
+      "path": "pg04s-chat.svg",
+      "sha256": "0e7591f5b931801e0bd28f211f6cf88ea215559e0e01efca4d99e2698c6e0b32",
+      "same": true
+    },
+    {
+      "path": "pg04s-photo_camera_back.svg",
+      "sha256": "cd733a6e05aaf6fcd4fca3fc73c6167ee269219b294e828a662f615cf6578188",
+      "same": true
+    },
+    {
+      "path": "pg01-crown.svg",
+      "sha256": "fb9f9b76aa3ca4e1786cc35b2dd0b172e6f501391cb5cb11a4955a9ecb21d28b",
+      "same": true
+    },
+    {
+      "path": "pg04s-close.svg",
+      "sha256": "3512de5ac7010c150cfd2a7a134b0053cb0dee3544242328ab9f417f00261673",
+      "same": true
+    },
+    {
+      "path": "pg05s-ios_share.svg",
+      "sha256": "e16c63d3d15b8195c5cddf22c5face6c0f62865b8308783c81b92331337bed22",
+      "same": true
+    },
+    {
+      "path": "pg04s-arrow_forward.svg",
+      "sha256": "58c33e26c605a304e92df1ced891706a342c62c52bd506388c8776f53b7cbd9e",
+      "same": true
+    },
+    {
+      "path": "pg01-seat-chevron.svg",
+      "sha256": "34fa718a8348189039d09d4f0138353309b1cd6e8fde68451682dd16ccb744ee",
+      "same": true
+    },
+    {
+      "path": "pg01-calendar_today.svg",
+      "sha256": "0eb35d52aa070a121f66242fb5dd7b2e0c402f5549b9737779bc8bb5a14f0aa3",
+      "same": true
+    },
+    {
+      "path": "pg01-back.svg",
+      "sha256": "936ba6e51e7ea41962e89cd2ed0f5607dad17f647d627f072a075ac2fca22c0e",
+      "same": true
+    },
+    {
+      "path": "pg05s-chevron_right.svg",
+      "sha256": "f320fa0e4c76cd9e99353bb2632b578c5718fc73a5a3cdec3771f41df958ca1b",
+      "same": true
+    },
+    {
+      "path": "pg01-location_on.svg",
+      "sha256": "09861c3bd72a72b766f76e539f03e19740a4a0591d68ebfa528a7fc94fbf6be2",
+      "same": true
+    },
+    {
+      "path": "pg01-money.svg",
+      "sha256": "c1d837d2b54155fb586cdc88446fab690c313f38f9b815f22ffc834724d4cefc",
+      "same": true
+    },
+    {
+      "path": "pg05-check.svg",
+      "sha256": "1356bf136e677aa7a9c4ec8dd75fbeb94651f263550a52722a6f49127f154bd5",
+      "same": true
+    },
+    {
+      "path": "pg05s-forum.svg",
+      "sha256": "de66c37c5898a450ba8f0f48ee09e139d724de902b03969b4941a79a448baf6c",
+      "same": true
+    },
+    {
+      "path": "pg01-chevron.svg",
+      "sha256": "fe8209a2c13213904b8d7b5f93b6eb0770b0f4bd6f8be28157596fcd02a33630",
+      "same": true
+    },
+    {
+      "path": "pg01-groups.svg",
+      "sha256": "7389b1e9b5ae187e889de57ecb9681c0aed5ed4db3ce003f2f753eb5e857bcbd",
+      "same": true
+    },
+    {
+      "path": "pg05s-calendar_today.svg",
+      "sha256": "41509ee59a21aadc07999f4548b268cbb4677a625e4587b8669a7d6aea6b70a0",
+      "same": true
+    },
+    {
+      "path": "pg01-heart.svg",
+      "sha256": "ee58caf97aa97c04358c66ff19147ea48b837b54d41dfbb8d50290bd917d9dc3",
+      "same": true
+    },
+    {
+      "path": "pg04s-auto_awesome.svg",
+      "sha256": "ece7add2f6e03892adaff32371d513607126cf4e07a93be752ad0745704fbff0",
+      "same": true
+    },
+    {
+      "path": "pg04s-calendar_today.svg",
+      "sha256": "01250c1bde0d8f1cf5876f932e9993e4b7e52f722aca80d819b82605bda0db19",
+      "same": true
+    },
+    {
+      "path": "pg05-calendar.svg",
+      "sha256": "e68bfb3ca725914459622892b17cdc972e7fc7de0ef861287dc76862982be16c",
+      "same": true
+    },
+    {
+      "path": "pg04s-visibility.svg",
+      "sha256": "518731bd837cd5e42efd6157f58990d446ad89daf518bd7a68648ebc3b2173b3",
+      "same": true
+    },
+    {
+      "path": "pg04s-person.svg",
+      "sha256": "dcd82b18c2b73881bc3e4abdf254f92647dfb16ae06b669f7dece7579f6eba73",
+      "same": true
+    },
+    {
+      "path": "pg05s-edit_calendar.svg",
+      "sha256": "29d45c6a7980034413a081f2f0960bc39defc0b398eb5248c4e572e6daf6ffcc",
+      "same": true
+    },
+    {
+      "path": "pg05s-group.svg",
+      "sha256": "2b233ae657912ae0ae2787dd08c4e24eb11fcaa1d9d296bcfd7bc2efee152146",
+      "same": true
+    },
+    {
+      "path": "pg01-more.svg",
+      "sha256": "9620512c239026603281bb79f2de4e183065e223c2425cbd99fe08b572e19c3f",
+      "same": true
+    },
+    {
+      "path": "pg04s-diversity_3.svg",
+      "sha256": "cc4cf1197e01524190f51b6d33e93aa3bcda5b89b8baf37fe957cfd87f932789",
+      "same": true
+    }
+  ],
+  "bindings": {
+    "count": 224,
+    "unique": 78
+  },
+  "resources": [
+    {
+      "reference": "./assets/pg01-back.svg",
+      "bytes": 197,
+      "sha256": "936ba6e51e7ea41962e89cd2ed0f5607dad17f647d627f072a075ac2fca22c0e"
+    },
+    {
+      "reference": "./assets/pg01-calendar_today.svg",
+      "bytes": 321,
+      "sha256": "0eb35d52aa070a121f66242fb5dd7b2e0c402f5549b9737779bc8bb5a14f0aa3"
+    },
+    {
+      "reference": "./assets/pg01-chevron.svg",
+      "bytes": 194,
+      "sha256": "fe8209a2c13213904b8d7b5f93b6eb0770b0f4bd6f8be28157596fcd02a33630"
+    },
+    {
+      "reference": "./assets/pg01-crown.svg",
+      "bytes": 255,
+      "sha256": "fb9f9b76aa3ca4e1786cc35b2dd0b172e6f501391cb5cb11a4955a9ecb21d28b"
+    },
+    {
+      "reference": "./assets/pg01-groups.svg",
+      "bytes": 442,
+      "sha256": "7389b1e9b5ae187e889de57ecb9681c0aed5ed4db3ce003f2f753eb5e857bcbd"
+    },
+    {
+      "reference": "./assets/pg01-heart.svg",
+      "bytes": 303,
+      "sha256": "ee58caf97aa97c04358c66ff19147ea48b837b54d41dfbb8d50290bd917d9dc3"
+    },
+    {
+      "reference": "./assets/pg01-location_on.svg",
+      "bytes": 441,
+      "sha256": "09861c3bd72a72b766f76e539f03e19740a4a0591d68ebfa528a7fc94fbf6be2"
+    },
+    {
+      "reference": "./assets/pg01-money.svg",
+      "bytes": 351,
+      "sha256": "c1d837d2b54155fb586cdc88446fab690c313f38f9b815f22ffc834724d4cefc"
+    },
+    {
+      "reference": "./assets/pg01-more.svg",
+      "bytes": 202,
+      "sha256": "9620512c239026603281bb79f2de4e183065e223c2425cbd99fe08b572e19c3f"
+    },
+    {
+      "reference": "./assets/pg01-racket.svg",
+      "bytes": 501,
+      "sha256": "ceae95cb399998f7cc4c96fa6a395716941790562cf79f1ba65577263da585bd"
+    },
+    {
+      "reference": "./assets/pg01-seat-chevron.svg",
+      "bytes": 192,
+      "sha256": "34fa718a8348189039d09d4f0138353309b1cd6e8fde68451682dd16ccb744ee"
+    },
+    {
+      "reference": "./assets/pg01-share-dark.svg",
+      "bytes": 244,
+      "sha256": "46f9fecb2acd63c650e2f36ca1509deb662e6fda54ec53e4b7839f9a686ae122"
+    },
+    {
+      "reference": "./assets/pg01-share-white.svg",
+      "bytes": 244,
+      "sha256": "e8bb7afadf7fe8a663d6226140e2c8f1dbae5638bf88c640b302f60ce91941ae"
+    },
+    {
+      "reference": "./assets/pg01-track.svg",
+      "bytes": 341,
+      "sha256": "37e07bb5f4c1ee571765c5452cb212b089fd08971931430d0f7f6f2ebf2ab861"
+    },
+    {
+      "reference": "./assets/pg04s-arrow_forward.svg",
+      "bytes": 190,
+      "sha256": "58c33e26c605a304e92df1ced891706a342c62c52bd506388c8776f53b7cbd9e"
+    },
+    {
+      "reference": "./assets/pg04s-auto_awesome.svg",
+      "bytes": 422,
+      "sha256": "ece7add2f6e03892adaff32371d513607126cf4e07a93be752ad0745704fbff0"
+    },
+    {
+      "reference": "./assets/pg04s-calendar_today.svg",
+      "bytes": 649,
+      "sha256": "01250c1bde0d8f1cf5876f932e9993e4b7e52f722aca80d819b82605bda0db19"
+    },
+    {
+      "reference": "./assets/pg04s-celebration.svg",
+      "bytes": 726,
+      "sha256": "cf5e29b2d83ac5a8a11865eb93cc0900d35ba3999fa282bac8e776b600a475ed"
+    },
+    {
+      "reference": "./assets/pg04s-chat.svg",
+      "bytes": 624,
+      "sha256": "0e7591f5b931801e0bd28f211f6cf88ea215559e0e01efca4d99e2698c6e0b32"
+    },
+    {
+      "reference": "./assets/pg04s-check_circle_fill0.svg",
+      "bytes": 856,
+      "sha256": "a4b04b9903d61e6c90cf012bdba7c6a0bc8ebc35c4b1fea4b97284a0afb1ceb6"
+    },
+    {
+      "reference": "./assets/pg04s-check_circle_fill1.svg",
+      "bytes": 856,
+      "sha256": "ab977649e865c7047d84bf477c341114fe10fba356750388d30adf769f0da3b2"
+    },
+    {
+      "reference": "./assets/pg04s-close.svg",
+      "bytes": 231,
+      "sha256": "3512de5ac7010c150cfd2a7a134b0053cb0dee3544242328ab9f417f00261673"
+    },
+    {
+      "reference": "./assets/pg04s-diversity_3.svg",
+      "bytes": 1235,
+      "sha256": "cc4cf1197e01524190f51b6d33e93aa3bcda5b89b8baf37fe957cfd87f932789"
+    },
+    {
+      "reference": "./assets/pg04s-group_add.svg",
+      "bytes": 1579,
+      "sha256": "adb20fbf1168f49d7e71c2f9f8cbe95bf80ceacc68e535951f3c6a016d3a3c2c"
+    },
+    {
+      "reference": "./assets/pg04s-link.svg",
+      "bytes": 542,
+      "sha256": "adac660f968d4ecd36d83073405204834b3aa39b01abb38baf69a1e1abeca774"
+    },
+    {
+      "reference": "./assets/pg04s-location_on.svg",
+      "bytes": 828,
+      "sha256": "764a729c10b30b4f9f281c6992ba878f135fc69d7d8fa8e1ab80dee7c259d259"
+    },
+    {
+      "reference": "./assets/pg04s-person.svg",
+      "bytes": 1221,
+      "sha256": "dcd82b18c2b73881bc3e4abdf254f92647dfb16ae06b669f7dece7579f6eba73"
+    },
+    {
+      "reference": "./assets/pg04s-person_add.svg",
+      "bytes": 1277,
+      "sha256": "c5a0ab529fbfa3b3458ac0a6808cd236d16dbfb707362db27712500f7c6b7ac8"
+    },
+    {
+      "reference": "./assets/pg04s-photo_camera_back.svg",
+      "bytes": 754,
+      "sha256": "cd733a6e05aaf6fcd4fca3fc73c6167ee269219b294e828a662f615cf6578188"
+    },
+    {
+      "reference": "./assets/pg04s-visibility.svg",
+      "bytes": 1032,
+      "sha256": "518731bd837cd5e42efd6157f58990d446ad89daf518bd7a68648ebc3b2173b3"
+    },
+    {
+      "reference": "./assets/pg05-back.svg",
+      "bytes": 220,
+      "sha256": "fcf8e9658cab1dac7d3657febcd4ccf24a4a290efeeb004726f3b89def48d500"
+    },
+    {
+      "reference": "./assets/pg05-calendar.svg",
+      "bytes": 428,
+      "sha256": "e68bfb3ca725914459622892b17cdc972e7fc7de0ef861287dc76862982be16c"
+    },
+    {
+      "reference": "./assets/pg05-check.svg",
+      "bytes": 217,
+      "sha256": "1356bf136e677aa7a9c4ec8dd75fbeb94651f263550a52722a6f49127f154bd5"
+    },
+    {
+      "reference": "./assets/pg05-groups.svg",
+      "bytes": 465,
+      "sha256": "4d7144e0988be8fe478016e6d4ad0fe9f8db37a72cec66e2f766a7e2109d6f98"
+    },
+    {
+      "reference": "./assets/pg05-money.svg",
+      "bytes": 288,
+      "sha256": "ac02d8c16cd928eb40ff133cdfeb116e0997b054fa8450c4e40a79e98229c2d7"
+    },
+    {
+      "reference": "./assets/pg05-more.svg",
+      "bytes": 225,
+      "sha256": "ded6ef6e4079cbd7274213090123ddaa306e3ce5ac1dcc59192b3257d388c9bd"
+    },
+    {
+      "reference": "./assets/pg05-pin.svg",
+      "bytes": 400,
+      "sha256": "b478e0e270310d7a33f39cf3619037e02e7b70271b0e5d8c75056a479211e818"
+    },
+    {
+      "reference": "./assets/pg05-shuttle.svg",
+      "bytes": 289,
+      "sha256": "232a17d687332ed81598b838830e832b1a728135a4b3c7f3fbb5ae52959479c7"
+    },
+    {
+      "reference": "./assets/pg05s-arrow_forward.svg",
+      "bytes": 186,
+      "sha256": "947f6c7303589519540cabb6ef8ba09e3ffa3e841f541348fda045d6854c7031"
+    },
+    {
+      "reference": "./assets/pg05s-calendar_today.svg",
+      "bytes": 321,
+      "sha256": "41509ee59a21aadc07999f4548b268cbb4677a625e4587b8669a7d6aea6b70a0"
+    },
+    {
+      "reference": "./assets/pg05s-check_fill1.svg",
+      "bytes": 174,
+      "sha256": "6e9a6f4799b124417e754b5210e0d03420f65323bf3c84ce0ece2d5a8376dc51"
+    },
+    {
+      "reference": "./assets/pg05s-chevron_right.svg",
+      "bytes": 174,
+      "sha256": "f320fa0e4c76cd9e99353bb2632b578c5718fc73a5a3cdec3771f41df958ca1b"
+    },
+    {
+      "reference": "./assets/pg05s-edit_calendar.svg",
+      "bytes": 502,
+      "sha256": "29d45c6a7980034413a081f2f0960bc39defc0b398eb5248c4e572e6daf6ffcc"
+    },
+    {
+      "reference": "./assets/pg05s-forum.svg",
+      "bytes": 353,
+      "sha256": "de66c37c5898a450ba8f0f48ee09e139d724de902b03969b4941a79a448baf6c"
+    },
+    {
+      "reference": "./assets/pg05s-group.svg",
+      "bytes": 762,
+      "sha256": "2b233ae657912ae0ae2787dd08c4e24eb11fcaa1d9d296bcfd7bc2efee152146"
+    },
+    {
+      "reference": "./assets/pg05s-ios_share.svg",
+      "bytes": 333,
+      "sha256": "e16c63d3d15b8195c5cddf22c5face6c0f62865b8308783c81b92331337bed22"
+    },
+    {
+      "reference": "./assets/pg05s-location_on.svg",
+      "bytes": 441,
+      "sha256": "bb176877e344f00816c6e4fb28d981471f6c8d0a5d4e61eb46871bf7452ce1ae"
+    },
+    {
+      "reference": "./assets/pg05s-navigation.svg",
+      "bytes": 220,
+      "sha256": "4d540ef6634e8db4a3697301aeba7160dbe18fc6dba3f51445d3a4525cec9ace"
+    },
+    {
+      "reference": "./assets/pg05s-payments.svg",
+      "bytes": 510,
+      "sha256": "4d1f7a5000813bc38f546c28687b54776ce968df5a0c5fdf519d24731ef4518a"
+    },
+    {
+      "reference": "./assets/pg05s-sports_tennis.svg",
+      "bytes": 574,
+      "sha256": "7cb15d9ec3d6f39ca080b843318ae1237fe4fd3fc8d871ddaf9da9dc051d6289"
+    },
+    {
+      "reference": "./assets/pg05s-verified_user.svg",
+      "bytes": 337,
+      "sha256": "f6e627ed9325c0065390f22bb00ba6354eed4a9dd106351d7ff858cfe37eceef"
+    },
+    {
+      "reference": "./assets/w69-arrow_back_ios_new-w400-f0-1a1b1f.svg",
+      "bytes": 153,
+      "sha256": "ca7bb7d407e7dc334ff380d8b3b4d1623f916d8d6152d0a72dc40ab2840d532b"
+    },
+    {
+      "reference": "./assets/w69-calendar_today-w400-f0-ffffff-a80.svg",
+      "bytes": 645,
+      "sha256": "c33b06b87daece1946f27d87a421a54082f99c7399f2c459ff1948f5cf70d7f1"
+    },
+    {
+      "reference": "./assets/w69-celebration-w400-f0-ff2d55.svg",
+      "bytes": 703,
+      "sha256": "28bc5c2f7de9a0916e30e4db4a697e7be8b50650bf01264ad01d5a5e024cd7d5"
+    },
+    {
+      "reference": "./assets/w69-check-w400-f0-34c759.svg",
+      "bytes": 154,
+      "sha256": "0f89192a79f9f361e2756fefce4f3cfbbf42fb8c25647411ebdc106cbcb55298"
+    },
+    {
+      "reference": "./assets/w69-check_circle-w400-f0-737687.svg",
+      "bytes": 833,
+      "sha256": "f67c219e4ec571f0189fe7026b5991709765e9634c3b14c46fa7c8bde050d151"
+    },
+    {
+      "reference": "./assets/w69-check_circle-w700-f0-34c759.svg",
+      "bytes": 1321,
+      "sha256": "7b931ca55b641886fc22545b1a22c25f0dd4e40e1e61630dd678484e6db5bd5d"
+    },
+    {
+      "reference": "./assets/w69-chevron_right-w400-f0-424655.svg",
+      "bytes": 154,
+      "sha256": "b8fee48b3e833334e79aaa98e9303d3ce1086079b61d15f574891616fc19bc76"
+    },
+    {
+      "reference": "./assets/w69-chevron_right-w400-f0-ffffff-a90.svg",
+      "bytes": 173,
+      "sha256": "80f86acc8fe60c0f88accfa10fd9180ed8a12689c7e89d8c45e005e8ce9d806e"
+    },
+    {
+      "reference": "./assets/w69-group-w400-f0-ffffff-a80.svg",
+      "bytes": 1607,
+      "sha256": "c02447192554e216b7ea0146c34675e94d968727fed3ad832dcffc0467ce1ea6"
+    },
+    {
+      "reference": "./assets/w69-info-w400-f0-004cc8.svg",
+      "bytes": 975,
+      "sha256": "aa16342b69d0c8c8bfeb3f8e889a0b6a41f36a1243a5d98aa51d34c99902584b"
+    },
+    {
+      "reference": "./assets/w69-ios_share-w400-f0-1d64f2.svg",
+      "bytes": 549,
+      "sha256": "ca9210e96e1dccff489afe2877c5222d2330db645c601c06b23661d05fa0b498"
+    },
+    {
+      "reference": "./assets/w69-ios_share-w400-f0-424655.svg",
+      "bytes": 549,
+      "sha256": "4b8a0fd1e2dd664eb2d6c51563f555eed1bb2f67321c99627263482079f32e03"
+    },
+    {
+      "reference": "./assets/w69-keyboard_arrow_down-w400-f0-424655.svg",
+      "bytes": 154,
+      "sha256": "17c172fcf47f1f8662d8d681496b360f3d263661bd49da0f037ed9cb33e1280b"
+    },
+    {
+      "reference": "./assets/w69-keyboard_arrow_down-w400-f0-4c4aca.svg",
+      "bytes": 154,
+      "sha256": "1a130f0ebbb7580c9e6cf0c4a243b2a4b9a937b0747cc4932f0740b7304e50a0"
+    },
+    {
+      "reference": "./assets/w69-keyboard_arrow_up-w400-f0-4c4aca.svg",
+      "bytes": 154,
+      "sha256": "2092964894a73227ebd56026d31b6359b9adcc2251150882f3d445e8e9d1c647"
+    },
+    {
+      "reference": "./assets/w69-lightbulb-w400-f1-ffffff.svg",
+      "bytes": 744,
+      "sha256": "45d85f610dae49dbfb59b3f2981ab6f49a8d9a6458500ca00fe385b029c54977"
+    },
+    {
+      "reference": "./assets/w69-location_on-w400-f0-ffffff-a80.svg",
+      "bytes": 824,
+      "sha256": "1ef469f97ae4351407bb7bc4e5643e3617a770122c9ccacdb1f4085d4d62beab"
+    },
+    {
+      "reference": "./assets/w69-more_horiz-w400-f0-1a1b1f.svg",
+      "bytes": 609,
+      "sha256": "295cd56b72e4a070b341c35331c4f965a6021ea2755371577007ff16a0e3d117"
+    },
+    {
+      "reference": "./assets/w69-receipt_long-w400-f0-ffffff-a80.svg",
+      "bytes": 958,
+      "sha256": "84fdafead1f7a12aec2921803bfbe35a01758344a5d399fa0db612e550f53d27"
+    },
+    {
+      "reference": "./assets/w69-send-w400-f0-004cc8.svg",
+      "bytes": 204,
+      "sha256": "9a8644e5b42f0394571c0c1660d93d96c84a1af53606c7d6b537fa3f25063ccf"
+    },
+    {
+      "reference": "./assets/w69-sentiment_dissatisfied-w400-f0-737687.svg",
+      "bytes": 1376,
+      "sha256": "2f0f85e04d8412a0f7b05424bde3f5e34906189cbdcbe36fe17e8d43d5332cdd"
+    },
+    {
+      "reference": "./assets/w69-sentiment_dissatisfied-w700-f0-34c759.svg",
+      "bytes": 1372,
+      "sha256": "24d19580debeafd1dc39453217134f310065c34e3feb81e8f79d71f12528c507"
+    },
+    {
+      "reference": "./assets/w69-sentiment_neutral-w400-f0-737687.svg",
+      "bytes": 1217,
+      "sha256": "8d7692f0326caddd5cca379d6821013df4bfbfa337dc0433e6e0dc40c4b5b424"
+    },
+    {
+      "reference": "./assets/w69-sentiment_neutral-w700-f0-5856d6.svg",
+      "bytes": 1213,
+      "sha256": "5b0cf5cf68d23e658904ffcb94af2800267768728f2a05af3ac325fff389b367"
+    },
+    {
+      "reference": "./assets/w69-star-w700-f0-181e00.svg",
+      "bytes": 288,
+      "sha256": "be489b40b207ee8bfe0070ae42ce6c62562db9b042a79cb9314ce444cd875260"
+    },
+    {
+      "reference": "./assets/w69-stop_circle-w400-f0-ff2d55.svg",
+      "bytes": 801,
+      "sha256": "186caea6b6a3508815a4d9171e77b67c2f0b54682a31de8e8eaf052fac87c743"
+    },
+    {
+      "reference": "./assets/w69-sync-w400-f0-1d64f2.svg",
+      "bytes": 535,
+      "sha256": "bc4354d9f3c2837999d7954b4e85b856e32c6dab18e00998f1eab502dc799609"
+    },
+    {
+      "reference": "./assets/w69-task_alt-w400-f0-737687.svg",
+      "bytes": 707,
+      "sha256": "46d93ee34ec602e2ff1d5d93c89ccd154f2322fbfba9d7ddeef6c50e2bc8ca86"
+    },
+    {
+      "reference": "./assets/w69-task_alt-w700-f0-5856d6.svg",
+      "bytes": 1248,
+      "sha256": "caad54b17c9488629bacc180f6b0a198cbdf6418e5a38589e7dd7d1efc2e98c5"
+    },
+    {
+      "reference": "/assets/stitch/caper_home_badminton.jpg",
+      "bytes": 56146,
+      "sha256": "df87413d3555b9f9b7cb7428a23ad2cbe1dad270fade6f53867ab29e29f2647d"
+    },
+    {
+      "reference": "/assets/stitch/caper_home_shanghai.jpg",
+      "bytes": 51218,
+      "sha256": "e618b8e7dc0348f140eb8502c33cec996a830dfbc2c4b502fef4d7f53bd69aea"
+    },
+    {
+      "reference": "/assets/stitch/itinerary_badminton.jpg",
+      "bytes": 60640,
+      "sha256": "6dff9b8ed669c73e1ee9ea1997af6c7da3383e59dd8ec1b32c516ddbdff6d7e7"
+    },
+    {
+      "reference": "/assets/stitch/pg01_badminton_player.jpg",
+      "bytes": 36028,
+      "sha256": "9d3ffba93e70736ff1d8d72c3f8387e2a7f3e4fafca6c0a9f56b1be2fb03db88"
+    },
+    {
+      "reference": "/assets/stitch/pg04s_badminton.jpg",
+      "bytes": 63131,
+      "sha256": "8d4c18256599f7d9ab5ff629947156507b40da2315fd5e0b4a88434471c0bdbe"
+    },
+    {
+      "reference": "/assets/stitch/pg08_checkin_rooftop.jpg",
+      "bytes": 67426,
+      "sha256": "1dac5da7892a3a5b77e078509de87f5e5d308f0d3b04aaefcd6773f059e6b541"
+    },
+    {
+      "reference": "/assets/stitch/pg09_expense_rooftop.jpg",
+      "bytes": 70223,
+      "sha256": "169a9e7aad0497b32c48e9fca3e908c14a870d9cd023bbaed0351a899f85c77a"
+    },
+    {
+      "reference": "/pages/create/assets/back.svg",
+      "bytes": 173,
+      "sha256": "b4d72b3ef91399480f63d49489df5b8ff1b26436974b423b3c60d11b103ff854"
+    },
+    {
+      "reference": "/pages/create/assets/person.svg",
+      "bytes": 544,
+      "sha256": "d66a89fc9036f18a31f3804ee7b19f52a7954e31cc1cbfbd9b98f206a8299d6f"
+    }
+  ],
+  "newRuntimeAssets": [
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-arrow_back_ios_new-w400-f0-1a1b1f.svg",
+      "bytes": 153,
+      "sha256": "ca7bb7d407e7dc334ff380d8b3b4d1623f916d8d6152d0a72dc40ab2840d532b",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E2EA"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-calendar_today-w400-f0-ffffff-a80.svg",
+      "bytes": 645,
+      "sha256": "c33b06b87daece1946f27d87a421a54082f99c7399f2c459ff1948f5cf70d7f1",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E935"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-celebration-w400-f0-ff2d55.svg",
+      "bytes": 703,
+      "sha256": "28bc5c2f7de9a0916e30e4db4a697e7be8b50650bf01264ad01d5a5e024cd7d5",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+EA65"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-check-w400-f0-34c759.svg",
+      "bytes": 154,
+      "sha256": "0f89192a79f9f361e2756fefce4f3cfbbf42fb8c25647411ebdc106cbcb55298",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E5CA",
+        "U+E668"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-check_circle-w400-f0-737687.svg",
+      "bytes": 833,
+      "sha256": "f67c219e4ec571f0189fe7026b5991709765e9634c3b14c46fa7c8bde050d151",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E86C",
+        "U+E92D",
+        "U+F0BE"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-check_circle-w700-f0-34c759.svg",
+      "bytes": 1321,
+      "sha256": "7b931ca55b641886fc22545b1a22c25f0dd4e40e1e61630dd678484e6db5bd5d",
+      "axes": {
+        "wght": 700,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E86C",
+        "U+E92D",
+        "U+F0BE"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-chevron_right-w400-f0-424655.svg",
+      "bytes": 154,
+      "sha256": "b8fee48b3e833334e79aaa98e9303d3ce1086079b61d15f574891616fc19bc76",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E409",
+        "U+E5CC"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-chevron_right-w400-f0-ffffff-a90.svg",
+      "bytes": 173,
+      "sha256": "80f86acc8fe60c0f88accfa10fd9180ed8a12689c7e89d8c45e005e8ce9d806e",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E409",
+        "U+E5CC"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-group-w400-f0-ffffff-a80.svg",
+      "bytes": 1607,
+      "sha256": "c02447192554e216b7ea0146c34675e94d968727fed3ad832dcffc0467ce1ea6",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E7EF",
+        "U+E7FB",
+        "U+E7FC",
+        "U+EA21"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-info-w400-f0-004cc8.svg",
+      "bytes": 975,
+      "sha256": "aa16342b69d0c8c8bfeb3f8e889a0b6a41f36a1243a5d98aa51d34c99902584b",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E88E"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-ios_share-w400-f0-1d64f2.svg",
+      "bytes": 549,
+      "sha256": "ca9210e96e1dccff489afe2877c5222d2330db645c601c06b23661d05fa0b498",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E6B8"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-ios_share-w400-f0-424655.svg",
+      "bytes": 549,
+      "sha256": "4b8a0fd1e2dd664eb2d6c51563f555eed1bb2f67321c99627263482079f32e03",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E6B8"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-keyboard_arrow_down-w400-f0-424655.svg",
+      "bytes": 154,
+      "sha256": "17c172fcf47f1f8662d8d681496b360f3d263661bd49da0f037ed9cb33e1280b",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E313"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-keyboard_arrow_down-w400-f0-4c4aca.svg",
+      "bytes": 154,
+      "sha256": "1a130f0ebbb7580c9e6cf0c4a243b2a4b9a937b0747cc4932f0740b7304e50a0",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E313"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-keyboard_arrow_up-w400-f0-4c4aca.svg",
+      "bytes": 154,
+      "sha256": "2092964894a73227ebd56026d31b6359b9adcc2251150882f3d445e8e9d1c647",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E316"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-lightbulb-w400-f1-ffffff.svg",
+      "bytes": 744,
+      "sha256": "45d85f610dae49dbfb59b3f2981ab6f49a8d9a6458500ca00fe385b029c54977",
+      "axes": {
+        "wght": 400,
+        "FILL": 1,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E0F0",
+        "U+E90F"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-location_on-w400-f0-ffffff-a80.svg",
+      "bytes": 824,
+      "sha256": "1ef469f97ae4351407bb7bc4e5643e3617a770122c9ccacdb1f4085d4d62beab",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E0C8",
+        "U+E55F",
+        "U+E8B4",
+        "U+F00F",
+        "U+F1DB"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-more_horiz-w400-f0-1a1b1f.svg",
+      "bytes": 609,
+      "sha256": "295cd56b72e4a070b341c35331c4f965a6021ea2755371577007ff16a0e3d117",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E5D3"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-receipt_long-w400-f0-ffffff-a80.svg",
+      "bytes": 958,
+      "sha256": "84fdafead1f7a12aec2921803bfbe35a01758344a5d399fa0db612e550f53d27",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+EF6E"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-send-w400-f0-004cc8.svg",
+      "bytes": 204,
+      "sha256": "9a8644e5b42f0394571c0c1660d93d96c84a1af53606c7d6b537fa3f25063ccf",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E163"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-sentiment_dissatisfied-w400-f0-737687.svg",
+      "bytes": 1376,
+      "sha256": "2f0f85e04d8412a0f7b05424bde3f5e34906189cbdcbe36fe17e8d43d5332cdd",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E811"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-sentiment_dissatisfied-w700-f0-34c759.svg",
+      "bytes": 1372,
+      "sha256": "24d19580debeafd1dc39453217134f310065c34e3feb81e8f79d71f12528c507",
+      "axes": {
+        "wght": 700,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E811"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-sentiment_neutral-w400-f0-737687.svg",
+      "bytes": 1217,
+      "sha256": "8d7692f0326caddd5cca379d6821013df4bfbfa337dc0433e6e0dc40c4b5b424",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E812"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-sentiment_neutral-w700-f0-5856d6.svg",
+      "bytes": 1213,
+      "sha256": "5b0cf5cf68d23e658904ffcb94af2800267768728f2a05af3ac325fff389b367",
+      "axes": {
+        "wght": 700,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E812"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-star-w700-f0-181e00.svg",
+      "bytes": 288,
+      "sha256": "be489b40b207ee8bfe0070ae42ce6c62562db9b042a79cb9314ce444cd875260",
+      "axes": {
+        "wght": 700,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E838",
+        "U+E83A",
+        "U+E885",
+        "U+EA06",
+        "U+F06F",
+        "U+F099",
+        "U+F09A"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-stop_circle-w400-f0-ff2d55.svg",
+      "bytes": 801,
+      "sha256": "186caea6b6a3508815a4d9171e77b67c2f0b54682a31de8e8eaf052fac87c743",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+EF71"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-sync-w400-f0-1d64f2.svg",
+      "bytes": 535,
+      "sha256": "bc4354d9f3c2837999d7954b4e85b856e32c6dab18e00998f1eab502dc799609",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E627"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-task_alt-w400-f0-737687.svg",
+      "bytes": 707,
+      "sha256": "46d93ee34ec602e2ff1d5d93c89ccd154f2322fbfba9d7ddeef6c50e2bc8ca86",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E2E6"
+      ]
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-task_alt-w700-f0-5856d6.svg",
+      "bytes": 1248,
+      "sha256": "caad54b17c9488629bacc180f6b0a198cbdf6418e5a38589e7dd7d1efc2e98c5",
+      "axes": {
+        "wght": 700,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "unicode": [
+        "U+E2E6"
+      ]
+    }
+  ],
+  "sourceFace": {
+    "requestedURL": "https://fonts.gstatic.com/s/materialsymbolsoutlined/v374/kJEPBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzBwG-RpA6RzaxHMPdY40KH8nGzv3fzfVJO1USv9ls.woff2",
+    "responseURL": "https://fonts.gstatic.com/s/materialsymbolsoutlined/v374/kJEPBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzBwG-RpA6RzaxHMPdY40KH8nGzv3fzfVJO1USv9ls.woff2",
+    "headers": {
+      "Accept-Ranges": "bytes",
+      "Access-Control-Allow-Origin": "*",
+      "Content-Security-Policy-Report-Only": "require-trusted-types-for 'script'; report-uri https://csp.withgoogle.com/csp/apps-themes",
+      "Cross-Origin-Resource-Policy": "cross-origin",
+      "Cross-Origin-Opener-Policy": "same-origin; report-to=\"apps-themes\"",
+      "Report-To": "{\"group\":\"apps-themes\",\"max_age\":2592000,\"endpoints\":[{\"url\":\"https://csp.withgoogle.com/csp/report-to/apps-themes\"}]}",
+      "Timing-Allow-Origin": "*",
+      "Content-Length": "1136920",
+      "X-Content-Type-Options": "nosniff",
+      "Server": "sffe",
+      "X-XSS-Protection": "0",
+      "Date": "Wed, 30 Sep 2026 03:14:57 GMT",
+      "Expires": "Thu, 30 Sep 2027 03:14:57 GMT",
+      "Cache-Control": "public, max-age=31536000",
+      "Last-Modified": "Mon, 21 Sep 2026 17:35:02 GMT",
+      "Content-Type": "font/woff2",
+      "Age": "158184",
+      "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+      "Connection": "close"
+    },
+    "bytes": 1136920,
+    "sha256": "77f9711f3f896a1d7a34ab95cffc45cfb17d84c223f197c1b90faa0d043006e9"
+  },
+  "fullWXMLInverseSHA256": "06741c8056566a32f33f356ce65f9aabfcb2164d950a6c288c28e2ec48f0fdf3",
+  "CSSPrefixSHA256": "36f4980f427bdf6502ffa2f068dbd935bd028a37c5b563f6860c76715a3b742f",
+  "historicalSourceGlyphBoundary": {
+    "reason": "independent activeGSUB review found FILL1 rclt after ligature. Earlier raw-liga paths/checks did not establish final filled shapes; replaced only affected source assertion, no142 rerun",
+    "supersededChecks": [
+      "official full-face SVG lightbulb-w400-f1-ffffff.svg",
+      "old exact outline reuse pg04s-check_circle_fill1.svg"
+    ],
+    "authoritativeReplacementProof": "fill1-rclt-correction-proof.json",
+    "oldHistoricalAssetPreserved": true
+  }
+}

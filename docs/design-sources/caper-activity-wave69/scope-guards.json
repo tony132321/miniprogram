@@ -1,0 +1,5 @@
+{
+  "PG06": "loadState === 'READY' && !successState && !joinConfirmation && activeSection === 'hostSection' && isHost && display.isBadminton",
+  "PG08": "loadState === 'READY' && !successState && !joinConfirmation && activeSection === 'checkinSection'",
+  "PG09": "loadState === 'READY' && !successState && !joinConfirmation && activeSection === 'expenseSection' && event.payload.feeMode === 'AA'"
+}

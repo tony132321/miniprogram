@@ -1,0 +1,13 @@
+{
+  "requestedURL": "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200",
+  "responseURL": "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+  "headers": {
+    "Content-Type": "text/css; charset=utf-8",
+    "Access-Control-Allow-Origin": "*",
+    "Last-Modified": "Thu, 01 Oct 2026 22:20:34 GMT"
+  },
+  "path": "sources/pg08-original-material-link-1.css",
+  "bytes": 7052,
+  "sha256": "874542290025679071fcbfd3fe73cd0266e18e0bcfa276b08cff13a6bff83784"
+}

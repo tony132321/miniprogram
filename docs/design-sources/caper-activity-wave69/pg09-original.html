@@ -1,0 +1,309 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><meta content="mobile_stack" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{width:100vw;margin:0;padding:0;min-height:100vh;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "surface-dim": "#dbd9df", "surface-variant": "#e3e2e7", "error-container": "#ffdad6", "party-violet-soft": "#F2F1FD", "status-active-green-soft": "#EBF9F0", "status-active-green": "#34C759", "vibrant-lime": "#D2F803", "on-tertiary-container": "#e6ff7e", "on-primary-container": "#f1f2ff", "electric-blue-soft": "#EBF2FE", "surface-card": "#FFFFFF", "surface": "#faf8fe", "inverse-surface": "#2f3034", "on-tertiary-fixed": "#181e00", "primary-container": "#1d64f2", "on-secondary": "#ffffff", "secondary-fixed": "#e2dfff", "divider-subtle": "rgba(60, 60, 67, 0.08)", "party-violet": "#5856D6", "on-surface-variant": "#424655", "on-error": "#ffffff", "error": "#ba1a1a", "surface-container-high": "#e9e7ed", "vibrant-lime-tint": "#F3FEE7", "on-tertiary": "#ffffff", "outline": "#737687", "party-pink-soft": "#FFF0F3", "surface-container-lowest": "#ffffff", "tertiary": "#4d5d00", "on-tertiary-fixed-variant": "#3f4c00", "surface-container-highest": "#e3e2e7", "surface-bright": "#faf8fe", "border-glass": "rgba(255, 255, 255, 0.6)", "tertiary-container": "#647700", "primary-fixed-dim": "#b3c5ff", "secondary-fixed-dim": "#c2c1ff", "on-primary": "#ffffff", "tertiary-fixed-dim": "#b3d400", "background": "#faf8fe", "on-error-container": "#93000a", "inverse-on-surface": "#f1f0f6", "surface-translucent": "rgba(255, 255, 255, 0.82)", "surface-canvas": "#F5F6F8", "on-secondary-fixed": "#0c006a", "electric-blue": "#1D64F2", "on-secondary-fixed-variant": "#3631b4", "surface-tint": "#0053d9", "party-pink": "#FF2D55", "secondary-container": "#6664e4", "outline-variant": "#c3c6d8", "on-secondary-container": "#fffbff", "surface-container-low": "#f4f3f8", "inverse-primary": "#b3c5ff", "tertiary-fixed": "#cdf200", "secondary": "#4c4aca", "primary": "#004cc8", "surface-container": "#efedf3", "primary-fixed": "#dbe1ff", "on-primary-fixed": "#00174a", "on-surface": "#1a1b1f", "on-primary-fixed-variant": "#003ea6", "on-background": "#1a1b1f" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-lg": "1rem", "gutter": "0.75rem", "space-sm": "0.5rem", "margin": "1rem", "space-md": "0.75rem", "space-xs": "0.25rem", "space-xl": "1.5rem" }, fontFamily: { "headline-lg-mobile": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "display-mobile": ["Plus Jakarta Sans"], "display": ["Plus Jakarta Sans"], "label-lg": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"] }, fontSize: { "headline-lg-mobile": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "700" }], "display-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.025em", "fontWeight": "800" }], "display": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.03em", "fontWeight": "800" }], "label-lg": ["15px", { "lineHeight": "20px", "fontWeight": "600" }], "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }], "label-md": ["13px", { "lineHeight": "16px", "fontWeight": "600" }], "headline-lg": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-sm": ["17px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "body-md": ["15px", { "lineHeight": "21px", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "700" }] } } } }</script></head><body class="bg-surface font-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 inset-x-0 z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe"><div class="h-16 px-margin flex items-center justify-between gap-gutter"><button aria-label="返回" class="w-11 h-11 -ml-space-xs rounded-full flex items-center justify-center text-on-surface active:scale-95 transition-transform" onclick="history.back()" type="button"><span class="material-symbols-outlined text-[24px]">arrow_back_ios_new</span></button><div class="flex-1 flex flex-col items-center justify-center text-center px-space-xs overflow-hidden"><h1 class="font-headline-sm text-headline-sm text-on-surface truncate">Pg09 费用记录</h1><div class="flex items-center gap-space-xs mt-0.5"><span class="font-label-sm text-label-sm text-secondary bg-party-violet-soft px-space-sm py-0.5 rounded-full">AA 制，更轻松也更尽兴</span></div></div><div class="flex items-center gap-space-xs -mr-space-xs"><button aria-label="分享或更多选项" class="w-11 h-11 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-95 transition-transform" type="button"><span class="material-symbols-outlined text-[22px]">ios_share</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-[0_2px_8px_rgba(29,100,242,0.25)]"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-16 pb-safe bg-surface min-h-screen"><div class="flex flex-col w-full relative pb-10">
+<!-- Subtle Ambient Glow Orbs -->
+<div class="absolute -top-10 -right-16 w-48 h-48 rounded-full bg-party-violet-soft/60 blur-3xl pointer-events-none"></div>
+<div class="absolute top-80 -left-12 w-44 h-44 rounded-full bg-electric-blue-soft/50 blur-2xl pointer-events-none"></div>
+<!-- Content Container with strict mobile padding -->
+<div class="flex flex-col px-margin gap-space-lg relative z-10 pt-space-xs">
+<!-- Top Playful Sticky Header Note (Partiful Style micro-badge) -->
+<div class="flex justify-end items-center pr-space-xs -mb-2">
+<div class="inline-flex items-center gap-1 text-[#5856D6] font-display-mobile text-[13px] tracking-tight rotate-[3deg] select-none">
+<span class="font-bold">Shall We Split?</span>
+<span class="text-base leading-none">✨</span>
+</div>
+</div>
+<!-- Hero Card: Total Amount & AA Calculation -->
+<div class="relative w-full">
+<!-- Main Photo Hero Box -->
+<div class="relative w-full rounded-2xl overflow-hidden shadow-xl bg-inverse-surface aspect-[4/3] flex flex-col justify-between p-space-lg text-white">
+<!-- Background Hero Image with Scrim Gradient -->
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Joyful friends gathering at a cozy bistro rooftop at golden hour dusk, raising wine and cocktail glasses in a warm celebratory toast, warm fairy lights, intimate community party atmosphere, cinematic rich photography with natural depth of field" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB1hSQp1LSL3Dn9dE7WjkO72uxrc5c6fhbMiwYFtjJY-d0YDrCp9uz2bRk3JU8Xh8rb7U4x8qN7tXOznBPYnpP6GnE0U6LbjE2wcRKpcxrewF53nKsDfSd121m74lK1dN9gPxabEXSqsfdROjy2oZJF1_5amNYNWmemEqEP-giD2KGjKz7z5zkO5ERNkXgfWAB7_1Gk44AtYKfM4XoE5PHX9vJ5z9tJ0YS9RzlWkl0xdxRrRqzJgXM7Wg')">
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/35"></div>
+<!-- Top Status Pill inside Hero -->
+<div class="relative z-10 flex items-center justify-between">
+<div class="flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full text-white/90">
+<span class="w-2 h-2 rounded-full bg-status-active-green animate-pulse"></span>
+<span class="font-label-sm text-label-sm tracking-wide">账单已对齐</span>
+</div>
+<span class="material-symbols-outlined text-white/80 text-[20px] active:scale-90 transition-transform cursor-pointer">receipt_long</span>
+</div>
+<!-- Center Amount Display -->
+<div class="relative z-10 flex flex-col items-center justify-center my-auto text-center">
+<span class="font-label-md text-label-md text-white/80 tracking-wide mb-1">总消费金额</span>
+<div class="flex items-baseline justify-center gap-1">
+<span class="font-display-mobile text-display-mobile font-extrabold text-white tracking-tight drop-shadow-sm">¥ 480.00</span>
+</div>
+<!-- Decorative golden brush underline accent -->
+<div class="w-32 h-1.5 bg-gradient-to-r from-transparent via-[#FFD027] to-transparent rounded-full -mt-0.5 opacity-90"></div>
+</div>
+<!-- Bottom Translucent Summary Pill Strip -->
+<div class="relative z-10 w-full bg-black/55 backdrop-blur-xl rounded-xl p-2.5 flex items-center justify-between shadow-inner">
+<!-- Left: Count -->
+<div class="flex items-center gap-1.5 pl-1.5">
+<span class="material-symbols-outlined text-white/80 text-[18px]">group</span>
+<span class="font-label-md text-label-md text-white/95 font-semibold">8 人参与</span>
+</div>
+<div class="w-px h-3.5 bg-white/20"></div>
+<!-- Middle: AA Per Person -->
+<div class="flex items-center gap-1 text-vibrant-lime font-bold">
+<span class="font-label-md text-label-md">¥ 60.00</span>
+<span class="text-white/70 font-label-sm text-[11px] font-normal">/ 人</span>
+</div>
+<div class="w-px h-3.5 bg-white/20"></div>
+<!-- Right: Action pill -->
+<button class="flex items-center gap-0.5 text-white/90 hover:text-white font-label-sm text-label-sm pr-1 active:opacity-75 transition-opacity" id="btn-details" type="button">
+<span>查看明细</span>
+<span class="material-symbols-outlined text-[15px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Playful Floating Sticky Note Badge on Top-Right edge -->
+<div class="absolute -bottom-4 -right-2 bg-[#FFF4B8] text-[#554000] px-3 py-2 rounded-lg shadow-lg rotate-[7deg] border border-[#FFE770]/60 pointer-events-none z-20 flex flex-col items-center">
+<span class="font-label-sm text-[11px] font-bold tracking-tight uppercase leading-none">Good Food</span>
+<span class="font-label-sm text-[11px] font-extrabold tracking-tight text-[#E65100] leading-tight">Great People</span>
+<span class="font-label-sm text-[10px] font-medium leading-none text-[#735A00]">Worth It! ♡</span>
+</div>
+</div>
+<!-- Participants Breakdown Section -->
+<div class="bg-surface-card rounded-2xl p-space-lg shadow-sm flex flex-col gap-space-md mt-2">
+<!-- Section Header -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">参与者</h2>
+<span class="bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm px-2 py-0.5 rounded-full">(8)</span>
+</div>
+<!-- Sort selector dropdown simulation -->
+<button class="flex items-center gap-1 font-label-md text-label-md text-on-surface-variant bg-surface-container-low px-2.5 py-1.5 rounded-full hover:bg-surface-container active:scale-95 transition-all" type="button">
+<span>按金额排序</span>
+<span class="material-symbols-outlined text-[16px]">keyboard_arrow_down</span>
+</button>
+</div>
+<!-- Participant Rows List -->
+<div class="flex flex-col gap-space-sm" id="participants-list">
+<!-- Row 1: Luna (Organizer) -->
+<div class="flex items-center justify-between p-2 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-colors interactive-row">
+<div class="flex items-center gap-3 min-w-0">
+<div class="relative">
+<img class="w-11 h-11 rounded-full object-cover shadow-sm ring-2 ring-amber-300" data-alt="Warm friendly smiling portrait avatar of Luna, an Asian female event host in her late 20s wearing modern casual party chic outfit, soft daylight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4z4hSk0yO83HdKXLDLRHZKGuWyjubshEjY-_hM4773-bqEVRPbuKTk1qPpKo8_X_uENNDkgKTDQphTanTSKOvg5YMHjMZ4m_eXuPC7QCv0qycKJ5FvNTDfK5Zuf19u_tKvbP-I6h1QliHNNRlVVg_ddG52G93qGkJ1zBEzA4ShEcUpGq96XMePe4umZjQyw8VLp6JorDv2sPxz52LbHG9NpTAnXfjsEB7Gi0gowAOVxO_k21LFAYHQg">
+<span class="absolute -bottom-1 -right-1 bg-amber-400 text-black text-[9px] font-bold px-1 rounded-full shadow-xs">★</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-label-lg text-label-lg font-bold text-on-surface truncate">Luna</span>
+<span class="bg-[#FFF4B8] text-[#735A00] font-label-sm text-[10px] px-1.5 py-0.5 rounded-full font-bold">主办方</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">已支付 · 谢谢大家一起玩! 💜</span>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0 pl-2">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">¥ 60.00</span>
+<span class="flex items-center gap-0.5 text-status-active-green font-label-sm text-[11px] font-medium">
+<span class="material-symbols-outlined text-[13px]">check_circle</span> 已付清
+            </span>
+</div>
+</div>
+<!-- Row 2: Alex -->
+<div class="flex items-center justify-between p-2 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-colors interactive-row">
+<div class="flex items-center gap-3 min-w-0">
+<img class="w-11 h-11 rounded-full object-cover shadow-sm" data-alt="Portrait avatar of Alex, young Asian photographer guy with clean smile and stylish black round glasses, natural light outdoors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUU4W7vwuxMR68YY_pajovB3h1jqiSiLx52ApiQ2rK5UN0RvzHNe2melu4kz6Dne2gvtbmW7cBjJ9E3OHtq1ach8SQ9QfB749cixW0C-W6inb9204yFw4o4s1cUa5val2lNdRMsK0spUujlkUhBl_C4DNxUb5KYfJaNCxg_Ewy9095_U-mTihoyusW7llVGBKbY71P77iLvEn2vvfKynqX0ReleOFeAHU8DJ9qTLzOSMQCivncviKpmg">
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg font-bold text-on-surface truncate">Alex</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">已支付 · 微信扫码</span>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0 pl-2">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">¥ 60.00</span>
+<span class="flex items-center gap-0.5 text-status-active-green font-label-sm text-[11px] font-medium">
+<span class="material-symbols-outlined text-[13px]">check_circle</span> 已付清
+            </span>
+</div>
+</div>
+<!-- Row 3: Momo -->
+<div class="flex items-center justify-between p-2 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-colors interactive-row">
+<div class="flex items-center gap-3 min-w-0">
+<img class="w-11 h-11 rounded-full object-cover shadow-sm" data-alt="Portrait avatar of Momo, artistic girl with dyed hair and cheerful expression, natural sunset lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYa3ryFZRYugt0aWBy5D7cL_eONtQ6EO-FavVc1ov3z2W1Jtgh7jcLLDW1jBtKLqu4R7gb3PyoAEAH5Ttcw7lFrpw5X6dnhZ9dFoL6tt9_gy2Q4GRQ23uqXinwZsit6XJF70-0eU5sLNZBWYRf8NeDyfOIkePcwIG6T0SBJ82oZ2csRDApFyNZzZPVS2A6GPrwDVU8d9JSPRccnPejFoLl4-PCqf0m47Ir63L182DqaXwrAVpZFf1eTA">
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg font-bold text-on-surface truncate">Momo</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">已支付</span>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0 pl-2">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">¥ 60.00</span>
+<span class="flex items-center gap-0.5 text-status-active-green font-label-sm text-[11px] font-medium">
+<span class="material-symbols-outlined text-[13px]">check_circle</span> 已付清
+            </span>
+</div>
+</div>
+<!-- Row 4: Taylor -->
+<div class="flex items-center justify-between p-2 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-colors interactive-row">
+<div class="flex items-center gap-3 min-w-0">
+<img class="w-11 h-11 rounded-full object-cover shadow-sm" data-alt="Portrait avatar of Taylor, young male urban explorer with vibrant knit beanie and friendly grin" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjgI1H8QErwz2MivKX9ur9Zf4ojp-SoaeNMDKPUXiNKzq_3DRzZ8Z1N1xAfD00ume4c648VGzu8CjiSmcFoMt_Jms26GkGk-Ln6wNNHOZycWvEGUYHGJW9oy3GXaFUnQC7aiRX9YoK8a8WEGMMEtKg27l7cfPj4PXoyIMCfiMBhHYHmMBseKBkCYKLsY4YW32jOQIhgc8LXwJ0raVxkvJs9QoH49QnPi12WKoni3UA_eTwC9RefYmHwg">
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg font-bold text-on-surface truncate">Taylor</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">已支付</span>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0 pl-2">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">¥ 60.00</span>
+<span class="flex items-center gap-0.5 text-status-active-green font-label-sm text-[11px] font-medium">
+<span class="material-symbols-outlined text-[13px]">check_circle</span> 已付清
+            </span>
+</div>
+</div>
+<!-- Row 5: Riley -->
+<div class="flex items-center justify-between p-2 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-colors interactive-row">
+<div class="flex items-center gap-3 min-w-0">
+<img class="w-11 h-11 rounded-full object-cover shadow-sm" data-alt="Portrait avatar of Riley, a cheerful creative designer girl with friendly energetic expression indoors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBb-ERGdk3FH0PeNZQPMMafn7r2rf6qts1WpMoKdU-kOvsVP-ftqM30b7ZNxM3iR21wdT40RYfOCbDirhUfSkOPmBsuneVQOlQlmNXOiLMQTQwKSJQ6WAQd2jm4OHv8ukf7vKXMC_sqDC9fDfGh7KZSPV6Kftqzux20YxHeh_PCvkzvf5T1whXO6CUQhNT0tKIc821B30AodnXz49Cpq71xJ4oPr8PGWo9NVHiiT5mrihgN4I_DIgdHSA">
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg font-bold text-on-surface truncate">Riley</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">已支付</span>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0 pl-2">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">¥ 60.00</span>
+<span class="flex items-center gap-0.5 text-status-active-green font-label-sm text-[11px] font-medium">
+<span class="material-symbols-outlined text-[13px]">check_circle</span> 已付清
+            </span>
+</div>
+</div>
+<!-- Collapsible additional rows (hidden by default) -->
+<div class="hidden flex-col gap-space-sm pt-space-xs" id="hidden-members">
+<!-- Row 6: Jordan -->
+<div class="flex items-center justify-between p-2 rounded-xl bg-surface-container-lowest">
+<div class="flex items-center gap-3 min-w-0">
+<img class="w-11 h-11 rounded-full object-cover shadow-sm" data-alt="Portrait avatar of Jordan, stylish young adult with warm welcoming face, bright studio portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCO8_r1eqkHo5ztRMNekD4VLOHM1PyjxDnecEq_S5ryWqAW3v5sHSBnHjmSVEigDXKbE5eqoVByrZpGbto4c1aKdgZnhCzpcI2oV_5jDh3SK_yHVNIEchWS9a7gtCt_qgIzcOVb5MAbLTwz4aR-ilRXoK216fmdKTXinFqEi4KEah3ab6jus7madssAIPfBcQAxBzZsCcYilxZ2ZhJRLssY3g-wsnn08z0VLNgrh2zap1nUBYhG0toe3g">
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg font-bold text-on-surface truncate">Jordan</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">已支付</span>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0 pl-2">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">¥ 60.00</span>
+<span class="text-status-active-green font-label-sm text-[11px] font-medium">已付清</span>
+</div>
+</div>
+<!-- Row 7: Chris -->
+<div class="flex items-center justify-between p-2 rounded-xl bg-surface-container-lowest">
+<div class="flex items-center gap-3 min-w-0">
+<img class="w-11 h-11 rounded-full object-cover shadow-sm" data-alt="Portrait avatar of Chris, relaxed traveler smiling warmly outdoors with sun flare" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFP0PsZnK6YSuImlTh-iVLkPlH8gacbZexAZI1VeNueb6dzpXBvVp0nryFkxESl3K9-5A7TPeW9d47aAOAR1LmEiu8wHFuDkE4tYWyfNjfD6mBSJp2q7OT6OXbPpufW_N8-939NJ4uyPXWcnFJ9qvBVbgwlV3k7tPCoPCdabrBbMN0_2TnYzSS3ixRC5EuiUG3HOj30maQEOFdHgChGKCAmvlXB0LmFx3re9cTuNLyccYYltzjGtsrJg">
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg font-bold text-on-surface truncate">Chris</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">已支付</span>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0 pl-2">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">¥ 60.00</span>
+<span class="text-status-active-green font-label-sm text-[11px] font-medium">已付清</span>
+</div>
+</div>
+<!-- Row 8: Sam -->
+<div class="flex items-center justify-between p-2 rounded-xl bg-surface-container-lowest">
+<div class="flex items-center gap-3 min-w-0">
+<img class="w-11 h-11 rounded-full object-cover shadow-sm" data-alt="Portrait avatar of Sam, creative modern professional enjoying evening party lights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA05RlvhBAOjzDiqqoD8gKvGE7ctMyGHjusOTQQF9p7P0gfzvuPyn9ksK1a7c8BVlmPBLaeV6llYLy-7EXVl_RHXAQNWOZY9seGypCLoGjDd7uCHcfsm11TjMq0uStOm9sz8q8GhDTg4Y0WclVKQ0zQ9sOXVU1cSx48JVLcq4z0DbHvJOYj-Hkio7GvAlOMMl45MEjkaFj0ToDMpjI8SB0EMWCBL__QuxFYZWVh__lfvCJrojSmuPFphw">
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg font-bold text-on-surface truncate">Sam</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">已支付</span>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0 pl-2">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">¥ 60.00</span>
+<span class="text-status-active-green font-label-sm text-[11px] font-medium">已付清</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Expand Button -->
+<button class="w-full py-2.5 flex items-center justify-center gap-1.5 text-secondary hover:text-primary font-label-md text-label-md active:scale-98 transition-all" id="expand-btn" type="button">
+<span id="expand-text">展开全部成员 (8)</span>
+<span class="material-symbols-outlined text-[18px]" id="expand-icon">keyboard_arrow_down</span>
+</button>
+</div>
+<!-- AI Split Insights & Receipt Breakdown Mini-Card -->
+<div class="bg-gradient-to-br from-party-violet-soft/80 via-white to-electric-blue-soft/70 rounded-2xl p-space-lg shadow-sm flex flex-col gap-3 interactive-card">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-electric-blue flex items-center justify-center text-white shadow-md">
+<span class="material-symbols-outlined text-[16px]">auto_awesome</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface font-bold">智能消费拆解</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary bg-white px-2 py-0.5 rounded-full shadow-xs">AI 自动核算</span>
+</div>
+<div class="grid grid-cols-3 gap-2 text-center pt-1">
+<div class="bg-white/80 rounded-xl p-2.5 flex flex-col items-center shadow-xs">
+<span class="font-body-sm text-[11px] text-on-surface-variant">场地租金</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface mt-0.5">¥ 280</span>
+</div>
+<div class="bg-white/80 rounded-xl p-2.5 flex flex-col items-center shadow-xs">
+<span class="font-body-sm text-[11px] text-on-surface-variant">饮品水果</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface mt-0.5">¥ 140</span>
+</div>
+<div class="bg-white/80 rounded-xl p-2.5 flex flex-col items-center shadow-xs">
+<span class="font-body-sm text-[11px] text-on-surface-variant">道具物料</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface mt-0.5">¥ 60</span>
+</div>
+</div>
+</div>
+<!-- Disclaimer / Info Notice Card -->
+<div class="flex items-start gap-2.5 bg-surface-container-low p-3.5 rounded-xl text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">info</span>
+<p class="font-body-sm text-body-sm leading-relaxed">
+        此为活动费用记录，用于方便大家 AA 分摊，不涉及平台支付与资金托管，请自行与主办方或伙伴完成转账哦～
+      </p>
+</div>
+<!-- Playful Social IRL Kinetic Sticker Cluster -->
+<div class="relative py-2 flex flex-col items-center justify-center gap-2 select-none">
+<div class="flex items-center justify-center gap-4 text-on-surface-variant">
+<div class="bg-party-pink-soft text-party-pink font-bold text-[12px] px-3 py-1 rounded-full -rotate-3 shadow-xs">
+          Good Friends Always ♡
+        </div>
+<div class="bg-vibrant-lime-tint text-tertiary-container font-extrabold text-[12px] px-3 py-1 rounded-full rotate-2 shadow-xs">
+          Next Round Soon! 🏸
+        </div>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface-variant/80 font-label-md text-label-md italic mt-1">
+<span>下一场，更好玩！</span>
+<span class="text-party-pink font-bold">♡</span>
+</div>
+</div>
+</div>
+<!-- Interactive script for expand/collapse and toast -->
+<script>
+    const expandBtn = document.getElementById('expand-btn');
+    const hiddenMembers = document.getElementById('hidden-members');
+    const expandText = document.getElementById('expand-text');
+    const expandIcon = document.getElementById('expand-icon');
+    let isExpanded = false;
+
+    if (expandBtn && hiddenMembers) {
+      expandBtn.addEventListener('click', () => {
+        isExpanded = !isExpanded;
+        if (isExpanded) {
+          hiddenMembers.classList.remove('hidden');
+          hiddenMembers.classList.add('flex');
+          expandText.textContent = '收起列表';
+          expandIcon.textContent = 'keyboard_arrow_up';
+        } else {
+          hiddenMembers.classList.add('hidden');
+          hiddenMembers.classList.remove('flex');
+          expandText.textContent = '展开全部成员 (8)';
+          expandIcon.textContent = 'keyboard_arrow_down';
+        }
+      });
+    }
+
+    const detailsBtn = document.getElementById('btn-details');
+    if (detailsBtn) {
+      detailsBtn.addEventListener('click', () => {
+        window.scrollTo({
+          top: 360,
+          behavior: 'smooth'
+        });
+      });
+    }
+  </script>
+</div></main>
+
+</body></html>

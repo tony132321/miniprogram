@@ -1,0 +1,21 @@
+{
+  "legacyTicketPrefixBytes": 6897,
+  "legacyTicketPrefixSHA256": "1b4136ce41f430f3f9d47a6b288d54e1535369e057bf3103bd48e5ccc6a04451",
+  "legacyCSSPrefixBytes": 13329,
+  "legacyCSSPrefixSHA256": "8309549f016b13b98e2496551089e88a069265c6d0b60b2ac8bb5a3b562f196c",
+  "JSJSONExact": true,
+  "allBindingsPreserved": {
+    "back": 2,
+    "goProfile": 1,
+    "refresh": 2,
+    "copyInvite": 3,
+    "openShareSheet": 1,
+    "closeShareSheet": 3,
+    "prepareShare": 1,
+    "generatePoster": 1
+  },
+  "shareOpenTypes": 2,
+  "newGlyphs": 8,
+  "newPhotoBytes": 40193,
+  "sourceLimit": "Only foreground geometry restoration; capability text/real data/native capsule and existing background are intentional R1 differences, no full-pixel parity claim."
+}

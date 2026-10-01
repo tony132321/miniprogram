@@ -1,0 +1,158 @@
+{
+  "wave": 69,
+  "base": "2e3e027",
+  "priorGapAudit": {
+    "path": "docs/evidence/caper-next-messages-reference-gap-audit-wave68-2026-10-02.md",
+    "bytes": 26664,
+    "sha256": "1efb84af3eb3131192628b0746b439367eb2970a5af38ac6f6fd0da86f6e2593"
+  },
+  "zip": {
+    "path": "/Users/tsb/Downloads/stitch_design_system_generator (2).zip",
+    "bytes": 24668856,
+    "sha256": "df22e733d33fda20979b75b8a7bc94717c4a5c9e41561a54e3038432fab32603"
+  },
+  "sources": [
+    {
+      "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg02_n_1/code.html",
+      "bytes": 25023,
+      "sha256": "2e9fba3bed3e6a075be13b75d0c3d4af75ad000e6f50c6f799828472c17a1583",
+      "zipEntry": "stitch_design_system_generator/pg02_n_1/code.html",
+      "zipBytesEqual": true
+    },
+    {
+      "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg02_n_1/screen.png",
+      "bytes": 330041,
+      "sha256": "5b4094ff4604eefdb8af7a83f5896612a2d1967f58f6c32ea211718a74cdf4ba",
+      "zipEntry": "stitch_design_system_generator/pg02_n_1/screen.png",
+      "zipBytesEqual": true
+    },
+    {
+      "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg11_c_alex/code.html",
+      "bytes": 20410,
+      "sha256": "a08e381cfc4ff5a2af57bb8341cfafc85937175c86cd1ea3d29f2a4e91f9dc04",
+      "zipEntry": "stitch_design_system_generator/pg11_c_alex/code.html",
+      "zipBytesEqual": true
+    },
+    {
+      "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg11_c_alex/screen.png",
+      "bytes": 320991,
+      "sha256": "c7a62c63d50e5713e43becdd80cc6cdf0bd02bc3c208e7843414262b14cd9c44",
+      "zipEntry": "stitch_design_system_generator/pg11_c_alex/screen.png",
+      "zipBytesEqual": true
+    }
+  ],
+  "font": {
+    "cssUrl": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap&icon_names=add,alarm_on,arrow_back_ios_new,arrow_forward_ios,auto_awesome,call,celebration,check_circle,chevron_right,done_all,edit_location_alt,group_add,local_activity,mic,more_horiz,more_vert,navigation,person,qr_code_2,sentiment_satisfied,verified_user",
+    "cssBytes": 768,
+    "cssSha256": "d2b987c08c8e7f4de4c8564d0a84f94e0080a03f1e592700d820d956a3ed17cf",
+    "fontUrl": "https://fonts.gstatic.com/l/font?kit=kJEPBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzBwG-RpA6RzaxHMPdY40KH8nGzv3fzfVJO1USv9luNuhfgt12Loe1Fsdk28Plhwl8XLrXVM68N21lWs_Y518OjOhZTSQlJhSGzkuHfGRQVmU4CIL8m9KkGbU2YFPe34w&skey=b8dc2088854b122f&v=v374",
+    "fontBytes": 8980,
+    "fontSha256": "fd821798ef97f95e1ef22b0858b44bba40c9a3dca6c0ff43cb35a0a21cf21f80",
+    "reason": "Same last source wght,FILL face; subset only requested ligatures, source normal400 / verified_user FILL1, fixed opsz24 GRAD0.",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+  },
+  "glyphManifest": {
+    "path": "docs/design-sources/caper-messages-wave69/material-assets.json",
+    "bytes": 29018,
+    "sha256": "0d471448782bdf5447954d888603c4be27c6e3d6ad70239dcaa2d356738e7cbb"
+  },
+  "sourceFiles": [
+    {
+      "path": "docs/design-sources/caper-messages-wave69/material-assets.json",
+      "bytes": 29018,
+      "sha256": "0d471448782bdf5447954d888603c4be27c6e3d6ad70239dcaa2d356738e7cbb"
+    },
+    {
+      "path": "docs/design-sources/caper-messages-wave69/material-decoded.ttf",
+      "bytes": 17684,
+      "sha256": "90c1c271bd19e9c46400bca24710238a105718c02d03722536dc2aeccea4cc39"
+    },
+    {
+      "path": "docs/design-sources/caper-messages-wave69/material-request.json",
+      "bytes": 1116,
+      "sha256": "3ddde5fcf9191d452187cc92eef91e172b9f1735a9b57d93fa8bf4ae415aa939"
+    },
+    {
+      "path": "docs/design-sources/caper-messages-wave69/material-source.css",
+      "bytes": 768,
+      "sha256": "d2b987c08c8e7f4de4c8564d0a84f94e0080a03f1e592700d820d956a3ed17cf"
+    },
+    {
+      "path": "docs/design-sources/caper-messages-wave69/material-source.woff2",
+      "bytes": 8980,
+      "sha256": "fd821798ef97f95e1ef22b0858b44bba40c9a3dca6c0ff43cb35a0a21cf21f80"
+    }
+  ],
+  "bindingProof": {
+    "path": "docs/evidence/caper-messages-center-chat-binding-proof-wave69-2026-10-02.json",
+    "bytes": 30578,
+    "sha256": "a944eed2e0434b7e91e9e12fdfd369571a5f7896365124840f2eced2454c5dd8"
+  },
+  "scopeSelectors": [
+    ".messages-center-reference",
+    ".messages-chat-reference"
+  ],
+  "sourceLayout": {
+    "N1": {
+      "header": 56,
+      "title": [
+        28,
+        36,
+        800
+      ],
+      "cardPadding": 16,
+      "cardGap": 12,
+      "radius": 12,
+      "topBar": 4,
+      "circle": 32,
+      "glyph": 18,
+      "cardTitle": [
+        17,
+        22,
+        600
+      ],
+      "summary": [
+        13,
+        18,
+        400
+      ],
+      "reminderThumb": 64,
+      "mapClosedFootprint": 96,
+      "footerOrb": 40
+    },
+    "Alex": {
+      "header": 64,
+      "back": 44,
+      "avatar": 40,
+      "contextImage": 56,
+      "contextPadding": 12,
+      "timelineGap": 12,
+      "safetyCircle": 24,
+      "safetyGlyphFILL": 1,
+      "safetyText": [
+        13,
+        21.125,
+        400
+      ],
+      "composerRow": 64,
+      "attachmentAndVoice": 44,
+      "input": 44,
+      "emojiTouch": 32,
+      "bottomPadding": [
+        96,
+        24
+      ]
+    }
+  },
+  "closedSourceBoundaries": [
+    "N2 independent route absent",
+    "No source fake people or realtime timestamps",
+    "No expense notification contract, fake amount/payment omitted",
+    "Alex closed explanation replaces illustrative transcript/online/reaction/quick-send",
+    "Existing badminton image explicitly illustrative and not original N1/Alex picture",
+    "Map data absent; source 96px footprint visibly closed",
+    "Native capsule moves source44px closed header tools to second row"
+  ],
+  "mainRawNetBytes": 43560,
+  "newAssetBytes": 16657
+}

@@ -1,0 +1,10 @@
+{
+  "cssUrl": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap&icon_names=add,alarm_on,arrow_back_ios_new,arrow_forward_ios,auto_awesome,call,celebration,check_circle,chevron_right,done_all,edit_location_alt,group_add,local_activity,mic,more_horiz,more_vert,navigation,person,qr_code_2,sentiment_satisfied,verified_user",
+  "cssBytes": 768,
+  "cssSha256": "d2b987c08c8e7f4de4c8564d0a84f94e0080a03f1e592700d820d956a3ed17cf",
+  "fontUrl": "https://fonts.gstatic.com/l/font?kit=kJEPBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzBwG-RpA6RzaxHMPdY40KH8nGzv3fzfVJO1USv9luNuhfgt12Loe1Fsdk28Plhwl8XLrXVM68N21lWs_Y518OjOhZTSQlJhSGzkuHfGRQVmU4CIL8m9KkGbU2YFPe34w&skey=b8dc2088854b122f&v=v374",
+  "fontBytes": 8980,
+  "fontSha256": "fd821798ef97f95e1ef22b0858b44bba40c9a3dca6c0ff43cb35a0a21cf21f80",
+  "reason": "Same last source wght,FILL face; subset only requested ligatures, source normal400 / verified_user FILL1, fixed opsz24 GRAD0.",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+}

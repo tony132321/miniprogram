@@ -1,0 +1,39 @@
+{
+  "scope": "three PG06 precise source roles only; no142 rerun",
+  "sourceNodes": [
+    {
+      "line": 64,
+      "class": "gap-1.5",
+      "gapPx": 6
+    },
+    {
+      "line": 99,
+      "class": "font-label-md text-label-md font-bold",
+      "fontSizePx": 13,
+      "lineHeightPx": 16,
+      "fontWeight": 700
+    },
+    {
+      "line": 149,
+      "class": "font-body-sm text-body-sm text-on-surface-variant",
+      "fontSizePx": 13,
+      "lineHeightPx": 18,
+      "fontWeight": 400
+    }
+  ],
+  "before": {
+    "bytes": 162260,
+    "sha256": "caef3ec15ddd1a1db874946efe97cbb91e5236dcf6e425b942d814798608368f"
+  },
+  "after": {
+    "bytes": 162462,
+    "sha256": "85c1f8ecc5152e98b82d860f5199fb2b6258b6d9d1c8ca4a1605e285af33869b"
+  },
+  "inverseToPriorCSS": true,
+  "oldCSSPrefix": true,
+  "WXMLJSJSONUnchanged": {
+    "event.wxml": "27614e27494fa920cff810a633ff5f89e4ad7ca1c839c09b7fa902ba4588fd3a",
+    "event.js": "ccb5b5fede066ba0533b82cb564e816cc3d45ca96778a0d25ac5286d3c11a4bd",
+    "event.json": "bf33dc7da099d240642a50fe3cf44cee01a2b282f70a80a313c79317c76ad10b"
+  }
+}

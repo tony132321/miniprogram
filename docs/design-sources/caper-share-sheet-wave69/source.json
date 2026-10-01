@@ -1,0 +1,144 @@
+{
+  "scope": "PG06-S foreground sheet only. Existing _3 ticket, JS/JSON and qualification API preserved. Native background remains existing share page, not PG06 dashboard.",
+  "sourceHTMLSHA256": "ae332500609017a0a0d467d88b52ff0942e3b2824dc542e8f5bd65e5e18527c5",
+  "sourcePNGSHA256": "25784a100075b14dccb1f3e0b0a562df4ffc9f5ef90f5dacfa900138a4b848f0",
+  "cssUrl": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap&icon_names=calendar_today,chat,close,content_copy,copy_all,groups,key,photo_library",
+  "fontUrl": "https://fonts.gstatic.com/l/font?kit=kJEPBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzBwG-RpA6RzaxHMPdY40KH8nGzv3fzfVJO1USv9luNs3retFyMoO9Lv9oz9fp83kMTKr7MUvuzu5du_c0AjqzZHiZTegRKKdIj8g&skey=b8dc2088854b122f&v=v375",
+  "fontSHA256": "695eed65ff2e611ce1b59fe6a9414c9b4e46d02b12fde7de43756245014875de",
+  "axes": [
+    {
+      "tag": "FILL",
+      "min": 0.0,
+      "default": 0.0,
+      "max": 1.0
+    },
+    {
+      "tag": "wght",
+      "min": 100.0,
+      "default": 400.0,
+      "max": 700.0
+    }
+  ],
+  "unitsPerEm": 960,
+  "version": "Version 2.973",
+  "instantiated": {
+    "wght": 400,
+    "FILL": 0
+  },
+  "license": "Existing docs/licenses/material-symbols-Apache-2.0.txt",
+  "sourceChoice": "Last original same-family normal face overrides first opsz-range face. Subset preserves eight real cmap outlines. Incomplete initial UA returned seven static faces; response retained; no asset built from it. First Python photo fetch had SSL EOF, then ordinary verified curl fetched original URL; no TLS bypass.",
+  "assets": [
+    {
+      "symbol": "close",
+      "codepoint": "0xe5cd",
+      "glyph": "uniE14C",
+      "color": "#424655",
+      "sizePx": 20,
+      "weight": 400,
+      "FILL": 0,
+      "path": "miniprogram/subpackages/activity/share/assets/sheet69-close.svg",
+      "bytes": 228,
+      "sha256": "d884d0ea25b61e6430f586f151db8694b42b8564b1ff849dd3bd81ffe2cbde91",
+      "fontPathData": "M256 200 200 256 424 480 200 704 256 760 480 536 704 760 760 704 536 480 760 256 704 200 480 424Z"
+    },
+    {
+      "symbol": "calendar_today",
+      "codepoint": "0xe935",
+      "glyph": "uniE935",
+      "color": "#004cc8",
+      "sizePx": 13,
+      "weight": 400,
+      "FILL": 0,
+      "path": "miniprogram/subpackages/activity/share/assets/sheet69-calendar_today.svg",
+      "bytes": 603,
+      "sha256": "30f0929bc2314fa840458dacc8b58d32dd496fcd77420d052982cb386540917d",
+      "fontPathData": "M200 80Q167 80 143.5 103.5Q120 127 120 160V720Q120 753 143.5 776.5Q167 800 200 800H240V880H320V800H640V880H720V800H760Q793 800 816.5 776.5Q840 753 840 720V160Q840 127 816.5 103.5Q793 80 760 80ZM200 160H760Q760 160 760.0 160.0Q760 160 760 160V560H200V160Q200 160 200.0 160.0Q200 160 200 160ZM200 640H760V720Q760 720 760.0 720.0Q760 720 760 720H200Q200 720 200.0 720.0Q200 720 200 720ZM200 640V720Q200 720 200.0 720.0Q200 720 200 720Q200 720 200.0 720.0Q200 720 200 720V640Z"
+    },
+    {
+      "symbol": "chat",
+      "codepoint": "0xe0b7",
+      "glyph": "uniE0B7",
+      "color": "#ffffff",
+      "sizePx": 26,
+      "weight": 400,
+      "FILL": 0,
+      "path": "miniprogram/subpackages/activity/share/assets/sheet69-chat.svg",
+      "bytes": 582,
+      "sha256": "f19b9f2a869cba7c28e4f357b1048d5e3c09376020be9be9e11ff9bca8427839",
+      "fontPathData": "M240 400H560V480H240ZM240 520H720V600H240ZM240 640H720V720H240ZM80 80V800Q80 833 103.5 856.5Q127 880 160 880H800Q833 880 856.5 856.5Q880 833 880 800V320Q880 287 856.5 263.5Q833 240 800 240H240ZM206 320H800Q800 320 800.0 320.0Q800 320 800 320V800Q800 800 800.0 800.0Q800 800 800 800H160Q160 800 160.0 800.0Q160 800 160 800V275ZM160 320V800Q160 800 160.0 800.0Q160 800 160 800Q160 800 160.0 800.0Q160 800 160 800V320Q160 320 160.0 320.0Q160 320 160 320Z"
+    },
+    {
+      "symbol": "photo_library",
+      "codepoint": "0xe413",
+      "glyph": "uniE413",
+      "color": "#ffffff",
+      "sizePx": 26,
+      "weight": 400,
+      "FILL": 0,
+      "path": "miniprogram/subpackages/activity/share/assets/sheet69-photo_library.svg",
+      "bytes": 759,
+      "sha256": "b89e7f62b727515229d427ba32b05ea76671fa7143671d0170c352f8c4789bc5",
+      "fontPathData": "M360 400H760L622 580L530 460L468 540ZM320 240Q287 240 263.5 263.5Q240 287 240 320V800Q240 833 263.5 856.5Q287 880 320 880H800Q833 880 856.5 856.5Q880 833 880 800V320Q880 287 856.5 263.5Q833 240 800 240ZM320 320H800Q800 320 800.0 320.0Q800 320 800 320V800Q800 800 800.0 800.0Q800 800 800 800H320Q320 800 320.0 800.0Q320 800 320 800V320Q320 320 320.0 320.0Q320 320 320 320ZM160 80Q127 80 103.5 103.5Q80 127 80 160V720H160V160Q160 160 160.0 160.0Q160 160 160 160H720V80ZM320 800Q320 800 320.0 800.0Q320 800 320 800V320Q320 320 320.0 320.0Q320 320 320 320Q320 320 320.0 320.0Q320 320 320 320V800Q320 800 320.0 800.0Q320 800 320 800Z"
+    },
+    {
+      "symbol": "groups",
+      "codepoint": "0xf233",
+      "glyph": "uniF233",
+      "color": "#ffffff",
+      "sizePx": 26,
+      "weight": 400,
+      "FILL": 0,
+      "path": "miniprogram/subpackages/activity/share/assets/sheet69-groups.svg",
+      "bytes": 1464,
+      "sha256": "45c7de3a5c8739d095544ca37637243e0500951900727a5140bbdf15bd82aa73",
+      "fontPathData": "M0 240V303Q0 346 44.0 373.0Q88 400 160 400Q173 400 185.0 399.5Q197 399 208 397Q194 376 187.0 353.0Q180 330 180 305V240ZM240 240V305Q240 337 257.5 363.5Q275 390 307 410Q339 430 383.5 440.0Q428 450 480 450Q533 450 577.5 440.0Q622 430 654 410Q686 390 703.0 363.5Q720 337 720 305V240ZM780 240V305Q780 331 773.5 354.0Q767 377 754 397Q765 399 776.5 399.5Q788 400 800 400Q872 400 916.0 373.5Q960 347 960 303V240ZM325 320H636Q626 340 580.5 355.0Q535 370 480 370Q425 370 379.5 355.0Q334 340 325 320ZM160 440Q127 440 103.5 463.5Q80 487 80 520Q80 554 103.5 577.0Q127 600 160 600Q194 600 217.0 577.0Q240 554 240 520Q240 487 217.0 463.5Q194 440 160 440ZM800 440Q767 440 743.5 463.5Q720 487 720 520Q720 554 743.5 577.0Q767 600 800 600Q834 600 857.0 577.0Q880 554 880 520Q880 487 857.0 463.5Q834 440 800 440ZM480 480Q430 480 395.0 515.0Q360 550 360 600Q360 651 395.0 685.5Q430 720 480 720Q531 720 565.5 685.5Q600 651 600 600Q600 550 565.5 515.0Q531 480 480 480ZM480 560Q497 560 508.5 571.5Q520 583 520 600Q520 617 508.5 628.5Q497 640 480 640Q463 640 451.5 628.5Q440 617 440 600Q440 583 451.5 571.5Q463 560 480 560ZM481 320Q481 320 481.0 320.0Q481 320 481 320Q481 320 481.0 320.0Q481 320 481 320ZM480 600Q480 600 480.0 600.0Q480 600 480 600Q480 600 480.0 600.0Q480 600 480 600Q480 600 480.0 600.0Q480 600 480 600Q480 600 480.0 600.0Q480 600 480 600Z"
+    },
+    {
+      "symbol": "content_copy",
+      "codepoint": "0xe14d",
+      "glyph": "uniE14D",
+      "color": "#1a1b1f",
+      "sizePx": 24,
+      "weight": 400,
+      "FILL": 0,
+      "path": "miniprogram/subpackages/activity/share/assets/sheet69-content_copy.svg",
+      "bytes": 724,
+      "sha256": "13b7a99f8bc2a64391746104c6ae21e1c81f064f6383550d7b67096a8a2f006a",
+      "fontPathData": "M360 240Q327 240 303.5 263.5Q280 287 280 320V800Q280 833 303.5 856.5Q327 880 360 880H720Q753 880 776.5 856.5Q800 833 800 800V320Q800 287 776.5 263.5Q753 240 720 240ZM360 320H720Q720 320 720.0 320.0Q720 320 720 320V800Q720 800 720.0 800.0Q720 800 720 800H360Q360 800 360.0 800.0Q360 800 360 800V320Q360 320 360.0 320.0Q360 320 360 320ZM200 80Q167 80 143.5 103.5Q120 127 120 160V720H200V160Q200 160 200.0 160.0Q200 160 200 160H640V80ZM360 320Q360 320 360.0 320.0Q360 320 360 320V800Q360 800 360.0 800.0Q360 800 360 800Q360 800 360.0 800.0Q360 800 360 800V320Q360 320 360.0 320.0Q360 320 360 320Z"
+    },
+    {
+      "symbol": "key",
+      "codepoint": "0xe73c",
+      "glyph": "uniE73C",
+      "color": "#004cc8",
+      "sizePx": 20,
+      "weight": 400,
+      "FILL": 0,
+      "path": "miniprogram/subpackages/activity/share/assets/sheet69-key.svg",
+      "bytes": 707,
+      "sha256": "c23d475406c3e22fd21486d868e04c483bb7c7671b03cd5b9e3007121116da78",
+      "fontPathData": "M280.0 400.0Q247 400 223.5 423.5Q200 447 200.0 480.0Q200 513 223.5 536.5Q247 560 280.0 560.0Q313 560 336.5 536.5Q360 513 360.0 480.0Q360 447 336.5 423.5Q313 400 280.0 400.0ZM280 240Q180 240 110.0 310.0Q40 380 40.0 480.0Q40 580 110.0 650.0Q180 720 280 720Q347 720 401.5 687.0Q456 654 488 600H840L960 480L780 300L700 360L620 300L535 360H488Q456 306 401.5 273.0Q347 240 280 240ZM280 320Q336 320 378.5 354.0Q421 388 435 440H560L618 399L700 460L771 405L846 480L806 520H435Q421 572 378.5 606.0Q336 640 280 640Q214 640 167.0 593.0Q120 546 120 480Q120 414 167.0 367.0Q214 320 280 320Z"
+    },
+    {
+      "symbol": "copy_all",
+      "codepoint": "0xe2ec",
+      "glyph": "uniE2EC",
+      "color": "#ffffff",
+      "sizePx": 14,
+      "weight": 400,
+      "FILL": 0,
+      "path": "miniprogram/subpackages/activity/share/assets/sheet69-copy_all.svg",
+      "bytes": 865,
+      "sha256": "a32590cccf58095b48849ed8455509c9d66f17c0866239a9606356332b3f0136",
+      "fontPathData": "M120 220V300H200V220ZM120 360V440H200V360ZM120 500V580H200V500ZM260 80V160H340V80ZM360 240Q327 240 303.5 263.5Q280 287 280 320V800Q280 833 303.5 856.5Q327 880 360 880H720Q753 880 776.5 856.5Q800 833 800 800V320Q800 287 776.5 263.5Q753 240 720 240ZM360 320H720Q720 320 720.0 320.0Q720 320 720 320V800Q720 800 720.0 800.0Q720 800 720 800H360Q360 800 360.0 800.0Q360 800 360 800V320Q360 320 360.0 320.0Q360 320 360 320ZM400 80V160H480V80ZM200 80Q167 80 143.5 103.5Q120 127 120 160H200ZM540 80V160H620Q620 127 596.5 103.5Q573 80 540 80ZM120 640Q120 673 143.5 696.5Q167 720 200 720V640ZM540 560Q540 560 540.0 560.0Q540 560 540 560Q540 560 540.0 560.0Q540 560 540 560Q540 560 540.0 560.0Q540 560 540 560Q540 560 540.0 560.0Q540 560 540 560Z"
+    }
+  ],
+  "cover": {
+    "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuBJ5KYdLoeLgWLiWXSmUXx4Zps-lF2FxVh1MIhpg3AwCWu0tgbDEQGuwUc-rTMXMyc9qrD-NfNY0sN6osYRk9Ds-GDISJYrRKon1yyfzPpq15AKY6RGGVzDVstVtc9OPpPgyB9Hf7uInXno4WGn9gy9Haxd2j7Ksrh8v8mfY_QlWi4lCgbE9X2zn_sHVmpny-J78eM-oO4QlaV_A1sb_108rOnhjtnod6REHJU89phuTlo-hi7mSGWaxg",
+    "path": "miniprogram/subpackages/activity/share/assets/sheet69-badminton.jpg",
+    "bytes": 40193,
+    "sha256": "277b7d72221482111ee7799a958cd0c08ee7897fcb60f31900d1fcc68f293769",
+    "semantics": "Original badminton scene when existing type classifier selected badminton, labelled illustrative; other type covers and all real event data retained"
+  },
+  "originalFullFaceComparison": "full-face-eight-outline-comparison.json: original full v374/2.972 vs downloaded subset v375/2.973, all eight actual 400/FILL0 original text ligature outlines equal; no product glyph replacement needed."
+}

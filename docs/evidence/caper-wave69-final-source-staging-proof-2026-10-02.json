@@ -1,0 +1,744 @@
+{
+  "stagedPaths": 143,
+  "scope": "Existing scanner against isolated 143 current staged changed files only, no full repository/suite",
+  "result": "Credential scan passed: 124 tracked text files, 0 ZIP archives inspected, 19 binary files skipped.",
+  "excluded": [
+    "Project_IRL_Autonomous_Engineering_Package_v3.1/",
+    "docs/design-sources/caper-pg04s-wave68/__pycache__/",
+    "/private/tmp/caper-wave69-share-sheet-private-failed-capture.png"
+  ],
+  "cachedDiffCheck": true,
+  "files": [
+    {
+      "path": "docs/acceptance-matrix.md",
+      "bytes": 161066,
+      "sha256": "c22774114c2aa0914af677beae4826dccbfc5d41365458b1a1be38cac317fa4e"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/README.md",
+      "bytes": 3384,
+      "sha256": "aef4e8a3a364620ad10da491b0a2b6fba5b2cc36265ee6e4343129b229b16b0e"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/bounded-scoped-check.json",
+      "bytes": 54289,
+      "sha256": "df7bf4053886f12a4e1b5d258aa940b3a572acf99ea4d557791256f755ea3306"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/fill1-rclt-correction-proof.json",
+      "bytes": 9998,
+      "sha256": "944e9b03aa743641eb70c77000fe06d8adada3d8a5a56370b2febf554d8110a4"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/fonttools_node_brotli_bridge.py",
+      "bytes": 1106,
+      "sha256": "5492c1f7199e933e419b38b874418741b23e7b03eb2998003b0b766cb885deac"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/full-vs-subset-outline-proof.json",
+      "bytes": 5569,
+      "sha256": "6bc678a13761461854bcb423accb18d19a93eeb7ab7e5a54aa26c77dca2a9da0"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/material-full-face-manifest.json",
+      "bytes": 51494,
+      "sha256": "dc9a4e5bb549d7982939ab0ce989c460c6c2251afac578f77768b9ac6faf0868"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/original-last-material-full.response.json",
+      "bytes": 1582,
+      "sha256": "cd02baa1214cbf700a63b775e396917b907bb61ef70383c8991dfe34169ad269"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/original-last-material-full.woff2",
+      "bytes": 1136920,
+      "sha256": "77f9711f3f896a1d7a34ab95cffc45cfb17d84c223f197c1b90faa0d043006e9"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/pg06-inline-styles.css",
+      "bytes": 314,
+      "sha256": "36f42b3047066e1b24a11f4674f2f71146e931f6bc4ea65ec165c514e60cb444"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/pg06-original-material-link-1.css",
+      "bytes": 636,
+      "sha256": "67ce062167324405accfff0aa7fe69bee200e215134cc777048c0df32fbd824f"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/pg06-original-material-link-1.css.response.json",
+      "bytes": 725,
+      "sha256": "06b72929bc857a7914d4e1c1f190d227a5f0521027bdd7cdc678b4f75c7826dc"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/pg06-original-material-link-2.css",
+      "bytes": 693,
+      "sha256": "4ceb712c148ba306c7b6c50333df6fb1ba43d2fa810cab9f79a3b48b48c78443"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/pg06-original-material-link-2.css.response.json",
+      "bytes": 699,
+      "sha256": "086ff0be0d66921094a37e413af84cddc5483fddbaaae4f72272458c4f5b31e9"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/pg06-original.html",
+      "bytes": 19548,
+      "sha256": "05c1f7dccc856304c080298d7680f1e3df91bb765decea2e59efd2c7996b31b6"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/pg06-role-correction-proof.json",
+      "bytes": 1080,
+      "sha256": "dbb186dbf518856dd1b16e127573550ecdd109bcfe0879a3a8e2d15092c1d877"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/pg06-tailwind-config.js",
+      "bytes": 3784,
+      "sha256": "b8f5a1a069cdb5a95f22fde21b4f34093b976fe3a397d07e0534386fe6b3631a"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/pg08-inline-styles.css",
+      "bytes": 314,
+      "sha256": "36f42b3047066e1b24a11f4674f2f71146e931f6bc4ea65ec165c514e60cb444"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/pg08-original-material-link-1.css",
+      "bytes": 7052,
+      "sha256": "874542290025679071fcbfd3fe73cd0266e18e0bcfa276b08cff13a6bff83784"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/pg08-original-material-link-1.css.response.json",
+      "bytes": 818,
+      "sha256": "1689bdeebbc9451c338cbade2eaeb6d840f8aed0f0a2b5b4356da3883d00b23f"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/pg08-original.html",
+      "bytes": 20823,
+      "sha256": "c54ae75aef6fccc653601e3d9c23d172e22e7de36b5e4022f72880ba1f39de46"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/pg08-tailwind-config.js",
+      "bytes": 3488,
+      "sha256": "55645d101dce8f78158d031e6dec9171e762ca376d84de3db224b49b311e4ddb"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/pg09-inline-styles.css",
+      "bytes": 331,
+      "sha256": "147dc29dc0d636f9b85f2bdf9cf1ef4e711ee61ce538a54bb8790401028ce19e"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/pg09-native-gutter-correction-proof.json",
+      "bytes": 861,
+      "sha256": "aa94723b6a6cef6b6585277a001a30efc9d16a6f0ad9a9950e8cdbf33c3832f6"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/pg09-original-material-link-1.css",
+      "bytes": 7494,
+      "sha256": "1c59e556b6dd99b5fac1e28fba7f0252fe828bbeea2ce70afee73331fab9fc02"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/pg09-original-material-link-1.css.response.json",
+      "bytes": 806,
+      "sha256": "5e772d83556a8d35cbb4febbae29ba091444ff10e604ed3b9257ae55e5f62ece"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/pg09-original.html",
+      "bytes": 26928,
+      "sha256": "3f0f3f3f62d9d863121784e2ad4c3fd65562bb82b3360cea16593158b0c6d8fd"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/pg09-tailwind-config.js",
+      "bytes": 3783,
+      "sha256": "5aed0f56394eee1d4846471da3fe07c8080ec06b8ee654ab9e309733ae1df9a0"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/scope-guards.json",
+      "bytes": 400,
+      "sha256": "f1e55ba9f6f94df5da149bc2990c9bf9bbbe9cfb0846802e90ab944f3b77df7e"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/shadow-sm-correction-proof.json",
+      "bytes": 2115,
+      "sha256": "672ac9a0136324ffd73f7348cf5731aed6d2520cd9aff09c2ed54debe47d96bb"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/source-manifest.json",
+      "bytes": 108247,
+      "sha256": "c1c03757d3f5428559edca61d285b33578e35e0dbab1578385303249f335dfde"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/source-text-refinement-proof.json",
+      "bytes": 1027,
+      "sha256": "007ece622c28ecea439a9864b0567b7df5589491759aace308aa6d3e1632d729"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/source-tokens.json",
+      "bytes": 16357,
+      "sha256": "1409d6974a67d9b5ee477a641a057878390f25698f2e35c706c89296c9b063b0"
+    },
+    {
+      "path": "docs/design-sources/caper-activity-wave69/tailwind-shadow-source-excerpt.txt",
+      "bytes": 510,
+      "sha256": "2eec31974356db440a3bf5154b818e49eb946c63438f1bf64ee34b9bc73da3de"
+    },
+    {
+      "path": "docs/design-sources/caper-messages-wave69/material-assets.json",
+      "bytes": 29018,
+      "sha256": "0d471448782bdf5447954d888603c4be27c6e3d6ad70239dcaa2d356738e7cbb"
+    },
+    {
+      "path": "docs/design-sources/caper-messages-wave69/material-decoded.ttf",
+      "bytes": 17684,
+      "sha256": "90c1c271bd19e9c46400bca24710238a105718c02d03722536dc2aeccea4cc39"
+    },
+    {
+      "path": "docs/design-sources/caper-messages-wave69/material-request.json",
+      "bytes": 1116,
+      "sha256": "3ddde5fcf9191d452187cc92eef91e172b9f1735a9b57d93fa8bf4ae415aa939"
+    },
+    {
+      "path": "docs/design-sources/caper-messages-wave69/material-source.css",
+      "bytes": 768,
+      "sha256": "d2b987c08c8e7f4de4c8564d0a84f94e0080a03f1e592700d820d956a3ed17cf"
+    },
+    {
+      "path": "docs/design-sources/caper-messages-wave69/material-source.woff2",
+      "bytes": 8980,
+      "sha256": "fd821798ef97f95e1ef22b0858b44bba40c9a3dca6c0ff43cb35a0a21cf21f80"
+    },
+    {
+      "path": "docs/design-sources/caper-share-sheet-wave69/cascade-correction.json",
+      "bytes": 3495,
+      "sha256": "83a1c7ebe5228218fab132afdec43c230c418b1408afd085cf19ddc0e1ca567f"
+    },
+    {
+      "path": "docs/design-sources/caper-share-sheet-wave69/full-face-eight-outline-comparison.json",
+      "bytes": 14100,
+      "sha256": "e45d885671aad3b7f15cf25d22e2a24ec3e9ae7516bf8ee53f40f94e347a4aef"
+    },
+    {
+      "path": "docs/design-sources/caper-share-sheet-wave69/material-decoded.ttf",
+      "bytes": 10172,
+      "sha256": "6b7564b1e81635c6d6ee2c07dd3836da53e53735b621d400498c0f99e90f0b11"
+    },
+    {
+      "path": "docs/design-sources/caper-share-sheet-wave69/material-legacy-ua.css",
+      "bytes": 3046,
+      "sha256": "c1866faa54673fb4541ac5a4cb4ac32c84afad077ebaa8b62416bddf3e79ea87"
+    },
+    {
+      "path": "docs/design-sources/caper-share-sheet-wave69/material-source.css",
+      "bytes": 740,
+      "sha256": "d9d5c413b628923c14e988520e1a6df39d6726d68a3aae3b50b5a7404a51d866"
+    },
+    {
+      "path": "docs/design-sources/caper-share-sheet-wave69/material-source.woff2",
+      "bytes": 5016,
+      "sha256": "695eed65ff2e611ce1b59fe6a9414c9b4e46d02b12fde7de43756245014875de"
+    },
+    {
+      "path": "docs/design-sources/caper-share-sheet-wave69/photo-fetch-result.json",
+      "bytes": 826,
+      "sha256": "67b8c1835ea34596bac6b1b9181af990a14767612c9a58ddc219ae4abd50c9a3"
+    },
+    {
+      "path": "docs/design-sources/caper-share-sheet-wave69/protected-proof.json",
+      "bytes": 741,
+      "sha256": "bca2c0859b8d9791c0f69a7ee9f70a9d6538c55c61a89101391028f66c6faf9d"
+    },
+    {
+      "path": "docs/design-sources/caper-share-sheet-wave69/source.json",
+      "bytes": 10551,
+      "sha256": "8c7d6c50354fa27a0bf86ece066542f6974f17ec4b0144d0d60427bb9dceb00d"
+    },
+    {
+      "path": "docs/evidence/caper-host-checkin-aa-independent-review-wave69-2026-10-02.md",
+      "bytes": 9336,
+      "sha256": "af63a796b5290cb4e78aaf861112b406ef05475a6473512655190df72e7e1953"
+    },
+    {
+      "path": "docs/evidence/caper-host-checkin-aa-reference-ui-wave69-2026-10-02.md",
+      "bytes": 14875,
+      "sha256": "3ac67bceb4ebb27d41cf0f1acb180c9fe5bcdd4f7a88f6346f3138a41c19caa3"
+    },
+    {
+      "path": "docs/evidence/caper-messages-center-chat-binding-proof-wave69-2026-10-02.json",
+      "bytes": 30578,
+      "sha256": "a944eed2e0434b7e91e9e12fdfd369571a5f7896365124840f2eced2454c5dd8"
+    },
+    {
+      "path": "docs/evidence/caper-messages-center-chat-independent-review-wave69-2026-10-02.md",
+      "bytes": 18056,
+      "sha256": "fcf139458f52c0832c5cece751810654a68cfb5bb9a87600510405b9d88474bd"
+    },
+    {
+      "path": "docs/evidence/caper-messages-center-chat-reference-sources-wave69-2026-10-02.json",
+      "bytes": 5887,
+      "sha256": "a2a276aa9d85c26675cb308b345fd60e72a0e7918796d795dc7a0277b1bdd35a"
+    },
+    {
+      "path": "docs/evidence/caper-messages-center-chat-reference-ui-wave69-2026-10-02.md",
+      "bytes": 8565,
+      "sha256": "76acc1d23884405f5c211453ba3d77be1c3ba3cf568db48399ee4c13d20d0e61"
+    },
+    {
+      "path": "docs/evidence/caper-next-detail-roster-reference-gap-audit-wave69-2026-10-02.md",
+      "bytes": 19107,
+      "sha256": "2cb70caa78abcb083410a856b3934b52c5260afb77d90dc8c827d27d6f8ee43f"
+    },
+    {
+      "path": "docs/evidence/caper-next-home-members-reference-gap-audit-wave69-2026-10-02.md",
+      "bytes": 25337,
+      "sha256": "8ae45fba49438942a28acd7cc7448ae67672b84c1ba5f4182811b49305818713"
+    },
+    {
+      "path": "docs/evidence/caper-share-sheet-independent-review-wave69-2026-10-02.md",
+      "bytes": 12157,
+      "sha256": "e9486d28f19f97421706642e618d060d6f89479526b865329d01e45729b0b157"
+    },
+    {
+      "path": "docs/evidence/caper-share-sheet-reference-ui-wave69-2026-10-02.md",
+      "bytes": 3686,
+      "sha256": "64b5d8f6cc63d9424b16ae2c2a85d5a221aa96894ce329ce335b20e40072be51"
+    },
+    {
+      "path": "docs/evidence/images/caper-aa-host-expanded-wave69-2026-10-02.png",
+      "bytes": 158351,
+      "sha256": "570c2be0a3ebf309ec5bd89f52acf4f6816a6dcfe1b317574f9878bd3ac579a1"
+    },
+    {
+      "path": "docs/evidence/images/caper-aa-host-wave69-2026-10-02.png",
+      "bytes": 354521,
+      "sha256": "8d9af8fd454e9d90b89f4a88f9d730f86a97cf3da9f3f8e646de956145f5cc85"
+    },
+    {
+      "path": "docs/evidence/images/caper-aa-member-own-wave69-2026-10-02.png",
+      "bytes": 413475,
+      "sha256": "ea898175f0f1b75344d4f25a3b1f428b0fc2d3136666433d87893b5a71623a4f"
+    },
+    {
+      "path": "docs/evidence/images/caper-checkin-live-host-wave69-2026-10-02.png",
+      "bytes": 304921,
+      "sha256": "3eb1486e97766c978e146031f73c38daba9ad6a3f8b6d244b84f1b530f201ae0"
+    },
+    {
+      "path": "docs/evidence/images/caper-feedback-recorded-wave69-2026-10-02.png",
+      "bytes": 285772,
+      "sha256": "a36400e89d90d6ec302e98d5e9e57d83bcc135b0d2fe7d2078193336c323055a"
+    },
+    {
+      "path": "docs/evidence/images/caper-feedback-selected-no-wave69-2026-10-02.png",
+      "bytes": 225539,
+      "sha256": "2050a241c6291034e26ff3ad9de899a595f48bbfbbc152d4d7a988337f7b175a"
+    },
+    {
+      "path": "docs/evidence/images/caper-feedback-unselected-wave69-2026-10-02.png",
+      "bytes": 226370,
+      "sha256": "d10917741dde5f390dafd1a678b4292b7fb00c37fe4cc34fc842dd869c1501a7"
+    },
+    {
+      "path": "docs/evidence/images/caper-host-dashboard-wave69-2026-10-02.png",
+      "bytes": 153497,
+      "sha256": "64f43464294f18bca72c9504e588b8a1fe21685b93da7afd734768a4e54d25fd"
+    },
+    {
+      "path": "docs/evidence/images/caper-notifications-center-top-wave69-2026-10-02.png",
+      "bytes": 176480,
+      "sha256": "942ea9ad26e66cf666753444e8d65ec014dfe437979f44afbafc6099f66872ed"
+    },
+    {
+      "path": "docs/evidence/images/caper-notifications-center-wave69-2026-10-02.png",
+      "bytes": 199707,
+      "sha256": "fe0d31426859b7c4d5a8983deca7edcef21d6d304225bce7f11231150d1e2834"
+    },
+    {
+      "path": "docs/evidence/images/caper-private-chat-closed-top-wave69-2026-10-02.png",
+      "bytes": 153537,
+      "sha256": "bfe8659b6745f1b1fc9efe89dc22eb66568553373bfd015c7b648e3e5753050e"
+    },
+    {
+      "path": "docs/evidence/images/caper-private-chat-closed-wave69-2026-10-02.png",
+      "bytes": 153967,
+      "sha256": "7f5dc020e894349f7b9773a7a33b69422a48b78f4df7f6cefbd56dc8f629e324"
+    },
+    {
+      "path": "docs/evidence/images/caper-share-sheet-wave69-2026-10-02.png",
+      "bytes": 241605,
+      "sha256": "29692c78ad78574032dae1213e70aeb318758c6ae0ea2dd4affe6e70cc36c5c3"
+    },
+    {
+      "path": "docs/stitch-ui-parity.md",
+      "bytes": 97735,
+      "sha256": "924f2ff08808bfe5a776a886284d187a413776395609b9af5e6809a6705dab36"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-02-home-states-members-and-details-reference-ui.md",
+      "bytes": 3005,
+      "sha256": "2fa4e455b368ae0e6219dc276f35b0bfa6709c0a9c98236e340aee895909435f"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-02-host-checkin-aa-and-center-reference-ui.md",
+      "bytes": 3430,
+      "sha256": "e4d86a2ac8abb26dcddedbec13a029e4e61d16d4551850fee7b8c6c747ba4ec2"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-activity.svg",
+      "bytes": 1395,
+      "sha256": "769ba801dafb8b772bc1bea7ee03d8becc9eda6bd0754b3bb48078a680b96ade"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-add.svg",
+      "bytes": 181,
+      "sha256": "e2faf4b9c911528052d722c14b0961aa4d349fda1b0b37333331d624d2f80e66"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-alarm.svg",
+      "bytes": 941,
+      "sha256": "f18b2634a1f413e46d9b64a01ccb51dd378686c8b0ad0c3c6ccd51bddc066e49"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-approve.svg",
+      "bytes": 856,
+      "sha256": "2936873419db7812916d5b3b47b9f211ae73e2cd06abdb7fbfbfe48bd96a6b90"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-arrow-forward.svg",
+      "bytes": 176,
+      "sha256": "edb7f148b1799ca9adbc9e8fd7ebb298cfc99d268763e942e358eea95a51ec64"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-back.svg",
+      "bytes": 176,
+      "sha256": "a7c95a2ef8b451189ba7e0d0a834542c257a97375d36c6dca15daa6d86b2ad6b"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-call.svg",
+      "bytes": 1293,
+      "sha256": "39164588544d4db755047e2a7edecbeb83a6a7ac9350c15bb5dbe6e3343f6f6b"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-celebration.svg",
+      "bytes": 726,
+      "sha256": "d256e0bc235c5fea8ed0d53906d42611dc1ad2337a97a6ed5c5bd51647a94565"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-chevron.svg",
+      "bytes": 177,
+      "sha256": "9e59fde3efc83f8237eec2f357cdfe56bc43fbe53acbdc8cc47659b3f2240140"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-done-all.svg",
+      "bytes": 258,
+      "sha256": "a195b0500b3e2ca74b21ec10aa1e88ae78a65703b1a143f8d8682e3b30a957a4"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-edit-location.svg",
+      "bytes": 921,
+      "sha256": "62dd04e8a1178b61cd34531b6b6b1121b4d964fd46812f939c96494d28f9e337"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-emoji.svg",
+      "bytes": 1399,
+      "sha256": "a962b55f7fdb3a4a6add35210d77548889ba6777e316e1719b5df1c07fb802aa"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-group.svg",
+      "bytes": 1579,
+      "sha256": "553f097fc8bc67ba60c07d574249bb6be9959460f24bcb0f6eea1b3a508a28a8"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-mic.svg",
+      "bytes": 868,
+      "sha256": "b3dd100ae3398c95d70f25d2a7c6a4b7ad7692c7f8e538bda803faf814b48898"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-more-vert.svg",
+      "bytes": 632,
+      "sha256": "638c8fe797f56e63826824e20eb94dedca72186d99532b9c43d57ac60c306364"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-more.svg",
+      "bytes": 632,
+      "sha256": "5daf6d8ba0b8a1e4537b3a7d4b6ebef020aacbc6f3eca04cc75b376677e46768"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-navigation.svg",
+      "bytes": 224,
+      "sha256": "42bcc67ff797e35f473164aeeeda6dc578a13098495b4ae6d5f2a52085ae568e"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-person-blue.svg",
+      "bytes": 1221,
+      "sha256": "374b6dc0497b9b312a135ad9c32f2d906f5bf4214bf2f65217b58eeafb816fd3"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-person-white.svg",
+      "bytes": 1221,
+      "sha256": "eb9f584cd54abceb581a241bba6492adc6781bccd5dff96f7b48d63fcec34488"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-qr.svg",
+      "bytes": 644,
+      "sha256": "8762f0820ad71d80c9d266c83c94672397c66f42896148039d55bb5aff957847"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-shield.svg",
+      "bytes": 293,
+      "sha256": "77edac762d11873c5c2d2615a2dc86170d83a860f6ffa3efe7ae77852a8e06d2"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-sparkle-footer.svg",
+      "bytes": 422,
+      "sha256": "0c317fc323fe8e7490c7dbde09eb9e7235c29d5b06cda0f9a329906a918ae49c"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-sparkle-white.svg",
+      "bytes": 422,
+      "sha256": "8b98eec6e75f3dbb537690fa3d73085eb8d4e6630a09c09ee190a3aeea6d3936"
+    },
+    {
+      "path": "miniprogram/pages/messages/messages.js",
+      "bytes": 30972,
+      "sha256": "5815366a2033852089afba3a7bff08e8869d8249a5457aee057b131c6cc74a4e"
+    },
+    {
+      "path": "miniprogram/pages/messages/messages.wxml",
+      "bytes": 25349,
+      "sha256": "016d85c858bceb0cedc77f3d276d9c8737fe2d2ff91f02f3188bd64d6f16f41c"
+    },
+    {
+      "path": "miniprogram/pages/messages/messages.wxss",
+      "bytes": 56674,
+      "sha256": "a6ba47ac7cade2ec7b42187a803207a7b7165c4a1e914f57fd233c8157cc98e0"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-arrow_back_ios_new-w400-f0-1a1b1f.svg",
+      "bytes": 153,
+      "sha256": "ca7bb7d407e7dc334ff380d8b3b4d1623f916d8d6152d0a72dc40ab2840d532b"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-calendar_today-w400-f0-ffffff-a80.svg",
+      "bytes": 645,
+      "sha256": "c33b06b87daece1946f27d87a421a54082f99c7399f2c459ff1948f5cf70d7f1"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-celebration-w400-f0-ff2d55.svg",
+      "bytes": 703,
+      "sha256": "28bc5c2f7de9a0916e30e4db4a697e7be8b50650bf01264ad01d5a5e024cd7d5"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-check-w400-f0-34c759.svg",
+      "bytes": 154,
+      "sha256": "0f89192a79f9f361e2756fefce4f3cfbbf42fb8c25647411ebdc106cbcb55298"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-check_circle-w400-f0-737687.svg",
+      "bytes": 833,
+      "sha256": "f67c219e4ec571f0189fe7026b5991709765e9634c3b14c46fa7c8bde050d151"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-check_circle-w400-f1-34c759.svg",
+      "bytes": 493,
+      "sha256": "6c1cf4026c3c5a55cfd3961b6b6f64904e2a956a815db494b926bd7001ed500e"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-check_circle-w700-f0-34c759.svg",
+      "bytes": 1321,
+      "sha256": "7b931ca55b641886fc22545b1a22c25f0dd4e40e1e61630dd678484e6db5bd5d"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-chevron_right-w400-f0-424655.svg",
+      "bytes": 154,
+      "sha256": "b8fee48b3e833334e79aaa98e9303d3ce1086079b61d15f574891616fc19bc76"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-chevron_right-w400-f0-ffffff-a90.svg",
+      "bytes": 173,
+      "sha256": "80f86acc8fe60c0f88accfa10fd9180ed8a12689c7e89d8c45e005e8ce9d806e"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-group-w400-f0-ffffff-a80.svg",
+      "bytes": 1607,
+      "sha256": "c02447192554e216b7ea0146c34675e94d968727fed3ad832dcffc0467ce1ea6"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-info-w400-f0-004cc8.svg",
+      "bytes": 975,
+      "sha256": "aa16342b69d0c8c8bfeb3f8e889a0b6a41f36a1243a5d98aa51d34c99902584b"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-ios_share-w400-f0-1d64f2.svg",
+      "bytes": 549,
+      "sha256": "ca9210e96e1dccff489afe2877c5222d2330db645c601c06b23661d05fa0b498"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-ios_share-w400-f0-424655.svg",
+      "bytes": 549,
+      "sha256": "4b8a0fd1e2dd664eb2d6c51563f555eed1bb2f67321c99627263482079f32e03"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-keyboard_arrow_down-w400-f0-424655.svg",
+      "bytes": 154,
+      "sha256": "17c172fcf47f1f8662d8d681496b360f3d263661bd49da0f037ed9cb33e1280b"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-keyboard_arrow_down-w400-f0-4c4aca.svg",
+      "bytes": 154,
+      "sha256": "1a130f0ebbb7580c9e6cf0c4a243b2a4b9a937b0747cc4932f0740b7304e50a0"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-keyboard_arrow_up-w400-f0-4c4aca.svg",
+      "bytes": 154,
+      "sha256": "2092964894a73227ebd56026d31b6359b9adcc2251150882f3d445e8e9d1c647"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-lightbulb-w400-f1-ffffff.svg",
+      "bytes": 392,
+      "sha256": "1c4735c5cbbe480656046b8dccea841c8fd0bde367e2a23dc227194beb4ac5a9"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-location_on-w400-f0-ffffff-a80.svg",
+      "bytes": 824,
+      "sha256": "1ef469f97ae4351407bb7bc4e5643e3617a770122c9ccacdb1f4085d4d62beab"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-more_horiz-w400-f0-1a1b1f.svg",
+      "bytes": 609,
+      "sha256": "295cd56b72e4a070b341c35331c4f965a6021ea2755371577007ff16a0e3d117"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-receipt_long-w400-f0-ffffff-a80.svg",
+      "bytes": 958,
+      "sha256": "84fdafead1f7a12aec2921803bfbe35a01758344a5d399fa0db612e550f53d27"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-send-w400-f0-004cc8.svg",
+      "bytes": 204,
+      "sha256": "9a8644e5b42f0394571c0c1660d93d96c84a1af53606c7d6b537fa3f25063ccf"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-sentiment_dissatisfied-w400-f0-737687.svg",
+      "bytes": 1376,
+      "sha256": "2f0f85e04d8412a0f7b05424bde3f5e34906189cbdcbe36fe17e8d43d5332cdd"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-sentiment_dissatisfied-w700-f0-34c759.svg",
+      "bytes": 1372,
+      "sha256": "24d19580debeafd1dc39453217134f310065c34e3feb81e8f79d71f12528c507"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-sentiment_neutral-w400-f0-737687.svg",
+      "bytes": 1217,
+      "sha256": "8d7692f0326caddd5cca379d6821013df4bfbfa337dc0433e6e0dc40c4b5b424"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-sentiment_neutral-w700-f0-5856d6.svg",
+      "bytes": 1213,
+      "sha256": "5b0cf5cf68d23e658904ffcb94af2800267768728f2a05af3ac325fff389b367"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-star-w700-f0-181e00.svg",
+      "bytes": 288,
+      "sha256": "be489b40b207ee8bfe0070ae42ce6c62562db9b042a79cb9314ce444cd875260"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-stop_circle-w400-f0-ff2d55.svg",
+      "bytes": 801,
+      "sha256": "186caea6b6a3508815a4d9171e77b67c2f0b54682a31de8e8eaf052fac87c743"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-sync-w400-f0-1d64f2.svg",
+      "bytes": 535,
+      "sha256": "bc4354d9f3c2837999d7954b4e85b856e32c6dab18e00998f1eab502dc799609"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-task_alt-w400-f0-737687.svg",
+      "bytes": 707,
+      "sha256": "46d93ee34ec602e2ff1d5d93c89ccd154f2322fbfba9d7ddeef6c50e2bc8ca86"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-task_alt-w700-f0-5856d6.svg",
+      "bytes": 1248,
+      "sha256": "caad54b17c9488629bacc180f6b0a198cbdf6418e5a38589e7dd7d1efc2e98c5"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/event.wxml",
+      "bytes": 137918,
+      "sha256": "27614e27494fa920cff810a633ff5f89e4ad7ca1c839c09b7fa902ba4588fd3a"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/event.wxss",
+      "bytes": 162268,
+      "sha256": "794cd1b6235a51eb59d080e016b2a6faa08f7b85e44d189e3d379a852e441838"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/share/assets/sheet69-badminton.jpg",
+      "bytes": 40193,
+      "sha256": "277b7d72221482111ee7799a958cd0c08ee7897fcb60f31900d1fcc68f293769"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/share/assets/sheet69-calendar_today.svg",
+      "bytes": 603,
+      "sha256": "30f0929bc2314fa840458dacc8b58d32dd496fcd77420d052982cb386540917d"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/share/assets/sheet69-chat.svg",
+      "bytes": 582,
+      "sha256": "f19b9f2a869cba7c28e4f357b1048d5e3c09376020be9be9e11ff9bca8427839"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/share/assets/sheet69-close.svg",
+      "bytes": 228,
+      "sha256": "d884d0ea25b61e6430f586f151db8694b42b8564b1ff849dd3bd81ffe2cbde91"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/share/assets/sheet69-content_copy.svg",
+      "bytes": 724,
+      "sha256": "13b7a99f8bc2a64391746104c6ae21e1c81f064f6383550d7b67096a8a2f006a"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/share/assets/sheet69-copy_all.svg",
+      "bytes": 865,
+      "sha256": "a32590cccf58095b48849ed8455509c9d66f17c0866239a9606356332b3f0136"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/share/assets/sheet69-groups.svg",
+      "bytes": 1464,
+      "sha256": "45c7de3a5c8739d095544ca37637243e0500951900727a5140bbdf15bd82aa73"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/share/assets/sheet69-key.svg",
+      "bytes": 707,
+      "sha256": "c23d475406c3e22fd21486d868e04c483bb7c7671b03cd5b9e3007121116da78"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/share/assets/sheet69-photo_library.svg",
+      "bytes": 759,
+      "sha256": "b89e7f62b727515229d427ba32b05ea76671fa7143671d0170c352f8c4789bc5"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/share/share.wxml",
+      "bytes": 11692,
+      "sha256": "94fcd4751620f77782db3852bb6be73668b3f82f73a8db1286c99ce0f2577fca"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/share/share.wxss",
+      "bytes": 20152,
+      "sha256": "3f69b34649e84e0b0354038fad2be585423e7c5b33e2579f6d8bdf727c78d743"
+    }
+  ],
+  "sourceCloneFiles": 558,
+  "sourceCloneDifferences": 0,
+  "finalProduct": [
+    {
+      "path": "miniprogram/subpackages/activity/event/event.wxml",
+      "sha256": "27614e27494fa920cff810a633ff5f89e4ad7ca1c839c09b7fa902ba4588fd3a"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/event.wxss",
+      "sha256": "794cd1b6235a51eb59d080e016b2a6faa08f7b85e44d189e3d379a852e441838"
+    },
+    {
+      "path": "miniprogram/pages/messages/messages.js",
+      "sha256": "5815366a2033852089afba3a7bff08e8869d8249a5457aee057b131c6cc74a4e"
+    }
+  ]
+}

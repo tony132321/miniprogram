@@ -1,0 +1,48 @@
+{
+  "scope": "15 current Wave69 source shadow-sm roles plus PG06 native person only; no142 rerun",
+  "officialSource": {
+    "url": "https://raw.githubusercontent.com/tailwindlabs/tailwindcss/v3.4.17/stubs/config.full.js",
+    "absolutePath": "/private/tmp/caper-wave66-event-review/tailwind-3.4.17-source/config.full.js",
+    "sha256": "8f3394e8a4990a7b678d3462b6e1440b84c11a6c06e55d7b26108b90a1fcc538",
+    "smLine": 109,
+    "DEFAULTLine": 110,
+    "sourceSm": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+    "sourceDefault": "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)"
+  },
+  "affectedSourceSelectors": [
+    "/* PG06 original -z10 photograph/scrim paint below the page background. */\n.pg06-reference .pg06-hero",
+    ".pg06-reference .pg06-status",
+    ".pg06-reference .pg06-sticker",
+    ".pg06-stats>view",
+    ".pg06-reference .pg06-members,.pg06-reference .pg06-conditions",
+    ".pg06-member>view>text",
+    ".pg06-reference .pg06-helper",
+    ".pg06-helper-icon",
+    ".pg06-reference .pg06-shortcuts button",
+    ".pg08-reference .feedback-celebration",
+    ".pg08-reference .feedback-choice-green",
+    ".pg08-reference .feedback-choice-violet",
+    ".pg09-reference .pg09-members-card",
+    ".pg09-reference .expense-person-icon",
+    ".pg09-reference .pg09-ai-closed"
+  ],
+  "replacedDeclarations": 15,
+  "addedDeclaration": ".pg06-native-nav .w69-native-person",
+  "correctedCSSValue": "0 1px 2px 0 rgba(0,0,0,.05)",
+  "beforeCSS": {
+    "bytes": 162542,
+    "sha256": "35661d0903b3537e27822220fb05b895d03589d371cf2c45a2cc1b749a9de60c"
+  },
+  "afterCSS": {
+    "bytes": 162268,
+    "sha256": "794cd1b6235a51eb59d080e016b2a6faa08f7b85e44d189e3d379a852e441838"
+  },
+  "fullInverseToPriorFreeze": true,
+  "old131951BytePrefixUnchanged": true,
+  "otherLgXl2xlInnerCustomAndTextShadowDeclarationsUnchanged": true,
+  "WXMLJSJSON": {
+    "event.wxml": "27614e27494fa920cff810a633ff5f89e4ad7ca1c839c09b7fa902ba4588fd3a",
+    "event.js": "ccb5b5fede066ba0533b82cb564e816cc3d45ca96778a0d25ac5286d3c11a4bd",
+    "event.json": "bf33dc7da099d240642a50fe3cf44cee01a2b282f70a80a313c79317c76ad10b"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "reason": "Independent original CSS-only cascade observation: font-family tokens do not supply dimension tokens; source inherits body21. Source tracking-tight=-.025em at9px.",
+  "beforeSHA256": "a35b8d2ec709137ca2c67aab2ce6292686198db477b53e165dbdbb338d0db971",
+  "afterSHA256": "3f69b34649e84e0b0354038fad2be585423e7c5b33e2579f6d8bdf727c78d743",
+  "inverseExact": true,
+  "changedRules": [
+    {
+      "old": ".sheet-reference69 .sheet-preview-status { padding:2px 8px; border-radius:9999px; color:#424655!important; font-size:10px!important; line-height:14px; font-weight:700; letter-spacing:.22px; background:#e9e7ed; }",
+      "new": ".sheet-reference69 .sheet-preview-status { padding:2px 8px; border-radius:9999px; color:#424655!important; font-size:10px!important; line-height:21px; font-weight:700; letter-spacing:normal; background:#e9e7ed; }"
+    },
+    {
+      "old": ".sheet-reference69 .sheet-preview-date { display:flex; align-items:center; gap:4px; margin:0; color:#424655; font-size:12px; line-height:18px; font-weight:400; }",
+      "new": ".sheet-reference69 .sheet-preview-date { display:flex; align-items:center; gap:4px; margin:0; color:#424655; font-size:12px; line-height:21px; font-weight:400; }"
+    },
+    {
+      "old": ".sheet-reference69 .sheet-preview-count { display:flex; flex-wrap:nowrap; align-items:center; gap:8px; margin:2px 0 0; color:#34C759; font-size:11px; line-height:14px; font-weight:700; letter-spacing:.22px; }",
+      "new": ".sheet-reference69 .sheet-preview-count { display:flex; flex-wrap:nowrap; align-items:center; gap:8px; margin:2px 0 0; color:#34C759; font-size:11px; line-height:21px; font-weight:700; letter-spacing:normal; }"
+    },
+    {
+      "old": ".sheet-reference69 .sheet-action { display:flex; flex-direction:column; align-items:center; gap:6px; width:auto; min-width:0; margin:0; padding:8px; border-radius:16px; color:#1a1b1f; background:transparent; line-height:18px!important; }",
+      "new": ".sheet-reference69 .sheet-action { display:flex; flex-direction:column; align-items:center; gap:6px; width:auto; min-width:0; margin:0; padding:8px; border-radius:16px; color:#1a1b1f; background:transparent; line-height:21px!important; }"
+    },
+    {
+      "old": ".sheet-reference69 .sheet-action>text:last-child { margin:0; font-size:12px; line-height:18px; font-weight:500; white-space:nowrap; }",
+      "new": ".sheet-reference69 .sheet-action>text:last-child { margin:0; font-size:12px; line-height:21px; font-weight:500; white-space:nowrap; }"
+    },
+    {
+      "old": ".sheet-reference69 .action-recommend { top:-4px; right:8px; left:auto; padding:0 6px; border-radius:9999px; font-size:9px; line-height:14px; font-weight:700; letter-spacing:-.45px; box-shadow:0 1px 2px rgba(0,0,0,.05); }",
+      "new": ".sheet-reference69 .action-recommend { top:-4px; right:8px; left:auto; padding:0 6px; border-radius:9999px; font-size:9px; line-height:21px; font-weight:700; letter-spacing:-.225px; box-shadow:0 1px 2px rgba(0,0,0,.05); }"
+    },
+    {
+      "old": ".sheet-reference69 .sheet-code .sheet-code-text>text:first-child { color:#424655; font-size:11px; line-height:14px; font-weight:500; letter-spacing:.22px; }",
+      "new": ".sheet-reference69 .sheet-code .sheet-code-text>text:first-child { color:#424655; font-size:11px; line-height:21px; font-weight:500; letter-spacing:normal; }"
+    }
+  ],
+  "productScope": "Only seven newly-added PG06-S foreground rules; old CSS prefix/WXML/JS/JSON and glyphs unchanged"
+}

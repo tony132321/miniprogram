@@ -235,7 +235,9 @@ Page({
     if (this.clearPrivateAfterIdentityChange()) return;
     const filter = 'ALL';
     this.setData({ viewMode: 'CENTER', filter, searchOpen: false, searchQuery: '',
-      ...displayed(this.data.items, filter) });
+      ...displayed(this.data.items, filter) }, () => {
+      wx.pageScrollTo?.({ scrollTop: 0, duration: 0 });
+    });
     this.setTabBarHidden(true);
     if (this.data.loadState === 'READY' && this.data.approvalLoadState === 'IDLE')
       await this.loadApprovals();
@@ -244,14 +246,18 @@ Page({
     if (this.clearPrivateAfterIdentityChange()) return;
     const filter = 'ALL';
     this.setData({ viewMode: 'CHAT_UNAVAILABLE', filter, searchOpen: false, searchQuery: '',
-      ...displayed(this.data.items, filter) });
+      ...displayed(this.data.items, filter) }, () => {
+      wx.pageScrollTo?.({ scrollTop: 0, duration: 0 });
+    });
     this.setTabBarHidden(true);
   },
   backToInbox() {
     if (this.clearPrivateAfterIdentityChange()) return;
     const filter = 'ALL';
     this.setData({ viewMode: 'INBOX', filter,
-      ...displayed(this.data.items, filter, this.data.searchQuery) });
+      ...displayed(this.data.items, filter, this.data.searchQuery) }, () => {
+      wx.pageScrollTo?.({ scrollTop: 0, duration: 0 });
+    });
     this.setTabBarHidden(false);
   },
   toggleSearch() {

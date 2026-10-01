@@ -1,0 +1,3229 @@
+{
+  "implementationScope": "READY/no success/no join overlay; PG06 badminton hostSection / PG08 checkinSection and COMPLETED feedback / PG09 AA expenseSection",
+  "baselineCommit": "2e3e027",
+  "originalZIP": {
+    "path": "/Users/tsb/Downloads/stitch_design_system_generator (2).zip",
+    "sha256": "df22e733d33fda20979b75b8a7bc94717c4a5c9e41561a54e3038432fab32603"
+  },
+  "sources": {
+    "pg06": {
+      "HTML": {
+        "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg06/code.html",
+        "bytes": 19548,
+        "sha256": "05c1f7dccc856304c080298d7680f1e3df91bb765decea2e59efd2c7996b31b6"
+      },
+      "PNG": {
+        "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg06/screen.png",
+        "bytes": 391968,
+        "sha256": "56b6646520ac21c8ed159b6ace92a56899dd27c39379e91571af5b1f9b621a73"
+      },
+      "originalMaterialImportOrder": [
+        "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200",
+        "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      ],
+      "nodes": [
+        {
+          "line": 2,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[17px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "en"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"
+              }
+            },
+            {
+              "tag": "header",
+              "attributes": {
+                "class": "fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "w-full px-space-xl pt-space-xs pb-1 flex items-center justify-between text-on-surface"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center gap-1.5"
+              }
+            }
+          ],
+          "ligature": "signal_cellular_alt",
+          "displayPx": 17,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#1a1b1f",
+            "opacity": 1,
+            "source": "div class text-on-surface"
+          },
+          "runtimeEligible": false,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "exclusion": "source synthetic status indicator; native OS supplies real status, no SVG export"
+        },
+        {
+          "line": 2,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[17px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "en"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"
+              }
+            },
+            {
+              "tag": "header",
+              "attributes": {
+                "class": "fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "w-full px-space-xl pt-space-xs pb-1 flex items-center justify-between text-on-surface"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center gap-1.5"
+              }
+            }
+          ],
+          "ligature": "wifi",
+          "displayPx": 17,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#1a1b1f",
+            "opacity": 1,
+            "source": "div class text-on-surface"
+          },
+          "runtimeEligible": false,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "exclusion": "source synthetic status indicator; native OS supplies real status, no SVG export"
+        },
+        {
+          "line": 2,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[20px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "en"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"
+              }
+            },
+            {
+              "tag": "header",
+              "attributes": {
+                "class": "fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "w-full px-space-xl pt-space-xs pb-1 flex items-center justify-between text-on-surface"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center gap-1.5"
+              }
+            }
+          ],
+          "ligature": "battery_full",
+          "displayPx": 20,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#1a1b1f",
+            "opacity": 1,
+            "source": "div class text-on-surface"
+          },
+          "runtimeEligible": false,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "exclusion": "source synthetic status indicator; native OS supplies real status, no SVG export"
+        },
+        {
+          "line": 2,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[22px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "en"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"
+              }
+            },
+            {
+              "tag": "header",
+              "attributes": {
+                "class": "fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "h-14 px-margin flex items-center justify-between relative"
+              }
+            },
+            {
+              "tag": "button",
+              "attributes": {
+                "aria-label": "Go back",
+                "class": "w-11 h-11 flex items-center justify-center -ml-2 rounded-full text-on-surface active:scale-95 transition-transform hover:bg-surface-container/60",
+                "onclick": "history.back()"
+              }
+            }
+          ],
+          "ligature": "arrow_back_ios_new",
+          "displayPx": 22,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#1a1b1f",
+            "opacity": 1,
+            "source": "button class text-on-surface"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/arrow_back_ios_new-w400-f0-1a1b1f.svg"
+        },
+        {
+          "line": 2,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[22px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "en"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"
+              }
+            },
+            {
+              "tag": "header",
+              "attributes": {
+                "class": "fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "h-14 px-margin flex items-center justify-between relative"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center gap-space-xs"
+              }
+            },
+            {
+              "tag": "button",
+              "attributes": {
+                "aria-label": "More actions",
+                "class": "w-11 h-11 flex items-center justify-center rounded-full text-on-surface active:scale-95 transition-transform hover:bg-surface-container/60"
+              }
+            }
+          ],
+          "ligature": "more_horiz",
+          "displayPx": 22,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#1a1b1f",
+            "opacity": 1,
+            "source": "button class text-on-surface"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/more_horiz-w400-f0-1a1b1f.svg"
+        },
+        {
+          "line": 2,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-on-primary text-[18px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "en"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"
+              }
+            },
+            {
+              "tag": "header",
+              "attributes": {
+                "class": "fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "h-14 px-margin flex items-center justify-between relative"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center gap-space-xs"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-sm"
+              }
+            }
+          ],
+          "ligature": "person",
+          "displayPx": 18,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#ffffff",
+            "opacity": 1,
+            "source": "span class text-on-primary"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/person-w400-f0-ffffff.svg"
+        },
+        {
+          "line": 22,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[16px] text-white/80"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "en"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-14 pb-safe bg-background flex-1"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "px-margin flex flex-col gap-space-md pb-8"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "relative w-full rounded-2xl overflow-hidden shadow-sm aspect-[16/9] flex flex-col justify-between p-space-lg text-white"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-end justify-between mt-auto"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col gap-1 text-white/95"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center gap-1.5 font-label-md text-label-md"
+              }
+            }
+          ],
+          "ligature": "calendar_today",
+          "displayPx": 16,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#ffffff",
+            "opacity": 0.8,
+            "source": "span class text-white/80"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/calendar_today-w400-f0-ffffff-a80.svg"
+        },
+        {
+          "line": 26,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[16px] text-white/80"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "en"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-14 pb-safe bg-background flex-1"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "px-margin flex flex-col gap-space-md pb-8"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "relative w-full rounded-2xl overflow-hidden shadow-sm aspect-[16/9] flex flex-col justify-between p-space-lg text-white"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-end justify-between mt-auto"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col gap-1 text-white/95"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center gap-1.5 font-label-md text-label-md"
+              }
+            }
+          ],
+          "ligature": "location_on",
+          "displayPx": 16,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#ffffff",
+            "opacity": 0.8,
+            "source": "span class text-white/80"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/location_on-w400-f0-ffffff-a80.svg"
+        },
+        {
+          "line": 70,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[16px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "en"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-14 pb-safe bg-background flex-1"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "px-margin flex flex-col gap-space-md pb-8"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "bg-surface-card rounded-2xl p-space-lg shadow-sm flex flex-col gap-3"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center justify-between"
+              }
+            },
+            {
+              "tag": "button",
+              "attributes": {
+                "class": "flex items-center gap-0.5 font-label-md text-label-md text-on-surface-variant active:opacity-70 transition-opacity"
+              }
+            }
+          ],
+          "ligature": "chevron_right",
+          "displayPx": 16,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#424655",
+            "opacity": 1,
+            "source": "button class text-on-surface-variant"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/chevron_right-w400-f0-424655.svg"
+        },
+        {
+          "line": 79,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[11px] text-on-tertiary-fixed font-bold"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "en"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-14 pb-safe bg-background flex-1"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "px-margin flex flex-col gap-space-md pb-8"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "bg-surface-card rounded-2xl p-space-lg shadow-sm flex flex-col gap-3"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center gap-2.5 overflow-x-auto py-1"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "relative flex-shrink-0"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "absolute -top-1 -right-1 w-4 h-4 rounded-full bg-vibrant-lime flex items-center justify-center shadow-sm"
+              }
+            }
+          ],
+          "ligature": "star",
+          "displayPx": 11,
+          "axes": {
+            "wght": 700,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#181e00",
+            "opacity": 1,
+            "source": "span class text-on-tertiary-fixed"
+          },
+          "runtimeEligible": true,
+          "weightReason": "explicit span fontWeight utility",
+          "preparedSVG": "svg/star-w700-f0-181e00.svg"
+        },
+        {
+          "line": 108,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[20px]",
+            "style": "font-variation-settings: 'FILL' 1;"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "en"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-14 pb-safe bg-background flex-1"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "px-margin flex flex-col gap-space-md pb-8"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "relative overflow-hidden rounded-2xl bg-gradient-to-r from-electric-blue-soft via-party-violet-soft to-surface-card p-4 shadow-sm active:scale-[0.99] transition-transform cursor-pointer"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-start gap-3"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "w-9 h-9 rounded-xl bg-party-violet flex items-center justify-center text-white shadow-sm flex-shrink-0 mt-0.5"
+              }
+            }
+          ],
+          "ligature": "lightbulb",
+          "displayPx": 20,
+          "axes": {
+            "wght": 400,
+            "FILL": 1,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#ffffff",
+            "opacity": 1,
+            "source": "div class text-white"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/lightbulb-w400-f1-ffffff.svg"
+        },
+        {
+          "line": 119,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[20px] text-on-surface-variant mt-2"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "en"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-14 pb-safe bg-background flex-1"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "px-margin flex flex-col gap-space-md pb-8"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "relative overflow-hidden rounded-2xl bg-gradient-to-r from-electric-blue-soft via-party-violet-soft to-surface-card p-4 shadow-sm active:scale-[0.99] transition-transform cursor-pointer"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-start gap-3"
+              }
+            }
+          ],
+          "ligature": "chevron_right",
+          "displayPx": 20,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#424655",
+            "opacity": 1,
+            "source": "span class text-on-surface-variant"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/chevron_right-w400-f0-424655.svg"
+        },
+        {
+          "line": 130,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[14px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "en"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-14 pb-safe bg-background flex-1"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "px-margin flex flex-col gap-space-md pb-8"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "bg-surface-card rounded-2xl p-space-lg shadow-sm flex flex-col gap-3.5"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center justify-between"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-status-active-green-soft text-status-active-green font-label-sm text-label-sm font-bold"
+              }
+            }
+          ],
+          "ligature": "check",
+          "displayPx": 14,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#34c759",
+            "opacity": 1,
+            "source": "div class text-status-active-green"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/check-w400-f0-34c759.svg"
+        },
+        {
+          "line": 138,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-status-active-green text-[18px]",
+            "style": "font-variation-settings: 'FILL' 1;"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "en"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-14 pb-safe bg-background flex-1"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "px-margin flex flex-col gap-space-md pb-8"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "bg-surface-card rounded-2xl p-space-lg shadow-sm flex flex-col gap-3.5"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col gap-3 pt-1"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center justify-between"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center gap-2.5"
+              }
+            }
+          ],
+          "ligature": "check_circle",
+          "displayPx": 18,
+          "axes": {
+            "wght": 400,
+            "FILL": 1,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#34c759",
+            "opacity": 1,
+            "source": "span class text-status-active-green"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/check_circle-w400-f1-34c759.svg"
+        },
+        {
+          "line": 146,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-status-active-green text-[18px]",
+            "style": "font-variation-settings: 'FILL' 1;"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "en"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-14 pb-safe bg-background flex-1"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "px-margin flex flex-col gap-space-md pb-8"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "bg-surface-card rounded-2xl p-space-lg shadow-sm flex flex-col gap-3.5"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col gap-3 pt-1"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center justify-between"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center gap-2.5"
+              }
+            }
+          ],
+          "ligature": "check_circle",
+          "displayPx": 18,
+          "axes": {
+            "wght": 400,
+            "FILL": 1,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#34c759",
+            "opacity": 1,
+            "source": "span class text-status-active-green"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/check_circle-w400-f1-34c759.svg"
+        },
+        {
+          "line": 154,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-status-active-green text-[18px]",
+            "style": "font-variation-settings: 'FILL' 1;"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "en"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-14 pb-safe bg-background flex-1"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "px-margin flex flex-col gap-space-md pb-8"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "bg-surface-card rounded-2xl p-space-lg shadow-sm flex flex-col gap-3.5"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col gap-3 pt-1"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center justify-between"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center gap-2.5"
+              }
+            }
+          ],
+          "ligature": "check_circle",
+          "displayPx": 18,
+          "axes": {
+            "wght": 400,
+            "FILL": 1,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#34c759",
+            "opacity": 1,
+            "source": "span class text-status-active-green"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/check_circle-w400-f1-34c759.svg"
+        },
+        {
+          "line": 165,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[22px] text-electric-blue"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "en"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-14 pb-safe bg-background flex-1"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "px-margin flex flex-col gap-space-md pb-8"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "grid grid-cols-3 gap-2.5 pt-1"
+              }
+            },
+            {
+              "tag": "button",
+              "attributes": {
+                "class": "bg-surface-card text-on-surface hover:bg-surface-container active:scale-[0.97] transition-all rounded-xl py-3 px-2 flex flex-col items-center justify-center gap-1 shadow-sm"
+              }
+            }
+          ],
+          "ligature": "ios_share",
+          "displayPx": 22,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#1d64f2",
+            "opacity": 1,
+            "source": "span class text-electric-blue"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/ios_share-w400-f0-1d64f2.svg"
+        },
+        {
+          "line": 170,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[22px] text-primary"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "en"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-14 pb-safe bg-background flex-1"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "px-margin flex flex-col gap-space-md pb-8"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "grid grid-cols-3 gap-2.5 pt-1"
+              }
+            },
+            {
+              "tag": "button",
+              "attributes": {
+                "class": "bg-surface-card text-on-surface hover:bg-surface-container active:scale-[0.97] transition-all rounded-xl py-3 px-2 flex flex-col items-center justify-center gap-1 shadow-sm"
+              }
+            }
+          ],
+          "ligature": "send",
+          "displayPx": 22,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#004cc8",
+            "opacity": 1,
+            "source": "span class text-primary"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/send-w400-f0-004cc8.svg"
+        },
+        {
+          "line": 175,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[22px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "en"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-background font-body-md text-body-md text-on-surface flex flex-col min-h-screen antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-14 pb-safe bg-background flex-1"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "px-margin flex flex-col gap-space-md pb-8"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "grid grid-cols-3 gap-2.5 pt-1"
+              }
+            },
+            {
+              "tag": "button",
+              "attributes": {
+                "class": "bg-party-pink-soft text-party-pink hover:bg-error-container active:scale-[0.97] transition-all rounded-xl py-3 px-2 flex flex-col items-center justify-center gap-1 shadow-sm"
+              }
+            }
+          ],
+          "ligature": "stop_circle",
+          "displayPx": 22,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#ff2d55",
+            "opacity": 1,
+            "source": "button class text-party-pink"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/stop_circle-w400-f0-ff2d55.svg"
+        }
+      ]
+    },
+    "pg08": {
+      "HTML": {
+        "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg08/code.html",
+        "bytes": 20823,
+        "sha256": "c54ae75aef6fccc653601e3d9c23d172e22e7de36b5e4022f72880ba1f39de46"
+      },
+      "PNG": {
+        "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg08/screen.png",
+        "bytes": 652051,
+        "sha256": "a18734111819e713f5f2e28edd9b6c0e8b0995c9e73993b533c46cfa7c02ed53"
+      },
+      "originalMaterialImportOrder": [
+        "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200",
+        "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      ],
+      "nodes": [
+        {
+          "line": 3,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[24px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "header",
+              "attributes": {
+                "class": "fixed top-0 inset-x-0 z-50 bg-surface/85 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "h-16 px-margin flex items-center justify-between"
+              }
+            },
+            {
+              "tag": "button",
+              "attributes": {
+                "aria-label": "Back",
+                "class": "w-11 h-11 -ml-2 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors active:scale-95",
+                "onclick": "history.back()",
+                "type": "button"
+              }
+            }
+          ],
+          "ligature": "arrow_back_ios_new",
+          "displayPx": 24,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#1a1b1f",
+            "opacity": 1,
+            "source": "button class text-on-surface"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/arrow_back_ios_new-w400-f0-1a1b1f.svg"
+        },
+        {
+          "line": 3,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[22px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "header",
+              "attributes": {
+                "class": "fixed top-0 inset-x-0 z-50 bg-surface/85 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "h-16 px-margin flex items-center justify-between"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center gap-space-xs -mr-2"
+              }
+            },
+            {
+              "tag": "button",
+              "attributes": {
+                "aria-label": "More options",
+                "class": "w-11 h-11 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors active:scale-95",
+                "type": "button"
+              }
+            }
+          ],
+          "ligature": "more_horiz",
+          "displayPx": 22,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#1a1b1f",
+            "opacity": 1,
+            "source": "button class text-on-surface"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/more_horiz-w400-f0-1a1b1f.svg"
+        },
+        {
+          "line": 3,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-on-primary text-[18px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "header",
+              "attributes": {
+                "class": "fixed top-0 inset-x-0 z-50 bg-surface/85 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "h-16 px-margin flex items-center justify-between"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center gap-space-xs -mr-2"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"
+              }
+            }
+          ],
+          "ligature": "person",
+          "displayPx": 18,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#ffffff",
+            "opacity": 1,
+            "source": "span class text-on-primary"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/person-w400-f0-ffffff.svg"
+        },
+        {
+          "line": 103,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[18px] text-electric-blue",
+            "id": "refresh-icon"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-16 bg-surface"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full px-margin pb-safe space-y-space-md"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "relative w-full rounded-2xl overflow-hidden shadow-xl bg-inverse-surface text-inverse-on-surface poster-card-touch"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "relative z-10 p-space-md flex flex-col items-center"
+              }
+            },
+            {
+              "tag": "button",
+              "attributes": {
+                "class": "mt-space-md py-2.5 px-6 rounded-full bg-surface-card text-on-surface font-label-md text-label-md flex items-center justify-center gap-1.5 shadow-md hover:bg-surface-container active:scale-95 transition-all",
+                "id": "btn-refresh-qr",
+                "type": "button"
+              }
+            }
+          ],
+          "ligature": "sync",
+          "displayPx": 18,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#1d64f2",
+            "opacity": 1,
+            "source": "span class text-electric-blue"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/sync-w400-f0-1d64f2.svg"
+        },
+        {
+          "line": 127,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-party-pink text-[22px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-16 bg-surface"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full px-margin pb-safe space-y-space-md"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "w-full bg-surface-card rounded-2xl p-space-md shadow-[0_4px_20px_-2px_rgba(28,41,61,0.05)] flex flex-col space-y-space-md"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-start justify-between"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "w-10 h-10 rounded-full bg-party-pink-soft flex items-center justify-center shrink-0 shadow-sm"
+              }
+            }
+          ],
+          "ligature": "celebration",
+          "displayPx": 22,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#ff2d55",
+            "opacity": 1,
+            "source": "span class text-party-pink"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/celebration-w400-f0-ff2d55.svg"
+        },
+        {
+          "line": 133,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[18px] text-status-active-green font-bold"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-16 bg-surface"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full px-margin pb-safe space-y-space-md"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "w-full bg-surface-card rounded-2xl p-space-md shadow-[0_4px_20px_-2px_rgba(28,41,61,0.05)] flex flex-col space-y-space-md"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "grid grid-cols-2 gap-space-sm",
+                "id": "group-q1"
+              }
+            },
+            {
+              "tag": "button",
+              "attributes": {
+                "class": "feedback-btn flex items-center justify-center gap-2 py-3 px-3 rounded-xl bg-status-active-green-soft text-status-active-green shadow-sm active:scale-98 transition-all",
+                "data-active": "true",
+                "data-group": "q1",
+                "type": "button"
+              }
+            }
+          ],
+          "ligature": "check_circle",
+          "displayPx": 18,
+          "axes": {
+            "wght": 700,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#34c759",
+            "opacity": 1,
+            "source": "span class text-status-active-green"
+          },
+          "runtimeEligible": true,
+          "weightReason": "explicit span fontWeight utility",
+          "preparedSVG": "svg/check_circle-w700-f0-34c759.svg"
+        },
+        {
+          "line": 137,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[18px] text-outline"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-16 bg-surface"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full px-margin pb-safe space-y-space-md"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "w-full bg-surface-card rounded-2xl p-space-md shadow-[0_4px_20px_-2px_rgba(28,41,61,0.05)] flex flex-col space-y-space-md"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "grid grid-cols-2 gap-space-sm",
+                "id": "group-q1"
+              }
+            },
+            {
+              "tag": "button",
+              "attributes": {
+                "class": "feedback-btn flex items-center justify-center gap-2 py-3 px-3 rounded-xl bg-surface-container-low text-on-surface-variant hover:bg-surface-container active:scale-98 transition-all",
+                "data-active": "false",
+                "data-group": "q1",
+                "type": "button"
+              }
+            }
+          ],
+          "ligature": "sentiment_dissatisfied",
+          "displayPx": 18,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#737687",
+            "opacity": 1,
+            "source": "span class text-outline"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/sentiment_dissatisfied-w400-f0-737687.svg"
+        },
+        {
+          "line": 148,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[18px] text-party-violet font-bold"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-16 bg-surface"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full px-margin pb-safe space-y-space-md"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "w-full bg-surface-card rounded-2xl p-space-md shadow-[0_4px_20px_-2px_rgba(28,41,61,0.05)] flex flex-col space-y-space-md"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col space-y-2 pt-1"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "grid grid-cols-2 gap-space-sm",
+                "id": "group-q2"
+              }
+            },
+            {
+              "tag": "button",
+              "attributes": {
+                "class": "feedback-btn flex items-center justify-center gap-2 py-3 px-3 rounded-xl bg-party-violet-soft text-party-violet shadow-sm active:scale-98 transition-all",
+                "data-active": "true",
+                "data-group": "q2",
+                "type": "button"
+              }
+            }
+          ],
+          "ligature": "task_alt",
+          "displayPx": 18,
+          "axes": {
+            "wght": 700,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#5856d6",
+            "opacity": 1,
+            "source": "span class text-party-violet"
+          },
+          "runtimeEligible": true,
+          "weightReason": "explicit span fontWeight utility",
+          "preparedSVG": "svg/task_alt-w700-f0-5856d6.svg"
+        },
+        {
+          "line": 152,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[18px] text-outline"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-16 bg-surface"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full px-margin pb-safe space-y-space-md"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "w-full bg-surface-card rounded-2xl p-space-md shadow-[0_4px_20px_-2px_rgba(28,41,61,0.05)] flex flex-col space-y-space-md"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col space-y-2 pt-1"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "grid grid-cols-2 gap-space-sm",
+                "id": "group-q2"
+              }
+            },
+            {
+              "tag": "button",
+              "attributes": {
+                "class": "feedback-btn flex items-center justify-center gap-2 py-3 px-3 rounded-xl bg-surface-container-low text-on-surface-variant hover:bg-surface-container active:scale-98 transition-all",
+                "data-active": "false",
+                "data-group": "q2",
+                "type": "button"
+              }
+            }
+          ],
+          "ligature": "sentiment_neutral",
+          "displayPx": 18,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#737687",
+            "opacity": 1,
+            "source": "span class text-outline"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/sentiment_neutral-w400-f0-737687.svg"
+        }
+      ]
+    },
+    "pg09": {
+      "HTML": {
+        "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg09/code.html",
+        "bytes": 26928,
+        "sha256": "3f0f3f3f62d9d863121784e2ad4c3fd65562bb82b3360cea16593158b0c6d8fd"
+      },
+      "PNG": {
+        "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg09/screen.png",
+        "bytes": 511634,
+        "sha256": "1f5309f071bd83244b769c5b549785ff9fc9a6c571336f8c347d9dc479a0cae3"
+      },
+      "originalMaterialImportOrder": [
+        "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap",
+        "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      ],
+      "nodes": [
+        {
+          "line": 3,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[24px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "header",
+              "attributes": {
+                "class": "fixed top-0 inset-x-0 z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "h-16 px-margin flex items-center justify-between gap-gutter"
+              }
+            },
+            {
+              "tag": "button",
+              "attributes": {
+                "aria-label": "返回",
+                "class": "w-11 h-11 -ml-space-xs rounded-full flex items-center justify-center text-on-surface active:scale-95 transition-transform",
+                "onclick": "history.back()",
+                "type": "button"
+              }
+            }
+          ],
+          "ligature": "arrow_back_ios_new",
+          "displayPx": 24,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#1a1b1f",
+            "opacity": 1,
+            "source": "button class text-on-surface"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/arrow_back_ios_new-w400-f0-1a1b1f.svg"
+        },
+        {
+          "line": 3,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[22px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "header",
+              "attributes": {
+                "class": "fixed top-0 inset-x-0 z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "h-16 px-margin flex items-center justify-between gap-gutter"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center gap-space-xs -mr-space-xs"
+              }
+            },
+            {
+              "tag": "button",
+              "attributes": {
+                "aria-label": "分享或更多选项",
+                "class": "w-11 h-11 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface active:scale-95 transition-transform",
+                "type": "button"
+              }
+            }
+          ],
+          "ligature": "ios_share",
+          "displayPx": 22,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#424655",
+            "opacity": 1,
+            "source": "button class text-on-surface-variant"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/ios_share-w400-f0-424655.svg"
+        },
+        {
+          "line": 3,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-on-primary text-[18px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "header",
+              "attributes": {
+                "class": "fixed top-0 inset-x-0 z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "h-16 px-margin flex items-center justify-between gap-gutter"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center gap-space-xs -mr-space-xs"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-[0_2px_8px_rgba(29,100,242,0.25)]"
+              }
+            }
+          ],
+          "ligature": "person",
+          "displayPx": 18,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#ffffff",
+            "opacity": 1,
+            "source": "span class text-on-primary"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/person-w400-f0-ffffff.svg"
+        },
+        {
+          "line": 30,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-white/80 text-[20px] active:scale-90 transition-transform cursor-pointer"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-16 pb-safe bg-surface min-h-screen"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full relative pb-10"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col px-margin gap-space-lg relative z-10 pt-space-xs"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "relative w-full"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "relative w-full rounded-2xl overflow-hidden shadow-xl bg-inverse-surface aspect-[4/3] flex flex-col justify-between p-space-lg text-white"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "relative z-10 flex items-center justify-between"
+              }
+            }
+          ],
+          "ligature": "receipt_long",
+          "displayPx": 20,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#ffffff",
+            "opacity": 0.8,
+            "source": "span class text-white/80"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/receipt_long-w400-f0-ffffff-a80.svg"
+        },
+        {
+          "line": 45,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-white/80 text-[18px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-16 pb-safe bg-surface min-h-screen"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full relative pb-10"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col px-margin gap-space-lg relative z-10 pt-space-xs"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "relative w-full"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "relative w-full rounded-2xl overflow-hidden shadow-xl bg-inverse-surface aspect-[4/3] flex flex-col justify-between p-space-lg text-white"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "relative z-10 w-full bg-black/55 backdrop-blur-xl rounded-xl p-2.5 flex items-center justify-between shadow-inner"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center gap-1.5 pl-1.5"
+              }
+            }
+          ],
+          "ligature": "group",
+          "displayPx": 18,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#ffffff",
+            "opacity": 0.8,
+            "source": "span class text-white/80"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/group-w400-f0-ffffff-a80.svg"
+        },
+        {
+          "line": 58,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[15px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-16 pb-safe bg-surface min-h-screen"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full relative pb-10"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col px-margin gap-space-lg relative z-10 pt-space-xs"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "relative w-full"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "relative w-full rounded-2xl overflow-hidden shadow-xl bg-inverse-surface aspect-[4/3] flex flex-col justify-between p-space-lg text-white"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "relative z-10 w-full bg-black/55 backdrop-blur-xl rounded-xl p-2.5 flex items-center justify-between shadow-inner"
+              }
+            },
+            {
+              "tag": "button",
+              "attributes": {
+                "class": "flex items-center gap-0.5 text-white/90 hover:text-white font-label-sm text-label-sm pr-1 active:opacity-75 transition-opacity",
+                "id": "btn-details",
+                "type": "button"
+              }
+            }
+          ],
+          "ligature": "chevron_right",
+          "displayPx": 15,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#ffffff",
+            "opacity": 0.9,
+            "source": "button class text-white/90"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/chevron_right-w400-f0-ffffff-a90.svg"
+        },
+        {
+          "line": 80,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[16px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-16 pb-safe bg-surface min-h-screen"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full relative pb-10"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col px-margin gap-space-lg relative z-10 pt-space-xs"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "bg-surface-card rounded-2xl p-space-lg shadow-sm flex flex-col gap-space-md mt-2"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center justify-between"
+              }
+            },
+            {
+              "tag": "button",
+              "attributes": {
+                "class": "flex items-center gap-1 font-label-md text-label-md text-on-surface-variant bg-surface-container-low px-2.5 py-1.5 rounded-full hover:bg-surface-container active:scale-95 transition-all",
+                "type": "button"
+              }
+            }
+          ],
+          "ligature": "keyboard_arrow_down",
+          "displayPx": 16,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#424655",
+            "opacity": 1,
+            "source": "button class text-on-surface-variant"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/keyboard_arrow_down-w400-f0-424655.svg"
+        },
+        {
+          "line": 103,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[13px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-16 pb-safe bg-surface min-h-screen"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full relative pb-10"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col px-margin gap-space-lg relative z-10 pt-space-xs"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "bg-surface-card rounded-2xl p-space-lg shadow-sm flex flex-col gap-space-md mt-2"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col gap-space-sm",
+                "id": "participants-list"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center justify-between p-2 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-colors interactive-row"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col items-end shrink-0 pl-2"
+              }
+            },
+            {
+              "tag": "span",
+              "attributes": {
+                "class": "flex items-center gap-0.5 text-status-active-green font-label-sm text-[11px] font-medium"
+              }
+            }
+          ],
+          "ligature": "check_circle",
+          "displayPx": 13,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#34c759",
+            "opacity": 1,
+            "source": "span class text-status-active-green"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/check_circle-w400-f0-34c759.svg"
+        },
+        {
+          "line": 119,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[13px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-16 pb-safe bg-surface min-h-screen"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full relative pb-10"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col px-margin gap-space-lg relative z-10 pt-space-xs"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "bg-surface-card rounded-2xl p-space-lg shadow-sm flex flex-col gap-space-md mt-2"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col gap-space-sm",
+                "id": "participants-list"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center justify-between p-2 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-colors interactive-row"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col items-end shrink-0 pl-2"
+              }
+            },
+            {
+              "tag": "span",
+              "attributes": {
+                "class": "flex items-center gap-0.5 text-status-active-green font-label-sm text-[11px] font-medium"
+              }
+            }
+          ],
+          "ligature": "check_circle",
+          "displayPx": 13,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#34c759",
+            "opacity": 1,
+            "source": "span class text-status-active-green"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/check_circle-w400-f0-34c759.svg"
+        },
+        {
+          "line": 135,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[13px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-16 pb-safe bg-surface min-h-screen"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full relative pb-10"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col px-margin gap-space-lg relative z-10 pt-space-xs"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "bg-surface-card rounded-2xl p-space-lg shadow-sm flex flex-col gap-space-md mt-2"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col gap-space-sm",
+                "id": "participants-list"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center justify-between p-2 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-colors interactive-row"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col items-end shrink-0 pl-2"
+              }
+            },
+            {
+              "tag": "span",
+              "attributes": {
+                "class": "flex items-center gap-0.5 text-status-active-green font-label-sm text-[11px] font-medium"
+              }
+            }
+          ],
+          "ligature": "check_circle",
+          "displayPx": 13,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#34c759",
+            "opacity": 1,
+            "source": "span class text-status-active-green"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/check_circle-w400-f0-34c759.svg"
+        },
+        {
+          "line": 151,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[13px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-16 pb-safe bg-surface min-h-screen"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full relative pb-10"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col px-margin gap-space-lg relative z-10 pt-space-xs"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "bg-surface-card rounded-2xl p-space-lg shadow-sm flex flex-col gap-space-md mt-2"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col gap-space-sm",
+                "id": "participants-list"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center justify-between p-2 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-colors interactive-row"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col items-end shrink-0 pl-2"
+              }
+            },
+            {
+              "tag": "span",
+              "attributes": {
+                "class": "flex items-center gap-0.5 text-status-active-green font-label-sm text-[11px] font-medium"
+              }
+            }
+          ],
+          "ligature": "check_circle",
+          "displayPx": 13,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#34c759",
+            "opacity": 1,
+            "source": "span class text-status-active-green"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/check_circle-w400-f0-34c759.svg"
+        },
+        {
+          "line": 167,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[13px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-16 pb-safe bg-surface min-h-screen"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full relative pb-10"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col px-margin gap-space-lg relative z-10 pt-space-xs"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "bg-surface-card rounded-2xl p-space-lg shadow-sm flex flex-col gap-space-md mt-2"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col gap-space-sm",
+                "id": "participants-list"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center justify-between p-2 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low transition-colors interactive-row"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col items-end shrink-0 pl-2"
+              }
+            },
+            {
+              "tag": "span",
+              "attributes": {
+                "class": "flex items-center gap-0.5 text-status-active-green font-label-sm text-[11px] font-medium"
+              }
+            }
+          ],
+          "ligature": "check_circle",
+          "displayPx": 13,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#34c759",
+            "opacity": 1,
+            "source": "span class text-status-active-green"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/check_circle-w400-f0-34c759.svg"
+        },
+        {
+          "line": 220,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[18px]",
+            "id": "expand-icon"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-16 pb-safe bg-surface min-h-screen"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full relative pb-10"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col px-margin gap-space-lg relative z-10 pt-space-xs"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "bg-surface-card rounded-2xl p-space-lg shadow-sm flex flex-col gap-space-md mt-2"
+              }
+            },
+            {
+              "tag": "button",
+              "attributes": {
+                "class": "w-full py-2.5 flex items-center justify-center gap-1.5 text-secondary hover:text-primary font-label-md text-label-md active:scale-98 transition-all",
+                "id": "expand-btn",
+                "type": "button"
+              }
+            }
+          ],
+          "ligature": "keyboard_arrow_down",
+          "displayPx": 18,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#4c4aca",
+            "opacity": 1,
+            "source": "button class text-secondary"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/keyboard_arrow_down-w400-f0-4c4aca.svg"
+        },
+        {
+          "line": 228,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-[16px]"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-16 pb-safe bg-surface min-h-screen"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full relative pb-10"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col px-margin gap-space-lg relative z-10 pt-space-xs"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "bg-gradient-to-br from-party-violet-soft/80 via-white to-electric-blue-soft/70 rounded-2xl p-space-lg shadow-sm flex flex-col gap-3 interactive-card"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center justify-between"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-center gap-2"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "w-7 h-7 rounded-full bg-electric-blue flex items-center justify-center text-white shadow-md"
+              }
+            }
+          ],
+          "ligature": "auto_awesome",
+          "displayPx": 16,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#ffffff",
+            "opacity": 1,
+            "source": "div class text-white"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/auto_awesome-w400-f0-ffffff.svg"
+        },
+        {
+          "line": 251,
+          "sourceAttributes": {
+            "class": "material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5"
+          },
+          "ancestors": [
+            {
+              "tag": "html",
+              "attributes": {
+                "lang": "zh-CN"
+              }
+            },
+            {
+              "tag": "body",
+              "attributes": {
+                "class": "bg-surface font-body-md text-on-surface flex flex-col min-h-screen"
+              }
+            },
+            {
+              "tag": "main",
+              "attributes": {
+                "class": "flex flex-col relative w-full pt-16 pb-safe bg-surface min-h-screen"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col w-full relative pb-10"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex flex-col px-margin gap-space-lg relative z-10 pt-space-xs"
+              }
+            },
+            {
+              "tag": "div",
+              "attributes": {
+                "class": "flex items-start gap-2.5 bg-surface-container-low p-3.5 rounded-xl text-on-surface-variant"
+              }
+            }
+          ],
+          "ligature": "info",
+          "displayPx": 20,
+          "axes": {
+            "wght": 400,
+            "FILL": 0,
+            "opsz": 24,
+            "GRAD": 0
+          },
+          "color": {
+            "hex": "#004cc8",
+            "opacity": 1,
+            "source": "span class text-primary"
+          },
+          "runtimeEligible": true,
+          "weightReason": "official .material-symbols-outlined font-weight:normal overrides parent inherited weight",
+          "preparedSVG": "svg/info-w400-f0-004cc8.svg"
+        }
+      ]
+    }
+  },
+  "sourceFace": {
+    "savedWOFF2": "original-last-material-full.woff2",
+    "response": "original-last-material-full.response.json",
+    "bytes": 1136920,
+    "sha256": "77f9711f3f896a1d7a34ab95cffc45cfb17d84c223f197c1b90faa0d043006e9",
+    "version": [
+      "Version 2.972"
+    ],
+    "variableAxes": [
+      {
+        "tag": "FILL",
+        "min": 0.0,
+        "default": 0.0,
+        "max": 1.0
+      },
+      {
+        "tag": "wght",
+        "min": 100.0,
+        "default": 400.0,
+        "max": 700.0
+      }
+    ],
+    "fixedAxes": {
+      "opsz": 24,
+      "GRAD": 0
+    },
+    "actualFullFaceExports": 33,
+    "historicalSubsetDifferences": 2,
+    "correctedRuntimeVariants": [
+      "check_circle-w700-f0-34c759.svg",
+      "task_alt-w700-f0-5856d6.svg",
+      "lightbulb-w400-f1-ffffff.svg",
+      "check_circle-w400-f1-34c759.svg"
+    ],
+    "rcltCorrectionProof": "fill1-rclt-correction-proof.json",
+    "activeRcltAffectedGlyphs": 2
+  },
+  "fontBoundary": {
+    "report": "docs/evidence/caper-pg08-font-weight-boundary-audit-wave68-2026-10-02.md",
+    "PG08CSS900": "preserved; existing registered original800 face is the available weight match, no real900 binary claim",
+    "CSS500": "original requested500 retained in small source roles; four Jakarta400/600/700/800 faces; no profile-only500 alias imported",
+    "globalFontsModified": false
+  },
+  "inverseProtection": {
+    "segments": [
+      {
+        "label": "native header fallback exclusion",
+        "originalBytes": 1595,
+        "originalSHA256": "c4d43ea285481cc798fbc60c4a4cc2a0afd52b7322270c8d0dd2d9907b93d1d4",
+        "replacementBytes": 5197,
+        "replacementSHA256": "c0bffe8231a9ceaff5824c3312677c7f17a30ce7a0b1d83eb4caff086ecc8b65"
+      },
+      {
+        "label": "root scope classes",
+        "originalBytes": 906,
+        "originalSHA256": "6a868a800e66b486c50fd55fe5df9f2a78c862c03b48a4de015bf8f305b1dcdb",
+        "replacementBytes": 1348,
+        "replacementSHA256": "b97164fc720d12f11cd8e60d8dc46adba0cb61425503f98f5bce8264c7b09ab4"
+      },
+      {
+        "label": "PG08 reference and exact legacy fallback",
+        "originalBytes": 9670,
+        "originalSHA256": "56aecc0efaf32e66ed859e2eb72da04fff6e9ec3559aee9c7f76893731483ac2",
+        "replacementBytes": 21719,
+        "replacementSHA256": "62fc0074b659b38b70e1dbece2622bc6917a3d4fd897ec958d7043108e8ae077"
+      },
+      {
+        "label": "PG09 AA reference and exact free/generic fallback",
+        "originalBytes": 5548,
+        "originalSHA256": "b9e092bccc11c704c3d45d52ed52773e27636efacf7432e5a384d171ee3f4e64",
+        "replacementBytes": 12896,
+        "replacementSHA256": "0de9546e78e0ed8d9f6272ae80b94c5dc1611eeb890c0bc29ba0c869127b5d98"
+      },
+      {
+        "label": "PG06 badminton overview and exact generic fallback",
+        "originalBytes": 5211,
+        "originalSHA256": "328157be09eff972b0a52eecfc2a8ab4b1714aee64abc311f1867428e1b62a54",
+        "replacementBytes": 11759,
+        "replacementSHA256": "a994368d95b560662cb3864fe5535e791a3a32e33b3051cd110b5c90c02fcd98"
+      }
+    ],
+    "fullInverseSHA256": "06741c8056566a32f33f356ce65f9aabfcb2164d950a6c288c28e2ec48f0fdf3",
+    "CSSOldPrefixSHA256": "36f4980f427bdf6502ffa2f068dbd935bd028a37c5b563f6860c76715a3b742f",
+    "temporaryInverseMap": "/private/tmp/caper-wave69-event/wxml-inverse-edits.json",
+    "baselineFiles": "/private/tmp/caper-wave69-event/baseline/",
+    "archive": "/private/tmp/caper-ui68-immutable-keerh5mh/"
+  },
+  "sourceAdaptations": [
+    "PG06 original photo and scrim both -z10 paint below page; original PNG near-white hero retained without dark replacement or photo download",
+    "Native real statusBarHeight/headerPaddingRight replace original synthetic OS indicators; headings may ellipsize in capsule-constrained width at source font size",
+    "PG08 illustrative inline SVG QR and center A badge never exported as credential; actual host encoder/canvas240 remain, outer card272px contains 240+16+16; participant scan/token input kept",
+    "PG08 feedback default selections not fabricated; null/false/true from real fields; original script700-selected and400-inactive glyphs exported",
+    "Source persons, fake counts and paid labels not adopted; authorized aliases/anonymous glyphs and actual API counts remain",
+    "PG09 total/share cent values and both party statements kept; no invented average amount, fake receipt, platform payment or AI split",
+    "Source invalid shadow-xs/active:scale-98 not invented; no new typography/global fonts"
+  ],
+  "reusedAssets": [
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/pg04s-person.svg",
+      "verification": "actual full face exact viewBox/path/paint; existing source width/height attributes retained"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/pg04s-auto_awesome.svg",
+      "verification": "actual full face exact viewBox/path/paint; existing source width/height attributes retained"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/pg04s-check_circle_fill0.svg",
+      "verification": "actual full face exact viewBox/path/paint; existing source width/height attributes retained"
+    }
+  ],
+  "runtimeNewAssets": [
+    "miniprogram/subpackages/activity/event/assets/w69-arrow_back_ios_new-w400-f0-1a1b1f.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-calendar_today-w400-f0-ffffff-a80.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-celebration-w400-f0-ff2d55.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-check-w400-f0-34c759.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-check_circle-w400-f0-737687.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-check_circle-w400-f1-34c759.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-check_circle-w700-f0-34c759.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-chevron_right-w400-f0-424655.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-chevron_right-w400-f0-ffffff-a90.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-group-w400-f0-ffffff-a80.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-info-w400-f0-004cc8.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-ios_share-w400-f0-1d64f2.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-ios_share-w400-f0-424655.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-keyboard_arrow_down-w400-f0-424655.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-keyboard_arrow_down-w400-f0-4c4aca.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-keyboard_arrow_up-w400-f0-4c4aca.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-lightbulb-w400-f1-ffffff.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-location_on-w400-f0-ffffff-a80.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-more_horiz-w400-f0-1a1b1f.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-receipt_long-w400-f0-ffffff-a80.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-send-w400-f0-004cc8.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-sentiment_dissatisfied-w400-f0-737687.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-sentiment_dissatisfied-w700-f0-34c759.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-sentiment_neutral-w400-f0-737687.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-sentiment_neutral-w700-f0-5856d6.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-star-w700-f0-181e00.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-stop_circle-w400-f0-ff2d55.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-sync-w400-f0-1d64f2.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-task_alt-w400-f0-737687.svg",
+    "miniprogram/subpackages/activity/event/assets/w69-task_alt-w700-f0-5856d6.svg"
+  ],
+  "checkReport": "bounded-scoped-check.json",
+  "sourceRefinementProof": "source-text-refinement-proof.json",
+  "license": {
+    "family": "Material Symbols Outlined",
+    "license": "Apache-2.0",
+    "path": "docs/licenses/material-symbols-Apache-2.0.txt",
+    "bytes": 11357,
+    "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd"
+  },
+  "sourceRoleCorrectionProof": "pg06-role-correction-proof.json",
+  "nativeGutterCorrectionProof": "pg09-native-gutter-correction-proof.json",
+  "sourceShadowCorrectionProof": "shadow-sm-correction-proof.json"
+}
