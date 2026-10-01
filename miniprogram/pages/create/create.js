@@ -6,10 +6,10 @@ function headerActionInsets() {
     const width = (wx.getWindowInfo?.() || wx.getSystemInfoSync?.() || {}).windowWidth;
     if (Number.isFinite(menu?.left) && Number.isFinite(width) && menu.left >= 0 && menu.left < width) {
       const inset = Math.ceil(width - menu.left + 8);
-      return { profile: `${inset}px`, draft: `${inset + 34}px` };
+      return { profile: `${inset}px`, draft: `${inset + 40}px` };
     }
   } catch (_) { /* Keep native menu controls clear on older clients. */ }
-  return { profile: '112px', draft: '146px' };
+  return { profile: '112px', draft: '152px' };
 }
 function iso(date, time) { return new Date(`${date}T${time}:00+08:00`).toISOString(); }
 function localParts(value) {

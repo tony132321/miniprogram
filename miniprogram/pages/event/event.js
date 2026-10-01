@@ -1,6 +1,15 @@
 const { api } = require('../../utils/api.js');
 const { drawCheckInQr } = require('../../utils/checkin-qr.js');
 const config = require('../../config.js');
+function headerPaddingRight() {
+  try {
+    const menu = wx.getMenuButtonBoundingClientRect?.();
+    const windowWidth = (wx.getWindowInfo?.() || wx.getSystemInfoSync?.() || {}).windowWidth;
+    if (Number.isFinite(menu?.left) && Number.isFinite(windowWidth) && menu.left >= 0 && menu.left < windowWidth)
+      return `${Math.ceil(windowWidth - menu.left + 8)}px`;
+  } catch (_) { /* The fixed inset below keeps the native menu clear on older clients. */ }
+  return '112px';
+}
 function currentActorId() {
   return wx.getStorageSync('sessionToken') ? wx.getStorageSync('userId')
     : wx.getStorageSync('devUser') || config.developmentUser || '';
@@ -263,7 +272,7 @@ const sectionHeadings = {
   cohostCheckinSection: ['协办签到管理', '仅限本场授权']
 };
 Page({
-  data: { statusBarHeight: 24, id: '', token: '', source: '', activeSection: 'detailsSection', sectionTitle: '活动详情', sectionSubtitle: '耍起 CAPER · 线下见面', checkInMode: 'participant', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '', canCopyPublishedInvite: false,
+  data: { statusBarHeight: 24, headerPaddingRight: '112px', id: '', token: '', source: '', activeSection: 'detailsSection', sectionTitle: '活动详情', sectionSubtitle: '耍起 CAPER · 线下见面', checkInMode: 'participant', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '', canCopyPublishedInvite: false,
     joinConfirmation: null, joinSubmitting: false,
     canJoin: false, canExpressInterest: false, canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
     canGenerateCheckInToken: false, canCompleteEvent: false, checkInWindowNotice: '', checkInAvailability: '', completionAvailability: '',
@@ -293,7 +302,7 @@ Page({
     const pendingExitIntent = options.id && options.section === 'registrationSection' && options.entry === 'pendingExit'
       ? { eventId: options.id, actor: '' } : null;
     this.pendingExitIntent = pendingExitIntent;
-    this.setData({ statusBarHeight: wx.getSystemInfoSync?.().statusBarHeight || 24,
+    this.setData({ statusBarHeight: wx.getSystemInfoSync?.().statusBarHeight || 24, headerPaddingRight: headerPaddingRight(),
       id: options.id || '', token: options.token || '', source: options.source || '', activeSection: 'detailsSection', sectionTitle: '活动详情', sectionSubtitle: '耍起 CAPER · 线下见面', checkInMode: 'participant', successState: '', feedbackSubmitting: false, feedbackUncertain: false });
     await getApp().globalData.ready;
     if (pendingExitIntent && this.pendingExitIntent === pendingExitIntent)

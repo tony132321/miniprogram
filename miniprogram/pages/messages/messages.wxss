@@ -280,3 +280,46 @@
 .private-chat-composer { position:fixed; z-index:12; left:0; right:0; bottom:0; display:flex; align-items:center; gap:12rpx; padding:16rpx 26rpx calc(16rpx + env(safe-area-inset-bottom)); background:#faf8fe; box-shadow:0 -2rpx 12rpx rgba(16,38,80,.055); }
 .private-chat-composer button { flex:none; width:63rpx; height:63rpx; margin:0; padding:0; border-radius:50%; background:#edf0f5; color:#9ca3af; font-size:33rpx; line-height:63rpx; }
 .private-chat-composer input { flex:1; min-width:0; height:63rpx; box-sizing:border-box; padding:0 22rpx; border-radius:99rpx; background:#fff; color:#9ca3af; font-size:22rpx; }
+
+/* caper_3 source px; INBOX alone owns this sticky header and priority card. */
+.messages-inbox .messages-status-shield { background:#fff; }
+.messages-inbox .inbox-reference-header { position:sticky; z-index:11; box-sizing:border-box; margin:0 -26rpx; padding:0 20px 8px; background:linear-gradient(to bottom,#fff,#fff 50%,#f8fafc); font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; }
+/* Native status area replaces the source status mock; controls fit a 56px row. */
+.messages-inbox .messages-brand { position:relative; top:auto; box-sizing:border-box; height:56px; min-height:56px; margin:0; padding:0; gap:0; background:transparent; }
+.messages-inbox .brand-lockup { gap:6px; }
+.messages-inbox .brand-dot { flex:none; width:32px; height:32px; color:#fff; font-size:18px; font-weight:900; line-height:32px; letter-spacing:-.05em; box-shadow:0 4px 6px -1px rgba(59,130,246,.3),0 2px 4px -2px rgba(59,130,246,.3); }
+.messages-inbox .brand-words { line-height:1.5; }
+.messages-inbox .brand-words text:first-child { font-size:12px; font-weight:900; line-height:1; letter-spacing:.1em; }
+.messages-inbox .brand-words text:last-child { font-size:9px; font-weight:700; line-height:1.5; letter-spacing:.05em; }
+.messages-inbox .brand-actions { gap:8px; }
+.messages-inbox .brand-icon { display:flex; flex:none; align-items:center; justify-content:center; box-sizing:border-box; width:32px; height:32px; min-height:0; margin:0; padding:0; border-radius:9999px; line-height:1; }
+.messages-inbox .brand-icon-glyph { display:block; width:16px; height:16px; }
+.messages-inbox .title-row { min-height:0; margin:8px 0 0; padding:0; }
+.messages-inbox .title-heading { gap:8px; }
+.messages-inbox .page-title { font-size:24px; font-weight:900; line-height:32px; letter-spacing:-.025em; }
+.messages-inbox .title-count { min-width:0; padding:2px 8px; border-radius:9999px; font-size:12px; font-weight:700; line-height:16px; box-shadow:0 1px 2px rgba(0,0,0,.05); }
+.messages-inbox .subtitle { margin-top:2px; color:#64748b; font-size:11px; font-weight:500; line-height:16.5px; }
+.messages-inbox .title-stickers { top:-12px; right:0; }
+.messages-inbox .title-stickers>text { padding:2px 8px; border:1px solid rgba(191,219,254,.6); border-radius:9999px; background:rgba(239,246,255,.9); font-size:11px; font-weight:700; line-height:16.5px; letter-spacing:-.025em; box-shadow:0 1px 2px rgba(0,0,0,.05); transform:rotate(-3deg); }
+.messages-inbox .title-stickers>view { display:flex; flex-direction:column; width:auto; margin:4px 0 0; padding:4px 8px; border-radius:4px; font-size:10px; font-weight:800; line-height:1.25; text-align:left; box-shadow:2px 4px 12px rgba(0,0,0,.06); transform:rotate(3deg); }
+.messages-inbox .title-stickers>view text:last-child { margin-top:0; font-size:9px; }
+.messages-inbox .filter-row { align-items:center; gap:8px; margin:16px 0 0; padding-bottom:4px; overflow:visible; }
+.messages-inbox .filter { flex:1 1 0; min-width:0; box-sizing:border-box; margin:0; padding:6px 0; border:1px solid rgba(226,232,240,.8); border-radius:9999px; font-size:12px; font-weight:600; line-height:16px; }
+.messages-inbox .filter.active { border:0; box-shadow:0 1px 2px rgba(59,130,246,.2); }
+/* 16px source card inset, without changing protected long-page gutters. */
+.messages-inbox .priority-card { box-sizing:border-box; margin:0 calc(16px - 26rpx) 16px; padding:12px; border:1px solid #f1f5f9; border-radius:16px; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,.05); font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; }
+.messages-inbox .priority-heading { min-height:0; margin-bottom:8px; padding:0 4px; }
+.messages-inbox .priority-heading-title { gap:6px; font-size:12px; font-weight:700; line-height:18px; }
+.messages-inbox .priority-heading-title>text:first-child { font-size:14px; line-height:20px; }
+.messages-inbox .priority-count { font-size:12px; font-weight:700; }
+.messages-inbox .priority-heading button { padding:0; font-size:11px; font-weight:600; line-height:16.5px; }
+.messages-inbox .priority-list { margin-top:0; }
+.messages-inbox .priority-row { gap:12px; min-height:0; padding:8px 4px; border-bottom:1px solid #f1f5f9; line-height:1.5; }
+.messages-inbox .priority-row:last-child { border-bottom:0; }
+.messages-inbox .priority-icon { box-sizing:border-box; width:40px; height:40px; border:1px solid #c9dafc; font-size:12px; font-weight:700; line-height:38px; }
+.messages-inbox .priority-main { align-items:baseline; gap:6px; }
+.messages-inbox .priority-title { font-size:12px; font-weight:700; line-height:18px; }
+.messages-inbox .priority-category { padding:0 4px; border-radius:4px; background:#f1f5f9; color:#475569; font-size:10px; font-weight:400; line-height:15px; }
+.messages-inbox .priority-time { color:#94a3b8; font-size:10px; line-height:15px; }
+.messages-inbox .priority-summary { margin-top:2px; color:#475569; font-size:12px; line-height:18px; }
+.messages-inbox .priority-unread { width:16px; height:16px; font-size:10px; font-weight:700; line-height:16px; }
