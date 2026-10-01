@@ -8,4 +8,10 @@
 
 - 新增 `test/miniprogram-city-search-focus.test.ts`，断言清空后输入 `b` 与 `beijing` 都保留受控焦点且筛选正确。修改前 **1/1 失败**，修改后 **1/1 通过**。
 - 城市页相关四个测试文件 **12/12** 通过；`city.js` 语法检查、全局 `tsc --noEmit` 均退出 0。
-- 本批未运行全量测试、微信开发者工具或真机实点；焦点在实际微信输入法中的表现仍需模拟器或真机复点。本修复不引入 GPS 定位或公开活动列表。
+- 未运行全量测试。本修复不引入 GPS 定位或公开活动列表。
+
+## 隔离微信开发者工具复点及边界
+
+- 仅把当前 `pages/city/city.js` 同步到隔离项目 `/private/tmp/irl-pg10f-wave48-sim`；微信开发者工具 CLI `preview` 退出 0，包体 `2,233,555` 字节。Automator 打开 `pages/city/city`，实点「搜索更多城市」。
+- 使用 Automator 的 `InputElement.input` 依次送入 `b`、`be`、`bei`、`beij`、`beiji`、`beijin`、`beijing`；每一步等待页面 `query` 更新，观察 `searchFocused=true`、输入框值与查询一致。最后只显示「北京」一项，输入框 `focus` 属性为 `true`，捕获 `exception=0`。[最终结果截图](images/caper-city-search-focus-wave49-2026-10-01.png)不含敏感信息。
+- `InputElement.input` 是程序化输入，不能可靠证明真实微信输入法没有在字符之间失焦。尝试用 Computer Use 操作开发者工具原生键盘时，宿主 Mac 已锁定且自动解锁不可用，因此本轮**不声明真实输入法焦点实点通过**；这部分仍需解锁后的原生键盘或真机复核。
