@@ -42,6 +42,7 @@ function sameProfileIdentity(expected, current) {
   return !expected || !current || expected.every((value, index) => value === current[index]);
 }
 function beginProfileAction(page, key) {
+  if (page._privateActionsBlocked) return null;
   const identity = readProfileIdentity();
   if (page._loadedIdentity && !sameProfileIdentity(page._loadedIdentity, identity)) {
     page.clearForIdentitySwitch();
@@ -357,6 +358,7 @@ Page({
   onUnload() { this._pendingFocus = ''; this._offerFocusGeneration = (this._offerFocusGeneration || 0) + 1; },
   clearForIdentitySwitch() {
     this.clearPrivateData(); this._privateActor = null;
+    this._privateActionsBlocked = true;
     this.setData({ hasSession: false, loadState: 'UNAUTHENTICATED', message: '账号已切换，请重新进入个人页。' });
   },
   handlePrivateAccessError(error) {
@@ -421,6 +423,7 @@ Page({
       const activityFilter = this.data.activityFilter;
       const notificationItems = listItems(notifications);
       this._loadedIdentity = identity;
+      this._privateActionsBlocked = false;
       this.setData({ notifications: presentNotifications(notificationItems, activityItems || []),
         notificationsTotal: notifications ? notifications.total ?? notificationItems.length : 0,
         nextNotificationOffset: notifications?.nextOffset ?? null, notificationSnapshot: notifications?.snapshot ?? null,
@@ -831,10 +834,12 @@ Page({
   },
   goMessages() { wx.switchTab({ url: '/pages/messages/messages' }); },
   goApprovalManagement() {
+    if (!beginProfileAction(this, 'approvalShortcut')) return;
     wx.setStorageSync('irlMessagesFocusIntent', 'approvals');
     wx.switchTab({ url: '/pages/messages/messages' });
   },
   selectActivityFilter(event) {
+    if (!beginProfileAction(this, 'activityFilter')) return;
     const filter = event?.currentTarget?.dataset?.filter;
     if (!Object.prototype.hasOwnProperty.call(activityEmptyLabels, filter)) return;
     this.setData({ activityFilter: filter, activityEmptyLabel: activityEmptyLabels[filter],
@@ -844,10 +849,12 @@ Page({
   showPrivacyRequests() { this.revealAdvanced('privacySection'); },
   goHostedActivities() { wx.navigateTo({ url: '/subpackages/profile/moments/moments?filter=hosted' }); },
   goHostCenter() {
+    if (!beginProfileAction(this, 'hostCenterShortcut')) return;
     wx.setStorageSync('irlHomeTabIntent', 'organized');
     this.goHome();
   },
   inviteFriends() {
+    if (!beginProfileAction(this, 'inviteShortcut')) return;
     const shareable = this.data.activityItems.filter(item => item.isHost && item.status === 'RECRUITING');
     if (shareable.length === 1)
       return wx.navigateTo({ url: '/subpackages/activity/share/share?id=' + encodeURIComponent(shareable[0].id) });
@@ -876,6 +883,7 @@ Page({
   goGuidelines() { wx.navigateTo({ url: '/subpackages/profile/guidelines/guidelines' }); },
   goHome() { wx.switchTab({ url: '/pages/index/index' }); },
   openActivity(event) {
+    if (!beginProfileAction(this, 'openActivity')) return;
     const id = event.currentTarget.dataset.id;
     if (id) wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) });
   },

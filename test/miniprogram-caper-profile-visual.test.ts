@@ -7,7 +7,8 @@ import { cityModule } from './miniprogram-city-module.js';
 type Activity = { id: string; title: string; status: string; startAt?: string;
   venueName?: string; isHost: boolean; myRegistrationStatus: string | null };
 
-function loadProfile(activities: Activity[], reportContext?: { actor: string; owner: string; eventId: string }, profileFocusIntent = '') {
+function loadProfile(activities: Activity[], reportContext?: { actor: string; owner: string; eventId: string },
+  profileFocusIntent = '', sessionState = { token: 'session', userId: 'host' }) {
   let page: Record<string, any> | undefined;
   const navigations: string[] = [];
   const storageWrites: Array<[string, string]> = [];
@@ -35,7 +36,7 @@ function loadProfile(activities: Activity[], reportContext?: { actor: string; ow
     Page(definition: Record<string, any>) { page = definition; },
     getApp() { return { globalData }; },
     wx: {
-      getStorageSync(key: string) { return key === 'sessionToken' ? 'session' : key === 'userId' ? 'host' :
+      getStorageSync(key: string) { return key === 'sessionToken' ? sessionState.token : key === 'userId' ? sessionState.userId :
         key === 'irlProfileFocusIntent' ? profileFocusIntent : ''; },
       setStorageSync(key: string, value: string) { storageWrites.push([key, value]); },
       removeStorageSync(key: string) { storageRemovals.push(key); },
@@ -82,6 +83,27 @@ test('profile activity grid uses real event rows with category photos and opens 
 
   const markup = readFileSync(new URL('../miniprogram/pages/me/me.wxml', import.meta.url), 'utf8');
   assert.match(markup, /class="activity-cover"[\s\S]*?<image[^>]+src="{{item\.cover}}"/);
+});
+
+test('a stale profile card cannot open or share the previous account activity after a session switch', async () => {
+  const sessionState = { token: 'first-session', userId: 'first-host' };
+  const { page, navigations, storageWrites } = loadProfile([
+    { id: 'first-event', title: '旧账号活动', status: 'RECRUITING', isHost: true, myRegistrationStatus: null }
+  ], undefined, '', sessionState);
+  await page.onShow();
+  assert.equal(page.data.activityPreview[0].id, 'first-event');
+
+  sessionState.token = 'second-session';
+  sessionState.userId = 'second-host';
+  page.openActivity({ currentTarget: { dataset: { id: 'first-event' } } });
+  page.inviteFriends();
+  page.goApprovalManagement();
+  page.goHostCenter();
+
+  assert.deepEqual(navigations, []);
+  assert.deepEqual(storageWrites, []);
+  assert.equal(page.data.activityPreview.length, 0);
+  assert.equal(page.data.inviteReady, false);
 });
 
 test('profile activity filters and invitation entry use only the current member events', async () => {
