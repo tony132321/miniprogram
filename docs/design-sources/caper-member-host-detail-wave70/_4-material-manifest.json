@@ -1,0 +1,1255 @@
+{
+  "sourceHTMLSHA256": "5891318df87bc1c022164130244b1a5739fc706e46bbb837e90553abb690fd62",
+  "lastMaterialURL": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap",
+  "originalMaterialURLs": [
+    "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200",
+    "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+  ],
+  "fixedSourceFace": "docs/design-sources/caper-activity-wave69/original-last-material-full.woff2",
+  "fullFontSHA256": "77f9711f3f896a1d7a34ab95cffc45cfb17d84c223f197c1b90faa0d043006e9",
+  "version": "Version2.972",
+  "activeRcltApplied": true,
+  "nodes": [
+    {
+      "line": 9,
+      "attributes": {
+        "class": "material-symbols-outlined text-[24px]"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "en"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "header",
+          "attributes": {
+            "class": "fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "h-14 px-margin flex items-center justify-between"
+          }
+        },
+        {
+          "tag": "button",
+          "attributes": {
+            "aria-label": "Go back",
+            "class": "w-11 h-11 -ml-space-sm flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container active:scale-95 transition-all",
+            "onclick": "history.back()"
+          }
+        }
+      ],
+      "name": "arrow_back_ios_new",
+      "displayPx": 24,
+      "exactSVG": "arrow_back_ios_new-w400-f0-1a1b1f.svg"
+    },
+    {
+      "line": 9,
+      "attributes": {
+        "class": "material-symbols-outlined text-on-primary text-[18px]"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "en"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "header",
+          "attributes": {
+            "class": "fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "h-14 px-margin flex items-center justify-between"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"
+          }
+        }
+      ],
+      "name": "person",
+      "displayPx": 18,
+      "exactSVG": "person-w400-f0-ffffff.svg"
+    },
+    {
+      "line": 44,
+      "attributes": {
+        "class": "material-symbols-outlined text-[14px] text-electric-blue",
+        "style": "font-variation-settings: 'FILL' 1;"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "en"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex flex-col relative w-full pt-14 pb-safe bg-surface min-h-screen"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full pb-10 space-y-4"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "px-margin"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "relative w-full rounded-xl overflow-hidden shadow-md bg-surface-container"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-full h-56 bg-cover bg-center relative flex flex-col justify-between p-4",
+            "data-alt": "A vivid, professional indoor badminton court with polished hardwood floors, crisp green vinyl court mats, bright architectural overhead arena lights, shuttlecocks and rackets resting by the bench, lively modern sports photography with energetic warm ambiance and electric blue color accents, 8k resolution, cinematic lighting.",
+            "style": "background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuABaoqehUb9vREoj3NtqXORQ6SsPFR9bXD8rowIWKfOA4C-bbk4GLTNTLxCGVRf-SX-ypfMYGRQcyS5PvBXbQiiCUfzU6EYpkVMNNZwVT9KQ7sSZV-e4uvF696fDTHIqpcuUSA7XecRvpBwKUG8R-37NWLkHqM7uHFO5jbX-8zw-4FY8QOv5WyKDQj0YgGogcfcQ0VShrnj2NqwqKDxf66p_JafUzMcL8AE_lyCJoptzVi1W4q2E06M8g')"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "relative z-10 space-y-1"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "inline-flex items-center space-x-1.5 bg-surface-translucent backdrop-blur-md px-2.5 py-0.5 rounded-full"
+          }
+        }
+      ],
+      "name": "verified",
+      "displayPx": 14,
+      "exactSVG": "verified-w400-f1-1d64f2.svg"
+    },
+    {
+      "line": 59,
+      "attributes": {
+        "class": "material-symbols-outlined text-[20px]",
+        "style": "font-variation-settings: 'FILL' 1;"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "en"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex flex-col relative w-full pt-14 pb-safe bg-surface min-h-screen"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full pb-10 space-y-4"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "px-margin space-y-3"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "bg-surface-card p-space-md rounded-xl shadow-sm flex items-start space-x-3"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-10 h-10 rounded-full bg-electric-blue-soft text-electric-blue flex items-center justify-center shrink-0"
+          }
+        }
+      ],
+      "name": "calendar_clock",
+      "displayPx": 20,
+      "exactSVG": "calendar_clock-w400-f1-1d64f2.svg"
+    },
+    {
+      "line": 70,
+      "attributes": {
+        "class": "material-symbols-outlined text-[20px]",
+        "style": "font-variation-settings: 'FILL' 1;"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "en"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex flex-col relative w-full pt-14 pb-safe bg-surface min-h-screen"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full pb-10 space-y-4"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "px-margin space-y-3"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "bg-surface-card p-space-md rounded-xl shadow-sm flex items-start space-x-3"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-10 h-10 rounded-full bg-party-pink-soft text-party-pink flex items-center justify-center shrink-0"
+          }
+        }
+      ],
+      "name": "location_on",
+      "displayPx": 20,
+      "exactSVG": "location_on-w400-f1-ff2d55.svg"
+    },
+    {
+      "line": 84,
+      "attributes": {
+        "class": "material-symbols-outlined text-[16px]"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "en"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex flex-col relative w-full pt-14 pb-safe bg-surface min-h-screen"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full pb-10 space-y-4"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "px-margin space-y-3"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "grid grid-cols-2 gap-gutter"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "bg-surface-card p-space-md rounded-xl shadow-sm flex flex-col justify-between"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex items-center space-x-2"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-7 h-7 rounded-full bg-status-active-green-soft text-status-active-green flex items-center justify-center shrink-0"
+          }
+        }
+      ],
+      "name": "payments",
+      "displayPx": 16,
+      "exactSVG": "payments-w400-f0-34c759.svg"
+    },
+    {
+      "line": 100,
+      "attributes": {
+        "class": "material-symbols-outlined text-[16px]"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "en"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex flex-col relative w-full pt-14 pb-safe bg-surface min-h-screen"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full pb-10 space-y-4"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "px-margin space-y-3"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "grid grid-cols-2 gap-gutter"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "bg-surface-card p-space-md rounded-xl shadow-sm flex flex-col justify-between"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex items-center space-x-2"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-7 h-7 rounded-full bg-party-violet-soft text-party-violet flex items-center justify-center shrink-0"
+          }
+        }
+      ],
+      "name": "group",
+      "displayPx": 16,
+      "exactSVG": "group-w400-f0-5856d6.svg"
+    },
+    {
+      "line": 120,
+      "attributes": {
+        "class": "material-symbols-outlined text-[18px] text-electric-blue"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "en"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex flex-col relative w-full pt-14 pb-safe bg-surface min-h-screen"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full pb-10 space-y-4"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "px-margin"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "bg-surface-card rounded-xl overflow-hidden shadow-sm"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "p-space-md pb-space-sm flex items-center justify-between"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex items-center space-x-2"
+          }
+        }
+      ],
+      "name": "map",
+      "displayPx": 18,
+      "exactSVG": "map-w400-f0-1d64f2.svg"
+    },
+    {
+      "line": 128,
+      "attributes": {
+        "class": "material-symbols-outlined text-party-pink text-[18px]",
+        "style": "font-variation-settings: 'FILL' 1;"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "en"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex flex-col relative w-full pt-14 pb-safe bg-surface min-h-screen"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full pb-10 space-y-4"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "px-margin"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "bg-surface-card rounded-xl overflow-hidden shadow-sm"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "px-space-md pb-space-md"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-full h-36 rounded-lg bg-cover bg-center shadow-inner relative flex items-end p-2.5",
+            "data-location": "上海静安体育中心",
+            "style": "background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBfZr-UVw03kUhoQTe6W5aF15S-Y4A0gTQDoJXZ2l44LGXoELliYI4VI8wVE56ZlltvR9syqViJ9j1_l2w4ZfBmXpyOUGLPzwZ05cAKG001kmy3A_Eq3a1MRDvWPbdZNYaFan6VRMC25EtxNw6MoBiSkgHU-iZUw7hotYLbTvsXpwpENeHofMyI66B0og0Q3d2Sf6YUUaktANl_K-VIlS6XJvLrpNfO0GHsMAz4pwpAXsB_cVxEBZ67Ng')"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "bg-surface-translucent backdrop-blur-md px-2.5 py-1.5 rounded-lg flex items-center space-x-2 shadow-sm"
+          }
+        }
+      ],
+      "name": "near_me",
+      "displayPx": 18,
+      "exactSVG": "near_me-w400-f1-ff2d55.svg"
+    },
+    {
+      "line": 228,
+      "attributes": {
+        "class": "material-symbols-outlined text-[20px] text-outline"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "en"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex flex-col relative w-full pt-14 pb-safe bg-surface min-h-screen"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full pb-10 space-y-4"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "px-margin space-y-2"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "bg-surface-card p-space-md rounded-xl shadow-sm"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "grid grid-cols-4 gap-3"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col items-center text-center mt-2"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-13 h-13 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant shadow-inner"
+          }
+        }
+      ],
+      "name": "hourglass_top",
+      "displayPx": 20,
+      "exactSVG": "hourglass_top-w400-f0-737687.svg"
+    },
+    {
+      "line": 236,
+      "attributes": {
+        "class": "material-symbols-outlined text-[20px] text-outline"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "en"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex flex-col relative w-full pt-14 pb-safe bg-surface min-h-screen"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full pb-10 space-y-4"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "px-margin space-y-2"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "bg-surface-card p-space-md rounded-xl shadow-sm"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "grid grid-cols-4 gap-3"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col items-center text-center mt-2"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-13 h-13 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant shadow-inner"
+          }
+        }
+      ],
+      "name": "add",
+      "displayPx": 20,
+      "exactSVG": "add-w400-f0-737687.svg"
+    },
+    {
+      "line": 247,
+      "attributes": {
+        "class": "material-symbols-outlined text-[18px] text-tertiary"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "en"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex flex-col relative w-full pt-14 pb-safe bg-surface min-h-screen"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full pb-10 space-y-4"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "px-margin space-y-2"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex items-center space-x-2 px-1"
+          }
+        }
+      ],
+      "name": "sports_score",
+      "displayPx": 18,
+      "exactSVG": "sports_score-w400-f0-4d5d00.svg"
+    }
+  ],
+  "exports": [
+    {
+      "name": "arrow_back_ios_new",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#1a1b1f",
+      "unicode": [
+        "U+E2EA"
+      ],
+      "ligatureGlyph": "arrow_back_ios_new",
+      "renderedGlyph": "arrow_back_ios_new",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M640 -80 240 -480 640 -880 711 -809 382 -480 711 -151Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "arrow_back_ios_new-w400-f0-1a1b1f.svg",
+      "bytes": 153,
+      "sha256": "ca7bb7d407e7dc334ff380d8b3b4d1623f916d8d6152d0a72dc40ab2840d532b",
+      "sourceNodes": [
+        {
+          "line": 9,
+          "displayPx": 24
+        }
+      ],
+      "reusedRuntime": "miniprogram/subpackages/activity/event/assets/w69-arrow_back_ios_new-w400-f0-1a1b1f.svg",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/w69-arrow_back_ios_new-w400-f0-1a1b1f.svg"
+    },
+    {
+      "name": "person",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#ffffff",
+      "unicode": [
+        "U+E7FD",
+        "U+E7FF",
+        "U+E8A6",
+        "U+F0D3"
+      ],
+      "ligatureGlyph": "person",
+      "renderedGlyph": "person",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M480.0 -480.0Q414 -480 367.0 -527.0Q320 -574 320.0 -640.0Q320 -706 367.0 -753.0Q414 -800 480.0 -800.0Q546 -800 593.0 -753.0Q640 -706 640.0 -640.0Q640 -574 593.0 -527.0Q546 -480 480.0 -480.0ZM160 -160V-272Q160 -306 177.5 -334.5Q195 -363 224 -378Q286 -409 350.0 -424.5Q414 -440 480 -440Q546 -440 610.0 -424.5Q674 -409 736 -378Q765 -363 782.5 -334.5Q800 -306 800 -272V-160ZM240 -240H720V-272Q720 -283 714.5 -292.0Q709 -301 700 -306Q646 -333 591.0 -346.5Q536 -360 480 -360Q424 -360 369.0 -346.5Q314 -333 260 -306Q251 -301 245.5 -292.0Q240 -283 240 -272ZM480.0 -560.0Q513 -560 536.5 -583.5Q560 -607 560.0 -640.0Q560 -673 536.5 -696.5Q513 -720 480.0 -720.0Q447 -720 423.5 -696.5Q400 -673 400.0 -640.0Q400 -607 423.5 -583.5Q447 -560 480.0 -560.0ZM480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0ZM480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "person-w400-f0-ffffff.svg",
+      "bytes": 1198,
+      "sha256": "110856b1348d0fb1cf2fbb59cf27a390c7e259ec186dcfc4dd970826b40bb14b",
+      "sourceNodes": [
+        {
+          "line": 9,
+          "displayPx": 18
+        }
+      ],
+      "reusedRuntime": "miniprogram/subpackages/activity/event/assets/pg04s-person.svg",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg04s-person.svg"
+    },
+    {
+      "name": "verified",
+      "axes": {
+        "wght": 400,
+        "FILL": 1,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#1d64f2",
+      "unicode": [
+        "U+E031",
+        "U+EF76"
+      ],
+      "ligatureGlyph": "verified",
+      "renderedGlyph": "verified.fill",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rclt",
+            "lookups": [
+              1
+            ]
+          },
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": [
+          {
+            "feature": "rclt",
+            "lookup": 1,
+            "from": "verified",
+            "to": "verified.fill"
+          }
+        ]
+      },
+      "path": "M344 -60 268 -188 124 -220 138 -368 40 -480 138 -592 124 -740 268 -772 344 -900 480 -842 616 -900 692 -772 836 -740 822 -592 920 -480 822 -368 836 -220 692 -188 616 -60 480 -118ZM438 -338 664 -564 608 -622 438 -452 352 -536 296 -480Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "verified-w400-f1-1d64f2.svg",
+      "bytes": 332,
+      "sha256": "87ea229b08354deaf3dc26658e65c656555be3f79204d254a347579bdb42ad9e",
+      "sourceNodes": [
+        {
+          "line": 44,
+          "displayPx": 14
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pgd-verified-w400-f1-1d64f2.svg"
+    },
+    {
+      "name": "calendar_clock",
+      "axes": {
+        "wght": 400,
+        "FILL": 1,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#1d64f2",
+      "unicode": [
+        "U+F540"
+      ],
+      "ligatureGlyph": "calendar_clock",
+      "renderedGlyph": "calendar_clock.fill",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rclt",
+            "lookups": [
+              1
+            ]
+          },
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": [
+          {
+            "feature": "rclt",
+            "lookup": 1,
+            "from": "calendar_clock",
+            "to": "calendar_clock.fill"
+          }
+        ]
+      },
+      "path": "M200 -80Q167 -80 143.5 -103.5Q120 -127 120 -160V-720Q120 -753 143.5 -776.5Q167 -800 200 -800H240V-880H320V-800H640V-880H720V-800H760Q793 -800 816.5 -776.5Q840 -753 840 -720V-533Q840 -516 828.5 -504.5Q817 -493 800.0 -493.0Q783 -493 771.5 -504.5Q760 -516 760 -533V-560H200V-160Q200 -160 200.0 -160.0Q200 -160 200 -160H432Q449 -160 460.5 -148.5Q472 -137 472 -120Q472 -103 460.5 -91.5Q449 -80 432 -80ZM720.0 -40.0Q637 -40 578.5 -98.5Q520 -157 520.0 -240.0Q520 -323 578.5 -381.5Q637 -440 720.0 -440.0Q803 -440 861.5 -381.5Q920 -323 920.0 -240.0Q920 -157 861.5 -98.5Q803 -40 720.0 -40.0ZM787 -145 815 -173 740 -248V-360H700V-232Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "calendar_clock-w400-f1-1d64f2.svg",
+      "bytes": 722,
+      "sha256": "09d35b503725535007ee1c07e6e277aa95fa2b261b7c8f8e8bcf428f8f30e365",
+      "sourceNodes": [
+        {
+          "line": 59,
+          "displayPx": 20
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pgd-calendar_clock-w400-f1-1d64f2.svg"
+    },
+    {
+      "name": "location_on",
+      "axes": {
+        "wght": 400,
+        "FILL": 1,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#ff2d55",
+      "unicode": [
+        "U+E0C8",
+        "U+E55F",
+        "U+E8B4",
+        "U+F00F",
+        "U+F1DB"
+      ],
+      "ligatureGlyph": "place",
+      "renderedGlyph": "place.fill",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rclt",
+            "lookups": [
+              1
+            ]
+          },
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": [
+          {
+            "feature": "rclt",
+            "lookup": 1,
+            "from": "place",
+            "to": "place.fill"
+          }
+        ]
+      },
+      "path": "M480.0 -480.0Q513 -480 536.5 -503.5Q560 -527 560.0 -560.0Q560 -593 536.5 -616.5Q513 -640 480.0 -640.0Q447 -640 423.5 -616.5Q400 -593 400.0 -560.0Q400 -527 423.5 -503.5Q447 -480 480.0 -480.0ZM480 -80Q319 -217 239.5 -334.5Q160 -452 160 -552Q160 -702 256.5 -791.0Q353 -880 480 -880Q607 -880 703.5 -791.0Q800 -702 800 -552Q800 -452 720.5 -334.5Q641 -217 480 -80Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "location_on-w400-f1-ff2d55.svg",
+      "bytes": 457,
+      "sha256": "a53b09a45ed3ba2186700b313625ec4f424b3f17f8997365608ed1f24066a795",
+      "sourceNodes": [
+        {
+          "line": 70,
+          "displayPx": 20
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pgd-location_on-w400-f1-ff2d55.svg"
+    },
+    {
+      "name": "payments",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#34c759",
+      "unicode": [
+        "U+EF63"
+      ],
+      "ligatureGlyph": "payments",
+      "renderedGlyph": "payments",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M560 -440Q510 -440 475.0 -475.0Q440 -510 440 -560Q440 -610 475.0 -645.0Q510 -680 560 -680Q610 -680 645.0 -645.0Q680 -610 680 -560Q680 -510 645.0 -475.0Q610 -440 560 -440ZM280 -320Q247 -320 223.5 -343.5Q200 -367 200 -400V-720Q200 -753 223.5 -776.5Q247 -800 280 -800H840Q873 -800 896.5 -776.5Q920 -753 920 -720V-400Q920 -367 896.5 -343.5Q873 -320 840 -320ZM360 -400H760Q760 -433 783.5 -456.5Q807 -480 840 -480V-640Q807 -640 783.5 -663.5Q760 -687 760 -720H360Q360 -687 336.5 -663.5Q313 -640 280 -640V-480Q313 -480 336.5 -456.5Q360 -433 360 -400ZM800 -160H120Q87 -160 63.5 -183.5Q40 -207 40 -240V-680H120V-240Q120 -240 120.0 -240.0Q120 -240 120 -240H800ZM280 -400Q280 -400 280.0 -400.0Q280 -400 280 -400V-720Q280 -720 280.0 -720.0Q280 -720 280 -720Q280 -720 280.0 -720.0Q280 -720 280 -720V-400Q280 -400 280.0 -400.0Q280 -400 280 -400Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "payments-w400-f0-34c759.svg",
+      "bytes": 929,
+      "sha256": "edef7ef79fc1dfc6ebe384bb4a33207ec670ffbad94ecf984fdb97def60cf5ea",
+      "sourceNodes": [
+        {
+          "line": 84,
+          "displayPx": 16
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pgd-payments-w400-f0-34c759.svg"
+    },
+    {
+      "name": "group",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#5856d6",
+      "unicode": [
+        "U+E7EF",
+        "U+E7FB",
+        "U+E7FC",
+        "U+EA21"
+      ],
+      "ligatureGlyph": "group",
+      "renderedGlyph": "group",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M40 -160V-272Q40 -306 57.5 -334.5Q75 -363 104 -378Q166 -409 230.0 -424.5Q294 -440 360 -440Q426 -440 490.0 -424.5Q554 -409 616 -378Q645 -363 662.5 -334.5Q680 -306 680 -272V-160ZM760 -160V-280Q760 -324 735.5 -364.5Q711 -405 666 -434Q717 -428 762.0 -413.5Q807 -399 846 -378Q882 -358 901.0 -333.5Q920 -309 920 -280V-160ZM360.0 -480.0Q294 -480 247.0 -527.0Q200 -574 200.0 -640.0Q200 -706 247.0 -753.0Q294 -800 360.0 -800.0Q426 -800 473.0 -753.0Q520 -706 520.0 -640.0Q520 -574 473.0 -527.0Q426 -480 360.0 -480.0ZM600 -480Q589 -480 572.0 -482.5Q555 -485 544 -488Q571 -520 585.5 -559.0Q600 -598 600 -640Q600 -682 585.5 -721.0Q571 -760 544 -792Q558 -797 572.0 -798.5Q586 -800 600 -800Q666 -800 713.0 -753.0Q760 -706 760.0 -640.0Q760 -574 713.0 -527.0Q666 -480 600 -480ZM120 -240H600V-272Q600 -283 594.5 -292.0Q589 -301 580 -306Q526 -333 471.0 -346.5Q416 -360 360 -360Q304 -360 249.0 -346.5Q194 -333 140 -306Q131 -301 125.5 -292.0Q120 -283 120 -272ZM360.0 -560.0Q393 -560 416.5 -583.5Q440 -607 440.0 -640.0Q440 -673 416.5 -696.5Q393 -720 360.0 -720.0Q327 -720 303.5 -696.5Q280 -673 280.0 -640.0Q280 -607 303.5 -583.5Q327 -560 360.0 -560.0ZM360 -240Q360 -240 360.0 -240.0Q360 -240 360 -240Q360 -240 360.0 -240.0Q360 -240 360 -240Q360 -240 360.0 -240.0Q360 -240 360 -240Q360 -240 360.0 -240.0Q360 -240 360 -240ZM360.0 -640.0Q360 -640 360.0 -640.0Q360 -640 360.0 -640.0Q360 -640 360.0 -640.0Q360 -640 360.0 -640.0Q360 -640 360.0 -640.0Q360 -640 360.0 -640.0Q360 -640 360.0 -640.0Q360 -640 360.0 -640.0Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "group-w400-f0-5856d6.svg",
+      "bytes": 1588,
+      "sha256": "75c39f2ad587d7a70a6e2df2ffd40301d0655342f7abf4daf47d4e5df8c1a739",
+      "sourceNodes": [
+        {
+          "line": 100,
+          "displayPx": 16
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pgd-group-w400-f0-5856d6.svg"
+    },
+    {
+      "name": "map",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#1d64f2",
+      "unicode": [
+        "U+E55B"
+      ],
+      "ligatureGlyph": "map",
+      "renderedGlyph": "map",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M600 -120 360 -204 174 -132Q154 -124 137.0 -136.5Q120 -149 120 -170V-730Q120 -743 127.5 -753.0Q135 -763 148 -768L360 -840L600 -756L786 -828Q806 -836 823.0 -823.5Q840 -811 840 -790V-230Q840 -217 832.5 -207.0Q825 -197 812 -192ZM560 -218V-686L400 -742V-274ZM640 -218 760 -258V-732L640 -686ZM200 -228 320 -274V-742L200 -702ZM640 -686V-218ZM320 -742V-274Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "map-w400-f0-1d64f2.svg",
+      "bytes": 449,
+      "sha256": "cb44ac4d488f1a26b30afb3b29783cafb828ae91a2a8011b2bd3dacd4f8f4763",
+      "sourceNodes": [
+        {
+          "line": 120,
+          "displayPx": 18
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pgd-map-w400-f0-1d64f2.svg"
+    },
+    {
+      "name": "near_me",
+      "axes": {
+        "wght": 400,
+        "FILL": 1,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#ff2d55",
+      "unicode": [
+        "U+E569"
+      ],
+      "ligatureGlyph": "near_me",
+      "renderedGlyph": "near_me.fill",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rclt",
+            "lookups": [
+              1
+            ]
+          },
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": [
+          {
+            "feature": "rclt",
+            "lookup": 1,
+            "from": "near_me",
+            "to": "near_me.fill"
+          }
+        ]
+      },
+      "path": "M516 -120 402 -402 120 -516V-572L840 -840L572 -120Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "near_me-w400-f1-ff2d55.svg",
+      "bytes": 150,
+      "sha256": "c6e32ad191e2bc60f503b044f69457f1258fbe7835bee7a6cd3b5cb57b95c7b9",
+      "sourceNodes": [
+        {
+          "line": 128,
+          "displayPx": 18
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pgd-near_me-w400-f1-ff2d55.svg"
+    },
+    {
+      "name": "hourglass_top",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#737687",
+      "unicode": [
+        "U+EA5B"
+      ],
+      "ligatureGlyph": "hourglass_top",
+      "renderedGlyph": "hourglass_top",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M320 -160H640V-280Q640 -346 593.0 -393.0Q546 -440 480.0 -440.0Q414 -440 367.0 -393.0Q320 -346 320 -280ZM160 -80V-160H240V-280Q240 -341 268.5 -394.5Q297 -448 348 -480Q297 -512 268.5 -565.5Q240 -619 240 -680V-800H160V-880H800V-800H720V-680Q720 -619 691.5 -565.5Q663 -512 612 -480Q663 -448 691.5 -394.5Q720 -341 720 -280V-160H800V-80Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "hourglass_top-w400-f0-737687.svg",
+      "bytes": 430,
+      "sha256": "645065c136127d48a6101de61ae3847f647424c045817da9d66083a3cd6e25d0",
+      "sourceNodes": [
+        {
+          "line": 228,
+          "displayPx": 20
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": null,
+      "reason": "Reference-only fake open slots omitted"
+    },
+    {
+      "name": "add",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#737687",
+      "unicode": [
+        "U+E145"
+      ],
+      "ligatureGlyph": "add",
+      "renderedGlyph": "add",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M440 -440H200V-520H440V-760H520V-520H760V-440H520V-200H440Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "add-w400-f0-737687.svg",
+      "bytes": 158,
+      "sha256": "e37726708e42041b5688975a0ad19cd97e0750dea9349e748e0ae3697a7744f0",
+      "sourceNodes": [
+        {
+          "line": 236,
+          "displayPx": 20
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": null,
+      "reason": "Reference-only fake open slots omitted"
+    },
+    {
+      "name": "sports_score",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#4d5d00",
+      "unicode": [
+        "U+F06E"
+      ],
+      "ligatureGlyph": "sports_score",
+      "renderedGlyph": "sports_score",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M360 -720H440V-800H360ZM520 -720V-800H600V-720ZM360 -400V-480H440V-400ZM680 -560V-640H760V-560ZM680 -400V-480H760V-400ZM520 -400V-480H600V-400ZM680 -720V-800H760V-720ZM440 -640V-720H520V-640ZM200 -160V-800H280V-720H360V-640H280V-560H360V-480H280V-160ZM600 -480V-560H680V-480ZM440 -480V-560H520V-480ZM360 -560V-640H440V-560ZM520 -560V-640H600V-560ZM600 -640V-720H680V-640Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "sports_score-w400-f0-4d5d00.svg",
+      "bytes": 470,
+      "sha256": "889c9d2d9ddb3ed159fa576fb6f900fd95dc8bd46026f46d10f41cc06153dba4",
+      "sourceNodes": [
+        {
+          "line": 247,
+          "displayPx": 18
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pgd-sports_score-w400-f0-4d5d00.svg"
+    }
+  ]
+}

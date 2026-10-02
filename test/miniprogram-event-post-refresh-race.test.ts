@@ -32,7 +32,7 @@ function mount(options: {
         get: options.get || (async () => ({ items: [] })),
         post: options.post || (async () => ({}))
       } };
-      if ((module === '../../utils/checkin-qr.js' || module === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((module === '../../utils/checkin-qr.js' || module === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((module === '../../config.js' || module === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${module}`);
     },

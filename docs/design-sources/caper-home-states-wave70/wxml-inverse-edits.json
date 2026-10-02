@@ -1,0 +1,106 @@
+[
+  {
+    "old": "<view class=\"home-page {{stateView ? 'state-view' : 'ordinary-view'}}\">",
+    "new": "<view class=\"home-page {{stateView ? 'state-view' : 'ordinary-view'}} {{activeTab === 'pending' || activeTab === 'organized' || activeTab === 'history' ? 'home-state-reference home-state-' + activeTab : ''}}\">"
+  },
+  {
+    "old": "<view class=\"state-brand-mark\">✦</view>",
+    "new": "<view class=\"state-brand-mark\"><block wx:if=\"{{activeTab === 'pending' || activeTab === 'organized' || activeTab === 'history'}}\"><image class=\"state-brand-icon\" src=\"./assets/w70-auto_awesome-f0-004cc8.svg\" mode=\"aspectFit\" aria-hidden=\"true\" /></block><block wx:else>✦</block></view>"
+  },
+  {
+    "old": "<image class=\"header-bell-image\" src=\"./assets/notification-bell.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/>",
+    "new": "<image wx:if=\"{{activeTab === 'pending' || activeTab === 'organized' || activeTab === 'history'}}\" class=\"reference-header-bell\" src=\"./assets/w70-notifications-f0-424655.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><image wx:else class=\"header-bell-image\" src=\"./assets/notification-bell.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/>"
+  },
+  {
+    "old": "<button class=\"header-avatar\" bindtap=\"goProfile\" aria-label=\"进入我的页面\"><view class=\"avatar-glyph\"></view></button>",
+    "new": "<button class=\"header-avatar\" bindtap=\"goProfile\" aria-label=\"进入我的页面\"><image wx:if=\"{{activeTab === 'pending' || activeTab === 'organized' || activeTab === 'history'}}\" class=\"reference-header-person\" src=\"./assets/w70-person-f0-ffffff.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><view wx:else class=\"avatar-glyph\"></view></button>"
+  },
+  {
+    "old": "<view class=\"state-ai-orb\">✦</view><view class=\"state-ai-copy\"><view>{{activeTab === 'history' ? '让好活动继续发生' : '想组什么局？一句话开始'}}</view><text>{{activeTab === 'history' ? '发起新局，或在已结束活动中生成相似草稿' : '构思助手整理草稿，发布前由你确认'}}</text></view><view class=\"state-ai-arrow\">→</view>",
+    "new": "<block wx:if=\"{{activeTab === 'pending' || activeTab === 'organized' || activeTab === 'history'}}\"><view class=\"reference-banner-glow\"></view><view class=\"reference-banner-pink\" wx:if=\"{{activeTab === 'pending'}}\"></view><view class=\"reference-ai-orb\"><view class=\"reference-ai-orb-inner\"><image src=\"{{activeTab === 'pending' ? './assets/w70-smart_toy-f1-5856d6.svg' : activeTab === 'organized' ? './assets/w70-neurology-f0-ffffff.svg' : './assets/w70-arrow_back_ios_new-f0-ffffff.svg'}}\" mode=\"aspectFit\" aria-hidden=\"true\"/></view><view class=\"reference-ai-status\"></view></view><view class=\"reference-ai-copy\"><view class=\"reference-ai-heading\"><text>{{activeTab === 'history' ? '活动构思助手' : '想组什么局？一句话开始'}}</text><image wx:if=\"{{activeTab === 'pending'}}\" class=\"reference-heading-arrow\" src=\"./assets/w70-arrow_forward-f0-d2f803.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><image class=\"reference-heading-spark\" src=\"./assets/w70-auto_awesome-f0-5856d6.svg\" mode=\"aspectFit\" aria-hidden=\"true\" wx:elif=\"{{activeTab === 'organized'}}\"/><text wx:else class=\"reference-ai-tag\">本地</text></view><text class=\"reference-ai-subtitle\">{{activeTab === 'history' ? '发起新局，或从已结束活动整理相似草稿' : '本地整理活动草稿，发布前由你确认'}}</text></view><view wx:if=\"{{activeTab !== 'pending'}}\" class=\"reference-ai-arrow\"><image src=\"{{activeTab === 'organized' ? './assets/w70-arrow_forward-f0-004cc8.svg' : './assets/w70-arrow_forward-f0-ffffff.svg'}}\" mode=\"aspectFit\" aria-hidden=\"true\"/></view></block><block wx:else><view class=\"state-ai-orb\">✦</view><view class=\"state-ai-copy\"><view>{{activeTab === 'history' ? '让好活动继续发生' : '想组什么局？一句话开始'}}</view><text>{{activeTab === 'history' ? '发起新局，或在已结束活动中生成相似草稿' : '构思助手整理草稿，发布前由你确认'}}</text></view><view class=\"state-ai-arrow\">→</view></block>"
+  },
+  {
+    "old": "class=\"event-card card-{{item.cardKind}}\"",
+    "new": "class=\"event-card card-{{item.cardKind}} {{(item.cardKind === 'pending' && (item.myRegistrationStatus === 'REQUESTED' || item.myRegistrationStatus === 'RECONFIRM_REQUIRED' || item.myRegistrationStatus === 'WAITLISTED')) || (item.cardKind === 'organized' && (item.shareReady || item.status === 'CONFIRMED' || item.status === 'IN_PROGRESS')) || (item.cardKind === 'history' && item.status === 'COMPLETED') ? 'home-reference-card' : ''}} registration-{{item.myRegistrationStatus}} status-{{item.status}} {{item.primaryAction === 'hostRepeat' ? 'history-repeat-card' : 'history-record-card'}} {{item.primaryAction === 'checkinSection' ? 'history-feedback-card' : ''}}\""
+  },
+  {
+    "old": "<button class=\"cover-wrap\" data-id=\"{{item.id}}\"",
+    "new": "<view wx:if=\"{{stateView && item.cardKind === 'pending' && item.myRegistrationStatus === 'RECONFIRM_REQUIRED'}}\" class=\"reference-change-band\"><image class=\"reference-glyph\" src=\"./assets/w70-warning-f0-ff2d55.svg\" mode=\"aspectFit\" aria-hidden=\"true\" /><text>活动信息有变更，需重新确认参加</text></view>\n        <button class=\"cover-wrap\" data-id=\"{{item.id}}\""
+  },
+  {
+    "old": "<image class=\"cover\" src=\"{{item.cover}}\" mode=\"aspectFill\" />",
+    "new": "<image class=\"cover\" src=\"{{activeTab === 'organized' && item.cover === '/assets/stitch/caper_home_badminton.jpg' && (item.shareReady || item.status === 'CONFIRMED' || item.status === 'IN_PROGRESS') ? './assets/w70-organized-badminton.jpg' : activeTab === 'history' && item.status === 'COMPLETED' && item.cover === '/assets/stitch/caper_home_badminton.jpg' ? './assets/w70-history-badminton.jpg' : item.cover}}\" mode=\"aspectFill\" />"
+  },
+  {
+    "old": "<view wx:if=\"{{stateView && item.cardKind === 'history'}}\" class=\"cover-sticker history-sticker-{{item.historyTone}}\">{{item.historyStickerLabel}}</view>",
+    "new": "<view wx:if=\"{{stateView && item.cardKind === 'history'}}\" class=\"cover-sticker history-sticker-{{item.historyTone}}\"><image wx:if=\"{{item.status === 'COMPLETED'}}\" class=\"reference-sticker-icon\" src=\"{{item.primaryAction === 'checkinSection' ? './assets/w70-rate_review-f0-ff2d55.svg' : './assets/w70-verified-f0-1a1b1f.svg'}}\" mode=\"aspectFit\" aria-hidden=\"true\"/><text>{{item.primaryAction === 'checkinSection' ? '结项反馈' : item.historyStickerLabel}}</text></view>"
+  },
+  {
+    "old": ">{{item.coverStatusLabel || item.cardLabel}}</view>",
+    "new": "><block wx:if=\"{{stateView && item.cardKind === 'pending' && (item.myRegistrationStatus === 'REQUESTED' || item.myRegistrationStatus === 'RECONFIRM_REQUIRED' || item.myRegistrationStatus === 'WAITLISTED')}}\"><image class=\"reference-status-icon\" src=\"{{item.myRegistrationStatus === 'RECONFIRM_REQUIRED' ? './assets/w70-edit_calendar-f0-ffffff.svg' : item.myRegistrationStatus === 'WAITLISTED' ? './assets/w70-filter_list-f0-5856d6.svg' : './assets/w70-hourglass_top-f0-181e00.svg'}}\" mode=\"aspectFit\" aria-hidden=\"true\"/></block><view wx:elif=\"{{stateView && ((item.cardKind === 'organized' && (item.shareReady || item.status === 'CONFIRMED' || item.status === 'IN_PROGRESS')) || (item.cardKind === 'history' && item.status === 'COMPLETED'))}}\" class=\"reference-status-dot\"></view><text>{{item.coverStatusLabel || item.cardLabel}}</text></view>"
+  },
+  {
+    "old": "<text class=\"cover-poster-word\">{{item.posterWord}}</text><text class=\"cover-poster-line\">GOOD PEOPLE · REAL PLANS</text>",
+    "new": "<text class=\"cover-poster-word\">{{activeTab === 'organized' && item.status === 'CONFIRMED' ? 'CONFIRMED & READY' : activeTab === 'organized' && item.status === 'IN_PROGRESS' ? 'IN PROGRESS' : item.posterWord}}</text><text class=\"cover-poster-line\">{{activeTab === 'organized' ? 'REAL PEOPLE · REAL PLANS' : 'GOOD PEOPLE · REAL PLANS'}}</text>"
+  },
+  {
+    "old": "<view wx:if=\"{{stateView && item.cardKind === 'history'}}\" class=\"history-cover-copy",
+    "new": "<view wx:if=\"{{activeTab === 'organized' && item.shareReady && item.cover === '/assets/stitch/caper_home_badminton.jpg'}}\" class=\"reference-game-sticker\"><text>Good Game!</text><image class=\"reference-game-icon\" src=\"./assets/w70-sports_tennis-f0-1a1b1f.svg\" mode=\"aspectFit\" aria-hidden=\"true\" /></view><view wx:if=\"{{stateView && item.cardKind === 'history'}}\" class=\"history-cover-copy"
+  },
+  {
+    "old": "{{item.cardKind === 'pending' ? item.registrationLabel : item.statusLabel}}",
+    "new": "{{item.cardKind === 'pending' ? item.registrationLabel : item.cardKind === 'organized' && (item.shareReady || item.status === 'CONFIRMED' || item.status === 'IN_PROGRESS') ? '我主办的' : item.statusLabel}}"
+  },
+  {
+    "old": "<view wx:else class=\"card-meta\">▣　{{item.dateRangeLabel}}</view>",
+    "new": "<view wx:else class=\"card-meta reference-date-meta\"><block wx:if=\"{{stateView && ((item.cardKind === 'pending' && (item.myRegistrationStatus === 'REQUESTED' || item.myRegistrationStatus === 'RECONFIRM_REQUIRED' || item.myRegistrationStatus === 'WAITLISTED')) || (item.cardKind === 'organized' && (item.shareReady || item.status === 'CONFIRMED' || item.status === 'IN_PROGRESS')) || (item.cardKind === 'history' && item.status === 'COMPLETED'))}}\"><image class=\"reference-meta-icon\" src=\"{{item.cardKind === 'pending' && item.myRegistrationStatus === 'WAITLISTED' ? './assets/w70-calendar_month-f0-004cc8.svg' : item.cardKind === 'organized' && (item.status === 'CONFIRMED' || item.status === 'IN_PROGRESS') ? './assets/w70-schedule-f0-004cc8.svg' : './assets/w70-calendar_today-f0-004cc8.svg'}}\" mode=\"aspectFit\" aria-hidden=\"true\"/><text>{{item.dateRangeLabel}}</text></block><block wx:else>▣　{{item.dateRangeLabel}}</block></view>"
+  },
+  {
+    "old": "<view wx:if=\"{{stateView && item.cardKind !== 'history'}}\" class=\"card-meta\">⌖　{{item.venueLabel}}</view>",
+    "new": "<view wx:if=\"{{stateView && item.cardKind !== 'history'}}\" class=\"card-meta reference-place-meta\"><block wx:if=\"{{(item.cardKind === 'pending' && (item.myRegistrationStatus === 'REQUESTED' || item.myRegistrationStatus === 'RECONFIRM_REQUIRED' || item.myRegistrationStatus === 'WAITLISTED')) || (item.cardKind === 'organized' && (item.shareReady || item.status === 'CONFIRMED' || item.status === 'IN_PROGRESS')) || (item.cardKind === 'history' && item.status === 'COMPLETED')}}\"><image class=\"reference-meta-icon\" src=\"{{item.cardKind === 'pending' && item.myRegistrationStatus === 'WAITLISTED' ? './assets/w70-storefront-f0-5856d6.svg' : item.cardKind === 'organized' && (item.status === 'CONFIRMED' || item.status === 'IN_PROGRESS') ? './assets/w70-route-f0-5856d6.svg' : './assets/w70-location_on-f0-5856d6.svg'}}\" mode=\"aspectFit\" aria-hidden=\"true\"/><text>{{item.venueLabel}}</text></block><block wx:else>⌖　{{item.venueLabel}}</block></view>"
+  },
+  {
+    "old": "<text class=\"history-fact-icon\">▣</text>",
+    "new": "<image wx:if=\"{{item.status === 'COMPLETED'}}\" class=\"reference-history-icon\" src=\"{{item.primaryAction === 'checkinSection' ? './assets/w70-schedule-f0-1d64f2.svg' : './assets/w70-calendar_today-f0-1d64f2.svg'}}\" mode=\"aspectFit\" aria-hidden=\"true\"/><text wx:else class=\"history-fact-icon\">▣</text>"
+  },
+  {
+    "old": "<text class=\"history-fact-icon\">⌖</text>",
+    "new": "<image wx:if=\"{{item.status === 'COMPLETED'}}\" class=\"reference-history-icon\" src=\"{{item.primaryAction === 'checkinSection' ? './assets/w70-pin_drop-f0-5856d6.svg' : './assets/w70-location_on-f0-5856d6.svg'}}\" mode=\"aspectFit\" aria-hidden=\"true\"/><text wx:else class=\"history-fact-icon\">⌖</text>"
+  },
+  {
+    "old": "<view wx:if=\"{{item.cardKind === 'pending'}}\" class=\"card-state pending-state\"><text class=\"state-icon\">!</text><text>{{item.cardNote}}</text></view>",
+    "new": "<view wx:if=\"{{item.cardKind === 'pending'}}\" class=\"card-state pending-state\"><view wx:if=\"{{stateView && item.myRegistrationStatus === 'WAITLISTED'}}\" class=\"reference-notification-orb\"><image class=\"reference-glyph\" src=\"./assets/w70-notifications_active-f0-1d64f2.svg\" mode=\"aspectFit\" aria-hidden=\"true\" /></view><image wx:elif=\"{{stateView && item.myRegistrationStatus === 'RECONFIRM_REQUIRED'}}\" class=\"reference-state-icon\" src=\"./assets/w70-warning-f0-ff2d55.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><text wx:else class=\"state-icon\">!</text><text>{{item.cardNote}}</text></view>"
+  },
+  {
+    "old": "<view wx:elif=\"{{item.cardKind === 'organized'}}\" class=\"card-state organized-state\"><text class=\"state-icon\">✦</text><text>{{item.cardNote}}</text></view>",
+    "new": "<view wx:elif=\"{{item.cardKind === 'organized'}}\" class=\"card-state organized-state\"><image wx:if=\"{{stateView && (item.status === 'CONFIRMED' || item.status === 'IN_PROGRESS')}}\" class=\"reference-state-icon\" src=\"./assets/w70-check_circle-f0-4d5d00.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><text wx:else class=\"state-icon\">✦</text><text>{{item.cardNote}}</text></view>"
+  },
+  {
+    "old": "<text class=\"state-icon\">{{item.historyStateIcon}}</text>",
+    "new": "<image wx:if=\"{{stateView && item.status === 'COMPLETED'}}\" class=\"reference-state-icon\" src=\"./assets/w70-verified-f0-424655.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><text wx:else class=\"state-icon\">{{item.historyStateIcon}}</text>"
+  },
+  {
+    "old": ">{{item.primaryLabel}}　→</button>",
+    "new": "><block wx:if=\"{{stateView && ((item.cardKind === 'pending' && (item.myRegistrationStatus === 'REQUESTED' || item.myRegistrationStatus === 'RECONFIRM_REQUIRED' || item.myRegistrationStatus === 'WAITLISTED')) || (item.cardKind === 'organized' && (item.shareReady || item.status === 'CONFIRMED' || item.status === 'IN_PROGRESS')) || (item.cardKind === 'history' && item.status === 'COMPLETED'))}}\"><image wx:if=\"{{item.primaryAction === 'hostRepeat'}}\" class=\"reference-action-icon\" src=\"./assets/w70-auto_awesome-f0-ffffff.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><image wx:elif=\"{{item.cardKind === 'history' && item.primaryAction === 'checkinSection'}}\" class=\"reference-action-icon\" src=\"./assets/w70-edit_note-f0-ffffff.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><image wx:elif=\"{{item.cardKind === 'organized' && (item.status === 'CONFIRMED' || item.status === 'IN_PROGRESS')}}\" class=\"reference-action-icon\" src=\"./assets/w70-tune-f0-424655.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><text>{{item.primaryLabel}}</text><image wx:if=\"{{item.cardKind === 'organized' && item.shareReady}}\" class=\"reference-action-icon\" src=\"./assets/w70-arrow_forward-f0-ffffff.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><image wx:elif=\"{{item.cardKind === 'pending' && item.myRegistrationStatus === 'RECONFIRM_REQUIRED'}}\" class=\"reference-action-icon\" src=\"./assets/w70-check_circle-f0-ffffff.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/></block><block wx:else>{{item.primaryLabel}}　→</block></button>"
+  },
+  {
+    "old": ">{{item.secondaryLabel}}</button>",
+    "new": "><image wx:if=\"{{stateView && item.cardKind === 'organized' && item.secondaryAction === 'hostAnnouncement'}}\" class=\"reference-action-icon\" src=\"./assets/w70-campaign-f0-424655.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><image wx:elif=\"{{stateView && item.cardKind === 'organized' && item.secondaryAction === 'checkinSection'}}\" class=\"reference-action-icon\" src=\"./assets/w70-qr_code_scanner-f0-ffffff.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><image wx:elif=\"{{stateView && item.cardKind === 'history' && item.status === 'COMPLETED' && item.secondaryAction === 'expenseSection'}}\" class=\"reference-action-icon\" src=\"./assets/w70-receipt_long-f0-1d64f2.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><text>{{item.secondaryLabel}}</text></button>"
+  },
+  {
+    "old": "<view wx:elif=\"{{item.cardKind === 'history'}}\" class=\"card-disabled\">相册未开放</view>",
+    "new": "<view wx:elif=\"{{item.cardKind === 'history'}}\" class=\"card-disabled\"><image wx:if=\"{{stateView && item.status === 'COMPLETED'}}\" class=\"reference-action-icon\" src=\"./assets/w70-photo_library-f0-5856d6.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><text>相册未开放</text></view>"
+  },
+  {
+    "old": "aria-label=\"分享{{item.title}}的邀请\">↗</button>",
+    "new": "aria-label=\"分享{{item.title}}的邀请\"><image wx:if=\"{{stateView && item.cardKind === 'organized'}}\" class=\"reference-share-icon\" src=\"./assets/w70-share-f0-424655.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><block wx:else>↗</block></button>"
+  },
+  {
+    "old": "<view>{{activeTab === 'history' ? '♡' : '✦'}}</view>",
+    "new": "<view class=\"reference-footer-symbol\"><image wx:if=\"{{activeTab === 'pending'}}\" src=\"./assets/w70-check_circle-f0-737687.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><image wx:elif=\"{{activeTab === 'organized'}}\" src=\"./assets/w70-verified-f0-424655.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><block wx:elif=\"{{activeTab === 'history'}}\"><view class=\"reference-footer-line\"></view><image class=\"reference-footer-heart\" src=\"./assets/w70-favorite-f1-ff2d55.svg\" mode=\"aspectFit\" aria-hidden=\"true\" /><view class=\"reference-footer-line\"></view></block><block wx:else>{{activeTab === 'history' ? '♡' : '✦'}}</block></view>"
+  },
+  {
+    "old": "'协办事项以每场活动当前授权为准'}}</text></view>",
+    "new": "'协办事项以每场活动当前授权为准'}}</text><text wx:if=\"{{activeTab === 'organized'}}\" class=\"reference-footer-caption\">More People · Brighter Days</text></view>"
+  }
+]

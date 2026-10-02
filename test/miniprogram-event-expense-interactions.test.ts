@@ -25,7 +25,7 @@ function expensePage(ledgers: Ledger[], aliases: Array<{ id: string; displayName
         if (route === '/events/e1/expenses') { expenseReads++; return { items: ledgers }; }
         return { items: [] };
       } } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../utils/sha256.js' || path === '../../../utils/sha256.js')) return { sha256(value: string) {
         return createHash('sha256').update(value).digest('hex');
       } };

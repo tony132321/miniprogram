@@ -9,7 +9,7 @@ test('a direct-linked event back button returns to a real app route when there i
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -30,7 +30,7 @@ test('rejected activity content shortcut opens the real profile review form', ()
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(path);
     },
@@ -53,7 +53,7 @@ test('event more button offers a safety action before navigating to the report f
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -83,7 +83,7 @@ test('host workbench opens the registered share card for the current event', () 
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -113,7 +113,7 @@ test('AA ledger presentation keeps each integer-cent share exact in yuan', () =>
     '\nglobalThis.__format = yuanFromFen;', {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -134,7 +134,7 @@ test('event header shows the current China-local time range without repeating a 
     '\nglobalThis.__display = eventDisplay;', {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -161,7 +161,7 @@ test('PG01 location and share controls use the current event and its real capabi
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -204,7 +204,7 @@ test('PG05-S confirmed member copies the latest venue from the success card', as
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -234,7 +234,7 @@ test('PG05-S venue action rejects a stale identity, revoked seat and missing ven
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -280,7 +280,7 @@ test('venue clipboard completion does not show an old-account success toast', ()
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -332,7 +332,7 @@ test('PG05-S venue action uses the real event refresh before copying or dismissi
         if (url.startsWith('/events/event-1/')) return { items: [] };
         throw new Error(`unexpected GET ${url}`);
       } } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -394,7 +394,7 @@ test('PG05-S ignores an old A copy response after A to B to A account reloads', 
         if (url.startsWith('/events/event-1/')) return { items: [] };
         throw new Error(`unexpected GET ${url}`);
       } } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -460,7 +460,7 @@ function calendarHarness() {
         if (url.startsWith('/events/event-1/')) return { items: [] };
         throw new Error(`unexpected GET ${url}`);
       } } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },

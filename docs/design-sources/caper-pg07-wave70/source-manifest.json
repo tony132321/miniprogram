@@ -1,0 +1,108 @@
+{
+  "zip": {
+    "path": "/Users/tsb/Downloads/stitch_design_system_generator (2).zip",
+    "bytes": 24668856,
+    "sha256": "df22e733d33fda20979b75b8a7bc94717c4a5c9e41561a54e3038432fab32603"
+  },
+  "HTML": {
+    "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg07/code.html",
+    "bytes": 19165,
+    "sha256": "435b969b25bdfcde866d7d83d4cabf50eeae09cdc10bbd8bff10b7a2f22036d1"
+  },
+  "PNG": {
+    "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg07/screen.png",
+    "bytes": 560936,
+    "sha256": "0c9ac1263487ca7c74893da5f3f25b8374c0f9d54b493d687bd3b2f36df9588d"
+  },
+  "fullOfficialFace": {
+    "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-activity-wave69/original-last-material-full.woff2",
+    "bytes": 1136920,
+    "sha256": "77f9711f3f896a1d7a34ab95cffc45cfb17d84c223f197c1b90faa0d043006e9"
+  },
+  "decodedTTF": {
+    "path": "/private/tmp/caper-wave69-event/sources/material-up-decoded.ttf",
+    "bytes": 3200992,
+    "sha256": "cf46fa438e9ce2265958fdea4498c31ae5b7b39cb172ebff4f6aedb5aedcbc90"
+  },
+  "effectiveFaceReason": "PG07 second Material link equals retained Wave69 last full variable link; same family later face wins, wght400/FILL0 default, fixed opsz24/GRAD0; inline FILL1 applies active rclt",
+  "sourceCSSCascade": {
+    "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-pg07-wave70/source-generated.css",
+    "bytes": 20291,
+    "sha256": "c673748964cc929a9178388d49e419a842ff935659e26c06e1923c46ebd3e843"
+  },
+  "rawPx": "source CSS px / rem with 16px root, not rpx; responsive width100% native status/capsule",
+  "undefinedTokens": [
+    "shadow-xs",
+    "shadow-2xs",
+    "py-0.2"
+  ],
+  "tokens": {
+    "nav": {
+      "height": 64,
+      "title": [
+        17,
+        22,
+        600
+      ],
+      "subtitle": [
+        11,
+        14,
+        700
+      ],
+      "backTouch": 44,
+      "glyph": 24,
+      "person": 32,
+      "personGlyph": 18
+    },
+    "main": {
+      "side": 16,
+      "bottom": 112,
+      "gap": 12
+    },
+    "timeline": {
+      "gap": 16,
+      "guideLeft": 19,
+      "avatar": 40,
+      "rowGap": 12,
+      "cardPadding": 12,
+      "cardRadius": 16,
+      "body": [
+        15,
+        24.375,
+        400
+      ],
+      "systemBody": [
+        15,
+        20.625,
+        400
+      ]
+    },
+    "reply": {
+      "avatar": 24,
+      "marginLeft": 8,
+      "padding": [
+        4,
+        10,
+        4,
+        12
+      ],
+      "borderLeft": 2,
+      "gap": 10,
+      "body": [
+        13,
+        21.125,
+        400
+      ],
+      "shadow": "none"
+    },
+    "shadow-sm": "0 1px 2px 0 rgba(0,0,0,.05)"
+  },
+  "truthfulR1": {
+    "people": "Actual aliases/avatarGlyph; no source fake portraits or names",
+    "timeline": "Actual statusLabel/body/timeLabel/parent replies/moderation and current fact version",
+    "likes": "No successful count or action; inactive favorite outline with visible closed label",
+    "attachments": "No fake announcement photo; disabled composer attachment and visible closed label",
+    "query": "Existing askFact authorization and backend-current-version retained",
+    "question": "Only askQuestion unchanged; submitted for review, not fake immediately public"
+  }
+}

@@ -1,0 +1,2480 @@
+{
+  "scope": "One targeted source/assets/actions/protection static check, no business execution, CLI, SDK, UI, pixel or full suite",
+  "baselineCommit": "b45a99d0749fd1c4a14f88fa588b244b6a844a4d",
+  "passedCount": 93,
+  "checks": [
+    {
+      "name": "index.js exact baseline bytes",
+      "passed": true,
+      "detail": "d85b9db816163c4853bd2a7a9abec66dc62e8047d9e79c19457f4cb57dc8ac11"
+    },
+    {
+      "name": "index.json exact baseline bytes",
+      "passed": true,
+      "detail": "a082db2fcb674d4131b60f427fcb40891d00e1d2571e372df9827fa25e2f1fb1"
+    },
+    {
+      "name": "inverse edit uniquely present 26",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 25",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 24",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 23",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 22",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 21",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 20",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 19",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 18",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 17",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 16",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 15",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 14",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 13",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 12",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 11",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 10",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 9",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 8",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 7",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 6",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 5",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 4",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 3",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 2",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "inverse edit uniquely present 1",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "full WXML inverse baseline equality",
+      "passed": true,
+      "detail": "fcbf2764f06abb13207f5534b51bb7c93f563fd42ad4de3ddc55bda424a60da0"
+    },
+    {
+      "name": "full original CSS byte prefix",
+      "passed": true,
+      "detail": {
+        "bytes": 47655,
+        "sha256": "5fd04b24883cc3a89188e989e4d04f9ba70ece8d4d9f88916380e07dfceb6aa0"
+      }
+    },
+    {
+      "name": "only owned CSS append",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "new source dimensions use px and existing font only",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "every added CSS selector isolated",
+      "passed": true,
+      "detail": {
+        "rules": 186
+      }
+    },
+    {
+      "name": "WXML balanced tags",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all actual actions data aria and guard ancestry exact",
+      "passed": true,
+      "detail": {
+        "before": 62,
+        "after": 62
+      }
+    },
+    {
+      "name": "every unchanged handler exists",
+      "passed": true,
+      "detail": [
+        "goAbout",
+        "goCity",
+        "goCreate",
+        "goDiscover",
+        "goGuidelines",
+        "goItinerary",
+        "goMessages",
+        "goPrivacy",
+        "goProfile",
+        "goSupport",
+        "heroIdeaInput",
+        "openCardAction",
+        "openCategory",
+        "openEvent",
+        "openHostShare",
+        "openInspiration",
+        "openInvite",
+        "retry",
+        "selectTab",
+        "showAllOrganized",
+        "submitHeroIdea",
+        "tokenChanged"
+      ]
+    },
+    {
+      "name": "ordinary Wave64 and long first region exact source substring",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ordinary lower feed exact source substring",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "native status capsule data attributes retained",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "old asset unchanged calendar.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "old asset unchanged city-chevron.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "old asset unchanged feature-chevron.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "old asset unchanged idea-arrow.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "old asset unchanged map-pin.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "old asset unchanged microphone.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "old asset unchanged notification-bell.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "new runtime assets exactly actual referenced paths",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-arrow_back_ios_new-f0-ffffff.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-arrow_forward-f0-004cc8.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-arrow_forward-f0-d2f803.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-arrow_forward-f0-ffffff.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-auto_awesome-f0-004cc8.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-auto_awesome-f0-5856d6.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-auto_awesome-f0-ffffff.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-calendar_month-f0-004cc8.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-calendar_today-f0-004cc8.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-calendar_today-f0-1d64f2.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-campaign-f0-424655.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-check_circle-f0-4d5d00.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-check_circle-f0-737687.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-check_circle-f0-ffffff.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-edit_calendar-f0-ffffff.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-edit_note-f0-ffffff.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-favorite-f1-ff2d55.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-filter_list-f0-5856d6.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-hourglass_top-f0-181e00.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-location_on-f0-5856d6.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-neurology-f0-ffffff.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-notifications-f0-424655.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-notifications_active-f0-1d64f2.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-person-f0-ffffff.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-photo_library-f0-5856d6.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-pin_drop-f0-5856d6.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-qr_code_scanner-f0-ffffff.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-rate_review-f0-ff2d55.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-receipt_long-f0-1d64f2.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-route-f0-5856d6.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-schedule-f0-004cc8.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-schedule-f0-1d64f2.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-share-f0-424655.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-smart_toy-f1-5856d6.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-sports_tennis-f0-1a1b1f.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-storefront-f0-5856d6.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-tune-f0-424655.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-verified-f0-1a1b1f.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-verified-f0-424655.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exact source glyph and paint w70-warning-f0-ff2d55.svg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "source photo unchanged binary w70-organized-badminton.jpg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "source photo unchanged binary w70-history-badminton.jpg",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "full Material source proof hash current",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "source filled glyphs apply rclt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "no static fake people score rank money push claims",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "actual counts and IDs still bound",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "bindings": [
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goCity",
+        "aria-label": "选择城市"
+      },
+      "ownGuard": {
+        "wx:if": "{{!stateView}}"
+      },
+      "ancestors": []
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goMessages",
+        "aria-label": "查看消息"
+      },
+      "ownGuard": {},
+      "ancestors": []
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goProfile",
+        "aria-label": "进入我的页面"
+      },
+      "ownGuard": {},
+      "ancestors": []
+    },
+    {
+      "tag": "input",
+      "attrs": {
+        "value": "{{heroIdeaText}}",
+        "bindinput": "heroIdeaInput",
+        "bindconfirm": "submitHeroIdea",
+        "confirm-type": "go",
+        "maxlength": "300",
+        "aria-label": "输入活动想法"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "submitHeroIdea",
+        "aria-label": "用这句话开始构思"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-label": "{{item.label}}",
+        "bindtap": "openCategory",
+        "aria-label": "查看{{item.label}}活动灵感"
+      },
+      "ownGuard": {
+        "wx:for": "{{categoryIdeas}}",
+        "wx:key": "label"
+      },
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-id": "{{featuredItem.id}}",
+        "bindtap": "openEvent",
+        "aria-label": "查看{{featuredItem.title}}活动详情"
+      },
+      "ownGuard": {
+        "wx:if": "{{featuredItem}}"
+      },
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goCreate",
+        "aria-label": "发起一场真实活动"
+      },
+      "ownGuard": {
+        "wx:else": null
+      },
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goCreate"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-title": "周末聚餐",
+        "bindtap": "openInspiration",
+        "aria-label": "查看美食聚会灵感"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-title": "户外徒步",
+        "bindtap": "openInspiration",
+        "aria-label": "查看徒步活动灵感"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goDiscover"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-title": "网球新手局",
+        "bindtap": "openInspiration"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-title": "咖啡探店",
+        "bindtap": "openInspiration"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-title": "户外轻运动",
+        "bindtap": "openInspiration"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-title": "桌游之夜",
+        "bindtap": "openInspiration"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-title": "下班快乐局",
+        "bindtap": "openInspiration"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-title": "周末出逃",
+        "bindtap": "openInspiration"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-title": "女生友好",
+        "bindtap": "openInspiration"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-title": "新手友好",
+        "bindtap": "openInspiration"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goItinerary"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-id": "{{item.id}}",
+        "bindtap": "openEvent"
+      },
+      "ownGuard": {
+        "wx:for": "{{homePreviewItems}}",
+        "wx:key": "id"
+      },
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        },
+        {
+          "wx:if": "{{homePreviewItems.length > 0}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goCreate"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        },
+        {
+          "wx:else": null
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goCreate"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goCreate"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goCreate"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-title": "周末咖啡局",
+        "bindtap": "openInspiration"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-title": "城市漫步",
+        "bindtap": "openInspiration"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goDiscover"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-title": "朋友相聚",
+        "bindtap": "openInspiration"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-title": "朋友聚餐",
+        "bindtap": "openInspiration"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-title": "户外相聚",
+        "bindtap": "openInspiration"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goAbout"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goAbout"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goGuidelines"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goCity"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goCreate"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goCreate",
+        "aria-label": "打开活动构思"
+      },
+      "ownGuard": {
+        "wx:if": "{{stateView}}"
+      },
+      "ancestors": []
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goItinerary"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goMessages"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-key": "attending",
+        "bindtap": "selectTab"
+      },
+      "ownGuard": {},
+      "ancestors": []
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-key": "pending",
+        "bindtap": "selectTab"
+      },
+      "ownGuard": {},
+      "ancestors": []
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-key": "organized",
+        "bindtap": "selectTab"
+      },
+      "ownGuard": {},
+      "ancestors": []
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-key": "cohosting",
+        "bindtap": "selectTab"
+      },
+      "ownGuard": {},
+      "ancestors": []
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-key": "history",
+        "bindtap": "selectTab"
+      },
+      "ownGuard": {},
+      "ancestors": []
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "showAllOrganized"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{draftsOnly}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "retry"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{loadState === 'ERROR'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goCreate"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{loadState === 'READY' && draftsOnly && visibleItems.length === 0}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goCreate"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{loadState === 'READY' && items.length === 0 && !draftsOnly}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-id": "{{item.id}}",
+        "bindtap": "openEvent",
+        "aria-label": "查看{{item.title || '活动'}}详情"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{loadState === 'READY'}}"
+        },
+        {
+          "wx:for": "{{visibleItems}}",
+          "wx:key": "id"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-id": "{{item.id}}",
+        "data-action": "{{item.shortcutAction}}",
+        "bindtap": "openCardAction",
+        "aria-label": "{{item.shortcutLabel}}，进入{{item.title || '活动'}}详情页"
+      },
+      "ownGuard": {
+        "wx:if": "{{item.shortcutAction && item.cardKind === 'history'}}"
+      },
+      "ancestors": [
+        {
+          "wx:if": "{{loadState === 'READY'}}"
+        },
+        {
+          "wx:for": "{{visibleItems}}",
+          "wx:key": "id"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-id": "{{item.id}}",
+        "data-action": "{{item.primaryAction}}",
+        "bindtap": "openCardAction"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{loadState === 'READY'}}"
+        },
+        {
+          "wx:for": "{{visibleItems}}",
+          "wx:key": "id"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-id": "{{item.id}}",
+        "data-action": "{{item.secondaryAction}}",
+        "bindtap": "openCardAction"
+      },
+      "ownGuard": {
+        "wx:if": "{{item.secondaryAction}}"
+      },
+      "ancestors": [
+        {
+          "wx:if": "{{loadState === 'READY'}}"
+        },
+        {
+          "wx:for": "{{visibleItems}}",
+          "wx:key": "id"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-id": "{{item.id}}",
+        "bindtap": "openHostShare",
+        "aria-label": "分享{{item.title}}的邀请"
+      },
+      "ownGuard": {
+        "wx:if": "{{item.shareReady}}"
+      },
+      "ancestors": [
+        {
+          "wx:if": "{{loadState === 'READY'}}"
+        },
+        {
+          "wx:for": "{{visibleItems}}",
+          "wx:key": "id"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "data-id": "{{item.id}}",
+        "data-action": "{{item.shortcutAction}}",
+        "bindtap": "openCardAction",
+        "aria-label": "{{item.shortcutLabel}}，进入{{item.title || '活动'}}详情页"
+      },
+      "ownGuard": {
+        "wx:if": "{{item.shortcutAction && item.cardKind !== 'history'}}"
+      },
+      "ancestors": [
+        {
+          "wx:if": "{{loadState === 'READY'}}"
+        },
+        {
+          "wx:for": "{{visibleItems}}",
+          "wx:key": "id"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goDiscover"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goDiscover"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "input",
+      "attrs": {
+        "value": "{{tokenInput}}",
+        "bindinput": "tokenChanged"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "openInvite"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goAbout"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goPrivacy"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attrs": {
+        "bindtap": "goSupport"
+      },
+      "ownGuard": {},
+      "ancestors": [
+        {
+          "wx:if": "{{!stateView}}"
+        }
+      ]
+    }
+  ],
+  "handlers": [
+    "goAbout",
+    "goCity",
+    "goCreate",
+    "goDiscover",
+    "goGuidelines",
+    "goItinerary",
+    "goMessages",
+    "goPrivacy",
+    "goProfile",
+    "goSupport",
+    "heroIdeaInput",
+    "openCardAction",
+    "openCategory",
+    "openEvent",
+    "openHostShare",
+    "openInspiration",
+    "openInvite",
+    "retry",
+    "selectTab",
+    "showAllOrganized",
+    "submitHeroIdea",
+    "tokenChanged"
+  ],
+  "oldAssets": [
+    {
+      "path": "miniprogram/pages/index/assets/calendar.svg",
+      "sha256": "a3e84154e5213e67f9e3799bac1469170a29648a19635b5e67abf0e75981103a"
+    },
+    {
+      "path": "miniprogram/pages/index/assets/city-chevron.svg",
+      "sha256": "e9761e5feed109364ce70d40315a31a778daa22fb827c7ff2d4a32a2e64e7603"
+    },
+    {
+      "path": "miniprogram/pages/index/assets/feature-chevron.svg",
+      "sha256": "a445abcf0ee7b8370c31312dd2b8602b17775317bdf5e073f060a2786c945c01"
+    },
+    {
+      "path": "miniprogram/pages/index/assets/idea-arrow.svg",
+      "sha256": "f7db5551d5d6bb5728b3c523434933809a9255dec3643e9b8429ab36ed7168e9"
+    },
+    {
+      "path": "miniprogram/pages/index/assets/map-pin.svg",
+      "sha256": "9418a7d5542f51b17686ae8a7748ec97d38162b582bc7ac3f4ed0e51154734f3"
+    },
+    {
+      "path": "miniprogram/pages/index/assets/microphone.svg",
+      "sha256": "f3d1da2e3202e33a9b57d7fd872a4c1aee327ca73775f82e0b72d3eb11b4bc3b"
+    },
+    {
+      "path": "miniprogram/pages/index/assets/notification-bell.svg",
+      "sha256": "c649021a51231a33e9c17b30fd66473343b987fa47395ba341598b61638b32b6"
+    }
+  ],
+  "newAssets": [
+    {
+      "path": "miniprogram/pages/index/assets/w70-arrow_back_ios_new-f0-ffffff.svg",
+      "bytes": 153,
+      "sha256": "34a2650043d2793f204f763e9d218c248a1759f09435665a7e5e0975c96ab321",
+      "sourceGlyph": "arrow_back_ios_new",
+      "renderedGlyph": "arrow_back_ios_new",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-arrow_forward-f0-004cc8.svg",
+      "bytes": 167,
+      "sha256": "ccc94f0a315a36ac19bcc1c60245f2f586f5f01848bdf6acc3e6e92f213833b2",
+      "sourceGlyph": "arrow_forward",
+      "renderedGlyph": "arrow_forward",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-arrow_forward-f0-d2f803.svg",
+      "bytes": 167,
+      "sha256": "5aa73e0ab4f202e824b9ba8c91559a0a5115ffa19a989a7cf153439a3fffb1f2",
+      "sourceGlyph": "arrow_forward",
+      "renderedGlyph": "arrow_forward",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-arrow_forward-f0-ffffff.svg",
+      "bytes": 167,
+      "sha256": "b188534b4106e265981b1dd41d5479cbe309d169dfd3f8b5e1e77281d010d7d4",
+      "sourceGlyph": "arrow_forward",
+      "renderedGlyph": "arrow_forward",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-auto_awesome-f0-004cc8.svg",
+      "bytes": 399,
+      "sha256": "fc7164a883973c8cd90675bf69cf9cd3c74a65cd1b40c45f2f206d2fe6f6cd8e",
+      "sourceGlyph": "auto_awesome",
+      "renderedGlyph": "auto_awesome",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-auto_awesome-f0-5856d6.svg",
+      "bytes": 399,
+      "sha256": "4569ff929a1a580193f2cf01118542b47f1f8d2601d8f433d6821c0722021a3e",
+      "sourceGlyph": "auto_awesome",
+      "renderedGlyph": "auto_awesome",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-auto_awesome-f0-ffffff.svg",
+      "bytes": 399,
+      "sha256": "2ec2cf21a175c8ddced2c71df5055cc1f06cec784ac4a47ceaa133314fb3ab83",
+      "sourceGlyph": "auto_awesome",
+      "renderedGlyph": "auto_awesome",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-calendar_month-f0-004cc8.svg",
+      "bytes": 1690,
+      "sha256": "d7e64c86d63d8b5030c94b5868d34d58355daf32a43122a56930ca1446637ee0",
+      "sourceGlyph": "calendar_month",
+      "renderedGlyph": "calendar_month",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-calendar_today-f0-004cc8.svg",
+      "bytes": 626,
+      "sha256": "56aa4ad961aa0d7d215482face478dae6ac1492f15157438651914f4bec50c74",
+      "sourceGlyph": "calendar_today",
+      "renderedGlyph": "calendar_today",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-calendar_today-f0-1d64f2.svg",
+      "bytes": 626,
+      "sha256": "8734c2a7a3e660971a8fbe3aed1bc37125ec60258e3dc5b582c0ba1cc213e5b8",
+      "sourceGlyph": "calendar_today",
+      "renderedGlyph": "calendar_today",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-campaign-f0-424655.svg",
+      "bytes": 640,
+      "sha256": "9cbc14bf9a38bd55f31eb5a1f2e4cd66ebe405226c62834dbcd36f8f2adaf2f9",
+      "sourceGlyph": "campaign",
+      "renderedGlyph": "campaign",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-check_circle-f0-4d5d00.svg",
+      "bytes": 833,
+      "sha256": "035feefa9769995f82f43af62779eb211ab4180ad969b279daa07a10583ac78c",
+      "sourceGlyph": "check_circle",
+      "renderedGlyph": "check_circle",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-check_circle-f0-737687.svg",
+      "bytes": 833,
+      "sha256": "f67c219e4ec571f0189fe7026b5991709765e9634c3b14c46fa7c8bde050d151",
+      "sourceGlyph": "check_circle",
+      "renderedGlyph": "check_circle",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-check_circle-f0-ffffff.svg",
+      "bytes": 833,
+      "sha256": "cf6269386d0962e00b6c432e3538db7d04df867374e747837d66a585a9491b7d",
+      "sourceGlyph": "check_circle",
+      "renderedGlyph": "check_circle",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-edit_calendar-f0-ffffff.svg",
+      "bytes": 843,
+      "sha256": "df3fb26457c3d7a9d028ea7b77bb3d012c6928bdf2cad9b462dc2f89f5f10e75",
+      "sourceGlyph": "edit_calendar",
+      "renderedGlyph": "edit_calendar",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-edit_note-f0-ffffff.svg",
+      "bytes": 470,
+      "sha256": "6ae3159d1c851bc119742b21b3036e836c956e29475f645045a256918e494293",
+      "sourceGlyph": "edit_note",
+      "renderedGlyph": "edit_note",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-favorite-f1-ff2d55.svg",
+      "bytes": 442,
+      "sha256": "5bab2dcc80e024b690cd3ef1680d302bb90d6b6b3a99a01b964f73b56f2ed475",
+      "sourceGlyph": "favorite",
+      "renderedGlyph": "favorite.fill",
+      "axes": {
+        "wght": 400,
+        "FILL": 1,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-filter_list-f0-5856d6.svg",
+      "bytes": 171,
+      "sha256": "a82b607ee7a32308d0ecb3f02f6378ab1136187b3a21a3c5b5f4113a636b19e1",
+      "sourceGlyph": "filter_list",
+      "renderedGlyph": "filter_list",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-hourglass_top-f0-181e00.svg",
+      "bytes": 430,
+      "sha256": "140e26fa6389863971642d8d5121541a3af8d7e8a2ea64d4baae267db0b311f6",
+      "sourceGlyph": "hourglass_top",
+      "renderedGlyph": "hourglass_top",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-location_on-f0-5856d6.svg",
+      "bytes": 805,
+      "sha256": "ef0eb5b0b9e68565aa023ce4107c29286fbe8caa7992a463ef26bee6fdd3c2e9",
+      "sourceGlyph": "location_on",
+      "renderedGlyph": "place",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-neurology-f0-ffffff.svg",
+      "bytes": 4085,
+      "sha256": "c4b6b43a312100219cbca862c5eab0692f5df6fbd809bf728671d237055be922",
+      "sourceGlyph": "neurology",
+      "renderedGlyph": "neurology",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-notifications-f0-424655.svg",
+      "bytes": 598,
+      "sha256": "2703bf4449362fd6d316b3985079d6a0c87493f28345d2d64e81bc043787186c",
+      "sourceGlyph": "notifications",
+      "renderedGlyph": "notifications",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-notifications_active-f0-1d64f2.svg",
+      "bytes": 794,
+      "sha256": "f776558fe4de7cea6af256455829e14cb49e9ec9323e45218c3fedd8e05bfc1c",
+      "sourceGlyph": "notifications_active",
+      "renderedGlyph": "notifications_active",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-person-f0-ffffff.svg",
+      "bytes": 1198,
+      "sha256": "110856b1348d0fb1cf2fbb59cf27a390c7e259ec186dcfc4dd970826b40bb14b",
+      "sourceGlyph": "person",
+      "renderedGlyph": "person",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-photo_library-f0-5856d6.svg",
+      "bytes": 800,
+      "sha256": "47567ac022c077f6b70105779d4730dc2e6e091fc9f5d0cbafe0f8a7b8178f60",
+      "sourceGlyph": "photo_library",
+      "renderedGlyph": "photo_library",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-pin_drop-f0-5856d6.svg",
+      "bytes": 813,
+      "sha256": "12fcd554dbf629d29dbd71c9c30682e9d7864ca06153a4af7de9d9967b3d949b",
+      "sourceGlyph": "pin_drop",
+      "renderedGlyph": "pin_drop",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-qr_code_scanner-f0-ffffff.svg",
+      "bytes": 553,
+      "sha256": "9165acb0f08f798df2aeb5bec54a6f206f7ea583381e3650ad37890c96fcc7a1",
+      "sourceGlyph": "qr_code_scanner",
+      "renderedGlyph": "qr_code_scanner",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-rate_review-f0-ff2d55.svg",
+      "bytes": 854,
+      "sha256": "b3be2740117d9632a6080cbbc49454bfd1284a4c361ce3e44bca8ead7f4f7728",
+      "sourceGlyph": "rate_review",
+      "renderedGlyph": "rate_review",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-receipt_long-f0-1d64f2.svg",
+      "bytes": 939,
+      "sha256": "4483986def495f92b1546c9549c3c07533e745f313de8c00d9191850b10a158e",
+      "sourceGlyph": "receipt_long",
+      "renderedGlyph": "receipt_long",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-route-f0-5856d6.svg",
+      "bytes": 1467,
+      "sha256": "323c7fa5b0d4cae4ff6f677e5c08282dc7f9c46d80432a62484a2092e41c014b",
+      "sourceGlyph": "route",
+      "renderedGlyph": "route",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-schedule-f0-004cc8.svg",
+      "bytes": 820,
+      "sha256": "45d9709eb3074be89d223bc19f9ba839c475951ca529da210b879fe2639c8f17",
+      "sourceGlyph": "schedule",
+      "renderedGlyph": "schedule",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-schedule-f0-1d64f2.svg",
+      "bytes": 820,
+      "sha256": "88c759557422a0d8f75dca2e40273c657ae06685f3ae6e63fa8bc537e5ed2f2f",
+      "sourceGlyph": "schedule",
+      "renderedGlyph": "schedule",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-share-f0-424655.svg",
+      "bytes": 1804,
+      "sha256": "c23350bc6337913f77638dd7603009afd9c65818a9c5c7fbbcd29b69a7c51f9a",
+      "sourceGlyph": "share",
+      "renderedGlyph": "share",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-smart_toy-f1-5856d6.svg",
+      "bytes": 938,
+      "sha256": "f89c0290ed1facc249048d5df745d6f5a1509cd215e1bfd2f9a164e156146622",
+      "sourceGlyph": "smart_toy",
+      "renderedGlyph": "smart_toy.fill",
+      "axes": {
+        "wght": 400,
+        "FILL": 1,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-sports_tennis-f0-1a1b1f.svg",
+      "bytes": 1100,
+      "sha256": "d878c8c1b038d172bf0ba4dcbc49279149263f174710de91f818dfc5ef416174",
+      "sourceGlyph": "sports_tennis",
+      "renderedGlyph": "sports_tennis",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-storefront-f0-5856d6.svg",
+      "bytes": 1871,
+      "sha256": "c5dcab055c2e82f588c1e1469120c7d4ca5bf6275032279e1deec224e73c6b3e",
+      "sourceGlyph": "storefront",
+      "renderedGlyph": "storefront",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-tune-f0-424655.svg",
+      "bytes": 297,
+      "sha256": "14c561707a00a1ef16d2134dd67548a0dca665dee048bcfbd6da3f6f12fb964a",
+      "sourceGlyph": "tune",
+      "renderedGlyph": "tune",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-verified-f0-1a1b1f.svg",
+      "bytes": 523,
+      "sha256": "1d913ba0bb83c9f765bb95b870e475ba1509d69676a0ed29c9d1c18e69983437",
+      "sourceGlyph": "verified",
+      "renderedGlyph": "verified",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-verified-f0-424655.svg",
+      "bytes": 523,
+      "sha256": "1f13c252564c670145eedc000c93be858d9f516307b08dd564f484e9acc3fbfe",
+      "sourceGlyph": "verified",
+      "renderedGlyph": "verified",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-warning-f0-ff2d55.svg",
+      "bytes": 372,
+      "sha256": "527eb640eeb346b0762fe8728414e782355f3c8eb3908896f5a0bd5a57dee937",
+      "sourceGlyph": "warning",
+      "renderedGlyph": "warning",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-organized-badminton.jpg",
+      "bytes": 50486,
+      "sha256": "127a013960fb752eccf0bc9e89146d60d6a3b5f12f67ccfbca1dc42e7c760dd0",
+      "sourcePage": "pg02_c",
+      "sourceURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuDsZUCtG97Dhg0Zie50XCK9fkpHcuuGReqOBfihkFU3oKGddeY7M7JPz2pxJiP2H2c89IX_a6KTzSbfKhc1W4CeJZwQSI_wBVwsa4EV-1ZzHxtuxh4r-E4o3LQlhvKZANnYO50v3YSB8IvgLX6t_-Nkvb-xz5lR1uLCfioZ2KZLqn2U73SOG7Pa-LZvRcBgQr8-Bc236V6N0Zko4gBv4_41htfyPn8-ZB3-Rk0i7Ywb-FJCNU0jC9VSfg",
+      "semantic": "Explicit activity-type illustration, not real participant or event photography"
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-history-badminton.jpg",
+      "bytes": 61936,
+      "sha256": "a02ca85ada6835044e0e2056cf231c71a744a4e93a83601e6a9abb93d73d8c6a",
+      "sourcePage": "pg02_d",
+      "sourceURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuB-olyeAicsEosXyotX6OPSIekP9He_EGgqYJNulaqNJjy0wDs-9jJrlLkumqkFiuDRTmFH-_0LheEUw_bp7cH7KkZ6sMEpXbkKqJ4tzNnUFIWWhWFaCGdtOflLYfb7buEgYTPQLwc7T7c_3WCm3QIl7Q0EdxqTh4sAHQecxwInJ_pVPVeW61ACYH-sdxJ75AY-pmsb2F74Ps4K0u1Kc8JuTPcJmS8nKvBWIjvfaApx9DGSSVu2cTC9IQ",
+      "semantic": "Explicit activity-type illustration, not real participant or event photography"
+    }
+  ],
+  "products": [
+    {
+      "path": "miniprogram/pages/index/index.wxml",
+      "bytes": 36480,
+      "sha256": "791f7bb0e7062973d7e38dbb00d188afd43d903a19b6294a0b66a6ca1407b4d4"
+    },
+    {
+      "path": "miniprogram/pages/index/index.wxss",
+      "bytes": 78034,
+      "sha256": "2d0e3411470396a63250e50301a20201fd7b3a7a48eca2322c83ee7dadbed751"
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-arrow_back_ios_new-f0-ffffff.svg",
+      "bytes": 153,
+      "sha256": "34a2650043d2793f204f763e9d218c248a1759f09435665a7e5e0975c96ab321",
+      "sourceGlyph": "arrow_back_ios_new",
+      "renderedGlyph": "arrow_back_ios_new",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-arrow_forward-f0-004cc8.svg",
+      "bytes": 167,
+      "sha256": "ccc94f0a315a36ac19bcc1c60245f2f586f5f01848bdf6acc3e6e92f213833b2",
+      "sourceGlyph": "arrow_forward",
+      "renderedGlyph": "arrow_forward",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-arrow_forward-f0-d2f803.svg",
+      "bytes": 167,
+      "sha256": "5aa73e0ab4f202e824b9ba8c91559a0a5115ffa19a989a7cf153439a3fffb1f2",
+      "sourceGlyph": "arrow_forward",
+      "renderedGlyph": "arrow_forward",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-arrow_forward-f0-ffffff.svg",
+      "bytes": 167,
+      "sha256": "b188534b4106e265981b1dd41d5479cbe309d169dfd3f8b5e1e77281d010d7d4",
+      "sourceGlyph": "arrow_forward",
+      "renderedGlyph": "arrow_forward",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-auto_awesome-f0-004cc8.svg",
+      "bytes": 399,
+      "sha256": "fc7164a883973c8cd90675bf69cf9cd3c74a65cd1b40c45f2f206d2fe6f6cd8e",
+      "sourceGlyph": "auto_awesome",
+      "renderedGlyph": "auto_awesome",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-auto_awesome-f0-5856d6.svg",
+      "bytes": 399,
+      "sha256": "4569ff929a1a580193f2cf01118542b47f1f8d2601d8f433d6821c0722021a3e",
+      "sourceGlyph": "auto_awesome",
+      "renderedGlyph": "auto_awesome",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-auto_awesome-f0-ffffff.svg",
+      "bytes": 399,
+      "sha256": "2ec2cf21a175c8ddced2c71df5055cc1f06cec784ac4a47ceaa133314fb3ab83",
+      "sourceGlyph": "auto_awesome",
+      "renderedGlyph": "auto_awesome",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-calendar_month-f0-004cc8.svg",
+      "bytes": 1690,
+      "sha256": "d7e64c86d63d8b5030c94b5868d34d58355daf32a43122a56930ca1446637ee0",
+      "sourceGlyph": "calendar_month",
+      "renderedGlyph": "calendar_month",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-calendar_today-f0-004cc8.svg",
+      "bytes": 626,
+      "sha256": "56aa4ad961aa0d7d215482face478dae6ac1492f15157438651914f4bec50c74",
+      "sourceGlyph": "calendar_today",
+      "renderedGlyph": "calendar_today",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-calendar_today-f0-1d64f2.svg",
+      "bytes": 626,
+      "sha256": "8734c2a7a3e660971a8fbe3aed1bc37125ec60258e3dc5b582c0ba1cc213e5b8",
+      "sourceGlyph": "calendar_today",
+      "renderedGlyph": "calendar_today",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-campaign-f0-424655.svg",
+      "bytes": 640,
+      "sha256": "9cbc14bf9a38bd55f31eb5a1f2e4cd66ebe405226c62834dbcd36f8f2adaf2f9",
+      "sourceGlyph": "campaign",
+      "renderedGlyph": "campaign",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-check_circle-f0-4d5d00.svg",
+      "bytes": 833,
+      "sha256": "035feefa9769995f82f43af62779eb211ab4180ad969b279daa07a10583ac78c",
+      "sourceGlyph": "check_circle",
+      "renderedGlyph": "check_circle",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-check_circle-f0-737687.svg",
+      "bytes": 833,
+      "sha256": "f67c219e4ec571f0189fe7026b5991709765e9634c3b14c46fa7c8bde050d151",
+      "sourceGlyph": "check_circle",
+      "renderedGlyph": "check_circle",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-check_circle-f0-ffffff.svg",
+      "bytes": 833,
+      "sha256": "cf6269386d0962e00b6c432e3538db7d04df867374e747837d66a585a9491b7d",
+      "sourceGlyph": "check_circle",
+      "renderedGlyph": "check_circle",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-edit_calendar-f0-ffffff.svg",
+      "bytes": 843,
+      "sha256": "df3fb26457c3d7a9d028ea7b77bb3d012c6928bdf2cad9b462dc2f89f5f10e75",
+      "sourceGlyph": "edit_calendar",
+      "renderedGlyph": "edit_calendar",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-edit_note-f0-ffffff.svg",
+      "bytes": 470,
+      "sha256": "6ae3159d1c851bc119742b21b3036e836c956e29475f645045a256918e494293",
+      "sourceGlyph": "edit_note",
+      "renderedGlyph": "edit_note",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-favorite-f1-ff2d55.svg",
+      "bytes": 442,
+      "sha256": "5bab2dcc80e024b690cd3ef1680d302bb90d6b6b3a99a01b964f73b56f2ed475",
+      "sourceGlyph": "favorite",
+      "renderedGlyph": "favorite.fill",
+      "axes": {
+        "wght": 400,
+        "FILL": 1,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-filter_list-f0-5856d6.svg",
+      "bytes": 171,
+      "sha256": "a82b607ee7a32308d0ecb3f02f6378ab1136187b3a21a3c5b5f4113a636b19e1",
+      "sourceGlyph": "filter_list",
+      "renderedGlyph": "filter_list",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-hourglass_top-f0-181e00.svg",
+      "bytes": 430,
+      "sha256": "140e26fa6389863971642d8d5121541a3af8d7e8a2ea64d4baae267db0b311f6",
+      "sourceGlyph": "hourglass_top",
+      "renderedGlyph": "hourglass_top",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-location_on-f0-5856d6.svg",
+      "bytes": 805,
+      "sha256": "ef0eb5b0b9e68565aa023ce4107c29286fbe8caa7992a463ef26bee6fdd3c2e9",
+      "sourceGlyph": "location_on",
+      "renderedGlyph": "place",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-neurology-f0-ffffff.svg",
+      "bytes": 4085,
+      "sha256": "c4b6b43a312100219cbca862c5eab0692f5df6fbd809bf728671d237055be922",
+      "sourceGlyph": "neurology",
+      "renderedGlyph": "neurology",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-notifications-f0-424655.svg",
+      "bytes": 598,
+      "sha256": "2703bf4449362fd6d316b3985079d6a0c87493f28345d2d64e81bc043787186c",
+      "sourceGlyph": "notifications",
+      "renderedGlyph": "notifications",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-notifications_active-f0-1d64f2.svg",
+      "bytes": 794,
+      "sha256": "f776558fe4de7cea6af256455829e14cb49e9ec9323e45218c3fedd8e05bfc1c",
+      "sourceGlyph": "notifications_active",
+      "renderedGlyph": "notifications_active",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-person-f0-ffffff.svg",
+      "bytes": 1198,
+      "sha256": "110856b1348d0fb1cf2fbb59cf27a390c7e259ec186dcfc4dd970826b40bb14b",
+      "sourceGlyph": "person",
+      "renderedGlyph": "person",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-photo_library-f0-5856d6.svg",
+      "bytes": 800,
+      "sha256": "47567ac022c077f6b70105779d4730dc2e6e091fc9f5d0cbafe0f8a7b8178f60",
+      "sourceGlyph": "photo_library",
+      "renderedGlyph": "photo_library",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-pin_drop-f0-5856d6.svg",
+      "bytes": 813,
+      "sha256": "12fcd554dbf629d29dbd71c9c30682e9d7864ca06153a4af7de9d9967b3d949b",
+      "sourceGlyph": "pin_drop",
+      "renderedGlyph": "pin_drop",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-qr_code_scanner-f0-ffffff.svg",
+      "bytes": 553,
+      "sha256": "9165acb0f08f798df2aeb5bec54a6f206f7ea583381e3650ad37890c96fcc7a1",
+      "sourceGlyph": "qr_code_scanner",
+      "renderedGlyph": "qr_code_scanner",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-rate_review-f0-ff2d55.svg",
+      "bytes": 854,
+      "sha256": "b3be2740117d9632a6080cbbc49454bfd1284a4c361ce3e44bca8ead7f4f7728",
+      "sourceGlyph": "rate_review",
+      "renderedGlyph": "rate_review",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-receipt_long-f0-1d64f2.svg",
+      "bytes": 939,
+      "sha256": "4483986def495f92b1546c9549c3c07533e745f313de8c00d9191850b10a158e",
+      "sourceGlyph": "receipt_long",
+      "renderedGlyph": "receipt_long",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-route-f0-5856d6.svg",
+      "bytes": 1467,
+      "sha256": "323c7fa5b0d4cae4ff6f677e5c08282dc7f9c46d80432a62484a2092e41c014b",
+      "sourceGlyph": "route",
+      "renderedGlyph": "route",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-schedule-f0-004cc8.svg",
+      "bytes": 820,
+      "sha256": "45d9709eb3074be89d223bc19f9ba839c475951ca529da210b879fe2639c8f17",
+      "sourceGlyph": "schedule",
+      "renderedGlyph": "schedule",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-schedule-f0-1d64f2.svg",
+      "bytes": 820,
+      "sha256": "88c759557422a0d8f75dca2e40273c657ae06685f3ae6e63fa8bc537e5ed2f2f",
+      "sourceGlyph": "schedule",
+      "renderedGlyph": "schedule",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-share-f0-424655.svg",
+      "bytes": 1804,
+      "sha256": "c23350bc6337913f77638dd7603009afd9c65818a9c5c7fbbcd29b69a7c51f9a",
+      "sourceGlyph": "share",
+      "renderedGlyph": "share",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-smart_toy-f1-5856d6.svg",
+      "bytes": 938,
+      "sha256": "f89c0290ed1facc249048d5df745d6f5a1509cd215e1bfd2f9a164e156146622",
+      "sourceGlyph": "smart_toy",
+      "renderedGlyph": "smart_toy.fill",
+      "axes": {
+        "wght": 400,
+        "FILL": 1,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-sports_tennis-f0-1a1b1f.svg",
+      "bytes": 1100,
+      "sha256": "d878c8c1b038d172bf0ba4dcbc49279149263f174710de91f818dfc5ef416174",
+      "sourceGlyph": "sports_tennis",
+      "renderedGlyph": "sports_tennis",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-storefront-f0-5856d6.svg",
+      "bytes": 1871,
+      "sha256": "c5dcab055c2e82f588c1e1469120c7d4ca5bf6275032279e1deec224e73c6b3e",
+      "sourceGlyph": "storefront",
+      "renderedGlyph": "storefront",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-tune-f0-424655.svg",
+      "bytes": 297,
+      "sha256": "14c561707a00a1ef16d2134dd67548a0dca665dee048bcfbd6da3f6f12fb964a",
+      "sourceGlyph": "tune",
+      "renderedGlyph": "tune",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-verified-f0-1a1b1f.svg",
+      "bytes": 523,
+      "sha256": "1d913ba0bb83c9f765bb95b870e475ba1509d69676a0ed29c9d1c18e69983437",
+      "sourceGlyph": "verified",
+      "renderedGlyph": "verified",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-verified-f0-424655.svg",
+      "bytes": 523,
+      "sha256": "1f13c252564c670145eedc000c93be858d9f516307b08dd564f484e9acc3fbfe",
+      "sourceGlyph": "verified",
+      "renderedGlyph": "verified",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-warning-f0-ff2d55.svg",
+      "bytes": 372,
+      "sha256": "527eb640eeb346b0762fe8728414e782355f3c8eb3908896f5a0bd5a57dee937",
+      "sourceGlyph": "warning",
+      "renderedGlyph": "warning",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      }
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-organized-badminton.jpg",
+      "bytes": 50486,
+      "sha256": "127a013960fb752eccf0bc9e89146d60d6a3b5f12f67ccfbca1dc42e7c760dd0",
+      "sourcePage": "pg02_c",
+      "sourceURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuDsZUCtG97Dhg0Zie50XCK9fkpHcuuGReqOBfihkFU3oKGddeY7M7JPz2pxJiP2H2c89IX_a6KTzSbfKhc1W4CeJZwQSI_wBVwsa4EV-1ZzHxtuxh4r-E4o3LQlhvKZANnYO50v3YSB8IvgLX6t_-Nkvb-xz5lR1uLCfioZ2KZLqn2U73SOG7Pa-LZvRcBgQr8-Bc236V6N0Zko4gBv4_41htfyPn8-ZB3-Rk0i7Ywb-FJCNU0jC9VSfg",
+      "semantic": "Explicit activity-type illustration, not real participant or event photography"
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w70-history-badminton.jpg",
+      "bytes": 61936,
+      "sha256": "a02ca85ada6835044e0e2056cf231c71a744a4e93a83601e6a9abb93d73d8c6a",
+      "sourcePage": "pg02_d",
+      "sourceURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuB-olyeAicsEosXyotX6OPSIekP9He_EGgqYJNulaqNJjy0wDs-9jJrlLkumqkFiuDRTmFH-_0LheEUw_bp7cH7KkZ6sMEpXbkKqJ4tzNnUFIWWhWFaCGdtOflLYfb7buEgYTPQLwc7T7c_3WCm3QIl7Q0EdxqTh4sAHQecxwInJ_pVPVeW61ACYH-sdxJ75AY-pmsb2F74Ps4K0u1Kc8JuTPcJmS8nKvBWIjvfaApx9DGSSVu2cTC9IQ",
+      "semantic": "Explicit activity-type illustration, not real participant or event photography"
+    }
+  ],
+  "protectedJSJSON": {
+    "index.wxml": {
+      "bytes": 24707,
+      "sha256": "fcbf2764f06abb13207f5534b51bb7c93f563fd42ad4de3ddc55bda424a60da0"
+    },
+    "index.js": {
+      "bytes": 32598,
+      "sha256": "d85b9db816163c4853bd2a7a9abec66dc62e8047d9e79c19457f4cb57dc8ac11"
+    },
+    "index.wxss": {
+      "bytes": 47655,
+      "sha256": "5fd04b24883cc3a89188e989e4d04f9ba70ece8d4d9f88916380e07dfceb6aa0"
+    },
+    "index.json": {
+      "bytes": 143,
+      "sha256": "a082db2fcb674d4131b60f427fcb40891d00e1d2571e372df9827fa25e2f1fb1"
+    }
+  },
+  "CSSSourceRuleCount": 186,
+  "newAssetsBytes": 144684,
+  "productNetBytes": 186836,
+  "sourceObservationsAreReviewerOwnedAndNotExecutedHere": true
+}

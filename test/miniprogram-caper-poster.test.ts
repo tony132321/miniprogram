@@ -29,7 +29,7 @@ function loadPoster() {
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/share/share.js', import.meta.url), 'utf8'), {
     setTimeout, clearTimeout,
     require(path: string) {
-      if (path === '../../../vendor/qrcode.js') return () => ({
+      if (path === '../vendor/qrcode.js') return () => ({
         addData(value: string) { qrPayloads.push(value); }, make() {},
         getModuleCount() { return 21; }, isDark(row: number, col: number) { return row === col; }
       });
@@ -165,7 +165,7 @@ test('published poster shortcut routes through the share page and the share page
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(path);
     },

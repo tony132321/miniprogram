@@ -1,0 +1,28 @@
+{
+  "source": "_2 host role font-medium500 / current member role font-semibold600; _4 all nonhost role labels default text-label-sm700, host font-semibold600; _4 capacity caption text-label-sm font-medium500 green; real aliases no fake skills",
+  "WXMLClassChange": {
+    "old": "class=\"pgd-member {{item.isMine ? 'pgd-member-mine' : ''}}\"",
+    "new": "class=\"pgd-member {{item.isMine ? 'pgd-member-mine' : ''}} {{item.isHost ? 'pgd-member-host' : ''}}\""
+  },
+  "CSSChanges": [
+    {
+      "old": ".pgd-member-mine>view,.pgd-member-mine>.pgd-member-role{color:#1d64f2;font-weight:700}",
+      "new": ".pgd-member-mine>view{color:#1d64f2;font-weight:700}.pgd-member-mine>.pgd-member-role{color:#1d64f2;font-weight:600}.pgd-member-host>.pgd-member-role{color:#004cc8;font-weight:500}"
+    },
+    {
+      "old": ".pgd-host-reference .pgd-member>view{max-width:100%;width:100%;font-weight:700}",
+      "new": ".pgd-host-reference .pgd-member>view{max-width:100%;width:100%;font-weight:700;color:#1a1b1f}"
+    },
+    {
+      "old": ".pgd-host-reference .pgd-member-role{font-weight:600}",
+      "new": ".pgd-host-reference .pgd-member-role{font-weight:700}.pgd-host-reference .pgd-member-host>.pgd-member-role{color:#1d64f2;font-weight:600}"
+    }
+  ],
+  "CSSAdded": ".pgd-host-reference .pd-members .pgd-fact-caption{color:#34c759;font-weight:500}\n",
+  "inverseWXMLSHA": "214b0f996e46ff8c182b727dc9b20f337be542b6ef7eb4cc2604db63cd008194",
+  "inverseCSSSHA": "c8cdfbb046ef3696b786ec38a4b00979499b64153d57e8d0c32369949981d240",
+  "finalWXMLSHA": "cb61f218d1cfe2c2913e11d58e1ed403ec66ba1b991a867752e30244c60bf4c1",
+  "finalCSSSHA": "7718775a8edb072fa96f70cfcfde1c6085c1d4bc78c644598c929258252fa46b",
+  "noBindingsChanged": "Only class and CSS, all handler/data/qualification attrs unchanged; no repeated 8 role checks",
+  "deltaBytes": 314
+}

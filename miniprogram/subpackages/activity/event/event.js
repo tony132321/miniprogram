@@ -1,5 +1,5 @@
 const { api } = require('../../../utils/api.js');
-const { drawCheckInQr } = require('../../../utils/checkin-qr.js');
+const { drawCheckInQr } = require('../utils/checkin-qr.js');
 const config = require('../../../config.js');
 function headerPaddingRight() {
   try {

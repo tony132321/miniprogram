@@ -1,0 +1,26 @@
+{
+  "source": "Independent original CSS-only observation; tracking-wider .05em gives11px*.05=.55px; source mono credential role17/22/600/widest1.7 preserved with truthful short closed copy; source hosttime/venue labels wider .55",
+  "WXMLTextChange": {
+    "old": "<text>个人电子凭证尚未开放</text><view>以当前资格与现场动态码为准</view>",
+    "new": "<text>个人电子签到凭证</text><view>尚未开放</view>"
+  },
+  "PG07CSSChange": {
+    "source": "retained source-generated.css .tracking-wide=.025em, original hostchip text-label-sm11px =>.275px",
+    "old": ".pg07-role-chip{padding:2px 8px;border-radius:9999px;background:#f3fee7;color:#4d5d00;font-size:11px;line-height:14px;letter-spacing:.55px;font-weight:700}",
+    "new": ".pg07-role-chip{padding:2px 8px;border-radius:9999px;background:#f3fee7;color:#4d5d00;font-size:11px;line-height:14px;letter-spacing:.275px;font-weight:700}",
+    "inverseSHA": "14cb53da5e65bc779a24c2de306c24f2d795eaa06c728e6c908f0addfb9d22d7",
+    "finalStageCSSSHA": "c72cc63700e156013af0e9b2c134e4413516167d5f7a2bfcd82a327e36d8e469",
+    "boundaries": "Only PG07 chip CSS one numeric value; same8bindings/glyphs/3prior review classes untouched"
+  },
+  "credentialCSS": {
+    "old": ".pgd-pass-row>view>view{font-size:13px;line-height:18px;font-weight:600;color:#004cc8}",
+    "new": ".pgd-pass-row>view>view{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,\"Liberation Mono\",\"Courier New\",monospace;font-size:17px;line-height:22px;font-weight:600;letter-spacing:1.7px;color:#004cc8}"
+  },
+  "CSSAdded": ".pgd-host-reference .pd-time .pgd-fact-copy>text:first-child,.pgd-host-reference .pd-venue .pgd-fact-copy>text:first-child{letter-spacing:.55px}\n",
+  "inverseWXMLSHA": "5b4ce8e9767d8194a5ae7fb8535a7922b90c39c39c9c1bcc8da8923789f94a29",
+  "inverseCSSSHA": "add3e314074fbe92132a581b76ed1c72055bd888add9636a19e7581b5c94f707",
+  "finalWXMLSHA": "c6e223b8e57d6a3433a4c4b6a9ab994dc99ccf4082c4b0cdae515560d3b7e8ee",
+  "finalCSSSHA": "162f22913cea00edb0e4437c57a731f5c31954200832d67d2acd8ad943e53173",
+  "bindingProtection": "Only static presentation copy/CSS; no handler/data/qualification change; no repeated prior checks",
+  "deltaBytes": 238
+}

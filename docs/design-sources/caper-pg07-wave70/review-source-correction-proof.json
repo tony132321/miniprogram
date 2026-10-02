@@ -1,0 +1,44 @@
+{
+  "sourceBasis": "original retained PG07 generated CSS + original HTML; 3 final aggregated source findings",
+  "WXMLChanges": [
+    {
+      "old": "class=\"pg07-native-back\" bindtap=",
+      "new": "class=\"pg07-native-back\" hover-class=\"pg07-pressed\" hover-start-time=\"0\" bindtap="
+    },
+    {
+      "old": "class=\"pg07-native-more\" bindtap=",
+      "new": "class=\"pg07-native-more\" hover-class=\"pg07-pressed\" hover-start-time=\"0\" bindtap="
+    },
+    {
+      "old": "<view class=\"pg07-orb-dot\"></view>",
+      "new": "<view class=\"pg07-orb-badge\"><view class=\"pg07-orb-ping\"></view><view class=\"pg07-orb-dot\"></view></view>"
+    },
+    {
+      "old": "<input placeholder=\"提一个问题...\" value=\"{{questionText}}\"",
+      "new": "<input placeholder=\"提一个问题...\" placeholder-style=\"color:#737687\" value=\"{{questionText}}\""
+    },
+    {
+      "old": "class=\"pg07-send\" bindtap=",
+      "new": "class=\"pg07-send\" hover-class=\"pg07-pressed\" hover-start-time=\"0\" bindtap="
+    }
+  ],
+  "CSSChanges": [
+    {
+      "old": ".pg07-orb-glow{position:absolute;inset:0;border-radius:9999px;background:linear-gradient(to top right,#1d64f2,#5856d6,#d2f803);opacity:.8;filter:blur(6px)}",
+      "new": ".pg07-orb-glow{position:absolute;inset:0;border-radius:9999px;background:linear-gradient(to top right,#1d64f2,#5856d6,#d2f803);opacity:.8;filter:blur(6px);animation:pg07-pulse 2s cubic-bezier(.4,0,.6,1) infinite}"
+    },
+    {
+      "old": ".pg07-orb-dot{position:absolute;top:-2px;right:-2px;width:12px;height:12px;border-radius:9999px;background:#d2f803}",
+      "new": ".pg07-orb-badge{position:absolute;top:-2px;right:-2px;width:12px;height:12px}.pg07-orb-ping{position:absolute;inset:0;width:100%;height:100%;border-radius:9999px;background:#d2f803;opacity:.75;animation:pg07-ping 1s cubic-bezier(0,0,.2,1) infinite}.pg07-orb-dot{position:relative;width:12px;height:12px;border-radius:9999px;background:#d2f803}"
+    }
+  ],
+  "CSSAdded": "/* PG07 independent source review: decorative source motion, native pressed and input focus. */\n@keyframes pg07-pulse{50%{opacity:.5}}@keyframes pg07-ping{75%,100%{transform:scale(2);opacity:0}}\n.pg07-native-nav .pg07-pressed,.pg07-reference .pg07-pressed{transform:scale(.95)}.pg07-native-back,.pg07-native-more,.pg07-send{transition:all .15s cubic-bezier(.4,0,.2,1)}.pg07-input-wrap{transition:all .15s cubic-bezier(.4,0,.2,1)}.pg07-input-wrap:focus-within{background:#fff;box-shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1)}\n",
+  "inverseWXMLSHA": "42c385ffe7bff22daab319065a908a1ddb3cf4966ce329558acc1f2fb563f008",
+  "inverseCSSSHA": "5b426ff257df99a1306a86b5cec1b4e3a8b1b7aaa01c1be352b7b6eafbb5a217",
+  "preCorrectionWXMLSHA": "42c385ffe7bff22daab319065a908a1ddb3cf4966ce329558acc1f2fb563f008",
+  "preCorrectionCSSSHA": "5b426ff257df99a1306a86b5cec1b4e3a8b1b7aaa01c1be352b7b6eafbb5a217",
+  "finalWXMLSHA": "d3730787e1735822cba2182e85b648e4e1f98d41ab5d353c44f4cccaabcce628",
+  "finalCSSSHA": "a2396870a33ec775bf0ed42006c18e1b639b2bd183e94a5eec7ba22dadb8e281",
+  "scope": "Only PG07 decorative motion/placeholder/pressed/focus; JS/JSON/bind/data/value/qualification untouched; details new bytes untouched",
+  "bytesDelta": 1081
+}

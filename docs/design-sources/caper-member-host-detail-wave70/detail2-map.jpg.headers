@@ -1,0 +1,18 @@
+HTTP/2 200 
+access-control-allow-origin: *
+timing-allow-origin: *
+access-control-expose-headers: Content-Length
+content-disposition: inline;filename="unnamed.png"
+x-content-type-options: nosniff
+server: fife
+content-length: 152383
+x-xss-protection: 0
+date: Fri, 02 Oct 2026 00:09:31 GMT
+expires: Sat, 03 Oct 2026 00:09:31 GMT
+cache-control: public, max-age=86400, no-transform
+etag: "v0"
+content-type: image/png
+vary: Origin
+age: 99
+alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+

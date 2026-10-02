@@ -33,7 +33,7 @@ function eventPage(actor: 'host' | 'member' | 'helper', clock: { now: number }) 
         },
         async post(pathname: string) { posts.push(pathname); return { token: 'signed-token', expiresInSeconds: 30 }; }
       } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: actor };
       throw new Error(`unexpected require ${path}`);
     },

@@ -1,0 +1,1090 @@
+{
+  "sourceHTMLSHA256": "435b969b25bdfcde866d7d83d4cabf50eeae09cdc10bbd8bff10b7a2f22036d1",
+  "lastMaterialURL": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap",
+  "originalMaterialURLs": [
+    "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap",
+    "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+  ],
+  "fixedSourceFace": "docs/design-sources/caper-activity-wave69/original-last-material-full.woff2",
+  "fullFontSHA256": "77f9711f3f896a1d7a34ab95cffc45cfb17d84c223f197c1b90faa0d043006e9",
+  "version": "Version2.972",
+  "activeRcltApplied": true,
+  "nodes": [
+    {
+      "line": 3,
+      "attributes": {
+        "class": "material-symbols-outlined text-[24px]"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "zh-CN"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface font-body-md text-on-surface min-h-screen flex flex-col selection:bg-primary/20"
+          }
+        },
+        {
+          "tag": "header",
+          "attributes": {
+            "class": "fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "h-16 px-margin flex items-center justify-between"
+          }
+        },
+        {
+          "tag": "button",
+          "attributes": {
+            "aria-label": "返回",
+            "class": "w-11 h-11 -ml-space-xs flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container/60 active:scale-95 transition-all",
+            "onclick": "history.back()",
+            "type": "button"
+          }
+        }
+      ],
+      "name": "arrow_back_ios_new",
+      "displayPx": 24,
+      "exactSVG": "arrow_back_ios_new-w400-f0-1a1b1f.svg"
+    },
+    {
+      "line": 3,
+      "attributes": {
+        "class": "material-symbols-outlined text-[24px]"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "zh-CN"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface font-body-md text-on-surface min-h-screen flex flex-col selection:bg-primary/20"
+          }
+        },
+        {
+          "tag": "header",
+          "attributes": {
+            "class": "fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "h-16 px-margin flex items-center justify-between"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex items-center gap-space-xs"
+          }
+        },
+        {
+          "tag": "button",
+          "attributes": {
+            "aria-label": "更多操作",
+            "class": "w-11 h-11 flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container/60 active:scale-95 transition-all",
+            "type": "button"
+          }
+        }
+      ],
+      "name": "more_horiz",
+      "displayPx": 24,
+      "exactSVG": "more_horiz-w400-f0-1a1b1f.svg"
+    },
+    {
+      "line": 3,
+      "attributes": {
+        "class": "material-symbols-outlined text-on-primary text-[18px]"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "zh-CN"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface font-body-md text-on-surface min-h-screen flex flex-col selection:bg-primary/20"
+          }
+        },
+        {
+          "tag": "header",
+          "attributes": {
+            "class": "fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "h-16 px-margin flex items-center justify-between"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex items-center gap-space-xs"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-sm"
+          }
+        }
+      ],
+      "name": "person",
+      "displayPx": 18,
+      "exactSVG": "person-w400-f0-ffffff.svg"
+    },
+    {
+      "line": 46,
+      "attributes": {
+        "class": "material-symbols-outlined text-on-tertiary-fixed text-[11px]",
+        "style": "font-variation-settings: 'FILL' 1;"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "zh-CN"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface font-body-md text-on-surface min-h-screen flex flex-col selection:bg-primary/20"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex-1 flex flex-col relative w-full pt-16 pb-safe bg-gradient-to-b from-surface via-surface-canvas to-surface-bright"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full relative"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col px-margin pb-28 space-y-space-md"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "relative flex flex-col space-y-space-lg pt-space-xs"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "relative flex items-start gap-space-md z-10 group"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "relative flex-shrink-0"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "absolute -bottom-1 -right-1 w-4 h-4 bg-tertiary-fixed rounded-full flex items-center justify-center shadow-xs"
+          }
+        }
+      ],
+      "name": "star",
+      "displayPx": 11,
+      "exactSVG": "star-w400-f1-181e00.svg"
+    },
+    {
+      "line": 67,
+      "attributes": {
+        "class": "material-symbols-outlined text-[13px]"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "zh-CN"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface font-body-md text-on-surface min-h-screen flex flex-col selection:bg-primary/20"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex-1 flex flex-col relative w-full pt-16 pb-safe bg-gradient-to-b from-surface via-surface-canvas to-surface-bright"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full relative"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col px-margin pb-28 space-y-space-md"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "relative flex flex-col space-y-space-lg pt-space-xs"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "relative flex items-start gap-space-md z-10 group"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex-1 bg-surface-card rounded-2xl p-space-md shadow-sm space-y-space-xs"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "mt-2 rounded-xl overflow-hidden relative shadow-xs group-active:scale-[0.99] transition-transform"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "absolute bottom-2 right-2 px-2 py-0.5 rounded-full bg-on-background/60 backdrop-blur-md text-surface font-label-sm text-label-sm flex items-center gap-1"
+          }
+        }
+      ],
+      "name": "image",
+      "displayPx": 13,
+      "exactSVG": "image-w400-f0-faf8fe.svg"
+    },
+    {
+      "line": 77,
+      "attributes": {
+        "class": "material-symbols-outlined text-status-active-green text-[20px]",
+        "style": "font-variation-settings: 'FILL' 1;"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "zh-CN"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface font-body-md text-on-surface min-h-screen flex flex-col selection:bg-primary/20"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex-1 flex flex-col relative w-full pt-16 pb-safe bg-gradient-to-b from-surface via-surface-canvas to-surface-bright"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full relative"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col px-margin pb-28 space-y-space-md"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "relative flex flex-col space-y-space-lg pt-space-xs"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "relative flex items-start gap-space-md z-10"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "relative flex-shrink-0 w-10 h-10 rounded-full bg-status-active-green-soft flex items-center justify-center shadow-sm ring-2 ring-surface"
+          }
+        }
+      ],
+      "name": "campaign",
+      "displayPx": 20,
+      "exactSVG": "campaign-w400-f1-34c759.svg"
+    },
+    {
+      "line": 113,
+      "attributes": {
+        "class": "material-symbols-outlined text-[15px]",
+        "style": "font-variation-settings: 'FILL' 1;"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "zh-CN"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface font-body-md text-on-surface min-h-screen flex flex-col selection:bg-primary/20"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex-1 flex flex-col relative w-full pt-16 pb-safe bg-gradient-to-b from-surface via-surface-canvas to-surface-bright"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full relative"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col px-margin pb-28 space-y-space-md"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "relative flex flex-col space-y-space-lg pt-space-xs"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "relative flex items-start gap-space-md z-10"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex-1 space-y-2"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "bg-surface-card rounded-2xl p-space-md shadow-sm space-y-space-xs"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "pt-1 flex items-center gap-2"
+          }
+        },
+        {
+          "tag": "button",
+          "attributes": {
+            "class": "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-party-pink-soft text-party-pink active:scale-90 transition-transform reaction-btn",
+            "onclick": "toggleHeart(this)",
+            "type": "button"
+          }
+        }
+      ],
+      "name": "favorite",
+      "displayPx": 15,
+      "exactSVG": "favorite-w400-f1-ff2d55.svg"
+    },
+    {
+      "line": 152,
+      "attributes": {
+        "class": "material-symbols-outlined text-[15px]"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "zh-CN"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface font-body-md text-on-surface min-h-screen flex flex-col selection:bg-primary/20"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex-1 flex flex-col relative w-full pt-16 pb-safe bg-gradient-to-b from-surface via-surface-canvas to-surface-bright"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full relative"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col px-margin pb-28 space-y-space-md"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "relative flex flex-col space-y-space-lg pt-space-xs"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "relative flex items-start gap-space-md z-10"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex-1 bg-surface-card rounded-2xl p-space-md shadow-sm space-y-space-xs"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "pt-1 flex items-center gap-2"
+          }
+        },
+        {
+          "tag": "button",
+          "attributes": {
+            "class": "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container text-outline active:scale-90 transition-transform reaction-btn",
+            "onclick": "toggleHeart(this)",
+            "type": "button"
+          }
+        }
+      ],
+      "name": "favorite",
+      "displayPx": 15,
+      "exactSVG": "favorite-w400-f0-737687.svg"
+    },
+    {
+      "line": 167,
+      "attributes": {
+        "class": "material-symbols-outlined text-[22px]"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "zh-CN"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface font-body-md text-on-surface min-h-screen flex flex-col selection:bg-primary/20"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex-1 flex flex-col relative w-full pt-16 pb-safe bg-gradient-to-b from-surface via-surface-canvas to-surface-bright"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full relative"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "fixed bottom-0 left-0 right-0 z-40 bg-surface/85 backdrop-blur-xl shadow-[0_-4px_24px_rgba(0,0,0,0.06)] px-margin pt-3 pb-safe"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex items-center gap-space-sm max-w-lg mx-auto w-full"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex-1 flex items-center bg-surface-container rounded-full px-4 py-2 shadow-inner focus-within:bg-surface-card focus-within:shadow-md transition-all"
+          }
+        },
+        {
+          "tag": "button",
+          "attributes": {
+            "aria-label": "添加图片",
+            "class": "text-outline hover:text-on-surface active:scale-90 transition-transform p-1",
+            "type": "button"
+          }
+        }
+      ],
+      "name": "image",
+      "displayPx": 22,
+      "exactSVG": "image-w400-f0-737687.svg"
+    },
+    {
+      "line": 172,
+      "attributes": {
+        "class": "material-symbols-outlined text-[20px] ml-0.5"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "zh-CN"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface font-body-md text-on-surface min-h-screen flex flex-col selection:bg-primary/20"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex-1 flex flex-col relative w-full pt-16 pb-safe bg-gradient-to-b from-surface via-surface-canvas to-surface-bright"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full relative"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "fixed bottom-0 left-0 right-0 z-40 bg-surface/85 backdrop-blur-xl shadow-[0_-4px_24px_rgba(0,0,0,0.06)] px-margin pt-3 pb-safe"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex items-center gap-space-sm max-w-lg mx-auto w-full"
+          }
+        },
+        {
+          "tag": "button",
+          "attributes": {
+            "aria-label": "发送留言",
+            "class": "w-11 h-11 rounded-full bg-party-violet text-on-secondary flex items-center justify-center shadow-[0_4px_14px_rgba(88,86,214,0.35)] active:scale-95 transition-all flex-shrink-0 transition-transform",
+            "id": "send-btn",
+            "onclick": "handleSendMessage()",
+            "type": "button"
+          }
+        }
+      ],
+      "name": "arrow_upward",
+      "displayPx": 20,
+      "exactSVG": "arrow_upward-w400-f0-ffffff.svg"
+    }
+  ],
+  "exports": [
+    {
+      "name": "arrow_back_ios_new",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#1a1b1f",
+      "unicode": [
+        "U+E2EA"
+      ],
+      "ligatureGlyph": "arrow_back_ios_new",
+      "renderedGlyph": "arrow_back_ios_new",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M640 -80 240 -480 640 -880 711 -809 382 -480 711 -151Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "arrow_back_ios_new-w400-f0-1a1b1f.svg",
+      "bytes": 153,
+      "sha256": "ca7bb7d407e7dc334ff380d8b3b4d1623f916d8d6152d0a72dc40ab2840d532b",
+      "sourceNodes": [
+        {
+          "line": 3,
+          "displayPx": 24
+        }
+      ],
+      "reusedRuntime": "miniprogram/subpackages/activity/event/assets/w69-arrow_back_ios_new-w400-f0-1a1b1f.svg",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/w69-arrow_back_ios_new-w400-f0-1a1b1f.svg"
+    },
+    {
+      "name": "more_horiz",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#1a1b1f",
+      "unicode": [
+        "U+E5D3"
+      ],
+      "ligatureGlyph": "more_horiz",
+      "renderedGlyph": "more_horiz",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M240 -400Q207 -400 183.5 -423.5Q160 -447 160 -480Q160 -513 183.5 -536.5Q207 -560 240 -560Q273 -560 296.5 -536.5Q320 -513 320 -480Q320 -447 296.5 -423.5Q273 -400 240 -400ZM480 -400Q447 -400 423.5 -423.5Q400 -447 400 -480Q400 -513 423.5 -536.5Q447 -560 480 -560Q513 -560 536.5 -536.5Q560 -513 560 -480Q560 -447 536.5 -423.5Q513 -400 480 -400ZM720 -400Q687 -400 663.5 -423.5Q640 -447 640 -480Q640 -513 663.5 -536.5Q687 -560 720 -560Q753 -560 776.5 -536.5Q800 -513 800 -480Q800 -447 776.5 -423.5Q753 -400 720 -400Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "more_horiz-w400-f0-1a1b1f.svg",
+      "bytes": 609,
+      "sha256": "295cd56b72e4a070b341c35331c4f965a6021ea2755371577007ff16a0e3d117",
+      "sourceNodes": [
+        {
+          "line": 3,
+          "displayPx": 24
+        }
+      ],
+      "reusedRuntime": "miniprogram/subpackages/activity/event/assets/w69-more_horiz-w400-f0-1a1b1f.svg",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/w69-more_horiz-w400-f0-1a1b1f.svg"
+    },
+    {
+      "name": "person",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#ffffff",
+      "unicode": [
+        "U+E7FD",
+        "U+E7FF",
+        "U+E8A6",
+        "U+F0D3"
+      ],
+      "ligatureGlyph": "person",
+      "renderedGlyph": "person",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M480.0 -480.0Q414 -480 367.0 -527.0Q320 -574 320.0 -640.0Q320 -706 367.0 -753.0Q414 -800 480.0 -800.0Q546 -800 593.0 -753.0Q640 -706 640.0 -640.0Q640 -574 593.0 -527.0Q546 -480 480.0 -480.0ZM160 -160V-272Q160 -306 177.5 -334.5Q195 -363 224 -378Q286 -409 350.0 -424.5Q414 -440 480 -440Q546 -440 610.0 -424.5Q674 -409 736 -378Q765 -363 782.5 -334.5Q800 -306 800 -272V-160ZM240 -240H720V-272Q720 -283 714.5 -292.0Q709 -301 700 -306Q646 -333 591.0 -346.5Q536 -360 480 -360Q424 -360 369.0 -346.5Q314 -333 260 -306Q251 -301 245.5 -292.0Q240 -283 240 -272ZM480.0 -560.0Q513 -560 536.5 -583.5Q560 -607 560.0 -640.0Q560 -673 536.5 -696.5Q513 -720 480.0 -720.0Q447 -720 423.5 -696.5Q400 -673 400.0 -640.0Q400 -607 423.5 -583.5Q447 -560 480.0 -560.0ZM480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0ZM480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "person-w400-f0-ffffff.svg",
+      "bytes": 1198,
+      "sha256": "110856b1348d0fb1cf2fbb59cf27a390c7e259ec186dcfc4dd970826b40bb14b",
+      "sourceNodes": [
+        {
+          "line": 3,
+          "displayPx": 18
+        }
+      ],
+      "reusedRuntime": "miniprogram/subpackages/activity/event/assets/pg04s-person.svg",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg04s-person.svg"
+    },
+    {
+      "name": "star",
+      "axes": {
+        "wght": 400,
+        "FILL": 1,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#181e00",
+      "unicode": [
+        "U+E838",
+        "U+E83A",
+        "U+E885",
+        "U+EA06",
+        "U+F06F",
+        "U+F099",
+        "U+F09A"
+      ],
+      "ligatureGlyph": "star",
+      "renderedGlyph": "star.fill",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rclt",
+            "lookups": [
+              1
+            ]
+          },
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": [
+          {
+            "feature": "rclt",
+            "lookup": 1,
+            "from": "star",
+            "to": "star.fill"
+          }
+        ]
+      },
+      "path": "M233 -120 298 -401 80 -590 368 -615 480 -880 592 -615 880 -590 662 -401 727 -120 480 -269Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "star-w400-f1-181e00.svg",
+      "bytes": 189,
+      "sha256": "8eaead5cd1f6e63865d3cad0ceaf21d2668f373d2a6689a65563fa885f688196",
+      "sourceNodes": [
+        {
+          "line": 46,
+          "displayPx": 11
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg07-star-w400-f1-181e00.svg"
+    },
+    {
+      "name": "image",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#faf8fe",
+      "unicode": [
+        "U+E251",
+        "U+E3C4",
+        "U+E3F4"
+      ],
+      "ligatureGlyph": "image",
+      "renderedGlyph": "image",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M200 -120Q167 -120 143.5 -143.5Q120 -167 120 -200V-760Q120 -793 143.5 -816.5Q167 -840 200 -840H760Q793 -840 816.5 -816.5Q840 -793 840 -760V-200Q840 -167 816.5 -143.5Q793 -120 760 -120ZM200 -200H760Q760 -200 760.0 -200.0Q760 -200 760 -200V-760Q760 -760 760.0 -760.0Q760 -760 760 -760H200Q200 -760 200.0 -760.0Q200 -760 200 -760V-200Q200 -200 200.0 -200.0Q200 -200 200 -200ZM240 -280H720L570 -480L450 -320L360 -440ZM200 -200Q200 -200 200.0 -200.0Q200 -200 200 -200V-760Q200 -760 200.0 -760.0Q200 -760 200 -760Q200 -760 200.0 -760.0Q200 -760 200 -760V-200Q200 -200 200.0 -200.0Q200 -200 200 -200Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "image-w400-f0-faf8fe.svg",
+      "bytes": 692,
+      "sha256": "e06e565b6af2031f5304c7fe9650c4bcba270c376af694de80e5edc727fd4d2c",
+      "sourceNodes": [
+        {
+          "line": 67,
+          "displayPx": 13
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": null,
+      "reason": "reference-only closed attachment / inactive liked sample"
+    },
+    {
+      "name": "campaign",
+      "axes": {
+        "wght": 400,
+        "FILL": 1,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#34c759",
+      "unicode": [
+        "U+EF49"
+      ],
+      "ligatureGlyph": "campaign",
+      "renderedGlyph": "campaign.fill",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rclt",
+            "lookups": [
+              1
+            ]
+          },
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": [
+          {
+            "feature": "rclt",
+            "lookup": 1,
+            "from": "campaign",
+            "to": "campaign.fill"
+          }
+        ]
+      },
+      "path": "M720 -440V-520H880V-440ZM768 -160 640 -256 688 -320 816 -224ZM688 -640 640 -704 768 -800 816 -736ZM200 -200V-360H160Q127 -360 103.5 -383.5Q80 -407 80 -440V-520Q80 -553 103.5 -576.5Q127 -600 160 -600H320L520 -720V-240L320 -360H280V-200ZM560 -346V-614Q587 -590 603.5 -555.5Q620 -521 620.0 -480.0Q620 -439 603.5 -404.5Q587 -370 560 -346Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "campaign-w400-f1-34c759.svg",
+      "bytes": 433,
+      "sha256": "808d3bd9c993f39a955da5e2502741e89f5a578c67a7a08d1bd0509d5127c888",
+      "sourceNodes": [
+        {
+          "line": 77,
+          "displayPx": 20
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg07-campaign-w400-f1-34c759.svg"
+    },
+    {
+      "name": "favorite",
+      "axes": {
+        "wght": 400,
+        "FILL": 1,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#ff2d55",
+      "unicode": [
+        "U+E87D",
+        "U+E87E"
+      ],
+      "ligatureGlyph": "favorite",
+      "renderedGlyph": "favorite.fill",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rclt",
+            "lookups": [
+              1
+            ]
+          },
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": [
+          {
+            "feature": "rclt",
+            "lookup": 1,
+            "from": "favorite",
+            "to": "favorite.fill"
+          }
+        ]
+      },
+      "path": "M480 -120 422 -172Q321 -263 255.0 -329.0Q189 -395 150.0 -447.5Q111 -500 95.5 -544.0Q80 -588 80 -634Q80 -728 143.0 -791.0Q206 -854 300 -854Q352 -854 399.0 -832.0Q446 -810 480 -770Q514 -810 561.0 -832.0Q608 -854 660 -854Q754 -854 817.0 -791.0Q880 -728 880 -634Q880 -588 864.5 -544.0Q849 -500 810.0 -447.5Q771 -395 705.0 -329.0Q639 -263 538 -172Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "favorite-w400-f1-ff2d55.svg",
+      "bytes": 442,
+      "sha256": "5bab2dcc80e024b690cd3ef1680d302bb90d6b6b3a99a01b964f73b56f2ed475",
+      "sourceNodes": [
+        {
+          "line": 113,
+          "displayPx": 15
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": null,
+      "reason": "reference-only closed attachment / inactive liked sample"
+    },
+    {
+      "name": "favorite",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#737687",
+      "unicode": [
+        "U+E87D",
+        "U+E87E"
+      ],
+      "ligatureGlyph": "favorite",
+      "renderedGlyph": "favorite",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M480 -120 422 -172Q321 -263 255.0 -329.0Q189 -395 150.0 -447.5Q111 -500 95.5 -544.0Q80 -588 80 -634Q80 -728 143.0 -791.0Q206 -854 300 -854Q352 -854 399.0 -832.0Q446 -810 480 -770Q514 -810 561.0 -832.0Q608 -854 660 -854Q754 -854 817.0 -791.0Q880 -728 880 -634Q880 -588 864.5 -544.0Q849 -500 810.0 -447.5Q771 -395 705.0 -329.0Q639 -263 538 -172ZM480 -228Q576 -314 638.0 -375.5Q700 -437 736.0 -482.5Q772 -528 786.0 -563.5Q800 -599 800 -634Q800 -694 760.0 -734.0Q720 -774 660 -774Q613 -774 573.0 -747.5Q533 -721 518 -680H442Q427 -721 387.0 -747.5Q347 -774 300 -774Q240 -774 200.0 -734.0Q160 -694 160 -634Q160 -599 174.0 -563.5Q188 -528 224.0 -482.5Q260 -437 322.0 -375.5Q384 -314 480 -228ZM480 -501Q480 -501 480.0 -501.0Q480 -501 480.0 -501.0Q480 -501 480.0 -501.0Q480 -501 480 -501Q480 -501 480.0 -501.0Q480 -501 480 -501Q480 -501 480.0 -501.0Q480 -501 480 -501Q480 -501 480.0 -501.0Q480 -501 480 -501Q480 -501 480.0 -501.0Q480 -501 480 -501Q480 -501 480.0 -501.0Q480 -501 480.0 -501.0Q480 -501 480.0 -501.0Q480 -501 480 -501Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "favorite-w400-f0-737687.svg",
+      "bytes": 1122,
+      "sha256": "98ef77319113f83c937ebcde4aea34fa47fca63f0269a99ba27830302911162a",
+      "sourceNodes": [
+        {
+          "line": 152,
+          "displayPx": 15
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg07-favorite-w400-f0-737687.svg"
+    },
+    {
+      "name": "image",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#737687",
+      "unicode": [
+        "U+E251",
+        "U+E3C4",
+        "U+E3F4"
+      ],
+      "ligatureGlyph": "image",
+      "renderedGlyph": "image",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M200 -120Q167 -120 143.5 -143.5Q120 -167 120 -200V-760Q120 -793 143.5 -816.5Q167 -840 200 -840H760Q793 -840 816.5 -816.5Q840 -793 840 -760V-200Q840 -167 816.5 -143.5Q793 -120 760 -120ZM200 -200H760Q760 -200 760.0 -200.0Q760 -200 760 -200V-760Q760 -760 760.0 -760.0Q760 -760 760 -760H200Q200 -760 200.0 -760.0Q200 -760 200 -760V-200Q200 -200 200.0 -200.0Q200 -200 200 -200ZM240 -280H720L570 -480L450 -320L360 -440ZM200 -200Q200 -200 200.0 -200.0Q200 -200 200 -200V-760Q200 -760 200.0 -760.0Q200 -760 200 -760Q200 -760 200.0 -760.0Q200 -760 200 -760V-200Q200 -200 200.0 -200.0Q200 -200 200 -200Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "image-w400-f0-737687.svg",
+      "bytes": 692,
+      "sha256": "8defc04cf085ef24db4f2b53e1d8c4a6e63e38f86b39cf540f5c87acc7bcd85b",
+      "sourceNodes": [
+        {
+          "line": 167,
+          "displayPx": 22
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg07-image-w400-f0-737687.svg"
+    },
+    {
+      "name": "arrow_upward",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#ffffff",
+      "unicode": [
+        "U+E5D8"
+      ],
+      "ligatureGlyph": "arrow_upward",
+      "renderedGlyph": "arrow_upward",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M440 -160V-647L216 -423L160 -480L480 -800L800 -480L744 -423L520 -647V-160Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "arrow_upward-w400-f0-ffffff.svg",
+      "bytes": 173,
+      "sha256": "71d6fc2ac4aad613e672f353a0fce7286ac7fc715d855329b3df1c6915473ba5",
+      "sourceNodes": [
+        {
+          "line": 172,
+          "displayPx": 20
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg07-arrow_upward-w400-f0-ffffff.svg"
+    }
+  ],
+  "smile": {
+    "sourceLiteral": "<svg class=\"w-7 h-7 text-on-primary drop-shadow-sm\" fill=\"currentColor\" viewBox=\"0 0 24 24\">\n<circle cx=\"8\" cy=\"10\" r=\"1.5\"></circle>\n<circle cx=\"16\" cy=\"10\" r=\"1.5\"></circle>\n<path d=\"M7.5 14.2c1.2 1.8 3.3 2.8 4.5 2.8s3.3-1 4.5-2.8\" fill=\"none\" stroke=\"currentColor\" stroke-linecap=\"round\" stroke-width=\"1.8\"></path>\n</svg>",
+    "resolvedSVG": "<svg xmlns=\"http://www.w3.org/2000/svg\" class=\"w-7 h-7 text-on-primary drop-shadow-sm\" fill=\"#ffffff\" viewBox=\"0 0 24 24\">\n<circle cx=\"8\" cy=\"10\" r=\"1.5\"></circle>\n<circle cx=\"16\" cy=\"10\" r=\"1.5\"></circle>\n<path d=\"M7.5 14.2c1.2 1.8 3.3 2.8 4.5 2.8s3.3-1 4.5-2.8\" fill=\"none\" stroke=\"#ffffff\" stroke-linecap=\"round\" stroke-width=\"1.8\"></path>\n</svg>",
+    "onlyChanges": [
+      "xmlns",
+      "currentColor resolved source on-primary #ffffff"
+    ],
+    "bytes": 350,
+    "sha256": "837c56493cd003e543ad2a179d2c698700dc462f58055c84463470fc8178594d"
+  }
+}

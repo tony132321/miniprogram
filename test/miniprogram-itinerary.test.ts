@@ -119,7 +119,7 @@ test('itinerary uses the reference badminton cover and opens real registration d
     city: '深圳', venueName: '公共羽毛球馆', feeMode: 'AA', feeCapFen: 4200,
     startAt: '2099-03-22T11:00:00.000Z', endAt: '2099-03-22T13:00:00.000Z' }] }));
   await page.onShow();
-  assert.equal(page.data.featured.cover, '/assets/stitch/itinerary_badminton.jpg');
+  assert.equal(page.data.featured.cover, '/subpackages/activity/assets/itinerary-badminton.jpg');
   assert.equal(page.data.featured.venueLabel, '公共羽毛球馆');
   assert.equal(page.data.featured.locationLabel, '深圳 · 公共羽毛球馆');
   assert.equal(page.data.featured.timeLabel, '19:00 - 21:00');

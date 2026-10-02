@@ -1,6 +1,6 @@
 const { api } = require('../../../utils/api.js');
 const config = require('../../../config.js');
-const qrcode = require('../../../vendor/qrcode.js');
+const qrcode = require('../vendor/qrcode.js');
 
 function paintInviteQr(token, context, left, top, size) {
   const qr = qrcode(0, 'M');

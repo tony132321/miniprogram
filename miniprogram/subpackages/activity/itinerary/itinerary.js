@@ -18,7 +18,7 @@ function currentIdentity() {
   return developer ? 'dev:' + developer : '';
 }
 function coverFor(title) {
-  if (/羽毛球/.test(title)) return '/assets/stitch/itinerary_badminton.jpg';
+  if (/羽毛球/.test(title)) return '/subpackages/activity/assets/itinerary-badminton.jpg';
   if (/篮球/.test(title)) return '/assets/stitch/caper_discover_basketball.jpg';
   if (/咖啡|聊天|创业/.test(title)) return '/assets/stitch/caper_discover_coffee.jpg';
   if (/展览|艺术|画/.test(title)) return '/assets/stitch/caper_discover_art.jpg';

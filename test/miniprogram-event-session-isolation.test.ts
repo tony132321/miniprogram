@@ -18,7 +18,7 @@ function mount(readDetail: () => Promise<unknown>) {
         if (route === '/events/event-one/aliases') return { items: [], notice: { version: 'v1', text: '说明' } };
         return { items: [] };
       } } };
-      if ((module === '../../utils/checkin-qr.js' || module === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((module === '../../utils/checkin-qr.js' || module === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((module === '../../config.js' || module === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${module}`);
     },

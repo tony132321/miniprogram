@@ -1,0 +1,331 @@
+{
+  "originalZIP": {
+    "path": "/Users/tsb/Downloads/stitch_design_system_generator (2).zip",
+    "bytes": 24668856,
+    "sha256": "df22e733d33fda20979b75b8a7bc94717c4a5c9e41561a54e3038432fab32603"
+  },
+  "completeSourcesRead": [
+    {
+      "code": "_2",
+      "HTML": {
+        "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/_2/code.html",
+        "bytes": 23519,
+        "sha256": "80302149355f18cbde31733cea7da909f6ba1a31cd66e4d651a81a75986ede1c"
+      },
+      "PNG": {
+        "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/_2/screen.png",
+        "bytes": 364897,
+        "sha256": "96bec6456208ce0559b3a25f4ac4282353fc214dedd2a3a4ef258f39f69b5819"
+      },
+      "materialLinks": [
+        "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap",
+        "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      ],
+      "fontRoleBoundary": "Existing 400/600/700/800 faces. font-medium500 declared source where used, matches400; never Profile500 alias. _2 100..900 source request does not authorize new global font."
+    },
+    {
+      "code": "_4",
+      "HTML": {
+        "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/_4/code.html",
+        "bytes": 25007,
+        "sha256": "5891318df87bc1c022164130244b1a5739fc706e46bbb837e90553abb690fd62"
+      },
+      "PNG": {
+        "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/_4/screen.png",
+        "bytes": 463125,
+        "sha256": "0678bf3300b8dbae51812345d01d18b91cab36ca029903582f5039fbc3c26296"
+      },
+      "materialLinks": [
+        "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200",
+        "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      ],
+      "fontRoleBoundary": "Existing 400/600/700/800 faces. font-medium500 declared source where used, matches400; never Profile500 alias. _2 100..900 source request does not authorize new global font."
+    }
+  ],
+  "baseline": "Wave69 b45a99d0749fd1c4a14f88fa588b244b6a844a4d immutable + PG07 corrected stage (sequential same owner)",
+  "fullMaterialFace": {
+    "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-activity-wave69/original-last-material-full.woff2",
+    "bytes": 1136920,
+    "sha256": "77f9711f3f896a1d7a34ab95cffc45cfb17d84c223f197c1b90faa0d043006e9"
+  },
+  "lastFace": "Both final Material links equal retained official full default400/fill0, fixed opsz24/GRAD0. _4 prior opsz20..48/GRAD variable face is overridden by the later same family face. FILL1 active rclt is applied. No icon_names substitute, new font or dependency.",
+  "license": "docs/licenses/material-symbols-Apache-2.0.txt",
+  "photographs": [
+    {
+      "page": "_2",
+      "role": "hero",
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuAkBRqDYMHJu3byE0x6ZsRrFiCMfhICgNqG4aX29DAsLB6JQceHvz1OgAIhgXGpQ1NUZbN0PindFYR2qL-rQX-V9_giyyQNmITksIt6CWGiHpVEmEJIYVWaIxzNVBmkqD3JkBoFfJzo1BFSCI2KTxDbUb7CCHqu02WhO8jCuoxRLoqstoaYtLammRHbosDORPtacvwFyf3bJZTY4yVhnPpXTMQBeneI6PLZMdMeN4RljHjr7RrSEYlPRw",
+      "filename": "detail2-hero.jpg",
+      "bytes": 61951,
+      "sha256": "c15f89f32e5d3566cfc04e3013af6f30517f84117bbcbaeaf5834fd4103e7754",
+      "responseHeaders": "/private/tmp/caper-wave70-details/detail2-hero.jpg.headers",
+      "semantics": "original source illustrative scene; map never actual event coordinates/navigation",
+      "actualFormat": "JPEG",
+      "runtimeFile": "pgd-member-hero.jpg",
+      "decodedSize": [
+        512,
+        279
+      ]
+    },
+    {
+      "page": "_2",
+      "role": "map",
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuCr6cZG-udy1R9DtFwK3FZCzAvmaxQ4Ygrm8-mKxBqFgnygeBrDVpWJR4_m4QtqHXYus69_sAGNs-aUUExSrew2OaJOv962ktqMrerjDuPgXLMFiiggg-xLbXiExeDdDoXWa_wBUYQEJ0nyz5Ae9UgS2wzgYRwnefblRZ5vzhPQ3A1kW8vbSZgr7uiHGFPGsOX2Nh4ipILvTF7Evhw3dPudz7QIjFe067K864s9mWndA7I19XyMZbpQAg",
+      "filename": "detail2-map.jpg",
+      "bytes": 152383,
+      "sha256": "e1d1bcce15bff6996ff3a7bd9f3bb25061ab760221376a7fe8f1523b6b587e64",
+      "responseHeaders": "/private/tmp/caper-wave70-details/detail2-map.jpg.headers",
+      "semantics": "original source illustrative scene; map never actual event coordinates/navigation",
+      "actualFormat": "PNG",
+      "runtimeFile": "pgd-map-illustrative.png",
+      "decodedSize": [
+        512,
+        512
+      ]
+    },
+    {
+      "page": "_4",
+      "role": "hero",
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuABaoqehUb9vREoj3NtqXORQ6SsPFR9bXD8rowIWKfOA4C-bbk4GLTNTLxCGVRf-SX-ypfMYGRQcyS5PvBXbQiiCUfzU6EYpkVMNNZwVT9KQ7sSZV-e4uvF696fDTHIqpcuUSA7XecRvpBwKUG8R-37NWLkHqM7uHFO5jbX-8zw-4FY8QOv5WyKDQj0YgGogcfcQ0VShrnj2NqwqKDxf66p_JafUzMcL8AE_lyCJoptzVi1W4q2E06M8g",
+      "filename": "detail4-hero.jpg",
+      "bytes": 59343,
+      "sha256": "1783413ef8fb173f0525e5362bb2066aa89ed974a399e6ffa91ae7638d573432",
+      "responseHeaders": "/private/tmp/caper-wave70-details/detail4-hero.jpg.headers",
+      "semantics": "original source illustrative scene; map never actual event coordinates/navigation",
+      "actualFormat": "JPEG",
+      "runtimeFile": "pgd-host-hero.jpg",
+      "decodedSize": [
+        512,
+        279
+      ]
+    },
+    {
+      "page": "_4",
+      "role": "map",
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuBfZr-UVw03kUhoQTe6W5aF15S-Y4A0gTQDoJXZ2l44LGXoELliYI4VI8wVE56ZlltvR9syqViJ9j1_l2w4ZfBmXpyOUGLPzwZ05cAKG001kmy3A_Eq3a1MRDvWPbdZNYaFan6VRMC25EtxNw6MoBiSkgHU-iZUw7hotYLbTvsXpwpENeHofMyI66B0og0Q3d2Sf6YUUaktANl_K-VIlS6XJvLrpNfO0GHsMAz4pwpAXsB_cVxEBZ67Ng",
+      "filename": "detail4-map.jpg",
+      "bytes": 152383,
+      "sha256": "e1d1bcce15bff6996ff3a7bd9f3bb25061ab760221376a7fe8f1523b6b587e64",
+      "responseHeaders": "/private/tmp/caper-wave70-details/detail4-map.jpg.headers",
+      "semantics": "original source illustrative scene; map never actual event coordinates/navigation",
+      "actualFormat": "PNG",
+      "runtimeFile": "pgd-map-illustrative.png",
+      "decodedSize": [
+        512,
+        512
+      ]
+    }
+  ],
+  "runtimeImages": {
+    "hero2": "assets/pgd-member-hero.jpg",
+    "hero4": "assets/pgd-host-hero.jpg",
+    "sharedMap": "assets/pgd-map-illustrative.png"
+  },
+  "imageByteBudget": {
+    "JPEG": 121294,
+    "PNG": 152383,
+    "totalActivity": 273677,
+    "newMain": 0,
+    "newFonts": 0
+  },
+  "undefinedTokens": {
+    "_4": [
+      "w-13",
+      "h-13"
+    ],
+    "handling": "No guessed52px. Original PNG four columns fit each source grid cell; native anonymous glyph circle uses width100% and aspect-ratio1. No source fake portraits, open slots or seat numbers.",
+    "defaultSpacingProof": "Official retained Tailwind3.4.17 config spacing does not define13; custom source extend spacing likewise lacks13."
+  },
+  "tokens": {
+    "member": {
+      "nativeHeader": 56,
+      "backTouch": 44,
+      "backGlyph": 22,
+      "title": [
+        17,
+        22,
+        600
+      ],
+      "personCircle": 32,
+      "personGlyph": 18,
+      "mainSide": 16,
+      "mainBottom": 24,
+      "mainGap": 16,
+      "heroHeight": 224,
+      "heroRadius": 12,
+      "scrim": [
+        "on-surface90%",
+        "on-surface40%",
+        "transparent"
+      ],
+      "cardPadding": 16,
+      "factsRowPadding": 8,
+      "factsRowGap": 8,
+      "factsIconCircle": 36,
+      "factsGlyph": 20,
+      "mapHeight": 144,
+      "rosterColumns": 3,
+      "rosterGap": 8,
+      "rosterAvatar": 48,
+      "rulesNumber": 20,
+      "ruleBody": [
+        13,
+        18,
+        400
+      ],
+      "credentialClosedValue": {
+        "fontSize": 17,
+        "lineHeight": 22,
+        "weight": 600,
+        "fontFamily": "original font-mono stack",
+        "tracking-widestPx": 1.7,
+        "text": "尚未开放"
+      }
+    },
+    "host": {
+      "nativeHeader": 56,
+      "backTouch": 44,
+      "backGlyph": 24,
+      "backMargin": -8,
+      "title": [
+        17,
+        22,
+        600
+      ],
+      "mainSide": 16,
+      "mainBottom": 40,
+      "mainGap": 16,
+      "heroHeight": 224,
+      "heroRadius": 12,
+      "heroPadding": 16,
+      "scrim": [
+        "inverse-surface90%",
+        "inverse-surface30%",
+        "transparent"
+      ],
+      "timeLocationCardPadding": 12,
+      "timeLocationGap": 12,
+      "timeLocationIconCircle": 40,
+      "timeLocationGlyph": 20,
+      "timeLocationValue": [
+        17,
+        22,
+        700
+      ],
+      "metricColumns": 2,
+      "metricGap": 12,
+      "metricIconCircle": 28,
+      "metricGlyph": 16,
+      "mapHeight": 144,
+      "rosterColumns": 4,
+      "rosterGap": 12,
+      "rosterAvatar": "responsive cell width; undefined w13 never52px",
+      "rulesNumber": 24,
+      "ruleBody": [
+        13,
+        21.125,
+        400
+      ],
+      "rosterFrame": {
+        "outer": "transparent/no padding/no shadow",
+        "headingPaddingX": 4,
+        "headingBottom": 8,
+        "gridPadding": 12,
+        "gridRadius": 12,
+        "gridShadow": "shadow-sm",
+        "caption": [
+          11,
+          14,
+          700,
+          0.22
+        ]
+      },
+      "statusMainColor": "#424655",
+      "heroTitleColor": "#ffffff",
+      "mapInsetShadow": "inset 0 2px 4px rgba(0,0,0,.05)",
+      "terminalOuterTop": 8,
+      "capacityRoles": {
+        "confirmed": [
+          17,
+          22,
+          800,
+          "#004cc8",
+          -0.17
+        ],
+        "denominator": [
+          17,
+          22,
+          600,
+          "#424655",
+          -0.17
+        ],
+        "unit": [
+          11,
+          14,
+          700,
+          "#424655",
+          0.22
+        ]
+      }
+    },
+    "shadow-sm": "0 1px 2px 0 rgba(0,0,0,.05)",
+    "shadow-md": "0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1)",
+    "tracking": {
+      "wideEm": 0.025,
+      "widerEm": 0.05,
+      "widestEm": 0.1,
+      "label11WiderPx": 0.55,
+      "body13WidePx": 0.325,
+      "PG07HostChip11WidePx": 0.275
+    }
+  },
+  "R1Adaptation": {
+    "PASS": "No personal permanent credential/number/QR; original box presents closed personal credential and real dynamic checkin route",
+    "people": "Authorized activity aliases/avatarGlyph only; original portraits/names/integrity100%/skill ranks omitted",
+    "roster": "memberCards contains voluntary aliases, may include waitlist; labeled separately from true confirmed/capacity stats; no full management list leaked to ordinary members",
+    "map": "Original explicit illustrative PNG, no actual coordinates or fake directions/navigation; real copyVenue retained",
+    "hostMonitor": "Actual display.status/review/visibility, no automatic monitoring/AI/weather/payment or false public publication",
+    "legacyRules": "Current approvalMode/cancellationRule/venueStatus/review/version/risk/formation/update/safety and route actions retained",
+    "newSourcePulse": "Decorative original status pulse only, no operating claim"
+  },
+  "finalProductShapes": [
+    {
+      "path": "miniprogram/subpackages/activity/event/event.wxml",
+      "bytes": 160928,
+      "sha256": "69b231e3f4d506d2e3d46653bf9075e4ebaa69cdd06bcaf9b82b89d9c8fffa31"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/event.wxss",
+      "bytes": 194503,
+      "sha256": "d26cb609e200446af02965b5840bf1fe0f01f21b66e8841da6289022e6881ce0"
+    }
+  ],
+  "sourceProofs": [
+    "bounded-scoped-check.json",
+    "binding-role-proof.json",
+    "final-role-refinement-proof.json",
+    "native-source-interaction-proof.json",
+    "final-tracking-role-proof.json",
+    "host-review-source-correction-proof.json",
+    "native-status-selector-correction-proof.json"
+  ],
+  "verification": "One bounded detail static check, metadata repair resumed after already passed8 role proofs; no full suite/old142/SDK/CLI/WeChat/Git/matrix; root-authorized4 hostcorrectiongroups via exactinverseonly, root9photo literals retained, changedmetricfragmentXMLparsed; no8VMrerun",
+  "rootThreePhotoReferenceExceptions": [
+    {
+      "old": "/assets/stitch/pg04s_badminton.jpg",
+      "new": "./assets/pg04s-badminton.jpg",
+      "count": 2
+    },
+    {
+      "old": "/assets/stitch/pg01_badminton_player.jpg",
+      "new": "./assets/pg01-badminton-player.jpg",
+      "count": 2
+    },
+    {
+      "old": "/assets/stitch/itinerary_badminton.jpg",
+      "new": "../assets/itinerary-badminton.jpg",
+      "count": 5
+    }
+  ],
+  "nativeStatusSelectorBoundary": "Originalsourcecolor#424655 unchanged; parentSDKstructuralpseudo failure measured#1a1b1f. Explicitrealmaintextclass removes structuralposition dependency; native PASS pendingrootonlyitemrecheck."
+}

@@ -31,7 +31,7 @@ function loadShare(overrides: Record<string, any> = {}) {
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/share/share.js', import.meta.url), 'utf8'), {
     setTimeout, clearTimeout,
     require(path: string) {
-      if (path === '../../../vendor/qrcode.js') return () => ({
+      if (path === '../vendor/qrcode.js') return () => ({
         addData(value: string) { qrPayloads.push(value); },
         make() {},
         getModuleCount() { return 21; },

@@ -13,7 +13,7 @@ function mount(startingActor = 'host', actorAfterTick = startingActor) {
   runInNewContext(eventSource, {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async post(route: string) { posts.push(route); } } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },

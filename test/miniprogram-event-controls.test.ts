@@ -14,7 +14,7 @@ function pageWithApi(post: (path: string, body: Record<string, unknown>) => Prom
   runInNewContext(source, {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post, get } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'friend' };
       throw new Error(`unexpected require ${path}`);
     },

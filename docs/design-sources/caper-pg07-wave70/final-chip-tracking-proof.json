@@ -1,0 +1,8 @@
+{
+  "source": "retained source-generated.css .tracking-wide=.025em, original hostchip text-label-sm11px =>.275px",
+  "old": ".pg07-role-chip{padding:2px 8px;border-radius:9999px;background:#f3fee7;color:#4d5d00;font-size:11px;line-height:14px;letter-spacing:.55px;font-weight:700}",
+  "new": ".pg07-role-chip{padding:2px 8px;border-radius:9999px;background:#f3fee7;color:#4d5d00;font-size:11px;line-height:14px;letter-spacing:.275px;font-weight:700}",
+  "inverseSHA": "14cb53da5e65bc779a24c2de306c24f2d795eaa06c728e6c908f0addfb9d22d7",
+  "finalStageCSSSHA": "c72cc63700e156013af0e9b2c134e4413516167d5f7a2bfcd82a327e36d8e469",
+  "boundaries": "Only PG07 chip CSS one numeric value; same8bindings/glyphs/3prior review classes untouched"
+}

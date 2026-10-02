@@ -58,7 +58,7 @@ test('event success state appears only after the server confirms the published e
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -384,7 +384,7 @@ test('event safety entry carries its event into the signed-in report form only f
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -442,7 +442,7 @@ test('member can copy current activity facts for a trusted contact without expos
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -1652,7 +1652,7 @@ test('activity page hides new seat actions but keeps the exit path during a glob
         if (url === '/me/registrations?eventId=e1') return { items: [{ id: 'r1', event_id: 'e1', status: 'CONFIRMED' }] };
         return { items: [] };
       } } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -1693,7 +1693,7 @@ test('invitation landing preserves a minimal summary and token across real login
         },
         async login() { logins++; session = 'session'; }
       } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -1783,7 +1783,7 @@ test('event page does not render an unknown registration as not registered', asy
   runInNewContext(source, {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'person-one' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -1807,7 +1807,7 @@ test('event completion sends the host’s actual held choice and zero people whe
   runInNewContext(source, {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -1853,7 +1853,7 @@ test('independent feedback requires both answers before recording willingness to
   runInNewContext(source, {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async post(_path: string, payload: Record<string, any>) { sent.push(payload); } } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'p1' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -1906,7 +1906,7 @@ test('AA page refuses an empty or malformed amount instead of recording zero', (
   runInNewContext(source, {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -1941,7 +1941,7 @@ test('share card only uses a source after its intent has been committed', async 
         requests.push({ path, body });
         return new Promise(resolve => { finishIntent = resolve; });
       } } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -1984,7 +1984,7 @@ test('returning to the event page refreshes its version and drops a stale share 
         if (path === '/events/e1/share-metrics') return { shareIntents: 1, attributedOpens: 0 };
         return { items: [] };
       } } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -2018,7 +2018,7 @@ test('event page follows current cohost grant while preserving own participation
         if (path === '/me/registrations?eventId=e1') return { items: [{ id: 'own-seat', event_id: 'e1', status: 'CONFIRMED' }] };
         return { items: [] };
       } } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'helper' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -2054,7 +2054,7 @@ test('event page carries the current nickname display notice into a grant and pr
         },
         async post(path: string, body: Record<string, unknown>) { posts.push({ path, body }); return {}; }
       } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -2082,7 +2082,7 @@ test('a check-in token arriving after the event page hides is not displayed or r
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post: () => tokenResponse } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() { qrDraws++; } };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() { qrDraws++; } };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -2114,7 +2114,7 @@ test('an expired check-in token is hidden while its replacement is still loading
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post: () => replacement } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -2149,7 +2149,7 @@ test('a check-in token received after its remaining lifetime is never shown', as
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post: () => tokenResponse } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() { qrDraws++; } };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() { qrDraws++; } };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -2183,7 +2183,7 @@ test('host page grants selected capabilities for this event and can revoke the r
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async post(path: string, body: Record<string, any>) {
         posts.push({ path, body }); return { id: 'grant-1', status: path.includes('revoke') ? 'REVOKED' : 'ACTIVE' };
       } } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -2226,7 +2226,7 @@ test('a slow older event refresh cannot overwrite a newer response', async () =>
         if (path === '/events/e1/share-metrics') return Promise.resolve({ shareIntents: 0, attributedOpens: 0 });
         return Promise.resolve({ items: [] });
       } } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -2254,7 +2254,7 @@ test('event page clears prior host controls before loading under another identit
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: () => detail } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'old-host' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -2289,7 +2289,7 @@ test('event and profile block controls call the existing member routes', async (
   runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
       if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -2389,7 +2389,7 @@ test('event only reads protected sections for an eligible member or host', async
         if (route === '/events/e1/aliases') return { items: [], notice: { version: 'v1', text: '测试说明' } };
         return { items: [] };
       } } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'visitor' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -2450,7 +2450,7 @@ test('event expense area distinguishes network failure, empty ledger, and forbid
         }
         return { items: [] };
       } } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'p1' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -2501,7 +2501,7 @@ test('event attendance area does not hide failed reads as no check-ins', async (
         }
         return { items: [] };
       } } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -2550,7 +2550,7 @@ test('event discussion area distinguishes failed reads from a genuinely empty di
         }
         return { items: [] };
       } } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
@@ -2599,7 +2599,7 @@ test('completed event keeps outcome read failure visible so feedback can be retr
         }
         return { items: [] };
       } } };
-      if ((path === '../../utils/checkin-qr.js' || path === '../../../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
       if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'p1' };
       throw new Error(`unexpected require ${path}`);
     },

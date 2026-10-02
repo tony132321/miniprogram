@@ -1,0 +1,170 @@
+{
+  "baselineCommit": "b45a99d0749fd1c4a14f88fa588b244b6a844a4d",
+  "sourceZIP": {
+    "path": "/Users/tsb/Downloads/stitch_design_system_generator (2).zip",
+    "bytes": 24668856,
+    "sha256": "df22e733d33fda20979b75b8a7bc94717c4a5c9e41561a54e3038432fab32603"
+  },
+  "sourceHTMLPNG": [
+    {
+      "page": "pg02_b",
+      "file": "code.html",
+      "zipEntry": "stitch_design_system_generator/pg02_b/code.html",
+      "bytes": 27642,
+      "sha256": "c4bc70b16e1d4a6f3762f699efdc5c8414cf54fcc01158c2d01bfa3b739ad6a7"
+    },
+    {
+      "page": "pg02_b",
+      "file": "screen.png",
+      "zipEntry": "stitch_design_system_generator/pg02_b/screen.png",
+      "bytes": 546434,
+      "sha256": "e2580e22077bc9c3842eedbb871ade551bfd4bb557e3a1e01d9bca67e3a59ac1"
+    },
+    {
+      "page": "pg02_c",
+      "file": "code.html",
+      "zipEntry": "stitch_design_system_generator/pg02_c/code.html",
+      "bytes": 23196,
+      "sha256": "513bdc25f790648b29bbbd61813eb919f725f35ec46f1c124b01b15397346f64"
+    },
+    {
+      "page": "pg02_c",
+      "file": "screen.png",
+      "zipEntry": "stitch_design_system_generator/pg02_c/screen.png",
+      "bytes": 532266,
+      "sha256": "d14f895318eed0a0ef55e1c71144e257f9598a3a3aeac242fda97b3bebd5e6ac"
+    },
+    {
+      "page": "pg02_d",
+      "file": "code.html",
+      "zipEntry": "stitch_design_system_generator/pg02_d/code.html",
+      "bytes": 22993,
+      "sha256": "b084f0285633b0d8b6796006419204385a7c5752953d73ef15bb6280b5579698"
+    },
+    {
+      "page": "pg02_d",
+      "file": "screen.png",
+      "zipEntry": "stitch_design_system_generator/pg02_d/screen.png",
+      "bytes": 625803,
+      "sha256": "6426787ddd76ed42b7c69f11c22569f7fa952a9a8bfc31e63666b21f8e6bbd47"
+    }
+  ],
+  "originalScreensActuallyViewed": true,
+  "glyphSource": {
+    "WOFF2": "docs/design-sources/caper-activity-wave69/original-last-material-full.woff2",
+    "sha256": "77f9711f3f896a1d7a34ab95cffc45cfb17d84c223f197c1b90faa0d043006e9",
+    "fullFaceNotIconNamesSubset": true,
+    "fontToolsVersion": "4.60.2",
+    "axes": [
+      {
+        "tag": "FILL",
+        "min": 0.0,
+        "default": 0.0,
+        "max": 1.0
+      },
+      {
+        "tag": "wght",
+        "min": 100.0,
+        "default": 400.0,
+        "max": 700.0
+      }
+    ],
+    "fixedAxes": {
+      "opsz": 24,
+      "GRAD": 0
+    },
+    "runtimeCount": 40,
+    "runtimeBytes": 32262,
+    "filled": [
+      "smart_toy.fill",
+      "favorite.fill"
+    ],
+    "fontBytesNotAddedToMain": true,
+    "sourceNodesExplanation": "glyph-manifest sourceNodes are all name candidates from source. Paint/source role must use the actual consumer context; they do not claim every candidate has each exported color."
+  },
+  "photos": {
+    "downloadedSourceCount": 7,
+    "runtimeCount": 2,
+    "runtimeBytes": 112422,
+    "remainingFive": "Only private temporary original source files; not runtime and not committed binary",
+    "approvedCAndDOnly": true,
+    "selection": "C/D existing badminton cover category under mapped active/COMPLETED status; unmatched cover remains existing image",
+    "semantics": "Every state cover keeps the existing explicit illustration caption; no real event or member photo is claimed"
+  },
+  "scope": {
+    "stateContainer": [
+      "home-state-reference",
+      "home-state-pending",
+      "home-state-organized",
+      "home-state-history"
+    ],
+    "mappedCards": [
+      "pending REQUESTED",
+      "pending RECONFIRM_REQUIRED",
+      "pending WAITLISTED",
+      "organized shareReady",
+      "organized CONFIRMED",
+      "organized IN_PROGRESS",
+      "history COMPLETED"
+    ],
+    "sourceDSecond": "history-feedback-card only when existing primaryAction=checkinSection; caption is real available outcome feedback, not an unsubmitted-rating claim",
+    "protected": [
+      "ordinary Wave64 first+long region",
+      "ordinary lower feed",
+      "cohosting old banner and style scope",
+      "DRAFT/REVIEW_PENDING/review rejected/paused recruitment fallback cards",
+      "INTERESTED/OFFERED fallback cards",
+      "CANCELLED/EXPIRED neutral fallback cards",
+      "all 62 action/data/aria/guard bindings",
+      "index.js/index.json exact bytes",
+      "all prior index assets"
+    ]
+  },
+  "sourceDimensions": {
+    "commonHeader": "56px content height + existing actual native statusBarHeight/headerPaddingRight (no mock)",
+    "B": "48/32px AI orb; banner12px/r16; cover176px; headline17/22px; poster28/28px; body13/18px; actions10px12px/r12",
+    "C": "44px orb; banner12px/r12; 16:9 cover; title20/26px; host counts22/28px; 4-column gap12/p8; 44px rounded buttons/share; source Good Game badge exact glyph",
+    "D": "44/32px orb; 135deg original gradient; cover176px first/160px real feedback counterpart; source saturation.85/contrast1.05; headline17/22px; actions13/16px; original FILL1 footer heart"
+  },
+  "nativeAndDataAdaptations": [
+    "Actual capsule exclusion clips long brand title",
+    "Source 16:9 represented as width100% + height0/padding-bottom56.25% for native layout",
+    "Actual five categories and all API counts retained including cohosting",
+    "Long API badges/dates/locations stay bounded and preserve whole item action IDs",
+    "Actual notes/shortcuts/stats retained even when original source example has no corresponding row",
+    "No source people/ratings/candidate rank/old-new time comparison/weather/group/album counts/fee amount/automatic-push promise invented",
+    "Original B/other-theme source backgrounds not restored in runtime because R1 has no matching real theme/package budget; existing explicitly illustrative covers retained",
+    "C confirmed/inprogress uses the authorized badminton illustration instead of source bicycle photo for real R1 badminton",
+    "D real feedback counterpart uses source badminton illustration rather than source picnic",
+    "Source 900 font declaration remains; existing Jakarta400/600/700/800 registered faces and platform Chinese fallback reused; no full100..900 face or profile500 alias added"
+  ],
+  "checks": {
+    "kind": "One completed bounded static source/assets/binding/protection check",
+    "passed": 93,
+    "actions": 62,
+    "handlers": 22,
+    "noCLIorSDKorFullSuite": true,
+    "checkerCorrection": "First incomplete attempt rejected its own root selector because the matcher incorrectly required trailing space. Matcher corrected; product untouched. The complete check passed 93 assertions."
+  },
+  "netProductRawBytes": 197140,
+  "runtimePending": true,
+  "independentSourceReviewPending": true,
+  "all39PixelClaim": false,
+  "initialProductNetRawBytes": 186836,
+  "reviewCorrection": {
+    "proof": "review-delta-proof.json",
+    "initialCheck93NotRepeated": true,
+    "productFreeze": "/private/tmp/caper-wave70-home/frozen-product-reviewed-complete-paths.json",
+    "productFreezeSHA256": "549c9011a08f983a8fa5435db28eb3630628f19f99b8c7d8402a2d66c5407985",
+    "WXMLSHA256": "b972b559a2c523f2b1c7ca794023595fe6fee94a90add1527a3ef1cce7204c81",
+    "CSSSHA256": "27b11080f2eb16d8a2280567b697a3edd0d7af3e4158bc341d7a44146dcd0cea",
+    "sourceTrackingWideEm": 0.025,
+    "sourceTrackingWiderEm": 0.05,
+    "newNativeHoverClasses": true,
+    "sourceMotionKeyframesNamespaced": true,
+    "undefinedScale98NotInvented": true,
+    "feedbackCapsuleSourceBlurPx": 12,
+    "finalThreeConstants": true,
+    "feeSourceScope": "history-repeat-card only; feedback neutral AA extra retains previous geometry and never shows source example amount"
+  }
+}
