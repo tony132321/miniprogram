@@ -1,1 +1,12 @@
-{"navigationStyle":"custom","navigationBarTitleText":"耍起 CAPER","navigationBarBackgroundColor":"#ffffff","navigationBarTextStyle":"black"}
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "耍起 CAPER",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "usingComponents": {
+    "reference-image": "/subpackages/profile/components/reference-image/reference-image"
+  },
+  "componentPlaceholder": {
+    "reference-image": "view"
+  }
+}

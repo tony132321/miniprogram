@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=390, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>耍起 CAPER - 消息</title>
+<!-- Tailwind CSS v3 CDN with forms and container queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              blue: '#1d64f2',
+              lime: '#c6ff00',
+              limeDark: '#a3e635',
+              navy: '#0f172a',
+              badge: '#ff3b30'
+            }
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', '"PingFang SC"', '"Hiragino Sans GB"', '"Microsoft YaHei"', 'sans-serif'],
+            handwriting: ['"Comic Sans MS"', 'Chalkboard SE', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-scrollbars-and-decorations">
+    /* Hide scrollbars while allowing smooth touch scroll */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .hand-sticker {
+      transform: rotate(3deg);
+      box-shadow: 2px 4px 12px rgba(0,0,0,0.06);
+    }
+    .hand-sticker-left {
+      transform: rotate(-4deg);
+    }
+  </style>
+</head>
+<body class="bg-[#f5f7fb] text-slate-800 font-sans antialiased selection:bg-brand-blue selection:text-white flex justify-center min-h-screen">
+<!-- Mobile Viewport Container: 390px fixed scale width -->
+<div class="w-[390px] min-h-screen bg-[#f8fafc] flex flex-col relative pb-28 shadow-xl">
+<!-- BEGIN: TopBar -->
+<header class="pt-3 px-5 pb-2 bg-gradient-to-b from-white via-white to-[#f8fafc] sticky top-0 z-40">
+<!-- Status Bar Area Indicator -->
+<div class="flex justify-between items-center text-xs font-semibold text-slate-900 mb-2 px-1">
+<span>9:41</span>
+<div class="flex items-center space-x-1.5">
+<svg class="w-3.5 h-3.5 fill-current" viewbox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.22 19.57 10.56 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"></path></svg>
+<svg class="w-3.5 h-3.5 fill-current" viewbox="0 0 24 24"><path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98C20.93 5.9 16.69 4 12 4z"></path></svg>
+<div class="w-5 h-2.5 border border-slate-900 rounded-sm p-0.5 flex items-center">
+<div class="h-full bg-slate-900 w-3/4 rounded-2xs"></div>
+</div>
+</div>
+</div>
+<!-- Header Brand & Utilities -->
+<div class="flex items-center justify-between mt-1">
+<div class="flex items-center space-x-2">
+<!-- Logo Mark -->
+<div class="flex items-center space-x-1.5">
+<div class="w-8 h-8 rounded-full bg-brand-blue flex items-center justify-center shadow-md shadow-blue-500/30">
+<span class="text-white text-lg font-black tracking-tighter">耍</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-black tracking-widest text-slate-900 leading-none">耍起</span>
+<span class="text-[9px] font-bold text-slate-400 tracking-wider">CAPER</span>
+</div>
+</div>
+</div>
+<!-- Action Icons -->
+<div class="flex items-center space-x-2">
+<button aria-label="搜索" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+</button>
+<button aria-label="设置" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 hover:bg-slate-200">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+</button>
+</div>
+</div>
+<!-- Title & Creative Sticker Tagline -->
+<div class="relative mt-2">
+<div class="flex items-center space-x-2">
+<h1 class="text-2xl font-black text-slate-900 tracking-tight">消息</h1>
+<span class="inline-flex items-center justify-center bg-brand-badge text-white text-xs font-bold px-2 py-0.5 rounded-full shadow-sm">3</span>
+</div>
+<p class="text-[11px] text-slate-500 font-medium mt-0.5">因一件想做的事，遇见一群有趣的人</p>
+<!-- Playful Graphic Slogan Stickers -->
+<div class="absolute -top-3 right-0 pointer-events-none flex flex-col items-end">
+<span class="inline-block text-[11px] font-bold text-brand-blue tracking-tight rotate-[-3deg] bg-blue-50/90 border border-blue-200/60 px-2 py-0.5 rounded-full shadow-sm">
+            More People Brighter Days ☺
+          </span>
+<div class="mt-1 bg-yellow-300 text-slate-900 text-[10px] font-extrabold px-2 py-1 rounded shadow-sm hand-sticker flex flex-col leading-tight">
+<span>Good</span>
+<span>People</span>
+<span class="text-[9px]">More Plans ☺</span>
+</div>
+</div>
+</div>
+<!-- Segmented Control Filters -->
+<!-- BEGIN: SegmentedFilters -->
+<div class="flex items-center space-x-2 mt-4 pb-1">
+<button class="flex-1 py-1.5 bg-brand-blue text-white rounded-full text-xs font-semibold shadow-sm shadow-blue-500/20 text-center">
+          全部消息
+        </button>
+<button class="flex-1 py-1.5 bg-white text-slate-700 hover:bg-slate-50 rounded-full text-xs font-semibold border border-slate-200/80 flex items-center justify-center space-x-1 shadow-2xs">
+<span>👥 活动相关</span>
+<span class="w-1.5 h-1.5 bg-brand-badge rounded-full"></span>
+</button>
+<button class="flex-1 py-1.5 bg-white text-slate-700 hover:bg-slate-50 rounded-full text-xs font-semibold border border-slate-200/80 flex items-center justify-center space-x-1 shadow-2xs">
+<span>📢 系统通知</span>
+</button>
+</div>
+<!-- END: SegmentedFilters -->
+</header>
+<!-- END: TopBar -->
+<!-- Main Vertical Scroll Content Area -->
+<main class="px-4 space-y-4 pt-1">
+<!-- BEGIN: SectionRecentConversations -->
+<section class="bg-white rounded-2xl p-2.5 shadow-sm border border-slate-100 divide-y divide-slate-100" data-purpose="recent-conversations-list">
+<!-- Row 1: 球友 Alex -->
+<article class="flex items-center py-2.5 px-1.5 gap-3 hover:bg-slate-50/80 rounded-xl transition-colors">
+<div class="relative flex-shrink-0">
+<div class="w-11 h-11 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center font-bold text-blue-700 text-sm overflow-hidden">
+<span class="bg-gradient-to-tr from-blue-600 to-indigo-400 w-full h-full flex items-center justify-center text-white">Alex</span>
+</div>
+<span class="absolute -bottom-0.5 -right-0.5 text-xs bg-white rounded-full p-0.5 shadow">🏸</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-0.5">
+<div class="flex items-center space-x-1.5">
+<span class="font-bold text-slate-900 text-xs truncate max-w-[100px]">球友 Alex</span>
+<span class="inline-flex items-center text-[10px] bg-blue-50 text-brand-blue font-medium px-1.5 py-0.2 rounded">周六羽毛球</span>
+</div>
+<span class="text-[10px] text-slate-400">10:24</span>
+</div>
+<p class="text-xs text-slate-600 truncate">好的！那我带两副备用拍子，球馆见！</p>
+</div>
+<div class="flex-shrink-0">
+<span class="w-4 h-4 bg-brand-badge text-white text-[10px] font-bold rounded-full flex items-center justify-center">2</span>
+</div>
+</article>
+<!-- Row 2: 桌游搭子 Momo -->
+<article class="flex items-center py-2.5 px-1.5 gap-3 hover:bg-slate-50/80 rounded-xl transition-colors">
+<div class="relative flex-shrink-0">
+<div class="w-11 h-11 rounded-full bg-amber-100 border border-amber-200 flex items-center justify-center font-bold text-amber-800 text-sm overflow-hidden">
+<span class="bg-gradient-to-tr from-amber-500 to-rose-400 w-full h-full flex items-center justify-center text-white">Momo</span>
+</div>
+<span class="absolute -bottom-0.5 -right-0.5 text-xs bg-white rounded-full p-0.5 shadow">🎲</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-0.5">
+<div class="flex items-center space-x-1.5">
+<span class="font-bold text-slate-900 text-xs truncate max-w-[100px]">桌游搭子 Momo</span>
+<span class="inline-flex items-center text-[10px] bg-purple-50 text-purple-600 font-medium px-1.5 py-0.2 rounded">周五桌游</span>
+</div>
+<span class="text-[10px] text-slate-400">09:15</span>
+</div>
+<p class="text-xs text-slate-600 truncate">这次还有两个朋友一起过来吗？先锁定位置吧～</p>
+</div>
+<div class="flex-shrink-0">
+<span class="w-4 h-4 bg-brand-badge text-white text-[10px] font-bold rounded-full flex items-center justify-center">1</span>
+</div>
+</article>
+<!-- Row 3: 主理人 Luna -->
+<article class="flex items-center py-2.5 px-1.5 gap-3 hover:bg-slate-50/80 rounded-xl transition-colors">
+<div class="relative flex-shrink-0">
+<div class="w-11 h-11 rounded-full bg-emerald-100 border border-emerald-200 flex items-center justify-center font-bold text-emerald-800 text-sm overflow-hidden">
+<span class="bg-gradient-to-tr from-teal-500 to-emerald-400 w-full h-full flex items-center justify-center text-white">Luna</span>
+</div>
+<span class="absolute -bottom-0.5 -right-0.5 text-xs bg-white rounded-full p-0.5 shadow">🌅</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-0.5">
+<div class="flex items-center space-x-1.5">
+<span class="font-bold text-slate-900 text-xs truncate max-w-[100px]">主理人 Luna</span>
+<span class="inline-flex items-center text-[10px] bg-emerald-50 text-emerald-600 font-medium px-1.5 py-0.2 rounded">滨江日落</span>
+</div>
+<span class="text-[10px] text-slate-400">昨天 18:30</span>
+</div>
+<p class="text-xs text-slate-500 truncate">收到，稍后拉进微信群活动小群，记得带好水哦！</p>
+</div>
+<div class="flex-shrink-0 text-slate-400">
+<svg class="w-4 h-4 text-brand-blue" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+</article>
+<!-- Row 4: Kevin (AI创作者) -->
+<article class="flex items-center py-2.5 px-1.5 gap-3 hover:bg-slate-50/80 rounded-xl transition-colors">
+<div class="relative flex-shrink-0">
+<div class="w-11 h-11 rounded-full bg-orange-100 border border-orange-200 flex items-center justify-center font-bold text-orange-800 text-sm overflow-hidden">
+<span class="bg-gradient-to-tr from-amber-600 to-yellow-500 w-full h-full flex items-center justify-center text-white">Kevin</span>
+</div>
+<span class="absolute -bottom-0.5 -right-0.5 text-xs bg-white rounded-full p-0.5 shadow">☕</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-0.5">
+<div class="flex items-center space-x-1.5">
+<span class="font-bold text-slate-900 text-xs truncate max-w-[110px]">Kevin (AI创作者)</span>
+<span class="inline-flex items-center text-[10px] bg-amber-50 text-amber-700 font-medium px-1.5 py-0.2 rounded">创业咖啡</span>
+</div>
+<span class="text-[10px] text-slate-400">星期四</span>
+</div>
+<p class="text-xs text-slate-500 truncate">好的，明早 10 点我在咖啡馆靠窗长桌见！</p>
+</div>
+<div class="flex-shrink-0 text-slate-400">
+<svg class="w-4 h-4 text-brand-blue" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+</article>
+</section>
+<!-- END: SectionRecentConversations -->
+<!-- BEGIN: SectionUnreadPriority -->
+<section class="bg-white rounded-2xl p-3 shadow-sm border border-slate-100" data-purpose="unread-priority-section">
+<div class="flex justify-between items-center mb-2 px-1">
+<div class="flex items-center space-x-1.5">
+<span class="text-sm">🔥</span>
+<h2 class="text-xs font-bold text-slate-900">未读优先</h2>
+<span class="text-xs font-bold text-brand-badge">(2)</span>
+</div>
+<a class="text-[11px] font-semibold text-slate-400 hover:text-slate-600" href="#">全部 &gt;</a>
+</div>
+<div class="divide-y divide-slate-100">
+<!-- Item 1: 摄影搭子 Coco -->
+<article class="flex items-center py-2 px-1 gap-3">
+<div class="relative flex-shrink-0">
+<div class="w-10 h-10 rounded-full bg-violet-100 border border-violet-200 flex items-center justify-center font-bold text-violet-700 text-xs">Coco</div>
+<span class="absolute -bottom-0.5 -right-0.5 text-xs bg-white rounded-full p-0.5 shadow">📷</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-0.5">
+<div class="flex items-center space-x-1.5">
+<span class="font-bold text-slate-900 text-xs truncate">摄影搭子 Coco</span>
+<span class="inline-flex text-[10px] bg-slate-100 text-slate-600 px-1 py-0.2 rounded">城市漫步</span>
+</div>
+<span class="text-[10px] text-slate-400">11:20</span>
+</div>
+<p class="text-xs text-slate-600 truncate">下周还有类似的活动吗？好想再拍一次！</p>
+</div>
+<div class="flex-shrink-0">
+<span class="w-4 h-4 bg-brand-badge text-white text-[10px] font-bold rounded-full flex items-center justify-center">1</span>
+</div>
+</article>
+<!-- Item 2: 跑步伙伴·阿杰 -->
+<article class="flex items-center py-2 px-1 gap-3">
+<div class="relative flex-shrink-0">
+<div class="w-10 h-10 rounded-full bg-cyan-100 border border-cyan-200 flex items-center justify-center font-bold text-cyan-800 text-xs">阿杰</div>
+<span class="absolute -bottom-0.5 -right-0.5 text-xs bg-white rounded-full p-0.5 shadow">👟</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-0.5">
+<div class="flex items-center space-x-1.5">
+<span class="font-bold text-slate-900 text-xs truncate">跑步伙伴·阿杰</span>
+<span class="inline-flex text-[10px] bg-slate-100 text-slate-600 px-1 py-0.2 rounded">早安跑</span>
+</div>
+<span class="text-[10px] text-slate-400">10:08</span>
+</div>
+<p class="text-xs text-slate-600 truncate">周六的路线有所调整，起点改到世纪公园南门～</p>
+</div>
+<div class="flex-shrink-0">
+<span class="w-4 h-4 bg-brand-badge text-white text-[10px] font-bold rounded-full flex items-center justify-center">1</span>
+</div>
+</article>
+</div>
+</section>
+<!-- END: SectionUnreadPriority -->
+<!-- BEGIN: SectionEventStatus -->
+<section class="bg-white rounded-2xl p-3 shadow-sm border border-slate-100" data-purpose="event-status-notifications">
+<div class="flex justify-between items-center mb-2 px-1">
+<div class="flex items-center space-x-1.5">
+<span class="text-sm">🔔</span>
+<h2 class="text-xs font-bold text-slate-900">活动动态</h2>
+</div>
+<a class="text-[11px] font-semibold text-slate-400 hover:text-slate-600" href="#">全部 &gt;</a>
+</div>
+<div class="space-y-2.5">
+<!-- Card 1: 确认参加 -->
+<div class="p-2.5 bg-slate-50/70 border border-slate-100 rounded-xl flex items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center flex-shrink-0 mt-0.5">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 20 20"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v1h8v-1zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 16v-1a4.98 4.98 0 00-1.5-3.55 3.99 3.99 0 012.5 3.55v1h-1zM4.5 11.45A4.98 4.98 0 003 15v1H2v-1a3.99 3.99 0 012.5-3.55z"></path></svg>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-0.5">
+<h3 class="text-xs font-bold text-slate-900">你已确认参加活动</h3>
+<span class="text-[10px] text-slate-400">1小时前</span>
+</div>
+<p class="text-[11px] text-slate-600 font-medium">周六羽毛球 · 3月23日 (周六) 16:00</p>
+<p class="text-[11px] text-slate-500 mt-0.5">期待见到你！已有 8/10 人确认参加。</p>
+</div>
+</div>
+<!-- Card 2: 地点更新 -->
+<div class="p-2.5 bg-slate-50/70 border border-slate-100 rounded-xl flex items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-rose-100 text-rose-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" fill-rule="evenodd"></path></svg>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-0.5">
+<h3 class="text-xs font-bold text-slate-900">活动地点有更新</h3>
+<span class="text-[10px] text-slate-400">5小时前</span>
+</div>
+<p class="text-[11px] text-slate-600 font-medium">城市漫步 · 3月23日 (周六) 16:00</p>
+<p class="text-[11px] text-slate-500 mt-0.5">地点从「徐汇滨江」改为「西岸梦中心」，点击查看详情。</p>
+</div>
+</div>
+</div>
+</section>
+<!-- END: SectionEventStatus -->
+<!-- BEGIN: SectionAICopilot -->
+<section class="bg-gradient-to-br from-indigo-900 via-slate-900 to-slate-950 text-white rounded-2xl p-3.5 shadow-md relative overflow-hidden" data-purpose="ai-copilot-card">
+<!-- Background Neon Glow -->
+<div class="absolute -right-8 -top-8 w-32 h-32 bg-blue-500/20 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex justify-between items-center mb-3">
+<div class="flex items-center space-x-1.5">
+<span class="text-sm">🤖</span>
+<h2 class="text-xs font-bold text-white">AI 助手消息</h2>
+</div>
+<a class="text-[11px] font-semibold text-slate-400 hover:text-slate-200" href="#">全部 &gt;</a>
+</div>
+<div class="flex items-start gap-3">
+<!-- AI Orb Avatar -->
+<div class="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-blue to-purple-500 flex items-center justify-center p-0.5 shadow-md flex-shrink-0">
+<div class="w-full h-full bg-slate-950 rounded-full flex items-center justify-center">
+<span class="w-2.5 h-2.5 rounded-full bg-brand-lime shadow-sm animate-pulse"></span>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-1.5">
+<span class="text-xs font-bold text-white">耍起 AI 助手</span>
+<span class="text-[9px] bg-blue-500/20 text-blue-300 border border-blue-400/30 px-1.5 py-0.2 rounded-full font-medium">✨ 你的社交 Copilot</span>
+</div>
+<span class="text-[10px] text-slate-400">昨天 14:20</span>
+</div>
+<p class="text-xs text-slate-300 mt-1.5 leading-relaxed">
+              你有 <span class="text-brand-lime font-bold">2</span> 个活动还未确认，是否参加？我也为你推荐了 <span class="text-brand-lime font-bold">3</span> 个相似活动，去看看吧！
+            </p>
+<!-- Action Buttons -->
+<div class="flex items-center space-x-2 mt-3">
+<button class="bg-brand-blue hover:bg-blue-600 text-white text-[11px] font-semibold px-3 py-1.5 rounded-full shadow-sm">
+                查看推荐活动
+              </button>
+<button class="bg-white/10 hover:bg-white/20 text-slate-200 text-[11px] font-medium px-3 py-1.5 rounded-full border border-white/10">
+                一键确认
+              </button>
+</div>
+</div>
+</div>
+</section>
+<!-- END: SectionAICopilot -->
+<!-- BEGIN: SectionMentions -->
+<section class="bg-white rounded-2xl p-3 shadow-sm border border-slate-100" data-purpose="mentions-section">
+<div class="flex justify-between items-center mb-2 px-1">
+<div class="flex items-center space-x-1.5">
+<span class="text-sm font-bold text-brand-blue">@</span>
+<h2 class="text-xs font-bold text-slate-900">提到我</h2>
+</div>
+<a class="text-[11px] font-semibold text-slate-400 hover:text-slate-600" href="#">全部 &gt;</a>
+</div>
+<article class="flex items-center py-2 px-1 gap-3 hover:bg-slate-50 rounded-xl transition-colors">
+<div class="w-10 h-10 rounded-full bg-teal-100 border border-teal-200 flex items-center justify-center font-bold text-teal-700 text-xs flex-shrink-0">
+            Luna
+          </div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-0.5">
+<div class="flex items-center space-x-1 truncate">
+<span class="font-bold text-slate-900 text-xs truncate">Luna 在群聊中提到你</span>
+<span class="text-[10px] text-brand-blue bg-blue-50 px-1 py-0.2 rounded">周六羽毛球</span>
+</div>
+<span class="text-[10px] text-slate-400">昨天 18:30</span>
+</div>
+<p class="text-xs text-slate-600 truncate">...<span class="text-brand-blue font-semibold">@我</span> 下次一起约个夜场？听说那边氛围超棒！</p>
+</div>
+</article>
+</section>
+<!-- END: SectionMentions -->
+<!-- BEGIN: SectionPhotoStrip -->
+<section class="bg-white rounded-2xl p-3 shadow-sm border border-slate-100" data-purpose="group-album-moments">
+<div class="flex justify-between items-center mb-2.5 px-1">
+<div class="flex items-center space-x-1.5">
+<span class="text-sm">🖼️</span>
+<h2 class="text-xs font-bold text-slate-900">群内精彩瞬间</h2>
+</div>
+<a class="text-[11px] font-semibold text-slate-400 hover:text-slate-600" href="#">全部 &gt;</a>
+</div>
+<!-- Horizontal Scrollable Cards -->
+<div class="flex space-x-2.5 overflow-x-auto no-scrollbar pb-1">
+<!-- Album 1 -->
+<div class="w-24 flex-shrink-0 group cursor-pointer">
+<div class="h-16 w-full rounded-xl bg-gradient-to-tr from-sky-400 to-blue-600 p-1 flex items-end justify-center relative overflow-hidden shadow-xs">
+<span class="text-white text-lg">🏸</span>
+</div>
+<p class="text-[11px] font-bold text-slate-800 mt-1 truncate">周六羽毛球</p>
+<p class="text-[9px] text-brand-blue font-semibold">12 张新照片</p>
+</div>
+<!-- Album 2 -->
+<div class="w-24 flex-shrink-0 group cursor-pointer">
+<div class="h-16 w-full rounded-xl bg-gradient-to-tr from-amber-400 to-orange-600 p-1 flex items-end justify-center relative overflow-hidden shadow-xs">
+<span class="text-white text-lg">☕</span>
+</div>
+<p class="text-[11px] font-bold text-slate-800 mt-1 truncate">创业咖啡</p>
+<p class="text-[9px] text-brand-blue font-semibold">8 张新照片</p>
+</div>
+<!-- Album 3 -->
+<div class="w-24 flex-shrink-0 group cursor-pointer">
+<div class="h-16 w-full rounded-xl bg-gradient-to-tr from-teal-400 to-emerald-600 p-1 flex items-end justify-center relative overflow-hidden shadow-xs">
+<span class="text-white text-lg">🚶</span>
+</div>
+<p class="text-[11px] font-bold text-slate-800 mt-1 truncate">城市漫步</p>
+<p class="text-[9px] text-brand-blue font-semibold">15 张新照片</p>
+</div>
+<!-- Album 4 -->
+<div class="w-24 flex-shrink-0 group cursor-pointer">
+<div class="h-16 w-full rounded-xl bg-gradient-to-tr from-purple-400 to-pink-600 p-1 flex items-end justify-center relative overflow-hidden shadow-xs">
+<span class="text-white text-lg">🎲</span>
+</div>
+<p class="text-[11px] font-bold text-slate-800 mt-1 truncate">周五桌游</p>
+<p class="text-[9px] text-brand-blue font-semibold">9 张新照片</p>
+</div>
+<!-- Album 5 -->
+<div class="w-24 flex-shrink-0 group cursor-pointer">
+<div class="h-16 w-full rounded-xl bg-gradient-to-tr from-rose-400 to-amber-500 p-1 flex items-end justify-center relative overflow-hidden shadow-xs">
+<span class="text-white text-lg">🌅</span>
+</div>
+<p class="text-[11px] font-bold text-slate-800 mt-1 truncate">滨江日落</p>
+<p class="text-[9px] text-brand-blue font-semibold">11 张新照片</p>
+</div>
+</div>
+</section>
+<!-- END: SectionPhotoStrip -->
+<!-- BEGIN: SectionHistoryConversations -->
+<section class="bg-white rounded-2xl p-3 shadow-sm border border-slate-100" data-purpose="history-conversations">
+<div class="flex justify-between items-center mb-2 px-1">
+<div class="flex items-center space-x-1.5">
+<span class="text-sm">🕒</span>
+<h2 class="text-xs font-bold text-slate-900">历史会话</h2>
+</div>
+<a class="text-[11px] font-semibold text-slate-400 hover:text-slate-600" href="#">全部 &gt;</a>
+</div>
+<div class="divide-y divide-slate-100">
+<div class="flex items-center py-2 px-1 gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center text-sm font-bold">🏔️</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline">
+<span class="font-bold text-xs text-slate-900">登山小队</span>
+<span class="text-[10px] text-slate-400">3月18日</span>
+</div>
+<p class="text-xs text-slate-500 truncate">下次我们去天目山吧！</p>
+</div>
+</div>
+<div class="flex items-center py-2 px-1 gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-orange-50 text-orange-700 flex items-center justify-center text-sm font-bold">🍔</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline">
+<span class="font-bold text-xs text-slate-900">美食探店团</span>
+<span class="text-[10px] text-slate-400">3月12日</span>
+</div>
+<p class="text-xs text-slate-500 truncate">这家店确实不错，下次还去！</p>
+</div>
+</div>
+</div>
+</section>
+<!-- END: SectionHistoryConversations -->
+<!-- BEGIN: SectionCompletedSessions -->
+<section class="bg-white rounded-2xl p-3 shadow-sm border border-slate-100" data-purpose="ended-event-sessions">
+<div class="flex justify-between items-center mb-2 px-1">
+<div class="flex items-center space-x-1.5">
+<span class="text-emerald-500 text-sm font-bold">✓</span>
+<h2 class="text-xs font-bold text-slate-900">已结束活动会话</h2>
+</div>
+<a class="text-[11px] font-semibold text-slate-400 hover:text-slate-600" href="#">全部 &gt;</a>
+</div>
+<div class="flex items-center py-2 px-1 gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center text-sm">🎲</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline">
+<span class="font-bold text-xs text-slate-900">春节桌游专场</span>
+<span class="text-[10px] text-slate-400">2月10日</span>
+</div>
+<p class="text-xs text-slate-500 truncate">感谢大家一起度过愉快的夜晚！</p>
+</div>
+</div>
+</section>
+<!-- END: SectionCompletedSessions -->
+<!-- BEGIN: SectionArchivedSessions -->
+<section class="bg-white rounded-2xl p-3 shadow-sm border border-slate-100" data-purpose="archived-or-muted">
+<div class="flex justify-between items-center mb-2 px-1">
+<div class="flex items-center space-x-1.5">
+<span class="text-sm">🗄️</span>
+<h2 class="text-xs font-bold text-slate-900">归档 / 免打扰</h2>
+</div>
+<a class="text-[11px] font-semibold text-slate-400 hover:text-slate-600" href="#">全部 &gt;</a>
+</div>
+<div class="flex items-center py-2 px-1 gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center text-sm">📕</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline">
+<span class="font-bold text-xs text-slate-900">线下读书会</span>
+<span class="text-[10px] text-slate-400">1月20日</span>
+</div>
+<p class="text-xs text-slate-400 truncate">已开启免打扰</p>
+</div>
+<div class="text-slate-300">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M5.586 15H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path><path d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path></svg>
+</div>
+</div>
+</section>
+<!-- END: SectionArchivedSessions -->
+<!-- BEGIN: SectionBrandMessageBanner -->
+<section class="bg-gradient-to-r from-blue-50 via-indigo-50 to-lime-50 rounded-2xl p-3.5 border border-blue-100/70 relative overflow-hidden shadow-2xs" data-purpose="brand-slogan-card">
+<div class="flex items-center justify-between">
+<div class="pr-2">
+<div class="flex items-center space-x-1.5">
+<span class="text-brand-blue font-black text-sm tracking-tight">好的相遇 从消息开始 ☺</span>
+</div>
+<p class="text-[11px] text-slate-600 mt-1 font-medium">在 耍起 CAPER 遇见更多有趣的人和精彩的活动！</p>
+</div>
+<!-- Sticker Badge -->
+<div class="bg-yellow-300 text-slate-900 text-[9px] font-black px-2 py-1.5 rounded shadow-sm rotate-2 flex-shrink-0 text-center leading-tight">
+<span>More People</span><br/>
+<span>Brighter Days</span>
+</div>
+</div>
+</section>
+<!-- END: SectionBrandMessageBanner -->
+<!-- BEGIN: SectionNotificationSettings -->
+<section class="bg-white rounded-xl p-3 shadow-2xs border border-slate-100 flex items-center justify-between" data-purpose="notification-settings-link">
+<div class="flex items-center space-x-2.5">
+<span class="text-sm">🔔</span>
+<div>
+<span class="text-xs font-bold text-slate-900">消息通知设置</span>
+<p class="text-[10px] text-slate-400">管理你的消息推送偏好，不错过任何重要的相遇</p>
+</div>
+</div>
+<span class="text-slate-400 text-xs font-bold">&gt;</span>
+</section>
+<!-- END: SectionNotificationSettings -->
+<!-- BEGIN: FooterTagline -->
+<footer class="pt-4 pb-2 text-center" data-purpose="page-tagline">
+<p class="text-[9px] font-black tracking-widest text-slate-400 uppercase">GOOD PEOPLE · REAL MEETUPS · BRIGHTER DAYS</p>
+<div class="flex items-center justify-center space-x-2 mt-1">
+<span class="h-px w-6 bg-slate-200"></span>
+<p class="text-[10px] font-bold text-slate-500">耍起 CAPER 让有趣的事，真的发生</p>
+<span class="h-px w-6 bg-slate-200"></span>
+</div>
+</footer>
+<!-- END: FooterTagline -->
+</main>
+<!-- BEGIN: BottomNavigation -->
+<!-- Fixed 5-tab bar at bottom of mobile viewport (390px) -->
+<nav class="fixed bottom-0 w-[390px] bg-white/95 backdrop-blur-md border-t border-slate-200/80 px-4 py-2 z-50 flex justify-between items-center shadow-lg" data-purpose="bottom-tab-bar">
+<!-- Tab 1: 首页 -->
+<a class="flex flex-col items-center justify-center flex-1 text-slate-400 hover:text-slate-600 transition-colors" href="#">
+<svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+<span class="text-[10px] font-medium">首页</span>
+</a>
+<!-- Tab 2: 发现 -->
+<a class="flex flex-col items-center justify-center flex-1 text-slate-400 hover:text-slate-600 transition-colors" href="#">
+<svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+<span class="text-[10px] font-medium">发现</span>
+</a>
+<!-- Tab 3: 发布 Center Action Button (+) -->
+<div class="flex-1 flex justify-center -mt-4">
+<button aria-label="发起活动" class="w-12 h-12 rounded-full bg-brand-blue text-white flex items-center justify-center shadow-lg shadow-blue-500/40 hover:bg-blue-600 active:scale-95 transition-transform">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</button>
+</div>
+<!-- Tab 4: 消息 (Active) -->
+<a class="flex flex-col items-center justify-center flex-1 text-brand-blue font-bold relative transition-colors" href="#">
+<div class="relative">
+<svg class="w-5 h-5 mb-0.5" fill="currentColor" viewbox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"></path></svg>
+<span class="absolute -top-0.5 -right-1 w-2 h-2 bg-brand-badge rounded-full border border-white"></span>
+</div>
+<span class="text-[10px]">消息</span>
+</a>
+<!-- Tab 5: 我的 -->
+<a class="flex flex-col items-center justify-center flex-1 text-slate-400 hover:text-slate-600 transition-colors" href="#">
+<svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+<span class="text-[10px] font-medium">我的</span>
+</a>
+</nav>
+<!-- END: BottomNavigation -->
+</div>
+</body></html>

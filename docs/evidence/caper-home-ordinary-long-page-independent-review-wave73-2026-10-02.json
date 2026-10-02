@@ -1,0 +1,685 @@
+{
+  "scope": "Independent original source stage review and final only 3 reviewed source deltas/11photo nodes/rootJSON/fontdelta; not ownerchecker or SDK",
+  "stageProtection": {
+    "stage": "independent read of stable styles, photos and shared fonts pending",
+    "products": [
+      {
+        "path": "miniprogram/pages/index/assets/w73-chevron-gray-hover.svg",
+        "bytes": 185,
+        "sha256": "b67239d32edd6382c1070e026501b0c4e28c10c17c0bce82aea0826985075634"
+      },
+      {
+        "path": "miniprogram/pages/index/assets/w73-chevron-gray.svg",
+        "bytes": 185,
+        "sha256": "17dce00d9bce7f9ab6d95af53a15a823b8d52dc9207a11f21b672449c73ed7d8"
+      },
+      {
+        "path": "miniprogram/pages/index/assets/w73-chevron-purple.svg",
+        "bytes": 187,
+        "sha256": "3c7658a5751fda953ea81b6c37b26cd326a792fafaf94c40de92b0808586b5f8"
+      },
+      {
+        "path": "miniprogram/pages/index/assets/w73-plus-white.svg",
+        "bytes": 189,
+        "sha256": "b32b35e119356e82d38ab2e542aa06668cb9b5e5fcd67ef26cb5d585a2057c21"
+      },
+      {
+        "path": "miniprogram/pages/index/assets/w73-refresh-blue.svg",
+        "bytes": 280,
+        "sha256": "5c3156e0797781eeb3895931da1308423de0adf27f872f17ea9cf4d866d153e8"
+      },
+      {
+        "path": "miniprogram/pages/index/index.js",
+        "bytes": 32598,
+        "sha256": "d85b9db816163c4853bd2a7a9abec66dc62e8047d9e79c19457f4cb57dc8ac11"
+      },
+      {
+        "path": "miniprogram/pages/index/index.json",
+        "bytes": 143,
+        "sha256": "a082db2fcb674d4131b60f427fcb40891d00e1d2571e372df9827fa25e2f1fb1"
+      },
+      {
+        "path": "miniprogram/pages/index/index.wxml",
+        "bytes": 43633,
+        "sha256": "e219eda5981066ff0cb1f0f5e1ae81974f42b9bdb9c5ca13c36867e962fd5f22"
+      },
+      {
+        "path": "miniprogram/pages/index/index.wxss",
+        "bytes": 106789,
+        "sha256": "e74bdbf5c4f6c41c078ed1a79460dd0f4003f6d380beeb0b33923d2d92527013"
+      }
+    ],
+    "checks": {
+      "wholeWXMLinverse": {
+        "same": true,
+        "baselineBytes": 38653,
+        "sha256": "b972b559a2c523f2b1c7ca794023595fe6fee94a90add1527a3ef1cce7204c81",
+        "UITransforms": 2
+      },
+      "CSSprefix": {
+        "same": true,
+        "baselineBytes": 86165,
+        "sha256": "27b11080f2eb16d8a2280567b697a3edd0d7af3e4158bc341d7a44146dcd0cea",
+        "appendedBytes": 20624
+      },
+      "index.js": {
+        "same": true,
+        "bytes": 32598,
+        "sha256": "d85b9db816163c4853bd2a7a9abec66dc62e8047d9e79c19457f4cb57dc8ac11"
+      },
+      "index.json": {
+        "same": true,
+        "bytes": 143,
+        "sha256": "a082db2fcb674d4131b60f427fcb40891d00e1d2571e372df9827fa25e2f1fb1"
+      }
+    },
+    "actionContracts": {
+      "same": true,
+      "actionNodes": 62,
+      "uniqueContracts": 52,
+      "effectiveWxAncestorsIncluded": true,
+      "counterSHA256": "518f725b237d1b9d430c516272b04ac62da900a46977d9202bc40fa6349b7cc5"
+    },
+    "glyphs": [
+      {
+        "path": "miniprogram/pages/index/assets/w73-refresh-blue.svg",
+        "sourceLine": 266,
+        "bytes": 280,
+        "sha256": "5c3156e0797781eeb3895931da1308423de0adf27f872f17ea9cf4d866d153e8",
+        "childrenXMLAttributesAndTextExact": true,
+        "childSerializationBoundary": "HTML closing path vs XML self-closing, same elements/attributes/text",
+        "rootNormalizationExact": true
+      },
+      {
+        "path": "miniprogram/pages/index/assets/w73-chevron-gray.svg",
+        "sourceLine": 363,
+        "bytes": 185,
+        "sha256": "17dce00d9bce7f9ab6d95af53a15a823b8d52dc9207a11f21b672449c73ed7d8",
+        "childrenXMLAttributesAndTextExact": true,
+        "childSerializationBoundary": "HTML closing path vs XML self-closing, same elements/attributes/text",
+        "rootNormalizationExact": true
+      },
+      {
+        "path": "miniprogram/pages/index/assets/w73-chevron-purple.svg",
+        "sourceLine": 521,
+        "bytes": 187,
+        "sha256": "3c7658a5751fda953ea81b6c37b26cd326a792fafaf94c40de92b0808586b5f8",
+        "childrenXMLAttributesAndTextExact": true,
+        "childSerializationBoundary": "HTML closing path vs XML self-closing, same elements/attributes/text",
+        "rootNormalizationExact": true
+      },
+      {
+        "path": "miniprogram/pages/index/assets/w73-plus-white.svg",
+        "sourceLine": 696,
+        "bytes": 189,
+        "sha256": "b32b35e119356e82d38ab2e542aa06668cb9b5e5fcd67ef26cb5d585a2057c21",
+        "childrenXMLAttributesAndTextExact": true,
+        "childSerializationBoundary": "HTML closing path vs XML self-closing, same elements/attributes/text",
+        "rootNormalizationExact": true
+      },
+      {
+        "path": "miniprogram/pages/index/assets/w73-chevron-gray-hover.svg",
+        "sourceLine": 363,
+        "bytes": 185,
+        "sha256": "b67239d32edd6382c1070e026501b0c4e28c10c17c0bce82aea0826985075634",
+        "childrenXMLAttributesAndTextExact": true,
+        "childSerializationBoundary": "HTML closing path vs XML self-closing, same elements/attributes/text",
+        "rootNormalizationExact": true
+      }
+    ],
+    "source34RolesRead": [
+      {
+        "nodeIndex": 30,
+        "sourceClasses": "font-hand text-lg text-emerald-950 font-bold block sticker-rotate-left opacity-90 tracking-wide",
+        "fontSize": "18px",
+        "lineHeight": "28px",
+        "fontWeight": "700",
+        "color": "rgb(2, 44, 34)"
+      },
+      {
+        "nodeIndex": 73,
+        "sourceClasses": "font-hand text-sm text-brand-lime font-bold tracking-wider mt-0.5 drop-shadow",
+        "fontSize": "14px",
+        "lineHeight": "20px",
+        "fontWeight": "700",
+        "color": "rgb(200, 242, 51)"
+      },
+      {
+        "nodeIndex": 99,
+        "sourceClasses": "relative h-28 w-full bg-gray-200 overflow-hidden",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "400",
+        "color": "rgb(30, 41, 59)"
+      },
+      {
+        "nodeIndex": 116,
+        "sourceClasses": "relative h-28 w-full bg-gray-200 overflow-hidden",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "400",
+        "color": "rgb(30, 41, 59)"
+      },
+      {
+        "nodeIndex": 135,
+        "sourceClasses": "absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/30",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "400",
+        "color": "rgb(30, 41, 59)"
+      },
+      {
+        "nodeIndex": 142,
+        "sourceClasses": "font-hand text-white text-base font-bold sticker-rotate-left",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "700",
+        "color": "rgb(255, 255, 255)"
+      },
+      {
+        "nodeIndex": 150,
+        "sourceClasses": "h-20 rounded-2xl overflow-hidden bg-gray-200 mb-1.5 shadow-sm",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "400",
+        "color": "rgb(30, 41, 59)"
+      },
+      {
+        "nodeIndex": 156,
+        "sourceClasses": "h-20 rounded-2xl overflow-hidden bg-gray-200 mb-1.5 shadow-sm",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "400",
+        "color": "rgb(30, 41, 59)"
+      },
+      {
+        "nodeIndex": 162,
+        "sourceClasses": "h-20 rounded-2xl overflow-hidden bg-gray-200 mb-1.5 shadow-sm",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "400",
+        "color": "rgb(30, 41, 59)"
+      },
+      {
+        "nodeIndex": 168,
+        "sourceClasses": "h-20 rounded-2xl overflow-hidden bg-gray-200 mb-1.5 shadow-sm",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "400",
+        "color": "rgb(30, 41, 59)"
+      },
+      {
+        "nodeIndex": 175,
+        "sourceClasses": "bg-amber-50 rounded-2xl p-2.5 flex flex-col justify-between h-24 border border-amber-100 cursor-pointer hover:bg-amber-100/60 transition",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "400",
+        "color": "rgb(30, 41, 59)"
+      },
+      {
+        "nodeIndex": 178,
+        "sourceClasses": "text-xs font-bold text-gray-900 block leading-tight",
+        "fontSize": "12px",
+        "lineHeight": "15px",
+        "fontWeight": "700",
+        "color": "rgb(17, 24, 39)"
+      },
+      {
+        "nodeIndex": 180,
+        "sourceClasses": "bg-sky-50 rounded-2xl p-2.5 flex flex-col justify-between h-24 border border-sky-100 cursor-pointer hover:bg-sky-100/60 transition",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "400",
+        "color": "rgb(30, 41, 59)"
+      },
+      {
+        "nodeIndex": 183,
+        "sourceClasses": "text-xs font-bold text-gray-900 block leading-tight",
+        "fontSize": "12px",
+        "lineHeight": "15px",
+        "fontWeight": "700",
+        "color": "rgb(17, 24, 39)"
+      },
+      {
+        "nodeIndex": 185,
+        "sourceClasses": "bg-pink-50 rounded-2xl p-2.5 flex flex-col justify-between h-24 border border-pink-100 cursor-pointer hover:bg-pink-100/60 transition",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "400",
+        "color": "rgb(30, 41, 59)"
+      },
+      {
+        "nodeIndex": 188,
+        "sourceClasses": "text-xs font-bold text-gray-900 block leading-tight",
+        "fontSize": "12px",
+        "lineHeight": "15px",
+        "fontWeight": "700",
+        "color": "rgb(17, 24, 39)"
+      },
+      {
+        "nodeIndex": 190,
+        "sourceClasses": "bg-emerald-50 rounded-2xl p-2.5 flex flex-col justify-between h-24 border border-emerald-100 cursor-pointer hover:bg-emerald-100/60 transition",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "400",
+        "color": "rgb(30, 41, 59)"
+      },
+      {
+        "nodeIndex": 193,
+        "sourceClasses": "text-xs font-bold text-gray-900 block leading-tight",
+        "fontSize": "12px",
+        "lineHeight": "15px",
+        "fontWeight": "700",
+        "color": "rgb(17, 24, 39)"
+      },
+      {
+        "nodeIndex": 207,
+        "sourceClasses": "text-xs font-bold text-gray-900 block truncate",
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "fontWeight": "700",
+        "color": "rgb(17, 24, 39)"
+      },
+      {
+        "nodeIndex": 217,
+        "sourceClasses": "text-xs font-bold text-gray-900 block truncate",
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "fontWeight": "700",
+        "color": "rgb(17, 24, 39)"
+      },
+      {
+        "nodeIndex": 227,
+        "sourceClasses": "text-xs font-bold text-gray-900 block truncate",
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "fontWeight": "700",
+        "color": "rgb(17, 24, 39)"
+      },
+      {
+        "nodeIndex": 241,
+        "sourceClasses": "relative bg-white rounded-3xl p-3 border border-gray-100 shadow-soft space-y-3",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "400",
+        "color": "rgb(30, 41, 59)"
+      },
+      {
+        "nodeIndex": 243,
+        "sourceClasses": "font-hand text-brand-blue font-bold text-base leading-none block",
+        "fontSize": "16px",
+        "lineHeight": "16px",
+        "fontWeight": "700",
+        "color": "rgb(29, 100, 242)"
+      },
+      {
+        "nodeIndex": 244,
+        "sourceClasses": "flex items-center space-x-3 pr-14 cursor-pointer hover:bg-gray-50/60 p-1.5 rounded-2xl transition",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "400",
+        "color": "rgb(30, 41, 59)"
+      },
+      {
+        "nodeIndex": 251,
+        "sourceClasses": "flex items-center space-x-3 pr-14 cursor-pointer hover:bg-gray-50/60 p-1.5 rounded-2xl transition",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "400",
+        "color": "rgb(30, 41, 59)"
+      },
+      {
+        "nodeIndex": 263,
+        "sourceClasses": "flex items-center space-x-3 pr-14 cursor-pointer hover:bg-gray-50/60 p-1.5 rounded-2xl transition",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "400",
+        "color": "rgb(30, 41, 59)"
+      },
+      {
+        "nodeIndex": 279,
+        "sourceClasses": "relative grid grid-cols-12 gap-2 h-64 rounded-3xl overflow-hidden p-1",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "400",
+        "color": "rgb(30, 41, 59)"
+      },
+      {
+        "nodeIndex": 284,
+        "sourceClasses": "font-hand text-lg text-white font-bold leading-tight block drop-shadow",
+        "fontSize": "18px",
+        "lineHeight": "22.5px",
+        "fontWeight": "700",
+        "color": "rgb(255, 255, 255)"
+      },
+      {
+        "nodeIndex": 300,
+        "sourceClasses": "w-56 flex-shrink-0 bg-blue-50/50 rounded-2xl p-3 border border-blue-100/60 shadow-sm flex flex-col justify-between",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "400",
+        "color": "rgb(30, 41, 59)"
+      },
+      {
+        "nodeIndex": 307,
+        "sourceClasses": "text-xs font-bold text-gray-900 block truncate",
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "fontWeight": "700",
+        "color": "rgb(17, 24, 39)"
+      },
+      {
+        "nodeIndex": 309,
+        "sourceClasses": "w-56 flex-shrink-0 bg-emerald-50/50 rounded-2xl p-3 border border-emerald-100/60 shadow-sm flex flex-col justify-between",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "fontWeight": "400",
+        "color": "rgb(30, 41, 59)"
+      },
+      {
+        "nodeIndex": 316,
+        "sourceClasses": "text-xs font-bold text-gray-900 block truncate",
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "fontWeight": "700",
+        "color": "rgb(17, 24, 39)"
+      },
+      {
+        "nodeIndex": 331,
+        "sourceClasses": "font-hand text-white text-xs block sticker-rotate-left",
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "fontWeight": "400",
+        "color": "rgb(255, 255, 255)"
+      },
+      {
+        "nodeIndex": 337,
+        "sourceClasses": "w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-brand-blue via-blue-600 to-emerald-400 text-white font-extrabold text-sm shadow-floating hover:opacity-95 transition flex items-center justify-center space-x-2",
+        "fontSize": "14px",
+        "lineHeight": "20px",
+        "fontWeight": "800",
+        "color": "rgb(255, 255, 255)"
+      }
+    ],
+    "manualSourceCorrectionsRequested": [
+      {
+        "group": "hot-frame",
+        "sourceLines": [
+          370,
+          379,
+          388,
+          397
+        ],
+        "difference": "original fixed overflow-hidden shadow frame; only inner image scaled; stage image holds frame itself"
+      },
+      {
+        "group": "transition",
+        "sourceClass": "transition",
+        "difference": "stage all / transform-only / missing city; original precise property list with 150ms cubic(0.4,0,0.2,1)"
+      },
+      {
+        "group": "collage-hand-shadow",
+        "sourceLine": 593,
+        "difference": "source two drop-shadow filters, stage text-shadow"
+      }
+    ],
+    "excludedPending": [
+      "11 exact photo component nodes pending root interface",
+      "shared font actual callback/paint pending root",
+      "source max440 whole-wrapper vs protected existing core large-screen layout not claimed"
+    ]
+  },
+  "finalSourceDelta": {
+    "boundary": "Only three review source deltas + eleven component consumers + root JSON/font delta; no repeated34 roles/80checker/old runtime",
+    "final": {
+      "WXMLBytes": 43747,
+      "WXMLSHA256": "9c35f217aefeaebfb33a003b996f127de9850e486ee431704d6480f816249f4e",
+      "WXSSBytes": 110058,
+      "WXSSSHA256": "9c370a6b694c57ee508e8c6c8a698094a1892c91d45e8b7f73a2b4244e8c9d87"
+    },
+    "reviewInverse": {
+      "WXMLBytes": 43603,
+      "WXMLSHA256": "d05adf6b78bde38217902e2e6dae847043dd842a51d0bd1048f6c3774c87a83a",
+      "WXSSBytes": 107076,
+      "WXSSSHA256": "0fad19bb89114f0584837df52b02b20d499ee86db4bf6563e661914da1c76822"
+    },
+    "reviewAndPhotoInverseToOriginalStage": true,
+    "unchangedJSExactToStage": true,
+    "rootJSONOldParsedKeysUnchanged": true,
+    "rootJSONAddedKeys": [
+      "usingComponents.reference-image",
+      "componentPlaceholder.reference-image"
+    ],
+    "manualCorrectedSourceRoles": {
+      "hotFrame": "four fixed80/r16/overflow-hidden/shadow-sm; inner actual external-class image only scale1.05, no image shadow/radius/margin",
+      "transition": "exact generated source three compatibility declaration lists, 150ms cubic(.4,0,.2,1), five selector groups cover original11 consumers",
+      "collageShadow": "text-shadow none, exact dual drop-shadow filter on original hand text"
+    },
+    "readonlyPhotos": [
+      {
+        "key": "home-brand-party",
+        "consumerClass": "w73-photo-brand-party",
+        "photoClass": "ribbon-image w73-photo-brand-party",
+        "path": "miniprogram/subpackages/profile/components/reference-image/assets/home-brand-party.jpg",
+        "bytes": 67934,
+        "sha256": "3365ce00ca5e741f4cbfbd5cf9ed76b8e0f821f83a5235e7182a6b41164e1d6a",
+        "originalResponseByteEqual": true,
+        "noReencoding": true,
+        "readonlyNodeNoAction": true
+      },
+      {
+        "key": "home-hot-tennis",
+        "consumerClass": "w73-photo-hot-tennis",
+        "photoClass": "w73-photo-hot-tennis home-hot-photo",
+        "path": "miniprogram/subpackages/profile/components/reference-image/assets/home-hot-tennis.jpg",
+        "bytes": 46931,
+        "sha256": "17d3ced8567411d7b67e5643c486c1d1862aa6d154cad5613b8637545c34db30",
+        "originalResponseByteEqual": true,
+        "noReencoding": true,
+        "readonlyNodeNoAction": true
+      },
+      {
+        "key": "home-hot-coffee",
+        "consumerClass": "w73-photo-hot-coffee",
+        "photoClass": "w73-photo-hot-coffee home-hot-photo",
+        "path": "miniprogram/subpackages/profile/components/reference-image/assets/home-hot-coffee.jpg",
+        "bytes": 61237,
+        "sha256": "789626490bad53fe814fe1194a7ffa3dad1121719744c9a781e587e80fc4ded5",
+        "originalResponseByteEqual": true,
+        "noReencoding": true,
+        "readonlyNodeNoAction": true
+      },
+      {
+        "key": "home-hot-frisbee",
+        "consumerClass": "w73-photo-hot-frisbee",
+        "photoClass": "w73-photo-hot-frisbee home-hot-photo",
+        "path": "miniprogram/subpackages/profile/components/reference-image/assets/home-hot-frisbee.jpg",
+        "bytes": 70328,
+        "sha256": "1d496fa254500f6a66310fadfecbd546457bcdc6d9982313dcbcf905903bbc4f",
+        "originalResponseByteEqual": true,
+        "noReencoding": true,
+        "readonlyNodeNoAction": true
+      },
+      {
+        "key": "home-hot-boardgame",
+        "consumerClass": "w73-photo-hot-boardgame",
+        "photoClass": "w73-photo-hot-boardgame home-hot-photo",
+        "path": "miniprogram/subpackages/profile/components/reference-image/assets/home-hot-boardgame.jpg",
+        "bytes": 62758,
+        "sha256": "dfe5dc41e9e955bae653a9c1095c00675f17bf96d96bdef42bbfc8223c2d98e2",
+        "originalResponseByteEqual": true,
+        "noReencoding": true,
+        "readonlyNodeNoAction": true
+      },
+      {
+        "key": "home-idea-badminton",
+        "consumerClass": "w73-photo-idea-badminton",
+        "photoClass": "w73-photo-idea-badminton home-idea-photo",
+        "path": "miniprogram/subpackages/profile/components/reference-image/assets/home-idea-badminton.jpg",
+        "bytes": 33316,
+        "sha256": "85c9aae86f539cab1e6f06254f49165c6e6c1fe5e688c5341bf202c8a4146189",
+        "originalResponseByteEqual": true,
+        "noReencoding": true,
+        "readonlyNodeNoAction": true
+      },
+      {
+        "key": "home-idea-coffee",
+        "consumerClass": "w73-photo-idea-coffee",
+        "photoClass": "w73-photo-idea-coffee home-idea-photo",
+        "path": "miniprogram/subpackages/profile/components/reference-image/assets/home-idea-coffee.jpg",
+        "bytes": 72113,
+        "sha256": "5c0350df75d28b6a38499477eabd40e6889f8400f9e34708aae54b1419608131",
+        "originalResponseByteEqual": true,
+        "noReencoding": true,
+        "readonlyNodeNoAction": true
+      },
+      {
+        "key": "home-idea-cycling",
+        "consumerClass": "w73-photo-idea-cycling",
+        "photoClass": "w73-photo-idea-cycling home-idea-photo",
+        "path": "miniprogram/subpackages/profile/components/reference-image/assets/home-idea-cycling.jpg",
+        "bytes": 51100,
+        "sha256": "d24a483e4f1042c527f414c436edcc895a68c2709f9dbc269cdca2c7ac77e745",
+        "originalResponseByteEqual": true,
+        "noReencoding": true,
+        "readonlyNodeNoAction": true
+      },
+      {
+        "key": "home-collage-main",
+        "consumerClass": "w73-photo-collage-main",
+        "photoClass": "w73-photo-collage-main home-collage-photo",
+        "path": "miniprogram/subpackages/profile/components/reference-image/assets/home-collage-main.jpg",
+        "bytes": 77396,
+        "sha256": "e990073eed579ac88dd91be60ff6c1e4888fe803fb53ab1ac9383ab7164d9dca",
+        "originalResponseByteEqual": true,
+        "noReencoding": true,
+        "readonlyNodeNoAction": true
+      },
+      {
+        "key": "home-collage-dinner",
+        "consumerClass": "w73-photo-collage-dinner",
+        "photoClass": "w73-photo-collage-dinner home-collage-photo",
+        "path": "miniprogram/subpackages/profile/components/reference-image/assets/home-collage-dinner.jpg",
+        "bytes": 67130,
+        "sha256": "e111454a86e9b5ef33a7fe5774092f74f39cfbe574e356baf74f0432bf8829af",
+        "originalResponseByteEqual": true,
+        "noReencoding": true,
+        "readonlyNodeNoAction": true
+      },
+      {
+        "key": "home-collage-grass",
+        "consumerClass": "w73-photo-collage-grass",
+        "photoClass": "w73-photo-collage-grass home-collage-photo",
+        "path": "miniprogram/subpackages/profile/components/reference-image/assets/home-collage-grass.jpg",
+        "bytes": 73338,
+        "sha256": "969e214d70fe40a4933f19c4022b79a19cc0e7f0e889d2975bdf57743ff4ecb2",
+        "originalResponseByteEqual": true,
+        "noReencoding": true,
+        "readonlyNodeNoAction": true
+      }
+    ],
+    "newJPEGBytes": 683581,
+    "fontsRootOwnedReadOnly": [
+      {
+        "file": "caveat-700-home-discover-pg05-union.woff",
+        "weight": 700,
+        "bytes": 28076,
+        "sha256": "f2fb6438cd2a04f9bcbb67fea2f9136208a99693156a533d1e2d8f28fb9628cd",
+        "cmapClaimFromRoot": [
+          "U+0020",
+          "U+0026",
+          "U+002C",
+          "U+0042",
+          "U+0043",
+          "U+0044",
+          "U+0045",
+          "U+0046",
+          "U+0047",
+          "U+0048",
+          "U+004D",
+          "U+004E",
+          "U+004F",
+          "U+0050",
+          "U+0052",
+          "U+0053",
+          "U+0054",
+          "U+0056",
+          "U+0061",
+          "U+0062",
+          "U+0063",
+          "U+0064",
+          "U+0065",
+          "U+0067",
+          "U+0068",
+          "U+0069",
+          "U+006B",
+          "U+006C",
+          "U+006D",
+          "U+006E",
+          "U+006F",
+          "U+0070",
+          "U+0072",
+          "U+0073",
+          "U+0074",
+          "U+0075",
+          "U+0076",
+          "U+0077",
+          "U+0079"
+        ],
+        "fallback": [
+          "☺",
+          "♡",
+          "⚡"
+        ]
+      },
+      {
+        "file": "caveat-600-city.woff",
+        "weight": 600,
+        "bytes": 11624,
+        "sha256": "65a31f27c6f651920868421bc775a63546e843e478f66b137fe52f5069098379",
+        "cmapClaimFromRoot": [
+          "U+0020",
+          "U+0042",
+          "U+0043",
+          "U+0047",
+          "U+004D",
+          "U+0050",
+          "U+0061",
+          "U+0064",
+          "U+0065",
+          "U+0069",
+          "U+006B",
+          "U+006C",
+          "U+006F",
+          "U+0070",
+          "U+0072",
+          "U+0073",
+          "U+0074"
+        ],
+        "fallback": [
+          "☺"
+        ]
+      }
+    ],
+    "fontRuntimeBoundary": "root8callbacks evidence pertains initial home5 expansion; final discover6 addition requires root finalSDK; reviewer did not rerun3VM/fonttools/SDK",
+    "fontSourceProofPath": "docs/evidence/caper-reference-photo-and-font-async-source-proof-wave73-2026-10-02.json"
+  },
+  "rootCaveatPayloadReadOnly": {
+    "faceCount": 8,
+    "caveat": [
+      {
+        "family": "Caveat",
+        "weight": "700",
+        "bytes": 28076,
+        "sha256": "f2fb6438cd2a04f9bcbb67fea2f9136208a99693156a533d1e2d8f28fb9628cd"
+      },
+      {
+        "family": "Caveat",
+        "weight": "600",
+        "bytes": 11624,
+        "sha256": "65a31f27c6f651920868421bc775a63546e843e478f66b137fe52f5069098379"
+      }
+    ],
+    "readonlyNoLoaderExecuted": true
+  }
+}

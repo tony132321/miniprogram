@@ -1,0 +1,764 @@
+{
+  "phase1": {
+    "scope": "Independent frozen-source review. One whole inverse/action/asset provenance audit; no owner checker rerun, CSS mirror/product projection, API/business/CI/SDK/CLI/Git operation.",
+    "checks": [
+      {
+        "name": "all17 frozen owned hashes independently match",
+        "pass": true,
+        "detail": {
+          "manifestSHA256": "8389bdf73d841707b79b639e22ddfcae82726771c8239a9f79c93793b99bba92",
+          "owned": 17
+        }
+      },
+      {
+        "name": "independently inverse14 whole WXML baseline exact",
+        "pass": true,
+        "detail": {
+          "baselineBytes": 34914,
+          "baselineSHA256": "69208a8ae7b49fef663ac51ef723f45248959b29aa0c3ad649507d174c0c1e13",
+          "freezeBytes": 38729,
+          "freezeSHA256": "6e0c3b0d43c509797f4be92921afb5e87c35db45d363f509ea21bbcbecd5e788",
+          "inverseCounts": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        }
+      },
+      {
+        "name": "entire67613 oldCSS prefix independently exact",
+        "pass": true,
+        "detail": {
+          "sha256": "2b8787c83c01314c1a23b5d2549984c251e842180cd8206ee4553304f3907c7a"
+        }
+      },
+      {
+        "name": "unchanged business js exact",
+        "pass": true,
+        "detail": {
+          "path": "miniprogram/pages/messages/messages.js",
+          "bytes": 32969,
+          "sha256": "b297f95f560581abc5718b4fe35cb66453601f1e0948e6940800e4eb8e10a8c0"
+        }
+      },
+      {
+        "name": "unchanged business json exact",
+        "pass": true,
+        "detail": {
+          "path": "miniprogram/pages/messages/messages.json",
+          "bytes": 63,
+          "sha256": "b76e69c65eadf25397e0df5c9457c5a098c1bfc714ae05be5441318bdc8ebacc"
+        }
+      },
+      {
+        "name": "whole CHAT+N2+N1 suffix exact",
+        "pass": true,
+        "detail": {
+          "fullSuffixIncludingMarkerBytes": 23282,
+          "sha256": "c38173522a35fefec876eab293b7e25db1e6d70019d9952462857cd8fde6025f"
+        }
+      },
+      {
+        "name": "all63 action bindings/datasets/attrs/ancestor guards independent exact",
+        "pass": true,
+        "detail": {
+          "oldCount": 63,
+          "newCount": 63
+        }
+      },
+      {
+        "name": "only6 ordinary affected actions same contracts",
+        "pass": true,
+        "detail": {
+          "sixAffected": [
+            {
+              "tag": "button",
+              "events": {
+                "bindtap": "openPrivateChatPreview"
+              },
+              "data": {},
+              "guards": [
+                {
+                  "wx:if": "{{viewMode === 'INBOX'}}"
+                },
+                {
+                  "wx:if": "{{loadState === 'READY' && filter === 'ALL'}}"
+                }
+              ],
+              "attrs": {
+                "aria-label": "查看私聊功能状态"
+              }
+            },
+            {
+              "tag": "button",
+              "events": {
+                "bindtap": "openNotice"
+              },
+              "data": {
+                "data-id": "{{notice.id}}",
+                "data-event-id": "{{notice.event_id}}",
+                "data-kind": "{{notice.kind}}"
+              },
+              "guards": [
+                {
+                  "wx:if": "{{viewMode === 'INBOX'}}"
+                },
+                {
+                  "wx:if": "{{loadState === 'READY' && filteredCount > 0}}"
+                },
+                {
+                  "wx:for": "{{noticeGroups}}",
+                  "wx:key": "key",
+                  "wx:for-item": "group"
+                },
+                {
+                  "wx:if": "{{group.items.length > 0}}"
+                },
+                {
+                  "wx:for": "{{group.items}}",
+                  "wx:key": "id",
+                  "wx:for-item": "notice"
+                }
+              ],
+              "attrs": {}
+            },
+            {
+              "tag": "button",
+              "events": {
+                "bindtap": "openNotice"
+              },
+              "data": {
+                "data-id": "{{notice.id}}",
+                "data-event-id": "{{notice.event_id}}",
+                "data-kind": "{{notice.kind}}",
+                "data-section": "checkinSection"
+              },
+              "guards": [
+                {
+                  "wx:if": "{{viewMode === 'INBOX'}}"
+                },
+                {
+                  "wx:if": "{{loadState === 'READY' && filteredCount > 0}}"
+                },
+                {
+                  "wx:for": "{{noticeGroups}}",
+                  "wx:key": "key",
+                  "wx:for-item": "group"
+                },
+                {
+                  "wx:if": "{{group.items.length > 0}}"
+                },
+                {
+                  "wx:for": "{{group.items}}",
+                  "wx:key": "id",
+                  "wx:for-item": "notice"
+                },
+                {
+                  "wx:if": "{{notice.kind === 'EVENT_REMINDER' || notice.kind === 'MANUAL_CHECKIN_REQUEST'}}"
+                }
+              ],
+              "attrs": {}
+            },
+            {
+              "tag": "button",
+              "events": {
+                "bindtap": "loadMore"
+              },
+              "data": {},
+              "guards": [
+                {
+                  "wx:if": "{{viewMode === 'INBOX'}}"
+                },
+                {
+                  "wx:if": "{{loadState === 'READY' && nextOffset !== null}}"
+                }
+              ],
+              "attrs": {
+                "disabled": "{{loadingMore}}"
+              }
+            },
+            {
+              "tag": "button",
+              "events": {
+                "bindtap": "goDiscover"
+              },
+              "data": {},
+              "guards": [
+                {
+                  "wx:if": "{{viewMode === 'INBOX'}}"
+                }
+              ],
+              "attrs": {}
+            },
+            {
+              "tag": "button",
+              "events": {
+                "bindtap": "goNotificationSettings"
+              },
+              "data": {},
+              "guards": [
+                {
+                  "wx:if": "{{viewMode === 'INBOX'}}"
+                }
+              ],
+              "attrs": {}
+            }
+          ]
+        }
+      },
+      {
+        "name": "secondary AI disabled only, no handler/data write",
+        "pass": true,
+        "detail": [
+          {
+            "tag": "button",
+            "attrs": {
+              "class": "inbox-long-ai-secondary",
+              "disabled": "{{true}}",
+              "aria-label": "AI 一键确认暂未开放"
+            }
+          }
+        ]
+      },
+      {
+        "name": "two precise source realkind consumers",
+        "pass": true,
+        "detail": [
+          {
+            "src": "./assets/wave74-inbox-people.svg",
+            "guards": [
+              {
+                "wx:if": "{{viewMode === 'INBOX'}}"
+              },
+              {
+                "wx:if": "{{loadState === 'READY' && filteredCount > 0}}"
+              },
+              {
+                "wx:for": "{{noticeGroups}}",
+                "wx:key": "key",
+                "wx:for-item": "group"
+              },
+              {
+                "wx:if": "{{group.items.length > 0}}"
+              },
+              {
+                "wx:for": "{{group.items}}",
+                "wx:key": "id",
+                "wx:for-item": "notice"
+              },
+              {
+                "wx:if": "{{notice.kind === 'REGISTRATION_APPROVED'}}"
+              }
+            ]
+          },
+          {
+            "src": "./assets/wave74-inbox-pin.svg",
+            "guards": [
+              {
+                "wx:if": "{{viewMode === 'INBOX'}}"
+              },
+              {
+                "wx:if": "{{loadState === 'READY' && filteredCount > 0}}"
+              },
+              {
+                "wx:for": "{{noticeGroups}}",
+                "wx:key": "key",
+                "wx:for-item": "group"
+              },
+              {
+                "wx:if": "{{group.items.length > 0}}"
+              },
+              {
+                "wx:for": "{{group.items}}",
+                "wx:key": "id",
+                "wx:for-item": "notice"
+              },
+              {
+                "wx:elif": "{{notice.kind === 'MATERIAL_CHANGE'}}"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "source child exact wave74-inbox-people.svg",
+        "pass": true,
+        "detail": {
+          "originalLine": 285,
+          "childrenSHA256": "a0475b4111b9ab2f45b66acee31c943612e0b4a6c95c320205ffa16a37240839",
+          "bytes": 364,
+          "sha256": "73eb0f340370629c4852237533cea9751888524a15b085e42b6f9c94f5f8adc6",
+          "fill": "#059669"
+        }
+      },
+      {
+        "name": "source child exact wave74-inbox-pin.svg",
+        "pass": true,
+        "detail": {
+          "originalLine": 299,
+          "childrenSHA256": "0a06351c7a9110d2f568382f88e5c1f406646309d25ec164163a9ba5b570bba1",
+          "bytes": 254,
+          "sha256": "4fd6d2c2fb7de30ec688d4fec4b27d67c6e9b84a2b2aa77a9154ce88b3c22e50",
+          "fill": "#f43f5e"
+        }
+      },
+      {
+        "name": "old34 asset files byte exact",
+        "pass": true,
+        "detail": {
+          "paths": 34,
+          "bytes": 50721
+        }
+      },
+      {
+        "name": "48 original CSS roles provenance independently valid",
+        "pass": true,
+        "detail": {
+          "roles": 48,
+          "fontImagePaint": "not observed; CSS only",
+          "compiledCSSHashes": {
+            "caper_3-style-0.css": "d1e9a7373cb2dbe5beb27562e188c728cd7553e437d362b358ec9d8318dfcf4c",
+            "caper_3-style-1.css": "d2f94577e58aaeee533701c7a364c77172233dbe2119a07b9d33cd3f42033fce"
+          }
+        }
+      },
+      {
+        "name": "original ZIP exact caper_3/code.html",
+        "pass": true,
+        "detail": {
+          "entry": "stitch_design_system_generator/caper_3/code.html",
+          "bytes": 32137,
+          "sha256": "18fab22c6b92592673e19574739eb2ed86cbfb0fe628023ec5dcd3b843a1aa6b"
+        }
+      },
+      {
+        "name": "original ZIP exact caper_3/screen.png",
+        "pass": true,
+        "detail": {
+          "entry": "stitch_design_system_generator/caper_3/screen.png",
+          "bytes": 210560,
+          "sha256": "85fc42cb05ea57b3afe81c594917572ead3122dfa5feb958595574fb5901da1b"
+        }
+      },
+      {
+        "name": "ordinary scope prevents other mode CSS influence",
+        "pass": true,
+        "detail": {
+          "selectors": 98,
+          "keyframe": "unique inbox-long-source-pulse"
+        }
+      }
+    ],
+    "initialSourceDeltas": [
+      {
+        "role": "notice-summary-normal-wrap",
+        "original": "source caper_3:291/305 p without truncate",
+        "product": "messages.wxss:601 inherits old:42 nowrap/ellipsis/overflowhidden",
+        "fix": "new notice scope only normal/visible/clip"
+      },
+      {
+        "role": "archived-helper-tone",
+        "original": "caper_3:505 text-slate-400 = #94a3b8",
+        "product": "new:654 common history helper #64748b",
+        "fix": "third archived helper only #94a3b8; other history remains"
+      },
+      {
+        "role": "settings-inline-title-parent-linebox",
+        "original": "caper_3:534–536 parent16px24px contains inline span title12px16px and block helper10px15px",
+        "product": "new title block view and parent inherits12px16px",
+        "fix": "precise inline title with parent16px24px; not arbitrary fixed height"
+      }
+    ],
+    "svg": [
+      {
+        "path": "miniprogram/pages/messages/assets/wave74-inbox-people.svg",
+        "sourceLine": 285,
+        "bytes": 364,
+        "sha256": "73eb0f340370629c4852237533cea9751888524a15b085e42b6f9c94f5f8adc6",
+        "childrenSHA256": "a0475b4111b9ab2f45b66acee31c943612e0b4a6c95c320205ffa16a37240839",
+        "fill": "#059669",
+        "viewBox": "0 0 20 20"
+      },
+      {
+        "path": "miniprogram/pages/messages/assets/wave74-inbox-pin.svg",
+        "sourceLine": 299,
+        "bytes": 254,
+        "sha256": "4fd6d2c2fb7de30ec688d4fec4b27d67c6e9b84a2b2aa77a9154ce88b3c22e50",
+        "childrenSHA256": "0a06351c7a9110d2f568382f88e5c1f406646309d25ec164163a9ba5b570bba1",
+        "fill": "#f43f5e",
+        "viewBox": "0 0 20 20"
+      }
+    ],
+    "actions": [
+      {
+        "tag": "button",
+        "events": {
+          "bindtap": "openPrivateChatPreview"
+        },
+        "data": {},
+        "guards": [
+          {
+            "wx:if": "{{viewMode === 'INBOX'}}"
+          },
+          {
+            "wx:if": "{{loadState === 'READY' && filter === 'ALL'}}"
+          }
+        ],
+        "attrs": {
+          "aria-label": "查看私聊功能状态"
+        }
+      },
+      {
+        "tag": "button",
+        "events": {
+          "bindtap": "openNotice"
+        },
+        "data": {
+          "data-id": "{{notice.id}}",
+          "data-event-id": "{{notice.event_id}}",
+          "data-kind": "{{notice.kind}}"
+        },
+        "guards": [
+          {
+            "wx:if": "{{viewMode === 'INBOX'}}"
+          },
+          {
+            "wx:if": "{{loadState === 'READY' && filteredCount > 0}}"
+          },
+          {
+            "wx:for": "{{noticeGroups}}",
+            "wx:key": "key",
+            "wx:for-item": "group"
+          },
+          {
+            "wx:if": "{{group.items.length > 0}}"
+          },
+          {
+            "wx:for": "{{group.items}}",
+            "wx:key": "id",
+            "wx:for-item": "notice"
+          }
+        ],
+        "attrs": {}
+      },
+      {
+        "tag": "button",
+        "events": {
+          "bindtap": "openNotice"
+        },
+        "data": {
+          "data-id": "{{notice.id}}",
+          "data-event-id": "{{notice.event_id}}",
+          "data-kind": "{{notice.kind}}",
+          "data-section": "checkinSection"
+        },
+        "guards": [
+          {
+            "wx:if": "{{viewMode === 'INBOX'}}"
+          },
+          {
+            "wx:if": "{{loadState === 'READY' && filteredCount > 0}}"
+          },
+          {
+            "wx:for": "{{noticeGroups}}",
+            "wx:key": "key",
+            "wx:for-item": "group"
+          },
+          {
+            "wx:if": "{{group.items.length > 0}}"
+          },
+          {
+            "wx:for": "{{group.items}}",
+            "wx:key": "id",
+            "wx:for-item": "notice"
+          },
+          {
+            "wx:if": "{{notice.kind === 'EVENT_REMINDER' || notice.kind === 'MANUAL_CHECKIN_REQUEST'}}"
+          }
+        ],
+        "attrs": {}
+      },
+      {
+        "tag": "button",
+        "events": {
+          "bindtap": "loadMore"
+        },
+        "data": {},
+        "guards": [
+          {
+            "wx:if": "{{viewMode === 'INBOX'}}"
+          },
+          {
+            "wx:if": "{{loadState === 'READY' && nextOffset !== null}}"
+          }
+        ],
+        "attrs": {
+          "disabled": "{{loadingMore}}"
+        }
+      },
+      {
+        "tag": "button",
+        "events": {
+          "bindtap": "goDiscover"
+        },
+        "data": {},
+        "guards": [
+          {
+            "wx:if": "{{viewMode === 'INBOX'}}"
+          }
+        ],
+        "attrs": {}
+      },
+      {
+        "tag": "button",
+        "events": {
+          "bindtap": "goNotificationSettings"
+        },
+        "data": {},
+        "guards": [
+          {
+            "wx:if": "{{viewMode === 'INBOX'}}"
+          }
+        ],
+        "attrs": {}
+      }
+    ],
+    "result": {
+      "independentProtectionPass": true,
+      "checks": 17,
+      "sourceCSSFirstPass": "three source deltas pending owner authorized correction; no unrelated defects found",
+      "styleEvidenceBoundary": "native font/emoji/rendering and full PNG pixel match unproven; closure/data adaptation intentional"
+    }
+  },
+  "phase2": {
+    "scope": "Only 3 authorized source deltas and final freeze bytes; initial17 proof/owner71/original48 observation not rerun. No product render, business test, CLI/SDK/Git.",
+    "checks": [
+      {
+        "name": "single new non-action title/hint replacement",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "name": "new exact scoped correction once",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "name": "new exact scoped correction once",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "name": "new exact scoped correction once",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "name": "whole final WXML delta inverse returns initial independently auditedfreeze",
+        "pass": true,
+        "detail": {
+          "bytes": 38729,
+          "sha256": "6e0c3b0d43c509797f4be92921afb5e87c35db45d363f509ea21bbcbecd5e788"
+        }
+      },
+      {
+        "name": "whole final CSS delta inverse returns initial independently auditedfreeze",
+        "pass": true,
+        "detail": {
+          "bytes": 82346,
+          "sha256": "f9eff614c4e6802518b9eda6a42b38cd0f724ff6a5a9c9005461708fc6a1621f"
+        }
+      },
+      {
+        "name": "final frozen product SHA and size matches officialmanifest",
+        "pass": true,
+        "detail": {
+          "manifestBytes": 4924,
+          "manifestSHA256": "acf81ad34d47af0e6a5a9c9e816026ec9ae921118b43998ac22becba64165e4a",
+          "products": [
+            {
+              "path": "miniprogram/pages/messages/assets/wave74-inbox-people.svg",
+              "bytes": 364,
+              "sha256": "73eb0f340370629c4852237533cea9751888524a15b085e42b6f9c94f5f8adc6",
+              "product": true
+            },
+            {
+              "path": "miniprogram/pages/messages/assets/wave74-inbox-pin.svg",
+              "bytes": 254,
+              "sha256": "4fd6d2c2fb7de30ec688d4fec4b27d67c6e9b84a2b2aa77a9154ce88b3c22e50",
+              "product": true
+            },
+            {
+              "path": "miniprogram/pages/messages/messages.wxml",
+              "bytes": 38796,
+              "sha256": "db32d3f3a4061d472f579953efdbe4fd5af71ae8af5e5e4c5fb171f141ac4dd7",
+              "product": true
+            },
+            {
+              "path": "miniprogram/pages/messages/messages.wxss",
+              "bytes": 82556,
+              "sha256": "ca8454e7cc3e9f8892d14fbf9a5c5ac79517db8c4045222012c14e54456b6a89",
+              "product": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "actual scoped summary clears oldellipsis",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "name": "archive same specificity and later rule actually wins",
+        "pass": true,
+        "detail": {
+          "oldSpecificity": [
+            0,
+            3,
+            1
+          ],
+          "newSpecificity": [
+            0,
+            3,
+            1
+          ],
+          "oldIndex": 79570,
+          "newIndex": 79661,
+          "reviewerCorrection": "An intermediate message miscounted old3 classes as4. Corrected immediately before mutation; same3/later rule works. This was reviewer counting error, not product defect."
+        }
+      },
+      {
+        "name": "settings source inline/father/hint precise",
+        "pass": true,
+        "detail": null
+      },
+      {
+        "name": "new inline title beats inherited legacy block text byclassspecificity",
+        "pass": true,
+        "detail": {
+          "new": [
+            0,
+            3,
+            0
+          ],
+          "old": [
+            0,
+            1,
+            2
+          ],
+          "noNativePixelClaim": true
+        }
+      },
+      {
+        "name": "only277 total rawdelta",
+        "pass": true,
+        "detail": {
+          "WXMLDelta": 67,
+          "CSSDelta": 210
+        }
+      },
+      {
+        "name": "closed tag and mentions adaptation explicitly documented",
+        "pass": true,
+        "detail": null
+      }
+    ],
+    "result": {
+      "pass": true,
+      "checks": 13,
+      "sourceUnresolved": 0,
+      "finalWXML": {
+        "bytes": 38796,
+        "sha256": "db32d3f3a4061d472f579953efdbe4fd5af71ae8af5e5e4c5fb171f141ac4dd7"
+      },
+      "finalWXSS": {
+        "bytes": 82556,
+        "sha256": "ca8454e7cc3e9f8892d14fbf9a5c5ac79517db8c4045222012c14e54456b6a89"
+      },
+      "runtimeRawNetDelta": 19443,
+      "originalSourceLineCorrections": [
+        292,
+        306,
+        505,
+        535,
+        536
+      ],
+      "nonProductDiagnostic": "Reviewer specificity temporary counting error corrected; no unnecessary selector mutation."
+    }
+  },
+  "finalFreeze": {
+    "path": "/private/tmp/caper-wave74-inbox-long/frozen-owned-paths.json",
+    "bytes": 4924,
+    "sha256": "acf81ad34d47af0e6a5a9c9e816026ec9ae921118b43998ac22becba64165e4a",
+    "products": [
+      {
+        "path": "miniprogram/pages/messages/assets/wave74-inbox-people.svg",
+        "bytes": 364,
+        "sha256": "73eb0f340370629c4852237533cea9751888524a15b085e42b6f9c94f5f8adc6",
+        "product": true
+      },
+      {
+        "path": "miniprogram/pages/messages/assets/wave74-inbox-pin.svg",
+        "bytes": 254,
+        "sha256": "4fd6d2c2fb7de30ec688d4fec4b27d67c6e9b84a2b2aa77a9154ce88b3c22e50",
+        "product": true
+      },
+      {
+        "path": "miniprogram/pages/messages/messages.wxml",
+        "bytes": 38796,
+        "sha256": "db32d3f3a4061d472f579953efdbe4fd5af71ae8af5e5e4c5fb171f141ac4dd7",
+        "product": true
+      },
+      {
+        "path": "miniprogram/pages/messages/messages.wxss",
+        "bytes": 82556,
+        "sha256": "ca8454e7cc3e9f8892d14fbf9a5c5ac79517db8c4045222012c14e54456b6a89",
+        "product": true
+      }
+    ],
+    "runtimeRawNetDelta": 19443
+  },
+  "retainedNonProductDiagnostics": [
+    {
+      "type": "reviewer-counting-error",
+      "detail": "Review message briefly miscounted three old selector classes as four. Corrected immediately; both original common and adjacent selectors are 0,3,1 and adjacent is later, so source #94a3b8 was already effective. Owner applied a temporary24B explicit scope before correction; root requested removal and entire formal freeze returned byte-exact acf81. No product cascade failure."
+    },
+    {
+      "type": "final-delta-harness-current-snapshot",
+      "error": "ValueError: substring not found",
+      "detail": "Final-delta harness expected original adjacent selector while owner had temporarily inserted the24B longer selector. Kept failed diagnostic, waited root final acf81 rollback; no product change by reviewer."
+    },
+    {
+      "type": "final-delta-harness-property-filter",
+      "error": "AssertionError: settings source inline/father/hint precise",
+      "detail": "The no-fixed-height guard used substring height: and inadvertently matched required line-height:. Changed only harness to CSS property-token regex (?<![-\\w])height\\s*:. Final3delta check then exit0; no product change."
+    }
+  ],
+  "temporaryDeltaInverseProof": {
+    "reason": "Reviewer withdrew false specificity count; independent literal count old/new0,3,1 and post-order source color already valid",
+    "temporaryPatchBytes": 24,
+    "inverseExact": true,
+    "finalManifestSHA256": "acf81ad34d47af0e6a5a9c9e816026ec9ae921118b43998ac22becba64165e4a",
+    "finalCSSSHA256": "ca8454e7cc3e9f8892d14fbf9a5c5ac79517db8c4045222012c14e54456b6a89",
+    "prior71NotRerun": true
+  },
+  "result": {
+    "sourceCorrectionsVerified": 3,
+    "unresolvedSourceDefectsInReviewedScope": 0,
+    "initialIndependentProtectionChecks": 17,
+    "finalLocalDeltaChecks": 13,
+    "wholeProtectionNotRerun": true,
+    "nativePixelFontEmojiNotClaimed": true
+  }
+}

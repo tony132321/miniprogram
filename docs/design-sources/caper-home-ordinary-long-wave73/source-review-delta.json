@@ -1,0 +1,75 @@
+{
+  "reason": "ui65 one aggregated source review, three confirmed original CSS roles, root authorized same current scope",
+  "beforeWXMLBytes": 43603,
+  "beforeWXMLSHA256": "d05adf6b78bde38217902e2e6dae847043dd842a51d0bd1048f6c3774c87a83a",
+  "beforeCSSBytes": 107076,
+  "beforeCSSSHA256": "0fad19bb89114f0584837df52b02b20d499ee86db4bf6563e661914da1c76822",
+  "WXMLChanges": [
+    {
+      "old": "<reference-image photo-key=\"home-hot-tennis\" photo-class=\"w73-photo-hot-tennis home-hot-photo\" />",
+      "new": "<view class=\"home-hot-frame\"><reference-image photo-key=\"home-hot-tennis\" photo-class=\"w73-photo-hot-tennis home-hot-photo\" /></view>",
+      "count": 1
+    },
+    {
+      "old": "<reference-image photo-key=\"home-hot-coffee\" photo-class=\"w73-photo-hot-coffee home-hot-photo\" />",
+      "new": "<view class=\"home-hot-frame\"><reference-image photo-key=\"home-hot-coffee\" photo-class=\"w73-photo-hot-coffee home-hot-photo\" /></view>",
+      "count": 1
+    },
+    {
+      "old": "<reference-image photo-key=\"home-hot-frisbee\" photo-class=\"w73-photo-hot-frisbee home-hot-photo\" />",
+      "new": "<view class=\"home-hot-frame\"><reference-image photo-key=\"home-hot-frisbee\" photo-class=\"w73-photo-hot-frisbee home-hot-photo\" /></view>",
+      "count": 1
+    },
+    {
+      "old": "<reference-image photo-key=\"home-hot-boardgame\" photo-class=\"w73-photo-hot-boardgame home-hot-photo\" />",
+      "new": "<view class=\"home-hot-frame\"><reference-image photo-key=\"home-hot-boardgame\" photo-class=\"w73-photo-hot-boardgame home-hot-photo\" /></view>",
+      "count": 1
+    }
+  ],
+  "CSSChanges": [
+    {
+      "old": ".home-long-reference .home-hot-grid image,.home-long-reference .home-hot-grid .home-hot-photo{display:block;width:100%;height:80px;margin-bottom:6px;border-radius:16px;background:#e5e7eb;box-shadow:0 1px 2px 0 rgba(0,0,0,.05)}",
+      "new": ".home-long-reference .home-hot-grid image,.home-long-reference .home-hot-grid .home-hot-photo{display:block;width:100%;height:100%;margin-bottom:0;border-radius:0;background:transparent;box-shadow:none}",
+      "count": 1
+    },
+    {
+      "old": ".home-long-reference .home-hot-grid image,.home-long-reference .home-hot-grid .home-hot-photo{transition:transform .15s cubic-bezier(.4,0,.2,1)}",
+      "new": ".home-long-reference .home-hot-grid image,.home-long-reference .home-hot-grid .home-hot-photo{transition-property:color,background-color,border-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-text-decoration-color,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-text-decoration-color,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:150ms}",
+      "count": 1
+    },
+    {
+      "old": ".home-long-reference .home-theme-grid button{display:flex;flex-direction:column;justify-content:space-between;min-height:0;height:96px;padding:10px;border:1px solid;border-radius:16px;box-sizing:border-box;text-align:left;transition:all .15s cubic-bezier(.4,0,.2,1)}",
+      "new": ".home-long-reference .home-theme-grid button{display:flex;flex-direction:column;justify-content:space-between;min-height:0;height:96px;padding:10px;border:1px solid;border-radius:16px;box-sizing:border-box;text-align:left;transition-property:color,background-color,border-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-text-decoration-color,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-text-decoration-color,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:150ms}",
+      "count": 1
+    },
+    {
+      "old": ".home-long-reference .home-idea-list button{display:flex;align-items:center;width:100%;gap:12px;margin:0!important;padding:6px 56px 6px 6px;border:0;border-radius:16px;background:transparent;text-align:left;transition:all .15s cubic-bezier(.4,0,.2,1)}",
+      "new": ".home-long-reference .home-idea-list button{display:flex;align-items:center;width:100%;gap:12px;margin:0!important;padding:6px 56px 6px 6px;border:0;border-radius:16px;background:transparent;text-align:left;transition-property:color,background-color,border-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-text-decoration-color,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-text-decoration-color,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:150ms}",
+      "count": 1
+    },
+    {
+      "old": ".home-long-reference .home-final-cta button{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:0!important;padding:14px 24px;border-radius:16px;background:linear-gradient(to right,#1d64f2,#2563eb,#34d399);color:#fff;font-size:14px;line-height:20px;font-weight:800;box-shadow:0 12px 32px -6px rgba(29,100,242,.35);transition:all .15s cubic-bezier(.4,0,.2,1)}",
+      "new": ".home-long-reference .home-final-cta button{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:0!important;padding:14px 24px;border-radius:16px;background:linear-gradient(to right,#1d64f2,#2563eb,#34d399);color:#fff;font-size:14px;line-height:20px;font-weight:800;box-shadow:0 12px 32px -6px rgba(29,100,242,.35);transition-property:color,background-color,border-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-text-decoration-color,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-text-decoration-color,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:150ms}",
+      "count": 1
+    },
+    {
+      "old": ".home-long-reference .home-city-banner button{display:flex;align-items:center;gap:6px;flex:none;margin-top:0!important;padding:8px 16px;border-radius:9999px;background:#c8f233;color:#030712;font-size:12px;line-height:16px;font-weight:800;box-shadow:0 0 20px -3px rgba(200,242,51,.45)}",
+      "new": ".home-long-reference .home-city-banner button{display:flex;align-items:center;gap:6px;flex:none;margin-top:0!important;padding:8px 16px;border-radius:9999px;background:#c8f233;color:#030712;font-size:12px;line-height:16px;font-weight:800;box-shadow:0 0 20px -3px rgba(200,242,51,.45);transition-property:color,background-color,border-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-text-decoration-color,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-text-decoration-color,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:150ms}",
+      "count": 1
+    },
+    {
+      "old": ".home-long-reference .home-photo-main>text{position:absolute;left:10px;right:8px;bottom:10px;color:#fff;font-family:\"Caveat\",\"Permanent Marker\",cursive,sans-serif;font-size:18px;line-height:22.5px;font-weight:700;font-style:normal;text-shadow:0 1px 2px rgba(0,0,0,.1),0 1px 1px rgba(0,0,0,.06);text-align:left}",
+      "new": ".home-long-reference .home-photo-main>text{position:absolute;left:10px;right:8px;bottom:10px;color:#fff;font-family:\"Caveat\",\"Permanent Marker\",cursive,sans-serif;font-size:18px;line-height:22.5px;font-weight:700;font-style:normal;text-shadow:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,.1)) drop-shadow(0 1px 1px rgba(0,0,0,.06));text-align:left}",
+      "count": 1
+    },
+    {
+      "old": "",
+      "new": "\n/* Source hot frame is fixed; only the contained source image scales. */\n.home-long-reference .home-hot-grid .home-hot-frame{display:block;flex:none;width:100%;height:80px;margin-bottom:6px;overflow:hidden;border-radius:16px;background:#e5e7eb;box-shadow:0 1px 2px 0 rgba(0,0,0,.05)}\n",
+      "count": 1,
+      "appendOnly": true
+    }
+  ],
+  "officialOriginalCSSPath": "docs/design-sources/caper-home-ordinary-long-wave73/caper_2-style-2.css",
+  "officialOriginalCSSSHA256": "79abe017e69df1c2db029ae6b16664da55ddae573a720a4a4f238a27013ed056",
+  "boundary": "only this three-item delta/inverse checked after the retained80/80 source pass; not rerunning80"
+}

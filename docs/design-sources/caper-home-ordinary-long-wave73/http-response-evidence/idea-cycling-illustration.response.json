@@ -1,0 +1,32 @@
+{
+  "sourceLine": 559,
+  "sourceAlt": "骑行",
+  "URL": "https://lh3.googleusercontent.com/aida-public/AB6AXuDQty30DywdNbiERtGQsmW20uvNZ8pJD_rJ4IJ_6qG4XSTlmT2E3zTxSW8R5yYfwqpBNsoRBElJH7Dx5_HzQr-_yHGWozhLjFKL7P8VKdadoqn0D2B1NdzIF5zQZE2QzutuYM04Y1PSD9KK4NBRi0Y5aljiHNoBw5elMHu857l0g89Qcqrm34fuy9tv24KuVgteH9xHAkAfE8dlp76rcAzMZ4jaPYCgREgpVgm0caAbuP6clKkPHwiOnw",
+  "finalURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuDQty30DywdNbiERtGQsmW20uvNZ8pJD_rJ4IJ_6qG4XSTlmT2E3zTxSW8R5yYfwqpBNsoRBElJH7Dx5_HzQr-_yHGWozhLjFKL7P8VKdadoqn0D2B1NdzIF5zQZE2QzutuYM04Y1PSD9KK4NBRi0Y5aljiHNoBw5elMHu857l0g89Qcqrm34fuy9tv24KuVgteH9xHAkAfE8dlp76rcAzMZ4jaPYCgREgpVgm0caAbuP6clKkPHwiOnw",
+  "status": 200,
+  "headers": {
+    "Content-Type": "image/jpeg",
+    "Vary": "Origin",
+    "Access-Control-Allow-Origin": "*",
+    "Timing-Allow-Origin": "*",
+    "Access-Control-Expose-Headers": "Content-Length",
+    "ETag": "\"v0\"",
+    "Expires": "Sat, 03 Oct 2026 02:03:48 GMT",
+    "Cache-Control": "public, max-age=86400, no-transform",
+    "Content-Disposition": "inline;filename=\"unnamed.jpg\"",
+    "X-Content-Type-Options": "nosniff",
+    "Date": "Fri, 02 Oct 2026 02:03:48 GMT",
+    "Server": "fife",
+    "Content-Length": "51100",
+    "X-XSS-Protection": "0",
+    "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "Connection": "close"
+  },
+  "contentType": "image/jpeg",
+  "bytes": 51100,
+  "sha256": "d24a483e4f1042c527f414c436edcc895a68c2709f9dbc269cdca2c7ac77e745",
+  "savedPath": "/private/tmp/caper-wave73-home-long/photos/idea-cycling-illustration.jpg",
+  "noReencoding": true,
+  "fetchedAtUTC": "2026-10-02T02:03:48.885257+00:00",
+  "existingByteEqualCandidates": []
+}

@@ -1,0 +1,559 @@
+{
+  "scope": "Independent root freeze/actual emitted declarations/source reads, not a replay of owner138 checker or style mirror tests",
+  "ownedPlusProtectedHashesVerified": 32,
+  "allExistingOwnActionDeclarationsRetained": true,
+  "unchangedFullJSEqualHEAD": true,
+  "oldFullCSSExactPrefix": true,
+  "rootJSONOnlyRegistration": true,
+  "actualParkConsumerCount": 2,
+  "sourceModuleRolesReviewed": [
+    {
+      "module": "ai-recommendations",
+      "sourceNodes": 57,
+      "selectedSourceRoles": [
+        {
+          "tag": "BUTTON",
+          "classes": "text-xs text-brand-blue font-semibold flex items-center gap-0.5 hover:opacity-80",
+          "text": "",
+          "fontSize": "12px",
+          "fontWeight": "600",
+          "lineHeight": "16px",
+          "width": "50px",
+          "height": "16px"
+        },
+        {
+          "tag": "IMG",
+          "classes": "w-full h-full object-cover",
+          "text": "冲浪体验课",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "24px",
+          "width": "198px",
+          "height": "112px"
+        },
+        {
+          "tag": "BUTTON",
+          "classes": "absolute top-2 right-2 z-20 w-6 h-6 rounded-full bg-black/40 flex items-center justify-center text-white",
+          "text": "",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "24px",
+          "width": "24px",
+          "height": "24px"
+        },
+        {
+          "tag": "H4",
+          "classes": "font-bold text-xs text-slate-900 line-clamp-1",
+          "text": "冲浪体验课 · 新手友好",
+          "fontSize": "12px",
+          "fontWeight": "700",
+          "lineHeight": "16px",
+          "width": "178px",
+          "height": "16px"
+        },
+        {
+          "tag": "IMG",
+          "classes": "w-full h-full object-cover",
+          "text": "春日露营",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "24px",
+          "width": "198px",
+          "height": "112px"
+        }
+      ]
+    },
+    {
+      "module": "nearby-events",
+      "sourceNodes": 59,
+      "selectedSourceRoles": [
+        {
+          "tag": "IMG",
+          "classes": "w-full h-full object-cover",
+          "text": "晚间飞盘局",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "24px",
+          "width": "48px",
+          "height": "48px"
+        },
+        {
+          "tag": "H4",
+          "classes": "font-bold text-xs text-slate-900 truncate",
+          "text": "晚间飞盘局",
+          "fontSize": "12px",
+          "fontWeight": "700",
+          "lineHeight": "16px",
+          "width": "60px",
+          "height": "16px"
+        },
+        {
+          "tag": "IMG",
+          "classes": "w-full h-full object-cover",
+          "text": "小酒馆音乐夜",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "24px",
+          "width": "48px",
+          "height": "48px"
+        },
+        {
+          "tag": "H4",
+          "classes": "font-bold text-xs text-slate-900 truncate",
+          "text": "小酒馆音乐夜",
+          "fontSize": "12px",
+          "fontWeight": "700",
+          "lineHeight": "16px",
+          "width": "72px",
+          "height": "16px"
+        },
+        {
+          "tag": "IMG",
+          "classes": "w-full h-full object-cover",
+          "text": "City walk · 武康路",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "24px",
+          "width": "48px",
+          "height": "48px"
+        }
+      ]
+    },
+    {
+      "module": "campaign-topics",
+      "sourceNodes": 16,
+      "selectedSourceRoles": [
+        {
+          "tag": "H4",
+          "classes": "font-black text-sm tracking-tight leading-none mt-1",
+          "text": "女生友好",
+          "fontSize": "14px",
+          "fontWeight": "900",
+          "lineHeight": "14px",
+          "width": "125px",
+          "height": "14px"
+        },
+        {
+          "tag": "H4",
+          "classes": "font-black text-sm tracking-tight leading-none mt-1",
+          "text": "新手友好",
+          "fontSize": "14px",
+          "fontWeight": "900",
+          "lineHeight": "14px",
+          "width": "125px",
+          "height": "14px"
+        },
+        {
+          "tag": "H4",
+          "classes": "font-black text-sm tracking-tight leading-none mt-1",
+          "text": "今晚有空 ☾",
+          "fontSize": "14px",
+          "fontWeight": "900",
+          "lineHeight": "14px",
+          "width": "125px",
+          "height": "14px"
+        }
+      ]
+    },
+    {
+      "module": "organizer-list",
+      "sourceNodes": 58,
+      "selectedSourceRoles": []
+    },
+    {
+      "module": "friends-attending",
+      "sourceNodes": 43,
+      "selectedSourceRoles": [
+        {
+          "tag": "H4",
+          "classes": "font-bold text-xs text-slate-900 flex items-center justify-between",
+          "text": "",
+          "fontSize": "12px",
+          "fontWeight": "700",
+          "lineHeight": "16px",
+          "width": "178px",
+          "height": "16px"
+        },
+        {
+          "tag": "H4",
+          "classes": "font-bold text-xs text-slate-900 flex items-center justify-between",
+          "text": "",
+          "fontSize": "12px",
+          "fontWeight": "700",
+          "lineHeight": "16px",
+          "width": "178px",
+          "height": "16px"
+        },
+        {
+          "tag": "H4",
+          "classes": "font-bold text-xs text-slate-900 flex items-center justify-between",
+          "text": "",
+          "fontSize": "12px",
+          "fontWeight": "700",
+          "lineHeight": "16px",
+          "width": "178px",
+          "height": "16px"
+        }
+      ]
+    },
+    {
+      "module": "social-moments",
+      "sourceNodes": 42,
+      "selectedSourceRoles": [
+        {
+          "tag": "IMG",
+          "classes": "absolute inset-0 w-full h-full object-cover",
+          "text": "Good People",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "24px",
+          "width": "114px",
+          "height": "112px"
+        },
+        {
+          "tag": "IMG",
+          "classes": "absolute inset-0 w-full h-full object-cover",
+          "text": "日落合影",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "24px",
+          "width": "114px",
+          "height": "112px"
+        },
+        {
+          "tag": "IMG",
+          "classes": "absolute inset-0 w-full h-full object-cover",
+          "text": "Life is Better",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "24px",
+          "width": "114px",
+          "height": "112px"
+        },
+        {
+          "tag": "IMG",
+          "classes": "absolute inset-0 w-full h-full object-cover",
+          "text": "露营夜话",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "24px",
+          "width": "114px",
+          "height": "112px"
+        },
+        {
+          "tag": "IMG",
+          "classes": "absolute inset-0 w-full h-full object-cover",
+          "text": "周五桌游",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "24px",
+          "width": "114px",
+          "height": "112px"
+        }
+      ]
+    },
+    {
+      "module": "user-reviews",
+      "sourceNodes": 28,
+      "selectedSourceRoles": []
+    },
+    {
+      "module": "weekly-curation",
+      "sourceNodes": 46,
+      "selectedSourceRoles": []
+    },
+    {
+      "module": "city-walk-routes",
+      "sourceNodes": 43,
+      "selectedSourceRoles": [
+        {
+          "tag": "IMG",
+          "classes": "absolute inset-0 w-full h-full object-cover",
+          "text": "外滩历史漫游线",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "24px",
+          "width": "220px",
+          "height": "112px"
+        },
+        {
+          "tag": "H4",
+          "classes": "font-black text-sm",
+          "text": "外滩历史漫游线",
+          "fontSize": "14px",
+          "fontWeight": "900",
+          "lineHeight": "20px",
+          "width": "196px",
+          "height": "20px"
+        },
+        {
+          "tag": "IMG",
+          "classes": "absolute inset-0 w-full h-full object-cover",
+          "text": "法租界梧桐树下",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "24px",
+          "width": "220px",
+          "height": "112px"
+        },
+        {
+          "tag": "H4",
+          "classes": "font-black text-sm",
+          "text": "法租界梧桐树下",
+          "fontSize": "14px",
+          "fontWeight": "900",
+          "lineHeight": "20px",
+          "width": "196px",
+          "height": "20px"
+        },
+        {
+          "tag": "IMG",
+          "classes": "absolute inset-0 w-full h-full object-cover",
+          "text": "滨江海岸线",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "24px",
+          "width": "220px",
+          "height": "112px"
+        }
+      ]
+    },
+    {
+      "module": "popular-venues",
+      "sourceNodes": 46,
+      "selectedSourceRoles": [
+        {
+          "tag": "IMG",
+          "classes": "w-full h-full object-cover",
+          "text": "The COMMUNE",
+          "fontSize": "12px",
+          "fontWeight": "700",
+          "lineHeight": "16px",
+          "width": "172px",
+          "height": "80px"
+        },
+        {
+          "tag": "IMG",
+          "classes": "w-full h-full object-cover",
+          "text": "Manner Coffee",
+          "fontSize": "12px",
+          "fontWeight": "700",
+          "lineHeight": "16px",
+          "width": "172px",
+          "height": "80px"
+        },
+        {
+          "tag": "IMG",
+          "classes": "w-full h-full object-cover",
+          "text": "上海当代艺术博物馆",
+          "fontSize": "12px",
+          "fontWeight": "700",
+          "lineHeight": "16px",
+          "width": "172px",
+          "height": "80px"
+        },
+        {
+          "tag": "IMG",
+          "classes": "w-full h-full object-cover",
+          "text": "世纪公园",
+          "fontSize": "12px",
+          "fontWeight": "700",
+          "lineHeight": "16px",
+          "width": "172px",
+          "height": "80px"
+        }
+      ]
+    },
+    {
+      "module": "ai-cta-banner",
+      "sourceNodes": 10,
+      "selectedSourceRoles": [
+        {
+          "tag": "H4",
+          "classes": "font-black text-sm text-white tracking-tight",
+          "text": "没找到合适的？让 AI 帮你找局",
+          "fontSize": "14px",
+          "fontWeight": "900",
+          "lineHeight": "20px",
+          "width": "209px",
+          "height": "20px"
+        },
+        {
+          "tag": "BUTTON",
+          "classes": "relative z-10 w-9 h-9 rounded-full bg-white text-brand-blue flex items-center justify-center shadow-md font-bold text-base hover:scale-105 transition-transform shrink-0 ml-2",
+          "text": "",
+          "fontSize": "16px",
+          "fontWeight": "700",
+          "lineHeight": "24px",
+          "width": "36px",
+          "height": "36px"
+        }
+      ]
+    }
+  ],
+  "sourceFiles": [
+    {
+      "path": "miniprogram/pages/discover/discover.wxml",
+      "bytes": 28263,
+      "sha256": "9a5ef290ad126f61e7539efa8353c26f781d65f198da4e6a3c0afd678c9ae810"
+    },
+    {
+      "path": "miniprogram/pages/discover/discover.wxss",
+      "bytes": 45436,
+      "sha256": "6d8d44cf1ff77d77d5158ada0857f7f4f74c2a4f6d816460cb343cc29e89d350"
+    },
+    {
+      "path": "miniprogram/pages/discover/assets/w74-ph-arrow-right-bold-1d64f2.svg",
+      "bytes": 530,
+      "sha256": "824bf805f5d6f6336875d21005394fe29f920a01eb51c9f21e7a695d40902726"
+    },
+    {
+      "path": "miniprogram/pages/discover/assets/w74-ph-arrows-clockwise-bold-1d64f2.svg",
+      "bytes": 1199,
+      "sha256": "cdf4f23e57b68e0353235ab84d5ca8d514f6214cffc73ff9391afe2b681612e3"
+    },
+    {
+      "path": "miniprogram/pages/discover/assets/w74-ph-buildings-fill-4f46e5.svg",
+      "bytes": 2283,
+      "sha256": "98deb52817a1c07898a2e4ba5ca222b9a55073f80968ee800fd94dfc0c0507af"
+    },
+    {
+      "path": "miniprogram/pages/discover/assets/w74-ph-calendar-blank-regular-64748b.svg",
+      "bytes": 650,
+      "sha256": "e46000b352dcc7a8e6e8f3b9c4bf4799707a4065cfd3f28aaf76a08eb120d5cc"
+    },
+    {
+      "path": "miniprogram/pages/discover/assets/w74-ph-camera-bold-1d64f2.svg",
+      "bytes": 1094,
+      "sha256": "04f8dfd5991b297c34840982f8fcdfe78fc685172643c545d239ab34dcd8a581"
+    },
+    {
+      "path": "miniprogram/pages/discover/assets/w74-ph-caret-right-bold-1d64f2.svg",
+      "bytes": 450,
+      "sha256": "7197659f91b0c4d4f9517e807aa8b1af64dac377562e1b972fa73ff1a1af4423"
+    },
+    {
+      "path": "miniprogram/pages/discover/assets/w74-ph-caret-right-bold-94a3b8.svg",
+      "bytes": 450,
+      "sha256": "90051749b447935bded4ae2b47794086f6f615ace800123e2ddce3c547c6e052"
+    },
+    {
+      "path": "miniprogram/pages/discover/assets/w74-ph-chat-circle-dots-fill-1d64f2.svg",
+      "bytes": 1020,
+      "sha256": "be41440bd56d99b16536355b22bb730386f453e84fb958eba314db7564d7e862"
+    },
+    {
+      "path": "miniprogram/pages/discover/assets/w74-ph-compass-bold-000000.svg",
+      "bytes": 1038,
+      "sha256": "9029ee41374dec22cc732b17c0196df9b5b84b0d0288d40b491734c6178083b9"
+    },
+    {
+      "path": "miniprogram/pages/discover/assets/w74-ph-compass-fill-9333ea.svg",
+      "bytes": 724,
+      "sha256": "dd402abb938be1e898b328c992e77550c88d3544f55681fbfcb7814981a45ccb"
+    },
+    {
+      "path": "miniprogram/pages/discover/assets/w74-ph-map-pin-fill-1d64f2.svg",
+      "bytes": 621,
+      "sha256": "e31b4fcf89c0abf451e49d3acfb7e0dad5b7a44a8c58743dbe29459f23ac77a8"
+    },
+    {
+      "path": "miniprogram/pages/discover/assets/w74-ph-map-pin-regular-64748b.svg",
+      "bytes": 1143,
+      "sha256": "3cc516f28ed5c7f2df4a6c0fb8d49d9330fe3ffc2d07ed58572cdb8d6b8fb69f"
+    },
+    {
+      "path": "miniprogram/pages/discover/assets/w74-ph-map-pin-regular-e2e8f0.svg",
+      "bytes": 1143,
+      "sha256": "148aa500fe47f815941b2ddcbe4221e1f3124dac744e9780e80379c4c6257fa6"
+    },
+    {
+      "path": "miniprogram/pages/discover/assets/w74-ph-moon-stars-bold-000000.svg",
+      "bytes": 1660,
+      "sha256": "9565ea61028c247ad3f81ba5e8b6e229575ed78092cdec32ebfd2fded202e531"
+    },
+    {
+      "path": "miniprogram/pages/discover/assets/w74-ph-navigation-arrow-fill-ffffff.svg",
+      "bytes": 532,
+      "sha256": "2cf1a94e4d65e11d08918d7675ace7c7c3c02f43205837fb01c349c68f881bc0"
+    },
+    {
+      "path": "miniprogram/pages/discover/assets/w74-ph-sparkle-bold-ffffff.svg",
+      "bytes": 1368,
+      "sha256": "091df03561c05847019294bb665dec4a5d9aa8a7efcf098d6795da0572aa2601"
+    },
+    {
+      "path": "miniprogram/pages/discover/assets/w74-ph-sparkle-fill-1d64f2.svg",
+      "bytes": 1180,
+      "sha256": "9d5ffcc26368058a1fe659dc3bc7169275578eed4744a57c507fe4701a4506d3"
+    },
+    {
+      "path": "miniprogram/pages/discover/assets/w74-ph-users-three-fill-1d64f2.svg",
+      "bytes": 1702,
+      "sha256": "8e02aa3690b7c6c5acc986dd58af529f8e9244b4576702dc8102be07357a08f8"
+    },
+    {
+      "path": "docs/design-sources/caper-discover-long-page-wave74/code.html",
+      "bytes": 63270,
+      "sha256": "514d9e5fbfbbc66e9c5c19cf33767b58b54f77a144720c4b89f3b5248356aed2"
+    },
+    {
+      "path": "docs/design-sources/caper-discover-long-page-wave74/original-photo-response-manifest.json",
+      "bytes": 18422,
+      "sha256": "5ebc917abba5d6f358f4d4b09a2788df8a097ebc7054e287eae4f1e00ecfb344"
+    },
+    {
+      "path": "docs/design-sources/caper-discover-long-page-wave74/screen.png",
+      "bytes": 265845,
+      "sha256": "15ffd670e926b6f508dac5223bb00e3beee8301a6a712a3836d468893a95d63e"
+    },
+    {
+      "path": "docs/design-sources/caper-discover-long-page-wave74/source-css-observation.json",
+      "bytes": 852223,
+      "sha256": "42ba36328b3a01d9fbaa50df3cc81bb13d9ad5c56004117c8b4e40c6cd492c27"
+    },
+    {
+      "path": "docs/design-sources/caper-discover-long-page-wave74/source-css-observer.cjs",
+      "bytes": 3725,
+      "sha256": "448a6d10309460757578f583a292403e031d98c23d671938c70ab860b24206e6"
+    },
+    {
+      "path": "docs/design-sources/caper-discover-long-page-wave74/source.json",
+      "bytes": 28367,
+      "sha256": "db1ffc5ab57f11de94a8f17e3954ef33b463d00da60b914858960b8acaba8727"
+    },
+    {
+      "path": "docs/design-sources/caper-discover-long-page-wave74/targeted-source-check.json",
+      "bytes": 68474,
+      "sha256": "c703982e0b0f48d636818e57dc906420196c83c18d06c53f676e0d7d9a7dd31d"
+    },
+    {
+      "path": "docs/design-sources/caper-discover-long-page-wave74/targeted-source-check.py",
+      "bytes": 10307,
+      "sha256": "0f44642ec2cad8d4348631d439319c188502f8e9db1c71a48929555972dccead"
+    },
+    {
+      "path": "docs/design-sources/caper-discover-long-page-wave74/wxml-inverse-edits.json",
+      "bytes": 34534,
+      "sha256": "7dc4f053b9483ff882ded4766d3500fec818da20d15775565557c7522f321a8c"
+    },
+    {
+      "path": "docs/evidence/caper-discover-ordinary-long-page-reference-ui-wave74-2026-10-02.md",
+      "bytes": 4956,
+      "sha256": "69bfa0eec37f5cabc57dc2bfd53345a4f198c152e655b7f3f689653b39a37b49"
+    },
+    {
+      "path": "miniprogram/pages/discover/discover.js",
+      "bytes": 17758,
+      "sha256": "928b72be56fca9c7cd4d2a8fd8f76d14632ef9c315dbfb2ea62c97a9c81712b5"
+    },
+    {
+      "path": "miniprogram/pages/discover/discover.json",
+      "bytes": 344,
+      "sha256": "f762dcbb0800c487704c08a1464150b21e8b27e4dc5e4072bfab8616fa89964e"
+    }
+  ],
+  "fontReviewDiscovery": "Exact Caveat upper TOGETHER and route Nature Trail need6 additional glyphs; root expands700 without changing old outlines/advances; source report records fallback symbols",
+  "sourceUnavailableFeatures": "No public discovery/organizers/friends/reviews/maps/route/photo-service/merchant facts invented",
+  "nativePending": true
+}

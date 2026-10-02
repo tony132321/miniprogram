@@ -1,0 +1,2277 @@
+{
+  "scope": "One necessary source/glyph/resource/action/whole inverse check. No CSS mirror test, API/business suite, historical checker, CLI, SDK, native click or pixel PASS.",
+  "checks": [
+    {
+      "name": "inverse current replacement once",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "inverse current replacement once",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "whole WXML inverse baseline bytes",
+      "pass": true,
+      "detail": {
+        "oldSHA256": "712b837104da4ba86ac372b2a9f2a1bad7b5aff9df40c9fa5b8b14b95f62bc8c",
+        "finalSHA256": "9a5ef290ad126f61e7539efa8353c26f781d65f198da4e6a3c0afd678c9ae810",
+        "oldBytes": 15967,
+        "finalBytes": 28263
+      }
+    },
+    {
+      "name": "entire old WXSS prefix byte equality",
+      "pass": true,
+      "detail": {
+        "oldBytes": 21968,
+        "oldSHA256": "b2e7823086c5f30b69ba25bf1605136e52bcefd0d48cbb94f4c03abb65d32e13",
+        "finalSHA256": "6d8d44cf1ff77d77d5158ada0857f7f4f74c2a4f6d816460cb343cc29e89d350"
+      }
+    },
+    {
+      "name": "business JS unchanged bytes",
+      "pass": true,
+      "detail": {
+        "bytes": 17758,
+        "sha256": "928b72be56fca9c7cd4d2a8fd8f76d14632ef9c315dbfb2ea62c97a9c81712b5"
+      }
+    },
+    {
+      "name": "JSON root registration only; other keys unchanged",
+      "pass": true,
+      "detail": {
+        "owner": "root",
+        "baselineSHA256": "d09ff0a32fee5e70496a03f5c691f07462d0c9ea399dd69ae9f198e6ba1cc451",
+        "currentSHA256": "f762dcbb0800c487704c08a1464150b21e8b27e4dc5e4072bfab8616fa89964e"
+      }
+    },
+    {
+      "name": "all existing event attributes/data/disabled/guard multisets retained",
+      "pass": true,
+      "detail": {
+        "beforeCount": 40,
+        "afterCount": 40
+      }
+    },
+    {
+      "name": "28 ordinary long module + CTA action declarations exact",
+      "pass": true,
+      "detail": {
+        "before": [
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "rotateRecommendations"
+            },
+            "data": {},
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "{{item.title}}"
+            },
+            "guards": [
+              {
+                "wx:for": "{{recommendationCards}}",
+                "wx:key": "title"
+              }
+            ],
+            "disabled": null
+          },
+          {
+            "tag": "view",
+            "events": {
+              "catchtap": "showUnavailable"
+            },
+            "data": {
+              "data-name": "收藏灵感"
+            },
+            "guards": [
+              {
+                "wx:for": "{{recommendationCards}}",
+                "wx:key": "title"
+              }
+            ],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openCity"
+            },
+            "data": {},
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openPersonalEvent"
+            },
+            "data": {
+              "data-id": "{{item.id}}"
+            },
+            "guards": [
+              {
+                "wx:if": "{{personalState === 'READY' && nearbyPersonalEvents.length > 0}}"
+              },
+              {
+                "wx:for": "{{nearbyPersonalEvents}}",
+                "wx:key": "id"
+              }
+            ],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openCity"
+            },
+            "data": {},
+            "guards": [
+              {
+                "wx:else": null
+              }
+            ],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "女生友好"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "新手友好"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "今晚有空"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "goPersonalAll"
+            },
+            "data": {},
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "goCreate"
+            },
+            "data": {},
+            "guards": [
+              {
+                "wx:if": "{{personalState === 'READY' && personalEvents.length === 0}}"
+              }
+            ],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openPersonalEvent"
+            },
+            "data": {
+              "data-id": "{{item.id}}"
+            },
+            "guards": [
+              {
+                "wx:if": "{{personalState === 'READY' && personalEvents.length > 0}}"
+              },
+              {
+                "wx:for": "{{personalEvents}}",
+                "wx:key": "id"
+              }
+            ],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "goPersonalAll"
+            },
+            "data": {},
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "goCreate"
+            },
+            "data": {},
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "春日野餐"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "胶片摄影"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "烘焙体验"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "城市走读"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "近郊徒步"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "咖啡馆聊天"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openCity"
+            },
+            "data": {},
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "城市漫步"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "山野徒步"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "咖啡馆聊天"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "球场约局"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "周末看展"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "户外公园"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "goCreate"
+            },
+            "data": {},
+            "guards": [],
+            "disabled": null
+          }
+        ],
+        "after": [
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "rotateRecommendations"
+            },
+            "data": {},
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "{{item.title}}"
+            },
+            "guards": [
+              {
+                "wx:for": "{{recommendationCards}}",
+                "wx:key": "title"
+              }
+            ],
+            "disabled": null
+          },
+          {
+            "tag": "view",
+            "events": {
+              "catchtap": "showUnavailable"
+            },
+            "data": {
+              "data-name": "收藏灵感"
+            },
+            "guards": [
+              {
+                "wx:for": "{{recommendationCards}}",
+                "wx:key": "title"
+              }
+            ],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openCity"
+            },
+            "data": {},
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openPersonalEvent"
+            },
+            "data": {
+              "data-id": "{{item.id}}"
+            },
+            "guards": [
+              {
+                "wx:if": "{{personalState === 'READY' && nearbyPersonalEvents.length > 0}}"
+              },
+              {
+                "wx:for": "{{nearbyPersonalEvents}}",
+                "wx:key": "id"
+              }
+            ],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openCity"
+            },
+            "data": {},
+            "guards": [
+              {
+                "wx:else": null
+              }
+            ],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "女生友好"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "新手友好"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "今晚有空"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "goPersonalAll"
+            },
+            "data": {},
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "goCreate"
+            },
+            "data": {},
+            "guards": [
+              {
+                "wx:if": "{{personalState === 'READY' && personalEvents.length === 0}}"
+              }
+            ],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openPersonalEvent"
+            },
+            "data": {
+              "data-id": "{{item.id}}"
+            },
+            "guards": [
+              {
+                "wx:if": "{{personalState === 'READY' && personalEvents.length > 0}}"
+              },
+              {
+                "wx:for": "{{personalEvents}}",
+                "wx:key": "id"
+              }
+            ],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "goPersonalAll"
+            },
+            "data": {},
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "goCreate"
+            },
+            "data": {},
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "春日野餐"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "胶片摄影"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "烘焙体验"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "城市走读"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "近郊徒步"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "咖啡馆聊天"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openCity"
+            },
+            "data": {},
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "城市漫步"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "山野徒步"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "咖啡馆聊天"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "球场约局"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "周末看展"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "openInspiration"
+            },
+            "data": {
+              "data-title": "户外公园"
+            },
+            "guards": [],
+            "disabled": null
+          },
+          {
+            "tag": "button",
+            "events": {
+              "bindtap": "goCreate"
+            },
+            "data": {},
+            "guards": [],
+            "disabled": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "existing handler goCreate",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing handler goPersonalAll",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing handler openCity",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing handler openInspiration",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing handler openPersonalEvent",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing handler rotateRecommendations",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "existing handler showUnavailable",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "two precise async park consumers",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "park original response bytes in profile, not main",
+      "pass": true,
+      "detail": {
+        "path": "miniprogram/subpackages/profile/components/reference-image/assets/discover-park.jpg",
+        "bytes": 122735,
+        "sha256": "ab6bc2647289d4dfd98ea1229b2ea0caf5ead4390de18624c61af3e7645db05d",
+        "consumerScopes": [
+          "moments:first",
+          "venues:fourth"
+        ],
+        "runtimeOwner": "root; no component/JSON test repeated"
+      }
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-sparkle-fill-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-arrows-clockwise-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/ph-heart-bold.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-calendar-blank-regular-64748b.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-map-pin-regular-64748b.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-map-pin-fill-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-caret-right-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-navigation-arrow-fill-ffffff.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-map-pin-regular-64748b.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-sparkle-bold-ffffff.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-compass-bold-000000.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-moon-stars-bold-000000.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-users-three-fill-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-caret-right-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-caret-right-bold-94a3b8.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-camera-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves /assets/stitch/caper_discover_citywalk.jpg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves /assets/stitch/caper_discover_coffee.jpg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves /assets/stitch/caper_discover_camping.jpg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves /assets/stitch/caper_discover_boardgame.jpg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves /assets/stitch/caper_discover_art.jpg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-chat-circle-dots-fill-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-caret-right-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-caret-right-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-compass-fill-9333ea.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-caret-right-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves /assets/stitch/caper_discover_citywalk.jpg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-map-pin-regular-e2e8f0.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves /assets/stitch/caper_discover_art.jpg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-map-pin-regular-e2e8f0.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves /assets/stitch/caper_discover_surf.jpg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-map-pin-regular-e2e8f0.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-buildings-fill-4f46e5.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves /assets/stitch/caper_discover_boardgame.jpg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/ph-map-pin-regular.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves /assets/stitch/caper_discover_coffee.jpg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/ph-map-pin-regular.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves /assets/stitch/caper_discover_art.jpg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/ph-map-pin-regular.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/ph-map-pin-regular.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "static source resource resolves ./assets/w74-ph-arrow-right-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official fill face SHA for ph-sparkle-fill-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official CSS Unicode ph-sparkle-fill-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unrounded official outline/viewBox/paint ph-sparkle-fill-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "new glyph consumer exists ph-sparkle-fill-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official bold face SHA for ph-arrows-clockwise-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official CSS Unicode ph-arrows-clockwise-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unrounded official outline/viewBox/paint ph-arrows-clockwise-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "new glyph consumer exists ph-arrows-clockwise-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official regular face SHA for ph-calendar-blank-regular-64748b.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official CSS Unicode ph-calendar-blank-regular-64748b.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unrounded official outline/viewBox/paint ph-calendar-blank-regular-64748b.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "new glyph consumer exists ph-calendar-blank-regular-64748b.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official regular face SHA for ph-map-pin-regular-64748b.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official CSS Unicode ph-map-pin-regular-64748b.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unrounded official outline/viewBox/paint ph-map-pin-regular-64748b.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "new glyph consumer exists ph-map-pin-regular-64748b.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official fill face SHA for ph-map-pin-fill-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official CSS Unicode ph-map-pin-fill-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unrounded official outline/viewBox/paint ph-map-pin-fill-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "new glyph consumer exists ph-map-pin-fill-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official bold face SHA for ph-caret-right-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official CSS Unicode ph-caret-right-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unrounded official outline/viewBox/paint ph-caret-right-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "new glyph consumer exists ph-caret-right-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official fill face SHA for ph-navigation-arrow-fill-ffffff.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official CSS Unicode ph-navigation-arrow-fill-ffffff.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unrounded official outline/viewBox/paint ph-navigation-arrow-fill-ffffff.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "new glyph consumer exists ph-navigation-arrow-fill-ffffff.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official bold face SHA for ph-sparkle-bold-ffffff.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official CSS Unicode ph-sparkle-bold-ffffff.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unrounded official outline/viewBox/paint ph-sparkle-bold-ffffff.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "new glyph consumer exists ph-sparkle-bold-ffffff.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official bold face SHA for ph-compass-bold-000000.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official CSS Unicode ph-compass-bold-000000.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unrounded official outline/viewBox/paint ph-compass-bold-000000.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "new glyph consumer exists ph-compass-bold-000000.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official bold face SHA for ph-moon-stars-bold-000000.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official CSS Unicode ph-moon-stars-bold-000000.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unrounded official outline/viewBox/paint ph-moon-stars-bold-000000.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "new glyph consumer exists ph-moon-stars-bold-000000.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official fill face SHA for ph-users-three-fill-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official CSS Unicode ph-users-three-fill-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unrounded official outline/viewBox/paint ph-users-three-fill-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "new glyph consumer exists ph-users-three-fill-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official bold face SHA for ph-caret-right-bold-94a3b8.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official CSS Unicode ph-caret-right-bold-94a3b8.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unrounded official outline/viewBox/paint ph-caret-right-bold-94a3b8.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "new glyph consumer exists ph-caret-right-bold-94a3b8.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official bold face SHA for ph-camera-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official CSS Unicode ph-camera-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unrounded official outline/viewBox/paint ph-camera-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "new glyph consumer exists ph-camera-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official fill face SHA for ph-chat-circle-dots-fill-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official CSS Unicode ph-chat-circle-dots-fill-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unrounded official outline/viewBox/paint ph-chat-circle-dots-fill-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "new glyph consumer exists ph-chat-circle-dots-fill-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official fill face SHA for ph-compass-fill-9333ea.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official CSS Unicode ph-compass-fill-9333ea.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unrounded official outline/viewBox/paint ph-compass-fill-9333ea.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "new glyph consumer exists ph-compass-fill-9333ea.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official regular face SHA for ph-map-pin-regular-e2e8f0.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official CSS Unicode ph-map-pin-regular-e2e8f0.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unrounded official outline/viewBox/paint ph-map-pin-regular-e2e8f0.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "new glyph consumer exists ph-map-pin-regular-e2e8f0.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official fill face SHA for ph-buildings-fill-4f46e5.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official CSS Unicode ph-buildings-fill-4f46e5.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unrounded official outline/viewBox/paint ph-buildings-fill-4f46e5.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "new glyph consumer exists ph-buildings-fill-4f46e5.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official bold face SHA for ph-arrow-right-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "official CSS Unicode ph-arrow-right-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "unrounded official outline/viewBox/paint ph-arrow-right-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "new glyph consumer exists ph-arrow-right-bold-1d64f2.svg",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "reused official glyph exact ph-heart-bold.svg",
+      "pass": true,
+      "detail": {
+        "unicode": "eb8a",
+        "sourceStyle": "bold",
+        "sourceFontSHA256": "b0b27f810a2646b0b48d243b119bc4f3ed727f1e4162e05bfe6e4f85018f4b7b"
+      }
+    },
+    {
+      "name": "reused official glyph exact ph-map-pin-regular.svg",
+      "pass": true,
+      "detail": {
+        "unicode": "ebe0",
+        "sourceStyle": "regular",
+        "sourceFontSHA256": "83034c352ef88208a6433526ebe04139caa3fabc28912c465992d791e29a4593"
+      }
+    },
+    {
+      "name": "original ZIP supplied SHA",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "ZIP caper_4 one code.html",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "exact original caper_4 code.html",
+      "pass": true,
+      "detail": {
+        "entry": "stitch_design_system_generator/caper_4/code.html",
+        "bytes": 63270,
+        "sha256": "514d9e5fbfbbc66e9c5c19cf33767b58b54f77a144720c4b89f3b5248356aed2"
+      }
+    },
+    {
+      "name": "ZIP caper_4 one screen.png",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "exact original caper_4 screen.png",
+      "pass": true,
+      "detail": {
+        "entry": "stitch_design_system_generator/caper_4/screen.png",
+        "bytes": 265845,
+        "sha256": "15ffd670e926b6f508dac5223bb00e3beee8301a6a712a3836d468893a95d63e"
+      }
+    },
+    {
+      "name": "one source-only cascade observation matches original and no page errors",
+      "pass": true,
+      "detail": {
+        "boundary": "All font/image binaries blocked; computed properties do not establish font paint/text wrapping/native pixels.",
+        "sha256": "42ba36328b3a01d9fbaa50df3cc81bb13d9ad5c56004117c8b4e40c6cd492c27"
+      }
+    }
+  ],
+  "staticResources": [
+    {
+      "src": "./assets/w74-ph-sparkle-fill-1d64f2.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-sparkle-fill-1d64f2.svg",
+      "bytes": 1180,
+      "sha256": "9d5ffcc26368058a1fe659dc3bc7169275578eed4744a57c507fe4701a4506d3"
+    },
+    {
+      "src": "./assets/w74-ph-arrows-clockwise-bold-1d64f2.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-arrows-clockwise-bold-1d64f2.svg",
+      "bytes": 1199,
+      "sha256": "cdf4f23e57b68e0353235ab84d5ca8d514f6214cffc73ff9391afe2b681612e3"
+    },
+    {
+      "src": "./assets/ph-heart-bold.svg",
+      "path": "miniprogram/pages/discover/assets/ph-heart-bold.svg",
+      "bytes": 990,
+      "sha256": "cc384fd9dae4781155ba9cb0639c2677eba89f6a7e68b1e0fdf0efc0e0b92360"
+    },
+    {
+      "src": "./assets/w74-ph-calendar-blank-regular-64748b.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-calendar-blank-regular-64748b.svg",
+      "bytes": 650,
+      "sha256": "e46000b352dcc7a8e6e8f3b9c4bf4799707a4065cfd3f28aaf76a08eb120d5cc"
+    },
+    {
+      "src": "./assets/w74-ph-map-pin-regular-64748b.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-map-pin-regular-64748b.svg",
+      "bytes": 1143,
+      "sha256": "3cc516f28ed5c7f2df4a6c0fb8d49d9330fe3ffc2d07ed58572cdb8d6b8fb69f"
+    },
+    {
+      "src": "./assets/w74-ph-map-pin-fill-1d64f2.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-map-pin-fill-1d64f2.svg",
+      "bytes": 621,
+      "sha256": "e31b4fcf89c0abf451e49d3acfb7e0dad5b7a44a8c58743dbe29459f23ac77a8"
+    },
+    {
+      "src": "./assets/w74-ph-caret-right-bold-1d64f2.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-caret-right-bold-1d64f2.svg",
+      "bytes": 450,
+      "sha256": "7197659f91b0c4d4f9517e807aa8b1af64dac377562e1b972fa73ff1a1af4423"
+    },
+    {
+      "src": "./assets/w74-ph-navigation-arrow-fill-ffffff.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-navigation-arrow-fill-ffffff.svg",
+      "bytes": 532,
+      "sha256": "2cf1a94e4d65e11d08918d7675ace7c7c3c02f43205837fb01c349c68f881bc0"
+    },
+    {
+      "src": "./assets/w74-ph-map-pin-regular-64748b.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-map-pin-regular-64748b.svg",
+      "bytes": 1143,
+      "sha256": "3cc516f28ed5c7f2df4a6c0fb8d49d9330fe3ffc2d07ed58572cdb8d6b8fb69f"
+    },
+    {
+      "src": "./assets/w74-ph-sparkle-bold-ffffff.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-sparkle-bold-ffffff.svg",
+      "bytes": 1368,
+      "sha256": "091df03561c05847019294bb665dec4a5d9aa8a7efcf098d6795da0572aa2601"
+    },
+    {
+      "src": "./assets/w74-ph-compass-bold-000000.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-compass-bold-000000.svg",
+      "bytes": 1038,
+      "sha256": "9029ee41374dec22cc732b17c0196df9b5b84b0d0288d40b491734c6178083b9"
+    },
+    {
+      "src": "./assets/w74-ph-moon-stars-bold-000000.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-moon-stars-bold-000000.svg",
+      "bytes": 1660,
+      "sha256": "9565ea61028c247ad3f81ba5e8b6e229575ed78092cdec32ebfd2fded202e531"
+    },
+    {
+      "src": "./assets/w74-ph-users-three-fill-1d64f2.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-users-three-fill-1d64f2.svg",
+      "bytes": 1702,
+      "sha256": "8e02aa3690b7c6c5acc986dd58af529f8e9244b4576702dc8102be07357a08f8"
+    },
+    {
+      "src": "./assets/w74-ph-caret-right-bold-1d64f2.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-caret-right-bold-1d64f2.svg",
+      "bytes": 450,
+      "sha256": "7197659f91b0c4d4f9517e807aa8b1af64dac377562e1b972fa73ff1a1af4423"
+    },
+    {
+      "src": "./assets/w74-ph-caret-right-bold-94a3b8.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-caret-right-bold-94a3b8.svg",
+      "bytes": 450,
+      "sha256": "90051749b447935bded4ae2b47794086f6f615ace800123e2ddce3c547c6e052"
+    },
+    {
+      "src": "./assets/w74-ph-camera-bold-1d64f2.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-camera-bold-1d64f2.svg",
+      "bytes": 1094,
+      "sha256": "04f8dfd5991b297c34840982f8fcdfe78fc685172643c545d239ab34dcd8a581"
+    },
+    {
+      "src": "/assets/stitch/caper_discover_citywalk.jpg",
+      "path": "miniprogram/assets/stitch/caper_discover_citywalk.jpg",
+      "bytes": 63210,
+      "sha256": "29ec54d0a3ad4928008e957d8229c72d0a357167098d458d749c4d391d09faa2"
+    },
+    {
+      "src": "/assets/stitch/caper_discover_coffee.jpg",
+      "path": "miniprogram/assets/stitch/caper_discover_coffee.jpg",
+      "bytes": 75091,
+      "sha256": "8c0b55f856d8fbf2fc565b240aff905bcd4a8a0fdc5db4e2047591bebb71d07e"
+    },
+    {
+      "src": "/assets/stitch/caper_discover_camping.jpg",
+      "path": "miniprogram/assets/stitch/caper_discover_camping.jpg",
+      "bytes": 84585,
+      "sha256": "583817d363bf087b5581ec58df7427c6ff1e079082bd4550ca4d2b1b6c00b621"
+    },
+    {
+      "src": "/assets/stitch/caper_discover_boardgame.jpg",
+      "path": "miniprogram/assets/stitch/caper_discover_boardgame.jpg",
+      "bytes": 93870,
+      "sha256": "0496a27ec5e007deba173ce6a54c882fadba2d882babf0010a3b7ade1116a070"
+    },
+    {
+      "src": "/assets/stitch/caper_discover_art.jpg",
+      "path": "miniprogram/assets/stitch/caper_discover_art.jpg",
+      "bytes": 70164,
+      "sha256": "84a0a5c6ce78fe0918d7edbaf75f010a2b255f239219344a8e65e10850745bbd"
+    },
+    {
+      "src": "./assets/w74-ph-chat-circle-dots-fill-1d64f2.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-chat-circle-dots-fill-1d64f2.svg",
+      "bytes": 1020,
+      "sha256": "be41440bd56d99b16536355b22bb730386f453e84fb958eba314db7564d7e862"
+    },
+    {
+      "src": "./assets/w74-ph-caret-right-bold-1d64f2.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-caret-right-bold-1d64f2.svg",
+      "bytes": 450,
+      "sha256": "7197659f91b0c4d4f9517e807aa8b1af64dac377562e1b972fa73ff1a1af4423"
+    },
+    {
+      "src": "./assets/w74-ph-caret-right-bold-1d64f2.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-caret-right-bold-1d64f2.svg",
+      "bytes": 450,
+      "sha256": "7197659f91b0c4d4f9517e807aa8b1af64dac377562e1b972fa73ff1a1af4423"
+    },
+    {
+      "src": "./assets/w74-ph-compass-fill-9333ea.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-compass-fill-9333ea.svg",
+      "bytes": 724,
+      "sha256": "dd402abb938be1e898b328c992e77550c88d3544f55681fbfcb7814981a45ccb"
+    },
+    {
+      "src": "./assets/w74-ph-caret-right-bold-1d64f2.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-caret-right-bold-1d64f2.svg",
+      "bytes": 450,
+      "sha256": "7197659f91b0c4d4f9517e807aa8b1af64dac377562e1b972fa73ff1a1af4423"
+    },
+    {
+      "src": "/assets/stitch/caper_discover_citywalk.jpg",
+      "path": "miniprogram/assets/stitch/caper_discover_citywalk.jpg",
+      "bytes": 63210,
+      "sha256": "29ec54d0a3ad4928008e957d8229c72d0a357167098d458d749c4d391d09faa2"
+    },
+    {
+      "src": "./assets/w74-ph-map-pin-regular-e2e8f0.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-map-pin-regular-e2e8f0.svg",
+      "bytes": 1143,
+      "sha256": "148aa500fe47f815941b2ddcbe4221e1f3124dac744e9780e80379c4c6257fa6"
+    },
+    {
+      "src": "/assets/stitch/caper_discover_art.jpg",
+      "path": "miniprogram/assets/stitch/caper_discover_art.jpg",
+      "bytes": 70164,
+      "sha256": "84a0a5c6ce78fe0918d7edbaf75f010a2b255f239219344a8e65e10850745bbd"
+    },
+    {
+      "src": "./assets/w74-ph-map-pin-regular-e2e8f0.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-map-pin-regular-e2e8f0.svg",
+      "bytes": 1143,
+      "sha256": "148aa500fe47f815941b2ddcbe4221e1f3124dac744e9780e80379c4c6257fa6"
+    },
+    {
+      "src": "/assets/stitch/caper_discover_surf.jpg",
+      "path": "miniprogram/assets/stitch/caper_discover_surf.jpg",
+      "bytes": 61363,
+      "sha256": "7e8d064a4d9b4f4ecd2ae282cee3089322dbe036f8bfda9f71c32ddacd768956"
+    },
+    {
+      "src": "./assets/w74-ph-map-pin-regular-e2e8f0.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-map-pin-regular-e2e8f0.svg",
+      "bytes": 1143,
+      "sha256": "148aa500fe47f815941b2ddcbe4221e1f3124dac744e9780e80379c4c6257fa6"
+    },
+    {
+      "src": "./assets/w74-ph-buildings-fill-4f46e5.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-buildings-fill-4f46e5.svg",
+      "bytes": 2283,
+      "sha256": "98deb52817a1c07898a2e4ba5ca222b9a55073f80968ee800fd94dfc0c0507af"
+    },
+    {
+      "src": "/assets/stitch/caper_discover_boardgame.jpg",
+      "path": "miniprogram/assets/stitch/caper_discover_boardgame.jpg",
+      "bytes": 93870,
+      "sha256": "0496a27ec5e007deba173ce6a54c882fadba2d882babf0010a3b7ade1116a070"
+    },
+    {
+      "src": "./assets/ph-map-pin-regular.svg",
+      "path": "miniprogram/pages/discover/assets/ph-map-pin-regular.svg",
+      "bytes": 1143,
+      "sha256": "0ef0349cab3091ab3fab8f37af6052f56ad15c466a30cbfe700f5d609308bc27"
+    },
+    {
+      "src": "/assets/stitch/caper_discover_coffee.jpg",
+      "path": "miniprogram/assets/stitch/caper_discover_coffee.jpg",
+      "bytes": 75091,
+      "sha256": "8c0b55f856d8fbf2fc565b240aff905bcd4a8a0fdc5db4e2047591bebb71d07e"
+    },
+    {
+      "src": "./assets/ph-map-pin-regular.svg",
+      "path": "miniprogram/pages/discover/assets/ph-map-pin-regular.svg",
+      "bytes": 1143,
+      "sha256": "0ef0349cab3091ab3fab8f37af6052f56ad15c466a30cbfe700f5d609308bc27"
+    },
+    {
+      "src": "/assets/stitch/caper_discover_art.jpg",
+      "path": "miniprogram/assets/stitch/caper_discover_art.jpg",
+      "bytes": 70164,
+      "sha256": "84a0a5c6ce78fe0918d7edbaf75f010a2b255f239219344a8e65e10850745bbd"
+    },
+    {
+      "src": "./assets/ph-map-pin-regular.svg",
+      "path": "miniprogram/pages/discover/assets/ph-map-pin-regular.svg",
+      "bytes": 1143,
+      "sha256": "0ef0349cab3091ab3fab8f37af6052f56ad15c466a30cbfe700f5d609308bc27"
+    },
+    {
+      "src": "./assets/ph-map-pin-regular.svg",
+      "path": "miniprogram/pages/discover/assets/ph-map-pin-regular.svg",
+      "bytes": 1143,
+      "sha256": "0ef0349cab3091ab3fab8f37af6052f56ad15c466a30cbfe700f5d609308bc27"
+    },
+    {
+      "src": "./assets/w74-ph-arrow-right-bold-1d64f2.svg",
+      "path": "miniprogram/pages/discover/assets/w74-ph-arrow-right-bold-1d64f2.svg",
+      "bytes": 530,
+      "sha256": "824bf805f5d6f6336875d21005394fe29f920a01eb51c9f21e7a695d40902726"
+    }
+  ],
+  "glyphs": [
+    {
+      "candidate": "ph-sparkle-fill-1d64f2.svg",
+      "bytes": 1180,
+      "sha256": "9d5ffcc26368058a1fe659dc3bc7169275578eed4744a57c507fe4701a4506d3",
+      "sourceLines": [
+        276
+      ],
+      "style": "fill",
+      "glyph": "uniED0A",
+      "unicode": "ed0a",
+      "pathSha256": "baf6f78957b18a78b251db5faf0eb4efbef60d318daf7e7256b2745dca8c81d4",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/fill/Phosphor-Fill.ttf",
+      "sourceFontSha256": "3a8fd92374be66aa4c58db0caea81d3be4b6058288351550bcb4f946ae324267",
+      "color": "#1d64f2",
+      "size": 18,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-sparkle-fill-1d64f2.svg",
+      "cmapGlyph": "uniED0A",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/fill/style.css",
+      "sourceCSSSHA256": "2d2b5281299a3a849ac8d3ceb42b8e3107b820c20e4e82687bfc8ec4f7e9a0fc"
+    },
+    {
+      "candidate": "ph-arrows-clockwise-bold-1d64f2.svg",
+      "bytes": 1199,
+      "sha256": "cdf4f23e57b68e0353235ab84d5ca8d514f6214cffc73ff9391afe2b681612e3",
+      "sourceLines": [
+        281
+      ],
+      "style": "bold",
+      "glyph": "uniE95D",
+      "unicode": "e95d",
+      "pathSha256": "776ad6f7d48246d684d4cf73cdc73ada3801e5873e18304844a86ffbeedc967b",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/bold/Phosphor-Bold.ttf",
+      "sourceFontSha256": "b0b27f810a2646b0b48d243b119bc4f3ed727f1e4162e05bfe6e4f85018f4b7b",
+      "color": "#1d64f2",
+      "size": 12,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-arrows-clockwise-bold-1d64f2.svg",
+      "cmapGlyph": "uniE95D",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/bold/style.css",
+      "sourceCSSSHA256": "c2b4f3dbe9960e4ed9ffa0c78b19a2210f946cfb4bb01b53b4fce64afaee2961"
+    },
+    {
+      "candidate": "ph-calendar-blank-regular-64748b.svg",
+      "bytes": 650,
+      "sha256": "e46000b352dcc7a8e6e8f3b9c4bf4799707a4065cfd3f28aaf76a08eb120d5cc",
+      "sourceLines": [
+        293,
+        312,
+        331
+      ],
+      "style": "regular",
+      "glyph": "uniE9E4",
+      "unicode": "e9e4",
+      "pathSha256": "27616371293c5f039df6c1167cfcddb0034afb099f242d6763ddadeb06c05eb8",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/regular/Phosphor.ttf",
+      "sourceFontSha256": "83034c352ef88208a6433526ebe04139caa3fabc28912c465992d791e29a4593",
+      "color": "#64748b",
+      "size": 10,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-calendar-blank-regular-64748b.svg",
+      "cmapGlyph": "uniE9E4",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/regular/style.css",
+      "sourceCSSSHA256": "ae360472b03f686e8327d0440ac943bbf3e25ae3a833e7ff530aef1ce33ab44d"
+    },
+    {
+      "candidate": "ph-map-pin-regular-64748b.svg",
+      "bytes": 1143,
+      "sha256": "3cc516f28ed5c7f2df4a6c0fb8d49d9330fe3ffc2d07ed58572cdb8d6b8fb69f",
+      "sourceLines": [
+        296,
+        315,
+        334,
+        391
+      ],
+      "style": "regular",
+      "glyph": "uniEBE0",
+      "unicode": "ebe0",
+      "pathSha256": "4e9e9e17e93c0eec21cc80829652f974dc7b51593bc127a8fbd22cd02b010145",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/regular/Phosphor.ttf",
+      "sourceFontSha256": "83034c352ef88208a6433526ebe04139caa3fabc28912c465992d791e29a4593",
+      "color": "#64748b",
+      "size": 10,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-map-pin-regular-64748b.svg",
+      "cmapGlyph": "uniEBE0",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/regular/style.css",
+      "sourceCSSSHA256": "ae360472b03f686e8327d0440ac943bbf3e25ae3a833e7ff530aef1ce33ab44d"
+    },
+    {
+      "candidate": "ph-map-pin-fill-1d64f2.svg",
+      "bytes": 621,
+      "sha256": "e31b4fcf89c0abf451e49d3acfb7e0dad5b7a44a8c58743dbe29459f23ac77a8",
+      "sourceLines": [
+        352
+      ],
+      "style": "fill",
+      "glyph": "uniEBE0",
+      "unicode": "ebe0",
+      "pathSha256": "a3a9f1038734b8487144348575faabe49a826cd3c241a736dd0cce276b4bdc58",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/fill/Phosphor-Fill.ttf",
+      "sourceFontSha256": "3a8fd92374be66aa4c58db0caea81d3be4b6058288351550bcb4f946ae324267",
+      "color": "#1d64f2",
+      "size": 16,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-map-pin-fill-1d64f2.svg",
+      "cmapGlyph": "uniEBE0",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/fill/style.css",
+      "sourceCSSSHA256": "2d2b5281299a3a849ac8d3ceb42b8e3107b820c20e4e82687bfc8ec4f7e9a0fc"
+    },
+    {
+      "candidate": "ph-caret-right-bold-1d64f2.svg",
+      "bytes": 450,
+      "sha256": "7197659f91b0c4d4f9517e807aa8b1af64dac377562e1b972fa73ff1a1af4423",
+      "sourceLines": [
+        358,
+        436,
+        528,
+        599,
+        672,
+        745,
+        763
+      ],
+      "style": "bold",
+      "glyph": "uniEA00",
+      "unicode": "ea00",
+      "pathSha256": "8047472dd2230c27aef6086047047efebe5eb6cb669fda034626cf4194bf33ac",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/bold/Phosphor-Bold.ttf",
+      "sourceFontSha256": "b0b27f810a2646b0b48d243b119bc4f3ed727f1e4162e05bfe6e4f85018f4b7b",
+      "color": "#1d64f2",
+      "size": 12,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-caret-right-bold-1d64f2.svg",
+      "cmapGlyph": "uniEA00",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/bold/style.css",
+      "sourceCSSSHA256": "c2b4f3dbe9960e4ed9ffa0c78b19a2210f946cfb4bb01b53b4fce64afaee2961"
+    },
+    {
+      "candidate": "ph-navigation-arrow-fill-ffffff.svg",
+      "bytes": 532,
+      "sha256": "2cf1a94e4d65e11d08918d7675ace7c7c3c02f43205837fb01c349c68f881bc0",
+      "sourceLines": [
+        372
+      ],
+      "style": "fill",
+      "glyph": "uniEC0C",
+      "unicode": "ec0c",
+      "pathSha256": "decaac7010a00255222c5df23f9afb0e09c3e04c03eb5dbb63b8fb69a8842f6e",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/fill/Phosphor-Fill.ttf",
+      "sourceFontSha256": "3a8fd92374be66aa4c58db0caea81d3be4b6058288351550bcb4f946ae324267",
+      "color": "#ffffff",
+      "size": 8,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-navigation-arrow-fill-ffffff.svg",
+      "cmapGlyph": "uniEC0C",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/fill/style.css",
+      "sourceCSSSHA256": "2d2b5281299a3a849ac8d3ceb42b8e3107b820c20e4e82687bfc8ec4f7e9a0fc"
+    },
+    {
+      "candidate": "ph-sparkle-bold-ffffff.svg",
+      "bytes": 1368,
+      "sha256": "091df03561c05847019294bb665dec4a5d9aa8a7efcf098d6795da0572aa2601",
+      "sourceLines": [
+        404
+      ],
+      "style": "bold",
+      "glyph": "uniED0A",
+      "unicode": "ed0a",
+      "pathSha256": "d83608d941d923c1a259dfd0e953f15977091e0b1b89670da9da37e4e76da276",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/bold/Phosphor-Bold.ttf",
+      "sourceFontSha256": "b0b27f810a2646b0b48d243b119bc4f3ed727f1e4162e05bfe6e4f85018f4b7b",
+      "color": "#ffffff",
+      "size": 30,
+      "sourceAlphaConsumerCSS": ".3",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-sparkle-bold-ffffff.svg",
+      "cmapGlyph": "uniED0A",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/bold/style.css",
+      "sourceCSSSHA256": "c2b4f3dbe9960e4ed9ffa0c78b19a2210f946cfb4bb01b53b4fce64afaee2961"
+    },
+    {
+      "candidate": "ph-compass-bold-000000.svg",
+      "bytes": 1038,
+      "sha256": "9029ee41374dec22cc732b17c0196df9b5b84b0d0288d40b491734c6178083b9",
+      "sourceLines": [
+        412
+      ],
+      "style": "bold",
+      "glyph": "uniEA63",
+      "unicode": "ea63",
+      "pathSha256": "8a29ce22548c67fd18d0c573cb45b7917c654251e41e99e27358af12929adc9a",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/bold/Phosphor-Bold.ttf",
+      "sourceFontSha256": "b0b27f810a2646b0b48d243b119bc4f3ed727f1e4162e05bfe6e4f85018f4b7b",
+      "color": "#000000",
+      "size": 30,
+      "sourceAlphaConsumerCSS": ".15",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-compass-bold-000000.svg",
+      "cmapGlyph": "uniEA63",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/bold/style.css",
+      "sourceCSSSHA256": "c2b4f3dbe9960e4ed9ffa0c78b19a2210f946cfb4bb01b53b4fce64afaee2961"
+    },
+    {
+      "candidate": "ph-moon-stars-bold-000000.svg",
+      "bytes": 1660,
+      "sha256": "9565ea61028c247ad3f81ba5e8b6e229575ed78092cdec32ebfd2fded202e531",
+      "sourceLines": [
+        420
+      ],
+      "style": "bold",
+      "glyph": "uniEBFF",
+      "unicode": "ebff",
+      "pathSha256": "639262c5c0426fd40933984a4eb3f9c896d0ea92e040c43a01611bec114e39c1",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/bold/Phosphor-Bold.ttf",
+      "sourceFontSha256": "b0b27f810a2646b0b48d243b119bc4f3ed727f1e4162e05bfe6e4f85018f4b7b",
+      "color": "#000000",
+      "size": 30,
+      "sourceAlphaConsumerCSS": ".15",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-moon-stars-bold-000000.svg",
+      "cmapGlyph": "uniEBFF",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/bold/style.css",
+      "sourceCSSSHA256": "c2b4f3dbe9960e4ed9ffa0c78b19a2210f946cfb4bb01b53b4fce64afaee2961"
+    },
+    {
+      "candidate": "ph-users-three-fill-1d64f2.svg",
+      "bytes": 1702,
+      "sha256": "8e02aa3690b7c6c5acc986dd58af529f8e9244b4576702dc8102be07357a08f8",
+      "sourceLines": [
+        522
+      ],
+      "style": "fill",
+      "glyph": "uniEDAE",
+      "unicode": "edae",
+      "pathSha256": "f829da5a58cc22ee7a8bc44572b38eb390ca9105d698cbb8b92e0ad4816d4cd6",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/fill/Phosphor-Fill.ttf",
+      "sourceFontSha256": "3a8fd92374be66aa4c58db0caea81d3be4b6058288351550bcb4f946ae324267",
+      "color": "#1d64f2",
+      "size": 16,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-users-three-fill-1d64f2.svg",
+      "cmapGlyph": "uniEDAE",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/fill/style.css",
+      "sourceCSSSHA256": "2d2b5281299a3a849ac8d3ceb42b8e3107b820c20e4e82687bfc8ec4f7e9a0fc"
+    },
+    {
+      "candidate": "ph-caret-right-bold-94a3b8.svg",
+      "bytes": 450,
+      "sha256": "90051749b447935bded4ae2b47794086f6f615ace800123e2ddce3c547c6e052",
+      "sourceLines": [
+        539,
+        556,
+        573
+      ],
+      "style": "bold",
+      "glyph": "uniEA00",
+      "unicode": "ea00",
+      "pathSha256": "8047472dd2230c27aef6086047047efebe5eb6cb669fda034626cf4194bf33ac",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/bold/Phosphor-Bold.ttf",
+      "sourceFontSha256": "b0b27f810a2646b0b48d243b119bc4f3ed727f1e4162e05bfe6e4f85018f4b7b",
+      "color": "#94a3b8",
+      "size": 10,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-caret-right-bold-94a3b8.svg",
+      "cmapGlyph": "uniEA00",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/bold/style.css",
+      "sourceCSSSHA256": "c2b4f3dbe9960e4ed9ffa0c78b19a2210f946cfb4bb01b53b4fce64afaee2961"
+    },
+    {
+      "candidate": "ph-camera-bold-1d64f2.svg",
+      "bytes": 1094,
+      "sha256": "04f8dfd5991b297c34840982f8fcdfe78fc685172643c545d239ab34dcd8a581",
+      "sourceLines": [
+        593
+      ],
+      "style": "bold",
+      "glyph": "uniE9E9",
+      "unicode": "e9e9",
+      "pathSha256": "0672189eb3938a64437e64c60230eb82cfb8cdffbb103dd1bbe5142ea124dc63",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/bold/Phosphor-Bold.ttf",
+      "sourceFontSha256": "b0b27f810a2646b0b48d243b119bc4f3ed727f1e4162e05bfe6e4f85018f4b7b",
+      "color": "#1d64f2",
+      "size": 16,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-camera-bold-1d64f2.svg",
+      "cmapGlyph": "uniE9E9",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/bold/style.css",
+      "sourceCSSSHA256": "c2b4f3dbe9960e4ed9ffa0c78b19a2210f946cfb4bb01b53b4fce64afaee2961"
+    },
+    {
+      "candidate": "ph-chat-circle-dots-fill-1d64f2.svg",
+      "bytes": 1020,
+      "sha256": "be41440bd56d99b16536355b22bb730386f453e84fb958eba314db7564d7e862",
+      "sourceLines": [
+        611
+      ],
+      "style": "fill",
+      "glyph": "uniEA24",
+      "unicode": "ea24",
+      "pathSha256": "c317b933dbce736405a9e481d4d27cf54e7b3cf8693f54e60821d118302d81e5",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/fill/Phosphor-Fill.ttf",
+      "sourceFontSha256": "3a8fd92374be66aa4c58db0caea81d3be4b6058288351550bcb4f946ae324267",
+      "color": "#1d64f2",
+      "size": 16,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-chat-circle-dots-fill-1d64f2.svg",
+      "cmapGlyph": "uniEA24",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/fill/style.css",
+      "sourceCSSSHA256": "2d2b5281299a3a849ac8d3ceb42b8e3107b820c20e4e82687bfc8ec4f7e9a0fc"
+    },
+    {
+      "candidate": "ph-compass-fill-9333ea.svg",
+      "bytes": 724,
+      "sha256": "dd402abb938be1e898b328c992e77550c88d3544f55681fbfcb7814981a45ccb",
+      "sourceLines": [
+        739
+      ],
+      "style": "fill",
+      "glyph": "uniEA63",
+      "unicode": "ea63",
+      "pathSha256": "5a92144d98b3b2b3587ee96b624f3beac0ad5f98e2be99e87f72cfefd9d1903d",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/fill/Phosphor-Fill.ttf",
+      "sourceFontSha256": "3a8fd92374be66aa4c58db0caea81d3be4b6058288351550bcb4f946ae324267",
+      "color": "#9333ea",
+      "size": 16,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-compass-fill-9333ea.svg",
+      "cmapGlyph": "uniEA63",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/fill/style.css",
+      "sourceCSSSHA256": "2d2b5281299a3a849ac8d3ceb42b8e3107b820c20e4e82687bfc8ec4f7e9a0fc"
+    },
+    {
+      "candidate": "ph-map-pin-regular-e2e8f0.svg",
+      "bytes": 1143,
+      "sha256": "148aa500fe47f815941b2ddcbe4221e1f3124dac744e9780e80379c4c6257fa6",
+      "sourceLines": [
+        748
+      ],
+      "style": "regular",
+      "glyph": "uniEBE0",
+      "unicode": "ebe0",
+      "pathSha256": "4e9e9e17e93c0eec21cc80829652f974dc7b51593bc127a8fbd22cd02b010145",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/regular/Phosphor.ttf",
+      "sourceFontSha256": "83034c352ef88208a6433526ebe04139caa3fabc28912c465992d791e29a4593",
+      "color": "#e2e8f0",
+      "size": 10,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-map-pin-regular-e2e8f0.svg",
+      "cmapGlyph": "uniEBE0",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/regular/style.css",
+      "sourceCSSSHA256": "ae360472b03f686e8327d0440ac943bbf3e25ae3a833e7ff530aef1ce33ab44d"
+    },
+    {
+      "candidate": "ph-buildings-fill-4f46e5.svg",
+      "bytes": 2283,
+      "sha256": "98deb52817a1c07898a2e4ba5ca222b9a55073f80968ee800fd94dfc0c0507af",
+      "sourceLines": [
+        757
+      ],
+      "style": "fill",
+      "glyph": "uniE9DD",
+      "unicode": "e9dd",
+      "pathSha256": "087b5434459b9f1ed7c4a778aaaa3a5e7a61048d1065157f1ac1f51e146fe794",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/fill/Phosphor-Fill.ttf",
+      "sourceFontSha256": "3a8fd92374be66aa4c58db0caea81d3be4b6058288351550bcb4f946ae324267",
+      "color": "#4f46e5",
+      "size": 16,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-buildings-fill-4f46e5.svg",
+      "cmapGlyph": "uniE9DD",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/fill/style.css",
+      "sourceCSSSHA256": "2d2b5281299a3a849ac8d3ceb42b8e3107b820c20e4e82687bfc8ec4f7e9a0fc"
+    },
+    {
+      "candidate": "ph-arrow-right-bold-1d64f2.svg",
+      "bytes": 530,
+      "sha256": "824bf805f5d6f6336875d21005394fe29f920a01eb51c9f21e7a695d40902726",
+      "sourceLines": [
+        785
+      ],
+      "style": "bold",
+      "glyph": "uniE95C",
+      "unicode": "e95c",
+      "pathSha256": "59c506ed54cbf353deacb2cca76faf9f4639f77831ed71bad24f7dcd67e64fff",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/bold/Phosphor-Bold.ttf",
+      "sourceFontSha256": "b0b27f810a2646b0b48d243b119bc4f3ed727f1e4162e05bfe6e4f85018f4b7b",
+      "color": "#1d64f2",
+      "size": 16,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-arrow-right-bold-1d64f2.svg",
+      "cmapGlyph": "uniE95C",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/bold/style.css",
+      "sourceCSSSHA256": "c2b4f3dbe9960e4ed9ffa0c78b19a2210f946cfb4bb01b53b4fce64afaee2961"
+    }
+  ],
+  "newGlyphBytes": 18787,
+  "newFontBytes": 0,
+  "originalZip": {
+    "path": "/Users/tsb/Downloads/stitch_design_system_generator (2).zip",
+    "bytes": 24668856,
+    "sha256": "df22e733d33fda20979b75b8a7bc94717c4a5c9e41561a54e3038432fab32603"
+  },
+  "photoSourceManifestSHA256": "5ebc917abba5d6f358f4d4b09a2788df8a097ebc7054e287eae4f1e00ecfb344",
+  "photoEvidence": "Original URLs fetched exactly once before implementation; seven existing runtime images byte match source response. Missing eighth exact park bytes live only in root profile component. No image re-encoding.",
+  "result": {
+    "pass": true,
+    "checks": 138,
+    "longActions": 28,
+    "newGlyphs": 18,
+    "newGlyphBytes": 18787,
+    "newFontBytes": 0,
+    "mainRawNetDeltaExcludingRootJSON": 54551,
+    "protected": [
+      "whole WXML inverse to baseline",
+      "entire old CSS prefix",
+      "unchanged business JS",
+      "root-only JSON component registration",
+      "core/availability/invite/actions/guards exact through whole inverse"
+    ]
+  }
+}

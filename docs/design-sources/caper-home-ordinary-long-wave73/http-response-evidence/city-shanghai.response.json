@@ -1,0 +1,34 @@
+{
+  "sourceLine": 664,
+  "sourceAlt": "上海夜景",
+  "URL": "https://lh3.googleusercontent.com/aida-public/AB6AXuCydvsuC_9SNyYBMjTYcmpzcgWvnw_Gu87XSEo2Q2TM4LjSRPsjY4yejmK_2WwNA2ZTJRK0xbzrbaD-INHEXisFLrv8XCL7mWtjjnFOol8s-LOt9r0bJv1F6FXEXnbrh0qQLYB7YjkBDFHMFxem_h03gOFkzZt7t6rC8ikw27dzbk27-ykTqOERMbkGRH8mJhN1zxAgSARuCZYKIf0fKtVmKVy3g84SXn2oADjFCf8yL3fkF4hNcKGuFg",
+  "finalURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuCydvsuC_9SNyYBMjTYcmpzcgWvnw_Gu87XSEo2Q2TM4LjSRPsjY4yejmK_2WwNA2ZTJRK0xbzrbaD-INHEXisFLrv8XCL7mWtjjnFOol8s-LOt9r0bJv1F6FXEXnbrh0qQLYB7YjkBDFHMFxem_h03gOFkzZt7t6rC8ikw27dzbk27-ykTqOERMbkGRH8mJhN1zxAgSARuCZYKIf0fKtVmKVy3g84SXn2oADjFCf8yL3fkF4hNcKGuFg",
+  "status": 200,
+  "headers": {
+    "Content-Type": "image/jpeg",
+    "Vary": "Origin",
+    "Access-Control-Allow-Origin": "*",
+    "Timing-Allow-Origin": "*",
+    "Access-Control-Expose-Headers": "Content-Length",
+    "ETag": "\"v0\"",
+    "Expires": "Sat, 03 Oct 2026 02:03:49 GMT",
+    "Cache-Control": "public, max-age=86400, no-transform",
+    "Content-Disposition": "inline;filename=\"unnamed.jpg\"",
+    "X-Content-Type-Options": "nosniff",
+    "Date": "Fri, 02 Oct 2026 02:03:49 GMT",
+    "Server": "fife",
+    "Content-Length": "51218",
+    "X-XSS-Protection": "0",
+    "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "Connection": "close"
+  },
+  "contentType": "image/jpeg",
+  "bytes": 51218,
+  "sha256": "e618b8e7dc0348f140eb8502c33cec996a830dfbc2c4b502fef4d7f53bd69aea",
+  "savedPath": "/private/tmp/caper-wave73-home-long/photos/city-shanghai.jpg",
+  "noReencoding": true,
+  "fetchedAtUTC": "2026-10-02T02:03:50.293411+00:00",
+  "existingByteEqualCandidates": [
+    "miniprogram/assets/stitch/caper_home_shanghai.jpg"
+  ]
+}

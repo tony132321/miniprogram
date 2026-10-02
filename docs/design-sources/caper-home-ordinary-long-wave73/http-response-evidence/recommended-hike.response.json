@@ -1,0 +1,34 @@
+{
+  "sourceLine": 302,
+  "sourceAlt": "余山徒步",
+  "URL": "https://lh3.googleusercontent.com/aida-public/AB6AXuD0t3GFDdAWiqvj_oA_Vmmv-mRUaE531esIRgrr4j9HtbolO2-eLXu_uB91eTV86nrCiNg5zn8yGmFsmxk2cmJQot-pGpU5UCLR9HFMBP69_-E_X3T04oaY0WtaQsCjIn8xBQgFGhTHAVJWJtueARS4FMT69uznn29X_tmcovhZkPhQ2oqWoQJ6ocTBg7kCIFRScD5QHE13skwtZwYL6qxYZEnF4covQwULR9cCcCvOHuN1ue5abBL1qg",
+  "finalURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuD0t3GFDdAWiqvj_oA_Vmmv-mRUaE531esIRgrr4j9HtbolO2-eLXu_uB91eTV86nrCiNg5zn8yGmFsmxk2cmJQot-pGpU5UCLR9HFMBP69_-E_X3T04oaY0WtaQsCjIn8xBQgFGhTHAVJWJtueARS4FMT69uznn29X_tmcovhZkPhQ2oqWoQJ6ocTBg7kCIFRScD5QHE13skwtZwYL6qxYZEnF4covQwULR9cCcCvOHuN1ue5abBL1qg",
+  "status": 200,
+  "headers": {
+    "Content-Type": "image/jpeg",
+    "Vary": "Origin",
+    "Access-Control-Allow-Origin": "*",
+    "Timing-Allow-Origin": "*",
+    "Access-Control-Expose-Headers": "Content-Length",
+    "ETag": "\"v0\"",
+    "Expires": "Sat, 03 Oct 2026 02:03:45 GMT",
+    "Cache-Control": "public, max-age=86400, no-transform",
+    "Content-Disposition": "inline;filename=\"unnamed.jpg\"",
+    "X-Content-Type-Options": "nosniff",
+    "Date": "Fri, 02 Oct 2026 02:03:45 GMT",
+    "Server": "fife",
+    "Content-Length": "91338",
+    "X-XSS-Protection": "0",
+    "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "Connection": "close"
+  },
+  "contentType": "image/jpeg",
+  "bytes": 91338,
+  "sha256": "59118f098cb6741ee1c6d89f152a2ae78c42c198b70a5fb9ef6526dea169f0b4",
+  "savedPath": "/private/tmp/caper-wave73-home-long/photos/recommended-hike.jpg",
+  "noReencoding": true,
+  "fetchedAtUTC": "2026-10-02T02:03:46.353273+00:00",
+  "existingByteEqualCandidates": [
+    "miniprogram/assets/stitch/caper_home_hiking.jpg"
+  ]
+}

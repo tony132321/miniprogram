@@ -1,0 +1,58 @@
+{
+  "scope": "Only new async font loader and new Caveat faces; no page route suites",
+  "checks": [
+    {
+      "pass": true,
+      "label": "Async font package actually loaded and all8 global font callbacks succeeded",
+      "state": {
+        "support": "supported",
+        "source": "loaded",
+        "sdkVersion": "3.17.2",
+        "faces": [
+          {
+            "family": "Caveat",
+            "weight": "700",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "600",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "700",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "800",
+            "status": "loaded"
+          },
+          {
+            "family": "Rubik Mono One",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Caper Jakarta Profile 500",
+            "weight": "500",
+            "status": "loaded"
+          },
+          {
+            "family": "Caveat",
+            "weight": "600",
+            "status": "loaded"
+          }
+        ]
+      }
+    }
+  ],
+  "exceptions": [],
+  "pass": true
+}

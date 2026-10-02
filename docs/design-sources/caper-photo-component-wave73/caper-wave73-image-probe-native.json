@@ -1,0 +1,103 @@
+{
+  "scope": "Clone-only async component source/image decoding/native CSS probe; no product routes or business writes",
+  "checks": [
+    {
+      "pass": true,
+      "label": "Cross-package placeholder replaced by actual48px image with16px radius",
+      "values": {
+        "left": 20,
+        "right": 68,
+        "top": 120,
+        "bottom": 168,
+        "width": 48,
+        "height": 48,
+        "src": "/subpackages/profile/components/reference-image/assets/home-brand-party.jpg",
+        "border-radius": "16px"
+      }
+    },
+    {
+      "pass": true,
+      "label": "All12 packaged original JPEGs actually decoded",
+      "images": [
+        {
+          "key": "home-brand-party",
+          "src": "/subpackages/profile/components/reference-image/assets/home-brand-party.jpg",
+          "width": 512,
+          "height": 279
+        },
+        {
+          "key": "home-hot-tennis",
+          "src": "/subpackages/profile/components/reference-image/assets/home-hot-tennis.jpg",
+          "width": 512,
+          "height": 279
+        },
+        {
+          "key": "home-hot-coffee",
+          "src": "/subpackages/profile/components/reference-image/assets/home-hot-coffee.jpg",
+          "width": 512,
+          "height": 279
+        },
+        {
+          "key": "home-hot-frisbee",
+          "src": "/subpackages/profile/components/reference-image/assets/home-hot-frisbee.jpg",
+          "width": 512,
+          "height": 279
+        },
+        {
+          "key": "home-hot-boardgame",
+          "src": "/subpackages/profile/components/reference-image/assets/home-hot-boardgame.jpg",
+          "width": 512,
+          "height": 279
+        },
+        {
+          "key": "home-idea-badminton",
+          "src": "/subpackages/profile/components/reference-image/assets/home-idea-badminton.jpg",
+          "width": 512,
+          "height": 279
+        },
+        {
+          "key": "home-idea-coffee",
+          "src": "/subpackages/profile/components/reference-image/assets/home-idea-coffee.jpg",
+          "width": 512,
+          "height": 279
+        },
+        {
+          "key": "home-idea-cycling",
+          "src": "/subpackages/profile/components/reference-image/assets/home-idea-cycling.jpg",
+          "width": 512,
+          "height": 279
+        },
+        {
+          "key": "home-collage-main",
+          "src": "/subpackages/profile/components/reference-image/assets/home-collage-main.jpg",
+          "width": 512,
+          "height": 279
+        },
+        {
+          "key": "home-collage-dinner",
+          "src": "/subpackages/profile/components/reference-image/assets/home-collage-dinner.jpg",
+          "width": 512,
+          "height": 279
+        },
+        {
+          "key": "home-collage-grass",
+          "src": "/subpackages/profile/components/reference-image/assets/home-collage-grass.jpg",
+          "width": 512,
+          "height": 279
+        },
+        {
+          "key": "discover-park",
+          "src": "/subpackages/profile/components/reference-image/assets/discover-park.jpg",
+          "width": 512,
+          "height": 512
+        }
+      ]
+    },
+    {
+      "pass": true,
+      "label": "Invalid key clears rendered image"
+    }
+  ],
+  "exceptions": [],
+  "pass": true
+}

@@ -1,0 +1,776 @@
+{
+  "source": "User supplied ZIP caper_4 (ordinary discover), 11 original long modules; source core already restored and not changed",
+  "zip": {
+    "path": "/Users/tsb/Downloads/stitch_design_system_generator (2).zip",
+    "bytes": 24668856,
+    "sha256": "df22e733d33fda20979b75b8a7bc94717c4a5c9e41561a54e3038432fab32603"
+  },
+  "originals": {
+    "code.html": {
+      "path": "docs/design-sources/caper-discover-long-page-wave74/code.html",
+      "bytes": 63270,
+      "sha256": "514d9e5fbfbbc66e9c5c19cf33767b58b54f77a144720c4b89f3b5248356aed2"
+    },
+    "screen.png": {
+      "path": "docs/design-sources/caper-discover-long-page-wave74/screen.png",
+      "bytes": 265845,
+      "sha256": "15ffd670e926b6f508dac5223bb00e3beee8301a6a712a3836d468893a95d63e"
+    }
+  },
+  "protectedBaseline": {
+    "wxml": {
+      "bytes": 15967,
+      "sha256": "712b837104da4ba86ac372b2a9f2a1bad7b5aff9df40c9fa5b8b14b95f62bc8c"
+    },
+    "wxss": {
+      "bytes": 21968,
+      "sha256": "b2e7823086c5f30b69ba25bf1605136e52bcefd0d48cbb94f4c03abb65d32e13"
+    },
+    "js": {
+      "bytes": 17758,
+      "sha256": "928b72be56fca9c7cd4d2a8fd8f76d14632ef9c315dbfb2ea62c97a9c81712b5"
+    },
+    "json": {
+      "bytes": 147,
+      "sha256": "d09ff0a32fee5e70496a03f5c691f07462d0c9ea399dd69ae9f198e6ba1cc451"
+    }
+  },
+  "nativeAdaptation": "Full protected core/header/category/capsule/status/Tab/invite unchanged. Only ordinary long wrapper cancels old 24rpx native gutter to restore original 16px section edge. No source fake status/device chrome added. Bottom existing native Tab/safe handling remains unchanged.",
+  "scopeSelectors": [
+    ".d74-long",
+    ".d74-cta-scope"
+  ],
+  "longModuleMap": [
+    {
+      "original": "ai-recommendations",
+      "product": ".d74-recommend-section",
+      "truth": "Static existing recommendationCards; same rotation, inspiration, closed favorite actions; no AI claim/time/enrolment/place facts."
+    },
+    {
+      "original": "nearby-events",
+      "product": ".d74-nearby-section",
+      "truth": "Actual personalState and nearbyPersonalEvents under exact READY/length guards; map is marked non-location illustration; no actual distance/radar/count."
+    },
+    {
+      "original": "campaign-topics",
+      "product": ".d74-campaign-scroll",
+      "truth": "Existing three openInspiration data-title contracts retained."
+    },
+    {
+      "original": "organizer-list",
+      "product": "[data-source=\"organizer-list\"]",
+      "truth": "Original eight structural empty decorative slots explicitly not real people/count/certification. No fake avatars/public directory or invented click."
+    },
+    {
+      "original": "friends-attending",
+      "product": "[data-source=\"friends-attending\"]",
+      "truth": "Real personalEvents list/LOADING/ERROR/READY-empty/READY-populated, IDs, dates, host membership label. No friends/names/avatar/count claims."
+    },
+    {
+      "original": "social-moments",
+      "product": "[data-source=\"social-moments\"]",
+      "truth": "All six exact original scene photos/stickers illustrative, not community records. Park bytes supplied by root async profile component; no actual activity photo upload claim."
+    },
+    {
+      "original": "user-reviews",
+      "product": "[data-source=\"user-reviews\"]",
+      "truth": "One explicit closed-state card in original quote/footer geometry. No fake three users/testimonials."
+    },
+    {
+      "original": "weekly-curation",
+      "product": "[data-source=\"weekly-curation\"]",
+      "truth": "Same six inspiration bindings; source cover/color/card/mini-tag geometry, no actual dates/weekly listings."
+    },
+    {
+      "original": "city-walk-routes",
+      "product": "[data-source=\"city-walk-routes\"]",
+      "truth": "Original 3 scene/handwriting slots; existing 2 inspiration bindings retained, third non-action illustration. No location count/km/planning claim. The existing second action remains 山野徒步, visibly labelled as its actual inspiration destination while original Wukang scene is illustrative."
+    },
+    {
+      "original": "popular-venues",
+      "product": ".d74-place-section",
+      "truth": "Four exact original scene photos including profile-loaded park. Existing four data-title contracts preserved; caption explicitly generic scene and action text discloses original actual inspiration target. No merchant name/location/verification/reservation facts."
+    },
+    {
+      "original": "ai-cta-banner",
+      "product": ".d74-cta-scope",
+      "truth": "Same real goCreate action and original truthful publish copy; source gradient/robot/arrow/gap/blur/geometry; no AI service claim."
+    }
+  ],
+  "sourceCSSObservation": {
+    "path": "docs/design-sources/caper-discover-long-page-wave74/source-css-observation.json",
+    "sha256": "42ba36328b3a01d9fbaa50df3cc81bb13d9ad5c56004117c8b4e40c6cd492c27",
+    "nodes": 448,
+    "sections": 11,
+    "runs": 1,
+    "scope": "Original source cascade only; fonts/images blocked; no product mirror/SDK/API/actions or pixel PASS.",
+    "effectiveTokens": [
+      "px-4=16px / mt-5=20px / border-t-4=4px; cards200/240/220px",
+      "Source Phosphor18px sparkle has28px linebox, 12px caret has16px linebox, 30px banner glyph has36px linebox",
+      "Source tracking-tight -.025em; text-sticker -.02em inherited from16px on moments =-.32px, own14px route =-.28px",
+      "Source from-black/85 actually effective; source route gradient .85/.4/.3",
+      "Source py-0.2/shadow-xs undefined; no guessed padding/shadow",
+      "Actual two source animations: sparkle pulse2s and map ping1s; hover opacity.8/backgroundslate50/CTAarrow1.05 with source .15s easing"
+    ]
+  },
+  "photos": {
+    "manifest": "docs/design-sources/caper-discover-long-page-wave74/original-photo-response-manifest.json",
+    "sha256": "5ebc917abba5d6f358f4d4b09a2788df8a097ebc7054e287eae4f1e00ecfb344",
+    "originalDistinctURLs": 8,
+    "originalDistinctBytes": 651802,
+    "existingExactImages": 7,
+    "existingExactBytes": 529067,
+    "park": {
+      "bytes": 122735,
+      "sha256": "ab6bc2647289d4dfd98ea1229b2ea0caf5ead4390de18624c61af3e7645db05d",
+      "path": "miniprogram/subpackages/profile/components/reference-image/assets/discover-park.jpg",
+      "componentOwner": "root",
+      "consumers": 2
+    },
+    "noImageReencoding": true,
+    "newMainPhotoBytes": 0
+  },
+  "glyphs": [
+    {
+      "candidate": "ph-sparkle-fill-1d64f2.svg",
+      "bytes": 1180,
+      "sha256": "9d5ffcc26368058a1fe659dc3bc7169275578eed4744a57c507fe4701a4506d3",
+      "sourceLines": [
+        276
+      ],
+      "style": "fill",
+      "glyph": "uniED0A",
+      "unicode": "ed0a",
+      "pathSha256": "baf6f78957b18a78b251db5faf0eb4efbef60d318daf7e7256b2745dca8c81d4",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/fill/Phosphor-Fill.ttf",
+      "sourceFontSha256": "3a8fd92374be66aa4c58db0caea81d3be4b6058288351550bcb4f946ae324267",
+      "color": "#1d64f2",
+      "size": 18,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-sparkle-fill-1d64f2.svg",
+      "cmapGlyph": "uniED0A",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/fill/style.css",
+      "sourceCSSSHA256": "2d2b5281299a3a849ac8d3ceb42b8e3107b820c20e4e82687bfc8ec4f7e9a0fc"
+    },
+    {
+      "candidate": "ph-arrows-clockwise-bold-1d64f2.svg",
+      "bytes": 1199,
+      "sha256": "cdf4f23e57b68e0353235ab84d5ca8d514f6214cffc73ff9391afe2b681612e3",
+      "sourceLines": [
+        281
+      ],
+      "style": "bold",
+      "glyph": "uniE95D",
+      "unicode": "e95d",
+      "pathSha256": "776ad6f7d48246d684d4cf73cdc73ada3801e5873e18304844a86ffbeedc967b",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/bold/Phosphor-Bold.ttf",
+      "sourceFontSha256": "b0b27f810a2646b0b48d243b119bc4f3ed727f1e4162e05bfe6e4f85018f4b7b",
+      "color": "#1d64f2",
+      "size": 12,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-arrows-clockwise-bold-1d64f2.svg",
+      "cmapGlyph": "uniE95D",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/bold/style.css",
+      "sourceCSSSHA256": "c2b4f3dbe9960e4ed9ffa0c78b19a2210f946cfb4bb01b53b4fce64afaee2961"
+    },
+    {
+      "candidate": "ph-calendar-blank-regular-64748b.svg",
+      "bytes": 650,
+      "sha256": "e46000b352dcc7a8e6e8f3b9c4bf4799707a4065cfd3f28aaf76a08eb120d5cc",
+      "sourceLines": [
+        293,
+        312,
+        331
+      ],
+      "style": "regular",
+      "glyph": "uniE9E4",
+      "unicode": "e9e4",
+      "pathSha256": "27616371293c5f039df6c1167cfcddb0034afb099f242d6763ddadeb06c05eb8",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/regular/Phosphor.ttf",
+      "sourceFontSha256": "83034c352ef88208a6433526ebe04139caa3fabc28912c465992d791e29a4593",
+      "color": "#64748b",
+      "size": 10,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-calendar-blank-regular-64748b.svg",
+      "cmapGlyph": "uniE9E4",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/regular/style.css",
+      "sourceCSSSHA256": "ae360472b03f686e8327d0440ac943bbf3e25ae3a833e7ff530aef1ce33ab44d"
+    },
+    {
+      "candidate": "ph-map-pin-regular-64748b.svg",
+      "bytes": 1143,
+      "sha256": "3cc516f28ed5c7f2df4a6c0fb8d49d9330fe3ffc2d07ed58572cdb8d6b8fb69f",
+      "sourceLines": [
+        296,
+        315,
+        334,
+        391
+      ],
+      "style": "regular",
+      "glyph": "uniEBE0",
+      "unicode": "ebe0",
+      "pathSha256": "4e9e9e17e93c0eec21cc80829652f974dc7b51593bc127a8fbd22cd02b010145",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/regular/Phosphor.ttf",
+      "sourceFontSha256": "83034c352ef88208a6433526ebe04139caa3fabc28912c465992d791e29a4593",
+      "color": "#64748b",
+      "size": 10,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-map-pin-regular-64748b.svg",
+      "cmapGlyph": "uniEBE0",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/regular/style.css",
+      "sourceCSSSHA256": "ae360472b03f686e8327d0440ac943bbf3e25ae3a833e7ff530aef1ce33ab44d"
+    },
+    {
+      "candidate": "ph-map-pin-fill-1d64f2.svg",
+      "bytes": 621,
+      "sha256": "e31b4fcf89c0abf451e49d3acfb7e0dad5b7a44a8c58743dbe29459f23ac77a8",
+      "sourceLines": [
+        352
+      ],
+      "style": "fill",
+      "glyph": "uniEBE0",
+      "unicode": "ebe0",
+      "pathSha256": "a3a9f1038734b8487144348575faabe49a826cd3c241a736dd0cce276b4bdc58",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/fill/Phosphor-Fill.ttf",
+      "sourceFontSha256": "3a8fd92374be66aa4c58db0caea81d3be4b6058288351550bcb4f946ae324267",
+      "color": "#1d64f2",
+      "size": 16,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-map-pin-fill-1d64f2.svg",
+      "cmapGlyph": "uniEBE0",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/fill/style.css",
+      "sourceCSSSHA256": "2d2b5281299a3a849ac8d3ceb42b8e3107b820c20e4e82687bfc8ec4f7e9a0fc"
+    },
+    {
+      "candidate": "ph-caret-right-bold-1d64f2.svg",
+      "bytes": 450,
+      "sha256": "7197659f91b0c4d4f9517e807aa8b1af64dac377562e1b972fa73ff1a1af4423",
+      "sourceLines": [
+        358,
+        436,
+        528,
+        599,
+        672,
+        745,
+        763
+      ],
+      "style": "bold",
+      "glyph": "uniEA00",
+      "unicode": "ea00",
+      "pathSha256": "8047472dd2230c27aef6086047047efebe5eb6cb669fda034626cf4194bf33ac",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/bold/Phosphor-Bold.ttf",
+      "sourceFontSha256": "b0b27f810a2646b0b48d243b119bc4f3ed727f1e4162e05bfe6e4f85018f4b7b",
+      "color": "#1d64f2",
+      "size": 12,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-caret-right-bold-1d64f2.svg",
+      "cmapGlyph": "uniEA00",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/bold/style.css",
+      "sourceCSSSHA256": "c2b4f3dbe9960e4ed9ffa0c78b19a2210f946cfb4bb01b53b4fce64afaee2961"
+    },
+    {
+      "candidate": "ph-navigation-arrow-fill-ffffff.svg",
+      "bytes": 532,
+      "sha256": "2cf1a94e4d65e11d08918d7675ace7c7c3c02f43205837fb01c349c68f881bc0",
+      "sourceLines": [
+        372
+      ],
+      "style": "fill",
+      "glyph": "uniEC0C",
+      "unicode": "ec0c",
+      "pathSha256": "decaac7010a00255222c5df23f9afb0e09c3e04c03eb5dbb63b8fb69a8842f6e",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/fill/Phosphor-Fill.ttf",
+      "sourceFontSha256": "3a8fd92374be66aa4c58db0caea81d3be4b6058288351550bcb4f946ae324267",
+      "color": "#ffffff",
+      "size": 8,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-navigation-arrow-fill-ffffff.svg",
+      "cmapGlyph": "uniEC0C",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/fill/style.css",
+      "sourceCSSSHA256": "2d2b5281299a3a849ac8d3ceb42b8e3107b820c20e4e82687bfc8ec4f7e9a0fc"
+    },
+    {
+      "candidate": "ph-sparkle-bold-ffffff.svg",
+      "bytes": 1368,
+      "sha256": "091df03561c05847019294bb665dec4a5d9aa8a7efcf098d6795da0572aa2601",
+      "sourceLines": [
+        404
+      ],
+      "style": "bold",
+      "glyph": "uniED0A",
+      "unicode": "ed0a",
+      "pathSha256": "d83608d941d923c1a259dfd0e953f15977091e0b1b89670da9da37e4e76da276",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/bold/Phosphor-Bold.ttf",
+      "sourceFontSha256": "b0b27f810a2646b0b48d243b119bc4f3ed727f1e4162e05bfe6e4f85018f4b7b",
+      "color": "#ffffff",
+      "size": 30,
+      "sourceAlphaConsumerCSS": ".3",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-sparkle-bold-ffffff.svg",
+      "cmapGlyph": "uniED0A",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/bold/style.css",
+      "sourceCSSSHA256": "c2b4f3dbe9960e4ed9ffa0c78b19a2210f946cfb4bb01b53b4fce64afaee2961"
+    },
+    {
+      "candidate": "ph-compass-bold-000000.svg",
+      "bytes": 1038,
+      "sha256": "9029ee41374dec22cc732b17c0196df9b5b84b0d0288d40b491734c6178083b9",
+      "sourceLines": [
+        412
+      ],
+      "style": "bold",
+      "glyph": "uniEA63",
+      "unicode": "ea63",
+      "pathSha256": "8a29ce22548c67fd18d0c573cb45b7917c654251e41e99e27358af12929adc9a",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/bold/Phosphor-Bold.ttf",
+      "sourceFontSha256": "b0b27f810a2646b0b48d243b119bc4f3ed727f1e4162e05bfe6e4f85018f4b7b",
+      "color": "#000000",
+      "size": 30,
+      "sourceAlphaConsumerCSS": ".15",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-compass-bold-000000.svg",
+      "cmapGlyph": "uniEA63",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/bold/style.css",
+      "sourceCSSSHA256": "c2b4f3dbe9960e4ed9ffa0c78b19a2210f946cfb4bb01b53b4fce64afaee2961"
+    },
+    {
+      "candidate": "ph-moon-stars-bold-000000.svg",
+      "bytes": 1660,
+      "sha256": "9565ea61028c247ad3f81ba5e8b6e229575ed78092cdec32ebfd2fded202e531",
+      "sourceLines": [
+        420
+      ],
+      "style": "bold",
+      "glyph": "uniEBFF",
+      "unicode": "ebff",
+      "pathSha256": "639262c5c0426fd40933984a4eb3f9c896d0ea92e040c43a01611bec114e39c1",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/bold/Phosphor-Bold.ttf",
+      "sourceFontSha256": "b0b27f810a2646b0b48d243b119bc4f3ed727f1e4162e05bfe6e4f85018f4b7b",
+      "color": "#000000",
+      "size": 30,
+      "sourceAlphaConsumerCSS": ".15",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-moon-stars-bold-000000.svg",
+      "cmapGlyph": "uniEBFF",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/bold/style.css",
+      "sourceCSSSHA256": "c2b4f3dbe9960e4ed9ffa0c78b19a2210f946cfb4bb01b53b4fce64afaee2961"
+    },
+    {
+      "candidate": "ph-users-three-fill-1d64f2.svg",
+      "bytes": 1702,
+      "sha256": "8e02aa3690b7c6c5acc986dd58af529f8e9244b4576702dc8102be07357a08f8",
+      "sourceLines": [
+        522
+      ],
+      "style": "fill",
+      "glyph": "uniEDAE",
+      "unicode": "edae",
+      "pathSha256": "f829da5a58cc22ee7a8bc44572b38eb390ca9105d698cbb8b92e0ad4816d4cd6",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/fill/Phosphor-Fill.ttf",
+      "sourceFontSha256": "3a8fd92374be66aa4c58db0caea81d3be4b6058288351550bcb4f946ae324267",
+      "color": "#1d64f2",
+      "size": 16,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-users-three-fill-1d64f2.svg",
+      "cmapGlyph": "uniEDAE",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/fill/style.css",
+      "sourceCSSSHA256": "2d2b5281299a3a849ac8d3ceb42b8e3107b820c20e4e82687bfc8ec4f7e9a0fc"
+    },
+    {
+      "candidate": "ph-caret-right-bold-94a3b8.svg",
+      "bytes": 450,
+      "sha256": "90051749b447935bded4ae2b47794086f6f615ace800123e2ddce3c547c6e052",
+      "sourceLines": [
+        539,
+        556,
+        573
+      ],
+      "style": "bold",
+      "glyph": "uniEA00",
+      "unicode": "ea00",
+      "pathSha256": "8047472dd2230c27aef6086047047efebe5eb6cb669fda034626cf4194bf33ac",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/bold/Phosphor-Bold.ttf",
+      "sourceFontSha256": "b0b27f810a2646b0b48d243b119bc4f3ed727f1e4162e05bfe6e4f85018f4b7b",
+      "color": "#94a3b8",
+      "size": 10,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-caret-right-bold-94a3b8.svg",
+      "cmapGlyph": "uniEA00",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/bold/style.css",
+      "sourceCSSSHA256": "c2b4f3dbe9960e4ed9ffa0c78b19a2210f946cfb4bb01b53b4fce64afaee2961"
+    },
+    {
+      "candidate": "ph-camera-bold-1d64f2.svg",
+      "bytes": 1094,
+      "sha256": "04f8dfd5991b297c34840982f8fcdfe78fc685172643c545d239ab34dcd8a581",
+      "sourceLines": [
+        593
+      ],
+      "style": "bold",
+      "glyph": "uniE9E9",
+      "unicode": "e9e9",
+      "pathSha256": "0672189eb3938a64437e64c60230eb82cfb8cdffbb103dd1bbe5142ea124dc63",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/bold/Phosphor-Bold.ttf",
+      "sourceFontSha256": "b0b27f810a2646b0b48d243b119bc4f3ed727f1e4162e05bfe6e4f85018f4b7b",
+      "color": "#1d64f2",
+      "size": 16,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-camera-bold-1d64f2.svg",
+      "cmapGlyph": "uniE9E9",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/bold/style.css",
+      "sourceCSSSHA256": "c2b4f3dbe9960e4ed9ffa0c78b19a2210f946cfb4bb01b53b4fce64afaee2961"
+    },
+    {
+      "candidate": "ph-chat-circle-dots-fill-1d64f2.svg",
+      "bytes": 1020,
+      "sha256": "be41440bd56d99b16536355b22bb730386f453e84fb958eba314db7564d7e862",
+      "sourceLines": [
+        611
+      ],
+      "style": "fill",
+      "glyph": "uniEA24",
+      "unicode": "ea24",
+      "pathSha256": "c317b933dbce736405a9e481d4d27cf54e7b3cf8693f54e60821d118302d81e5",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/fill/Phosphor-Fill.ttf",
+      "sourceFontSha256": "3a8fd92374be66aa4c58db0caea81d3be4b6058288351550bcb4f946ae324267",
+      "color": "#1d64f2",
+      "size": 16,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-chat-circle-dots-fill-1d64f2.svg",
+      "cmapGlyph": "uniEA24",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/fill/style.css",
+      "sourceCSSSHA256": "2d2b5281299a3a849ac8d3ceb42b8e3107b820c20e4e82687bfc8ec4f7e9a0fc"
+    },
+    {
+      "candidate": "ph-compass-fill-9333ea.svg",
+      "bytes": 724,
+      "sha256": "dd402abb938be1e898b328c992e77550c88d3544f55681fbfcb7814981a45ccb",
+      "sourceLines": [
+        739
+      ],
+      "style": "fill",
+      "glyph": "uniEA63",
+      "unicode": "ea63",
+      "pathSha256": "5a92144d98b3b2b3587ee96b624f3beac0ad5f98e2be99e87f72cfefd9d1903d",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/fill/Phosphor-Fill.ttf",
+      "sourceFontSha256": "3a8fd92374be66aa4c58db0caea81d3be4b6058288351550bcb4f946ae324267",
+      "color": "#9333ea",
+      "size": 16,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-compass-fill-9333ea.svg",
+      "cmapGlyph": "uniEA63",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/fill/style.css",
+      "sourceCSSSHA256": "2d2b5281299a3a849ac8d3ceb42b8e3107b820c20e4e82687bfc8ec4f7e9a0fc"
+    },
+    {
+      "candidate": "ph-map-pin-regular-e2e8f0.svg",
+      "bytes": 1143,
+      "sha256": "148aa500fe47f815941b2ddcbe4221e1f3124dac744e9780e80379c4c6257fa6",
+      "sourceLines": [
+        748
+      ],
+      "style": "regular",
+      "glyph": "uniEBE0",
+      "unicode": "ebe0",
+      "pathSha256": "4e9e9e17e93c0eec21cc80829652f974dc7b51593bc127a8fbd22cd02b010145",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/regular/Phosphor.ttf",
+      "sourceFontSha256": "83034c352ef88208a6433526ebe04139caa3fabc28912c465992d791e29a4593",
+      "color": "#e2e8f0",
+      "size": 10,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-map-pin-regular-e2e8f0.svg",
+      "cmapGlyph": "uniEBE0",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/regular/style.css",
+      "sourceCSSSHA256": "ae360472b03f686e8327d0440ac943bbf3e25ae3a833e7ff530aef1ce33ab44d"
+    },
+    {
+      "candidate": "ph-buildings-fill-4f46e5.svg",
+      "bytes": 2283,
+      "sha256": "98deb52817a1c07898a2e4ba5ca222b9a55073f80968ee800fd94dfc0c0507af",
+      "sourceLines": [
+        757
+      ],
+      "style": "fill",
+      "glyph": "uniE9DD",
+      "unicode": "e9dd",
+      "pathSha256": "087b5434459b9f1ed7c4a778aaaa3a5e7a61048d1065157f1ac1f51e146fe794",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/fill/Phosphor-Fill.ttf",
+      "sourceFontSha256": "3a8fd92374be66aa4c58db0caea81d3be4b6058288351550bcb4f946ae324267",
+      "color": "#4f46e5",
+      "size": 16,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-buildings-fill-4f46e5.svg",
+      "cmapGlyph": "uniE9DD",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/fill/style.css",
+      "sourceCSSSHA256": "2d2b5281299a3a849ac8d3ceb42b8e3107b820c20e4e82687bfc8ec4f7e9a0fc"
+    },
+    {
+      "candidate": "ph-arrow-right-bold-1d64f2.svg",
+      "bytes": 530,
+      "sha256": "824bf805f5d6f6336875d21005394fe29f920a01eb51c9f21e7a695d40902726",
+      "sourceLines": [
+        785
+      ],
+      "style": "bold",
+      "glyph": "uniE95C",
+      "unicode": "e95c",
+      "pathSha256": "59c506ed54cbf353deacb2cca76faf9f4639f77831ed71bad24f7dcd67e64fff",
+      "sourceFont": "docs/design-sources/phosphor-web-2.0.3/bold/Phosphor-Bold.ttf",
+      "sourceFontSha256": "b0b27f810a2646b0b48d243b119bc4f3ed727f1e4162e05bfe6e4f85018f4b7b",
+      "color": "#1d64f2",
+      "size": 16,
+      "sourceAlphaConsumerCSS": "1",
+      "budgetNotProduct": false,
+      "runtimePath": "miniprogram/pages/discover/assets/w74-ph-arrow-right-bold-1d64f2.svg",
+      "cmapGlyph": "uniE95C",
+      "upem": 1024,
+      "ascent": 960,
+      "transform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "outlineEqual": true,
+      "sourceCSSPath": "docs/design-sources/phosphor-web-2.0.3/bold/style.css",
+      "sourceCSSSHA256": "c2b4f3dbe9960e4ed9ffa0c78b19a2210f946cfb4bb01b53b4fce64afaee2961"
+    }
+  ],
+  "glyphBudget": {
+    "newSVGCount": 18,
+    "newSVGBytes": 18787,
+    "newFontBytes": 0,
+    "reused": [
+      "miniprogram/pages/discover/assets/ph-heart-bold.svg",
+      "miniprogram/pages/discover/assets/ph-map-pin-regular.svg"
+    ],
+    "license": "docs/licenses/phosphor-web-2.0.3-MIT.txt",
+    "boundary": "Unrounded official 2.0.3 regular/bold/fill outlines, official Unicode/viewBox/opaque fill. Alpha remains accurate consumer CSS. No Material replacement."
+  },
+  "checks": {
+    "path": "docs/design-sources/caper-discover-long-page-wave74/targeted-source-check.json",
+    "sha256": "c703982e0b0f48d636818e57dc906420196c83c18d06c53f676e0d7d9a7dd31d",
+    "pass": true,
+    "checks": 138,
+    "longActions": 28,
+    "newGlyphs": 18,
+    "newGlyphBytes": 18787,
+    "newFontBytes": 0,
+    "mainRawNetDeltaExcludingRootJSON": 54551,
+    "protected": [
+      "whole WXML inverse to baseline",
+      "entire old CSS prefix",
+      "unchanged business JS",
+      "root-only JSON component registration",
+      "core/availability/invite/actions/guards exact through whole inverse"
+    ]
+  },
+  "inverse": {
+    "path": "docs/design-sources/caper-discover-long-page-wave74/wxml-inverse-edits.json",
+    "sha256": "7dc4f053b9483ff882ded4766d3500fec818da20d15775565557c7522f321a8c"
+  },
+  "runtimeBoundary": "Root alone tests new page scopes/park native component/CLI package budget; no production, physical device, exact pixel or all39screens acceptance claim here."
+}

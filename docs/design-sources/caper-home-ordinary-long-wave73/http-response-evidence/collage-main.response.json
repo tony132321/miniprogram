@@ -1,0 +1,32 @@
+{
+  "sourceLine": 589,
+  "sourceAlt": "朋友聚会",
+  "URL": "https://lh3.googleusercontent.com/aida-public/AB6AXuDlO_BnR-cyEOfX8NcKDRMBoyw5xk921FHr0rw0XCjgSqPIPwAkTFXWx_4C9U8Tc_nNPnsAUynsOGRr_oEL3_RnfxELAQkOfMUxvSFx9mDrxWcqLNIlT2G6mA1zkWctJBxPGs67xYg_wmxqs9C_yn7BzUKWCuBykW8AFaOPovRLxin3sB5i4odprtTFLY301KQe-HAxdw3sctR2NRGCutqk0QhQGMCnfmddvxFhDiCblAeGj9M9mj_1hw",
+  "finalURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuDlO_BnR-cyEOfX8NcKDRMBoyw5xk921FHr0rw0XCjgSqPIPwAkTFXWx_4C9U8Tc_nNPnsAUynsOGRr_oEL3_RnfxELAQkOfMUxvSFx9mDrxWcqLNIlT2G6mA1zkWctJBxPGs67xYg_wmxqs9C_yn7BzUKWCuBykW8AFaOPovRLxin3sB5i4odprtTFLY301KQe-HAxdw3sctR2NRGCutqk0QhQGMCnfmddvxFhDiCblAeGj9M9mj_1hw",
+  "status": 200,
+  "headers": {
+    "Content-Type": "image/jpeg",
+    "Vary": "Origin",
+    "Access-Control-Allow-Origin": "*",
+    "Timing-Allow-Origin": "*",
+    "Access-Control-Expose-Headers": "Content-Length",
+    "ETag": "\"v0\"",
+    "Expires": "Sat, 03 Oct 2026 02:03:48 GMT",
+    "Cache-Control": "public, max-age=86400, no-transform",
+    "Content-Disposition": "inline;filename=\"unnamed.jpg\"",
+    "X-Content-Type-Options": "nosniff",
+    "Date": "Fri, 02 Oct 2026 02:03:48 GMT",
+    "Server": "fife",
+    "Content-Length": "77396",
+    "X-XSS-Protection": "0",
+    "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "Connection": "close"
+  },
+  "contentType": "image/jpeg",
+  "bytes": 77396,
+  "sha256": "e990073eed579ac88dd91be60ff6c1e4888fe803fb53ab1ac9383ab7164d9dca",
+  "savedPath": "/private/tmp/caper-wave73-home-long/photos/collage-main.jpg",
+  "noReencoding": true,
+  "fetchedAtUTC": "2026-10-02T02:03:49.121971+00:00",
+  "existingByteEqualCandidates": []
+}

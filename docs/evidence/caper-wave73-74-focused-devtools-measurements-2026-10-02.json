@@ -1,0 +1,4322 @@
+{
+  "scope": "Only W73/74 frozen ordinary home/discover/INBOX and exact async photos/font delta; no full tests, CI or all-page end-to-end claim",
+  "generatedAtUTC": "2026-10-02T03:53:57.987631Z",
+  "sdkSuccessAssertions": 117,
+  "retainedFailedAuxiliaryOrExpectationAssertions": 5,
+  "assertionCountBoundary": "Includes geometry/exception guards and partial segments; not117 business cases. Original early home modal capture failure was reported but its JSON was overwritten, excluded from retained raw count; no reconstructed raw record or pass claim. Auxiliary probes separate.",
+  "segments": [
+    {
+      "script": "home-geometry",
+      "sourceSHA256": "a09383ff194d285f933414b202df490020624fc3abaf701efa0b5aefd84139af",
+      "result": {
+        "scope": "Only ordinary home long source geometry, actual11 async photo consumers and final8 font callbacks",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Ordinary long page only on unchanged default attending state"
+          },
+          {
+            "pass": true,
+            "label": "Final expanded700 and original6 plus600 actually loaded",
+            "actual": {
+              "source": "loaded",
+              "faces": [
+                {
+                  "family": "Caveat",
+                  "weight": "700",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Plus Jakarta Sans",
+                  "weight": "400",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Plus Jakarta Sans",
+                  "weight": "600",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Plus Jakarta Sans",
+                  "weight": "700",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Plus Jakarta Sans",
+                  "weight": "800",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Rubik Mono One",
+                  "weight": "400",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Caper Jakarta Profile 500",
+                  "weight": "500",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Caveat",
+                  "weight": "600",
+                  "status": "loaded"
+                }
+              ]
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source brand frame176",
+            "actual": {
+              "selector": ".home-long-reference .brand-ribbon",
+              "value": {
+                "left": 16,
+                "right": 386,
+                "top": 1077,
+                "bottom": 1253,
+                "width": 370,
+                "height": 176,
+                "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                "font-size": "16px",
+                "line-height": "24px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(17, 24, 39)",
+                "display": "block",
+                "color": "rgb(255, 255, 255)"
+              }
+            }
+          },
+          {
+            "pass": true,
+            "label": "Brand component fills source frame",
+            "actual": {
+              "selector": ".home-long-reference .brand-ribbon >>> .reference-photo",
+              "value": {
+                "left": 16,
+                "right": 386,
+                "top": 1077,
+                "bottom": 1253,
+                "width": 370,
+                "height": 176,
+                "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                "font-size": "16px",
+                "line-height": "24px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(0, 0, 0, 0)",
+                "display": "block",
+                "color": "rgb(255, 255, 255)"
+              }
+            }
+          },
+          {
+            "pass": false,
+            "label": "Source fixed hot frame and only inner image80",
+            "actual": [
+              {
+                "selector": ".home-long-reference .home-hot-frame",
+                "value": {
+                  "left": 16,
+                  "right": 102.5,
+                  "top": 1337.5,
+                  "bottom": 1417.5,
+                  "width": 86.5,
+                  "height": 80,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                  "font-size": "18px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(229, 231, 235)",
+                  "display": "block",
+                  "color": "rgb(0, 0, 0)"
+                }
+              },
+              {
+                "selector": ".home-long-reference .home-hot-grid >>> .home-hot-photo",
+                "value": {
+                  "left": 16,
+                  "top": 1337.5,
+                  "width": 370,
+                  "height": 131.5,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                  "font-weight": "400"
+                },
+                "adapter": "SDK Element read fallback; native wx selector returned null"
+              }
+            ]
+          }
+        ],
+        "metrics": [
+          {
+            "name": "nativeSourceGeometry",
+            "g": [
+              {
+                "selector": ".home-long-reference .brand-ribbon",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 1077,
+                  "bottom": 1253,
+                  "width": 370,
+                  "height": 176,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(17, 24, 39)",
+                  "display": "block",
+                  "color": "rgb(255, 255, 255)"
+                }
+              },
+              {
+                "selector": ".home-long-reference .brand-ribbon >>> .reference-photo",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 1077,
+                  "bottom": 1253,
+                  "width": 370,
+                  "height": 176,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(255, 255, 255)"
+                }
+              },
+              {
+                "selector": ".home-long-reference .home-hot-frame",
+                "value": {
+                  "left": 16,
+                  "right": 102.5,
+                  "top": 1337.5,
+                  "bottom": 1417.5,
+                  "width": 86.5,
+                  "height": 80,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                  "font-size": "18px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(229, 231, 235)",
+                  "display": "block",
+                  "color": "rgb(0, 0, 0)"
+                }
+              },
+              {
+                "selector": ".home-long-reference .home-hot-grid >>> .home-hot-photo",
+                "value": {
+                  "left": 16,
+                  "top": 1337.5,
+                  "width": 370,
+                  "height": 131.5,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                  "font-weight": "400"
+                },
+                "adapter": "SDK Element read fallback; native wx selector returned null"
+              },
+              {
+                "selector": ".home-long-reference .home-idea-list >>> .home-idea-photo",
+                "value": {
+                  "left": 16,
+                  "top": 2044,
+                  "width": 370,
+                  "height": 268,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                  "font-weight": "400"
+                },
+                "adapter": "SDK Element read fallback; native wx selector returned null"
+              },
+              {
+                "selector": ".home-long-reference .home-photo-collage >>> .home-collage-photo",
+                "value": {
+                  "left": 16,
+                  "top": 2392,
+                  "width": 370,
+                  "height": 256,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                  "font-weight": "400"
+                },
+                "adapter": "SDK Element read fallback; native wx selector returned null"
+              },
+              {
+                "selector": ".home-long-reference .home-city-banner",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 2884.5,
+                  "bottom": 3076.5,
+                  "width": 370,
+                  "height": 192,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(17, 24, 39)",
+                  "display": "block",
+                  "color": "rgb(255, 255, 255)"
+                }
+              },
+              {
+                "selector": ".home-long-reference .home-city-hand",
+                "value": {
+                  "left": 224.4202880859375,
+                  "right": 366.3218994140625,
+                  "top": 3028.814453125,
+                  "bottom": 3052.185546875,
+                  "width": 141.901611328125,
+                  "height": 23.37109375,
+                  "font-family": "Caveat, \"Permanent Marker\", cursive, sans-serif",
+                  "font-size": "12px",
+                  "line-height": "16px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(255, 255, 255)"
+                }
+              }
+            ]
+          }
+        ],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave73/74 ordinary home/discover/INBOX and shared async photos/fonts. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "pass": false,
+        "failure": {
+          "phase": "connect",
+          "message": "Source fixed hot frame and only inner image80",
+          "stack": "AssertionError [ERR_ASSERTION]: Source fixed hot frame and only inner image80\n    at check (/private/tmp/caper-wave73-74-sdk-helpers.cjs:16:80)\n    at /private/tmp/caper-wave73-74-home-geometry.cjs:2:1552\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async run (/private/tmp/caper-wave73-74-sdk-helpers.cjs:22:3)",
+          "currentPage": "pages/index/index"
+        },
+        "elapsedMs": 6933
+      }
+    },
+    {
+      "script": "home-geometry-remaining",
+      "sourceSHA256": "cf5beff2d4d7352aa7757adc829aa05a784965240f70f7e93fa5f50e7f5076c2",
+      "result": {
+        "scope": "Only ordinary home long source geometry, actual11 async photo consumers and final8 font callbacks",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Source fixed hot frame and only inner image80",
+            "actual": [
+              {
+                "selector": ".home-long-reference .home-hot-frame",
+                "value": {
+                  "left": 16,
+                  "right": 102.5,
+                  "top": 1337.5,
+                  "bottom": 1417.5,
+                  "width": 86.5,
+                  "height": 80,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                  "font-size": "18px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(229, 231, 235)",
+                  "display": "block",
+                  "color": "rgb(0, 0, 0)"
+                }
+              },
+              {
+                "selector": ".home-long-reference .home-hot-frame >>> .reference-photo",
+                "value": {
+                  "left": 16,
+                  "right": 102.5,
+                  "top": 1337.5,
+                  "bottom": 1417.5,
+                  "width": 86.5,
+                  "height": 80,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                  "font-size": "18px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(0, 0, 0)"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "Source exact idea component48 square",
+            "actual": {
+              "selector": ".home-long-reference .home-idea-list >>> .reference-photo",
+              "value": {
+                "left": 35,
+                "right": 83,
+                "top": 2075,
+                "bottom": 2123,
+                "width": 48,
+                "height": 48,
+                "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                "font-size": "18px",
+                "line-height": "normal",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(0, 0, 0, 0)",
+                "display": "block",
+                "color": "rgb(0, 0, 0)"
+              }
+            }
+          },
+          {
+            "pass": true,
+            "label": "Collage component has actual inherited dimensions",
+            "actual": {
+              "selector": ".home-long-reference .home-photo-main >>> .reference-photo",
+              "value": {
+                "left": 20,
+                "right": 227.828125,
+                "top": 2396,
+                "bottom": 2644,
+                "width": 207.828125,
+                "height": 248,
+                "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                "font-size": "18px",
+                "line-height": "normal",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(0, 0, 0, 0)",
+                "display": "block",
+                "color": "rgb(0, 0, 0)"
+              }
+            }
+          },
+          {
+            "pass": true,
+            "label": "City original192 and nominal400",
+            "actual": [
+              {
+                "selector": ".home-long-reference .home-city-banner",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 2884.5,
+                  "bottom": 3076.5,
+                  "width": 370,
+                  "height": 192,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(17, 24, 39)",
+                  "display": "block",
+                  "color": "rgb(255, 255, 255)"
+                }
+              },
+              {
+                "selector": ".home-long-reference .home-city-hand",
+                "value": {
+                  "left": 224.4202880859375,
+                  "right": 366.3218994140625,
+                  "top": 3028.814453125,
+                  "bottom": 3052.185546875,
+                  "width": 141.901611328125,
+                  "height": 23.37109375,
+                  "font-family": "Caveat, \"Permanent Marker\", cursive, sans-serif",
+                  "font-size": "12px",
+                  "line-height": "16px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(255, 255, 255)"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "All11 intended consumers replaced by exact packaged photos",
+            "actual": [
+              {
+                "width": 370,
+                "height": 176,
+                "src": "/subpackages/profile/components/reference-image/assets/home-brand-party.jpg"
+              },
+              {
+                "width": 86.5,
+                "height": 80,
+                "src": "/subpackages/profile/components/reference-image/assets/home-hot-tennis.jpg"
+              },
+              {
+                "width": 86.5,
+                "height": 80,
+                "src": "/subpackages/profile/components/reference-image/assets/home-hot-coffee.jpg"
+              },
+              {
+                "width": 86.5,
+                "height": 80,
+                "src": "/subpackages/profile/components/reference-image/assets/home-hot-frisbee.jpg"
+              },
+              {
+                "width": 86.5,
+                "height": 80,
+                "src": "/subpackages/profile/components/reference-image/assets/home-hot-boardgame.jpg"
+              },
+              {
+                "width": 48,
+                "height": 48,
+                "src": "/subpackages/profile/components/reference-image/assets/home-idea-badminton.jpg"
+              },
+              {
+                "width": 48,
+                "height": 48,
+                "src": "/subpackages/profile/components/reference-image/assets/home-idea-coffee.jpg"
+              },
+              {
+                "width": 48,
+                "height": 48,
+                "src": "/subpackages/profile/components/reference-image/assets/home-idea-cycling.jpg"
+              },
+              {
+                "width": 207.828125,
+                "height": 248,
+                "src": "/subpackages/profile/components/reference-image/assets/home-collage-main.jpg"
+              },
+              {
+                "width": 146.171875,
+                "height": 124,
+                "src": "/subpackages/profile/components/reference-image/assets/home-collage-dinner.jpg"
+              },
+              {
+                "width": 146.171875,
+                "height": 124,
+                "src": "/subpackages/profile/components/reference-image/assets/home-collage-grass.jpg"
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [
+          {
+            "name": "nativeSourceGeometry",
+            "g": [
+              {
+                "selector": ".home-long-reference .brand-ribbon",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 1077,
+                  "bottom": 1253,
+                  "width": 370,
+                  "height": 176,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(17, 24, 39)",
+                  "display": "block",
+                  "color": "rgb(255, 255, 255)"
+                }
+              },
+              {
+                "selector": ".home-long-reference .brand-ribbon >>> .reference-photo",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 1077,
+                  "bottom": 1253,
+                  "width": 370,
+                  "height": 176,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(255, 255, 255)"
+                }
+              },
+              {
+                "selector": ".home-long-reference .home-hot-frame",
+                "value": {
+                  "left": 16,
+                  "right": 102.5,
+                  "top": 1337.5,
+                  "bottom": 1417.5,
+                  "width": 86.5,
+                  "height": 80,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                  "font-size": "18px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(229, 231, 235)",
+                  "display": "block",
+                  "color": "rgb(0, 0, 0)"
+                }
+              },
+              {
+                "selector": ".home-long-reference .home-hot-frame >>> .reference-photo",
+                "value": {
+                  "left": 16,
+                  "right": 102.5,
+                  "top": 1337.5,
+                  "bottom": 1417.5,
+                  "width": 86.5,
+                  "height": 80,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                  "font-size": "18px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(0, 0, 0)"
+                }
+              },
+              {
+                "selector": ".home-long-reference .home-idea-list >>> .reference-photo",
+                "value": {
+                  "left": 35,
+                  "right": 83,
+                  "top": 2075,
+                  "bottom": 2123,
+                  "width": 48,
+                  "height": 48,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                  "font-size": "18px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(0, 0, 0)"
+                }
+              },
+              {
+                "selector": ".home-long-reference .home-photo-main >>> .reference-photo",
+                "value": {
+                  "left": 20,
+                  "right": 227.828125,
+                  "top": 2396,
+                  "bottom": 2644,
+                  "width": 207.828125,
+                  "height": 248,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                  "font-size": "18px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(0, 0, 0)"
+                }
+              },
+              {
+                "selector": ".home-long-reference .home-city-banner",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 2884.5,
+                  "bottom": 3076.5,
+                  "width": 370,
+                  "height": 192,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(17, 24, 39)",
+                  "display": "block",
+                  "color": "rgb(255, 255, 255)"
+                }
+              },
+              {
+                "selector": ".home-long-reference .home-city-hand",
+                "value": {
+                  "left": 224.4202880859375,
+                  "right": 366.3218994140625,
+                  "top": 3028.814453125,
+                  "bottom": 3052.185546875,
+                  "width": 141.901611328125,
+                  "height": 23.37109375,
+                  "font-family": "Caveat, \"Permanent Marker\", cursive, sans-serif",
+                  "font-size": "12px",
+                  "line-height": "16px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(255, 255, 255)"
+                }
+              }
+            ]
+          }
+        ],
+        "screenshots": [
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-home-long-brand-hot-wave73-74-2026-10-02.png",
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-home-long-collage-city-wave73-74-2026-10-02.png"
+        ],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave73/74 ordinary home/discover/INBOX and shared async photos/fonts. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "pass": true,
+        "elapsedMs": 9065
+      }
+    },
+    {
+      "script": "home-inspirations",
+      "sourceSHA256": "c1e77a3031f0269a0ec9f4bdb7745525e2d1909ca4dcd728a9659a4ea60d880c",
+      "result": {
+        "scope": "Only15 unchanged inspiration buttons on restored ordinary home long; explicitSDK cancel, no native modal/submit",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Source inspiration button retains controlled cancel: .home-long-reference .inspiration-card 0",
+            "actual": {
+              "title": "周末聚餐"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source inspiration button retains controlled cancel: .home-long-reference .inspiration-card 1",
+            "actual": {
+              "title": "户外徒步"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source inspiration button retains controlled cancel: .home-long-reference .home-hot-grid button 0",
+            "actual": {
+              "title": "网球新手局"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source inspiration button retains controlled cancel: .home-long-reference .home-hot-grid button 1",
+            "actual": {
+              "title": "咖啡探店"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source inspiration button retains controlled cancel: .home-long-reference .home-hot-grid button 2",
+            "actual": {
+              "title": "户外轻运动"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source inspiration button retains controlled cancel: .home-long-reference .home-hot-grid button 3",
+            "actual": {
+              "title": "桌游之夜"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source inspiration button retains controlled cancel: .home-long-reference .home-theme-grid button 0",
+            "actual": {
+              "title": "下班快乐局"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source inspiration button retains controlled cancel: .home-long-reference .home-theme-grid button 1",
+            "actual": {
+              "title": "周末出逃"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source inspiration button retains controlled cancel: .home-long-reference .home-theme-grid button 2",
+            "actual": {
+              "title": "女生友好"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source inspiration button retains controlled cancel: .home-long-reference .home-theme-grid button 3",
+            "actual": {
+              "title": "新手友好"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source inspiration button retains controlled cancel: .home-long-reference .home-idea-list button 1",
+            "actual": {
+              "title": "周末咖啡局"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source inspiration button retains controlled cancel: .home-long-reference .home-idea-list button 2",
+            "actual": {
+              "title": "城市漫步"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source inspiration button retains controlled cancel: .home-long-reference .home-photo-collage button 0",
+            "actual": {
+              "title": "朋友相聚"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source inspiration button retains controlled cancel: .home-long-reference .home-photo-collage button 1",
+            "actual": {
+              "title": "朋友聚餐"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source inspiration button retains controlled cancel: .home-long-reference .home-photo-collage button 2",
+            "actual": {
+              "title": "户外相聚"
+            }
+          },
+          {
+            "pass": true,
+            "label": "All15 original named inspiration consumers visited once",
+            "actual": {
+              "count": 15
+            }
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave73/74 ordinary home/discover/INBOX and shared async photos/fonts. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "pass": true,
+        "elapsedMs": 5819
+      }
+    },
+    {
+      "script": "home-routes-top",
+      "sourceSHA256": "59cba6f9940321afc819e493f2b848660bb323e3beee1681f35be7e200f142c5",
+      "result": {
+        "scope": "Only changed home long existing top routes; no draft/registration submission",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Source button reaches original destination: .home-recommended-section .section-link",
+            "actual": {
+              "path": "pages/create/create"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source button reaches original destination: .home-hot-section .home-long-head button",
+            "actual": {
+              "path": "pages/discover/discover"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source button reaches original destination: .home-personal-section .home-long-head button",
+            "actual": {
+              "path": "subpackages/activity/itinerary/itinerary"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source button reaches original destination: .home-idea-section .home-idea-link",
+            "actual": {
+              "path": "pages/create/create"
+            }
+          }
+        ],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave73/74 ordinary home/discover/INBOX and shared async photos/fonts. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "pass": false,
+        "failure": {
+          "phase": "connect",
+          "message": "55 second bounded watchdog"
+        },
+        "elapsedMs": 55003
+      }
+    },
+    {
+      "script": "home-routes-top-remaining",
+      "sourceSHA256": "6698c553193875f8bf10a21b6c27d023555f60bb47e2c97fae62acbce183de3e",
+      "result": {
+        "scope": "Only changed home long existing top routes; no draft/registration submission",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Source button reaches original destination: .home-idea-banner",
+            "actual": {
+              "path": "pages/create/create"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source button reaches original destination: .home-idea-list button",
+            "actual": {
+              "path": "pages/create/create"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Existing actual member activity shown in source personal card",
+            "actual": {
+              "count": 1
+            }
+          },
+          {
+            "pass": true,
+            "label": "Personal source card reaches same actual event ID",
+            "actual": {
+              "id": "0e51f241-3f63-439d-b59d-593549a61ac2"
+            }
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave73/74 ordinary home/discover/INBOX and shared async photos/fonts. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "pass": true,
+        "elapsedMs": 13158
+      }
+    },
+    {
+      "script": "home-routes-lower",
+      "sourceSHA256": "c236d009dbaf14622cb013ab183ffb5f9e0fa7e0739dba4afb243209529f1894",
+      "result": {
+        "scope": "Only changed home long existing lower routes; no business submit",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Source button reaches original destination: .home-collage-section .home-long-head button ",
+            "actual": {
+              "path": "pages/discover/discover"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source button reaches original destination: .home-trust-section .home-long-head button ",
+            "actual": {
+              "path": "pages/about/about"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source button reaches original destination: .home-trust-row button 0",
+            "actual": {
+              "path": "pages/about/about"
+            }
+          }
+        ],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave73/74 ordinary home/discover/INBOX and shared async photos/fonts. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "pass": false,
+        "failure": {
+          "phase": "connect",
+          "message": "timeout waiting for automator response",
+          "stack": "Error: timeout waiting for automator response\n    at Connection.onMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/miniprogram-automator@0.12.1/node_modules/miniprogram-automator/out/Connection.js:1:985)\n    at Transport.emit (node:events:509:28)\n    at WebSocket.<anonymous> (/private/tmp/project-irl-automator/node_modules/.pnpm/miniprogram-automator@0.12.1/node_modules/miniprogram-automator/out/Transport.js:1:220)\n    at WebSocket.onMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/event-target.js:120:16)\n    at WebSocket.emit (node:events:509:28)\n    at Receiver.receiverOnMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/websocket.js:807:20)\n    at Receiver.emit (node:events:509:28)\n    at Receiver.dataMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:448:14)\n    at Receiver.getData (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:377:17)\n    at Receiver.startLoop (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:158:22)",
+          "currentPage": "pages/index/index"
+        },
+        "elapsedMs": 32084
+      }
+    },
+    {
+      "script": "home-routes-lower-remaining",
+      "sourceSHA256": "a31b05814a559af261a1e755569efd60d756cde3530c2e78834539d3a63dbda9",
+      "result": {
+        "scope": "Only changed home long existing lower routes; no business submit",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Source button reaches original destination: .home-trust-row button 1",
+            "actual": {
+              "path": "subpackages/profile/guidelines/guidelines"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source button reaches original destination: .home-city-banner button ",
+            "actual": {
+              "path": "pages/city/city"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source button reaches original destination: .home-final-cta button ",
+            "actual": {
+              "path": "pages/create/create"
+            }
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave73/74 ordinary home/discover/INBOX and shared async photos/fonts. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "pass": true,
+        "elapsedMs": 31936
+      }
+    },
+    {
+      "script": "discover-static",
+      "sourceSHA256": "ddb96d98ab4b46c8fb45378058ae81ed773d9aa3a9e915bc5e744d5471ed52c1",
+      "result": {
+        "scope": "Only affected discover long static existing inspiration/rotation/favorite closed actions; explicitSDK modal cancel",
+        "checks": [
+          {
+            "pass": false,
+            "label": "Actual existing recommendation set rotates"
+          }
+        ],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave73/74 ordinary home/discover/INBOX and shared async photos/fonts. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "pass": false,
+        "failure": {
+          "phase": "connect",
+          "message": "Actual existing recommendation set rotates",
+          "stack": "AssertionError [ERR_ASSERTION]: Actual existing recommendation set rotates\n    at check (/private/tmp/caper-wave73-74-sdk-helpers.cjs:16:80)\n    at /private/tmp/caper-wave73-74-discover-static.cjs:2:611\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async run (/private/tmp/caper-wave73-74-sdk-helpers.cjs:22:3)",
+          "currentPage": "pages/discover/discover"
+        },
+        "elapsedMs": 812
+      }
+    },
+    {
+      "script": "discover-static-ready",
+      "sourceSHA256": "0666c6ec2d321c38437c3477d6be99166f7c056b01c509335fba4957878fb9a8",
+      "result": {
+        "scope": "Only affected discover long static existing inspiration/rotation/favorite closed actions; explicitSDK modal cancel",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Actual existing recommendation set rotates"
+          },
+          {
+            "pass": true,
+            "label": "Existing inspiration modal receives actual source dataset: .d74-recommend-card 0",
+            "actual": {
+              "title": "春日露营"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Existing inspiration modal receives actual source dataset: .d74-recommend-card 1",
+            "actual": {
+              "title": "城市漫步"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Existing inspiration modal receives actual source dataset: .d74-recommend-card 2",
+            "actual": {
+              "title": "周五桌游局"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Existing inspiration modal receives actual source dataset: .d74-campaign-card 0",
+            "actual": {
+              "title": "女生友好"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Existing inspiration modal receives actual source dataset: .d74-campaign-card 1",
+            "actual": {
+              "title": "新手友好"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Existing inspiration modal receives actual source dataset: .d74-campaign-card 2",
+            "actual": {
+              "title": "今晚有空"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Existing inspiration modal receives actual source dataset: .d74-weekly-card 0",
+            "actual": {
+              "title": "春日野餐"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Existing inspiration modal receives actual source dataset: .d74-weekly-card 1",
+            "actual": {
+              "title": "胶片摄影"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Existing inspiration modal receives actual source dataset: .d74-weekly-card 2",
+            "actual": {
+              "title": "烘焙体验"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Existing inspiration modal receives actual source dataset: .d74-weekly-card 3",
+            "actual": {
+              "title": "城市走读"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Existing inspiration modal receives actual source dataset: .d74-weekly-card 4",
+            "actual": {
+              "title": "近郊徒步"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Existing inspiration modal receives actual source dataset: .d74-weekly-card 5",
+            "actual": {
+              "title": "咖啡馆聊天"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Existing inspiration modal receives actual source dataset: .d74-route-card 0",
+            "actual": {
+              "title": "城市漫步"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Existing inspiration modal receives actual source dataset: .d74-route-card 1",
+            "actual": {
+              "title": "山野徒步"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Existing inspiration modal receives actual source dataset: .d74-place-card 0",
+            "actual": {
+              "title": "咖啡馆聊天"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Existing inspiration modal receives actual source dataset: .d74-place-card 1",
+            "actual": {
+              "title": "球场约局"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Existing inspiration modal receives actual source dataset: .d74-place-card 2",
+            "actual": {
+              "title": "周末看展"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Existing inspiration modal receives actual source dataset: .d74-place-card 3",
+            "actual": {
+              "title": "户外公园"
+            }
+          },
+          {
+            "pass": false,
+            "label": "All17 actual long inspiration consumers visited once",
+            "actual": {
+              "count": 18
+            }
+          }
+        ],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave73/74 ordinary home/discover/INBOX and shared async photos/fonts. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "pass": false,
+        "failure": {
+          "phase": "connect",
+          "message": "All17 actual long inspiration consumers visited once",
+          "stack": "AssertionError [ERR_ASSERTION]: All17 actual long inspiration consumers visited once\n    at check (/private/tmp/caper-wave73-74-sdk-helpers.cjs:16:80)\n    at /private/tmp/caper-wave73-74-discover-static-ready.cjs:2:1645\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async run (/private/tmp/caper-wave73-74-sdk-helpers.cjs:22:3)",
+          "currentPage": "pages/discover/discover"
+        },
+        "elapsedMs": 2128
+      }
+    },
+    {
+      "script": "discover-favorites-remaining",
+      "sourceSHA256": "2a64a059cb109517d34b640bb5fe8182cc812a82a4142ac694086fbe3c05271b",
+      "result": {
+        "scope": "Only remaining actual favorite catchtap guards; no inspiration tap rerun",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Actual favorite closed and no parent modal bubble 0",
+            "actual": {
+              "count": 3
+            }
+          },
+          {
+            "pass": true,
+            "label": "Actual favorite closed and no parent modal bubble 1",
+            "actual": {
+              "count": 3
+            }
+          },
+          {
+            "pass": true,
+            "label": "Actual favorite closed and no parent modal bubble 2",
+            "actual": {
+              "count": 3
+            }
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave73/74 ordinary home/discover/INBOX and shared async photos/fonts. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "nativeModal": "SDK callback only",
+        "pass": true,
+        "elapsedMs": 7290
+      }
+    },
+    {
+      "script": "discover-geometry",
+      "sourceSHA256": "ccbb734be7e5e7b58ebb2e9147ceffd9c05f00fab008710908ae17fa6028ef04",
+      "result": {
+        "scope": "Only new discover long source geometry/actual async park and honest closed/real list projections",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Actual current Shenzhen event appears in nearby-personal only"
+          },
+          {
+            "pass": true,
+            "label": "Source recommendation200/image112",
+            "actual": [
+              {
+                "selector": ".d74-recommend-card",
+                "value": {
+                  "left": 16,
+                  "right": 216,
+                  "top": 965.5,
+                  "bottom": 1181.5,
+                  "width": 200,
+                  "height": 216,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(255, 255, 255)",
+                  "display": "block",
+                  "color": "rgb(15, 23, 42)"
+                }
+              },
+              {
+                "selector": ".d74-recommend-cover",
+                "value": {
+                  "left": 17,
+                  "right": 215,
+                  "top": 966.5,
+                  "bottom": 1078.5,
+                  "width": 198,
+                  "height": 112,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(15, 23, 42)"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "Real personal source card200/image80",
+            "actual": [
+              {
+                "selector": ".d74-personal-card",
+                "value": {
+                  "left": 16,
+                  "right": 216,
+                  "top": 1825,
+                  "bottom": 2008,
+                  "width": 200,
+                  "height": 183,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "10px",
+                  "padding-bottom": "10px",
+                  "background-color": "rgb(248, 250, 252)",
+                  "display": "block",
+                  "color": "rgb(15, 23, 42)"
+                }
+              },
+              {
+                "selector": ".d74-personal-cover",
+                "value": {
+                  "left": 27,
+                  "right": 205,
+                  "top": 1836,
+                  "bottom": 1916,
+                  "width": 178,
+                  "height": 80,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(232, 237, 245)",
+                  "display": "block",
+                  "color": "rgb(15, 23, 42)"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "Source moment112 and actual async park fills frame",
+            "actual": [
+              {
+                "selector": ".d74-moment-cell",
+                "value": {
+                  "left": 16,
+                  "right": 134.328125,
+                  "top": 2136.5,
+                  "bottom": 2248.5,
+                  "width": 118.328125,
+                  "height": 112,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "8px",
+                  "padding-bottom": "8px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(15, 23, 42)"
+                }
+              },
+              {
+                "selector": ".d74-moment-good >>> .reference-photo",
+                "value": {
+                  "left": 16,
+                  "right": 134.328125,
+                  "top": 2136.5,
+                  "bottom": 2248.5,
+                  "width": 118.328125,
+                  "height": 112,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(15, 23, 42)"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "Weekly64 and source route220/112",
+            "actual": [
+              {
+                "selector": ".d74-weekly-cover",
+                "value": {
+                  "left": 25,
+                  "right": 125.328125,
+                  "top": 2676,
+                  "bottom": 2740,
+                  "width": 100.328125,
+                  "height": 64,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "font-weight": "700",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(54, 83, 20, 0.6)",
+                  "display": "flex",
+                  "color": "rgb(255, 255, 255)"
+                }
+              },
+              {
+                "selector": ".d74-route-card",
+                "value": {
+                  "left": 16,
+                  "right": 236,
+                  "top": 3024,
+                  "bottom": 3136,
+                  "width": 220,
+                  "height": 112,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "12px",
+                  "padding-bottom": "12px",
+                  "background-color": "rgb(30, 41, 59)",
+                  "display": "flex",
+                  "color": "rgb(255, 255, 255)"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "Scene source80 and same park component crop",
+            "actual": [
+              {
+                "selector": ".d74-place-cover",
+                "value": {
+                  "left": 17,
+                  "right": 195.5,
+                  "top": 3242,
+                  "bottom": 3322,
+                  "width": 178.5,
+                  "height": 80,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(15, 23, 42)"
+                }
+              },
+              {
+                "selector": ".d74-place-cover >>> .reference-photo",
+                "value": {
+                  "left": 207.5,
+                  "right": 386,
+                  "top": 3400,
+                  "bottom": 3480,
+                  "width": 178.5,
+                  "height": 80,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(15, 23, 42)"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "Source CTA48/36",
+            "actual": [
+              {
+                "selector": ".d74-create-mascot",
+                "value": {
+                  "left": 28,
+                  "right": 76,
+                  "top": 3769.5,
+                  "bottom": 3817.5,
+                  "width": 48,
+                  "height": 48,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "24px",
+                  "line-height": "32px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(255, 255, 255, 0.1)",
+                  "display": "flex",
+                  "color": "rgb(255, 255, 255)"
+                }
+              },
+              {
+                "selector": ".d74-create-arrow",
+                "value": {
+                  "left": 339,
+                  "right": 375,
+                  "top": 3775.5,
+                  "bottom": 3811.5,
+                  "width": 36,
+                  "height": 36,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(255, 255, 255)",
+                  "display": "flex",
+                  "color": "rgb(255, 255, 255)"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "Both exact original park consumers rendered",
+            "actual": [
+              {
+                "width": 118.328125,
+                "height": 112,
+                "src": "/subpackages/profile/components/reference-image/assets/discover-park.jpg"
+              },
+              {
+                "width": 178.5,
+                "height": 80,
+                "src": "/subpackages/profile/components/reference-image/assets/discover-park.jpg"
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [
+          {
+            "name": "discoverNativeSourceGeometry",
+            "g": [
+              {
+                "selector": ".d74-recommend-card",
+                "value": {
+                  "left": 16,
+                  "right": 216,
+                  "top": 965.5,
+                  "bottom": 1181.5,
+                  "width": 200,
+                  "height": 216,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(255, 255, 255)",
+                  "display": "block",
+                  "color": "rgb(15, 23, 42)"
+                }
+              },
+              {
+                "selector": ".d74-recommend-cover",
+                "value": {
+                  "left": 17,
+                  "right": 215,
+                  "top": 966.5,
+                  "bottom": 1078.5,
+                  "width": 198,
+                  "height": 112,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(15, 23, 42)"
+                }
+              },
+              {
+                "selector": ".d74-personal-card",
+                "value": {
+                  "left": 16,
+                  "right": 216,
+                  "top": 1825,
+                  "bottom": 2008,
+                  "width": 200,
+                  "height": 183,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "10px",
+                  "padding-bottom": "10px",
+                  "background-color": "rgb(248, 250, 252)",
+                  "display": "block",
+                  "color": "rgb(15, 23, 42)"
+                }
+              },
+              {
+                "selector": ".d74-personal-cover",
+                "value": {
+                  "left": 27,
+                  "right": 205,
+                  "top": 1836,
+                  "bottom": 1916,
+                  "width": 178,
+                  "height": 80,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(232, 237, 245)",
+                  "display": "block",
+                  "color": "rgb(15, 23, 42)"
+                }
+              },
+              {
+                "selector": ".d74-moment-cell",
+                "value": {
+                  "left": 16,
+                  "right": 134.328125,
+                  "top": 2136.5,
+                  "bottom": 2248.5,
+                  "width": 118.328125,
+                  "height": 112,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "8px",
+                  "padding-bottom": "8px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(15, 23, 42)"
+                }
+              },
+              {
+                "selector": ".d74-moment-good >>> .reference-photo",
+                "value": {
+                  "left": 16,
+                  "right": 134.328125,
+                  "top": 2136.5,
+                  "bottom": 2248.5,
+                  "width": 118.328125,
+                  "height": 112,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(15, 23, 42)"
+                }
+              },
+              {
+                "selector": ".d74-weekly-cover",
+                "value": {
+                  "left": 25,
+                  "right": 125.328125,
+                  "top": 2676,
+                  "bottom": 2740,
+                  "width": 100.328125,
+                  "height": 64,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "font-weight": "700",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(54, 83, 20, 0.6)",
+                  "display": "flex",
+                  "color": "rgb(255, 255, 255)"
+                }
+              },
+              {
+                "selector": ".d74-route-card",
+                "value": {
+                  "left": 16,
+                  "right": 236,
+                  "top": 3024,
+                  "bottom": 3136,
+                  "width": 220,
+                  "height": 112,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "12px",
+                  "padding-bottom": "12px",
+                  "background-color": "rgb(30, 41, 59)",
+                  "display": "flex",
+                  "color": "rgb(255, 255, 255)"
+                }
+              },
+              {
+                "selector": ".d74-place-cover",
+                "value": {
+                  "left": 17,
+                  "right": 195.5,
+                  "top": 3242,
+                  "bottom": 3322,
+                  "width": 178.5,
+                  "height": 80,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(15, 23, 42)"
+                }
+              },
+              {
+                "selector": ".d74-place-cover >>> .reference-photo",
+                "value": {
+                  "left": 207.5,
+                  "right": 386,
+                  "top": 3400,
+                  "bottom": 3480,
+                  "width": 178.5,
+                  "height": 80,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(15, 23, 42)"
+                }
+              },
+              {
+                "selector": ".d74-create-mascot",
+                "value": {
+                  "left": 28,
+                  "right": 76,
+                  "top": 3769.5,
+                  "bottom": 3817.5,
+                  "width": 48,
+                  "height": 48,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "24px",
+                  "line-height": "32px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(255, 255, 255, 0.1)",
+                  "display": "flex",
+                  "color": "rgb(255, 255, 255)"
+                }
+              },
+              {
+                "selector": ".d74-create-arrow",
+                "value": {
+                  "left": 339,
+                  "right": 375,
+                  "top": 3775.5,
+                  "bottom": 3811.5,
+                  "width": 36,
+                  "height": 36,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"PingFang SC\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(255, 255, 255)",
+                  "display": "flex",
+                  "color": "rgb(255, 255, 255)"
+                }
+              }
+            ]
+          }
+        ],
+        "screenshots": [
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-discover-long-recommend-nearby-wave73-74-2026-10-02.png",
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-discover-long-moments-weekly-wave73-74-2026-10-02.png",
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-discover-long-scenes-create-wave73-74-2026-10-02.png"
+        ],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave73/74 ordinary home/discover/INBOX and shared async photos/fonts. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "pass": true,
+        "elapsedMs": 4205
+      }
+    },
+    {
+      "script": "discover-routes-headers",
+      "sourceSHA256": "6b3377c5b6a98e4223d55152162b4bde3d41df70b1063922b9849be41515d8fd",
+      "result": {
+        "scope": "Only restored discover long existing routing under current actual identity/events; no publish/signup",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Source destination .d74-nearby-section .d74-link",
+            "actual": {
+              "path": "pages/city/city"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source destination [data-source=\"friends-attending\"] .d74-link",
+            "actual": {
+              "path": "subpackages/profile/moments/moments"
+            }
+          }
+        ],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave73/74 ordinary home/discover/INBOX and shared async photos/fonts. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "pass": false,
+        "failure": {
+          "phase": "connect",
+          "message": "timeout waiting for automator response",
+          "stack": "Error: timeout waiting for automator response\n    at Connection.onMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/miniprogram-automator@0.12.1/node_modules/miniprogram-automator/out/Connection.js:1:985)\n    at Transport.emit (node:events:509:28)\n    at WebSocket.<anonymous> (/private/tmp/project-irl-automator/node_modules/.pnpm/miniprogram-automator@0.12.1/node_modules/miniprogram-automator/out/Transport.js:1:220)\n    at WebSocket.onMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/event-target.js:120:16)\n    at WebSocket.emit (node:events:509:28)\n    at Receiver.receiverOnMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/websocket.js:807:20)\n    at Receiver.emit (node:events:509:28)\n    at Receiver.dataMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:448:14)\n    at Receiver.getData (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:377:17)\n    at Receiver.startLoop (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:158:22)",
+          "currentPage": "pages/discover/discover"
+        },
+        "elapsedMs": 21600
+      }
+    },
+    {
+      "script": "discover-routes-headers-remaining",
+      "sourceSHA256": "65c6769d855d8a4aa5483c4d8c8ed8e1cfe04075990629e294c0902237249ebe",
+      "result": {
+        "scope": "Only restored discover long existing routing under current actual identity/events; no publish/signup",
+        "checks": [],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave73/74 ordinary home/discover/INBOX and shared async photos/fonts. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "pass": false,
+        "failure": {
+          "phase": "destination [data-source=\"meetup-reviews\"] .d74-link",
+          "message": "Missing existing source action [data-source=\"meetup-reviews\"] .d74-link",
+          "stack": "Error: Missing existing source action [data-source=\"meetup-reviews\"] .d74-link\n    at /private/tmp/caper-wave73-74-discover-routes-headers-remaining.cjs:2:900\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async run (/private/tmp/caper-wave73-74-sdk-helpers.cjs:22:3)",
+          "currentPage": "pages/discover/discover"
+        },
+        "elapsedMs": 804
+      }
+    },
+    {
+      "script": "discover-routes-headers-source-selectors",
+      "sourceSHA256": "c50a3a1458d370f376d29a4e7fd8c6de50d8cf0ee52ed4ea87083b2a26a3fa8d",
+      "result": {
+        "scope": "Only restored discover long existing routing under current actual identity/events; no publish/signup",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Source destination [data-source=\"user-reviews\"] .d74-link",
+            "actual": {
+              "path": "subpackages/profile/moments/moments"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source destination [data-source=\"weekly-curation\"] .d74-link",
+            "actual": {
+              "path": "pages/create/create"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source destination [data-source=\"city-walk-routes\"] .d74-link",
+            "actual": {
+              "path": "pages/city/city"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Source destination .d74-create-card",
+            "actual": {
+              "path": "pages/create/create"
+            }
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave73/74 ordinary home/discover/INBOX and shared async photos/fonts. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "pass": true,
+        "elapsedMs": 23386
+      }
+    },
+    {
+      "script": "discover-routes-actual-cards",
+      "sourceSHA256": "cb74d594a6ad92b23d3d54d17b740b7f9a4292436c3e6e1ba1bc3f468e1e616f",
+      "result": {
+        "scope": "Only restored discover long existing routing under current actual identity/events; no publish/signup",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Actual source personal row same eventID .d74-nearby-personal-row",
+            "actual": {
+              "id": "0e51f241-3f63-439d-b59d-593549a61ac2"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Actual source personal row same eventID .d74-personal-card",
+            "actual": {
+              "id": "0e51f241-3f63-439d-b59d-593549a61ac2"
+            }
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave73/74 ordinary home/discover/INBOX and shared async photos/fonts. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "pass": true,
+        "elapsedMs": 2990
+      }
+    },
+    {
+      "script": "messages-geometry",
+      "sourceSHA256": "20be943130b7f49529d780582ced7368df593eb9a2dba301cbcc72701cd97f17",
+      "result": {
+        "scope": "Wave74 changed ordinary INBOX geometry, three reviewed native cascade deltas and two safe readonly captures only",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Ordinary INBOX rendered for actual actor",
+            "actual": {
+              "mode": "INBOX",
+              "filter": "ALL",
+              "total": 1,
+              "nextOffset": null
+            }
+          },
+          {
+            "pass": false,
+            "label": "Native batch returned actual changed consumers (no style fallback or copied source values)"
+          }
+        ],
+        "metrics": [
+          {
+            "name": "SingleNativeChangedINBOXBatch",
+            "batch": {
+              "nodes": [
+                {
+                  "selector": ".inbox-long-conversation .conversation-icon",
+                  "value": {
+                    "left": 33,
+                    "right": 77,
+                    "top": 276,
+                    "bottom": 320,
+                    "width": 44,
+                    "height": 44,
+                    "font-size": "14px",
+                    "line-height": "20px",
+                    "display": "flex",
+                    "color": "rgb(255, 255, 255)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-notice-section .notice-badge",
+                  "value": {
+                    "left": 40,
+                    "right": 72,
+                    "top": 414,
+                    "bottom": 446,
+                    "width": 32,
+                    "height": 32,
+                    "font-size": "14px",
+                    "line-height": "20px",
+                    "display": "flex",
+                    "color": "rgb(29, 100, 242)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-ai .ai-orb",
+                  "value": {
+                    "left": 30,
+                    "right": 70,
+                    "top": 551.5,
+                    "bottom": 591.5,
+                    "width": 40,
+                    "height": 40,
+                    "font-size": "16px",
+                    "line-height": "24px",
+                    "display": "flex",
+                    "color": "rgb(198, 255, 0)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-ai-glow",
+                  "value": {
+                    "left": 290,
+                    "right": 418,
+                    "top": 473.5,
+                    "bottom": 601.5,
+                    "width": 128,
+                    "height": 128,
+                    "font-size": "16px",
+                    "line-height": "24px",
+                    "display": "block",
+                    "color": "rgb(255, 255, 255)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-mention-avatar",
+                  "value": {
+                    "left": 33,
+                    "right": 73,
+                    "top": 734,
+                    "bottom": 774,
+                    "width": 40,
+                    "height": 40,
+                    "font-size": "12px",
+                    "line-height": "16px",
+                    "display": "flex",
+                    "color": "rgb(15, 118, 110)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-album .gallery-item",
+                  "value": {
+                    "left": 29,
+                    "right": 125,
+                    "top": 880.5,
+                    "bottom": 978.5,
+                    "width": 96,
+                    "height": 98,
+                    "font-size": "16px",
+                    "line-height": "24px",
+                    "display": "block",
+                    "color": "rgb(15, 23, 42)",
+                    "white-space": "nowrap",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-album .gallery-tile",
+                  "value": {
+                    "left": 29,
+                    "right": 125,
+                    "top": 880.5,
+                    "bottom": 944.5,
+                    "width": 96,
+                    "height": 64,
+                    "font-size": "18px",
+                    "line-height": "28px",
+                    "display": "flex",
+                    "color": "rgb(255, 255, 255)",
+                    "white-space": "nowrap",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-history-icon",
+                  "value": {
+                    "left": 33,
+                    "right": 65,
+                    "top": 1060.5,
+                    "bottom": 1092.5,
+                    "width": 32,
+                    "height": 32,
+                    "font-size": "14px",
+                    "line-height": "20px",
+                    "display": "flex",
+                    "color": "rgb(4, 120, 87)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-settings",
+                  "value": {
+                    "left": 16,
+                    "right": 387,
+                    "top": 1452,
+                    "bottom": 1517,
+                    "width": 371,
+                    "height": 65,
+                    "font-size": "12px",
+                    "line-height": "16px",
+                    "display": "flex",
+                    "color": "rgb(15, 23, 42)",
+                    "white-space": "normal",
+                    "overflow": "hidden",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-foot-line",
+                  "value": {
+                    "left": 70.65625,
+                    "right": 94.65625,
+                    "top": 1573.5,
+                    "bottom": 1574.5,
+                    "width": 24,
+                    "height": 1,
+                    "font-size": "10px",
+                    "line-height": "15px",
+                    "display": "block",
+                    "color": "rgb(100, 116, 139)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-notice-section .notice-description",
+                  "value": {
+                    "left": 84,
+                    "right": 344.65625,
+                    "top": 430.5,
+                    "bottom": 447,
+                    "width": 260.65625,
+                    "height": 16.5,
+                    "font-size": "11px",
+                    "line-height": "16.5px",
+                    "display": "block",
+                    "color": "rgb(71, 85, 105)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-settings .inbox-long-settings-content > view",
+                  "value": null
+                },
+                {
+                  "selector": ".inbox-long-settings-title",
+                  "value": {
+                    "left": 53,
+                    "right": 125,
+                    "top": 1471.5,
+                    "bottom": 1485.5,
+                    "width": 72,
+                    "height": 14,
+                    "font-size": "12px",
+                    "line-height": "16px",
+                    "display": "inline",
+                    "color": "rgb(15, 23, 42)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-settings-hint",
+                  "value": {
+                    "left": 53,
+                    "right": 368.515625,
+                    "top": 1489,
+                    "bottom": 1504,
+                    "width": 315.515625,
+                    "height": 15,
+                    "font-size": "10px",
+                    "line-height": "15px",
+                    "display": "block",
+                    "color": "rgb(148, 163, 184)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                }
+              ],
+              "groups": [
+                {
+                  "selector": ".inbox-long-album .gallery-tile",
+                  "values": [
+                    {
+                      "left": 29,
+                      "right": 125,
+                      "top": 880.5,
+                      "bottom": 944.5,
+                      "width": 96,
+                      "height": 64,
+                      "font-size": "18px",
+                      "line-height": "28px",
+                      "display": "flex",
+                      "color": "rgb(255, 255, 255)",
+                      "white-space": "nowrap",
+                      "overflow": "visible",
+                      "text-overflow": "clip"
+                    },
+                    {
+                      "left": 135,
+                      "right": 231,
+                      "top": 880.5,
+                      "bottom": 944.5,
+                      "width": 96,
+                      "height": 64,
+                      "font-size": "18px",
+                      "line-height": "28px",
+                      "display": "flex",
+                      "color": "rgb(255, 255, 255)",
+                      "white-space": "nowrap",
+                      "overflow": "visible",
+                      "text-overflow": "clip"
+                    },
+                    {
+                      "left": 241,
+                      "right": 337,
+                      "top": 880.5,
+                      "bottom": 944.5,
+                      "width": 96,
+                      "height": 64,
+                      "font-size": "18px",
+                      "line-height": "28px",
+                      "display": "flex",
+                      "color": "rgb(255, 255, 255)",
+                      "white-space": "nowrap",
+                      "overflow": "visible",
+                      "text-overflow": "clip"
+                    },
+                    {
+                      "left": 347,
+                      "right": 443,
+                      "top": 880.5,
+                      "bottom": 944.5,
+                      "width": 96,
+                      "height": 64,
+                      "font-size": "18px",
+                      "line-height": "28px",
+                      "display": "flex",
+                      "color": "rgb(255, 255, 255)",
+                      "white-space": "nowrap",
+                      "overflow": "visible",
+                      "text-overflow": "clip"
+                    },
+                    {
+                      "left": 453,
+                      "right": 549,
+                      "top": 880.5,
+                      "bottom": 944.5,
+                      "width": 96,
+                      "height": 64,
+                      "font-size": "18px",
+                      "line-height": "28px",
+                      "display": "flex",
+                      "color": "rgb(255, 255, 255)",
+                      "white-space": "nowrap",
+                      "overflow": "visible",
+                      "text-overflow": "clip"
+                    }
+                  ]
+                },
+                {
+                  "selector": ".inbox-long-closed-section .inbox-long-closed-copy > text",
+                  "values": []
+                },
+                {
+                  "selector": ".inbox-long-notice-section .notice-actions button",
+                  "values": []
+                },
+                {
+                  "selector": ".inbox-long-load-more",
+                  "values": []
+                }
+              ]
+            }
+          }
+        ],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave73/74 ordinary home/discover/INBOX and shared async photos/fonts. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "expectedProductFreeze": "acf81ad34d47af0e6a5a9c9e816026ec9ae921118b43998ac22becba64165e4a",
+        "conditional": [],
+        "dataBoundary": "Existing local actor only; no seed, new records, page.setData, mocks, approvals or API writes.",
+        "pass": false,
+        "failure": {
+          "phase": "single-native-geometry-and-three-delta-batch",
+          "message": "Native batch returned actual changed consumers (no style fallback or copied source values)",
+          "stack": "AssertionError [ERR_ASSERTION]: Native batch returned actual changed consumers (no style fallback or copied source values)\n    at check (/private/tmp/caper-wave73-74-sdk-helpers.cjs:16:80)\n    at /private/tmp/caper-wave74-messages-geometry.cjs:50:3\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async run (/private/tmp/caper-wave73-74-sdk-helpers.cjs:22:3)",
+          "currentPage": "pages/messages/messages"
+        },
+        "elapsedMs": 4937
+      }
+    },
+    {
+      "script": "messages-geometry-remaining",
+      "sourceSHA256": "23c3c5de7b0c96900288df1886840f547651548e8dbb6f7da013270aebfe463f",
+      "result": {
+        "scope": "Wave74 changed ordinary INBOX geometry, three reviewed native cascade deltas and two safe readonly captures only",
+        "checks": [
+          {
+            "pass": false,
+            "label": "Native batch returned actual changed consumers (no style fallback or copied source values)"
+          }
+        ],
+        "metrics": [
+          {
+            "name": "SingleNativeChangedINBOXBatch",
+            "batch": {
+              "nodes": [
+                {
+                  "selector": ".inbox-long-conversation .conversation-icon",
+                  "value": {
+                    "left": 33,
+                    "right": 77,
+                    "top": 276,
+                    "bottom": 320,
+                    "width": 44,
+                    "height": 44,
+                    "font-size": "14px",
+                    "line-height": "20px",
+                    "display": "flex",
+                    "color": "rgb(255, 255, 255)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-notice-section .notice-badge",
+                  "value": {
+                    "left": 40,
+                    "right": 72,
+                    "top": 414,
+                    "bottom": 446,
+                    "width": 32,
+                    "height": 32,
+                    "font-size": "14px",
+                    "line-height": "20px",
+                    "display": "flex",
+                    "color": "rgb(29, 100, 242)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-ai .ai-orb",
+                  "value": {
+                    "left": 30,
+                    "right": 70,
+                    "top": 551.5,
+                    "bottom": 591.5,
+                    "width": 40,
+                    "height": 40,
+                    "font-size": "16px",
+                    "line-height": "24px",
+                    "display": "flex",
+                    "color": "rgb(198, 255, 0)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-ai-glow",
+                  "value": {
+                    "left": 290,
+                    "right": 418,
+                    "top": 473.5,
+                    "bottom": 601.5,
+                    "width": 128,
+                    "height": 128,
+                    "font-size": "16px",
+                    "line-height": "24px",
+                    "display": "block",
+                    "color": "rgb(255, 255, 255)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-mention-avatar",
+                  "value": {
+                    "left": 33,
+                    "right": 73,
+                    "top": 734,
+                    "bottom": 774,
+                    "width": 40,
+                    "height": 40,
+                    "font-size": "12px",
+                    "line-height": "16px",
+                    "display": "flex",
+                    "color": "rgb(15, 118, 110)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-album .gallery-item",
+                  "value": {
+                    "left": 29,
+                    "right": 125,
+                    "top": 880.5,
+                    "bottom": 978.5,
+                    "width": 96,
+                    "height": 98,
+                    "font-size": "16px",
+                    "line-height": "24px",
+                    "display": "block",
+                    "color": "rgb(15, 23, 42)",
+                    "white-space": "nowrap",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-album .gallery-tile",
+                  "value": {
+                    "left": 29,
+                    "right": 125,
+                    "top": 880.5,
+                    "bottom": 944.5,
+                    "width": 96,
+                    "height": 64,
+                    "font-size": "18px",
+                    "line-height": "28px",
+                    "display": "flex",
+                    "color": "rgb(255, 255, 255)",
+                    "white-space": "nowrap",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-history-icon",
+                  "value": {
+                    "left": 33,
+                    "right": 65,
+                    "top": 1060.5,
+                    "bottom": 1092.5,
+                    "width": 32,
+                    "height": 32,
+                    "font-size": "14px",
+                    "line-height": "20px",
+                    "display": "flex",
+                    "color": "rgb(4, 120, 87)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-settings",
+                  "value": {
+                    "left": 16,
+                    "right": 387,
+                    "top": 1452,
+                    "bottom": 1517,
+                    "width": 371,
+                    "height": 65,
+                    "font-size": "12px",
+                    "line-height": "16px",
+                    "display": "flex",
+                    "color": "rgb(15, 23, 42)",
+                    "white-space": "normal",
+                    "overflow": "hidden",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-foot-line",
+                  "value": {
+                    "left": 70.65625,
+                    "right": 94.65625,
+                    "top": 1573.5,
+                    "bottom": 1574.5,
+                    "width": 24,
+                    "height": 1,
+                    "font-size": "10px",
+                    "line-height": "15px",
+                    "display": "block",
+                    "color": "rgb(100, 116, 139)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-notice-section .notice-description",
+                  "value": {
+                    "left": 84,
+                    "right": 344.65625,
+                    "top": 430.5,
+                    "bottom": 447,
+                    "width": 260.65625,
+                    "height": 16.5,
+                    "font-size": "11px",
+                    "line-height": "16.5px",
+                    "display": "block",
+                    "color": "rgb(71, 85, 105)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-settings-content view",
+                  "value": null
+                },
+                {
+                  "selector": ".inbox-long-settings-title",
+                  "value": {
+                    "left": 53,
+                    "right": 125,
+                    "top": 1471.5,
+                    "bottom": 1485.5,
+                    "width": 72,
+                    "height": 14,
+                    "font-size": "12px",
+                    "line-height": "16px",
+                    "display": "inline",
+                    "color": "rgb(15, 23, 42)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-settings-hint",
+                  "value": {
+                    "left": 53,
+                    "right": 368.515625,
+                    "top": 1489,
+                    "bottom": 1504,
+                    "width": 315.515625,
+                    "height": 15,
+                    "font-size": "10px",
+                    "line-height": "15px",
+                    "display": "block",
+                    "color": "rgb(148, 163, 184)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                }
+              ],
+              "groups": [
+                {
+                  "selector": ".inbox-long-album .gallery-tile",
+                  "values": [
+                    {
+                      "left": 29,
+                      "right": 125,
+                      "top": 880.5,
+                      "bottom": 944.5,
+                      "width": 96,
+                      "height": 64,
+                      "font-size": "18px",
+                      "line-height": "28px",
+                      "display": "flex",
+                      "color": "rgb(255, 255, 255)",
+                      "white-space": "nowrap",
+                      "overflow": "visible",
+                      "text-overflow": "clip"
+                    },
+                    {
+                      "left": 135,
+                      "right": 231,
+                      "top": 880.5,
+                      "bottom": 944.5,
+                      "width": 96,
+                      "height": 64,
+                      "font-size": "18px",
+                      "line-height": "28px",
+                      "display": "flex",
+                      "color": "rgb(255, 255, 255)",
+                      "white-space": "nowrap",
+                      "overflow": "visible",
+                      "text-overflow": "clip"
+                    },
+                    {
+                      "left": 241,
+                      "right": 337,
+                      "top": 880.5,
+                      "bottom": 944.5,
+                      "width": 96,
+                      "height": 64,
+                      "font-size": "18px",
+                      "line-height": "28px",
+                      "display": "flex",
+                      "color": "rgb(255, 255, 255)",
+                      "white-space": "nowrap",
+                      "overflow": "visible",
+                      "text-overflow": "clip"
+                    },
+                    {
+                      "left": 347,
+                      "right": 443,
+                      "top": 880.5,
+                      "bottom": 944.5,
+                      "width": 96,
+                      "height": 64,
+                      "font-size": "18px",
+                      "line-height": "28px",
+                      "display": "flex",
+                      "color": "rgb(255, 255, 255)",
+                      "white-space": "nowrap",
+                      "overflow": "visible",
+                      "text-overflow": "clip"
+                    },
+                    {
+                      "left": 453,
+                      "right": 549,
+                      "top": 880.5,
+                      "bottom": 944.5,
+                      "width": 96,
+                      "height": 64,
+                      "font-size": "18px",
+                      "line-height": "28px",
+                      "display": "flex",
+                      "color": "rgb(255, 255, 255)",
+                      "white-space": "nowrap",
+                      "overflow": "visible",
+                      "text-overflow": "clip"
+                    }
+                  ]
+                },
+                {
+                  "selector": ".inbox-long-closed-section .inbox-long-closed-copy text",
+                  "values": []
+                },
+                {
+                  "selector": ".inbox-long-notice-section .notice-actions button",
+                  "values": []
+                },
+                {
+                  "selector": ".inbox-long-load-more",
+                  "values": []
+                }
+              ]
+            }
+          }
+        ],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave73/74 ordinary home/discover/INBOX and shared async photos/fonts. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "expectedProductFreeze": "acf81ad34d47af0e6a5a9c9e816026ec9ae921118b43998ac22becba64165e4a",
+        "conditional": [],
+        "dataBoundary": "Existing local actor only; no seed, new records, page.setData, mocks, approvals or API writes.",
+        "currentState": {
+          "mode": "INBOX",
+          "filter": "ALL",
+          "total": 1,
+          "nextOffset": null
+        },
+        "reusedNativeObservations": {
+          "path": "/private/tmp/caper-wave73-74-messages-geometry.json",
+          "sha256": "20be943130b7f49529d780582ced7368df593eb9a2dba301cbcc72701cd97f17",
+          "boundary": "Previously captured real nodes; only two native unsupported child-selector queries corrected, no product changes or successful checks repeated"
+        },
+        "pass": false,
+        "failure": {
+          "phase": "single-native-geometry-and-three-delta-batch",
+          "message": "Native batch returned actual changed consumers (no style fallback or copied source values)",
+          "stack": "AssertionError [ERR_ASSERTION]: Native batch returned actual changed consumers (no style fallback or copied source values)\n    at check (/private/tmp/caper-wave73-74-sdk-helpers.cjs:16:80)\n    at /private/tmp/caper-wave74-messages-geometry-remaining.cjs:31:3\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async run (/private/tmp/caper-wave73-74-sdk-helpers.cjs:22:3)",
+          "currentPage": "pages/messages/messages"
+        },
+        "elapsedMs": 763
+      }
+    },
+    {
+      "script": "messages-geometry-native-supported",
+      "sourceSHA256": "973937ca3bca25b370dc595e8c228c0b3df7596117aae453bb76ff6795173f51",
+      "result": {
+        "scope": "Wave74 changed ordinary INBOX geometry, three reviewed native cascade deltas and two safe readonly captures only",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Retained real native observations cover all13 selectable changed consumers"
+          },
+          {
+            "pass": true,
+            "label": "Conversation44 and actual notice badge32",
+            "actual": [
+              {
+                "selector": ".inbox-long-conversation .conversation-icon",
+                "value": {
+                  "left": 33,
+                  "right": 77,
+                  "top": 276,
+                  "bottom": 320,
+                  "width": 44,
+                  "height": 44,
+                  "font-size": "14px",
+                  "line-height": "20px",
+                  "display": "flex",
+                  "color": "rgb(255, 255, 255)",
+                  "white-space": "normal",
+                  "overflow": "visible",
+                  "text-overflow": "clip"
+                }
+              },
+              {
+                "selector": ".inbox-long-notice-section .notice-badge",
+                "value": {
+                  "left": 40,
+                  "right": 72,
+                  "top": 414,
+                  "bottom": 446,
+                  "width": 32,
+                  "height": 32,
+                  "font-size": "14px",
+                  "line-height": "20px",
+                  "display": "flex",
+                  "color": "rgb(29, 100, 242)",
+                  "white-space": "normal",
+                  "overflow": "visible",
+                  "text-overflow": "clip"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "AI orb40, glow128 and readonly mention40",
+            "actual": [
+              {
+                "selector": ".inbox-long-ai .ai-orb",
+                "value": {
+                  "left": 30,
+                  "right": 70,
+                  "top": 551.5,
+                  "bottom": 591.5,
+                  "width": 40,
+                  "height": 40,
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "display": "flex",
+                  "color": "rgb(198, 255, 0)",
+                  "white-space": "normal",
+                  "overflow": "visible",
+                  "text-overflow": "clip"
+                }
+              },
+              {
+                "selector": ".inbox-long-ai-glow",
+                "value": {
+                  "left": 290,
+                  "right": 418,
+                  "top": 473.5,
+                  "bottom": 601.5,
+                  "width": 128,
+                  "height": 128,
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "display": "block",
+                  "color": "rgb(255, 255, 255)",
+                  "white-space": "normal",
+                  "overflow": "visible",
+                  "text-overflow": "clip"
+                }
+              },
+              {
+                "selector": ".inbox-long-mention-avatar",
+                "value": {
+                  "left": 33,
+                  "right": 73,
+                  "top": 734,
+                  "bottom": 774,
+                  "width": 40,
+                  "height": 40,
+                  "font-size": "12px",
+                  "line-height": "16px",
+                  "display": "flex",
+                  "color": "rgb(15, 118, 110)",
+                  "white-space": "normal",
+                  "overflow": "visible",
+                  "text-overflow": "clip"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "Five CSS-only album tiles96×64 without photo records",
+            "actual": {
+              "count": 5,
+              "nodes": [
+                {
+                  "selector": ".inbox-long-album .gallery-item",
+                  "value": {
+                    "left": 29,
+                    "right": 125,
+                    "top": 880.5,
+                    "bottom": 978.5,
+                    "width": 96,
+                    "height": 98,
+                    "font-size": "16px",
+                    "line-height": "24px",
+                    "display": "block",
+                    "color": "rgb(15, 23, 42)",
+                    "white-space": "nowrap",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-album .gallery-tile",
+                  "value": {
+                    "left": 29,
+                    "right": 125,
+                    "top": 880.5,
+                    "bottom": 944.5,
+                    "width": 96,
+                    "height": 64,
+                    "font-size": "18px",
+                    "line-height": "28px",
+                    "display": "flex",
+                    "color": "rgb(255, 255, 255)",
+                    "white-space": "nowrap",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "pass": true,
+            "label": "History icon32 and footer line24×1",
+            "actual": [
+              {
+                "selector": ".inbox-long-history-icon",
+                "value": {
+                  "left": 33,
+                  "right": 65,
+                  "top": 1060.5,
+                  "bottom": 1092.5,
+                  "width": 32,
+                  "height": 32,
+                  "font-size": "14px",
+                  "line-height": "20px",
+                  "display": "flex",
+                  "color": "rgb(4, 120, 87)",
+                  "white-space": "normal",
+                  "overflow": "visible",
+                  "text-overflow": "clip"
+                }
+              },
+              {
+                "selector": ".inbox-long-foot-line",
+                "value": {
+                  "left": 70.65625,
+                  "right": 94.65625,
+                  "top": 1573.5,
+                  "bottom": 1574.5,
+                  "width": 24,
+                  "height": 1,
+                  "font-size": "10px",
+                  "line-height": "15px",
+                  "display": "block",
+                  "color": "rgb(100, 116, 139)",
+                  "white-space": "normal",
+                  "overflow": "visible",
+                  "text-overflow": "clip"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "Actual summary clears old nowrap and ellipsis",
+            "actual": {
+              "left": 84,
+              "right": 344.65625,
+              "top": 430.5,
+              "bottom": 447,
+              "width": 260.65625,
+              "height": 16.5,
+              "font-size": "11px",
+              "line-height": "16.5px",
+              "display": "block",
+              "color": "rgb(71, 85, 105)",
+              "white-space": "normal",
+              "overflow": "visible",
+              "text-overflow": "clip"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Actual named settings title12/16 and helper10/15; observed65 card height",
+            "actual": {
+              "title": {
+                "left": 53,
+                "right": 125,
+                "top": 1471.5,
+                "bottom": 1485.5,
+                "width": 72,
+                "height": 14,
+                "font-size": "12px",
+                "line-height": "16px",
+                "display": "inline",
+                "color": "rgb(15, 23, 42)",
+                "white-space": "normal",
+                "overflow": "visible",
+                "text-overflow": "clip"
+              },
+              "hint": {
+                "left": 53,
+                "right": 368.515625,
+                "top": 1489,
+                "bottom": 1504,
+                "width": 315.515625,
+                "height": 15,
+                "font-size": "10px",
+                "line-height": "15px",
+                "display": "block",
+                "color": "rgb(148, 163, 184)",
+                "white-space": "normal",
+                "overflow": "visible",
+                "text-overflow": "clip"
+              },
+              "actualCardHeight": 65
+            }
+          },
+          {
+            "pass": true,
+            "label": "AI secondary remains disabled and is not clicked",
+            "actual": "true"
+          },
+          {
+            "pass": true,
+            "label": "Two safe readonly captures, no roster or private user-data screenshot",
+            "actual": [
+              "/Users/tsb/Documents/小程序/docs/evidence/images/caper-messages-inbox-long-ai-album-wave73-74-2026-10-02.png",
+              "/Users/tsb/Documents/小程序/docs/evidence/images/caper-messages-inbox-long-settings-footer-wave73-74-2026-10-02.png"
+            ]
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [
+          {
+            "name": "SingleNativeChangedINBOXBatch",
+            "batch": {
+              "nodes": [
+                {
+                  "selector": ".inbox-long-conversation .conversation-icon",
+                  "value": {
+                    "left": 33,
+                    "right": 77,
+                    "top": 276,
+                    "bottom": 320,
+                    "width": 44,
+                    "height": 44,
+                    "font-size": "14px",
+                    "line-height": "20px",
+                    "display": "flex",
+                    "color": "rgb(255, 255, 255)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-notice-section .notice-badge",
+                  "value": {
+                    "left": 40,
+                    "right": 72,
+                    "top": 414,
+                    "bottom": 446,
+                    "width": 32,
+                    "height": 32,
+                    "font-size": "14px",
+                    "line-height": "20px",
+                    "display": "flex",
+                    "color": "rgb(29, 100, 242)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-ai .ai-orb",
+                  "value": {
+                    "left": 30,
+                    "right": 70,
+                    "top": 551.5,
+                    "bottom": 591.5,
+                    "width": 40,
+                    "height": 40,
+                    "font-size": "16px",
+                    "line-height": "24px",
+                    "display": "flex",
+                    "color": "rgb(198, 255, 0)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-ai-glow",
+                  "value": {
+                    "left": 290,
+                    "right": 418,
+                    "top": 473.5,
+                    "bottom": 601.5,
+                    "width": 128,
+                    "height": 128,
+                    "font-size": "16px",
+                    "line-height": "24px",
+                    "display": "block",
+                    "color": "rgb(255, 255, 255)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-mention-avatar",
+                  "value": {
+                    "left": 33,
+                    "right": 73,
+                    "top": 734,
+                    "bottom": 774,
+                    "width": 40,
+                    "height": 40,
+                    "font-size": "12px",
+                    "line-height": "16px",
+                    "display": "flex",
+                    "color": "rgb(15, 118, 110)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-album .gallery-item",
+                  "value": {
+                    "left": 29,
+                    "right": 125,
+                    "top": 880.5,
+                    "bottom": 978.5,
+                    "width": 96,
+                    "height": 98,
+                    "font-size": "16px",
+                    "line-height": "24px",
+                    "display": "block",
+                    "color": "rgb(15, 23, 42)",
+                    "white-space": "nowrap",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-album .gallery-tile",
+                  "value": {
+                    "left": 29,
+                    "right": 125,
+                    "top": 880.5,
+                    "bottom": 944.5,
+                    "width": 96,
+                    "height": 64,
+                    "font-size": "18px",
+                    "line-height": "28px",
+                    "display": "flex",
+                    "color": "rgb(255, 255, 255)",
+                    "white-space": "nowrap",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-history-icon",
+                  "value": {
+                    "left": 33,
+                    "right": 65,
+                    "top": 1060.5,
+                    "bottom": 1092.5,
+                    "width": 32,
+                    "height": 32,
+                    "font-size": "14px",
+                    "line-height": "20px",
+                    "display": "flex",
+                    "color": "rgb(4, 120, 87)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-settings",
+                  "value": {
+                    "left": 16,
+                    "right": 387,
+                    "top": 1452,
+                    "bottom": 1517,
+                    "width": 371,
+                    "height": 65,
+                    "font-size": "12px",
+                    "line-height": "16px",
+                    "display": "flex",
+                    "color": "rgb(15, 23, 42)",
+                    "white-space": "normal",
+                    "overflow": "hidden",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-foot-line",
+                  "value": {
+                    "left": 70.65625,
+                    "right": 94.65625,
+                    "top": 1573.5,
+                    "bottom": 1574.5,
+                    "width": 24,
+                    "height": 1,
+                    "font-size": "10px",
+                    "line-height": "15px",
+                    "display": "block",
+                    "color": "rgb(100, 116, 139)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-notice-section .notice-description",
+                  "value": {
+                    "left": 84,
+                    "right": 344.65625,
+                    "top": 430.5,
+                    "bottom": 447,
+                    "width": 260.65625,
+                    "height": 16.5,
+                    "font-size": "11px",
+                    "line-height": "16.5px",
+                    "display": "block",
+                    "color": "rgb(71, 85, 105)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-settings .inbox-long-settings-content > view",
+                  "value": null
+                },
+                {
+                  "selector": ".inbox-long-settings-title",
+                  "value": {
+                    "left": 53,
+                    "right": 125,
+                    "top": 1471.5,
+                    "bottom": 1485.5,
+                    "width": 72,
+                    "height": 14,
+                    "font-size": "12px",
+                    "line-height": "16px",
+                    "display": "inline",
+                    "color": "rgb(15, 23, 42)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                },
+                {
+                  "selector": ".inbox-long-settings-hint",
+                  "value": {
+                    "left": 53,
+                    "right": 368.515625,
+                    "top": 1489,
+                    "bottom": 1504,
+                    "width": 315.515625,
+                    "height": 15,
+                    "font-size": "10px",
+                    "line-height": "15px",
+                    "display": "block",
+                    "color": "rgb(148, 163, 184)",
+                    "white-space": "normal",
+                    "overflow": "visible",
+                    "text-overflow": "clip"
+                  }
+                }
+              ],
+              "groups": [
+                {
+                  "selector": ".inbox-long-album .gallery-tile",
+                  "values": [
+                    {
+                      "left": 29,
+                      "right": 125,
+                      "top": 880.5,
+                      "bottom": 944.5,
+                      "width": 96,
+                      "height": 64,
+                      "font-size": "18px",
+                      "line-height": "28px",
+                      "display": "flex",
+                      "color": "rgb(255, 255, 255)",
+                      "white-space": "nowrap",
+                      "overflow": "visible",
+                      "text-overflow": "clip"
+                    },
+                    {
+                      "left": 135,
+                      "right": 231,
+                      "top": 880.5,
+                      "bottom": 944.5,
+                      "width": 96,
+                      "height": 64,
+                      "font-size": "18px",
+                      "line-height": "28px",
+                      "display": "flex",
+                      "color": "rgb(255, 255, 255)",
+                      "white-space": "nowrap",
+                      "overflow": "visible",
+                      "text-overflow": "clip"
+                    },
+                    {
+                      "left": 241,
+                      "right": 337,
+                      "top": 880.5,
+                      "bottom": 944.5,
+                      "width": 96,
+                      "height": 64,
+                      "font-size": "18px",
+                      "line-height": "28px",
+                      "display": "flex",
+                      "color": "rgb(255, 255, 255)",
+                      "white-space": "nowrap",
+                      "overflow": "visible",
+                      "text-overflow": "clip"
+                    },
+                    {
+                      "left": 347,
+                      "right": 443,
+                      "top": 880.5,
+                      "bottom": 944.5,
+                      "width": 96,
+                      "height": 64,
+                      "font-size": "18px",
+                      "line-height": "28px",
+                      "display": "flex",
+                      "color": "rgb(255, 255, 255)",
+                      "white-space": "nowrap",
+                      "overflow": "visible",
+                      "text-overflow": "clip"
+                    },
+                    {
+                      "left": 453,
+                      "right": 549,
+                      "top": 880.5,
+                      "bottom": 944.5,
+                      "width": 96,
+                      "height": 64,
+                      "font-size": "18px",
+                      "line-height": "28px",
+                      "display": "flex",
+                      "color": "rgb(255, 255, 255)",
+                      "white-space": "nowrap",
+                      "overflow": "visible",
+                      "text-overflow": "clip"
+                    }
+                  ]
+                },
+                {
+                  "selector": ".inbox-long-closed-section .inbox-long-closed-copy > text",
+                  "values": []
+                },
+                {
+                  "selector": ".inbox-long-notice-section .notice-actions button",
+                  "values": []
+                },
+                {
+                  "selector": ".inbox-long-load-more",
+                  "values": []
+                }
+              ]
+            }
+          }
+        ],
+        "screenshots": [
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-messages-inbox-long-ai-album-wave73-74-2026-10-02.png",
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-messages-inbox-long-settings-footer-wave73-74-2026-10-02.png"
+        ],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave73/74 ordinary home/discover/INBOX and shared async photos/fonts. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "expectedProductFreeze": "acf81ad34d47af0e6a5a9c9e816026ec9ae921118b43998ac22becba64165e4a",
+        "conditional": [
+          {
+            "feature": "reminder-or-manual-checkin-secondary",
+            "count": 0,
+            "status": "conditional-not-rendered",
+            "boundary": "Actual fixture only; unavailable buttons are not injected or claimed as exercised."
+          },
+          {
+            "feature": "load-more-notifications",
+            "count": 0,
+            "status": "conditional-not-rendered",
+            "boundary": "Actual fixture only; unavailable buttons are not injected or claimed as exercised."
+          }
+        ],
+        "dataBoundary": "Existing local actor only; no seed, new records, page.setData, mocks, approvals or API writes.",
+        "currentState": {
+          "mode": "INBOX",
+          "filter": "ALL",
+          "total": 1,
+          "nextOffset": null
+        },
+        "reusedNativeObservations": {
+          "path": "/private/tmp/caper-wave73-74-messages-geometry.json",
+          "sha256": "20be943130b7f49529d780582ced7368df593eb9a2dba301cbcc72701cd97f17",
+          "boundary": "Previously captured real nodes; 13 prior real native nodes reused; unsupported two tag-selector probes retained separately; no product changes or successful checks repeated"
+        },
+        "nativeUnmeasured": [
+          {
+            "consumer": "unnamed settings inner view16/24",
+            "reason": "wx native selector does not select element-tag child; source independently verified; no fabricated parent measurement"
+          },
+          {
+            "consumer": "unnamed archive helper text slate400",
+            "reason": "same native tag selector restriction; source independently verified; no fabricated native color"
+          }
+        ],
+        "pass": true,
+        "elapsedMs": 2520
+      }
+    },
+    {
+      "script": "messages-routes",
+      "sourceSHA256": "2d2a7e27702ee1da122b6a4dbeca0d348929ff1f6d64bc5b00913a4abde56813",
+      "result": {
+        "scope": "Four Wave74 ordinary INBOX existing destinations with real local fixture; same OPENED notice, no new business data",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Actual ordinary INBOX for route phase",
+            "actual": {
+              "phase": "conversation-existing-closed-route",
+              "mode": "INBOX",
+              "filter": "ALL",
+              "total": 1
+            }
+          },
+          {
+            "pass": true,
+            "label": "Existing same notice is already OPENED and matches real event before any tap",
+            "actual": {
+              "id": "de94ca45-ccd5-43a4-a368-e8908fdccc68",
+              "status": "OPENED",
+              "kind": "EVENT_REVIEW_APPROVED",
+              "eventId": "f9d82605-c618-4e3f-ae1c-e23f2730bb95"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Conversation opens existing CHAT_UNAVAILABLE, no fake conversation"
+          },
+          {
+            "pass": true,
+            "label": "Actual ordinary INBOX for route phase",
+            "actual": {
+              "phase": "already-opened-notice-same-event-route",
+              "mode": "INBOX",
+              "filter": "ALL",
+              "total": 1
+            }
+          },
+          {
+            "pass": true,
+            "label": "Existing same notice is already OPENED and matches real event before any tap",
+            "actual": {
+              "id": "de94ca45-ccd5-43a4-a368-e8908fdccc68",
+              "status": "OPENED",
+              "kind": "EVENT_REVIEW_APPROVED",
+              "eventId": "f9d82605-c618-4e3f-ae1c-e23f2730bb95"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Actual same-ID notice row is rendered",
+            "actual": "de94ca45-ccd5-43a4-a368-e8908fdccc68"
+          },
+          {
+            "pass": true,
+            "label": "Existing OPENED notice reaches same real event through preserved entry route",
+            "actual": {
+              "id": "f9d82605-c618-4e3f-ae1c-e23f2730bb95",
+              "eventId": "f9d82605-c618-4e3f-ae1c-e23f2730bb95",
+              "actor": "caper-message-host-20260930",
+              "loadState": "READY"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Actual ordinary INBOX for route phase",
+            "actual": {
+              "phase": "existing-ai-primary-discover-route",
+              "mode": "INBOX",
+              "filter": "ALL",
+              "total": 1
+            }
+          },
+          {
+            "pass": true,
+            "label": "Existing same notice is already OPENED and matches real event before any tap",
+            "actual": {
+              "id": "de94ca45-ccd5-43a4-a368-e8908fdccc68",
+              "status": "OPENED",
+              "kind": "EVENT_REVIEW_APPROVED",
+              "eventId": "f9d82605-c618-4e3f-ae1c-e23f2730bb95"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Same existing notice remains OPENED and notification count does not grow",
+            "actual": {
+              "before": {
+                "total": 1,
+                "id": "de94ca45-ccd5-43a4-a368-e8908fdccc68",
+                "status": "OPENED",
+                "kind": "EVENT_REVIEW_APPROVED",
+                "eventId": "f9d82605-c618-4e3f-ae1c-e23f2730bb95"
+              },
+              "after": {
+                "total": 1,
+                "id": "de94ca45-ccd5-43a4-a368-e8908fdccc68",
+                "status": "OPENED",
+                "kind": "EVENT_REVIEW_APPROVED",
+                "eventId": "f9d82605-c618-4e3f-ae1c-e23f2730bb95"
+              }
+            }
+          },
+          {
+            "pass": true,
+            "label": "Existing AI primary button rendered"
+          },
+          {
+            "pass": true,
+            "label": "AI primary reaches existing discover page"
+          },
+          {
+            "pass": true,
+            "label": "Actual ordinary INBOX for route phase",
+            "actual": {
+              "phase": "existing-notification-settings-anchor",
+              "mode": "INBOX",
+              "filter": "ALL",
+              "total": 1
+            }
+          },
+          {
+            "pass": true,
+            "label": "Settings reaches existing notification settings anchor without unrelated advanced forms",
+            "actual": {
+              "rect": {
+                "left": 16,
+                "right": 386,
+                "top": 129.5,
+                "bottom": 149.5,
+                "width": 370,
+                "height": 20
+              },
+              "advancedOpen": false,
+              "statusBarHeight": 54,
+              "intentConsumed": true
+            }
+          },
+          {
+            "pass": true,
+            "label": "Exactly four affected real destinations; no additional route or write scope",
+            "actual": [
+              {
+                "action": "conversation-jump",
+                "path": "pages/messages/messages",
+                "viewMode": "CHAT_UNAVAILABLE",
+                "actual": true
+              },
+              {
+                "action": "existing-OPENED-notice",
+                "path": "subpackages/activity/event/event",
+                "id": "f9d82605-c618-4e3f-ae1c-e23f2730bb95",
+                "eventId": "f9d82605-c618-4e3f-ae1c-e23f2730bb95",
+                "actor": "caper-message-host-20260930",
+                "actual": true
+              },
+              {
+                "action": "AI-primary",
+                "path": "pages/discover/discover",
+                "actual": true
+              },
+              {
+                "action": "notification-settings",
+                "path": "pages/me/me",
+                "anchor": "#notificationSettingsSection",
+                "rect": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 129.5,
+                  "bottom": 149.5,
+                  "width": 370,
+                  "height": 20
+                },
+                "advancedOpen": false,
+                "statusBarHeight": 54,
+                "intentConsumed": true,
+                "actual": true
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [
+          {
+            "operation": "Existing idempotent notification open",
+            "method": "POST",
+            "path": "/me/notifications/de94ca45-ccd5-43a4-a368-e8908fdccc68/open",
+            "previousStatus": "OPENED",
+            "sourceDeclaredRequestCount": 1,
+            "observedNetworkRequestCount": null,
+            "status": "existing source route triggered; network not intercepted or counted",
+            "boundary": "Original openNotice navigates then calls /open behind original identity/generation guards; not zero HTTP writes and no new notice/event/approval."
+          }
+        ],
+        "boundary": "Only changed Wave73/74 ordinary home/discover/INBOX and shared async photos/fonts. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "expectedProductFreeze": "acf81ad34d47af0e6a5a9c9e816026ec9ae921118b43998ac22becba64165e4a",
+        "routes": [
+          {
+            "action": "conversation-jump",
+            "path": "pages/messages/messages",
+            "viewMode": "CHAT_UNAVAILABLE",
+            "actual": true
+          },
+          {
+            "action": "existing-OPENED-notice",
+            "path": "subpackages/activity/event/event",
+            "id": "f9d82605-c618-4e3f-ae1c-e23f2730bb95",
+            "eventId": "f9d82605-c618-4e3f-ae1c-e23f2730bb95",
+            "actor": "caper-message-host-20260930",
+            "actual": true
+          },
+          {
+            "action": "AI-primary",
+            "path": "pages/discover/discover",
+            "actual": true
+          },
+          {
+            "action": "notification-settings",
+            "path": "pages/me/me",
+            "anchor": "#notificationSettingsSection",
+            "rect": {
+              "left": 16,
+              "right": 386,
+              "top": 129.5,
+              "bottom": 149.5,
+              "width": 370,
+              "height": 20
+            },
+            "advancedOpen": false,
+            "statusBarHeight": 54,
+            "intentConsumed": true,
+            "actual": true
+          }
+        ],
+        "actualStates": [
+          {
+            "phase": "conversation-existing-closed-route",
+            "path": "pages/messages/messages",
+            "viewMode": "INBOX",
+            "total": 1,
+            "nextOffset": null
+          },
+          {
+            "phase": "already-opened-notice-same-event-route",
+            "path": "pages/messages/messages",
+            "viewMode": "INBOX",
+            "total": 1,
+            "nextOffset": null
+          },
+          {
+            "phase": "existing-ai-primary-discover-route",
+            "path": "pages/messages/messages",
+            "viewMode": "INBOX",
+            "total": 1,
+            "nextOffset": null
+          },
+          {
+            "phase": "existing-notification-settings-anchor",
+            "path": "pages/messages/messages",
+            "viewMode": "INBOX",
+            "total": 1,
+            "nextOffset": null
+          }
+        ],
+        "dataBoundary": "No seed, new records, page.setData, mocks or approvals. Existing already-OPENED notification route calls its idempotent POST /open once by source contract; network requests are not intercepted or counted.",
+        "fixtureBefore": {
+          "total": 1,
+          "id": "de94ca45-ccd5-43a4-a368-e8908fdccc68",
+          "status": "OPENED",
+          "kind": "EVENT_REVIEW_APPROVED",
+          "eventId": "f9d82605-c618-4e3f-ae1c-e23f2730bb95"
+        },
+        "fixtureAfterNotice": {
+          "total": 1,
+          "id": "de94ca45-ccd5-43a4-a368-e8908fdccc68",
+          "status": "OPENED",
+          "kind": "EVENT_REVIEW_APPROVED",
+          "eventId": "f9d82605-c618-4e3f-ae1c-e23f2730bb95"
+        },
+        "pass": true,
+        "elapsedMs": 13710
+      }
+    },
+    {
+      "script": "final-character-font-runtime",
+      "sourceSHA256": "7ae62a40278d3cbf0dc594453a14ae10810492c1fbb03e79d88ce0d71dd16798",
+      "result": {
+        "scope": "Only final W/y payload after final frozen CLI; callback delta, no earlier routes or VM tests repeated",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Async font package actually loaded and all8 global font callbacks succeeded",
+            "state": {
+              "support": "supported",
+              "source": "loaded",
+              "sdkVersion": "3.17.2",
+              "faces": [
+                {
+                  "family": "Caveat",
+                  "weight": "700",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Plus Jakarta Sans",
+                  "weight": "400",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Plus Jakarta Sans",
+                  "weight": "600",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Plus Jakarta Sans",
+                  "weight": "700",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Plus Jakarta Sans",
+                  "weight": "800",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Rubik Mono One",
+                  "weight": "400",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Caper Jakarta Profile 500",
+                  "weight": "500",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Caveat",
+                  "weight": "600",
+                  "status": "loaded"
+                }
+              ]
+            }
+          }
+        ],
+        "exceptions": [],
+        "finalFontDataSHA256": "fb39653c8663ba1bb7aa79e90df267aca6d1c6dd606ea484d8a052dbd53ad3de",
+        "pass": true
+      }
+    },
+    {
+      "script": "final-character-visible-word",
+      "sourceSHA256": "191209c4c9b2abe4ff8c7046e6ef415ff331dde65e186d293011da590f03a1b8",
+      "result": {
+        "scope": "Only final W700 fixed-text native geometry and safe photo; y600 is source/callback evidence, no old PG01 route retest",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Actual fixed Wukang Road consumer uses Caveat700 after final CLI payload",
+            "actual": [
+              {
+                "selector": ".d74-route-wukang .d74-route-hand",
+                "value": {
+                  "left": 260,
+                  "right": 456,
+                  "top": 3036,
+                  "bottom": 3056,
+                  "width": 196,
+                  "height": 20,
+                  "font-family": "Caveat, \"Segoe Print\", cursive",
+                  "font-size": "14px",
+                  "line-height": "20px",
+                  "font-weight": "700",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(198, 255, 0)"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [
+          {
+            "g": [
+              {
+                "selector": ".d74-route-wukang .d74-route-hand",
+                "value": {
+                  "left": 260,
+                  "right": 456,
+                  "top": 3036,
+                  "bottom": 3056,
+                  "width": 196,
+                  "height": 20,
+                  "font-family": "Caveat, \"Segoe Print\", cursive",
+                  "font-size": "14px",
+                  "line-height": "20px",
+                  "font-weight": "700",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(198, 255, 0)"
+                }
+              }
+            ]
+          }
+        ],
+        "screenshots": [
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-discover-long-final-handwriting-wave73-74-2026-10-02.png"
+        ],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave73/74 ordinary home/discover/INBOX and shared async photos/fonts. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "y600Boundary": "Exact new y glyph independently checked; final global600callback loaded; unchanged PG01 Play More route not replayed",
+        "pass": true,
+        "elapsedMs": 1753
+      }
+    },
+    {
+      "script": "final-character-visible-word-viewport",
+      "sourceSHA256": "fb762bf3f5d087b4178595e0f3bf8647c1a3c304124930243e07b93b0b886066",
+      "result": {
+        "scope": "Only remaining final W-word screenshot viewport correction; earlier font/route assertions not rerun",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Actual W-word now below sticky category edge in screenshot",
+            "actual": [
+              {
+                "selector": ".d74-route-wukang .d74-route-hand",
+                "value": {
+                  "left": 260,
+                  "right": 456,
+                  "top": 302,
+                  "bottom": 322,
+                  "width": 196,
+                  "height": 20,
+                  "font-family": "Caveat, \"Segoe Print\", cursive",
+                  "font-size": "14px",
+                  "line-height": "20px",
+                  "font-weight": "700",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(198, 255, 0)"
+                }
+              },
+              {
+                "selector": ".category-scroll",
+                "value": {
+                  "left": 0,
+                  "right": 403,
+                  "top": 110,
+                  "bottom": 161,
+                  "width": 403,
+                  "height": 51,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "10px",
+                  "background-color": "rgba(255, 255, 255, 0.95)",
+                  "display": "block",
+                  "color": "rgb(23, 32, 51)"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [
+          {
+            "g": [
+              {
+                "selector": ".d74-route-wukang .d74-route-hand",
+                "value": {
+                  "left": 260,
+                  "right": 456,
+                  "top": 302,
+                  "bottom": 322,
+                  "width": 196,
+                  "height": 20,
+                  "font-family": "Caveat, \"Segoe Print\", cursive",
+                  "font-size": "14px",
+                  "line-height": "20px",
+                  "font-weight": "700",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(198, 255, 0)"
+                }
+              },
+              {
+                "selector": ".category-scroll",
+                "value": {
+                  "left": 0,
+                  "right": 403,
+                  "top": 110,
+                  "bottom": 161,
+                  "width": 403,
+                  "height": 51,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Display\", \"SF Pro Text\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "10px",
+                  "background-color": "rgba(255, 255, 255, 0.95)",
+                  "display": "block",
+                  "color": "rgb(23, 32, 51)"
+                }
+              }
+            ]
+          }
+        ],
+        "screenshots": [
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-discover-long-final-handwriting-visible-wave73-74-2026-10-02.png"
+        ],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave73/74 ordinary home/discover/INBOX and shared async photos/fonts. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "previousCaptureBoundary": "Earlier safe capture clipped W-word under sticky bar; no product change or repeated font/route assertions",
+        "pass": true,
+        "elapsedMs": 2012
+      }
+    }
+  ],
+  "auxiliaryResourceAndHarnessProbes": [
+    {
+      "script": "caper-wave73-74-modal-capture-probe",
+      "sourceSHA256": "139fe82611c68c1746199ed130e425929b01fc469b8efb243ff3de2248c267ad",
+      "result": {
+        "scope": "One SDK modal capture adapter diagnostic, no application source changes",
+        "captures": [
+          {
+            "content": "周末聚餐目前仅供灵感参考。当前只能发起羽毛球活动，是否前往发起？",
+            "title": "活动灵感"
+          }
+        ],
+        "exceptions": [],
+        "path": "pages/index/index",
+        "pass": true
+      }
+    },
+    {
+      "script": "caper-wave73-74-discover-static-count-correction",
+      "sourceSHA256": "892bb321655436c174a3ab4182a847e090899fc936318b55d597f3f9f4d280f0",
+      "result": {
+        "scope": "Correction of aggregate expectation only; no successful action rerun",
+        "successfulActualConsumers": 18,
+        "baseRecommendationCount": 2,
+        "rotatedRecommendationCount": 3,
+        "campaignCount": 3,
+        "weeklyCount": 6,
+        "namedRouteCount": 2,
+        "placeCount": 4,
+        "failedAggregatePreserved": "/private/tmp/caper-wave73-74-discover-static-ready.json",
+        "pass": true
+      }
+    },
+    {
+      "script": "caper-wave73-image-probe",
+      "sourceSHA256": "f11271c8041bce1513f6932233fb90b9efddb265c811b0ca6402c6df8d4ae8c6",
+      "result": {
+        "scope": "Disposable clone-only main-to-profile asynchronous component probe; no production page mutation",
+        "checks": [],
+        "exceptions": [],
+        "pass": false,
+        "failure": "asynchronous component must actually replace placeholder"
+      }
+    },
+    {
+      "script": "caper-wave73-image-probe-sdk-selector-failed",
+      "sourceSHA256": "f11271c8041bce1513f6932233fb90b9efddb265c811b0ca6402c6df8d4ae8c6",
+      "result": {
+        "scope": "Disposable clone-only main-to-profile asynchronous component probe; no production page mutation",
+        "checks": [],
+        "exceptions": [],
+        "pass": false,
+        "failure": "asynchronous component must actually replace placeholder"
+      }
+    },
+    {
+      "script": "caper-wave73-image-probe-diagnostic",
+      "sourceSHA256": "d00691f0839bd153e5cab8f426166004ec606ea05540babbec2a4de9f2173d58",
+      "result": {
+        "route": "pages/index/index",
+        "probeKey": "home-brand-party",
+        "component": null,
+        "values": [
+          {
+            "dataset": {},
+            "left": 20,
+            "right": 68,
+            "top": 120,
+            "bottom": 168,
+            "width": "48px",
+            "height": "48px",
+            "border-radius": "0px"
+          },
+          null,
+          {
+            "dataset": {},
+            "left": 20,
+            "right": 68,
+            "top": 120,
+            "bottom": 168,
+            "width": "48px",
+            "height": "48px",
+            "src": "/subpackages/profile/components/reference-image/assets/home-brand-party.jpg",
+            "border-radius": "16px"
+          },
+          null
+        ]
+      }
+    },
+    {
+      "script": "caper-wave73-image-probe-native",
+      "sourceSHA256": "4363ad168f4a38fd6a5b7e0c23ca50d07588b253aa8ba05eb8a4e82fe606abbb",
+      "result": {
+        "scope": "Clone-only async component source/image decoding/native CSS probe; no product routes or business writes",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Cross-package placeholder replaced by actual48px image with16px radius",
+            "values": {
+              "left": 20,
+              "right": 68,
+              "top": 120,
+              "bottom": 168,
+              "width": 48,
+              "height": 48,
+              "src": "/subpackages/profile/components/reference-image/assets/home-brand-party.jpg",
+              "border-radius": "16px"
+            }
+          },
+          {
+            "pass": true,
+            "label": "All12 packaged original JPEGs actually decoded",
+            "images": [
+              {
+                "key": "home-brand-party",
+                "src": "/subpackages/profile/components/reference-image/assets/home-brand-party.jpg",
+                "width": 512,
+                "height": 279
+              },
+              {
+                "key": "home-hot-tennis",
+                "src": "/subpackages/profile/components/reference-image/assets/home-hot-tennis.jpg",
+                "width": 512,
+                "height": 279
+              },
+              {
+                "key": "home-hot-coffee",
+                "src": "/subpackages/profile/components/reference-image/assets/home-hot-coffee.jpg",
+                "width": 512,
+                "height": 279
+              },
+              {
+                "key": "home-hot-frisbee",
+                "src": "/subpackages/profile/components/reference-image/assets/home-hot-frisbee.jpg",
+                "width": 512,
+                "height": 279
+              },
+              {
+                "key": "home-hot-boardgame",
+                "src": "/subpackages/profile/components/reference-image/assets/home-hot-boardgame.jpg",
+                "width": 512,
+                "height": 279
+              },
+              {
+                "key": "home-idea-badminton",
+                "src": "/subpackages/profile/components/reference-image/assets/home-idea-badminton.jpg",
+                "width": 512,
+                "height": 279
+              },
+              {
+                "key": "home-idea-coffee",
+                "src": "/subpackages/profile/components/reference-image/assets/home-idea-coffee.jpg",
+                "width": 512,
+                "height": 279
+              },
+              {
+                "key": "home-idea-cycling",
+                "src": "/subpackages/profile/components/reference-image/assets/home-idea-cycling.jpg",
+                "width": 512,
+                "height": 279
+              },
+              {
+                "key": "home-collage-main",
+                "src": "/subpackages/profile/components/reference-image/assets/home-collage-main.jpg",
+                "width": 512,
+                "height": 279
+              },
+              {
+                "key": "home-collage-dinner",
+                "src": "/subpackages/profile/components/reference-image/assets/home-collage-dinner.jpg",
+                "width": 512,
+                "height": 279
+              },
+              {
+                "key": "home-collage-grass",
+                "src": "/subpackages/profile/components/reference-image/assets/home-collage-grass.jpg",
+                "width": 512,
+                "height": 279
+              },
+              {
+                "key": "discover-park",
+                "src": "/subpackages/profile/components/reference-image/assets/discover-park.jpg",
+                "width": 512,
+                "height": 512
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "Invalid key clears rendered image"
+          }
+        ],
+        "exceptions": [],
+        "pass": true
+      }
+    },
+    {
+      "script": "caper-wave73-async-font-runtime",
+      "sourceSHA256": "4276ecc385c5753aa526af8693c41c849f73005f66846a070dc656a67542d835",
+      "result": {
+        "scope": "Only new async font loader and new Caveat faces; no page route suites",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Async font package actually loaded and all8 global font callbacks succeeded",
+            "state": {
+              "support": "supported",
+              "source": "loaded",
+              "sdkVersion": "3.17.2",
+              "faces": [
+                {
+                  "family": "Caveat",
+                  "weight": "700",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Plus Jakarta Sans",
+                  "weight": "400",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Plus Jakarta Sans",
+                  "weight": "600",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Plus Jakarta Sans",
+                  "weight": "700",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Plus Jakarta Sans",
+                  "weight": "800",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Rubik Mono One",
+                  "weight": "400",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Caper Jakarta Profile 500",
+                  "weight": "500",
+                  "status": "loaded"
+                },
+                {
+                  "family": "Caveat",
+                  "weight": "600",
+                  "status": "loaded"
+                }
+              ]
+            }
+          }
+        ],
+        "exceptions": [],
+        "pass": true
+      }
+    }
+  ],
+  "retainedEarlyModalFailureBoundary": {
+    "knownFailure": "Initial getApp().globalData modal capture read no usable record; exposed SDK callback diagnostic subsequently passed",
+    "rawJSONPreserved": false,
+    "overwrittenBy": "home-inspirations successful corrected adapter record",
+    "sourceApplicationChangedForHarness": false
+  },
+  "runtimeExceptions": 0,
+  "newBusinessSubmissions": 0,
+  "existingNoticeOpen": [
+    {
+      "operation": "Existing idempotent notification open",
+      "method": "POST",
+      "path": "/me/notifications/de94ca45-ccd5-43a4-a368-e8908fdccc68/open",
+      "previousStatus": "OPENED",
+      "sourceDeclaredRequestCount": 1,
+      "observedNetworkRequestCount": null,
+      "status": "existing source route triggered; network not intercepted or counted",
+      "boundary": "Original openNotice navigates then calls /open behind original identity/generation guards; not zero HTTP writes and no new notice/event/approval."
+    }
+  ],
+  "CLI": {
+    "size": {
+      "total": 5282302,
+      "packages": [
+        {
+          "name": "TOTAL",
+          "size": 5282302
+        },
+        {
+          "name": "main",
+          "size": 1887500
+        },
+        {
+          "name": "/subpackages/activity/",
+          "size": 1369494
+        },
+        {
+          "name": "/subpackages/profile/",
+          "size": 2025308
+        }
+      ]
+    }
+  },
+  "mainMarginBytes": 209652,
+  "profileMarginBytes": 71844,
+  "finalFontDataSHA256": "fb39653c8663ba1bb7aa79e90df267aca6d1c6dd606ea484d8a052dbd53ad3de",
+  "targetedNewVMTests": {
+    "referenceImage": 3,
+    "fontAsync": 3,
+    "fullSuite": false,
+    "rerunAfterOnlyGlyphDelta": false
+  },
+  "screenshotsViewed": [
+    "/Users/tsb/Documents/小程序/docs/evidence/images/caper-discover-long-final-handwriting-visible-wave73-74-2026-10-02.png",
+    "/Users/tsb/Documents/小程序/docs/evidence/images/caper-discover-long-final-handwriting-wave73-74-2026-10-02.png",
+    "/Users/tsb/Documents/小程序/docs/evidence/images/caper-discover-long-moments-weekly-wave73-74-2026-10-02.png",
+    "/Users/tsb/Documents/小程序/docs/evidence/images/caper-discover-long-recommend-nearby-wave73-74-2026-10-02.png",
+    "/Users/tsb/Documents/小程序/docs/evidence/images/caper-discover-long-scenes-create-wave73-74-2026-10-02.png",
+    "/Users/tsb/Documents/小程序/docs/evidence/images/caper-home-long-brand-hot-wave73-74-2026-10-02.png",
+    "/Users/tsb/Documents/小程序/docs/evidence/images/caper-home-long-collage-city-wave73-74-2026-10-02.png",
+    "/Users/tsb/Documents/小程序/docs/evidence/images/caper-messages-inbox-long-ai-album-wave73-74-2026-10-02.png",
+    "/Users/tsb/Documents/小程序/docs/evidence/images/caper-messages-inbox-long-settings-footer-wave73-74-2026-10-02.png"
+  ],
+  "nativeForeground": "CUA getApp(/Applications/wechatwebdevtools.app) freshly reports Mac locked; automatic unlock unsuccessful; no new native clicks",
+  "modalBoundary": "Exposed SDK showModal callback with cancel; native modal not manually exercised",
+  "conditionalNotRendered": [
+    {
+      "feature": "reminder-or-manual-checkin-secondary",
+      "count": 0,
+      "status": "conditional-not-rendered",
+      "boundary": "Actual fixture only; unavailable buttons are not injected or claimed as exercised."
+    },
+    {
+      "feature": "load-more-notifications",
+      "count": 0,
+      "status": "conditional-not-rendered",
+      "boundary": "Actual fixture only; unavailable buttons are not injected or claimed as exercised."
+    }
+  ],
+  "nativeStyleUnmeasured": [
+    {
+      "consumer": "unnamed settings inner view16/24",
+      "reason": "wx native selector does not select element-tag child; source independently verified; no fabricated parent measurement"
+    },
+    {
+      "consumer": "unnamed archive helper text slate400",
+      "reason": "same native tag selector restriction; source independently verified; no fabricated native color"
+    }
+  ],
+  "deviceProductionOperationalAcceptance": false
+}

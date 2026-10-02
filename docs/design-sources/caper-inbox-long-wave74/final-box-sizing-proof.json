@@ -1,0 +1,14 @@
+{
+  "sourceReason": "Tailwind original preflight applies border-box to every node. Existing source row fills parent; native conversation-row width100% plus horizontal padding requires explicit same border-box.",
+  "selector": ".messages-inbox .inbox-long-conversation .conversation-row",
+  "onePureCSSDeclaration": "box-sizing: border-box;",
+  "beforeBytes": 82322,
+  "beforeSHA": "3cbee13c77e1a071b933998c0cd33143ca7ce863c40388886e61910efda8a6b2",
+  "finalBytes": 82346,
+  "finalSHA": "f9eff614c4e6802518b9eda6a42b38cd0f724ff6a5a9c9005461708fc6a1621f",
+  "inverseExactlyRestoresPriorSourceCheckedCSS": true,
+  "oldPrefixByteEqual": true,
+  "newRawBytes": 24,
+  "noWxmlJsJsonAssetBusinessChange": true,
+  "noPriorCheckRerun": true
+}

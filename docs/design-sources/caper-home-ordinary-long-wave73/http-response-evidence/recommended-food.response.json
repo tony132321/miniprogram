@@ -1,0 +1,34 @@
+{
+  "sourceLine": 274,
+  "sourceAlt": "美食聚餐",
+  "URL": "https://lh3.googleusercontent.com/aida-public/AB6AXuCGsKmU9H-R9bAVE1ijbWn_3svsWfdse1ot9bDai0DmMf74_n1IyC5vEaPu5l-v23QP3UWCq-KBb9zTAoEiGzXGCS3LMNV3rb1EE_exkKB-enxOogf8u9AzGCz3p8-Pc4nJXC9SfKni7cy-as_mo4ctPa2QvsRsao4OOD-_IscU0jf7wcnZ7j5q5fW4spyLklZ9N6WmDDkYV6hVxQpbVNjoaG13JaHgVTimxcLYSrvjcz4rSN0JlAzfHA",
+  "finalURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuCGsKmU9H-R9bAVE1ijbWn_3svsWfdse1ot9bDai0DmMf74_n1IyC5vEaPu5l-v23QP3UWCq-KBb9zTAoEiGzXGCS3LMNV3rb1EE_exkKB-enxOogf8u9AzGCz3p8-Pc4nJXC9SfKni7cy-as_mo4ctPa2QvsRsao4OOD-_IscU0jf7wcnZ7j5q5fW4spyLklZ9N6WmDDkYV6hVxQpbVNjoaG13JaHgVTimxcLYSrvjcz4rSN0JlAzfHA",
+  "status": 200,
+  "headers": {
+    "Content-Type": "image/jpeg",
+    "Vary": "Origin",
+    "Access-Control-Allow-Origin": "*",
+    "Timing-Allow-Origin": "*",
+    "Access-Control-Expose-Headers": "Content-Length",
+    "ETag": "\"v0\"",
+    "Expires": "Sat, 03 Oct 2026 02:03:45 GMT",
+    "Cache-Control": "public, max-age=86400, no-transform",
+    "Content-Disposition": "inline;filename=\"unnamed.jpg\"",
+    "X-Content-Type-Options": "nosniff",
+    "Date": "Fri, 02 Oct 2026 02:03:45 GMT",
+    "Server": "fife",
+    "Content-Length": "69929",
+    "X-XSS-Protection": "0",
+    "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "Connection": "close"
+  },
+  "contentType": "image/jpeg",
+  "bytes": 69929,
+  "sha256": "2396e91306c1e2d8a152996464094f24cd7698fcdb55193771d73ab78673987f",
+  "savedPath": "/private/tmp/caper-wave73-home-long/photos/recommended-food.jpg",
+  "noReencoding": true,
+  "fetchedAtUTC": "2026-10-02T02:03:46.379348+00:00",
+  "existingByteEqualCandidates": [
+    "miniprogram/assets/stitch/caper_home_dinner.jpg"
+  ]
+}

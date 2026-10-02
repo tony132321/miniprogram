@@ -1,1 +1,12 @@
-{"navigationStyle":"custom","navigationBarTitleText":"找局 · 发现","navigationBarBackgroundColor":"#ffffff","navigationBarTextStyle":"black"}
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "找局 · 发现",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "usingComponents": {
+    "reference-image": "/subpackages/profile/components/reference-image/reference-image"
+  },
+  "componentPlaceholder": {
+    "reference-image": "view"
+  }
+}
