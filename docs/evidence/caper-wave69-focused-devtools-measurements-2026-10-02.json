@@ -1,0 +1,1640 @@
+{
+  "at": "2026-10-01T23:47:27.601304+00:00",
+  "scope": "Wave69 changed UI and three-mode scroll correction only, no full suite or CI",
+  "segments": {
+    "messages": {
+      "scope": "Changed N1 CENTER real filters / actual outcome deep link / return and Alex chat-unavailable rendering only",
+      "checks": [
+        {
+          "pass": true,
+          "label": "N1 source title/header/back rendered",
+          "actual": [
+            {
+              "selector": ".center-header",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 54,
+                "bottom": 110,
+                "width": 402,
+                "height": 56,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "17px",
+                "line-height": "22px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(250, 248, 254, 0.8)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".center-back",
+              "value": {
+                "left": 16,
+                "right": 60,
+                "top": 60,
+                "bottom": 104,
+                "width": 44,
+                "height": 44,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "0px",
+                "line-height": "0px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(0, 0, 0, 0)",
+                "display": "flex",
+                "color": "rgb(17, 24, 39)"
+              }
+            },
+            {
+              "selector": ".center-filter",
+              "value": {
+                "left": 16,
+                "right": 84,
+                "top": 73.5,
+                "bottom": 101.5,
+                "width": 68,
+                "height": 28,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "13px",
+                "line-height": "16px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "14px",
+                "padding-bottom": "6px",
+                "background-color": "rgb(0, 76, 200)",
+                "display": "flex",
+                "color": "rgb(255, 255, 255)"
+              }
+            },
+            {
+              "selector": ".center-card",
+              "value": {
+                "left": 16,
+                "right": 386,
+                "top": 115.5,
+                "bottom": 297.5,
+                "width": 370,
+                "height": 182,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "16px",
+                "line-height": "24px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "16px",
+                "padding-bottom": "16px",
+                "background-color": "rgb(255, 255, 255)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            }
+          ]
+        },
+        {
+          "pass": true,
+          "label": "N1 actual system filter retained"
+        },
+        {
+          "pass": true,
+          "label": "All restores same real notification collection",
+          "actual": {
+            "count": 4
+          }
+        },
+        {
+          "pass": true,
+          "label": "Existing actual member outcome notification available",
+          "actual": {
+            "eventId": "dca728a9-f387-4fbf-a301-4f8558ee2f6b",
+            "kind": "EVENT_OUTCOME_REVIEW"
+          }
+        },
+        {
+          "pass": true,
+          "label": "N1 outcome button reaches same actual confirmed member unsubmitted feedback form",
+          "actual": {
+            "id": "dca728a9-f387-4fbf-a301-4f8558ee2f6b",
+            "state": "COMPLETED",
+            "myFeedbackSubmitted": false
+          }
+        },
+        {
+          "pass": true,
+          "label": "Alex closed composer remains disabled and source header64",
+          "actual": [
+            {
+              "selector": ".private-chat-header",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 54,
+                "bottom": 118,
+                "width": 402,
+                "height": 64,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "16px",
+                "line-height": "24px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(250, 248, 254, 0.8)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".private-chat-attach",
+              "value": {
+                "left": 16,
+                "right": 60,
+                "top": 786,
+                "bottom": 830,
+                "width": 44,
+                "height": 44,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "0px",
+                "line-height": "0px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(244, 243, 248)",
+                "display": "flex",
+                "color": "rgb(66, 70, 85)"
+              }
+            },
+            {
+              "selector": ".private-chat-voice",
+              "value": {
+                "left": 342,
+                "right": 386,
+                "top": 786,
+                "bottom": 830,
+                "width": 44,
+                "height": 44,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "0px",
+                "line-height": "0px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(29, 100, 242)",
+                "display": "flex",
+                "color": "rgb(255, 255, 255)"
+              }
+            }
+          ]
+        },
+        {
+          "pass": true,
+          "label": "Chat back button restores actual inbox"
+        },
+        {
+          "pass": true,
+          "label": "No SDK runtime exceptions on affected routes",
+          "actual": []
+        }
+      ],
+      "metrics": [
+        {
+          "geometry": [
+            {
+              "selector": ".center-header",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 54,
+                "bottom": 110,
+                "width": 402,
+                "height": 56,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "17px",
+                "line-height": "22px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(250, 248, 254, 0.8)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".center-back",
+              "value": {
+                "left": 16,
+                "right": 60,
+                "top": 60,
+                "bottom": 104,
+                "width": 44,
+                "height": 44,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "0px",
+                "line-height": "0px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(0, 0, 0, 0)",
+                "display": "flex",
+                "color": "rgb(17, 24, 39)"
+              }
+            },
+            {
+              "selector": ".center-filter",
+              "value": {
+                "left": 16,
+                "right": 84,
+                "top": 73.5,
+                "bottom": 101.5,
+                "width": 68,
+                "height": 28,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "13px",
+                "line-height": "16px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "14px",
+                "padding-bottom": "6px",
+                "background-color": "rgb(0, 76, 200)",
+                "display": "flex",
+                "color": "rgb(255, 255, 255)"
+              }
+            },
+            {
+              "selector": ".center-card",
+              "value": {
+                "left": 16,
+                "right": 386,
+                "top": 115.5,
+                "bottom": 297.5,
+                "width": 370,
+                "height": 182,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "16px",
+                "line-height": "24px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "16px",
+                "padding-bottom": "16px",
+                "background-color": "rgb(255, 255, 255)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            }
+          ]
+        },
+        {
+          "chat": [
+            {
+              "selector": ".private-chat-header",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 54,
+                "bottom": 118,
+                "width": 402,
+                "height": 64,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "16px",
+                "line-height": "24px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(250, 248, 254, 0.8)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".private-chat-attach",
+              "value": {
+                "left": 16,
+                "right": 60,
+                "top": 786,
+                "bottom": 830,
+                "width": 44,
+                "height": 44,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "0px",
+                "line-height": "0px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(244, 243, 248)",
+                "display": "flex",
+                "color": "rgb(66, 70, 85)"
+              }
+            },
+            {
+              "selector": ".private-chat-voice",
+              "value": {
+                "left": 342,
+                "right": 386,
+                "top": 786,
+                "bottom": 830,
+                "width": 44,
+                "height": 44,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "0px",
+                "line-height": "0px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(29, 100, 242)",
+                "display": "flex",
+                "color": "rgb(255, 255, 255)"
+              }
+            }
+          ]
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-notifications-center-wave69-2026-10-02.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-private-chat-closed-wave69-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "writes": [
+        {
+          "kind": "Existing notification openNotice action marks synthetic local notice read",
+          "eventId": "dca728a9-f387-4fbf-a301-4f8558ee2f6b",
+          "feedbackSubmitted": false
+        }
+      ],
+      "boundary": "Only changed Wave 69 host/checkin/AA/notification-center/chat-disabled UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Ephemeral local check-in token generation may be exercised and separately recorded.",
+      "pass": true,
+      "elapsedMs": 13202
+    },
+    "share-sheet": {
+      "scope": "Changed PG06-S foreground sheet, current qualified invitation, source geometry, copy and close actions only",
+      "checks": [
+        {
+          "pass": true,
+          "label": "Existing host and current approved invitation qualify, no injected authorization",
+          "actual": {
+            "id": "0e51f241-3f63-439d-b59d-593549a61ac2",
+            "status": "RECRUITING",
+            "canShare": true
+          }
+        },
+        {
+          "pass": true,
+          "label": "PG06-S source 64px scene, 48px tiles, 32px close, 48px cancel",
+          "actual": [
+            {
+              "selector": ".sheet-reference69 .sheet",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 316,
+                "bottom": 874,
+                "width": 402,
+                "height": 558,
+                "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", sans-serif",
+                "font-size": "15px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "16px",
+                "padding-bottom": "50px",
+                "background-color": "rgb(255, 255, 255)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".sheet-preview-art",
+              "value": {
+                "left": 31,
+                "right": 95,
+                "top": 434.5,
+                "bottom": 498.5,
+                "width": 64,
+                "height": 64,
+                "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", sans-serif",
+                "font-size": "15px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(0, 0, 0, 0)",
+                "display": "block",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".action-icon.green",
+              "value": {
+                "left": 35.25,
+                "right": 83.25,
+                "top": 548,
+                "bottom": 596,
+                "width": 48,
+                "height": 48,
+                "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", sans-serif",
+                "font-size": "18px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(7, 193, 96)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".sheet-close",
+              "value": {
+                "left": 354,
+                "right": 386,
+                "top": 360,
+                "bottom": 392,
+                "width": 32,
+                "height": 32,
+                "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", sans-serif",
+                "font-size": "19px",
+                "line-height": "32px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(239, 237, 243)",
+                "display": "flex",
+                "color": "rgb(64, 72, 85)"
+              }
+            },
+            {
+              "selector": ".sheet-cancel",
+              "value": {
+                "left": 16,
+                "right": 386,
+                "top": 776,
+                "bottom": 824,
+                "width": 370,
+                "height": 48,
+                "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", sans-serif",
+                "font-size": "15px",
+                "line-height": "20px",
+                "font-weight": "700",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "14px",
+                "background-color": "rgb(239, 237, 243)",
+                "display": "block",
+                "color": "rgb(26, 27, 31)"
+              }
+            }
+          ]
+        },
+        {
+          "pass": true,
+          "label": "Actual badminton type uses exact original scene resource"
+        },
+        {
+          "pass": true,
+          "label": "Tile copies current server invitation and actual title",
+          "actual": {
+            "sameToken": true,
+            "containsTitle": true
+          }
+        }
+      ],
+      "metrics": [
+        {
+          "geometry": [
+            {
+              "selector": ".sheet-reference69 .sheet",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 316,
+                "bottom": 874,
+                "width": 402,
+                "height": 558,
+                "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", sans-serif",
+                "font-size": "15px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "16px",
+                "padding-bottom": "50px",
+                "background-color": "rgb(255, 255, 255)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".sheet-preview-art",
+              "value": {
+                "left": 31,
+                "right": 95,
+                "top": 434.5,
+                "bottom": 498.5,
+                "width": 64,
+                "height": 64,
+                "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", sans-serif",
+                "font-size": "15px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(0, 0, 0, 0)",
+                "display": "block",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".action-icon.green",
+              "value": {
+                "left": 35.25,
+                "right": 83.25,
+                "top": 548,
+                "bottom": 596,
+                "width": 48,
+                "height": 48,
+                "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", sans-serif",
+                "font-size": "18px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(7, 193, 96)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".sheet-close",
+              "value": {
+                "left": 354,
+                "right": 386,
+                "top": 360,
+                "bottom": 392,
+                "width": 32,
+                "height": 32,
+                "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", sans-serif",
+                "font-size": "19px",
+                "line-height": "32px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(239, 237, 243)",
+                "display": "flex",
+                "color": "rgb(64, 72, 85)"
+              }
+            },
+            {
+              "selector": ".sheet-cancel",
+              "value": {
+                "left": 16,
+                "right": 386,
+                "top": 776,
+                "bottom": 824,
+                "width": 370,
+                "height": 48,
+                "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", sans-serif",
+                "font-size": "15px",
+                "line-height": "20px",
+                "font-weight": "700",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "14px",
+                "background-color": "rgb(239, 237, 243)",
+                "display": "block",
+                "color": "rgb(26, 27, 31)"
+              }
+            }
+          ]
+        }
+      ],
+      "screenshots": [],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 69 host/checkin/AA/notification-center/chat-disabled UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Ephemeral local check-in token generation may be exercised and separately recorded.",
+      "redactions": [
+        {
+          "kind": "UI text replacement for public screenshot only",
+          "field": "display.inviteToken",
+          "restored": true,
+          "persisted": false
+        }
+      ],
+      "pass": false,
+      "failure": {
+        "phase": "close",
+        "message": "Cannot read properties of null (reading 'tap')",
+        "stack": "TypeError: Cannot read properties of null (reading 'tap')\n    at /private/tmp/caper-wave69-share-sheet.cjs:7:52\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async run (/private/tmp/caper-wave69-sdk-helpers.cjs:22:3)"
+      },
+      "elapsedMs": 9366,
+      "privateFailedCapture": {
+        "excludedFromGit": true,
+        "retainedAt": "/private/tmp/caper-wave69-share-sheet-private-failed-capture.png",
+        "reason": "Copy refresh closed sheet, exposing background invite QR; replaced by separately verified foreground screenshot."
+      }
+    },
+    "share-remaining": {
+      "scope": "Only remaining share close/cancel and credential-safe foreground screenshot; no repeated copy/geometry",
+      "checks": [
+        {
+          "pass": true,
+          "label": "Close returns to same actual invitation card"
+        },
+        {
+          "pass": true,
+          "label": "Cancel closes same-event sheet"
+        },
+        {
+          "pass": true,
+          "label": "No SDK runtime exceptions on affected routes",
+          "actual": []
+        }
+      ],
+      "metrics": [],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-share-sheet-wave69-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 69 host/checkin/AA/notification-center/chat-disabled UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Ephemeral local check-in token generation may be exercised and separately recorded.",
+      "redactions": [
+        {
+          "field": "display.inviteToken",
+          "persisted": false,
+          "restored": true,
+          "backgroundQR": "Covered by foreground sheet"
+        }
+      ],
+      "priorFailureExplanation": "copyInvite refresh intentionally closes shareSheetOpen; original script assumed it remained open. Product unchanged. Remaining actions only. Original credential-bearing failed screenshot kept privately and excluded from upload.",
+      "pass": true,
+      "elapsedMs": 7882
+    },
+    "messages-scroll": {
+      "scope": "Only scroll inheritance fix for actual INBOX/CENTER/CHAT transitions and replacement source-first-screen screenshot",
+      "checks": [
+        {
+          "pass": true,
+          "label": "Actual center entry resets inherited inbox scroll; all filters below fixed header",
+          "actual": [
+            {
+              "selector": ".center-header",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 54,
+                "bottom": 110,
+                "width": 402,
+                "height": 56,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "17px",
+                "line-height": "22px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(250, 248, 254, 0.8)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".center-filter",
+              "value": {
+                "left": 16,
+                "right": 84,
+                "top": 170,
+                "bottom": 198,
+                "width": 68,
+                "height": 28,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "13px",
+                "line-height": "16px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "14px",
+                "padding-bottom": "6px",
+                "background-color": "rgb(0, 76, 200)",
+                "display": "flex",
+                "color": "rgb(255, 255, 255)"
+              }
+            }
+          ]
+        },
+        {
+          "pass": true,
+          "label": "Actual center back resets inbox position",
+          "actual": {
+            "scrollTop": 0
+          }
+        },
+        {
+          "pass": true,
+          "label": "Actual private-chat entry resets inherited inbox scroll",
+          "actual": {
+            "scrollTop": 0
+          }
+        },
+        {
+          "pass": true,
+          "label": "Actual chat back resets inbox position",
+          "actual": {
+            "scrollTop": 0
+          }
+        },
+        {
+          "pass": true,
+          "label": "No SDK runtime exceptions on affected routes",
+          "actual": []
+        }
+      ],
+      "metrics": [
+        {
+          "center": [
+            {
+              "selector": ".center-header",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 54,
+                "bottom": 110,
+                "width": 402,
+                "height": 56,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "17px",
+                "line-height": "22px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(250, 248, 254, 0.8)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".center-filter",
+              "value": {
+                "left": 16,
+                "right": 84,
+                "top": 170,
+                "bottom": 198,
+                "width": 68,
+                "height": 28,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "13px",
+                "line-height": "16px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "14px",
+                "padding-bottom": "6px",
+                "background-color": "rgb(0, 76, 200)",
+                "display": "flex",
+                "color": "rgb(255, 255, 255)"
+              }
+            }
+          ]
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-notifications-center-top-wave69-2026-10-02.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-private-chat-closed-top-wave69-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 69 host/checkin/AA/notification-center/chat-disabled UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Ephemeral local check-in token generation may be exercised and separately recorded.",
+      "pass": true,
+      "elapsedMs": 8711
+    },
+    "pg06": {
+      "scope": "Changed badminton host dashboard source bounds, actual counters/roster and existing member/announcement/share destinations only",
+      "checks": [
+        {
+          "pass": true,
+          "label": "Actual badminton host with 6 confirmed people",
+          "actual": {
+            "id": "0e51f241-3f63-439d-b59d-593549a61ac2",
+            "confirmed": 6,
+            "roster": 6
+          }
+        },
+        {
+          "pass": true,
+          "label": "PG06 actual source header, hero ratio and helper36",
+          "actual": [
+            {
+              "selector": ".pg06-native-nav",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 0,
+                "bottom": 110,
+                "width": 402,
+                "height": 110,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "16px",
+                "line-height": "normal",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(250, 248, 254, 0.8)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".pg06-hero",
+              "value": {
+                "left": 16,
+                "right": 386,
+                "top": 110,
+                "bottom": 318.125,
+                "width": 370,
+                "height": 208.125,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "22.5px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "16px",
+                "padding-bottom": "16px",
+                "background-color": "rgba(0, 0, 0, 0)",
+                "display": "flex",
+                "color": "rgb(255, 255, 255)"
+              }
+            },
+            {
+              "selector": ".pg06-member",
+              "value": {
+                "left": 32,
+                "right": 76,
+                "top": 456.125,
+                "bottom": 518.125,
+                "width": 44,
+                "height": 62,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "14px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(0, 0, 0, 0)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".pg06-helper-icon",
+              "value": {
+                "left": 32,
+                "right": 68,
+                "top": 568.125,
+                "bottom": 604.125,
+                "width": 36,
+                "height": 36,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "22.5px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(88, 86, 214)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            }
+          ]
+        },
+        {
+          "pass": true,
+          "label": "Source first5 preview + actual remainder, no invented people"
+        },
+        {
+          "pass": true,
+          "label": "Member button opens real same-event registration section"
+        },
+        {
+          "pass": true,
+          "label": "Registration source unchanged, member destination reached"
+        },
+        {
+          "pass": true,
+          "label": "Announcement shortcut reveals existing same-event input; no submit",
+          "actual": [
+            {
+              "selector": "#hostAnnouncementForm input",
+              "value": {
+                "left": 27,
+                "top": 168.484375,
+                "width": 348,
+                "height": 22.3984375,
+                "font-family": "UICTFontTextStyleBody",
+                "font-weight": "400"
+              },
+              "adapter": "SDK Element read fallback; native wx selector returned null"
+            }
+          ]
+        },
+        {
+          "pass": true,
+          "label": "Dashboard share opens current qualified same-event share card"
+        },
+        {
+          "pass": true,
+          "label": "No SDK runtime exceptions on affected routes",
+          "actual": []
+        }
+      ],
+      "metrics": [
+        {
+          "geometry": [
+            {
+              "selector": ".pg06-native-nav",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 0,
+                "bottom": 110,
+                "width": 402,
+                "height": 110,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "16px",
+                "line-height": "normal",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(250, 248, 254, 0.8)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".pg06-hero",
+              "value": {
+                "left": 16,
+                "right": 386,
+                "top": 110,
+                "bottom": 318.125,
+                "width": 370,
+                "height": 208.125,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "22.5px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "16px",
+                "padding-bottom": "16px",
+                "background-color": "rgba(0, 0, 0, 0)",
+                "display": "flex",
+                "color": "rgb(255, 255, 255)"
+              }
+            },
+            {
+              "selector": ".pg06-member",
+              "value": {
+                "left": 32,
+                "right": 76,
+                "top": 456.125,
+                "bottom": 518.125,
+                "width": 44,
+                "height": 62,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "14px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(0, 0, 0, 0)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".pg06-helper-icon",
+              "value": {
+                "left": 32,
+                "right": 68,
+                "top": 568.125,
+                "bottom": 604.125,
+                "width": 36,
+                "height": 36,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "22.5px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(88, 86, 214)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            }
+          ],
+          "statusBarHeight": 54
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-host-dashboard-wave69-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 69 host/checkin/AA/notification-center/chat-disabled UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Ephemeral local check-in token generation may be exercised and separately recorded.",
+      "pass": true,
+      "elapsedMs": 21504
+    },
+    "pg08-feedback": {
+      "scope": "Changed completed member feedback render/null/false/true option states, readonly record and fresh IDEA route; no submission",
+      "checks": [
+        {
+          "pass": true,
+          "label": "Actual completed confirmed member starts with no manufactured answers",
+          "actual": {
+            "status": "COMPLETED",
+            "submitted": false,
+            "held": null,
+            "repeat": null
+          }
+        },
+        {
+          "pass": true,
+          "label": "PG08 source native header and celebration40",
+          "actual": [
+            {
+              "selector": ".pg08-native-nav",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 0,
+                "bottom": 118,
+                "width": 402,
+                "height": 118,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "16px",
+                "line-height": "normal",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(250, 248, 254, 0.85)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".feedback-celebration",
+              "value": {
+                "left": 334,
+                "right": 374,
+                "top": 554,
+                "bottom": 594,
+                "width": 40,
+                "height": 40,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "19px",
+                "line-height": "33px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(255, 240, 243)",
+                "display": "flex",
+                "color": "rgb(255, 45, 117)"
+              }
+            },
+            {
+              "selector": ".feedback-choice",
+              "value": {
+                "left": 28,
+                "right": 197,
+                "top": 606,
+                "bottom": 648,
+                "width": 169,
+                "height": 42,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "13px",
+                "line-height": "16px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "12px",
+                "padding-bottom": "12px",
+                "background-color": "rgb(244, 243, 248)",
+                "display": "flex",
+                "color": "rgb(66, 70, 85)"
+              }
+            }
+          ]
+        },
+        {
+          "pass": true,
+          "label": "Existing radio label changes feedbackHeld to true"
+        },
+        {
+          "pass": true,
+          "label": "Existing radio label changes feedbackHeld to false"
+        },
+        {
+          "pass": true,
+          "label": "Existing radio label changes feedbackWouldRepeat to true"
+        },
+        {
+          "pass": true,
+          "label": "Existing radio label changes feedbackWouldRepeat to false"
+        },
+        {
+          "pass": true,
+          "label": "Actual false state keeps required reason and no auto submission"
+        },
+        {
+          "pass": true,
+          "label": "Next round enters fresh IDEA, no event publication"
+        },
+        {
+          "pass": true,
+          "label": "Actual already-recorded member sees closed feedback, no duplicate submit"
+        },
+        {
+          "pass": true,
+          "label": "No SDK runtime exceptions on affected routes",
+          "actual": []
+        }
+      ],
+      "metrics": [
+        {
+          "geometry": [
+            {
+              "selector": ".pg08-native-nav",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 0,
+                "bottom": 118,
+                "width": 402,
+                "height": 118,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "16px",
+                "line-height": "normal",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(250, 248, 254, 0.85)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".feedback-celebration",
+              "value": {
+                "left": 334,
+                "right": 374,
+                "top": 554,
+                "bottom": 594,
+                "width": 40,
+                "height": 40,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "19px",
+                "line-height": "33px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(255, 240, 243)",
+                "display": "flex",
+                "color": "rgb(255, 45, 117)"
+              }
+            },
+            {
+              "selector": ".feedback-choice",
+              "value": {
+                "left": 28,
+                "right": 197,
+                "top": 606,
+                "bottom": 648,
+                "width": 169,
+                "height": 42,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "13px",
+                "line-height": "16px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "12px",
+                "padding-bottom": "12px",
+                "background-color": "rgb(244, 243, 248)",
+                "display": "flex",
+                "color": "rgb(66, 70, 85)"
+              }
+            }
+          ]
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-feedback-unselected-wave69-2026-10-02.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-feedback-selected-no-wave69-2026-10-02.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-feedback-recorded-wave69-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 69 host/checkin/AA/notification-center/chat-disabled UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Ephemeral local check-in token generation may be exercised and separately recorded.",
+      "pass": true,
+      "elapsedMs": 13982
+    },
+    "pg09": {
+      "scope": "Changed current AA host/member layout, exact-cent amounts, view/sort/expand and actual permission rendering only",
+      "checks": [
+        {
+          "pass": true,
+          "label": "Host reads current real five-share ledger",
+          "actual": {
+            "ledgerId": "3e485179-8ded-442a-9964-43d8b49572e9",
+            "totalYuan": "¥100.01",
+            "shares": 5
+          }
+        },
+        {
+          "pass": true,
+          "label": "PG09 source header, 4:3 hero and 44px authorized member glyph",
+          "actual": [
+            {
+              "selector": ".pg09-native-nav",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 0,
+                "bottom": 118,
+                "width": 402,
+                "height": 118,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "16px",
+                "line-height": "normal",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(250, 248, 254, 0.8)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".pg09-hero",
+              "value": {
+                "left": 16,
+                "right": 386,
+                "top": 149.5,
+                "bottom": 427,
+                "width": 370,
+                "height": 277.5,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "16px",
+                "line-height": "16px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "16px",
+                "padding-bottom": "16px",
+                "background-color": "rgb(47, 48, 52)",
+                "display": "flex",
+                "color": "rgb(255, 255, 255)"
+              }
+            },
+            {
+              "selector": ".expense-person-icon",
+              "value": {
+                "left": 40,
+                "right": 84,
+                "top": 522,
+                "bottom": 566,
+                "width": 44,
+                "height": 44,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "20px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(235, 242, 254)",
+                "display": "flex",
+                "color": "rgb(29, 100, 242)"
+              }
+            }
+          ]
+        },
+        {
+          "pass": false,
+          "label": "Existing same-ledger detail toggle opens actual breakdown"
+        }
+      ],
+      "metrics": [
+        {
+          "geometry": [
+            {
+              "selector": ".pg09-native-nav",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 0,
+                "bottom": 118,
+                "width": 402,
+                "height": 118,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "16px",
+                "line-height": "normal",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(250, 248, 254, 0.8)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".pg09-hero",
+              "value": {
+                "left": 16,
+                "right": 386,
+                "top": 149.5,
+                "bottom": 427,
+                "width": 370,
+                "height": 277.5,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "16px",
+                "line-height": "16px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "16px",
+                "padding-bottom": "16px",
+                "background-color": "rgb(47, 48, 52)",
+                "display": "flex",
+                "color": "rgb(255, 255, 255)"
+              }
+            },
+            {
+              "selector": ".expense-person-icon",
+              "value": {
+                "left": 40,
+                "right": 84,
+                "top": 522,
+                "bottom": 566,
+                "width": 44,
+                "height": 44,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "20px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(235, 242, 254)",
+                "display": "flex",
+                "color": "rgb(29, 100, 242)"
+              }
+            }
+          ]
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-aa-host-wave69-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 69 host/checkin/AA/notification-center/chat-disabled UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Ephemeral local check-in token generation may be exercised and separately recorded.",
+      "pass": false,
+      "failure": {
+        "phase": "host-current-ledger",
+        "message": "Existing same-ledger detail toggle opens actual breakdown",
+        "stack": "AssertionError [ERR_ASSERTION]: Existing same-ledger detail toggle opens actual breakdown\n    at check (/private/tmp/caper-wave69-sdk-helpers.cjs:16:80)\n    at /private/tmp/caper-wave69-pg09.cjs:3:1170\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async run (/private/tmp/caper-wave69-sdk-helpers.cjs:22:3)"
+      },
+      "elapsedMs": 7563
+    },
+    "pg08-live": {
+      "scope": "Changed live host check-in visual, actual qualified ephemeral token generation and 240px encoder only; no attendee check-in",
+      "checks": [
+        {
+          "pass": true,
+          "label": "Real existing event and time window qualify live host, no injected status",
+          "actual": {
+            "id": "02c295b8-10e0-4602-8d25-1dc0d801a5f1",
+            "status": "IN_PROGRESS",
+            "qualified": true
+          }
+        },
+        {
+          "pass": true,
+          "label": "Existing current expiring QR canvas remains actual 240 inside source272 panel",
+          "actual": [
+            {
+              "selector": ".pg08-live-qr",
+              "value": {
+                "left": 65,
+                "right": 337,
+                "top": 378,
+                "bottom": 650,
+                "width": 272,
+                "height": 272,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "16px",
+                "line-height": "24px",
+                "font-weight": "400",
+                "max-width": "100%",
+                "padding-right": "16px",
+                "padding-bottom": "16px",
+                "background-color": "rgb(255, 255, 255)",
+                "display": "block",
+                "color": "rgb(255, 255, 255)"
+              }
+            },
+            {
+              "selector": ".pg08-live-qr canvas",
+              "value": {
+                "left": 81,
+                "top": 394,
+                "width": 240,
+                "height": 240,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-weight": "400"
+              },
+              "adapter": "SDK Element read fallback; native wx selector returned null"
+            }
+          ]
+        },
+        {
+          "pass": true,
+          "label": "No SDK runtime exceptions on affected routes",
+          "actual": []
+        }
+      ],
+      "metrics": [
+        {
+          "geometry": [
+            {
+              "selector": ".pg08-live-qr",
+              "value": {
+                "left": 65,
+                "right": 337,
+                "top": 378,
+                "bottom": 650,
+                "width": 272,
+                "height": 272,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "16px",
+                "line-height": "24px",
+                "font-weight": "400",
+                "max-width": "100%",
+                "padding-right": "16px",
+                "padding-bottom": "16px",
+                "background-color": "rgb(255, 255, 255)",
+                "display": "block",
+                "color": "rgb(255, 255, 255)"
+              }
+            },
+            {
+              "selector": ".pg08-live-qr canvas",
+              "value": {
+                "left": 81,
+                "top": 394,
+                "width": 240,
+                "height": 240,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-weight": "400"
+              },
+              "adapter": "SDK Element read fallback; native wx selector returned null"
+            }
+          ],
+          "expiresIn": 51
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-checkin-live-host-wave69-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "writes": [
+        {
+          "kind": "Local existing host ephemeral check-in token generation",
+          "attendeeCheckin": false,
+          "tokenCaptured": false
+        }
+      ],
+      "boundary": "Only changed Wave 69 host/checkin/AA/notification-center/chat-disabled UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Ephemeral local check-in token generation may be exercised and separately recorded.",
+      "screenshotBoundary": "Screenshot recorded before generating credential; no token or QR included in public artifact",
+      "pass": true,
+      "elapsedMs": 7678
+    },
+    "pg09-remaining": {
+      "scope": "Only remaining AA view/expand/sort and member privacy after first segment DOM readiness assertion; no repeated geometry/API writes",
+      "checks": [
+        {
+          "pass": true,
+          "label": "Existing same-ledger detail toggle opens actual breakdown after actual DOM readiness"
+        },
+        {
+          "pass": true,
+          "label": "Expand reveals only five real authorized shares"
+        },
+        {
+          "pass": true,
+          "label": "Source sort button preserves same actual ledger shares"
+        },
+        {
+          "pass": true,
+          "label": "Member page shows only own API-authorized share",
+          "actual": {
+            "shares": 1,
+            "amount": "¥20.00"
+          }
+        },
+        {
+          "pass": true,
+          "label": "Both real declarations retained; host sort/receipt controls absent"
+        },
+        {
+          "pass": true,
+          "label": "No SDK runtime exceptions on affected routes",
+          "actual": []
+        }
+      ],
+      "metrics": [],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-aa-host-expanded-wave69-2026-10-02.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-aa-member-own-wave69-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 69 host/checkin/AA/notification-center/chat-disabled UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Ephemeral local check-in token generation may be exercised and separately recorded.",
+      "priorFailure": "Initial segment tested inserted expense-breakdown immediately after tap, before branch DOM ready. This segment waits real data and actual rendered node, no product change.",
+      "pass": true,
+      "elapsedMs": 12019
+    }
+  },
+  "successfulChecks": 49,
+  "failedChecks": 1,
+  "passedSegments": 7,
+  "failedSegments": 2,
+  "runtimeExceptions": 0,
+  "cli": {
+    "size": {
+      "total": 3515720,
+      "packages": [
+        {
+          "name": "TOTAL",
+          "size": 3515720
+        },
+        {
+          "name": "main",
+          "size": 1993189
+        },
+        {
+          "name": "/subpackages/activity/",
+          "size": 567223
+        },
+        {
+          "name": "/subpackages/profile/",
+          "size": 955308
+        }
+      ]
+    }
+  },
+  "mainMarginBytes": 103963,
+  "clone": {
+    "sourceFiles": 558,
+    "cloneFiles": 558,
+    "differences": 0,
+    "excluded": [
+      "config.js",
+      ".DS_Store"
+    ]
+  },
+  "native": {
+    "at": "2026-10-01T23:34:59.599404+00:00",
+    "action": "cua.getApp(/Applications/wechatwebdevtools.app)",
+    "result": "The Mac is locked and automatic unlock could not unlock it.",
+    "nativeClicks": 0,
+    "boundary": "Existing unlock request remains pending; CLI and SDK can continue independently."
+  },
+  "apiAfter": {
+    "at": "2026-10-01T23:45:54.230432+00:00",
+    "feedbackAPIUnchanged": true,
+    "memberUnsubmitted": false,
+    "recordedMemberSubmitted": true,
+    "actualNoticeStatus": "OPENED"
+  }
+}
