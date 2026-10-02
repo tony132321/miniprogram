@@ -1,0 +1,88 @@
+{
+  "baselineCommit": "b45a99d0749fd1c4a14f88fa588b244b6a844a4d",
+  "wave70Exception": "Root no-loss QR import migration is the only current JS difference; inverse equals69",
+  "sourceZIP": "/Users/tsb/Downloads/stitch_design_system_generator (2).zip",
+  "originalHTMLSHA256": "ae332500609017a0a0d467d88b52ff0942e3b2824dc542e8f5bd65e5e18527c5",
+  "originalPNGSHA256": "25784a100075b14dccb1f3e0b0a562df4ffc9f5ef90f5dacfa900138a4b848f0",
+  "completeOriginalReadAndPNGViewed": true,
+  "guard": "shareSheetOpen && loadState === 'READY'",
+  "scope": "share-background71 only, one added readonly background before unchanged Wave69 foreground",
+  "native": {
+    "statusMockRemoved": "uses actual statusBarHeight; no time/signal/battery mock",
+    "headerHeightPx": 56,
+    "actualCapsuleExclusion": "headerPaddingRight preserved from existing helper; centered title within remaining flex width, clips long native title",
+    "safeInset": "existing safe-area-inset-bottom,0px",
+    "layer": {
+      "opaqueBackground": 40,
+      "unchangedForeground": 50,
+      "interaction": "pointer-events:none + aria-hidden; all backgrounds use view, no buttons/binds/canvas"
+    }
+  },
+  "sourceGeometry": {
+    "body": "Jakarta15/21/400; original400/600/700/800 request; source500 declared still matches400 if absent",
+    "hero": "16:9, p16/r16;22/28/700/-.55 title;11/14/600/.22 badge;13/16/600 facts; rotated-6deg p4x10/r8/blur12 sticker11/13.75/800/.275 tracking",
+    "sourceNegativeZ": "original photo and scrim -z-10 beneath unstacked relative hero and opaque main; original PNG largely blank hero. This paint order preserved, not made into a visible real event photo. Native stacking remains runtime boundary.",
+    "stats": "4 columns gap8;p10/r12;22/22/800/-.44 numbers;margin-bottom4;11/14/500/.22 labels",
+    "members": "p16/r16/gap12;17/22/700/-.17 heading;13/16/600 count;44px generic placeholder does not imply a person record",
+    "helper": "p16/r16/gap12;36x36/r12 lightbulb FILL1;15/20/700 title;13/17.875 body",
+    "conditions": "p16/r16;rows gap12/mt14/pt4;15/21/500 left,13/16/600 first right and13/18/400 venue-right;minimum and declaration true",
+    "actions": "3 columns/gap10/pt4;p12x8/r12/13/16/600 (last700);22px icons; readonly views",
+    "footer": "pt20/pb8;first13/16/500/.325;second arbitrary10px inherits21px/400, letter1px andopacity.7; no guessed15px/700"
+  },
+  "realFields": [
+    "display.title",
+    "display.status",
+    "display.date",
+    "display.end",
+    "display.cover",
+    "display.confirmed",
+    "display.minimum",
+    "event.payload.city",
+    "event.payload.venueStatus",
+    "event.stats.reserved",
+    "event.stats.waitlisted",
+    "event.stats.requested"
+  ],
+  "API": "Unchanged guarded GET /events/:id host identity/version/safety/invite lifecycle in share.refresh; server.ts GET stats onlyconfirmed/waitlisted/reconfirmRequired/requested/reserved",
+  "truthfulAdaptations": [
+    "source cancellation count unavailable; fourth cell uses actual requested / 待审核, matching existingPG06 R1 mapping",
+    "registered means confirmed actual version, labelled已确认",
+    "members actual list not fetched by share.js: one anonymous generic icon + explicit未加载成员名单; no source6 photos/count/+1 copied",
+    "source AI readiness suggestion/3days/venue booking not claims: readonly explanation; only true minimum + host venueStatus declaration",
+    "coarsecity only; no precise venue, person IDs or token inserted into new background",
+    "source结束活动 replaced actualR1活动结项 as readonly background label; no new completion/cancel behavior",
+    "sameURL original badminton image reused with explicitillustrationcaption; unmatched typed cover uses existingclassifier, not original badminton fact"
+  ],
+  "sourceAssets": "12 proven same fullMaterial path/paint reuse + existing originalsheet69-badminton; new runtime assets0B",
+  "changes": {
+    "JS": false,
+    "JSON": false,
+    "globalFont": false,
+    "config": false,
+    "originalForeground": "byte exact",
+    "ordinary_3": "byte exact",
+    "CSSOriginalPrefix": "byte exact"
+  },
+  "singleTargetedCheck": {
+    "passed": 22,
+    "realActionNodesProtected": 16,
+    "checkerCorrection": "initial selector check had str instead of bytes startswith TypeError; checker only corrected, product unchanged; one complete check22 passed",
+    "fullSuiteSDKCLI": false
+  },
+  "netActivityRawBytes": 18656,
+  "newMainRawBytes": 0,
+  "runtimePending": true,
+  "all39PixelClaim": false,
+  "finalCorrection": {
+    "kind": "Only two actually reviewed pending neutral paint constants; no repeat of22 source check",
+    "source": "Original source neutral surface-container #efedf3 and on-surface-variant #424655; not invented amber",
+    "oldCSS": "219f0221f85a46093fe19d16531a91463dec085c07a02574045de11e855de3ac",
+    "newCSS": "c49dc766a42b6e37bbab256a4262417ad0ca991c53f9c6f3f1d67f3ef199cd4b",
+    "sameBytes": true,
+    "inverseExact": true,
+    "oldChunk": ".share-background71 .share-background71-condition-pending { background:#fff4de; color:#8b5710; }",
+    "newChunk": ".share-background71 .share-background71-condition-pending { background:#efedf3; color:#424655; }",
+    "allOtherWXMLJSJSONValuesAndActionsUnchanged": true
+  },
+  "finalProductFreezeSHA256": "47fe3fdfddea336379fc94ae67f42db6e23a22300101c80d6ea558507cbb0c2f"
+}

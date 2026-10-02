@@ -1,0 +1,7 @@
+{
+  "chunk_id": "d90f0a",
+  "wall_time_seconds": 0.000005333,
+  "exit_code": 0,
+  "original_token_count": 180,
+  "output": "✔ Wave71 host monitor permitted menu preserves the current event and returns to its workbench (3.057625ms)\n✔ Wave71 host monitor rejects nonhosts and incomplete current host contexts (4.109375ms)\n✔ Wave71 host monitor direct links validate the loaded event and actor (2.208208ms)\n✔ Wave71 host monitor discards stale callbacks for every existing context guard and revoked host role (4.538459ms)\n✔ Wave71 host monitor clears private projection after refresh or account role changes (2.016417ms)\n✔ Wave71 host monitor keeps old safety menu actions and normal workbench back behavior (0.9615ms)\nℹ tests 6\nℹ suites 0\nℹ pass 6\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 70.940209\n"
+}

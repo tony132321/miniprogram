@@ -1,0 +1,29 @@
+{
+  "sourceURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuDgNEpbgE_KEd7djvwRtBbd23P9ZQm1rn9oXntdBU7wJIQdBotXeaGMU2ilqsW1xe7IGJGwIS5WRxZ8Awq5Ddy8NQUGZd5VSsi96ieEkU-BmBjXxzYF7BvmXRWNH72FtlRxpJJGVCnH4sBGyNj78jvbABEB-STpQeIQq5Z6p_C4Opy2076J_7LNfnBoUru4jJo7q5QhFsQ7pw1YinrUfEw_KJgAB6F3hOthxPbAlKIlTZXeWqOob1KYtw",
+  "finalURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuDgNEpbgE_KEd7djvwRtBbd23P9ZQm1rn9oXntdBU7wJIQdBotXeaGMU2ilqsW1xe7IGJGwIS5WRxZ8Awq5Ddy8NQUGZd5VSsi96ieEkU-BmBjXxzYF7BvmXRWNH72FtlRxpJJGVCnH4sBGyNj78jvbABEB-STpQeIQq5Z6p_C4Opy2076J_7LNfnBoUru4jJo7q5QhFsQ7pw1YinrUfEw_KJgAB6F3hOthxPbAlKIlTZXeWqOob1KYtw",
+  "httpStatus": 200,
+  "headers": {
+    "Content-Type": "image/jpeg",
+    "Vary": "Origin",
+    "Access-Control-Allow-Origin": "*",
+    "Timing-Allow-Origin": "*",
+    "Access-Control-Expose-Headers": "Content-Length",
+    "ETag": "\"v0\"",
+    "Expires": "Sat, 03 Oct 2026 01:34:01 GMT",
+    "Cache-Control": "public, max-age=86400, no-transform",
+    "Content-Disposition": "inline;filename=\"unnamed.jpg\"",
+    "X-Content-Type-Options": "nosniff",
+    "Date": "Fri, 02 Oct 2026 01:34:01 GMT",
+    "Server": "fife",
+    "Content-Length": "28623",
+    "X-XSS-Protection": "0",
+    "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "Connection": "close"
+  },
+  "sourceNode": "pg02_n_2 HTML48 first image; source badminton illustration, never actual event photo",
+  "asset": "miniprogram/pages/messages/assets/wave71-compact-badminton.jpg",
+  "bytes": 28623,
+  "sha256": "36c2ece6538bb2cd91a5be6a218c9380bc70c8e02cb87a9de015fdb56246eb10",
+  "noReencoding": true,
+  "excluded": "Original Alex/Momo approval portraits are not real R1 applicants; do not download or display."
+}

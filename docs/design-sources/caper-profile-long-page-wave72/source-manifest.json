@@ -1,0 +1,117 @@
+{
+  "scope": "Wave72 ordinary profile long page source restoration only",
+  "originalZIP": {
+    "path": "/Users/tsb/Downloads/stitch_design_system_generator (2).zip",
+    "bytes": 24668856,
+    "sha256": "df22e733d33fda20979b75b8a7bc94717c4a5c9e41561a54e3038432fab32603"
+  },
+  "originalSources": [
+    {
+      "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/caper_1/code.html",
+      "bytes": 42473,
+      "sha256": "37088f60630a26b0c2711c9ef018076d3ede9128cf33e5b7bf399fb66217faf9",
+      "zipEntry": "stitch_design_system_generator/caper_1/code.html"
+    },
+    {
+      "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/caper_1/screen.png",
+      "bytes": 192288,
+      "sha256": "8901eb5958e4ecb9a209d40992c0214e5e6b1d89b99a64b5eabea22df6bbb369",
+      "zipEntry": "stitch_design_system_generator/caper_1/screen.png"
+    }
+  ],
+  "baseline": [
+    {
+      "path": "/private/tmp/caper-wave72-profile-long/baseline/miniprogram/pages/me/me.wxml",
+      "bytes": 21117,
+      "sha256": "6b9348f72e03f955bb8c19b6c3996270eeb52d19bdcc76134a53c200eb9f2a7f"
+    },
+    {
+      "path": "/private/tmp/caper-wave72-profile-long/baseline/miniprogram/pages/me/me.wxss",
+      "bytes": 22131,
+      "sha256": "c090c16406ddcb5b85f5cea37c5fc8581df0a5f7907b23c6f423daec2e37fb7d"
+    },
+    {
+      "path": "/private/tmp/caper-wave72-profile-long/baseline/miniprogram/pages/me/me.js",
+      "bytes": 53362,
+      "sha256": "def9a36a9c46deca17cebbe95e5bd8672469eea6e759fd279b45d28c9f87021b"
+    },
+    {
+      "path": "/private/tmp/caper-wave72-profile-long/baseline/miniprogram/pages/me/me.json",
+      "bytes": 63,
+      "sha256": "1bc6ec418e7c2ba28f9ec3a5479da2a73c9d8eb8066588dbcd128604a39a9880"
+    }
+  ],
+  "product": [
+    {
+      "path": "/Users/tsb/Documents/小程序/miniprogram/pages/me/me.wxml",
+      "bytes": 24324,
+      "sha256": "d53c91bcb8e8087745f37c1e42bcbf1d877d8ffe347720211f2619475524ab05"
+    },
+    {
+      "path": "/Users/tsb/Documents/小程序/miniprogram/pages/me/me.wxss",
+      "bytes": 32935,
+      "sha256": "88e84dd895d782257102f55c89bf5ebb374808716fddbb1e284796bda2bf1923"
+    },
+    {
+      "path": "/Users/tsb/Documents/小程序/miniprogram/pages/me/me.js",
+      "bytes": 53362,
+      "sha256": "def9a36a9c46deca17cebbe95e5bd8672469eea6e759fd279b45d28c9f87021b"
+    },
+    {
+      "path": "/Users/tsb/Documents/小程序/miniprogram/pages/me/me.json",
+      "bytes": 63,
+      "sha256": "1bc6ec418e7c2ba28f9ec3a5479da2a73c9d8eb8066588dbcd128604a39a9880"
+    }
+  ],
+  "newSourceFields": {
+    "server": "src/server.ts:403-441",
+    "projection": "me.js:419-421 spreads existing authorized /me/events row",
+    "hostedPreview": "me.js:461 uses first mappedActivityItems item with isHost",
+    "cityAndVenue": "Only render when actually returned; no manufactured location or counts",
+    "photo": "Existing activityCover illustration; explicitly marked 场景示意图",
+    "manualRequest": "One existing showPrivacyRequests relocated; exact original authenticated/access guard; opens unchanged advanced privacySection. No new delete handler."
+  },
+  "differencesFromMock": {
+    "wishlist": "Closed state preserves actual goInviteEntry. No source sample image/count/heart action created. Source card colors/radius/padding/text metrics adapted to honest closed card.",
+    "hostStatus": "Only actual IN_PROGRESS uses original emerald source pill; other actual labels use source slate neutral palette.",
+    "hostMembers": "No API participant count/avatar field; original 16px fake avatars/+8 replaced by truthful illustration/real-detail note in original9px note role.",
+    "account": "Source phone/device/real-name values omitted. Two existing real profile/block actions remain, original manual request moved to source Danger panel under same guard.",
+    "notification": "Two actual actions/notification readback, no source fake checked OS/push switches. Existing consent region unchanged.",
+    "help": "Two existing actions and actual explanatory copy, rather than inventing source FAQ/feedback/contact endpoints.",
+    "about": "Existing three routes/copy, no hardcoded v1.2.0.",
+    "danger": "Manual request copy is truthful about review rather than irreversible deletion; logout actual guards unchanged.",
+    "foot": "Existing REAL PEOPLE · REAL MEETUPS string preserved; source font/spacing restored."
+  },
+  "nativeBoundary": "Original 390px/p16 viewport uses existing native100% width and native status/capsule/safe/tab contracts, untouched in this batch. CSS-only observation is not native geometry / glyph drawing / line wrap / business SDK.",
+  "finalReviewCorrections": {
+    "checkerCorrection": "Initial hover declaration regex expected unprefixed property first; cached official CSS has -webkit-text-decoration-line first. Private regex now permits prefix and still requires unprefixed underline in same rule. No product changed for harness correction.",
+    "scope": "Only two confirmed source review corrections; no repeat 26 source checks / 37 CSS observations / 63 actions / native/business tests.",
+    "source": {
+      "parentGrid": "HTML:551 same grid-cols-1 gap-3 owns all four settings cards; compiled gap3=.75rem=12px. Outer space-y4 has only this one grid child, so not a16px inter-card gap.",
+      "manualButton": "HTML:735 hover:underline; compiled exact text-decoration-line:underline. Native hover-class is pure presentation."
+    },
+    "before": {
+      "wxmlSHA": "6854799062489ef6bf70e0ae29f0f9ca2cbf0e38ff98b7b50071df5438fed949",
+      "wxssSHA": "1c5f6c235b4b36f58b1690e7d4b319cf855d1faae08620faf546b9f657601196"
+    },
+    "after": {
+      "wxml": {
+        "bytes": 24324,
+        "sha256": "d53c91bcb8e8087745f37c1e42bcbf1d877d8ffe347720211f2619475524ab05"
+      },
+      "wxss": {
+        "bytes": 32935,
+        "sha256": "88e84dd895d782257102f55c89bf5ebb374808716fddbb1e284796bda2bf1923"
+      }
+    },
+    "inverse": {
+      "wxmlEqual": true,
+      "wxssEqual": true,
+      "exactAttrCount": 1,
+      "exactRuleCount": 1,
+      "gapReplacementCount": 1
+    },
+    "newProductDeltaBytes": 127,
+    "noBusinessChange": "Removing only new hover-class recovers whole initial WXML bytes; CSS inverse recovers whole initial CSS. Prior exact action/guard/core/advanced/JSJSON protection remains historical stage proof, not repeated assertion on a new run."
+  }
+}

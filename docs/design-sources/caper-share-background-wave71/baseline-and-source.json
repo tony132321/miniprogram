@@ -1,0 +1,46 @@
+[
+  {
+    "path": "miniprogram/subpackages/activity/share/share.wxml",
+    "bytes": 11692,
+    "sha256": "94fcd4751620f77782db3852bb6be73668b3f82f73a8db1286c99ce0f2577fca",
+    "wave69SHA256": "94fcd4751620f77782db3852bb6be73668b3f82f73a8db1286c99ce0f2577fca",
+    "sameAsWave69": true,
+    "qrRequireMigrationOnly": false
+  },
+  {
+    "path": "miniprogram/subpackages/activity/share/share.wxss",
+    "bytes": 20152,
+    "sha256": "3f69b34649e84e0b0354038fad2be585423e7c5b33e2579f6d8bdf727c78d743",
+    "wave69SHA256": "3f69b34649e84e0b0354038fad2be585423e7c5b33e2579f6d8bdf727c78d743",
+    "sameAsWave69": true,
+    "qrRequireMigrationOnly": false
+  },
+  {
+    "path": "miniprogram/subpackages/activity/share/share.js",
+    "bytes": 27268,
+    "sha256": "8ab001ad92a8e911fc8b7e84934872d418a9d541c506ce42efbce1472373ab3d",
+    "wave69SHA256": "5fdde14c88902bb18e4c045d81326974978d718c6181d94cf76c86f2177a8258",
+    "sameAsWave69": false,
+    "qrRequireMigrationOnly": true
+  },
+  {
+    "path": "miniprogram/subpackages/activity/share/share.json",
+    "bytes": 75,
+    "sha256": "95f4181c4eb25045c994138c56d0741f84443d00426599975f8a3fe4f24e4262",
+    "wave69SHA256": "95f4181c4eb25045c994138c56d0741f84443d00426599975f8a3fe4f24e4262",
+    "sameAsWave69": true,
+    "qrRequireMigrationOnly": false
+  },
+  {
+    "zipEntry": "stitch_design_system_generator/pg06_s/code.html",
+    "bytes": 25536,
+    "sha256": "ae332500609017a0a0d467d88b52ff0942e3b2824dc542e8f5bd65e5e18527c5",
+    "zipByteEqual": true
+  },
+  {
+    "zipEntry": "stitch_design_system_generator/pg06_s/screen.png",
+    "bytes": 294902,
+    "sha256": "25784a100075b14dccb1f3e0b0a562df4ffc9f5ef90f5dacfa900138a4b848f0",
+    "zipByteEqual": true
+  }
+]

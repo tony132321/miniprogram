@@ -1,0 +1,544 @@
+{
+  "scope": "Original source CSS cascade only; fonts/images blocked; no product rendering, glyph paint, mini-program, business test, clicks or SDK.",
+  "screen": "_5",
+  "source": "/private/tmp/irl-stitch-original/stitch_design_system_generator/_5/code.html",
+  "sourceBytes": 25760,
+  "sourceSHA256": "e2a2ce2fb2266283f7762dca23592c732eca385d88ce1772f1e22a41bec8b024",
+  "browserVersion": "154.0.8037.93",
+  "tailwindSHA256": "176e894661aa9cdc9a5cba6c720044cbbf7b8bd80d1c9a142a7c24b1b6c50d15",
+  "materialCSSSHA256": "4ceb712c148ba306c7b6c50333df6fb1ba43d2fa810cab9f79a3b48b48c78443",
+  "observation": {
+    "nodes": [
+      {
+        "tag": "HEADER",
+        "classes": "fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]",
+        "text": "arrow_back_ios_newEvent Detailsperson",
+        "values": {
+          "fontFamily": "\"Plus Jakarta Sans\"",
+          "fontSize": "15px",
+          "lineHeight": "21px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "paddingTop": "0px",
+          "paddingRight": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "gap": "normal",
+          "height": "56px",
+          "borderRadius": "0px",
+          "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.04) 0px 1px 8px 0px",
+          "backgroundColor": "rgba(250, 248, 254, 0.8)",
+          "color": "rgb(26, 27, 31)"
+        }
+      },
+      {
+        "tag": "BUTTON",
+        "classes": "w-11 h-11 -ml-space-sm flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container active:scale-95 transition-all",
+        "text": "arrow_back_ios_new",
+        "values": {
+          "fontFamily": "\"Plus Jakarta Sans\"",
+          "fontSize": "15px",
+          "lineHeight": "21px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "paddingTop": "0px",
+          "paddingRight": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "gap": "normal",
+          "height": "44px",
+          "borderRadius": "9999px",
+          "boxShadow": "none",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(26, 27, 31)"
+        }
+      },
+      {
+        "tag": "SPAN",
+        "classes": "material-symbols-outlined text-[24px]",
+        "text": "arrow_back_ios_new",
+        "values": {
+          "fontFamily": "\"Material Symbols Outlined\"",
+          "fontSize": "24px",
+          "lineHeight": "24px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "paddingTop": "0px",
+          "paddingRight": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "gap": "normal",
+          "height": "24px",
+          "borderRadius": "0px",
+          "boxShadow": "none",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(26, 27, 31)"
+        }
+      },
+      {
+        "tag": "H1",
+        "classes": "text-center font-headline-sm text-headline-sm text-on-surface truncate px-space-xs",
+        "text": "Event Details",
+        "values": {
+          "fontFamily": "\"Plus Jakarta Sans\"",
+          "fontSize": "17px",
+          "lineHeight": "22px",
+          "fontWeight": "600",
+          "letterSpacing": "-0.17px",
+          "paddingTop": "0px",
+          "paddingRight": "4px",
+          "paddingBottom": "0px",
+          "paddingLeft": "4px",
+          "gap": "normal",
+          "height": "22px",
+          "borderRadius": "0px",
+          "boxShadow": "none",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(26, 27, 31)"
+        }
+      },
+      {
+        "tag": "SPAN",
+        "classes": "material-symbols-outlined text-on-primary text-[18px]",
+        "text": "person",
+        "values": {
+          "fontFamily": "\"Material Symbols Outlined\"",
+          "fontSize": "18px",
+          "lineHeight": "18px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "paddingTop": "0px",
+          "paddingRight": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "gap": "normal",
+          "height": "18px",
+          "borderRadius": "0px",
+          "boxShadow": "none",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        }
+      },
+      {
+        "tag": "MAIN",
+        "classes": "flex flex-col relative w-full pt-14 pb-safe bg-surface min-h-screen",
+        "text": "主办工作台 (实时看板)\n\n\n自动运行中\n\n\n\nsensors\n数据流每 15 秒静默同步 · 当前终端仅供观察监视\n\n\n\n\n\n\n\n\n\n\n🏸 羽毛球常驻圈\n周六固定档\n\n周六晚场羽毛球 🏸\n\nlocation_on\n          静安体育中心 3号馆 · 2片连场\n        \n\n\nsports_tennis\n\n\n\n\n\n已报名\n\n6\n/8\n\n75%已占\n\n\n预留名额\n2\n候补备选\n\n\n待审核\n2\n系统队列\n\n\n缺口人数\n0\n已达成局\n\n\n\n\n\n招募饱和度\n75% (6/8席)\n\n\n\n\n\n开局基准: 4人\n已超募 2 人 · 稳固成行\n满载: 8人\n\n\n\n\n\n\n\nverified\n成局前置条件监视\n\n全部达标\n\n\n\n\n\n\ncheck\n\n\n成局最低人数 (≥4人)\n当前已报名 6 人，达标率 150%\n\n\n已就绪\n\n\n\n\n\ncheck\n\n\n官方场地锁定\n静安体育中心 3号馆 (14:00-16:00)\n\n\n已锁场\n\n\n\n\n\ncheck\n\n\n时间窗口安全值\n距开场还有 48 小时 (预警阈值 24h)\n\n\n安全期\n\n\n\n\n\n\n\n\nauto_awesome\n\nAI 组局管家运行报告\n巡检正常\n\n\n      AI 组局管家已就绪：已自动为您配置天气预警监控与开场前 2 小时微信行程提醒，当前招募状态平稳，无需手动干预。\n    \n\n\ncloud_done\n        场馆室内恒温 22℃\n      \n\nschedule_send\n        自动提醒队列锁定 (T-2h)\n      \n\n\n\n\n\n\ngroup\n已锁定席位名册 (6人)\n\n只读名单 · 自动记账\n\n\n\n\n\n\n\n\nLuna (我)\n局长 Lv.3\n\n活动发起人 · 场地锁定者\n\n\n\n已预付场租\n总计 ¥180\n\n\n\n\n\n\n\n\nAlex\n双打进阶\n\n常驻 4.0 球手\n\n\n\n已支付 AA\n¥45.00\n\n\n\n\n\n\n\n\nMomo\n双打进阶\n\n前场突击高手\n\n\n\n已支付 AA\n¥45.00\n\n\n\n\n\n\n\n\nDavid\n常驻球友\n\n已累计参局 12 次\n\n\n\n已支付 AA\n¥45.00\n\n\n\n\n\n\n\n\nLeo\n运动爱好者\n\n擅长拉吊控制\n\n\n\n已支付 AA\n¥45.00\n\n\n\n\n\n\n\n\nTaylor\n首次加入\n\n新加入球友\n\n\n\n已支付 AA\n¥45.00\n\n\n\n\n\n\n\n场地预订凭证\n订单号: JASC-202310-09\n\n\n\n\n静安体育中心羽毛球馆\n3号馆场地 A/B (塑胶弹性地胶 · 独立更衣室)\n\n\n\n\n\n\n\ncloud_done\n监控运行中 · 组局状态实时同步云端 (只读终端看板)\n\n终端 ID: RT-TERMINAL-LUNA-01 · 严禁外部写入指令",
+        "values": {
+          "fontFamily": "\"Plus Jakarta Sans\"",
+          "fontSize": "15px",
+          "lineHeight": "21px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "paddingTop": "56px",
+          "paddingRight": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "gap": "normal",
+          "height": "1589.12px",
+          "borderRadius": "0px",
+          "boxShadow": "none",
+          "backgroundColor": "rgb(250, 248, 254)",
+          "color": "rgb(26, 27, 31)"
+        }
+      },
+      {
+        "tag": "SPAN",
+        "classes": "material-symbols-outlined text-[15px] text-primary",
+        "text": "sensors",
+        "values": {
+          "fontFamily": "\"Material Symbols Outlined\"",
+          "fontSize": "15px",
+          "lineHeight": "15px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "paddingTop": "0px",
+          "paddingRight": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "gap": "normal",
+          "height": "15px",
+          "borderRadius": "0px",
+          "boxShadow": "none",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(0, 76, 200)"
+        }
+      },
+      {
+        "tag": "H2",
+        "classes": "font-headline-lg-mobile text-headline-lg-mobile text-on-surface",
+        "text": "周六晚场羽毛球 🏸",
+        "values": {
+          "fontFamily": "\"Plus Jakarta Sans\"",
+          "fontSize": "22px",
+          "lineHeight": "28px",
+          "fontWeight": "700",
+          "letterSpacing": "-0.44px",
+          "paddingTop": "0px",
+          "paddingRight": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "gap": "normal",
+          "height": "28px",
+          "borderRadius": "0px",
+          "boxShadow": "none",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(26, 27, 31)"
+        }
+      },
+      {
+        "tag": "P",
+        "classes": "font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 mt-0.5",
+        "text": "location_on\n          静安体育中心 3号馆 · 2片连场",
+        "values": {
+          "fontFamily": "\"Plus Jakarta Sans\"",
+          "fontSize": "13px",
+          "lineHeight": "18px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "paddingTop": "0px",
+          "paddingRight": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "gap": "4px",
+          "height": "18px",
+          "borderRadius": "0px",
+          "boxShadow": "none",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(66, 70, 85)"
+        }
+      },
+      {
+        "tag": "SPAN",
+        "classes": "material-symbols-outlined text-[16px] text-outline",
+        "text": "location_on",
+        "values": {
+          "fontFamily": "\"Material Symbols Outlined\"",
+          "fontSize": "16px",
+          "lineHeight": "16px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "paddingTop": "0px",
+          "paddingRight": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "gap": "normal",
+          "height": "16px",
+          "borderRadius": "0px",
+          "boxShadow": "none",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(115, 118, 135)"
+        }
+      },
+      {
+        "tag": "SPAN",
+        "classes": "material-symbols-outlined text-[28px] text-primary",
+        "text": "sports_tennis",
+        "values": {
+          "fontFamily": "\"Material Symbols Outlined\"",
+          "fontSize": "28px",
+          "lineHeight": "28px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "paddingTop": "0px",
+          "paddingRight": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "gap": "normal",
+          "height": "28px",
+          "borderRadius": "0px",
+          "boxShadow": "none",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(0, 76, 200)"
+        }
+      },
+      {
+        "tag": "SPAN",
+        "classes": "material-symbols-outlined text-[18px] text-status-active-green",
+        "text": "verified",
+        "values": {
+          "fontFamily": "\"Material Symbols Outlined\"",
+          "fontSize": "18px",
+          "lineHeight": "18px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "paddingTop": "0px",
+          "paddingRight": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "gap": "normal",
+          "height": "18px",
+          "borderRadius": "0px",
+          "boxShadow": "none",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(52, 199, 89)"
+        }
+      },
+      {
+        "tag": "SPAN",
+        "classes": "material-symbols-outlined text-white text-[16px] font-bold",
+        "text": "check",
+        "values": {
+          "fontFamily": "\"Material Symbols Outlined\"",
+          "fontSize": "16px",
+          "lineHeight": "16px",
+          "fontWeight": "700",
+          "letterSpacing": "normal",
+          "paddingTop": "0px",
+          "paddingRight": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "gap": "normal",
+          "height": "16px",
+          "borderRadius": "0px",
+          "boxShadow": "none",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        }
+      },
+      {
+        "tag": "SPAN",
+        "classes": "material-symbols-outlined text-white text-[16px] font-bold",
+        "text": "check",
+        "values": {
+          "fontFamily": "\"Material Symbols Outlined\"",
+          "fontSize": "16px",
+          "lineHeight": "16px",
+          "fontWeight": "700",
+          "letterSpacing": "normal",
+          "paddingTop": "0px",
+          "paddingRight": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "gap": "normal",
+          "height": "16px",
+          "borderRadius": "0px",
+          "boxShadow": "none",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        }
+      },
+      {
+        "tag": "SPAN",
+        "classes": "material-symbols-outlined text-white text-[16px] font-bold",
+        "text": "check",
+        "values": {
+          "fontFamily": "\"Material Symbols Outlined\"",
+          "fontSize": "16px",
+          "lineHeight": "16px",
+          "fontWeight": "700",
+          "letterSpacing": "normal",
+          "paddingTop": "0px",
+          "paddingRight": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "gap": "normal",
+          "height": "16px",
+          "borderRadius": "0px",
+          "boxShadow": "none",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        }
+      },
+      {
+        "tag": "SPAN",
+        "classes": "material-symbols-outlined text-white text-[16px] animate-spin",
+        "text": "auto_awesome",
+        "values": {
+          "fontFamily": "\"Material Symbols Outlined\"",
+          "fontSize": "16px",
+          "lineHeight": "16px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "paddingTop": "0px",
+          "paddingRight": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "gap": "normal",
+          "height": "16px",
+          "borderRadius": "0px",
+          "boxShadow": "none",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(255, 255, 255)"
+        }
+      },
+      {
+        "tag": "P",
+        "classes": "font-body-md text-body-md text-on-surface-variant leading-relaxed",
+        "text": "AI 组局管家已就绪：已自动为您配置天气预警监控与开场前 2 小时微信行程提醒，当前招募状态平稳，无需手动干预。",
+        "values": {
+          "fontFamily": "\"Plus Jakarta Sans\"",
+          "fontSize": "15px",
+          "lineHeight": "24.375px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "paddingTop": "0px",
+          "paddingRight": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "gap": "normal",
+          "height": "73.125px",
+          "borderRadius": "0px",
+          "boxShadow": "none",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(66, 70, 85)"
+        }
+      },
+      {
+        "tag": "SPAN",
+        "classes": "material-symbols-outlined text-[15px] text-status-active-green",
+        "text": "cloud_done",
+        "values": {
+          "fontFamily": "\"Material Symbols Outlined\"",
+          "fontSize": "15px",
+          "lineHeight": "15px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "paddingTop": "0px",
+          "paddingRight": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "gap": "normal",
+          "height": "15px",
+          "borderRadius": "0px",
+          "boxShadow": "none",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(52, 199, 89)"
+        }
+      },
+      {
+        "tag": "SPAN",
+        "classes": "material-symbols-outlined text-[15px] text-primary",
+        "text": "schedule_send",
+        "values": {
+          "fontFamily": "\"Material Symbols Outlined\"",
+          "fontSize": "15px",
+          "lineHeight": "15px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "paddingTop": "0px",
+          "paddingRight": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "gap": "normal",
+          "height": "15px",
+          "borderRadius": "0px",
+          "boxShadow": "none",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(0, 76, 200)"
+        }
+      },
+      {
+        "tag": "SPAN",
+        "classes": "material-symbols-outlined text-[20px] text-primary",
+        "text": "group",
+        "values": {
+          "fontFamily": "\"Material Symbols Outlined\"",
+          "fontSize": "20px",
+          "lineHeight": "20px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "paddingTop": "0px",
+          "paddingRight": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "gap": "normal",
+          "height": "20px",
+          "borderRadius": "0px",
+          "boxShadow": "none",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(0, 76, 200)"
+        }
+      },
+      {
+        "tag": "SPAN",
+        "classes": "material-symbols-outlined text-[16px] text-status-active-green",
+        "text": "cloud_done",
+        "values": {
+          "fontFamily": "\"Material Symbols Outlined\"",
+          "fontSize": "16px",
+          "lineHeight": "16px",
+          "fontWeight": "400",
+          "letterSpacing": "normal",
+          "paddingTop": "0px",
+          "paddingRight": "0px",
+          "paddingBottom": "0px",
+          "paddingLeft": "0px",
+          "gap": "normal",
+          "height": "16px",
+          "borderRadius": "0px",
+          "boxShadow": "none",
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "color": "rgb(52, 199, 89)"
+        }
+      }
+    ],
+    "undefinedTokens": [
+      {
+        "classes": "font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-white text-secondary font-bold ml-auto shadow-xs",
+        "paddingTop": "2px",
+        "paddingBottom": "2px",
+        "boxShadow": "none"
+      },
+      {
+        "classes": "px-1.5 py-0.2 rounded-full bg-party-pink-soft text-party-pink font-label-sm text-label-sm font-semibold shrink-0",
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "boxShadow": "none"
+      },
+      {
+        "classes": "px-1.5 py-0.2 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm shrink-0",
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "boxShadow": "none"
+      },
+      {
+        "classes": "px-1.5 py-0.2 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm shrink-0",
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "boxShadow": "none"
+      },
+      {
+        "classes": "px-1.5 py-0.2 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm shrink-0",
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "boxShadow": "none"
+      },
+      {
+        "classes": "px-1.5 py-0.2 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm shrink-0",
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "boxShadow": "none"
+      },
+      {
+        "classes": "px-1.5 py-0.2 rounded bg-vibrant-lime-tint text-tertiary font-label-sm text-label-sm font-bold shrink-0",
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "boxShadow": "none"
+      },
+      {
+        "classes": "inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container text-on-surface-variant shadow-xs",
+        "paddingTop": "8px",
+        "paddingBottom": "8px",
+        "boxShadow": "none"
+      }
+    ]
+  },
+  "styleFiles": [
+    {
+      "path": "/private/tmp/caper-wave70-unrouted-background-audit/_5-style-0.css",
+      "bytes": 357,
+      "sha256": "6fef0da48a375a1a0b267671634b3803a6f0ef0d630054c7dd80643ba6d21f21"
+    },
+    {
+      "path": "/private/tmp/caper-wave70-unrouted-background-audit/_5-style-1.css",
+      "bytes": 58,
+      "sha256": "d08a966f1ccf70c95954d2f0cc5ad96cad6ab1ea0a0d5e1e8619260b334b7a29"
+    },
+    {
+      "path": "/private/tmp/caper-wave70-unrouted-background-audit/_5-style-2.css",
+      "bytes": 16357,
+      "sha256": "b84af60cc7fcd9e6738a32b3664d9d0859e7c441121074adf3ab367f9c0ba85f"
+    }
+  ],
+  "pageErrors": []
+}

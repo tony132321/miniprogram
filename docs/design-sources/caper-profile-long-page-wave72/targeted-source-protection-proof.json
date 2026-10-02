@@ -1,0 +1,1233 @@
+{
+  "checks": [
+    {
+      "name": "js unchanged bytes",
+      "pass": true,
+      "detail": {
+        "path": "/Users/tsb/Documents/小程序/miniprogram/pages/me/me.js",
+        "bytes": 53362,
+        "sha256": "def9a36a9c46deca17cebbe95e5bd8672469eea6e759fd279b45d28c9f87021b"
+      }
+    },
+    {
+      "name": "json unchanged bytes",
+      "pass": true,
+      "detail": {
+        "path": "/Users/tsb/Documents/小程序/miniprogram/pages/me/me.json",
+        "bytes": 63,
+        "sha256": "1bc6ec418e7c2ba28f9ec3a5479da2a73c9d8eb8066588dbcd128604a39a9880"
+      }
+    },
+    {
+      "name": "whole original CSS byte prefix",
+      "pass": true,
+      "detail": {
+        "oldBytes": 22131,
+        "oldSHA": "c090c16406ddcb5b85f5cea37c5fc8581df0a5f7907b23c6f423daec2e37fb7d",
+        "newSHA": "1c5f6c235b4b36f58b1690e7d4b319cf855d1faae08620faf546b9f657601196"
+      }
+    },
+    {
+      "name": "new scope only / no new rpx or font face",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "core and legal-consent whole byte prefix",
+      "pass": true,
+      "detail": {
+        "bytes": 8667,
+        "sha256": "6ae94e81234c603fe2e13604751e356e5f614f19d18a5c27a659a6091db8d7d6"
+      }
+    },
+    {
+      "name": "whole toggle / advanced / outer-close bytes",
+      "pass": true,
+      "detail": {
+        "bytes": 7599,
+        "sha256": "f4e8f5b669190ba3b864577fdf6f9a748f1fd6c50d7981705ba78464a8798829"
+      }
+    },
+    {
+      "name": "all real actions attrs / effective wx ancestor guards unchanged",
+      "pass": true,
+      "detail": {
+        "before": 63,
+        "after": 63
+      }
+    },
+    {
+      "name": "every bound handler remains in unchanged actual JS",
+      "pass": true,
+      "detail": [
+        "acceptOffer",
+        "appealContent",
+        "appealInput",
+        "appealRemoval",
+        "appealReport",
+        "contentAppealInput",
+        "declineOffer",
+        "devInput",
+        "exportData",
+        "goAbout",
+        "goAllActivities",
+        "goApprovalManagement",
+        "goBadges",
+        "goCache",
+        "goCreate",
+        "goDiscover",
+        "goEditProfile",
+        "goGuidelines",
+        "goHostCenter",
+        "goHostedActivities",
+        "goInterestInfo",
+        "goInviteEntry",
+        "goLegal",
+        "goMessages",
+        "goMoments",
+        "goPrivacySafety",
+        "goSupport",
+        "inviteFriends",
+        "loadMoreNotifications",
+        "login",
+        "logout",
+        "openActivity",
+        "openNotice",
+        "openScanEntry",
+        "privacyRequest",
+        "report",
+        "reportAppealInput",
+        "reportEventInput",
+        "reportInput",
+        "retryRefresh",
+        "retryReminderConsent",
+        "retrySimilarInvitesConsent",
+        "revokeBlock",
+        "selectActivityFilter",
+        "setDevUser",
+        "showPrivacyRequests",
+        "toggleAdvanced",
+        "toggleReminder",
+        "toggleSimilarInvites"
+      ]
+    },
+    {
+      "name": "advanced subtree not inside new long selectors",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "whole WXML inverse exact",
+      "pass": true,
+      "detail": {
+        "oldSHA": "6b9348f72e03f955bb8c19b6c3996270eeb52d19bdcc76134a53c200eb9f2a7f",
+        "newSHA": "6854799062489ef6bf70e0ae29f0f9ca2cbf0e38ff98b7b50071df5438fed949",
+        "edits": 2
+      }
+    },
+    {
+      "name": "original code.html ZIP equal",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "original screen.png ZIP equal",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "docs source HTML equals original",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "all original long chevron child attrs exact",
+      "pass": true,
+      "detail": 15
+    },
+    {
+      "name": "chevron-blue.svg exact source geometry / stroke / viewport",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "chevron-muted.svg exact source geometry / stroke / viewport",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "new local resources only reuse chevrons",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "CSS difference paint-equivalent host card",
+      "pass": true,
+      "detail": {
+        "name": "host card",
+        "property": "boxShadow",
+        "source": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(15, 23, 42, 0.05) 0px 4px 20px -2px",
+        "product": "rgba(15, 23, 42, 0.05) 0px 4px 20px -2px"
+      }
+    },
+    {
+      "name": "CSS difference paint-equivalent tool card",
+      "pass": true,
+      "detail": {
+        "name": "tool card",
+        "property": "boxShadow",
+        "source": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(15, 23, 42, 0.05) 0px 4px 20px -2px",
+        "product": "rgba(15, 23, 42, 0.05) 0px 4px 20px -2px"
+      }
+    },
+    {
+      "name": "CSS difference paint-equivalent account card",
+      "pass": true,
+      "detail": {
+        "name": "account card",
+        "property": "boxShadow",
+        "source": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(15, 23, 42, 0.05) 0px 4px 20px -2px",
+        "product": "rgba(15, 23, 42, 0.05) 0px 4px 20px -2px"
+      }
+    },
+    {
+      "name": "CSS difference paint-equivalent invite card",
+      "pass": true,
+      "detail": {
+        "name": "invite card",
+        "property": "boxShadow",
+        "source": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(29, 100, 242, 0.25) 0px 10px 25px -5px",
+        "product": "rgba(29, 100, 242, 0.25) 0px 10px 25px -5px"
+      }
+    },
+    {
+      "name": "CSS difference paint-equivalent invite button",
+      "pass": true,
+      "detail": {
+        "name": "invite button",
+        "property": "boxShadow",
+        "source": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+        "product": "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+      }
+    },
+    {
+      "name": "CSS difference paint-equivalent logout",
+      "pass": true,
+      "detail": {
+        "name": "logout",
+        "property": "boxShadow",
+        "source": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(15, 23, 42, 0.05) 0px 4px 20px -2px",
+        "product": "rgba(15, 23, 42, 0.05) 0px 4px 20px -2px"
+      }
+    },
+    {
+      "name": "CSS font family same source in sampled long roles",
+      "pass": true,
+      "detail": {
+        "sampleRoles": 37
+      }
+    },
+    {
+      "name": "source official hover / active tokens",
+      "pass": true,
+      "detail": [
+        "tool border-blue-200",
+        "invite scale95",
+        "logout scale.99"
+      ]
+    },
+    {
+      "name": "source sibling spaces adapt to product flex gap",
+      "pass": true,
+      "detail": [
+        {
+          "name": "account row gap",
+          "sourceSelector": "[data-purpose=\"settings-lists\"] > div > div:first-child > div > div:nth-child(2)",
+          "productSelector": ".me-long-account-menu .me-long-menu-rows",
+          "keys": [],
+          "source": {
+            "tag": "DIV",
+            "classes": "flex items-center justify-between text-slate-700 py-0.5",
+            "text": "💻\n登录设备\n\n\n                3 台设备",
+            "values": {
+              "fontFamily": "-apple-system, \"system-ui\", \"SF Pro Text\", \"PingFang SC\", \"Helvetica Neue\", sans-serif",
+              "fontSize": "12px",
+              "lineHeight": "16px",
+              "fontWeight": "400",
+              "letterSpacing": "normal",
+              "paddingTop": "2px",
+              "paddingRight": "0px",
+              "paddingBottom": "2px",
+              "paddingLeft": "0px",
+              "marginTop": "10px",
+              "marginBottom": "0px",
+              "gap": "normal",
+              "width": "328px",
+              "height": "20px",
+              "borderRadius": "0px",
+              "borderTopWidth": "0px",
+              "borderTopColor": "rgb(229, 231, 235)",
+              "boxShadow": "none",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "backgroundImage": "none",
+              "color": "rgb(51, 65, 85)",
+              "filter": "none",
+              "transitionDuration": "0s",
+              "transitionTimingFunction": "ease",
+              "pointerEvents": "auto",
+              "maxWidth": "none"
+            }
+          },
+          "product": {
+            "tag": "VIEW",
+            "classes": "me-long-menu-rows",
+            "text": "📱个人资料与城市本机城市偏好与资料状态💻隐私与屏蔽查看和解除真实屏蔽记录",
+            "values": {
+              "fontFamily": "-apple-system, \"system-ui\", \"SF Pro Text\", \"PingFang SC\", \"Helvetica Neue\", sans-serif",
+              "fontSize": "16px",
+              "lineHeight": "normal",
+              "fontWeight": "400",
+              "letterSpacing": "normal",
+              "paddingTop": "0px",
+              "paddingRight": "0px",
+              "paddingBottom": "0px",
+              "paddingLeft": "0px",
+              "marginTop": "0px",
+              "marginBottom": "0px",
+              "gap": "10px",
+              "width": "344px",
+              "height": "84px",
+              "borderRadius": "0px",
+              "borderTopWidth": "0px",
+              "borderTopColor": "rgb(0, 0, 0)",
+              "boxShadow": "none",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "backgroundImage": "none",
+              "color": "rgb(0, 0, 0)",
+              "filter": "none",
+              "transitionDuration": "0s",
+              "transitionTimingFunction": "ease",
+              "pointerEvents": "auto",
+              "maxWidth": "none"
+            }
+          },
+          "differences": []
+        },
+        {
+          "name": "help row gap",
+          "sourceSelector": "[data-purpose=\"settings-lists\"] a[href=\"#feedback\"]",
+          "productSelector": ".me-long-help-menu .me-long-menu-rows",
+          "keys": [],
+          "source": {
+            "tag": "A",
+            "classes": "flex items-center justify-between text-slate-600 py-1",
+            "text": "📝\n意见反馈",
+            "values": {
+              "fontFamily": "-apple-system, \"system-ui\", \"SF Pro Text\", \"PingFang SC\", \"Helvetica Neue\", sans-serif",
+              "fontSize": "12px",
+              "lineHeight": "16px",
+              "fontWeight": "400",
+              "letterSpacing": "normal",
+              "paddingTop": "4px",
+              "paddingRight": "0px",
+              "paddingBottom": "4px",
+              "paddingLeft": "0px",
+              "marginTop": "8px",
+              "marginBottom": "0px",
+              "gap": "normal",
+              "width": "328px",
+              "height": "24px",
+              "borderRadius": "0px",
+              "borderTopWidth": "0px",
+              "borderTopColor": "rgb(229, 231, 235)",
+              "boxShadow": "none",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "backgroundImage": "none",
+              "color": "rgb(71, 85, 105)",
+              "filter": "none",
+              "transitionDuration": "0s",
+              "transitionTimingFunction": "ease",
+              "pointerEvents": "auto",
+              "maxWidth": "none"
+            }
+          },
+          "product": {
+            "tag": "VIEW",
+            "classes": "me-long-menu-rows",
+            "text": "❓常见问题与安全求助安全举报可通过现有工单提交📝本地存储说明查看缓存与账号数据边界",
+            "values": {
+              "fontFamily": "-apple-system, \"system-ui\", \"SF Pro Text\", \"PingFang SC\", \"Helvetica Neue\", sans-serif",
+              "fontSize": "16px",
+              "lineHeight": "normal",
+              "fontWeight": "400",
+              "letterSpacing": "normal",
+              "paddingTop": "0px",
+              "paddingRight": "0px",
+              "paddingBottom": "0px",
+              "paddingLeft": "0px",
+              "marginTop": "0px",
+              "marginBottom": "0px",
+              "gap": "8px",
+              "width": "344px",
+              "height": "90px",
+              "borderRadius": "0px",
+              "borderTopWidth": "0px",
+              "borderTopColor": "rgb(0, 0, 0)",
+              "boxShadow": "none",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "backgroundImage": "none",
+              "color": "rgb(0, 0, 0)",
+              "filter": "none",
+              "transitionDuration": "0s",
+              "transitionTimingFunction": "ease",
+              "pointerEvents": "auto",
+              "maxWidth": "none"
+            }
+          },
+          "differences": []
+        }
+      ]
+    }
+  ],
+  "passed": 26,
+  "failures": 0,
+  "actions": [
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goPrivacySafety",
+        "aria-label": "隐私与设置"
+      },
+      "ancestorGuards": []
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "openScanEntry",
+        "aria-label": "现场签到与核验入口"
+      },
+      "ancestorGuards": []
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goBadges"
+      },
+      "ancestorGuards": []
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goBadges"
+      },
+      "ancestorGuards": []
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goBadges"
+      },
+      "ancestorGuards": []
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goBadges"
+      },
+      "ancestorGuards": []
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goBadges"
+      },
+      "ancestorGuards": []
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goInterestInfo"
+      },
+      "ancestorGuards": []
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goInterestInfo"
+      },
+      "ancestorGuards": []
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "id": "profileRetryButton",
+        "wx:if": "{{loadState === 'ERROR' || loadState === 'PARTIAL' || loadState === 'ACCESS_DENIED'}}",
+        "bindtap": "retryRefresh"
+      },
+      "ancestorGuards": []
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "login"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{!hasSession && !developmentMode}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goDiscover"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{!hasSession && !developmentMode}}"
+        }
+      ]
+    },
+    {
+      "tag": "switch",
+      "attributes": {
+        "id": "reminderConsentSwitch",
+        "checked": "{{eventReminder}}",
+        "disabled": "{{consentLoadState !== 'READY' || reminderConsentPending || reminderConsentUncertain}}",
+        "bindchange": "toggleReminder"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{reminderConsentUncertain}}",
+        "bindtap": "retryReminderConsent"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "switch",
+      "attributes": {
+        "id": "similarInvitesConsentSwitch",
+        "checked": "{{similarInvites}}",
+        "disabled": "{{similarInviteLoadState !== 'READY' || similarInvitesConsentPending || similarInvitesConsentUncertain}}",
+        "bindchange": "toggleSimilarInvites"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{similarInvitesConsentUncertain}}",
+        "bindtap": "retrySimilarInvitesConsent"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goPrivacySafety"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goAllActivities"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "data-filter": "all",
+        "bindtap": "selectActivityFilter"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "data-filter": "attended",
+        "bindtap": "selectActivityFilter"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "data-filter": "hosted",
+        "bindtap": "selectActivityFilter"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:for": "{{activityPreview}}",
+        "wx:key": "id",
+        "data-id": "{{item.id}}",
+        "bindtap": "openActivity",
+        "aria-label": "查看{{item.title || '活动'}}详情"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goInviteEntry"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goHostedActivities"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{hostedPreview}}",
+        "data-id": "{{hostedPreview.id}}",
+        "bindtap": "openActivity"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goHostCenter"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goCreate"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goHostedActivities"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goApprovalManagement"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goEditProfile"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goPrivacySafety"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goMessages"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goMoments"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "toggleAdvanced",
+        "aria-label": "{{advancedOpen ? '收起' : '展开'}}账号与安全操作"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "input",
+      "attributes": {
+        "value": "{{devUser}}",
+        "bindinput": "devInput"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        },
+        {
+          "wx:if": "{{advancedOpen}}"
+        },
+        {
+          "wx:if": "{{developmentMode}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "id": "switchDevUserButton",
+        "bindtap": "setDevUser"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        },
+        {
+          "wx:if": "{{advancedOpen}}"
+        },
+        {
+          "wx:if": "{{developmentMode}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{!hasSession}}",
+        "bindtap": "login"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        },
+        {
+          "wx:if": "{{advancedOpen}}"
+        },
+        {
+          "wx:if": "{{developmentMode}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "data-id": "{{item.id}}",
+        "bindtap": "revokeBlock"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        },
+        {
+          "wx:if": "{{advancedOpen}}"
+        },
+        {
+          "wx:for": "{{blocks}}",
+          "wx:key": "id"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goMessages"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        },
+        {
+          "wx:if": "{{advancedOpen}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "data-id": "{{item.id}}",
+        "data-event": "{{item.event_id}}",
+        "data-kind": "{{item.kind}}",
+        "bindtap": "openNotice"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        },
+        {
+          "wx:if": "{{advancedOpen}}"
+        },
+        {
+          "wx:for": "{{notifications}}",
+          "wx:key": "id"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{item.actionable}}",
+        "data-id": "{{item.detail.offerId}}",
+        "data-version": "{{item.event_version}}",
+        "bindtap": "acceptOffer"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        },
+        {
+          "wx:if": "{{advancedOpen}}"
+        },
+        {
+          "wx:for": "{{notifications}}",
+          "wx:key": "id"
+        },
+        {
+          "wx:if": "{{item.kind === 'WAITLIST_OFFER'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{item.declinable}}",
+        "id": "declineOfferButton",
+        "data-id": "{{item.detail.offerId}}",
+        "data-version": "{{item.event_version}}",
+        "bindtap": "declineOffer"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        },
+        {
+          "wx:if": "{{advancedOpen}}"
+        },
+        {
+          "wx:for": "{{notifications}}",
+          "wx:key": "id"
+        },
+        {
+          "wx:if": "{{item.kind === 'WAITLIST_OFFER'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{nextNotificationOffset !== null}}",
+        "bindtap": "loadMoreNotifications"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        },
+        {
+          "wx:if": "{{advancedOpen}}"
+        }
+      ]
+    },
+    {
+      "tag": "textarea",
+      "attributes": {
+        "value": "{{appealDescription}}",
+        "bindinput": "appealInput"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        },
+        {
+          "wx:if": "{{advancedOpen}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "data-id": "{{item.id}}",
+        "bindtap": "appealRemoval"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        },
+        {
+          "wx:if": "{{advancedOpen}}"
+        },
+        {
+          "wx:for": "{{removals}}",
+          "wx:key": "id"
+        }
+      ]
+    },
+    {
+      "tag": "textarea",
+      "attributes": {
+        "wx:if": "{{rejectedContent.length > 0}}",
+        "value": "{{contentAppealDescription}}",
+        "bindinput": "contentAppealInput"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        },
+        {
+          "wx:if": "{{advancedOpen}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:else": "",
+        "data-id": "{{item.id}}",
+        "bindtap": "appealContent"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        },
+        {
+          "wx:if": "{{advancedOpen}}"
+        },
+        {
+          "wx:for": "{{rejectedContent}}",
+          "wx:key": "id"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "id": "exportDataButton",
+        "bindtap": "exportData"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        },
+        {
+          "wx:if": "{{advancedOpen}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "data-kind": "EXPORT",
+        "bindtap": "privacyRequest"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        },
+        {
+          "wx:if": "{{advancedOpen}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "data-kind": "DELETE",
+        "bindtap": "privacyRequest"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        },
+        {
+          "wx:if": "{{advancedOpen}}"
+        }
+      ]
+    },
+    {
+      "tag": "input",
+      "attributes": {
+        "value": "{{reportEventId}}",
+        "bindinput": "reportEventInput"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        },
+        {
+          "wx:if": "{{advancedOpen}}"
+        }
+      ]
+    },
+    {
+      "tag": "textarea",
+      "attributes": {
+        "value": "{{reportDescription}}",
+        "bindinput": "reportInput"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        },
+        {
+          "wx:if": "{{advancedOpen}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "report"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        },
+        {
+          "wx:if": "{{advancedOpen}}"
+        }
+      ]
+    },
+    {
+      "tag": "textarea",
+      "attributes": {
+        "wx:if": "{{reports.length > 0}}",
+        "value": "{{reportAppealDescription}}",
+        "bindinput": "reportAppealInput"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        },
+        {
+          "wx:if": "{{advancedOpen}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{item.status === 'RESOLVED'}}",
+        "data-id": "{{item.id}}",
+        "bindtap": "appealReport"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        },
+        {
+          "wx:if": "{{advancedOpen}}"
+        },
+        {
+          "wx:for": "{{reports}}",
+          "wx:key": "id"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goSupport"
+      },
+      "ancestorGuards": []
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goCache"
+      },
+      "ancestorGuards": []
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "id": "aboutButton",
+        "bindtap": "goAbout"
+      },
+      "ancestorGuards": []
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goLegal"
+      },
+      "ancestorGuards": []
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goGuidelines"
+      },
+      "ancestorGuards": []
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "inviteFriends"
+      },
+      "ancestorGuards": []
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "id": "logoutButton",
+        "wx:if": "{{!developmentMode}}",
+        "bindtap": "logout"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{hasSession}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "showPrivacyRequests"
+      },
+      "ancestorGuards": [
+        {
+          "wx:if": "{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"
+        }
+      ]
+    }
+  ],
+  "cssObservation": {
+    "roles": 37,
+    "properties": 208,
+    "drawingEquivalentDifferences": [
+      {
+        "name": "host card",
+        "property": "boxShadow",
+        "source": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(15, 23, 42, 0.05) 0px 4px 20px -2px",
+        "product": "rgba(15, 23, 42, 0.05) 0px 4px 20px -2px"
+      },
+      {
+        "name": "tool card",
+        "property": "boxShadow",
+        "source": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(15, 23, 42, 0.05) 0px 4px 20px -2px",
+        "product": "rgba(15, 23, 42, 0.05) 0px 4px 20px -2px"
+      },
+      {
+        "name": "account card",
+        "property": "boxShadow",
+        "source": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(15, 23, 42, 0.05) 0px 4px 20px -2px",
+        "product": "rgba(15, 23, 42, 0.05) 0px 4px 20px -2px"
+      },
+      {
+        "name": "invite card",
+        "property": "boxShadow",
+        "source": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(29, 100, 242, 0.25) 0px 10px 25px -5px",
+        "product": "rgba(29, 100, 242, 0.25) 0px 10px 25px -5px"
+      },
+      {
+        "name": "invite button",
+        "property": "boxShadow",
+        "source": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+        "product": "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+      },
+      {
+        "name": "logout",
+        "property": "boxShadow",
+        "source": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(15, 23, 42, 0.05) 0px 4px 20px -2px",
+        "product": "rgba(15, 23, 42, 0.05) 0px 4px 20px -2px"
+      }
+    ]
+  },
+  "proofLimit": "No full suite / VM / WeChat CLI / SDK / CUA / screenshots / actual glyph paint or API runtime. Browser only resolves supplied source and existing/new CSS, resources blocked.",
+  "projectionErrors": [
+    "First browser projection timed out at help because self-closing WXML textarea is HTML raw-text; normalization still hit attribute >. Fixed private projection to isolate only the two new long scopes; no product was changed for either harness error.",
+    "Source chevron initial checker used source.index on duplicate inline SVG strings, mislocating nodes; changed private checker to actual regex match.start offset. No product change; final 15 source chevrons exact."
+  ]
+}

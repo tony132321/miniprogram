@@ -143,6 +143,7 @@ function displayed(items, filter, searchQuery = '') {
   const centerItems = shown.filter(item => item.visible);
   const unreadItems = centerItems.filter(item => item.status !== 'OPENED');
   return { items: shown, centerItems, filteredCount: centerItems.length,
+    loadedActivityUnreadCount: items.filter(item => groupFor(item) === 'ACTIVITY' && item.status !== 'OPENED').length,
     priorityItems: unreadItems.slice(0, 2), priorityCount: unreadItems.length,
     noticeGroups: groupSpecs.map(spec => ({ ...spec, items: shown.filter(item => item.visible && groupFor(item) === spec.key) })) };
 }
@@ -156,11 +157,11 @@ function currentIdentity(developmentMode) {
 }
 function noticeEventId(value) { return value == null ? '' : String(value); }
 Page({
-  data: { statusBarHeight: 24, capsuleInset: 96, items: [], centerItems: [], noticeGroups: [], priorityItems: [], priorityCount: 0, filteredCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
+  data: { statusBarHeight: 24, capsuleInset: 96, items: [], centerItems: [], noticeGroups: [], priorityItems: [], priorityCount: 0, filteredCount: 0, loadedActivityUnreadCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
     loadState: 'IDLE', loadingMore: false, markingAllRead: false, message: '',
     approvals: [], approvalTotal: 0, approvalNextOffset: null, approvalSnapshot: null, approvalLoadState: 'IDLE',
     approvingId: '', loadingMoreApprovals: false,
-    filter: 'ALL', viewMode: 'INBOX', searchOpen: false, searchQuery: '', hasSession: false, developmentMode: Boolean(config.developmentUser) },
+    filter: 'ALL', viewMode: 'INBOX', centerLayout: 'CARDS', searchOpen: false, searchQuery: '', hasSession: false, developmentMode: Boolean(config.developmentUser) },
   onLoad() {
     const system = wx.getSystemInfoSync?.() || {};
     const capsule = typeof wx.getMenuButtonBoundingClientRect === 'function'
@@ -179,21 +180,22 @@ Page({
     const { hasSession, actor, key } = currentIdentity(this.data.developmentMode);
     if (this._identity !== key) {
       this._generation = (this._generation || 0) + 1;
-      this.setData({ items: [], centerItems: [], noticeGroups: [], priorityItems: [], priorityCount: 0, filteredCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
+      this.setData({ items: [], centerItems: [], noticeGroups: [], priorityItems: [], priorityCount: 0, filteredCount: 0, loadedActivityUnreadCount: 0, total: 0, unreadTotal: 0, nextOffset: null, snapshot: null,
         loadingMore: false, markingAllRead: false, approvals: [], approvalTotal: 0,
         approvalNextOffset: null, approvalSnapshot: null, approvalLoadState: 'IDLE',
-        approvingId: '', loadingMoreApprovals: false, viewMode: 'INBOX', filter: 'ALL',
+        approvingId: '', loadingMoreApprovals: false, viewMode: 'INBOX', centerLayout: 'CARDS', filter: 'ALL',
         searchOpen: false, searchQuery: '' });
     }
     this._identity = key;
     this._actor = actor;
-    if (focusIntent === 'approvals') this.setData({ viewMode: 'CENTER', filter: 'INTERACTION' });
+    if (focusIntent === 'approvals') this.setData({ viewMode: 'CENTER', centerLayout: 'CARDS', filter: 'INTERACTION' });
     this.setData({ hasSession });
     this.setTabBarHidden(this.data.viewMode !== 'INBOX');
     if (!actor) return this.setData({ loadState: 'UNAUTHENTICATED', message: '请先微信登录后查看本人消息。' });
     return this.refresh();
   },
   onHide() {
+    this._centerOptionsRequestId = (this._centerOptionsRequestId || 0) + 1;
     this._venueCopyRequestId = (this._venueCopyRequestId || 0) + 1;
     this.setTabBarHidden(false);
   },
@@ -233,8 +235,9 @@ Page({
   },
   async openNotificationCenter() {
     if (this.clearPrivateAfterIdentityChange()) return;
+    this._centerOptionsRequestId = (this._centerOptionsRequestId || 0) + 1;
     const filter = 'ALL';
-    this.setData({ viewMode: 'CENTER', filter, searchOpen: false, searchQuery: '',
+    this.setData({ viewMode: 'CENTER', centerLayout: 'CARDS', filter, searchOpen: false, searchQuery: '',
       ...displayed(this.data.items, filter) }, () => {
       wx.pageScrollTo?.({ scrollTop: 0, duration: 0 });
     });
@@ -242,8 +245,35 @@ Page({
     if (this.data.loadState === 'READY' && this.data.approvalLoadState === 'IDLE')
       await this.loadApprovals();
   },
+  openCenterOptions() {
+    if (this.clearPrivateAfterIdentityChange()) return;
+    if (this.data.viewMode !== 'CENTER' || typeof wx.showActionSheet !== 'function') return;
+    const layout = this.data.centerLayout;
+    if (!['CARDS', 'COMPACT'].includes(layout)) return;
+    const identity = currentIdentity(this.data.developmentMode).key;
+    if ((this._identity || '') !== identity) return;
+    const generation = this._generation || 0;
+    const requestId = this._centerOptionsRequestId = (this._centerOptionsRequestId || 0) + 1;
+    wx.showActionSheet({
+      itemList: [layout === 'CARDS' ? '紧凑通知中心' : '卡片通知中心', '通知设置'],
+      success: result => {
+        if (identity !== currentIdentity(this.data.developmentMode).key) {
+          this.clearPrivateAfterIdentityChange();
+          return;
+        }
+        if (requestId !== this._centerOptionsRequestId || generation !== (this._generation || 0) ||
+          identity !== (this._identity || '') || this.data.viewMode !== 'CENTER' ||
+          layout !== this.data.centerLayout || ![0, 1].includes(result?.tapIndex)) return;
+        if (result.tapIndex === 1) return this.goNotificationSettings();
+        this.setData({ centerLayout: layout === 'CARDS' ? 'COMPACT' : 'CARDS' }, () => {
+          wx.pageScrollTo?.({ scrollTop: 0, duration: 0 });
+        });
+      }
+    });
+  },
   openPrivateChatPreview() {
     if (this.clearPrivateAfterIdentityChange()) return;
+    this._centerOptionsRequestId = (this._centerOptionsRequestId || 0) + 1;
     const filter = 'ALL';
     this.setData({ viewMode: 'CHAT_UNAVAILABLE', filter, searchOpen: false, searchQuery: '',
       ...displayed(this.data.items, filter) }, () => {
@@ -253,6 +283,7 @@ Page({
   },
   backToInbox() {
     if (this.clearPrivateAfterIdentityChange()) return;
+    this._centerOptionsRequestId = (this._centerOptionsRequestId || 0) + 1;
     const filter = 'ALL';
     this.setData({ viewMode: 'INBOX', filter,
       ...displayed(this.data.items, filter, this.data.searchQuery) }, () => {
@@ -326,12 +357,12 @@ Page({
     if (!this._identity || this._identity === currentIdentity(this.data.developmentMode).key) return false;
     this._generation = (this._generation || 0) + 1;
     this._approvalLoadId = (this._approvalLoadId || 0) + 1;
-    this.setData({ items: [], centerItems: [], noticeGroups: [], priorityItems: [], priorityCount: 0, filteredCount: 0,
+    this.setData({ items: [], centerItems: [], noticeGroups: [], priorityItems: [], priorityCount: 0, filteredCount: 0, loadedActivityUnreadCount: 0,
       total: 0, unreadTotal: 0, nextOffset: null, snapshot: null, loadState: 'IDLE',
       loadingMore: false, markingAllRead: false,
       approvals: [], approvalTotal: 0, approvalNextOffset: null, approvalSnapshot: null,
       approvalLoadState: 'IDLE', approvingId: '', loadingMoreApprovals: false,
-      viewMode: 'INBOX', filter: 'ALL', searchOpen: false, searchQuery: '',
+      viewMode: 'INBOX', centerLayout: 'CARDS', filter: 'ALL', searchOpen: false, searchQuery: '',
       message: '账号已切换，请返回后重新加载消息。' });
     this.setTabBarHidden(false);
     return true;

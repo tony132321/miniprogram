@@ -1,0 +1,11 @@
+{
+  "kind": "Only two actually reviewed pending neutral paint constants; no repeat of22 source check",
+  "source": "Original source neutral surface-container #efedf3 and on-surface-variant #424655; not invented amber",
+  "oldCSS": "219f0221f85a46093fe19d16531a91463dec085c07a02574045de11e855de3ac",
+  "newCSS": "c49dc766a42b6e37bbab256a4262417ad0ca991c53f9c6f3f1d67f3ef199cd4b",
+  "sameBytes": true,
+  "inverseExact": true,
+  "oldChunk": ".share-background71 .share-background71-condition-pending { background:#fff4de; color:#8b5710; }",
+  "newChunk": ".share-background71 .share-background71-condition-pending { background:#efedf3; color:#424655; }",
+  "allOtherWXMLJSJSONValuesAndActionsUnchanged": true
+}

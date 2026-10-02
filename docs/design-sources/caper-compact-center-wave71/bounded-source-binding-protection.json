@@ -1,0 +1,524 @@
+{
+  "scope": "Once-only source/resource/whole inverse/binding check, not style mirror tests or runtime. Seven new behavior VM cases run separately. No old full suites, SDK, CLI, CI or matrix.",
+  "baselineCommit": "d78b2464b4c97a17ddf4f0c13dc692ae892ba250",
+  "baselineArchive": "/private/tmp/caper-ui70-immutable-illt8q2z",
+  "wholeWXMLInverse": {
+    "bytes": 25349,
+    "sha256": "016d85c858bceb0cedc77f3d276d9c8737fe2d2ff91f02f3188bd64d6f16f41c"
+  },
+  "wholeJSInverse": {
+    "bytes": 30972,
+    "sha256": "5815366a2033852089afba3a7bff08e8869d8249a5457aee057b131c6cc74a4e"
+  },
+  "oldCSSPrefix": {
+    "bytes": 56674,
+    "sha256": "a6ba47ac7cade2ec7b42187a803207a7b7165c4a1e914f57fd233c8157cc98e0"
+  },
+  "JSONProtected": {
+    "path": "miniprogram/pages/messages/messages.json",
+    "bytes": 63,
+    "sha256": "b76e69c65eadf25397e0df5c9457c5a098c1bfc714ae05be5441318bdc8ebacc"
+  },
+  "WXMLStructure": "parsed",
+  "newActionContracts": [
+    {
+      "tag": "button",
+      "contract": {
+        "bindtap": "backToInbox"
+      },
+      "ancestors": [
+        {
+          "wx:elif": "{{viewMode === 'CENTER' && centerLayout === 'COMPACT'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "contract": {
+        "bindtap": "openCenterOptions"
+      },
+      "ancestors": [
+        {
+          "wx:elif": "{{viewMode === 'CENTER' && centerLayout === 'COMPACT'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "contract": {
+        "data-filter": "ALL",
+        "bindtap": "setFilter"
+      },
+      "ancestors": [
+        {
+          "wx:elif": "{{viewMode === 'CENTER' && centerLayout === 'COMPACT'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "contract": {
+        "data-filter": "ACTIVITY",
+        "bindtap": "setFilter"
+      },
+      "ancestors": [
+        {
+          "wx:elif": "{{viewMode === 'CENTER' && centerLayout === 'COMPACT'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "contract": {
+        "data-filter": "INTERACTION",
+        "bindtap": "setFilter"
+      },
+      "ancestors": [
+        {
+          "wx:elif": "{{viewMode === 'CENTER' && centerLayout === 'COMPACT'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "contract": {
+        "data-filter": "SYSTEM",
+        "bindtap": "setFilter"
+      },
+      "ancestors": [
+        {
+          "wx:elif": "{{viewMode === 'CENTER' && centerLayout === 'COMPACT'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "contract": {
+        "wx:if": "{{loadState === 'ERROR'}}",
+        "bindtap": "refresh"
+      },
+      "ancestors": [
+        {
+          "wx:elif": "{{viewMode === 'CENTER' && centerLayout === 'COMPACT'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "contract": {
+        "bindtap": "goProfile"
+      },
+      "ancestors": [
+        {
+          "wx:elif": "{{viewMode === 'CENTER' && centerLayout === 'COMPACT'}}"
+        },
+        {
+          "wx:if": "{{loadState === 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "contract": {
+        "bindtap": "loadApprovals"
+      },
+      "ancestors": [
+        {
+          "wx:elif": "{{viewMode === 'CENTER' && centerLayout === 'COMPACT'}}"
+        },
+        {
+          "wx:if": "{{(filter === 'ALL' || filter === 'INTERACTION') && approvalLoadState === 'ERROR'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "contract": {
+        "data-event-id": "{{item.eventId}}",
+        "data-is-host": "{{item.isHost}}",
+        "bindtap": "viewApproval"
+      },
+      "ancestors": [
+        {
+          "wx:elif": "{{viewMode === 'CENTER' && centerLayout === 'COMPACT'}}"
+        },
+        {
+          "wx:if": "{{(filter === 'ALL' || filter === 'INTERACTION') && approvalLoadState === 'READY' && approvals.length > 0}}"
+        },
+        {
+          "wx:for": "{{approvals}}",
+          "wx:key": "registrationId"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "contract": {
+        "wx:if": "{{item.canApprove}}",
+        "data-id": "{{item.registrationId}}",
+        "data-version": "{{item.expectedVersion}}",
+        "bindtap": "approveRequest",
+        "disabled": "{{approvingId !== ''}}"
+      },
+      "ancestors": [
+        {
+          "wx:elif": "{{viewMode === 'CENTER' && centerLayout === 'COMPACT'}}"
+        },
+        {
+          "wx:if": "{{(filter === 'ALL' || filter === 'INTERACTION') && approvalLoadState === 'READY' && approvals.length > 0}}"
+        },
+        {
+          "wx:for": "{{approvals}}",
+          "wx:key": "registrationId"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "contract": {
+        "wx:if": "{{approvalNextOffset !== null}}",
+        "bindtap": "loadMoreApprovals",
+        "disabled": "{{loadingMoreApprovals}}"
+      },
+      "ancestors": [
+        {
+          "wx:elif": "{{viewMode === 'CENTER' && centerLayout === 'COMPACT'}}"
+        },
+        {
+          "wx:if": "{{(filter === 'ALL' || filter === 'INTERACTION') && approvalLoadState === 'READY' && approvals.length > 0}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "contract": {
+        "wx:if": "{{notice.cardVariant === 'update'}}",
+        "data-id": "{{notice.id}}",
+        "data-event-id": "{{notice.event_id}}",
+        "data-kind": "{{notice.kind}}",
+        "data-section": "{{notice.actionSection}}",
+        "bindtap": "openNotice"
+      },
+      "ancestors": [
+        {
+          "wx:elif": "{{viewMode === 'CENTER' && centerLayout === 'COMPACT'}}"
+        },
+        {
+          "wx:if": "{{loadState === 'READY'}}"
+        },
+        {
+          "wx:for": "{{centerItems}}",
+          "wx:key": "id",
+          "wx:for-item": "notice"
+        },
+        {
+          "wx:if": "{{notice.visible}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "contract": {
+        "wx:if": "{{notice.cardVariant === 'milestone'}}",
+        "data-id": "{{notice.id}}",
+        "data-event-id": "{{notice.event_id}}",
+        "data-kind": "{{notice.kind}}",
+        "data-section": "{{notice.actionSection}}",
+        "bindtap": "openNotice"
+      },
+      "ancestors": [
+        {
+          "wx:elif": "{{viewMode === 'CENTER' && centerLayout === 'COMPACT'}}"
+        },
+        {
+          "wx:if": "{{loadState === 'READY'}}"
+        },
+        {
+          "wx:for": "{{centerItems}}",
+          "wx:key": "id",
+          "wx:for-item": "notice"
+        },
+        {
+          "wx:if": "{{notice.visible}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "contract": {
+        "data-id": "{{notice.id}}",
+        "data-event-id": "{{notice.event_id}}",
+        "data-kind": "{{notice.kind}}",
+        "data-section": "{{notice.actionSection}}",
+        "bindtap": "openNotice"
+      },
+      "ancestors": [
+        {
+          "wx:elif": "{{viewMode === 'CENTER' && centerLayout === 'COMPACT'}}"
+        },
+        {
+          "wx:if": "{{loadState === 'READY'}}"
+        },
+        {
+          "wx:for": "{{centerItems}}",
+          "wx:key": "id",
+          "wx:for-item": "notice"
+        },
+        {
+          "wx:if": "{{notice.visible}}"
+        },
+        {
+          "wx:if": "{{notice.cardVariant === 'standard'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "contract": {
+        "data-id": "{{notice.id}}",
+        "data-event-id": "{{notice.event_id}}",
+        "data-kind": "{{notice.kind}}",
+        "data-section": "{{notice.actionSection}}",
+        "bindtap": "openNotice"
+      },
+      "ancestors": [
+        {
+          "wx:elif": "{{viewMode === 'CENTER' && centerLayout === 'COMPACT'}}"
+        },
+        {
+          "wx:if": "{{loadState === 'READY'}}"
+        },
+        {
+          "wx:for": "{{centerItems}}",
+          "wx:key": "id",
+          "wx:for-item": "notice"
+        },
+        {
+          "wx:if": "{{notice.visible}}"
+        },
+        {
+          "wx:if": "{{notice.cardVariant === 'reminder'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "contract": {
+        "wx:if": "{{notice.event_id}}",
+        "data-id": "{{notice.id}}",
+        "data-event-id": "{{notice.event_id}}",
+        "data-kind": "{{notice.kind}}",
+        "bindtap": "copyReminderVenue"
+      },
+      "ancestors": [
+        {
+          "wx:elif": "{{viewMode === 'CENTER' && centerLayout === 'COMPACT'}}"
+        },
+        {
+          "wx:if": "{{loadState === 'READY'}}"
+        },
+        {
+          "wx:for": "{{centerItems}}",
+          "wx:key": "id",
+          "wx:for-item": "notice"
+        },
+        {
+          "wx:if": "{{notice.visible}}"
+        },
+        {
+          "wx:if": "{{notice.cardVariant === 'reminder'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "contract": {
+        "wx:if": "{{loadState === 'READY' && nextOffset !== null}}",
+        "bindtap": "loadMore",
+        "disabled": "{{loadingMore}}"
+      },
+      "ancestors": [
+        {
+          "wx:elif": "{{viewMode === 'CENTER' && centerLayout === 'COMPACT'}}"
+        }
+      ]
+    }
+  ],
+  "oldCenterBusinessContractCount": 17,
+  "newSameBusinessContractCount": 17,
+  "approvalOrder": "Original N2 details-before-approve, still original id/version/canApprove/disabled guards",
+  "protectedAssets": [
+    {
+      "path": "miniprogram/pages/messages/assets/search.svg",
+      "bytes": 207,
+      "sha256": "aeff8942a1a5a1a87f6f8dadfccba80d47d758084cc333270b360caef617c302"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-emoji.svg",
+      "bytes": 1399,
+      "sha256": "a962b55f7fdb3a4a6add35210d77548889ba6777e316e1719b5df1c07fb802aa"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-more-vert.svg",
+      "bytes": 632,
+      "sha256": "638c8fe797f56e63826824e20eb94dedca72186d99532b9c43d57ac60c306364"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-group.svg",
+      "bytes": 1579,
+      "sha256": "553f097fc8bc67ba60c07d574249bb6be9959460f24bcb0f6eea1b3a508a28a8"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-navigation.svg",
+      "bytes": 224,
+      "sha256": "42bcc67ff797e35f473164aeeeda6dc578a13098495b4ae6d5f2a52085ae568e"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-edit-location.svg",
+      "bytes": 921,
+      "sha256": "62dd04e8a1178b61cd34531b6b6b1121b4d964fd46812f939c96494d28f9e337"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-celebration.svg",
+      "bytes": 726,
+      "sha256": "d256e0bc235c5fea8ed0d53906d42611dc1ad2337a97a6ed5c5bd51647a94565"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/settings.svg",
+      "bytes": 758,
+      "sha256": "2f20e16cc351312cb34aa489af483fac0aac754687a8044f214a1b784c54e8ec"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-qr.svg",
+      "bytes": 644,
+      "sha256": "8762f0820ad71d80c9d266c83c94672397c66f42896148039d55bb5aff957847"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-mic.svg",
+      "bytes": 868,
+      "sha256": "b3dd100ae3398c95d70f25d2a7c6a4b7ad7692c7f8e538bda803faf814b48898"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-person-white.svg",
+      "bytes": 1221,
+      "sha256": "eb9f584cd54abceb581a241bba6492adc6781bccd5dff96f7b48d63fcec34488"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-person-blue.svg",
+      "bytes": 1221,
+      "sha256": "374b6dc0497b9b312a135ad9c32f2d906f5bf4214bf2f65217b58eeafb816fd3"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-chevron.svg",
+      "bytes": 177,
+      "sha256": "9e59fde3efc83f8237eec2f357cdfe56bc43fbe53acbdc8cc47659b3f2240140"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-done-all.svg",
+      "bytes": 258,
+      "sha256": "a195b0500b3e2ca74b21ec10aa1e88ae78a65703b1a143f8d8682e3b30a957a4"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-add.svg",
+      "bytes": 181,
+      "sha256": "e2faf4b9c911528052d722c14b0961aa4d349fda1b0b37333331d624d2f80e66"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-arrow-forward.svg",
+      "bytes": 176,
+      "sha256": "edb7f148b1799ca9adbc9e8fd7ebb298cfc99d268763e942e358eea95a51ec64"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-call.svg",
+      "bytes": 1293,
+      "sha256": "39164588544d4db755047e2a7edecbeb83a6a7ac9350c15bb5dbe6e3343f6f6b"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-alarm.svg",
+      "bytes": 941,
+      "sha256": "f18b2634a1f413e46d9b64a01ccb51dd378686c8b0ad0c3c6ccd51bddc066e49"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-shield.svg",
+      "bytes": 293,
+      "sha256": "77edac762d11873c5c2d2615a2dc86170d83a860f6ffa3efe7ae77852a8e06d2"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-approve.svg",
+      "bytes": 856,
+      "sha256": "2936873419db7812916d5b3b47b9f211ae73e2cd06abdb7fbfbfe48bd96a6b90"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-more.svg",
+      "bytes": 632,
+      "sha256": "5daf6d8ba0b8a1e4537b3a7d4b6ebef020aacbc6f3eca04cc75b376677e46768"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-activity.svg",
+      "bytes": 1395,
+      "sha256": "769ba801dafb8b772bc1bea7ee03d8becc9eda6bd0754b3bb48078a680b96ade"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-sparkle-footer.svg",
+      "bytes": 422,
+      "sha256": "0c317fc323fe8e7490c7dbde09eb9e7235c29d5b06cda0f9a329906a918ae49c"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-sparkle-white.svg",
+      "bytes": 422,
+      "sha256": "8b98eec6e75f3dbb537690fa3d73085eb8d4e6630a09c09ee190a3aeea6d3936"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-back.svg",
+      "bytes": 176,
+      "sha256": "a7c95a2ef8b451189ba7e0d0a834542c257a97375d36c6dca15daa6d86b2ad6b"
+    }
+  ],
+  "actualRefs": [
+    "/pages/messages/assets/wave69-back.svg",
+    "/pages/messages/assets/wave69-more.svg",
+    "/pages/messages/assets/wave69-person-white.svg",
+    "/pages/messages/assets/wave71-compact-bolt.svg",
+    "/pages/messages/assets/wave69-person-blue.svg",
+    "/pages/messages/assets/wave71-compact-alarm.svg",
+    "/pages/messages/assets/wave71-compact-update.svg",
+    "/pages/messages/assets/wave71-compact-confirmed.svg",
+    "/pages/messages/assets/wave71-compact-location.svg",
+    "/pages/messages/assets/wave71-compact-chevron.svg",
+    "/pages/messages/assets/wave71-compact-badminton.jpg",
+    "/pages/messages/assets/wave71-compact-ticket.svg",
+    "/pages/messages/assets/wave71-compact-near-me.svg"
+  ],
+  "newGlyphs": 8,
+  "reusedGlyphs": 3,
+  "photo": {
+    "sourceURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuDgNEpbgE_KEd7djvwRtBbd23P9ZQm1rn9oXntdBU7wJIQdBotXeaGMU2ilqsW1xe7IGJGwIS5WRxZ8Awq5Ddy8NQUGZd5VSsi96ieEkU-BmBjXxzYF7BvmXRWNH72FtlRxpJJGVCnH4sBGyNj78jvbABEB-STpQeIQq5Z6p_C4Opy2076J_7LNfnBoUru4jJo7q5QhFsQ7pw1YinrUfEw_KJgAB6F3hOthxPbAlKIlTZXeWqOob1KYtw",
+    "finalURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuDgNEpbgE_KEd7djvwRtBbd23P9ZQm1rn9oXntdBU7wJIQdBotXeaGMU2ilqsW1xe7IGJGwIS5WRxZ8Awq5Ddy8NQUGZd5VSsi96ieEkU-BmBjXxzYF7BvmXRWNH72FtlRxpJJGVCnH4sBGyNj78jvbABEB-STpQeIQq5Z6p_C4Opy2076J_7LNfnBoUru4jJo7q5QhFsQ7pw1YinrUfEw_KJgAB6F3hOthxPbAlKIlTZXeWqOob1KYtw",
+    "httpStatus": 200,
+    "headers": {
+      "Content-Type": "image/jpeg",
+      "Vary": "Origin",
+      "Access-Control-Allow-Origin": "*",
+      "Timing-Allow-Origin": "*",
+      "Access-Control-Expose-Headers": "Content-Length",
+      "ETag": "\"v0\"",
+      "Expires": "Sat, 03 Oct 2026 01:34:01 GMT",
+      "Cache-Control": "public, max-age=86400, no-transform",
+      "Content-Disposition": "inline;filename=\"unnamed.jpg\"",
+      "X-Content-Type-Options": "nosniff",
+      "Date": "Fri, 02 Oct 2026 01:34:01 GMT",
+      "Server": "fife",
+      "Content-Length": "28623",
+      "X-XSS-Protection": "0",
+      "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+      "Connection": "close"
+    },
+    "sourceNode": "pg02_n_2 HTML48 first image; source badminton illustration, never actual event photo",
+    "asset": "miniprogram/pages/messages/assets/wave71-compact-badminton.jpg",
+    "bytes": 28623,
+    "sha256": "36c2ece6538bb2cd91a5be6a218c9380bc70c8e02cb87a9de015fdb56246eb10",
+    "noReencoding": true,
+    "excluded": "Original Alex/Momo approval portraits are not real R1 applicants; do not download or display."
+  },
+  "sourceCascadeObservation": "Reused original once-only browser CSS observation /private/tmp/caper-wave70-unrouted-background-audit/pg02_n_2-source-css-observation.json; no original-font/image native rendering claim"
+}

@@ -57,6 +57,34 @@
     <view class="share-foot">GOOD PEOPLE · REAL MEETUPS · BRIGHTER DAYS</view>
   </view>
 
+  <!-- Wave71 PG06-S readonly dashboard background BEGIN -->
+  <view wx:if="{{shareSheetOpen && loadState === 'READY'}}" class="share-background71" aria-hidden="true" style="padding-top: {{statusBarHeight}}px">
+    <view class="share-background71-status" style="height: {{statusBarHeight}}px"></view>
+    <view class="share-background71-header" style="top: {{statusBarHeight}}px; padding-right: {{headerPaddingRight}}">
+      <view class="share-background71-back"><image src="../event/assets/w69-arrow_back_ios_new-w400-f0-1a1b1f.svg" mode="aspectFit"/></view>
+      <text class="share-background71-title">Organizer Dashboard</text>
+      <view class="share-background71-header-actions"><view class="share-background71-more"><image src="../event/assets/w69-more_horiz-w400-f0-1a1b1f.svg" mode="aspectFit"/></view><view class="share-background71-person"><image src="../event/assets/pg04s-person.svg" mode="aspectFit"/></view></view>
+    </view>
+    <view class="share-background71-main">
+      <view class="share-background71-content">
+        <view class="share-background71-hero">
+          <image class="share-background71-hero-photo" src="{{display.cover === '/assets/stitch/caper_home_badminton.jpg' ? './assets/sheet69-badminton.jpg' : display.cover}}" mode="aspectFill" aria-label="原稿活动类型示意图"/>
+          <view class="share-background71-hero-scrim"></view>
+          <view class="share-background71-hero-head"><view class="share-background71-hero-title"><text>{{display.title}}</text><text wx:if="{{display.cover === '/assets/stitch/caper_home_badminton.jpg'}}" class="share-background71-sport">🏸</text></view><text class="share-background71-status-badge {{event.status === 'RECRUITING' || event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS' ? 'share-background71-status-active' : ''}}">{{display.status}}</text></view>
+          <view class="share-background71-hero-bottom"><view class="share-background71-facts"><view><image src="../event/assets/w69-calendar_today-w400-f0-ffffff-a80.svg" mode="aspectFit"/><text>{{display.date}} – {{display.end}}</text></view><view><image src="../event/assets/w69-location_on-w400-f0-ffffff-a80.svg" mode="aspectFit"/><text>{{event.payload.city || '城市待确认'}}</text></view></view><view class="share-background71-sticker"><text>Play More</text><text>Meet Cool People</text></view></view>
+          <text class="share-background71-photo-credit">原稿场景示意图</text>
+        </view>
+        <view wx:if="{{event.stats}}" class="share-background71-stats"><view><text>{{display.confirmed !== null ? display.confirmed : '—'}}</text><text>已确认</text></view><view><text>{{event.stats.reserved >= 0 ? event.stats.reserved : '—'}}</text><text>预留名额</text></view><view><text>{{event.stats.waitlisted >= 0 ? event.stats.waitlisted : '—'}}</text><text>候补中</text></view><view><text>{{event.stats.requested >= 0 ? event.stats.requested : '—'}}</text><text>待审核</text></view></view>
+        <view class="share-background71-members"><view class="share-background71-members-head"><view><text>报名成员</text><text wx:if="{{display.confirmed !== null}}">({{display.confirmed}})</text></view><view class="share-background71-members-more"><text>成员详情</text><image src="../event/assets/w69-chevron_right-w400-f0-424655.svg" mode="aspectFit"/></view></view><view class="share-background71-member-summary"><view class="share-background71-anonymous"><image src="../event/assets/pg04s-person.svg" mode="aspectFit"/></view><text>当前分享快照未加载成员名单；请返回工作台查看。</text></view></view>
+        <view class="share-background71-helper"><view class="share-background71-helper-icon"><image src="../event/assets/w69-lightbulb-w400-f1-ffffff.svg" mode="aspectFit"/></view><view class="share-background71-helper-main"><view class="share-background71-helper-title"><text>AI 组局助手</text><view></view></view><text class="share-background71-helper-copy">此背景只展示已授权的活动快照；提醒与成局操作请返回工作台核对。</text></view><image class="share-background71-helper-arrow" src="../event/assets/w69-chevron_right-w400-f0-424655.svg" mode="aspectFit"/></view>
+        <view wx:if="{{event.stats && display.minimum !== null}}" class="share-background71-conditions"><view class="share-background71-conditions-head"><text>成局条件</text><view class="share-background71-condition-badge {{display.confirmed !== null && display.confirmed >= display.minimum && event.payload.venueStatus === 'HOST_CONFIRMED' ? '' : 'share-background71-condition-pending'}}"><text>{{display.confirmed !== null && display.confirmed >= display.minimum && event.payload.venueStatus === 'HOST_CONFIRMED' ? '人数与场地声明已具备' : '仍需核对'}}</text><image wx:if="{{display.confirmed !== null && display.confirmed >= display.minimum && event.payload.venueStatus === 'HOST_CONFIRMED'}}" src="../event/assets/w69-check-w400-f0-34c759.svg" mode="aspectFit"/></view></view><view class="share-background71-condition-rows"><view><view><image wx:if="{{display.confirmed !== null && display.confirmed >= display.minimum}}" src="../event/assets/w69-check_circle-w400-f1-34c759.svg" mode="aspectFit"/><text wx:else class="share-background71-condition-open">○</text><text>至少 {{display.minimum}} 人确认</text></view><text>当前 {{display.confirmed !== null ? display.confirmed : '待核对'}} / {{display.minimum}}</text></view><view><view><image wx:if="{{event.payload.venueStatus === 'HOST_CONFIRMED'}}" src="../event/assets/w69-check_circle-w400-f1-34c759.svg" mode="aspectFit"/><text wx:else class="share-background71-condition-open">○</text><text>场地由主办方核实</text></view><text>{{event.payload.venueStatus === 'HOST_CONFIRMED' ? '已声明核实' : '尚未声明核实'}}</text></view></view><text class="share-background71-condition-note">成局仍需人工确认；未显示未经核实的开始倒计时或场馆锁位。</text></view>
+        <view class="share-background71-actions"><view><image src="../event/assets/w69-ios_share-w400-f0-1d64f2.svg" mode="aspectFit"/><text>分享活动</text></view><view><image src="../event/assets/w69-send-w400-f0-004cc8.svg" mode="aspectFit"/><text>发送公告</text></view><view><image src="../event/assets/w69-stop_circle-w400-f0-ff2d55.svg" mode="aspectFit"/><text>活动结项</text></view></view>
+        <view class="share-background71-footer"><text>“ 好的活动，让普通的日子发光。 ”</text><text>SAME PEOPLE. BRIGHTER DAYS.</text></view>
+      </view>
+    </view>
+  </view>
+  <!-- Wave71 PG06-S readonly dashboard background END -->
+
   <!-- Wave69 PG06-S source sheet BEGIN -->
   <view wx:if="{{shareSheetOpen && canShare}}" class="sheet-layer sheet-reference69"><view class="sheet-mask" bindtap="closeShareSheet"></view><view class="sheet">
     <view class="sheet-handle"></view>

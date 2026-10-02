@@ -1,0 +1,279 @@
+{
+  "sourceWOFF2": "docs/design-sources/caper-activity-wave69/original-last-material-full.woff2",
+  "sourceWOFF2SHA256": "77f9711f3f896a1d7a34ab95cffc45cfb17d84c223f197c1b90faa0d043006e9",
+  "decodedTTF": "/private/tmp/caper-wave69-event/sources/material-up-decoded.ttf",
+  "decodedTTFSHA256": "cf46fa438e9ce2265958fdea4498c31ae5b7b39cb172ebff4f6aedb5aedcbc90",
+  "version": "2.972 / v374",
+  "fontTools": "4.60.2 / SVGPathPen + exact Y inversion / no simplification or rounding",
+  "license": "Apache-2.0; original retained docs/design-sources/caper-activity-wave69",
+  "exports": [
+    {
+      "key": "back",
+      "asset": "miniprogram/pages/messages/assets/wave69-back.svg",
+      "symbol": "arrow_back_ios_new",
+      "ligatureGlyph": "arrow_back_ios_new",
+      "renderedGlyph": "arrow_back_ios_new",
+      "activeRclt": [],
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "cssPx": 24,
+      "color": "#1a1b1f",
+      "viewBox": "0 -960 960 960",
+      "pathData": "M640 -80 240 -480 640 -880 711 -809 382 -480 711 -151Z",
+      "reused": true,
+      "bytes": 176,
+      "sha256": "a7c95a2ef8b451189ba7e0d0a834542c257a97375d36c6dca15daa6d86b2ad6b"
+    },
+    {
+      "key": "more",
+      "asset": "miniprogram/pages/messages/assets/wave69-more.svg",
+      "symbol": "more_horiz",
+      "ligatureGlyph": "more_horiz",
+      "renderedGlyph": "more_horiz",
+      "activeRclt": [],
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "cssPx": 22,
+      "color": "#1a1b1f",
+      "viewBox": "0 -960 960 960",
+      "pathData": "M240 -400Q207 -400 183.5 -423.5Q160 -447 160 -480Q160 -513 183.5 -536.5Q207 -560 240 -560Q273 -560 296.5 -536.5Q320 -513 320 -480Q320 -447 296.5 -423.5Q273 -400 240 -400ZM480 -400Q447 -400 423.5 -423.5Q400 -447 400 -480Q400 -513 423.5 -536.5Q447 -560 480 -560Q513 -560 536.5 -536.5Q560 -513 560 -480Q560 -447 536.5 -423.5Q513 -400 480 -400ZM720 -400Q687 -400 663.5 -423.5Q640 -447 640 -480Q640 -513 663.5 -536.5Q687 -560 720 -560Q753 -560 776.5 -536.5Q800 -513 800 -480Q800 -447 776.5 -423.5Q753 -400 720 -400Z",
+      "reused": true,
+      "bytes": 632,
+      "sha256": "5daf6d8ba0b8a1e4537b3a7d4b6ebef020aacbc6f3eca04cc75b376677e46768"
+    },
+    {
+      "key": "person",
+      "asset": "miniprogram/pages/messages/assets/wave69-person-white.svg",
+      "symbol": "person",
+      "ligatureGlyph": "person",
+      "renderedGlyph": "person",
+      "activeRclt": [],
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "cssPx": 18,
+      "color": "#ffffff",
+      "viewBox": "0 -960 960 960",
+      "pathData": "M480.0 -480.0Q414 -480 367.0 -527.0Q320 -574 320.0 -640.0Q320 -706 367.0 -753.0Q414 -800 480.0 -800.0Q546 -800 593.0 -753.0Q640 -706 640.0 -640.0Q640 -574 593.0 -527.0Q546 -480 480.0 -480.0ZM160 -160V-272Q160 -306 177.5 -334.5Q195 -363 224 -378Q286 -409 350.0 -424.5Q414 -440 480 -440Q546 -440 610.0 -424.5Q674 -409 736 -378Q765 -363 782.5 -334.5Q800 -306 800 -272V-160ZM240 -240H720V-272Q720 -283 714.5 -292.0Q709 -301 700 -306Q646 -333 591.0 -346.5Q536 -360 480 -360Q424 -360 369.0 -346.5Q314 -333 260 -306Q251 -301 245.5 -292.0Q240 -283 240 -272ZM480.0 -560.0Q513 -560 536.5 -583.5Q560 -607 560.0 -640.0Q560 -673 536.5 -696.5Q513 -720 480.0 -720.0Q447 -720 423.5 -696.5Q400 -673 400.0 -640.0Q400 -607 423.5 -583.5Q447 -560 480.0 -560.0ZM480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0ZM480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Z",
+      "reused": true,
+      "bytes": 1221,
+      "sha256": "eb9f584cd54abceb581a241bba6492adc6781bccd5dff96f7b48d63fcec34488"
+    },
+    {
+      "key": "alarm",
+      "asset": "miniprogram/pages/messages/assets/wave71-compact-alarm.svg",
+      "symbol": "alarm",
+      "ligatureGlyph": "alarm",
+      "renderedGlyph": "alarm.fill",
+      "activeRclt": [
+        {
+          "script": "latn",
+          "feature": "rclt",
+          "lookup": 1,
+          "from": "alarm",
+          "to": "alarm.fill"
+        }
+      ],
+      "axes": {
+        "wght": 400,
+        "FILL": 1,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "cssPx": 20,
+      "color": "#1d64f2",
+      "viewBox": "0 -960 960 960",
+      "pathData": "M120 -440Q120 -515 148.5 -580.5Q177 -646 225.5 -694.5Q274 -743 339.5 -771.5Q405 -800 480.0 -800.0Q555 -800 620.5 -771.5Q686 -743 734.5 -694.5Q783 -646 811.5 -580.5Q840 -515 840 -440Q840 -365 811.5 -299.5Q783 -234 734.5 -185.5Q686 -137 620.5 -108.5Q555 -80 480.0 -80.0Q405 -80 339.5 -108.5Q274 -137 225.5 -185.5Q177 -234 148.5 -299.5Q120 -365 120 -440ZM592 -272 648 -328 520 -456V-640H440V-424ZM224 -866 280 -810 110 -640 54 -696ZM736 -866 906 -696 850 -640 680 -810Z",
+      "reused": false,
+      "bytes": 565,
+      "sha256": "9e24f4e43a66ee1f14971603d57423f4cb864e1f633dc3ba4056191f9fcd798c"
+    },
+    {
+      "key": "ticket",
+      "asset": "miniprogram/pages/messages/assets/wave71-compact-ticket.svg",
+      "symbol": "confirmation_number",
+      "ligatureGlyph": "confirmation_number",
+      "renderedGlyph": "confirmation_number",
+      "activeRclt": [],
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "cssPx": 18,
+      "color": "#ffffff",
+      "viewBox": "0 -960 960 960",
+      "pathData": "M480 -280Q497 -280 508.5 -291.5Q520 -303 520 -320Q520 -337 508.5 -348.5Q497 -360 480 -360Q463 -360 451.5 -348.5Q440 -337 440 -320Q440 -303 451.5 -291.5Q463 -280 480 -280ZM480 -440Q497 -440 508.5 -451.5Q520 -463 520 -480Q520 -497 508.5 -508.5Q497 -520 480 -520Q463 -520 451.5 -508.5Q440 -497 440 -480Q440 -463 451.5 -451.5Q463 -440 480 -440ZM480 -600Q497 -600 508.5 -611.5Q520 -623 520 -640Q520 -657 508.5 -668.5Q497 -680 480 -680Q463 -680 451.5 -668.5Q440 -657 440 -640Q440 -623 451.5 -611.5Q463 -600 480 -600ZM800 -160H160Q127 -160 103.5 -183.5Q80 -207 80 -240V-400Q113 -400 136.5 -423.5Q160 -447 160 -480Q160 -513 136.5 -536.5Q113 -560 80 -560V-720Q80 -753 103.5 -776.5Q127 -800 160 -800H800Q833 -800 856.5 -776.5Q880 -753 880 -720V-560Q847 -560 823.5 -536.5Q800 -513 800 -480Q800 -447 823.5 -423.5Q847 -400 880 -400V-240Q880 -207 856.5 -183.5Q833 -160 800 -160ZM800 -240Q800 -240 800.0 -240.0Q800 -240 800 -240V-342Q763 -364 741.5 -400.5Q720 -437 720 -480Q720 -523 741.5 -559.5Q763 -596 800 -618V-720Q800 -720 800.0 -720.0Q800 -720 800 -720H160Q160 -720 160.0 -720.0Q160 -720 160 -720V-618Q197 -596 218.5 -559.5Q240 -523 240 -480Q240 -437 218.5 -400.5Q197 -364 160 -342V-240Q160 -240 160.0 -240.0Q160 -240 160 -240ZM480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Z",
+      "reused": false,
+      "bytes": 1647,
+      "sha256": "db363fdd5dfcebe2d62aa6a4417823691480e6095893ce5332ecc812ac6b02a0"
+    },
+    {
+      "key": "near-me",
+      "asset": "miniprogram/pages/messages/assets/wave71-compact-near-me.svg",
+      "symbol": "near_me",
+      "ligatureGlyph": "near_me",
+      "renderedGlyph": "near_me",
+      "activeRclt": [],
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "cssPx": 18,
+      "color": "#1d64f2",
+      "viewBox": "0 -960 960 960",
+      "pathData": "M516 -120 402 -402 120 -516V-572L840 -840L572 -120ZM542 -268 704 -704 268 -542 464 -464ZM464 -464Z",
+      "reused": false,
+      "bytes": 197,
+      "sha256": "2e9617e3f92cd71cfaa5dafe923ebe4fc44ba1f5ac1223938b1e5dc90582d9a9"
+    },
+    {
+      "key": "bolt",
+      "asset": "miniprogram/pages/messages/assets/wave71-compact-bolt.svg",
+      "symbol": "bolt",
+      "ligatureGlyph": "bolt",
+      "renderedGlyph": "bolt.fill",
+      "activeRclt": [
+        {
+          "script": "latn",
+          "feature": "rclt",
+          "lookup": 1,
+          "from": "bolt",
+          "to": "bolt.fill"
+        }
+      ],
+      "axes": {
+        "wght": 400,
+        "FILL": 1,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "cssPx": 20,
+      "color": "#ff2d55",
+      "viewBox": "0 -960 960 960",
+      "pathData": "M320 -80 360 -360H160L520 -880H600L560 -560H800L400 -80Z",
+      "reused": false,
+      "bytes": 155,
+      "sha256": "b2818f18f50f2cf8225d2bfd26b14cfbf8db56c71928cb3fe8923a97556bab81"
+    },
+    {
+      "key": "update",
+      "asset": "miniprogram/pages/messages/assets/wave71-compact-update.svg",
+      "symbol": "fmd_bad",
+      "ligatureGlyph": "fmd_bad",
+      "renderedGlyph": "fmd_bad.fill",
+      "activeRclt": [
+        {
+          "script": "latn",
+          "feature": "rclt",
+          "lookup": 1,
+          "from": "fmd_bad",
+          "to": "fmd_bad.fill"
+        }
+      ],
+      "axes": {
+        "wght": 400,
+        "FILL": 1,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "cssPx": 20,
+      "color": "#647700",
+      "viewBox": "0 -960 960 960",
+      "pathData": "M440 -520H520V-720H440ZM480 -360Q497 -360 508.5 -371.5Q520 -383 520 -400Q520 -417 508.5 -428.5Q497 -440 480 -440Q463 -440 451.5 -428.5Q440 -417 440 -400Q440 -383 451.5 -371.5Q463 -360 480 -360ZM480 -80Q319 -217 239.5 -334.5Q160 -452 160 -552Q160 -702 256.5 -791.0Q353 -880 480 -880Q607 -880 703.5 -791.0Q800 -702 800 -552Q800 -452 720.5 -334.5Q641 -217 480 -80Z",
+      "reused": false,
+      "bytes": 460,
+      "sha256": "a60164b7aee2a3c595a10aa523b250feec00fd4b76b12a18ae637aec17abdb00"
+    },
+    {
+      "key": "location",
+      "asset": "miniprogram/pages/messages/assets/wave71-compact-location.svg",
+      "symbol": "location_on",
+      "ligatureGlyph": "place",
+      "renderedGlyph": "place",
+      "activeRclt": [],
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "cssPx": 14,
+      "color": "#4d5d00",
+      "viewBox": "0 -960 960 960",
+      "pathData": "M480.0 -480.0Q513 -480 536.5 -503.5Q560 -527 560.0 -560.0Q560 -593 536.5 -616.5Q513 -640 480.0 -640.0Q447 -640 423.5 -616.5Q400 -593 400.0 -560.0Q400 -527 423.5 -503.5Q447 -480 480.0 -480.0ZM480 -186Q602 -298 661.0 -389.5Q720 -481 720 -552Q720 -661 650.5 -730.5Q581 -800 480.0 -800.0Q379 -800 309.5 -730.5Q240 -661 240 -552Q240 -481 299.0 -389.5Q358 -298 480 -186ZM480 -80Q319 -217 239.5 -334.5Q160 -452 160 -552Q160 -702 256.5 -791.0Q353 -880 480 -880Q607 -880 703.5 -791.0Q800 -702 800 -552Q800 -452 720.5 -334.5Q641 -217 480 -80ZM480 -560Q480 -560 480.0 -560.0Q480 -560 480 -560Q480 -560 480.0 -560.0Q480 -560 480.0 -560.0Q480 -560 480.0 -560.0Q480 -560 480 -560Q480 -560 480.0 -560.0Q480 -560 480 -560Z",
+      "reused": false,
+      "bytes": 805,
+      "sha256": "d273092201cb391308453bbbf1844de7f308fd8061bbe62b70e986ec481a5558"
+    },
+    {
+      "key": "confirmed",
+      "asset": "miniprogram/pages/messages/assets/wave71-compact-confirmed.svg",
+      "symbol": "check_circle",
+      "ligatureGlyph": "check_circle",
+      "renderedGlyph": "check_circle.fill",
+      "activeRclt": [
+        {
+          "script": "latn",
+          "feature": "rclt",
+          "lookup": 1,
+          "from": "check_circle",
+          "to": "check_circle.fill"
+        }
+      ],
+      "axes": {
+        "wght": 400,
+        "FILL": 1,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "cssPx": 20,
+      "color": "#34c759",
+      "viewBox": "0 -960 960 960",
+      "pathData": "M424 -296 706 -578 650 -634 424 -408 310 -522 254 -466ZM480 -80Q397 -80 324.0 -111.5Q251 -143 197.0 -197.0Q143 -251 111.5 -324.0Q80 -397 80 -480Q80 -563 111.5 -636.0Q143 -709 197.0 -763.0Q251 -817 324.0 -848.5Q397 -880 480 -880Q563 -880 636.0 -848.5Q709 -817 763.0 -763.0Q817 -709 848.5 -636.0Q880 -563 880 -480Q880 -397 848.5 -324.0Q817 -251 763.0 -197.0Q709 -143 636.0 -111.5Q563 -80 480 -80Z",
+      "reused": false,
+      "bytes": 493,
+      "sha256": "6c1cf4026c3c5a55cfd3961b6b6f64904e2a956a815db494b926bd7001ed500e"
+    },
+    {
+      "key": "chevron",
+      "asset": "miniprogram/pages/messages/assets/wave71-compact-chevron.svg",
+      "symbol": "chevron_right",
+      "ligatureGlyph": "chevron_right",
+      "renderedGlyph": "chevron_right",
+      "activeRclt": [],
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "cssPx": 16,
+      "color": "#737687",
+      "viewBox": "0 -960 960 960",
+      "pathData": "M504 -480 320 -664 376 -720 616 -480 376 -240 320 -296Z",
+      "reused": false,
+      "bytes": 154,
+      "sha256": "0c30c3621ee14d7d3ab4307fae3959327b88cf8b2c2a7d540b674580a88ce44d"
+    }
+  ],
+  "unusedSourceSlot": {
+    "symbol": "account_balance_wallet",
+    "reason": "No payment notification kind in actual R1 present()/API. No fabricated payment record or unused runtime icon."
+  },
+  "reusedLicense": "docs/licenses/material-symbols-Apache-2.0.txt"
+}

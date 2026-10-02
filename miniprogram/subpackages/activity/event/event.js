@@ -253,9 +253,28 @@ function actionPathMatchesEvent(page, path, payload, eventId) {
   }
   catch (_) { return false; }
 }
+// Wave71 host monitor read-only projection and current-owner gate.
+function canViewHostMonitor(page) {
+  return page.data.loadState === 'READY' && !page.data.joinConfirmation && currentHostEvent(page);
+}
+function hostMonitorMetrics(event) {
+  const stats = event?.stats;
+  const min = event?.payload?.minParticipants;
+  const max = event?.payload?.maxParticipants;
+  const count = value => Number.isSafeInteger(value) && value >= 0;
+  if (!stats || !['confirmed', 'reserved', 'requested', 'waitlisted'].every(key => count(stats[key])) ||
+    !Number.isSafeInteger(min) || min < 1 || !Number.isSafeInteger(max) || max < min) return null;
+  const occupancyPercent = Math.round(stats.confirmed / max * 100);
+  return { confirmed: stats.confirmed, reserved: stats.reserved, requested: stats.requested,
+    waitlisted: stats.waitlisted, min, max, occupancyPercent,
+    progressPercent: Math.min(100, occupancyPercent), minimumPercent: Math.round(stats.confirmed / min * 100),
+    missing: Math.max(0, min - stats.confirmed), surplus: Math.max(0, stats.confirmed - min),
+    minimumReached: stats.confirmed >= min };
+}
 function sectionAvailable(section, isHost, canApproveRegistration, canManageAnnouncements, canManageCheckins) {
   return ['detailsSection', 'registrationSection', 'contentSection', 'checkinSection', 'expenseSection'].includes(section) ||
     (section === 'hostSection' && isHost) ||
+    (section === 'hostMonitorSection' && isHost) ||
     (section === 'cohostApprovalSection' && !isHost && canApproveRegistration) ||
     (section === 'cohostContentSection' && !isHost && canManageAnnouncements) ||
     (section === 'cohostCheckinSection' && !isHost && canManageCheckins);
@@ -267,12 +286,13 @@ const sectionHeadings = {
   checkinSection: ['签到与反馈', '见面 · 参与 · 留下回忆'],
   expenseSection: ['费用记录', 'AA 制，更轻松也更尽兴'],
   hostSection: ['主办方工作台', '报名、成局与现场管理'],
+  hostMonitorSection: ['只读实时看板', '主办方当前活动快照'],
   cohostApprovalSection: ['协办报名审批', '仅限本场授权'],
   cohostContentSection: ['协办公告与回答', '仅限本场授权'],
   cohostCheckinSection: ['协办签到管理', '仅限本场授权']
 };
 Page({
-  data: { statusBarHeight: 24, headerPaddingRight: '112px', id: '', token: '', source: '', activeSection: 'detailsSection', sectionTitle: '活动详情', sectionSubtitle: '耍起 CAPER · 线下见面', checkInMode: 'participant', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '', canCopyPublishedInvite: false,
+  data: { hostMonitorMetrics: null, statusBarHeight: 24, headerPaddingRight: '112px', id: '', token: '', source: '', activeSection: 'detailsSection', sectionTitle: '活动详情', sectionSubtitle: '耍起 CAPER · 线下见面', checkInMode: 'participant', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '', canCopyPublishedInvite: false,
     joinConfirmation: null, joinSubmitting: false,
     canJoin: false, canExpressInterest: false, canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
     canGenerateCheckInToken: false, canCompleteEvent: false, checkInWindowNotice: '', checkInAvailability: '', completionAvailability: '',
@@ -318,6 +338,7 @@ Page({
       if (typeof wx.nextTick === 'function') await new Promise(resolve => wx.nextTick(resolve));
       if (this.data.currentUser && this.data.currentUser !== currentIdentity()) return;
       const sameEvent = Boolean(options.id && this.data.event?.id === options.id);
+      if (options.section === 'hostMonitorSection' && (!sameEvent || !canViewHostMonitor(this))) return;
       const hostCheckin = sameEvent && options.section === 'checkinSection' && options.entry === 'hostCheckin' &&
         this.data.isHost && this.data.canManageCheckins &&
         ['CONFIRMED', 'IN_PROGRESS'].includes(this.data.event.status);
@@ -357,7 +378,7 @@ Page({
       this.feedbackUncertainRequest = null;
       this.refreshId = (this.refreshId || 0) + 1;
       this.clearCheckInToken();
-      this.setData({ token: '', source: '', activeSection: 'detailsSection', sectionTitle: '活动详情', sectionSubtitle: '耍起 CAPER · 线下见面', checkInMode: 'participant', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '', canCopyPublishedInvite: false,
+      this.setData({ hostMonitorMetrics: null, token: '', source: '', activeSection: 'detailsSection', sectionTitle: '活动详情', sectionSubtitle: '耍起 CAPER · 线下见面', checkInMode: 'participant', event: null, display: null, registrationLabel: '未报名', inviteSummary: null, loadState: 'IDLE', isHost: false, successState: '', canCopyPublishedInvite: false,
         joinConfirmation: null, joinSubmitting: false,
         canJoin: false, canExpressInterest: false, canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
         canGenerateCheckInToken: false, canCompleteEvent: false, checkInWindowNotice: '', checkInAvailability: '', completionAvailability: '',
@@ -676,7 +697,7 @@ Page({
       this._inviteValidUntil = isHost && typeof inviteRemainingMs === 'number' &&
         Number.isFinite(inviteRemainingMs) && inviteRemainingMs > 0 &&
         Number.isFinite(requestedAt + inviteRemainingMs) ? requestedAt + inviteRemainingMs : 0;
-      this.setData({ id, event, display: eventDisplay(event), inviteSummary: null, loadState: 'READY', isHost, canJoin, canExpressInterest,
+      this.setData({ hostMonitorMetrics: isHost ? hostMonitorMetrics(event) : null, id, event, display: eventDisplay(event), inviteSummary: null, loadState: 'READY', isHost, canJoin, canExpressInterest,
         canUseCollaboration, canPostQuestion, canCheckIn: timedControls.canCheckIn,
         canGenerateCheckInToken: timedControls.canGenerateCheckInToken, canCompleteEvent: timedControls.canCompleteEvent,
         checkInWindowNotice: timedControls.checkInWindowNotice, checkInAvailability: timedControls.checkInAvailability,
@@ -700,12 +721,14 @@ Page({
         canRequestManualCheckIn, currentUser: actor, message: '' });
       this.updateTimedControls();
       this.reconcileSuccessState();
+      if (this.data.activeSection === 'hostMonitorSection' && !canViewHostMonitor(this))
+        this.scrollToSection('detailsSection');
       return true;
     } catch (error) {
       if (refreshId !== this.refreshId || actor !== currentIdentity()) return false;
       this._inviteValidUntil = 0;
       const needsLogin = error.code === 'UNAUTHENTICATED' && summary && !config.developmentUser;
-      this.setData({ event: null, display: null, registrationLabel: '未报名', inviteSummary: needsLogin ? summary : null,
+      this.setData({ hostMonitorMetrics: null, event: null, display: null, registrationLabel: '未报名', inviteSummary: needsLogin ? summary : null,
         loadState: needsLogin ? 'LOGIN_REQUIRED' : 'ERROR', canCopyPublishedInvite: false, canJoin: false, canExpressInterest: false,
         canUseCollaboration: false, canPostQuestion: false, canCheckIn: false,
         canGenerateCheckInToken: false, canCompleteEvent: false, checkInWindowNotice: '', checkInAvailability: '', completionAvailability: '',
@@ -735,12 +758,15 @@ Page({
   goBack() {
     if (this.data.joinConfirmation) return this.cancelJoin();
     if (this.data.successState) return this.dismissSuccess();
+    if (this.data.activeSection === 'hostMonitorSection')
+      return this.scrollToSection(canViewHostMonitor(this) ? 'hostSection' : 'detailsSection');
     if (this.data.activeSection !== 'detailsSection') return this.scrollToSection('detailsSection');
     if (typeof wx.navigateBack !== 'function') return wx.switchTab({ url: '/pages/index/index' });
     wx.navigateBack({ delta: 1, fail: () => wx.switchTab({ url: '/pages/index/index' }) });
   },
   jumpToSection(event) {
     const id = event.currentTarget.dataset.section;
+    if (id === 'hostMonitorSection' && !canViewHostMonitor(this)) return;
     if (sectionAvailable(id, this.data.isHost, this.data.canApproveRegistration,
       this.data.canManageAnnouncements, this.data.canManageCheckins)) {
       if (this.data.successState) this.dismissSuccess();
@@ -774,6 +800,10 @@ Page({
     this.scrollToSection('hostSection', '#hostAnnouncementAnchor');
   },
   scrollToSection(id, targetSelector) {
+    if (id === 'hostMonitorSection') {
+      if (!canViewHostMonitor(this)) return;
+      if (this.data.successState) this.dismissSuccess();
+    }
     if (!sectionHeadings[id]) return;
     if (id !== this.data.activeSection) {
       this.clearCheckInToken();
@@ -820,11 +850,16 @@ Page({
       this.data.event === event && this.data.event?.version === version &&
       this.data.currentUser === owner && this.data.loadState === loadState &&
       this.refreshId === refreshId;
-    wx.showActionSheet({ itemList: ['举报与求助', '复制活动信息给可信任的人'],
+    const canOpenMonitor = canViewHostMonitor(this);
+    const itemList = ['举报与求助', '复制活动信息给可信任的人'];
+    if (canOpenMonitor) itemList.push('只读实时看板');
+    wx.showActionSheet({ itemList,
       success: result => {
         if (!stillCurrent()) return;
         if (result.tapIndex === 0) this.goToReport();
         if (result.tapIndex === 1 && sameActionContext(this, context)) this.copySafetyDetails();
+        if (result.tapIndex === 2 && canOpenMonitor && canViewHostMonitor(this) && sameActionContext(this, context))
+          this.scrollToSection('hostMonitorSection');
       } });
   },
   goToReport() {

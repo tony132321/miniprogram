@@ -1,0 +1,67 @@
+[
+  {
+    "old": "return { items: shown, centerItems, filteredCount: centerItems.length,",
+    "new": "return { items: shown, centerItems, filteredCount: centerItems.length,\n    loadedActivityUnreadCount: items.filter(item => groupFor(item) === 'ACTIVITY' && item.status !== 'OPENED').length,",
+    "count": 1
+  },
+  {
+    "old": "priorityCount: 0, filteredCount: 0, total: 0",
+    "new": "priorityCount: 0, filteredCount: 0, loadedActivityUnreadCount: 0, total: 0",
+    "count": 2
+  },
+  {
+    "old": "filter: 'ALL', viewMode: 'INBOX', searchOpen",
+    "new": "filter: 'ALL', viewMode: 'INBOX', centerLayout: 'CARDS', searchOpen",
+    "count": 1
+  },
+  {
+    "old": "loadingMoreApprovals: false, viewMode: 'INBOX', filter: 'ALL',",
+    "new": "loadingMoreApprovals: false, viewMode: 'INBOX', centerLayout: 'CARDS', filter: 'ALL',",
+    "count": 1
+  },
+  {
+    "old": "if (focusIntent === 'approvals') this.setData({ viewMode: 'CENTER', filter: 'INTERACTION' });",
+    "new": "if (focusIntent === 'approvals') this.setData({ viewMode: 'CENTER', centerLayout: 'CARDS', filter: 'INTERACTION' });",
+    "count": 1
+  },
+  {
+    "old": "  onHide() {\n    this._venueCopyRequestId",
+    "new": "  onHide() {\n    this._centerOptionsRequestId = (this._centerOptionsRequestId || 0) + 1;\n    this._venueCopyRequestId",
+    "count": 1
+  },
+  {
+    "old": "  async openNotificationCenter() {\n    if (this.clearPrivateAfterIdentityChange()) return;",
+    "new": "  async openNotificationCenter() {\n    if (this.clearPrivateAfterIdentityChange()) return;\n    this._centerOptionsRequestId = (this._centerOptionsRequestId || 0) + 1;",
+    "count": 1
+  },
+  {
+    "old": "this.setData({ viewMode: 'CENTER', filter, searchOpen",
+    "new": "this.setData({ viewMode: 'CENTER', centerLayout: 'CARDS', filter, searchOpen",
+    "count": 1
+  },
+  {
+    "old": "  openPrivateChatPreview() {\n    if (this.clearPrivateAfterIdentityChange()) return;",
+    "new": "  openPrivateChatPreview() {\n    if (this.clearPrivateAfterIdentityChange()) return;\n    this._centerOptionsRequestId = (this._centerOptionsRequestId || 0) + 1;",
+    "count": 1
+  },
+  {
+    "old": "  backToInbox() {\n    if (this.clearPrivateAfterIdentityChange()) return;",
+    "new": "  backToInbox() {\n    if (this.clearPrivateAfterIdentityChange()) return;\n    this._centerOptionsRequestId = (this._centerOptionsRequestId || 0) + 1;",
+    "count": 1
+  },
+  {
+    "old": "priorityCount: 0, filteredCount: 0,\n      total:",
+    "new": "priorityCount: 0, filteredCount: 0, loadedActivityUnreadCount: 0,\n      total:",
+    "count": 1
+  },
+  {
+    "old": "viewMode: 'INBOX', filter: 'ALL', searchOpen: false",
+    "new": "viewMode: 'INBOX', centerLayout: 'CARDS', filter: 'ALL', searchOpen: false",
+    "count": 1
+  },
+  {
+    "old": "  openPrivateChatPreview() {",
+    "new": "  openCenterOptions() {\n    if (this.clearPrivateAfterIdentityChange()) return;\n    if (this.data.viewMode !== 'CENTER' || typeof wx.showActionSheet !== 'function') return;\n    const layout = this.data.centerLayout;\n    if (!['CARDS', 'COMPACT'].includes(layout)) return;\n    const identity = currentIdentity(this.data.developmentMode).key;\n    if ((this._identity || '') !== identity) return;\n    const generation = this._generation || 0;\n    const requestId = this._centerOptionsRequestId = (this._centerOptionsRequestId || 0) + 1;\n    wx.showActionSheet({\n      itemList: [layout === 'CARDS' ? '紧凑通知中心' : '卡片通知中心', '通知设置'],\n      success: result => {\n        if (identity !== currentIdentity(this.data.developmentMode).key) {\n          this.clearPrivateAfterIdentityChange();\n          return;\n        }\n        if (requestId !== this._centerOptionsRequestId || generation !== (this._generation || 0) ||\n          identity !== (this._identity || '') || this.data.viewMode !== 'CENTER' ||\n          layout !== this.data.centerLayout || ![0, 1].includes(result?.tapIndex)) return;\n        if (result.tapIndex === 1) return this.goNotificationSettings();\n        this.setData({ centerLayout: layout === 'CARDS' ? 'COMPACT' : 'CARDS' }, () => {\n          wx.pageScrollTo?.({ scrollTop: 0, duration: 0 });\n        });\n      }\n    });\n  },\n  openPrivateChatPreview() {",
+    "count": 1
+  }
+]

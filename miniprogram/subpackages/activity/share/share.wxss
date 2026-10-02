@@ -137,3 +137,79 @@ page { background: #faf8fe; color: #1a1b1f; }
 .sheet-reference69 .sheet-feedback { margin:0; padding:8px; border-radius:8px; font-size:11px; line-height:15px; }
 .sheet-reference69 .sheet-cancel { flex:none; width:100%; min-height:0; margin:4px 0 0!important; padding:14px 0; border-radius:12px; background:#efedf3; color:#1a1b1f; font-size:15px; line-height:20px!important; font-weight:700; }
 /* Wave69 PG06-S source sheet END */
+
+/* Wave71 PG06-S readonly source dashboard. All legacy _3 and Wave69 foreground rules above remain byte exact. */
+.share-background71 { position:fixed; inset:0; z-index:40; box-sizing:border-box; overflow:hidden; background:#faf8fe; color:#1a1b1f; pointer-events:none; font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif; font-size:15px; line-height:21px; font-weight:400; }
+.share-background71 image { display:block; flex:none; }
+.share-background71 .share-background71-status { position:absolute; top:0; left:0; right:0; z-index:2; background:#faf8fe; }
+.share-background71 .share-background71-header { position:absolute; left:0; right:0; z-index:2; display:flex; align-items:center; justify-content:space-between; box-sizing:border-box; height:56px; padding:0 16px; gap:4px; background:rgba(250,248,254,.8); backdrop-filter:blur(24px); box-shadow:0 1px 8px rgba(0,0,0,.04); }
+.share-background71 .share-background71-back,.share-background71 .share-background71-more { display:flex; align-items:center; justify-content:center; flex:none; width:44px; height:44px; border-radius:9999px; }
+.share-background71 .share-background71-back { margin-left:-8px; }
+.share-background71 .share-background71-back image,.share-background71 .share-background71-more image { width:22px; height:22px; }
+.share-background71 .share-background71-title { flex:1; min-width:0; text-align:center; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:17px; line-height:22px; letter-spacing:-.17px; font-weight:600; }
+.share-background71 .share-background71-header-actions { display:flex; align-items:center; flex:none; gap:4px; }
+.share-background71 .share-background71-person { display:flex; align-items:center; justify-content:center; flex:none; width:32px; height:32px; border-radius:9999px; background:#004cc8; box-shadow:0 1px 2px 0 rgba(0,0,0,.05); }
+.share-background71 .share-background71-person image { width:18px; height:18px; }
+.share-background71 .share-background71-main { position:relative; display:flex; flex-direction:column; width:100%; box-sizing:border-box; padding-top:56px; padding-bottom:env(safe-area-inset-bottom,0px); background:#faf8fe; }
+.share-background71 .share-background71-content { display:flex; flex-direction:column; gap:12px; padding:0 16px 32px; }
+.share-background71 .share-background71-hero { position:relative; display:flex; flex-direction:column; justify-content:space-between; box-sizing:border-box; overflow:hidden; width:100%; aspect-ratio:16/9; padding:16px; border-radius:16px; color:#fff; box-shadow:0 1px 2px 0 rgba(0,0,0,.05); }
+.share-background71 .share-background71-hero-photo,.share-background71 .share-background71-hero-scrim { position:absolute; inset:0; z-index:-10; width:100%; height:100%; }
+.share-background71 .share-background71-hero-scrim { background:linear-gradient(to top,rgba(0,0,0,.7),rgba(0,0,0,.3),rgba(0,0,0,.2)); }
+.share-background71 .share-background71-hero-head { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+.share-background71 .share-background71-hero-title { display:flex; align-items:center; flex:1; min-width:0; gap:6px; font-size:22px; line-height:28px; letter-spacing:-.55px; font-weight:700; filter:drop-shadow(0 1px 1px rgba(0,0,0,.05)); }
+.share-background71 .share-background71-hero-title>text:first-child { min-width:0; overflow-wrap:anywhere; }
+.share-background71 .share-background71-sport { flex:none; font-size:20px; line-height:28px; }
+.share-background71 .share-background71-status-badge { flex:none; max-width:112px; padding:4px 10px; border-radius:9999px; background:#e9e7ed; color:#424655; font-size:11px; line-height:14px; letter-spacing:.22px; font-weight:600; box-shadow:0 1px 2px 0 rgba(0,0,0,.05); }
+.share-background71 .share-background71-status-active { background:#34c759; color:#fff; }
+.share-background71 .share-background71-hero-bottom { display:flex; align-items:flex-end; justify-content:space-between; margin-top:auto; gap:8px; }
+.share-background71 .share-background71-facts { display:flex; flex-direction:column; flex:1; min-width:0; gap:4px; color:rgba(255,255,255,.95); }
+.share-background71 .share-background71-facts>view { display:flex; align-items:center; gap:6px; font-size:13px; line-height:16px; font-weight:600; }
+.share-background71 .share-background71-facts image { width:16px; height:16px; }
+.share-background71 .share-background71-facts text { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.share-background71 .share-background71-sticker { display:flex; flex-direction:column; flex:none; padding:4px 10px; border-radius:8px; background:rgba(255,255,255,.2); backdrop-filter:blur(12px); text-align:right; transform:rotate(-6deg); box-shadow:0 1px 2px 0 rgba(0,0,0,.05); font-size:11px; line-height:13.75px; letter-spacing:.275px; font-weight:800; font-style:italic; }
+.share-background71 .share-background71-photo-credit { position:absolute; right:3px; bottom:2px; padding:1px 3px; border-radius:3px; background:rgba(0,0,0,.45); color:#fff; font-size:8px; line-height:10px; }
+.share-background71 .share-background71-stats { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; }
+.share-background71 .share-background71-stats>view { display:flex; flex-direction:column; align-items:center; justify-content:center; box-sizing:border-box; padding:10px; border-radius:12px; background:#fff; text-align:center; box-shadow:0 1px 2px 0 rgba(0,0,0,.05); }
+.share-background71 .share-background71-stats>view>text:first-child { margin-bottom:4px; color:#34c759; font-size:22px; line-height:22px; letter-spacing:-.44px; font-weight:800; }
+.share-background71 .share-background71-stats>view:nth-child(2)>text:first-child { color:#1d64f2; }
+.share-background71 .share-background71-stats>view:nth-child(3)>text:first-child { color:#ff2d55; }
+.share-background71 .share-background71-stats>view:nth-child(4)>text:first-child { color:#737687; }
+.share-background71 .share-background71-stats>view>text:last-child { color:#424655; font-size:11px; line-height:14px; letter-spacing:.22px; font-weight:500; }
+.share-background71 .share-background71-members,.share-background71 .share-background71-conditions { display:flex; flex-direction:column; box-sizing:border-box; padding:16px; border-radius:16px; background:#fff; box-shadow:0 1px 2px 0 rgba(0,0,0,.05); }
+.share-background71 .share-background71-members { gap:12px; }
+.share-background71 .share-background71-members-head,.share-background71 .share-background71-conditions-head { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.share-background71 .share-background71-members-head>view:first-child { display:flex; align-items:center; min-width:0; gap:6px; }
+.share-background71 .share-background71-members-head>view:first-child>text:first-child,.share-background71 .share-background71-conditions-head>text { font-size:17px; line-height:22px; letter-spacing:-.17px; font-weight:700; }
+.share-background71 .share-background71-members-head>view:first-child>text:last-child { color:#424655; font-size:13px; line-height:16px; font-weight:600; }
+.share-background71 .share-background71-members-more { display:flex; align-items:center; flex:none; gap:2px; color:#424655; font-size:13px; line-height:16px; font-weight:600; }
+.share-background71 .share-background71-members-more image { width:16px; height:16px; }
+.share-background71 .share-background71-member-summary { display:flex; align-items:center; gap:10px; padding:4px 0; }
+.share-background71 .share-background71-anonymous { display:flex; align-items:center; justify-content:center; flex:none; width:44px; height:44px; border-radius:9999px; background:#004cc8; box-shadow:0 1px 2px 0 rgba(0,0,0,.05); }
+.share-background71 .share-background71-anonymous image { width:18px; height:18px; }
+.share-background71 .share-background71-member-summary>text { color:#424655; font-size:13px; line-height:18px; font-weight:400; }
+.share-background71 .share-background71-helper { position:relative; display:flex; align-items:flex-start; gap:12px; overflow:hidden; padding:16px; border-radius:16px; background:linear-gradient(to right,#ebf2fe,#f2f1fd,#fff); box-shadow:0 1px 2px 0 rgba(0,0,0,.05); }
+.share-background71 .share-background71-helper-icon { display:flex; align-items:center; justify-content:center; flex:none; width:36px; height:36px; margin-top:2px; border-radius:12px; background:#5856d6; box-shadow:0 1px 2px 0 rgba(0,0,0,.05); }
+.share-background71 .share-background71-helper-icon image { width:20px; height:20px; }
+.share-background71 .share-background71-helper-main { flex:1; min-width:0; }
+.share-background71 .share-background71-helper-title { display:flex; align-items:center; gap:6px; margin-bottom:4px; font-size:15px; line-height:20px; font-weight:700; }
+.share-background71 .share-background71-helper-title>view { width:6px; height:6px; border-radius:9999px; background:#5856d6; }
+.share-background71 .share-background71-helper-copy { color:#424655; font-size:13px; line-height:17.875px; font-weight:400; }
+.share-background71 .share-background71-helper-arrow { width:20px; height:20px; margin-top:8px; }
+.share-background71 .share-background71-condition-badge { display:flex; align-items:center; flex:none; gap:4px; max-width:175px; padding:2px 10px; border-radius:9999px; background:#ebf9f0; color:#34c759; font-size:11px; line-height:14px; letter-spacing:.22px; font-weight:700; }
+.share-background71 .share-background71-condition-badge image { width:14px; height:14px; }
+.share-background71 .share-background71-condition-pending { background:#efedf3; color:#424655; }
+.share-background71 .share-background71-condition-rows { display:flex; flex-direction:column; gap:12px; margin-top:14px; padding-top:4px; }
+.share-background71 .share-background71-condition-rows>view { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.share-background71 .share-background71-condition-rows>view>view { display:flex; align-items:center; gap:10px; flex:1; min-width:0; font-size:15px; line-height:21px; font-weight:500; }
+.share-background71 .share-background71-condition-rows image,.share-background71 .share-background71-condition-open { flex:none; width:18px; height:18px; }
+.share-background71 .share-background71-condition-open { color:#737687; font-size:18px; line-height:18px; text-align:center; }
+.share-background71 .share-background71-condition-rows>view>text { color:#424655; font-size:13px; line-height:16px; font-weight:600; text-align:right; }
+.share-background71 .share-background71-condition-rows>view:nth-child(2)>text { font-size:13px; line-height:18px; font-weight:400; }
+.share-background71 .share-background71-condition-note { margin-top:12px; color:#424655; font-size:13px; line-height:18px; font-weight:400; }
+.share-background71 .share-background71-actions { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; padding-top:4px; }
+.share-background71 .share-background71-actions>view { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; box-sizing:border-box; padding:12px 8px; border-radius:12px; background:#fff; color:#1a1b1f; font-size:13px; line-height:16px; font-weight:600; box-shadow:0 1px 2px 0 rgba(0,0,0,.05); }
+.share-background71 .share-background71-actions image { width:22px; height:22px; }
+.share-background71 .share-background71-actions>view:last-child { background:#fff0f3; color:#ff2d55; font-weight:700; }
+.share-background71 .share-background71-footer { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px 0 8px; color:#737687; }
+.share-background71 .share-background71-footer>text:first-child { font-size:13px; line-height:16px; font-weight:500; letter-spacing:.325px; }
+.share-background71 .share-background71-footer>text:last-child { margin-top:4px; font-size:10px; line-height:21px; font-weight:400; letter-spacing:1px; opacity:.7; }

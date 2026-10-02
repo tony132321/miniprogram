@@ -1,0 +1,145 @@
+{
+  "stage": "Independent root review of final N2 frozen products and source evidence; no tests rerun",
+  "manifest": {
+    "path": "/private/tmp/caper-wave71-compact-center-prep/frozen-owned-paths.json",
+    "bytes": 9574,
+    "sha256": "f8f81d0a9be15514edf41f4334c6d13b2ad2b3a09f9fda01641c2ec177560d74"
+  },
+  "checks": [
+    {
+      "pass": true,
+      "label": "Inverse edit present js"
+    },
+    {
+      "pass": true,
+      "label": "Inverse edit present js"
+    },
+    {
+      "pass": true,
+      "label": "Inverse edit present js"
+    },
+    {
+      "pass": true,
+      "label": "Inverse edit present js"
+    },
+    {
+      "pass": true,
+      "label": "Inverse edit present js"
+    },
+    {
+      "pass": true,
+      "label": "Inverse edit present js"
+    },
+    {
+      "pass": true,
+      "label": "Inverse edit present js"
+    },
+    {
+      "pass": true,
+      "label": "Inverse edit present js"
+    },
+    {
+      "pass": true,
+      "label": "Inverse edit present js"
+    },
+    {
+      "pass": true,
+      "label": "Inverse edit present js"
+    },
+    {
+      "pass": true,
+      "label": "Inverse edit present js"
+    },
+    {
+      "pass": true,
+      "label": "Inverse edit present js"
+    },
+    {
+      "pass": true,
+      "label": "Inverse edit present js"
+    },
+    {
+      "pass": true,
+      "label": "Independent whole inverse js"
+    },
+    {
+      "pass": true,
+      "label": "Final branch delta normalizes to preserved reviewed branch"
+    },
+    {
+      "pass": true,
+      "label": "Inverse edit present wxml"
+    },
+    {
+      "pass": true,
+      "label": "Inverse edit present wxml"
+    },
+    {
+      "pass": true,
+      "label": "Independent whole inverse wxml"
+    },
+    {
+      "pass": true,
+      "label": "Old CSS exact byte prefix"
+    },
+    {
+      "pass": true,
+      "label": "Menu guard this.data.viewMode !== 'CENTER'"
+    },
+    {
+      "pass": true,
+      "label": "Menu guard ['CARDS', 'COMPACT']"
+    },
+    {
+      "pass": true,
+      "label": "Menu guard currentIdentity(this.data.developmentMode).key"
+    },
+    {
+      "pass": true,
+      "label": "Menu guard requestId !== this._centerOptionsRequestId"
+    },
+    {
+      "pass": true,
+      "label": "Menu guard generation !== (this._generation || 0)"
+    },
+    {
+      "pass": true,
+      "label": "Menu guard layout !== this.data.centerLayout"
+    },
+    {
+      "pass": true,
+      "label": "Menu guard ![0, 1].includes(result?.tapIndex)"
+    },
+    {
+      "pass": true,
+      "label": "Menu guard this.goNotificationSettings()"
+    },
+    {
+      "pass": true,
+      "label": "Menu guard scrollTop: 0"
+    },
+    {
+      "pass": true,
+      "label": "Layout menu does not reload or write API"
+    },
+    {
+      "pass": true,
+      "label": "Loaded activity badge explicit scope"
+    },
+    {
+      "pass": true,
+      "label": "Loaded activity badge uses actual loaded records"
+    },
+    {
+      "pass": true,
+      "label": "No fabricated payment notice in compact branch"
+    }
+  ],
+  "manualReview": [
+    "Reviewed final whole JS diff, source original and owner source-cascade observation, 11 glyph consumer provenance / GSUB and exact JPEG HTTP record; final resource hashes all match",
+    "Current READY / anonymous / error / approvals / filters / paging / card actions reuse actual collection and original handlers",
+    "Menu identity, generation, mode, layout, request ID, hide and route roundtrip protection reviewed; seven newly added tests are meaningful and already passed by owner",
+    "Original INBOX / N1 / closed-chat inverse protection reviewed; exact source colors/px roles scoped and no global font edits",
+    "Native action sheet interaction, computed paint and same-ID routes remain root SDK / CUA boundary; source review is not pixel or production acceptance"
+  ]
+}

@@ -1,0 +1,805 @@
+{
+  "scope": "Wave71 original _5 current-host readonly monitor, one bounded source/assets/binding/inverse check; no old suites, SDK, CLI or real business mutation",
+  "baselineCommit": "81ab6a794f32367c10c329297128bb96b131d599",
+  "baselineImmutable": "/private/tmp/caper-ui70-immutable-illt8q2z",
+  "checks": [
+    {
+      "name": "JS inverse unique:         if (result.tapIndex === 1 && sameActionContext(this, cont",
+      "passed": true
+    },
+    {
+      "name": "JS inverse unique:     wx.showActionSheet({ itemList: ['举报与求助', '复制活动信息给可信任的人'],",
+      "passed": true
+    },
+    {
+      "name": "JS inverse unique:   scrollToSection(id, targetSelector) {",
+      "passed": true
+    },
+    {
+      "name": "JS inverse unique:     const id = event.currentTarget.dataset.section;",
+      "passed": true
+    },
+    {
+      "name": "JS inverse unique:     if (this.data.activeSection !== 'detailsSection') return this",
+      "passed": true
+    },
+    {
+      "name": "JS inverse unique:       this.setData({ event: null, display: null, registrationLabe",
+      "passed": true
+    },
+    {
+      "name": "JS inverse unique:       this.reconcileSuccessState();",
+      "passed": true
+    },
+    {
+      "name": "JS inverse unique:       this.setData({ id, event, display: eventDisplay(event),",
+      "passed": true
+    },
+    {
+      "name": "JS inverse unique:       this.setData({ token: '', source: '', activeSection: 'detai",
+      "passed": true
+    },
+    {
+      "name": "JS inverse unique:       const sameEvent = Boolean(options.id && this.data.event?.id",
+      "passed": true
+    },
+    {
+      "name": "JS inverse unique:   data: { statusBarHeight: 24,",
+      "passed": true
+    },
+    {
+      "name": "JS inverse unique:   hostSection: ['主办方工作台', '报名、成局与现场管理'],",
+      "passed": true
+    },
+    {
+      "name": "JS inverse unique:     (section === 'hostSection' && isHost) ||",
+      "passed": true
+    },
+    {
+      "name": "JS inverse unique: function sectionAvailable(section, isHost, canApproveRegistration",
+      "passed": true
+    },
+    {
+      "name": "Complete JS inverse equals immutable70 baseline",
+      "passed": true
+    },
+    {
+      "name": "WXML inverse unique:   <view id=\"hostSection\" class=\"event-section host-section",
+      "passed": true
+    },
+    {
+      "name": "WXML inverse unique: class=\"event-page {{loadState",
+      "passed": true
+    },
+    {
+      "name": "WXML inverse unique: <view wx:if=\"{{!(loadState === 'READY' && activeSection === 'deta",
+      "passed": true
+    },
+    {
+      "name": "Complete WXML inverse equals immutable70 baseline",
+      "passed": true
+    },
+    {
+      "name": "Exact 194503-byte old WXSS prefix unchanged",
+      "passed": true
+    },
+    {
+      "name": "Only declared monitor CSS appended",
+      "passed": true
+    },
+    {
+      "name": "event.json exact baseline",
+      "passed": true
+    },
+    {
+      "name": "Baseline event.js equals immutable70",
+      "passed": true
+    },
+    {
+      "name": "Baseline event.wxml equals immutable70",
+      "passed": true
+    },
+    {
+      "name": "Baseline event.wxss equals immutable70",
+      "passed": true
+    },
+    {
+      "name": "Baseline event.json equals immutable70",
+      "passed": true
+    },
+    {
+      "name": "All prior activity event assets preserved",
+      "passed": true,
+      "detail": {
+        "count": 108,
+        "changed": []
+      }
+    },
+    {
+      "name": "Complete existing more-menu stillCurrent guard retained",
+      "passed": true,
+      "detail": {
+        "bytes": 279,
+        "sha256": "d42e28e35f2b9a28390a86013b92ec7fb5fe3964512ebcdd068fb9a4659aa3b7"
+      }
+    },
+    {
+      "name": "Root QR require migration protected",
+      "passed": true
+    },
+    {
+      "name": "Root pgd-state-primary fix protected",
+      "passed": true
+    },
+    {
+      "name": "Root accepted resource paths unchanged",
+      "passed": true,
+      "detail": {
+        "./assets/pg09-expense-rooftop.jpg": 2,
+        "./assets/pg04s-badminton.jpg": 2,
+        "./assets/pg01-badminton-player.jpg": 2,
+        "../assets/itinerary-badminton.jpg": 5
+      }
+    },
+    {
+      "name": "New header and body have exact READY/no-success/no-join/current-host gate",
+      "passed": true
+    },
+    {
+      "name": "Readonly monitor body has no event, form, input, payment or mutation bindings",
+      "passed": true
+    },
+    {
+      "name": "Header only existing goBack/jumpToSection methods",
+      "passed": true,
+      "detail": [
+        "goBack",
+        "jumpToSection"
+      ]
+    },
+    {
+      "name": "Header existing registration navigation exact",
+      "passed": true
+    },
+    {
+      "name": "Actual server fields bound",
+      "passed": true
+    },
+    {
+      "name": "Unavailable counts not zeroed",
+      "passed": true
+    },
+    {
+      "name": "Reserve remains separate from actual waitlist",
+      "passed": true
+    },
+    {
+      "name": "Unsupported source facts visibly closed",
+      "passed": true
+    },
+    {
+      "name": "No invented source people/order/device/time/weather facts",
+      "passed": true
+    },
+    {
+      "name": "WXML normalized XML structure",
+      "passed": true
+    },
+    {
+      "name": "Exact original _5 HTML SHA",
+      "passed": true
+    },
+    {
+      "name": "Exact original _5 full PNG SHA",
+      "passed": true
+    },
+    {
+      "name": "Original 152683-byte illustrative map copied byte-exact",
+      "passed": true
+    },
+    {
+      "name": "No fake source portraits copied",
+      "passed": true
+    },
+    {
+      "name": "New assets only activity subpackage",
+      "passed": true
+    },
+    {
+      "name": "Original last Material import identified",
+      "passed": true
+    },
+    {
+      "name": "Official cached original full face SHA",
+      "passed": true
+    },
+    {
+      "name": "Original full decoded TTF SHA",
+      "passed": true
+    },
+    {
+      "name": "Original last face axes and defaults",
+      "passed": true,
+      "detail": {
+        "FILL": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "wght": [
+          100.0,
+          400.0,
+          700.0
+        ]
+      }
+    },
+    {
+      "name": "Exact active-GSUB Material arrow_back_ios_new (400, 0)",
+      "passed": true
+    },
+    {
+      "name": "Exact active-GSUB Material person (400, 0)",
+      "passed": true
+    },
+    {
+      "name": "Exact active-GSUB Material sensors (400, 0)",
+      "passed": true
+    },
+    {
+      "name": "Exact active-GSUB Material location_on (400, 0)",
+      "passed": true
+    },
+    {
+      "name": "Exact active-GSUB Material sports_tennis (400, 1)",
+      "passed": true
+    },
+    {
+      "name": "Exact active-GSUB Material verified (400, 1)",
+      "passed": true
+    },
+    {
+      "name": "Exact active-GSUB Material check (700, 0)",
+      "passed": true
+    },
+    {
+      "name": "Exact active-GSUB Material auto_awesome (400, 0)",
+      "passed": true
+    },
+    {
+      "name": "Exact active-GSUB Material cloud_done (400, 0)",
+      "passed": true
+    },
+    {
+      "name": "Exact active-GSUB Material schedule_send (400, 0)",
+      "passed": true
+    },
+    {
+      "name": "Exact active-GSUB Material group (400, 0)",
+      "passed": true
+    },
+    {
+      "name": "FILL1 actual substituted shapes retained",
+      "passed": true
+    },
+    {
+      "name": "Source three check spans actually 700",
+      "passed": true
+    },
+    {
+      "name": "Source header 56 native status/capsule fields",
+      "passed": true
+    },
+    {
+      "name": "Source side margin16/native back44/person32",
+      "passed": true
+    },
+    {
+      "name": "Source card12/radius12/shadow-sm",
+      "passed": true
+    },
+    {
+      "name": "Source ambient blur40/24",
+      "passed": true
+    },
+    {
+      "name": "Source 4 tiles/gap12/p8/r8",
+      "passed": true
+    },
+    {
+      "name": "Source headline20/26/700-.3",
+      "passed": true
+    },
+    {
+      "name": "Source hero22/28/700-.44",
+      "passed": true
+    },
+    {
+      "name": "Source 17/22/600-.17 explicit AI role",
+      "passed": true
+    },
+    {
+      "name": "Source status green specificity survives gray last-child",
+      "passed": true
+    },
+    {
+      "name": "Source conditions p10/check24/glyph16/rightML8",
+      "passed": true
+    },
+    {
+      "name": "Source no doubled condition spacing",
+      "passed": true
+    },
+    {
+      "name": "Source progress10/transition700",
+      "passed": true
+    },
+    {
+      "name": "Source pulse2s/spin9s",
+      "passed": true
+    },
+    {
+      "name": "Source body relaxed15/24.375",
+      "passed": true
+    },
+    {
+      "name": "Source host name/status700 vs member600",
+      "passed": true
+    },
+    {
+      "name": "Source member avatar40/map128",
+      "passed": true
+    },
+    {
+      "name": "Undefined source shadow-xs and py0.2 not invented",
+      "passed": true
+    },
+    {
+      "name": "Source ordinary fonts only, no new global weights",
+      "passed": true
+    },
+    {
+      "name": "Only new targeted6 groups reported successful",
+      "passed": true
+    }
+  ],
+  "passed": 82,
+  "failed": 0,
+  "JSInverse": {
+    "changes": 14,
+    "bytes": 104041,
+    "sha256": "97e9f505d58b4b10e4d74d0e360954a0bac4730e1ddbef3437efeba6ed17621e"
+  },
+  "WXMLInverse": {
+    "changes": 3,
+    "bytes": 160928,
+    "sha256": "69b231e3f4d506d2e3d46653bf9075e4ebaa69cdd06bcaf9b82b89d9c8fffa31"
+  },
+  "protectedCSSBytes": 194503,
+  "protectedCSSSHA256": "d26cb609e200446af02965b5840bf1fe0f01f21b66e8841da6289022e6881ce0",
+  "rootAcceptedMigrations": {
+    "./assets/pg09-expense-rooftop.jpg": 2,
+    "./assets/pg04s-badminton.jpg": 2,
+    "./assets/pg01-badminton-player.jpg": 2,
+    "../assets/itinerary-badminton.jpg": 5
+  },
+  "glyphProof": [
+    {
+      "name": "arrow_back_ios_new",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "ligatureGlyph": "arrow_back_ios_new",
+      "renderedGlyph": "arrow_back_ios_new",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "rawPathSHA256": "26d9d30a4a42359ed0b8387e966beacb950bc132a431f34b6ecc77a9a7bdde5f",
+      "runtime": {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-arrow_back_ios_new-w400-f0-1a1b1f.svg",
+        "bytes": 153,
+        "sha256": "ca7bb7d407e7dc334ff380d8b3b4d1623f916d8d6152d0a72dc40ab2840d532b"
+      }
+    },
+    {
+      "name": "person",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "ligatureGlyph": "person",
+      "renderedGlyph": "person",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "rawPathSHA256": "6a0949d798580274e04816b632e23f3eedae76057bb34e61efc7c1d229126468",
+      "runtime": {
+        "path": "miniprogram/subpackages/activity/event/assets/pg04s-person.svg",
+        "bytes": 1221,
+        "sha256": "dcd82b18c2b73881bc3e4abdf254f92647dfb16ae06b669f7dece7579f6eba73"
+      }
+    },
+    {
+      "name": "sensors",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "ligatureGlyph": "sensors",
+      "renderedGlyph": "sensors",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "rawPathSHA256": "f6c20b1604430e275a74c15a245f7d500568ae6fd2f3f671d80ebe29c9857ce0",
+      "runtime": {
+        "path": "miniprogram/subpackages/activity/event/assets/hm-sensors-w400-f0-004cc8.svg",
+        "bytes": 1020,
+        "sha256": "ff294d2194a6be292bcf5d8b998977e75f8e1455c891016b54695bd89c31d715"
+      }
+    },
+    {
+      "name": "location_on",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "ligatureGlyph": "place",
+      "renderedGlyph": "place",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "rawPathSHA256": "e71dff61f23ee1bceaf5ebc50a95fd1aa4c5a3c74618766def380ff9ad19a1aa",
+      "runtime": {
+        "path": "miniprogram/subpackages/activity/event/assets/hm-location_on-w400-f0-737687.svg",
+        "bytes": 805,
+        "sha256": "c3c1426c3af77d35192e680041b31dc8c25857d28c82af765e9b58c5ec71d0fc"
+      }
+    },
+    {
+      "name": "sports_tennis",
+      "axes": {
+        "wght": 400,
+        "FILL": 1,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "ligatureGlyph": "sports_tennis",
+      "renderedGlyph": "sports_tennis.fill",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rclt",
+            "lookups": [
+              1
+            ]
+          },
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": [
+          {
+            "feature": "rclt",
+            "lookup": 1,
+            "from": "sports_tennis",
+            "to": "sports_tennis.fill"
+          }
+        ]
+      },
+      "rawPathSHA256": "68c20b4abe14850d1a684ba6ea4f7ff6e07f6b408629227ca49e1ea13863e8fc",
+      "runtime": {
+        "path": "miniprogram/subpackages/activity/event/assets/hm-sports_tennis-w400-f1-004cc8.svg",
+        "bytes": 720,
+        "sha256": "06e91653964b56587bdc1c5ec4e73499028317914a46610f9f5a5f60958ebc77"
+      }
+    },
+    {
+      "name": "verified",
+      "axes": {
+        "wght": 400,
+        "FILL": 1,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "ligatureGlyph": "verified",
+      "renderedGlyph": "verified.fill",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rclt",
+            "lookups": [
+              1
+            ]
+          },
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": [
+          {
+            "feature": "rclt",
+            "lookup": 1,
+            "from": "verified",
+            "to": "verified.fill"
+          }
+        ]
+      },
+      "rawPathSHA256": "5a2abfa52c3801bc217943166794ccdd8158d6ee14c854a565417ac8373bfa7a",
+      "runtime": {
+        "path": "miniprogram/subpackages/activity/event/assets/pgd-verified-w400-f1-34c759.svg",
+        "bytes": 332,
+        "sha256": "69e7ed9e0491949eb2548794f24a7411f3f43b375b0f0ee264b9fb49e38ce9aa"
+      }
+    },
+    {
+      "name": "check",
+      "axes": {
+        "wght": 700,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "ligatureGlyph": "check",
+      "renderedGlyph": "check",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "rawPathSHA256": "01da02b198e739dd6f467f53a106d69ed2387eb79004f752797276e962192798",
+      "runtime": {
+        "path": "miniprogram/subpackages/activity/event/assets/hm-check-w700-f0-ffffff.svg",
+        "bytes": 154,
+        "sha256": "05d4bd3285fc41f0eb75e2a5f14c4e32345b9f8cf82059e8213e903217fce1b2"
+      }
+    },
+    {
+      "name": "auto_awesome",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "ligatureGlyph": "auto_awesome",
+      "renderedGlyph": "auto_awesome",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "rawPathSHA256": "d1fef45f829c97d69de59b6f25d86a6e56099c0d1598d1b2f2d1aa67b76276b7",
+      "runtime": {
+        "path": "miniprogram/subpackages/activity/event/assets/pg04s-auto_awesome.svg",
+        "bytes": 422,
+        "sha256": "ece7add2f6e03892adaff32371d513607126cf4e07a93be752ad0745704fbff0"
+      }
+    },
+    {
+      "name": "cloud_done",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "ligatureGlyph": "cloud_done",
+      "renderedGlyph": "cloud_done",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "rawPathSHA256": "e5bc1aed02ebfe750b24c4b98638e19004775c5f6e9ce41283146bf2644b6a79",
+      "runtime": {
+        "path": "miniprogram/subpackages/activity/event/assets/hm-cloud_done-w400-f0-34c759.svg",
+        "bytes": 925,
+        "sha256": "c0f6d39faff93f9601923ea2a155bd35401d5f5677367ddb7010bf81260e63c8"
+      }
+    },
+    {
+      "name": "schedule_send",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "ligatureGlyph": "schedule_send",
+      "renderedGlyph": "schedule_send",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "rawPathSHA256": "375e7c71f38428456872ca7baccb8de3c2040cd7813098309a60eba60f6513b5",
+      "runtime": {
+        "path": "miniprogram/subpackages/activity/event/assets/hm-schedule_send-w400-f0-004cc8.svg",
+        "bytes": 616,
+        "sha256": "f77b24b25e7c530b2cf0c6e794c474a0d1968c658d7148ba4fe45fa40fc3a816"
+      }
+    },
+    {
+      "name": "group",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "ligatureGlyph": "group",
+      "renderedGlyph": "group",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "rawPathSHA256": "0f2e4e9990e50eeeff0a20469ac1b204938663541566673aa1cd2d30b9096e87",
+      "runtime": {
+        "path": "miniprogram/subpackages/activity/event/assets/hm-group-w400-f0-004cc8.svg",
+        "bytes": 1588,
+        "sha256": "d3042e90529edaa0f1e1d164af385ff995ece20888945898ca1c51455318008f"
+      }
+    }
+  ],
+  "ownedPaths": [
+    {
+      "path": "miniprogram/subpackages/activity/event/event.js",
+      "bytes": 106348,
+      "sha256": "85db2c73f3b832944782f8913a1ee9cf3a2d4468b54b4ea709e108c76ab26634"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/event.wxml",
+      "bytes": 172013,
+      "sha256": "c23f5ee9f7b9d3238d6597fcf92ef18ff69bd9615e601d65261afeba3dc18680"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/event.wxss",
+      "bytes": 206812,
+      "sha256": "a62ec5123dcf1a4866023d83571a06968fae3377c8e374b19044ca874e2b26b8"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/hm-sensors-w400-f0-004cc8.svg",
+      "bytes": 1020,
+      "sha256": "ff294d2194a6be292bcf5d8b998977e75f8e1455c891016b54695bd89c31d715"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/hm-location_on-w400-f0-737687.svg",
+      "bytes": 805,
+      "sha256": "c3c1426c3af77d35192e680041b31dc8c25857d28c82af765e9b58c5ec71d0fc"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/hm-sports_tennis-w400-f1-004cc8.svg",
+      "bytes": 720,
+      "sha256": "06e91653964b56587bdc1c5ec4e73499028317914a46610f9f5a5f60958ebc77"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/hm-check-w700-f0-ffffff.svg",
+      "bytes": 154,
+      "sha256": "05d4bd3285fc41f0eb75e2a5f14c4e32345b9f8cf82059e8213e903217fce1b2"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/hm-cloud_done-w400-f0-34c759.svg",
+      "bytes": 925,
+      "sha256": "c0f6d39faff93f9601923ea2a155bd35401d5f5677367ddb7010bf81260e63c8"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/hm-schedule_send-w400-f0-004cc8.svg",
+      "bytes": 616,
+      "sha256": "f77b24b25e7c530b2cf0c6e794c474a0d1968c658d7148ba4fe45fa40fc3a816"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/hm-group-w400-f0-004cc8.svg",
+      "bytes": 1588,
+      "sha256": "d3042e90529edaa0f1e1d164af385ff995ece20888945898ca1c51455318008f"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/hm-map-illustrative.png",
+      "bytes": 152683,
+      "sha256": "8c4881b9d74ec892c8549613ab1426b0a11c54793cdb073ffd6540c2805d02f4"
+    },
+    {
+      "path": "test/miniprogram-event-host-monitor-navigation.test.ts",
+      "bytes": 10074,
+      "sha256": "79407909a461deb63c960544cd34e89ccfaace5a21b741829c78c5c5da87665d"
+    }
+  ],
+  "rawMiniProductNetBytes": 184212,
+  "newAssetsBytes": 158511,
+  "newTestResult": {
+    "chunk_id": "d90f0a",
+    "wall_time_seconds": 5.333e-06,
+    "exit_code": 0,
+    "original_token_count": 180,
+    "output": "✔ Wave71 host monitor permitted menu preserves the current event and returns to its workbench (3.057625ms)\n✔ Wave71 host monitor rejects nonhosts and incomplete current host contexts (4.109375ms)\n✔ Wave71 host monitor direct links validate the loaded event and actor (2.208208ms)\n✔ Wave71 host monitor discards stale callbacks for every existing context guard and revoked host role (4.538459ms)\n✔ Wave71 host monitor clears private projection after refresh or account role changes (2.016417ms)\n✔ Wave71 host monitor keeps old safety menu actions and normal workbench back behavior (0.9615ms)\nℹ tests 6\nℹ suites 0\nℹ pass 6\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 70.940209\n"
+  },
+  "testJSObservedSHA256": "85db2c73f3b832944782f8913a1ee9cf3a2d4468b54b4ea709e108c76ab26634",
+  "newTestFileSHA256": "79407909a461deb63c960544cd34e89ccfaace5a21b741829c78c5c5da87665d"
+}

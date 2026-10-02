@@ -1,0 +1,380 @@
+{
+  "sourceSHA256": "e2a2ce2fb2266283f7762dca23592c732eca385d88ce1772f1e22a41bec8b024",
+  "basis": "original complete HTML + existing CSS-only observation; all values CSS px with rem root16; no native rendering acceptance",
+  "colors": {
+    "tertiary-fixed-dim": "#b3d400",
+    "surface-container-highest": "#e3e2e7",
+    "primary-fixed": "#dbe1ff",
+    "on-error": "#ffffff",
+    "divider-subtle": "rgba(60, 60, 67, 0.08)",
+    "inverse-surface": "#2f3034",
+    "primary": "#004cc8",
+    "on-tertiary-container": "#e6ff7e",
+    "secondary": "#4c4aca",
+    "on-tertiary-fixed-variant": "#3f4c00",
+    "on-surface-variant": "#424655",
+    "surface-card": "#FFFFFF",
+    "background": "#faf8fe",
+    "party-violet-soft": "#F2F1FD",
+    "secondary-container": "#6664e4",
+    "status-active-green": "#34C759",
+    "surface": "#faf8fe",
+    "outline": "#737687",
+    "primary-container": "#1d64f2",
+    "primary-fixed-dim": "#b3c5ff",
+    "on-secondary": "#ffffff",
+    "on-primary-container": "#f1f2ff",
+    "surface-canvas": "#F5F6F8",
+    "surface-container": "#efedf3",
+    "surface-container-low": "#f4f3f8",
+    "electric-blue": "#1D64F2",
+    "surface-tint": "#0053d9",
+    "party-pink": "#FF2D55",
+    "status-active-green-soft": "#EBF9F0",
+    "on-primary-fixed": "#00174a",
+    "outline-variant": "#c3c6d8",
+    "on-error-container": "#93000a",
+    "border-glass": "rgba(255, 255, 255, 0.6)",
+    "surface-container-lowest": "#ffffff",
+    "inverse-primary": "#b3c5ff",
+    "on-secondary-fixed": "#0c006a",
+    "party-pink-soft": "#FFF0F3",
+    "tertiary": "#4d5d00",
+    "error-container": "#ffdad6",
+    "error": "#ba1a1a",
+    "tertiary-container": "#647700",
+    "surface-variant": "#e3e2e7",
+    "surface-container-high": "#e9e7ed",
+    "on-primary-fixed-variant": "#003ea6",
+    "party-violet": "#5856D6",
+    "on-primary": "#ffffff",
+    "on-background": "#1a1b1f",
+    "on-secondary-container": "#fffbff",
+    "vibrant-lime": "#D2F803",
+    "electric-blue-soft": "#EBF2FE",
+    "on-tertiary-fixed": "#181e00",
+    "surface-translucent": "rgba(255, 255, 255, 0.82)",
+    "secondary-fixed-dim": "#c2c1ff",
+    "tertiary-fixed": "#cdf200",
+    "secondary-fixed": "#e2dfff",
+    "on-tertiary": "#ffffff",
+    "on-secondary-fixed-variant": "#3631b4",
+    "on-surface": "#1a1b1f",
+    "vibrant-lime-tint": "#F3FEE7",
+    "inverse-on-surface": "#f1f0f6",
+    "surface-dim": "#dbd9df",
+    "surface-bright": "#faf8fe"
+  },
+  "roles": {
+    "body": {
+      "family": "Plus Jakarta Sans",
+      "size": 15,
+      "lineHeight": 21,
+      "weight": 400
+    },
+    "header": {
+      "height": 56,
+      "side": 16,
+      "backTouch": 44,
+      "backMarginLeft": -8,
+      "backGlyph": 24,
+      "title": {
+        "size": 17,
+        "lineHeight": 22,
+        "weight": 600,
+        "tracking": -0.17
+      },
+      "personCircle": 32,
+      "personGlyph": 18,
+      "background": "rgba(250,248,254,.8)",
+      "blur": 24,
+      "shadow": "0 1px 8px rgba(0,0,0,.04)",
+      "activeScale": 0.95
+    },
+    "main": {
+      "side": 16,
+      "bottom": 24,
+      "gap": 12,
+      "firstChildMarginTop": 0,
+      "mainDirectChildMarginTop": 0
+    },
+    "intro": {
+      "gap": 4,
+      "heading": {
+        "size": 20,
+        "lineHeight": 26,
+        "weight": 700,
+        "tracking": -0.3
+      },
+      "statusBadge": {
+        "padding": [
+          4,
+          10
+        ],
+        "gap": 6,
+        "dot": 8,
+        "size": 11,
+        "lineHeight": 14,
+        "weight": 700,
+        "tracking": -0.275
+      },
+      "subtitle": {
+        "size": 13,
+        "lineHeight": 18,
+        "weight": 400,
+        "gap": 6,
+        "glyph": 15
+      },
+      "marginTop": 8,
+      "marginExplanation": "mt-space-sm applies nested intro; main>:first-child reset applies outer wrapper, so it does not cancel this8px"
+    },
+    "hero": {
+      "padding": 12,
+      "radius": 12,
+      "shadow": "0 1px 2px 0 rgba(0,0,0,.05)",
+      "blueOrb": {
+        "size": 128,
+        "top": -40,
+        "right": -40,
+        "blur": 40,
+        "opacity": 0.1
+      },
+      "violetOrb": {
+        "size": 112,
+        "bottom": -32,
+        "left": -32,
+        "blur": 24,
+        "opacity": 0.1
+      },
+      "chips": {
+        "padding": [
+          2,
+          8
+        ],
+        "gap": 4,
+        "size": 11,
+        "lineHeight": 14,
+        "weight": 700,
+        "tracking": 0.22
+      },
+      "title": {
+        "size": 22,
+        "lineHeight": 28,
+        "weight": 700,
+        "tracking": -0.44
+      },
+      "venue": {
+        "size": 13,
+        "lineHeight": 18,
+        "weight": 400,
+        "gap": 4,
+        "glyph": 16,
+        "marginTop": 2
+      },
+      "sportCircle": 48,
+      "sportGlyph": 28,
+      "stats": {
+        "columns": 4,
+        "gap": 12,
+        "marginTop": 12,
+        "paddingTop": 8,
+        "tilePadding": 8,
+        "tileRadius": 8,
+        "number": {
+          "size": 20,
+          "lineHeight": 26,
+          "weight": 700,
+          "tracking": -0.3
+        }
+      },
+      "progress": {
+        "marginTop": 12,
+        "gap": 6,
+        "height": 10,
+        "label": {
+          "size": 13,
+          "lineHeight": 16,
+          "weight": 600
+        },
+        "sourceTransitionMs": 700
+      }
+    },
+    "condition": {
+      "padding": 12,
+      "radius": 12,
+      "gap": 8,
+      "heading": {
+        "size": 17,
+        "lineHeight": 22,
+        "weight": 600,
+        "tracking": -0.17
+      },
+      "headingGap": 6,
+      "glyph": 18,
+      "rowGap": 8,
+      "rowPadding": 10,
+      "rowRadius": 8,
+      "circle": 24,
+      "check": {
+        "size": 16,
+        "weight": 700
+      },
+      "textGap": 10,
+      "label": {
+        "size": 13,
+        "lineHeight": 16,
+        "weight": 600
+      },
+      "body": {
+        "size": 13,
+        "lineHeight": 18,
+        "weight": 400
+      },
+      "status": {
+        "size": 11,
+        "lineHeight": 14,
+        "weight": 700,
+        "marginLeft": 8
+      }
+    },
+    "ai": {
+      "padding": 12,
+      "radius": 12,
+      "headingGap": 8,
+      "headingBottom": 8,
+      "orb": 28,
+      "sparkle": 16,
+      "sourceSpinSeconds": 9,
+      "spinRepresentsCapability": false,
+      "body": {
+        "size": 15,
+        "lineHeight": 24.375,
+        "weight": 400
+      },
+      "footerGap": 12,
+      "footerTop": 12,
+      "footerPaddingTop": 8,
+      "footerGlyphs": 15,
+      "badgePadding": [
+        2,
+        6
+      ],
+      "badgeRadius": 4,
+      "badgeShadow": "none"
+    },
+    "roster": {
+      "padding": 12,
+      "radius": 12,
+      "gap": 8,
+      "headingPaddingBottom": 4,
+      "headingGlyph": 20,
+      "headingGap": 6,
+      "rowsGap": 8,
+      "rowPadding": 10,
+      "rowRadius": 8,
+      "avatar": 40,
+      "avatarTextGap": 10,
+      "name": {
+        "size": 15,
+        "lineHeight": 20,
+        "weight": 600
+      },
+      "hostNameWeight": 700,
+      "roleBadge": {
+        "paddingTopBottom": 0,
+        "paddingLeftRight": 6,
+        "size": 11,
+        "lineHeight": 14,
+        "py-0.2Defined": false
+      },
+      "status": {
+        "size": 13,
+        "lineHeight": 16,
+        "weight": 600
+      },
+      "subStatus": {
+        "size": 11,
+        "lineHeight": 14,
+        "weight": 700
+      },
+      "noSourcePortraitsAsRealPeople": true
+    },
+    "venue": {
+      "padding": 12,
+      "radius": 12,
+      "gap": 4,
+      "header": {
+        "size": 17,
+        "lineHeight": 22,
+        "weight": 600,
+        "tracking": -0.17
+      },
+      "orderBadge": {
+        "padding": [
+          2,
+          8
+        ],
+        "radius": 4,
+        "size": 11,
+        "lineHeight": 14,
+        "weight": 700,
+        "family": "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace"
+      },
+      "mapHeight": 128,
+      "mapRadius": 8,
+      "mapMarginTop": 8,
+      "overlayPadding": 10,
+      "overlayTitle": {
+        "size": 15,
+        "lineHeight": 20,
+        "weight": 700
+      },
+      "overlayBody": {
+        "size": 13,
+        "lineHeight": 18,
+        "weight": 400,
+        "opacity": 0.9
+      }
+    },
+    "footer": {
+      "paddingTop": 4,
+      "paddingBottom": 8,
+      "pillPadding": [
+        8,
+        16
+      ],
+      "pillGap": 8,
+      "glyph": 16,
+      "pillText": {
+        "size": 13,
+        "lineHeight": 16,
+        "weight": 600,
+        "tracking": -0.325
+      },
+      "pillShadow": "none",
+      "terminalLabel": {
+        "size": 11,
+        "lineHeight": 14,
+        "weight": 700,
+        "marginTop": 6,
+        "tracking": 0.22
+      }
+    },
+    "animation": {
+      "pulse": {
+        "seconds": 2,
+        "timing": "cubic-bezier(.4,0,.6,1)",
+        "keyframes": "50% opacity .5"
+      },
+      "spin": {
+        "seconds": 9,
+        "timing": "linear",
+        "keyframes": "to rotate(360deg)"
+      }
+    },
+    "undefinedTokens": [
+      "py-0.2",
+      "shadow-xs"
+    ]
+  }
+}

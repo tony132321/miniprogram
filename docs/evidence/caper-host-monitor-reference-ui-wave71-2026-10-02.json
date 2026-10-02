@@ -1,0 +1,167 @@
+{
+  "stage": "Wave71 original _5 current-host readonly monitor owner freeze",
+  "frozenAtUTC": "2026-10-02T01:56:00.472685+00:00",
+  "baselineCommit": "81ab6a794f32367c10c329297128bb96b131d599",
+  "baselineDocsFollowup": "d78b2464b4c97a17ddf4f0c13dc692ae892ba250",
+  "baselineImmutable": "/private/tmp/caper-ui70-immutable-illt8q2z",
+  "sourceHTML": {
+    "path": "docs/design-sources/caper-host-monitor-wave71/_5-code.html",
+    "bytes": 25760,
+    "sha256": "e2a2ce2fb2266283f7762dca23592c732eca385d88ce1772f1e22a41bec8b024"
+  },
+  "sourcePNG": {
+    "path": "docs/design-sources/caper-host-monitor-wave71/_5-screen.png",
+    "sha256": "c304525527f9fcab9c7e6646ed13e8b63a3febeff3c34880f8f1ff91f7b7b3cb"
+  },
+  "productPaths": [
+    {
+      "path": "miniprogram/subpackages/activity/event/event.js",
+      "bytes": 106348,
+      "sha256": "85db2c73f3b832944782f8913a1ee9cf3a2d4468b54b4ea709e108c76ab26634"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/event.wxml",
+      "bytes": 172013,
+      "sha256": "c23f5ee9f7b9d3238d6597fcf92ef18ff69bd9615e601d65261afeba3dc18680"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/event.wxss",
+      "bytes": 206812,
+      "sha256": "a62ec5123dcf1a4866023d83571a06968fae3377c8e374b19044ca874e2b26b8"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/hm-sensors-w400-f0-004cc8.svg",
+      "bytes": 1020,
+      "sha256": "ff294d2194a6be292bcf5d8b998977e75f8e1455c891016b54695bd89c31d715"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/hm-location_on-w400-f0-737687.svg",
+      "bytes": 805,
+      "sha256": "c3c1426c3af77d35192e680041b31dc8c25857d28c82af765e9b58c5ec71d0fc"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/hm-sports_tennis-w400-f1-004cc8.svg",
+      "bytes": 720,
+      "sha256": "06e91653964b56587bdc1c5ec4e73499028317914a46610f9f5a5f60958ebc77"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/hm-check-w700-f0-ffffff.svg",
+      "bytes": 154,
+      "sha256": "05d4bd3285fc41f0eb75e2a5f14c4e32345b9f8cf82059e8213e903217fce1b2"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/hm-cloud_done-w400-f0-34c759.svg",
+      "bytes": 925,
+      "sha256": "c0f6d39faff93f9601923ea2a155bd35401d5f5677367ddb7010bf81260e63c8"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/hm-schedule_send-w400-f0-004cc8.svg",
+      "bytes": 616,
+      "sha256": "f77b24b25e7c530b2cf0c6e794c474a0d1968c658d7148ba4fe45fa40fc3a816"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/hm-group-w400-f0-004cc8.svg",
+      "bytes": 1588,
+      "sha256": "d3042e90529edaa0f1e1d164af385ff995ece20888945898ca1c51455318008f"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/hm-map-illustrative.png",
+      "bytes": 152683,
+      "sha256": "8c4881b9d74ec892c8549613ab1426b0a11c54793cdb073ffd6540c2805d02f4"
+    }
+  ],
+  "newTestPaths": [
+    {
+      "path": "test/miniprogram-event-host-monitor-navigation.test.ts",
+      "bytes": 10074,
+      "sha256": "79407909a461deb63c960544cd34e89ccfaace5a21b741829c78c5c5da87665d"
+    }
+  ],
+  "protectedJSON": {
+    "path": "miniprogram/subpackages/activity/event/event.json",
+    "bytes": 69,
+    "sha256": "bf33dc7da099d240642a50fe3cf44cee01a2b282f70a80a313c79317c76ad10b"
+  },
+  "JSInverse": {
+    "changes": 14,
+    "bytes": 104041,
+    "sha256": "97e9f505d58b4b10e4d74d0e360954a0bac4730e1ddbef3437efeba6ed17621e"
+  },
+  "WXMLInverse": {
+    "changes": 3,
+    "bytes": 160928,
+    "sha256": "69b231e3f4d506d2e3d46653bf9075e4ebaa69cdd06bcaf9b82b89d9c8fffa31"
+  },
+  "protectedCSSBytes": 194503,
+  "protectedCSSSHA256": "d26cb609e200446af02965b5840bf1fe0f01f21b66e8841da6289022e6881ce0",
+  "priorAssetsProtection": {
+    "count": 108,
+    "changed": []
+  },
+  "rootAcceptedResourcePaths": {
+    "./assets/pg09-expense-rooftop.jpg": 2,
+    "./assets/pg04s-badminton.jpg": 2,
+    "./assets/pg01-badminton-player.jpg": 2,
+    "../assets/itinerary-badminton.jpg": 5
+  },
+  "sourceCheck": {
+    "path": "docs/design-sources/caper-host-monitor-wave71/scoped-source-binding-protection-check.json",
+    "sha256": "7fb2e0e24a6aaa3bbf3458f3ec342d72386a0627a5812a1f88d442e08149f2be",
+    "passed": 82,
+    "failed": 0,
+    "runs": 1
+  },
+  "targetedTests": {
+    "command": "/Users/tsb/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node --import tsx --test test/miniprogram-event-host-monitor-navigation.test.ts",
+    "red": {
+      "tests": 6,
+      "pass": 2,
+      "fail": 4,
+      "exitCode": 1,
+      "reason": "Missing monitor menu/deep-link/positive route prerequisites; expected feature failures, no harness error. Red observed in original tool response; not a saved raw red log."
+    },
+    "green": {
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "exitCode": 0,
+      "rawResult": "docs/design-sources/caper-host-monitor-wave71/targeted-green-tool-result.json"
+    },
+    "scope": "Only new file; source runInNewContext with native/API doubles, no actual API write or SDK."
+  },
+  "selectors": {
+    "more": ".w69-native-more / existing bindtap=openEventActions; current-host menu tapIndex2",
+    "monitor": "#hostMonitorSection",
+    "nativeBack": ".hm-native-back / bindtap=goBack -> hostSection if still current host, otherwise detailsSection",
+    "nativePerson": ".hm-native-person / bindtap=jumpToSection data-section=registrationSection",
+    "metrics": ".hm-stat-grid / .hm-progress",
+    "conditions": ".hm-conditions / .hm-condition-status",
+    "closedAI": ".hm-ai / .hm-ai-footer",
+    "actualRoster": ".hm-roster-list / .hm-roster-row",
+    "illustrativeVenue": ".hm-map / .hm-map-copy",
+    "readonlyFooter": ".hm-terminal"
+  },
+  "statePrerequisites": [
+    "loadState READY, joinConfirmation false; monitor entry dismisses prior success state",
+    "current real host: isHost + matching data.id/event.id + event.hostId===currentActorId + currentUser===currentIdentity",
+    "direct route validates the loaded requested event before opening; cohost permissions do not grant monitor",
+    "unchanged complete stillCurrent context gate plus sameActionContext plus currentHostEvent at menu callback",
+    "current valid integer confirmed/reserved/requested/waitlisted and positive min/max derive metrics; unavailable stays null",
+    "confirmedRoster from current registrations projection, only consented alias/anonymous glyph; no invented source portraits"
+  ],
+  "rawMiniProductNetBytes": 184212,
+  "newAssetsBytes": 158511,
+  "newMaterialBytes": 5828,
+  "newMapBytes": 152683,
+  "newMainAssetsBytes": 0,
+  "fontModuleChanged": false,
+  "unsupportedFactsClosed": [
+    "15second automatic sync",
+    "48hour/24hour time warning",
+    "weather/22degree claim",
+    "AI organization and T-2h reminder execution",
+    "payment or receipt/order ID",
+    "source device or cloud sync success"
+  ],
+  "remainingValidationOwner": "Root alone owns native SDK/CLI package gates, Git and aggregate acceptance. This freeze claims targeted local behavior + source/static protection only."
+}
