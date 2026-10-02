@@ -1,0 +1,37 @@
+{
+  "currentSHA256": "8cd1ac18d092175c22daaa5c80749251707f6b16f82d1550263b5aef875bda41",
+  "originalSHA256": "486de055ed7ecb35f165fcac8546c9cd916fc21a563b09803f59693c3c7ec7c8",
+  "changes": [
+    {
+      "op": "replace",
+      "oldLines": [
+        2,
+        2
+      ],
+      "newLines": [
+        2,
+        2
+      ],
+      "oldBytes": 130,
+      "newBytes": 154,
+      "contentKind": "provenance comment"
+    },
+    {
+      "op": "replace",
+      "oldLines": [
+        33,
+        33
+      ],
+      "newLines": [
+        33,
+        34
+      ],
+      "oldBytes": 4,
+      "newBytes": 39711,
+      "contentKind": "appended normal500 face registered under profile-only alias"
+    }
+  ],
+  "exactInverseIncludingProvenanceComment": true,
+  "restoreSHA256": "486de055ed7ecb35f165fcac8546c9cd916fc21a563b09803f59693c3c7ec7c8",
+  "scope": "Old six faces and licenses untouched. New official500 data unchanged; alias prevents different source500 matching on other pages."
+}

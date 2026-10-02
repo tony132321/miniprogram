@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import { once } from 'node:events';
 import { test } from 'node:test';
 import { createDatabase } from '../src/db.ts';
-import { createDraft, publishEvent } from '../src/events.ts';
+import { createDraft } from '../src/events.ts';
+import { publishApprovedInvite } from './helpers.ts';
 import { recordSupportMinutes } from '../src/support-minutes.ts';
 import { getPilotMetrics } from '../src/metrics.ts';
 import { createOperatorEnrollment, totpCode } from '../src/operator-auth.ts';
@@ -20,7 +21,7 @@ test('support minutes are immutable, idempotent, attributed to the operator and 
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'pilot-host', input, 'support-draft', false);
-    const event = await publishEvent(db, 'pilot-host', draft.id, draft.version, 'support-publish');
+    const event = await publishApprovedInvite(db, 'pilot-host', draft.id, draft.version, 'support-publish');
     const first = await recordSupportMinutes(db, 'operator:metrics', event.id, 12, 'SUPPORT', 'support-1');
     const replay = await recordSupportMinutes(db, 'operator:metrics', event.id, 12, 'SUPPORT', 'support-1');
     assert.deepEqual(replay, first);
@@ -43,9 +44,9 @@ test('pilot report labels recorded direct minutes as partial and excludes test o
   const db = await createDatabase();
   try {
     const realDraft = await createDraft(db, 'pilot-host', input, 'real-draft', false);
-    const real = await publishEvent(db, 'pilot-host', realDraft.id, realDraft.version, 'real-publish');
+    const real = await publishApprovedInvite(db, 'pilot-host', realDraft.id, realDraft.version, 'real-publish');
     const testDraft = await createDraft(db, 'pilot-host', input, 'test-draft', true);
-    const testEvent = await publishEvent(db, 'pilot-host', testDraft.id, testDraft.version, 'test-publish');
+    const testEvent = await publishApprovedInvite(db, 'pilot-host', testDraft.id, testDraft.version, 'test-publish');
     await recordSupportMinutes(db, 'operator:metrics', real.id, 15, 'SUPPORT', 'real-work');
     await recordSupportMinutes(db, 'operator:metrics', testEvent.id, 50, 'SUPPORT', 'test-work');
     const result = await getPilotMetrics(db, start + 3 * 60 * 60_000, ['pilot-host']);
@@ -75,7 +76,7 @@ test('support minute HTTP write requires a recorder role while METRICS remains r
   };
   try {
     const draft = await createDraft(db, 'pilot-host', input, 'http-draft', false);
-    const event = await publishEvent(db, 'pilot-host', draft.id, draft.version, 'http-publish');
+    const event = await publishApprovedInvite(db, 'pilot-host', draft.id, draft.version, 'http-publish');
     const metricToken = await login(metricAccount);
     const recorderToken = await login(recorderAccount);
     const reportToken = await login(reportAccount);

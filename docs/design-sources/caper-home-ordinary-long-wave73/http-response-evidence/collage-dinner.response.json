@@ -1,0 +1,32 @@
+{
+  "sourceLine": 600,
+  "sourceAlt": "聚餐笑脸",
+  "URL": "https://lh3.googleusercontent.com/aida-public/AB6AXuA6ZvkSMgknQqCd220ERPS73_hfdzdEpBNCViIJkugJsVPWrJkFvhIPkCrVqwM_Xz3AnzWrPA-QWfjf2BcQdGb6dv4FXqzvxTMwkdW2g5yRlNXS-aZFZy5hqN8M6agjj1_5KF4xrcFtZpXUZkk-daaf7_5UQlaDiX97IzJ-xLIvLGCpd_ihxP79TCshygZ9ZWxKnn6W-oj_hKq3VtBcfgOo0kYZCZ7TTxJnN1kHRTV7mrzUC5Hk4eqAuA",
+  "finalURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuA6ZvkSMgknQqCd220ERPS73_hfdzdEpBNCViIJkugJsVPWrJkFvhIPkCrVqwM_Xz3AnzWrPA-QWfjf2BcQdGb6dv4FXqzvxTMwkdW2g5yRlNXS-aZFZy5hqN8M6agjj1_5KF4xrcFtZpXUZkk-daaf7_5UQlaDiX97IzJ-xLIvLGCpd_ihxP79TCshygZ9ZWxKnn6W-oj_hKq3VtBcfgOo0kYZCZ7TTxJnN1kHRTV7mrzUC5Hk4eqAuA",
+  "status": 200,
+  "headers": {
+    "Content-Type": "image/jpeg",
+    "Vary": "Origin",
+    "Access-Control-Allow-Origin": "*",
+    "Timing-Allow-Origin": "*",
+    "Access-Control-Expose-Headers": "Content-Length",
+    "ETag": "\"v0\"",
+    "Expires": "Sat, 03 Oct 2026 02:03:48 GMT",
+    "Cache-Control": "public, max-age=86400, no-transform",
+    "Content-Disposition": "inline;filename=\"unnamed.jpg\"",
+    "X-Content-Type-Options": "nosniff",
+    "Date": "Fri, 02 Oct 2026 02:03:48 GMT",
+    "Server": "fife",
+    "Content-Length": "67130",
+    "X-XSS-Protection": "0",
+    "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "Connection": "close"
+  },
+  "contentType": "image/jpeg",
+  "bytes": 67130,
+  "sha256": "e111454a86e9b5ef33a7fe5774092f74f39cfbe574e356baf74f0432bf8829af",
+  "savedPath": "/private/tmp/caper-wave73-home-long/photos/collage-dinner.jpg",
+  "noReencoding": true,
+  "fetchedAtUTC": "2026-10-02T02:03:49.096252+00:00",
+  "existingByteEqualCandidates": []
+}

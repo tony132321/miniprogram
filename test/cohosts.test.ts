@@ -4,6 +4,7 @@ import { once } from 'node:events';
 import { createDatabase } from '../src/db.ts';
 import type { Database } from '../src/db.ts';
 import { createDraft, publishEvent } from '../src/events.ts';
+import { publishApprovedInvite } from './helpers.ts';
 import { grantCohost, revokeCohost, hasCohostCapability } from '../src/cohosts.ts';
 import { createApp } from '../src/server.ts';
 import { loginWithWechat } from '../src/auth.ts';
@@ -21,9 +22,9 @@ test('one event check-in grant is revocable and never grants approval or another
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'cohost-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'cohost-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'cohost-publish');
     const otherDraft = await createDraft(db, 'host', { ...input, title: '另一场' }, 'other-draft');
-    const other = await publishEvent(db, 'host', otherDraft.id, otherDraft.version, 'other-publish');
+    const other = await publishApprovedInvite(db, 'host', otherDraft.id, otherDraft.version, 'other-publish');
     const grant = await grantCohost(db, 'host', event.id, event.version, 'helper', ['CHECKIN_MANAGE'],
       '2027-01-04T14:00:00.000Z', 'grant-one');
     assert.equal(await hasCohostCapability(db, 'helper', event.id, 'CHECKIN_MANAGE'), true);
@@ -46,7 +47,7 @@ test('grant validates actor, capability, expiry and event version', async () => 
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'validation-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'validation-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'validation-publish');
     const grant = (actor: string, version: number, caps: string[], expiresAt: string, key: string) =>
       grantCohost(db, actor, event.id, version, 'helper', caps, expiresAt, key);
     await assert.rejects(() => grant('helper', event.version, ['CHECKIN_MANAGE'], '2027-01-04T14:00:00.000Z', 'self'), { code: 'FORBIDDEN' });
@@ -61,7 +62,7 @@ test('a fast application clock cannot reject a grant that is valid by database t
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'fast-cohost-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'fast-cohost-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'fast-cohost-publish');
     const actualNow = Date.now;
     const expiresAt = new Date(actualNow() + 30 * 60_000).toISOString();
     const fastNow = () => actualNow() + 2 * 60 * 60_000;
@@ -89,7 +90,7 @@ test('grant expires at the database write boundary without leaving authorization
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'boundary-cohost-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'boundary-cohost-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'boundary-cohost-publish');
     const actualNow = Date.now;
     const expiresAt = new Date(actualNow() + 30 * 60_000).toISOString();
     let crossed = false;
@@ -123,9 +124,9 @@ test('cohost bearer session has only current event capability and loses it immed
   const helper = await loginWithWechat(db, exchange, 'cohost-helper');
   const participant = await loginWithWechat(db, exchange, 'cohost-participant');
   const draft = await createDraft(db, host.userId, input, 'http-cohost-draft');
-  const event = await publishEvent(db, host.userId, draft.id, draft.version, 'http-cohost-publish');
+  const event = await publishApprovedInvite(db, host.userId, draft.id, draft.version, 'http-cohost-publish');
   const otherDraft = await createDraft(db, host.userId, { ...input, title: '活动 B' }, 'http-cohost-other-draft');
-  const other = await publishEvent(db, host.userId, otherDraft.id, otherDraft.version, 'http-cohost-other-publish');
+  const other = await publishApprovedInvite(db, host.userId, otherDraft.id, otherDraft.version, 'http-cohost-other-publish');
   await register(db, participant.userId, event.id, event.version, 'http-cohost-join');
   await db.query("UPDATE events SET status='CONFIRMED' WHERE id=$1", [event.id]);
   await db.query("UPDATE events SET status='CONFIRMED' WHERE id=$1", [other.id]);
@@ -146,6 +147,13 @@ test('cohost bearer session has only current event capability and loses it immed
         expiresAt: new Date(Date.now() + 30 * 60_000).toISOString() }, 'http-grant');
     assert.equal(granted.status, 200);
     const grant = await granted.json() as { id: string };
+    const cohostActivities = await get('/me/events', helper.token);
+    assert.equal(cohostActivities.status, 200);
+    assert.deepEqual((await cohostActivities.json() as { items: Array<{ id: string; isHost: boolean;
+      isCohost: boolean; myRegistrationStatus: string | null }> }).items.map(item => ({
+        id: item.id, isHost: item.isHost, isCohost: item.isCohost,
+        myRegistrationStatus: item.myRegistrationStatus
+      })), [{ id: event.id, isHost: false, isCohost: true, myRegistrationStatus: null }]);
     const grants = await get(`/events/${event.id}/cohosts`, host.token);
     assert.equal(grants.status, 200);
     assert.equal(((await grants.json() as { items: unknown[] }).items).length, 1);
@@ -172,7 +180,40 @@ test('cohost bearer session has only current event capability and loses it immed
     assert.equal((await post(`/events/${event.id}/checkin-token`, helper.token,
       { expectedVersion: event.version }, 'http-revoked-token')).status, 403);
     assert.equal((await get(`/events/${event.id}`, helper.token)).status, 403);
-    assert.equal((await get('/me/events', helper.token)).status, 200);
+    const afterRevoke = await get('/me/events', helper.token);
+    assert.equal(afterRevoke.status, 200);
+    assert.deepEqual((await afterRevoke.json() as { items: unknown[] }).items, []);
+  } finally { await new Promise<void>(resolve => server.close(() => resolve())); await db.close(); }
+});
+
+test('an unregistered cohost loses the own-event listing on expiry and cannot read unreviewed text', async () => {
+  const db = await createDatabase();
+  const server = createApp(db, { environment: 'test', devAuth: true, checkInSecret: 'cohost-expiry' });
+  server.listen(0, '127.0.0.1'); await once(server, 'listening');
+  const base = `http://127.0.0.1:${(server.address() as { port: number }).port}`;
+  const read = (path: string, actor: string) => fetch(base + path, { headers: { 'X-Dev-User': actor } });
+  try {
+    const draft = await createDraft(db, 'host', { ...input, title: '尚未审核的秘密活动标题' }, 'pending-cohost-draft');
+    const pending = await publishEvent(db, 'host', draft.id, draft.version, 'pending-cohost-publish');
+    assert.equal(pending.reviewStatus, 'PENDING');
+    const grant = await grantCohost(db, 'host', pending.id, pending.version, 'helper', ['MANAGE_ANNOUNCEMENTS'],
+      '2027-01-04T14:00:00.000Z', 'pending-cohost-grant');
+    const listed = await read('/me/events', 'helper');
+    assert.equal(listed.status, 200);
+    const listedText = await listed.text();
+    assert.equal(JSON.parse(listedText).items[0]?.isCohost, true);
+    assert.equal(JSON.parse(listedText).items[0]?.title, '活动审核中');
+    assert.equal(listedText.includes('尚未审核的秘密活动标题'), false);
+    const detail = await read(`/events/${pending.id}`, 'helper');
+    assert.equal(detail.status, 200);
+    const detailText = await detail.text();
+    assert.equal(JSON.parse(detailText).payload.title, '活动审核中');
+    assert.equal(detailText.includes('尚未审核的秘密活动标题'), false);
+    await db.query("UPDATE cohost_grants SET expires_at=clock_timestamp()-interval '1 second' WHERE id=$1", [grant.id]);
+    const expired = await read('/me/events', 'helper');
+    assert.equal(expired.status, 200);
+    assert.deepEqual((await expired.json() as { items: unknown[] }).items, []);
+    assert.equal((await read(`/events/${pending.id}`, 'helper')).status, 403);
   } finally { await new Promise<void>(resolve => server.close(() => resolve())); await db.close(); }
 });
 
@@ -180,7 +221,7 @@ test('revocation removes management but preserves a participant own check-in', a
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'participant-cohost-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'participant-cohost-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'participant-cohost-publish');
     await register(db, 'helper', event.id, event.version, 'participant-cohost-join');
     await register(db, 'p2', event.id, event.version, 'participant-cohost-p2');
     await register(db, 'p3', event.id, event.version, 'participant-cohost-p3');
@@ -201,7 +242,7 @@ test('approval and announcement grants each authorize only their named action', 
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', { ...input, approvalMode: 'MANUAL' }, 'capability-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'capability-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'capability-publish');
     const approvalGrant = await grantCohost(db, 'host', event.id, event.version, 'approver',
       ['APPROVE_REGISTRATION'], '2027-01-04T14:00:00.000Z', 'approve-grant');
     await grantCohost(db, 'host', event.id, event.version, 'announcer',

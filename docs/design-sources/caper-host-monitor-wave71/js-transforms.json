@@ -1,0 +1,75 @@
+{
+  "changes": [
+    {
+      "old": "function sectionAvailable(section, isHost, canApproveRegistration, canManageAnnouncements, canManageCheckins) {",
+      "new": "// Wave71 host monitor read-only projection and current-owner gate.\nfunction canViewHostMonitor(page) {\n  return page.data.loadState === 'READY' && !page.data.joinConfirmation && currentHostEvent(page);\n}\nfunction hostMonitorMetrics(event) {\n  const stats = event?.stats;\n  const min = event?.payload?.minParticipants;\n  const max = event?.payload?.maxParticipants;\n  const count = value => Number.isSafeInteger(value) && value >= 0;\n  if (!stats || !['confirmed', 'reserved', 'requested', 'waitlisted'].every(key => count(stats[key])) ||\n    !Number.isSafeInteger(min) || min < 1 || !Number.isSafeInteger(max) || max < min) return null;\n  const occupancyPercent = Math.round(stats.confirmed / max * 100);\n  return { confirmed: stats.confirmed, reserved: stats.reserved, requested: stats.requested,\n    waitlisted: stats.waitlisted, min, max, occupancyPercent,\n    progressPercent: Math.min(100, occupancyPercent), minimumPercent: Math.round(stats.confirmed / min * 100),\n    missing: Math.max(0, min - stats.confirmed), surplus: Math.max(0, stats.confirmed - min),\n    minimumReached: stats.confirmed >= min };\n}\nfunction sectionAvailable(section, isHost, canApproveRegistration, canManageAnnouncements, canManageCheckins) {",
+      "count": 1
+    },
+    {
+      "old": "    (section === 'hostSection' && isHost) ||",
+      "new": "    (section === 'hostSection' && isHost) ||\n    (section === 'hostMonitorSection' && isHost) ||",
+      "count": 1
+    },
+    {
+      "old": "  hostSection: ['主办方工作台', '报名、成局与现场管理'],",
+      "new": "  hostSection: ['主办方工作台', '报名、成局与现场管理'],\n  hostMonitorSection: ['只读实时看板', '主办方当前活动快照'],",
+      "count": 1
+    },
+    {
+      "old": "  data: { statusBarHeight: 24,",
+      "new": "  data: { hostMonitorMetrics: null, statusBarHeight: 24,",
+      "count": 1
+    },
+    {
+      "old": "      const sameEvent = Boolean(options.id && this.data.event?.id === options.id);",
+      "new": "      const sameEvent = Boolean(options.id && this.data.event?.id === options.id);\n      if (options.section === 'hostMonitorSection' && (!sameEvent || !canViewHostMonitor(this))) return;",
+      "count": 1
+    },
+    {
+      "old": "      this.setData({ token: '', source: '', activeSection: 'detailsSection',",
+      "new": "      this.setData({ hostMonitorMetrics: null, token: '', source: '', activeSection: 'detailsSection',",
+      "count": 1
+    },
+    {
+      "old": "      this.setData({ id, event, display: eventDisplay(event),",
+      "new": "      this.setData({ hostMonitorMetrics: isHost ? hostMonitorMetrics(event) : null, id, event, display: eventDisplay(event),",
+      "count": 1
+    },
+    {
+      "old": "      this.reconcileSuccessState();\n      return true;",
+      "new": "      this.reconcileSuccessState();\n      if (this.data.activeSection === 'hostMonitorSection' && !canViewHostMonitor(this))\n        this.scrollToSection('detailsSection');\n      return true;",
+      "count": 1
+    },
+    {
+      "old": "      this.setData({ event: null, display: null, registrationLabel: '未报名', inviteSummary: needsLogin ? summary : null,",
+      "new": "      this.setData({ hostMonitorMetrics: null, event: null, display: null, registrationLabel: '未报名', inviteSummary: needsLogin ? summary : null,",
+      "count": 1
+    },
+    {
+      "old": "    if (this.data.activeSection !== 'detailsSection') return this.scrollToSection('detailsSection');",
+      "new": "    if (this.data.activeSection === 'hostMonitorSection')\n      return this.scrollToSection(canViewHostMonitor(this) ? 'hostSection' : 'detailsSection');\n    if (this.data.activeSection !== 'detailsSection') return this.scrollToSection('detailsSection');",
+      "count": 1
+    },
+    {
+      "old": "    const id = event.currentTarget.dataset.section;",
+      "new": "    const id = event.currentTarget.dataset.section;\n    if (id === 'hostMonitorSection' && !canViewHostMonitor(this)) return;",
+      "count": 1
+    },
+    {
+      "old": "  scrollToSection(id, targetSelector) {\n    if (!sectionHeadings[id]) return;",
+      "new": "  scrollToSection(id, targetSelector) {\n    if (id === 'hostMonitorSection') {\n      if (!canViewHostMonitor(this)) return;\n      if (this.data.successState) this.dismissSuccess();\n    }\n    if (!sectionHeadings[id]) return;",
+      "count": 1
+    },
+    {
+      "old": "    wx.showActionSheet({ itemList: ['举报与求助', '复制活动信息给可信任的人'],",
+      "new": "    const canOpenMonitor = canViewHostMonitor(this);\n    const itemList = ['举报与求助', '复制活动信息给可信任的人'];\n    if (canOpenMonitor) itemList.push('只读实时看板');\n    wx.showActionSheet({ itemList,",
+      "count": 1
+    },
+    {
+      "old": "        if (result.tapIndex === 1 && sameActionContext(this, context)) this.copySafetyDetails();",
+      "new": "        if (result.tapIndex === 1 && sameActionContext(this, context)) this.copySafetyDetails();\n        if (result.tapIndex === 2 && canOpenMonitor && canViewHostMonitor(this) && sameActionContext(this, context))\n          this.scrollToSection('hostMonitorSection');",
+      "count": 1
+    }
+  ],
+  "inverseSHA256": "97e9f505d58b4b10e4d74d0e360954a0bac4730e1ddbef3437efeba6ed17621e"
+}

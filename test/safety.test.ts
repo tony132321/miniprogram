@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { once } from 'node:events';
 import { createDatabase, type Database } from '../src/db.ts';
-import { createDraft, publishEvent } from '../src/events.ts';
+import { createDraft, publishEvent, rotateInvite } from '../src/events.ts';
+import { publishApprovedInvite } from './helpers.ts';
 import { confirmEvent } from '../src/lifecycle.ts';
 import { acceptOffer, cancelRegistration, reserveSeats } from '../src/registrations.ts';
 import { register } from './helpers.ts';
@@ -11,6 +12,8 @@ import { createApp } from '../src/server.ts';
 import { reviewEvent } from '../src/event-review.ts';
 import { setEmergencyGate } from '../src/emergency-gate.ts';
 import { setPublicGate } from '../src/public-gate.ts';
+import { openSyntheticPublicCoverage } from './helpers/public-coverage.ts';
+import { recordShareIntent } from '../src/sharing.ts';
 
 const input = {
   title: '安全流程测试', type: 'badminton', startAt: '2027-01-02T12:00:00.000Z',
@@ -21,11 +24,171 @@ const input = {
   cancellationRule: '开始前可退出', visibility: 'INVITE', approvalMode: 'AUTO', hostParticipates: true
 };
 
+test('active safety hold blocks pending approval until released', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'held-review-draft');
+    const event = await publishEvent(db, 'host', draft.id, draft.version, 'held-review-publish');
+    assert.equal(event.reviewStatus, 'PENDING');
+    assert.equal(event.recruiting, false);
+    const hold = await placeEventHold(db, 'ops', event.id, '场地风险仍在核查中', 'held-review-place');
+
+    await assert.rejects(() => reviewEvent(db, 'ops', event.id, event.version, 'APPROVED',
+      '场地风险尚未解除，不能通过审核', 'held-review-approve'), { code: 'RISK_HOLD' });
+    const { rows: pending } = await db.query<{ review_status: string; recruiting: boolean }>(
+      'SELECT review_status,recruiting FROM events WHERE id=$1', [event.id]);
+    assert.deepEqual(pending[0], { review_status: 'PENDING', recruiting: false });
+    const { rows: decisions } = await db.query<{ count: number }>(
+      'SELECT count(*)::int AS count FROM event_review_decisions WHERE event_id=$1', [event.id]);
+    assert.equal(decisions[0]?.count, 0);
+
+    await releaseEventHold(db, 'ops', hold.id, '场地风险核查完成并允许审核', 'held-review-release');
+    const approved = await reviewEvent(db, 'ops', event.id, event.version, 'APPROVED',
+      '风险解除后重新核对活动信息', 'held-review-approve');
+    assert.equal(approved.reviewStatus, 'APPROVED');
+    assert.equal(approved.recruiting, true);
+  } finally { await db.close(); }
+});
+
+test('active safety hold still permits rejecting a pending event', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'held-reject-draft');
+    const event = await publishEvent(db, 'host', draft.id, draft.version, 'held-reject-publish');
+    await placeEventHold(db, 'ops', event.id, '活动资料存在待核查风险', 'held-reject-place');
+
+    const rejected = await reviewEvent(db, 'ops', event.id, event.version, 'REJECTED',
+      '存在风险，活动审核不通过', 'held-reject-review');
+    assert.equal(rejected.reviewStatus, 'REJECTED');
+    assert.equal(rejected.recruiting, false);
+    assert.equal((await getActiveEventHold(db, event.id))?.status, 'ACTIVE');
+  } finally { await db.close(); }
+});
+
+test('active safety hold rejects share intent without consuming a retry key', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'held-share-draft');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'held-share-publish');
+    const hold = await placeEventHold(db, 'ops', event.id, '场地安全风险仍在核查中', 'held-share-place');
+    const sourceToken = 'a'.repeat(32);
+    const requestKey = 'held-share-intent';
+
+    await assert.rejects(() => recordShareIntent(db, 'host', event.id, event.version,
+      sourceToken, requestKey), { code: 'RISK_HOLD' });
+    const { rows: blocked } = await db.query<{ total: number }>(
+      'SELECT count(*)::int AS total FROM share_intents WHERE event_id=$1', [event.id]);
+    assert.equal(blocked[0]?.total, 0);
+
+    await releaseEventHold(db, 'ops', hold.id, '场地安全风险已核查完成', 'held-share-release');
+    assert.deepEqual(await recordShareIntent(db, 'host', event.id, event.version,
+      sourceToken, requestKey), { sourceToken });
+    const { rows: accepted } = await db.query<{ total: number }>(
+      'SELECT count(*)::int AS total FROM share_intents WHERE event_id=$1', [event.id]);
+    assert.equal(accepted[0]?.total, 1);
+  } finally { await db.close(); }
+});
+
+test('active safety hold rejects a successful share intent replay until release', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'replayed-share-draft');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'replayed-share-publish');
+    const sourceToken = 'b'.repeat(32);
+    const requestKey = 'replayed-share-intent';
+    assert.deepEqual(await recordShareIntent(db, 'host', event.id, event.version,
+      sourceToken, requestKey), { sourceToken });
+
+    const hold = await placeEventHold(db, 'ops', event.id, '分享期间发现待核查风险', 'replayed-share-place');
+    await assert.rejects(() => recordShareIntent(db, 'host', event.id, event.version,
+      sourceToken, requestKey), { code: 'RISK_HOLD' });
+    const { rows: paused } = await db.query<{ total: number }>(
+      'SELECT count(*)::int AS total FROM share_intents WHERE event_id=$1', [event.id]);
+    assert.equal(paused[0]?.total, 1);
+
+    await releaseEventHold(db, 'ops', hold.id, '分享风险已经人工核查', 'replayed-share-release');
+    assert.deepEqual(await recordShareIntent(db, 'host', event.id, event.version,
+      sourceToken, requestKey), { sourceToken });
+    const { rows: resumed } = await db.query<{ total: number }>(
+      'SELECT count(*)::int AS total FROM share_intents WHERE event_id=$1', [event.id]);
+    assert.equal(resumed[0]?.total, 1);
+  } finally { await db.close(); }
+});
+
+test('global safety pause rejects new and replayed share intents until reopened', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'global-share-draft');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'global-share-publish');
+    const sourceToken = 'c'.repeat(32);
+    const requestKey = 'global-share-intent';
+    assert.deepEqual(await recordShareIntent(db, 'host', event.id, event.version,
+      sourceToken, requestKey), { sourceToken });
+
+    await setEmergencyGate(db, 'ops', 'CLOSED', '暂停所有新增邀请及报名', 'global-share-close');
+    await assert.rejects(() => recordShareIntent(db, 'host', event.id, event.version,
+      sourceToken, requestKey), { code: 'EMERGENCY_PAUSED' });
+    await assert.rejects(() => recordShareIntent(db, 'host', event.id, event.version,
+      'd'.repeat(32), 'global-share-new'), { code: 'EMERGENCY_PAUSED' });
+    const { rows: paused } = await db.query<{ total: number }>(
+      'SELECT count(*)::int AS total FROM share_intents WHERE event_id=$1', [event.id]);
+    assert.equal(paused[0]?.total, 1);
+
+    await setEmergencyGate(db, 'ops', 'OPEN', '风险核查完成恢复新增操作', 'global-share-open');
+    assert.deepEqual(await recordShareIntent(db, 'host', event.id, event.version,
+      sourceToken, requestKey), { sourceToken });
+  } finally { await db.close(); }
+});
+
+test('invite rotation invalidates a replayed share source without changing event version', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'rotated-share-draft');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'rotated-share-publish');
+    const sourceToken = 'e'.repeat(32);
+    const requestKey = 'rotated-share-intent';
+    assert.deepEqual(await recordShareIntent(db, 'host', event.id, event.version,
+      sourceToken, requestKey), { sourceToken });
+
+    const rotated = await rotateInvite(db, 'host', event.id, event.version, 'rotated-share-invite');
+    assert.equal(rotated.version, event.version);
+    assert.notEqual(rotated.inviteToken, event.inviteToken);
+    await assert.rejects(() => recordShareIntent(db, 'host', event.id, event.version,
+      sourceToken, requestKey), { code: 'SOURCE_STALE' });
+    const { rows: oldSources } = await db.query<{ total: number }>(
+      'SELECT count(*)::int AS total FROM share_intents WHERE event_id=$1', [event.id]);
+    assert.equal(oldSources[0]?.total, 1);
+
+    const freshSource = 'f'.repeat(32);
+    assert.deepEqual(await recordShareIntent(db, 'host', event.id, event.version,
+      freshSource, 'rotated-share-fresh'), { sourceToken: freshSource });
+    const { rows: sources } = await db.query<{ source_token: string; invite_token_hash: string }>(
+      'SELECT source_token,invite_token_hash FROM share_intents WHERE event_id=$1 ORDER BY source_token', [event.id]);
+    assert.deepEqual(sources.map(row => row.source_token), [sourceToken, freshSource]);
+    assert.notEqual(sources[0]?.invite_token_hash, sources[1]?.invite_token_hash);
+  } finally { await db.close(); }
+});
+
+test('share intent replay cannot return a different valid source for the same key', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host', input, 'mismatch-share-draft');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'mismatch-share-publish');
+    const firstSource = '1'.repeat(32);
+    const secondSource = '2'.repeat(32);
+    await recordShareIntent(db, 'host', event.id, event.version, firstSource, 'mismatch-share-first');
+    await recordShareIntent(db, 'host', event.id, event.version, secondSource, 'mismatch-share-second');
+
+    await assert.rejects(() => recordShareIntent(db, 'host', event.id, event.version,
+      secondSource, 'mismatch-share-first'), { code: 'IDEMPOTENCY_MISMATCH' });
+  } finally { await db.close(); }
+});
+
 test('operator safety hold blocks new seats and formation while preserving exits; release resumes FIFO', async () => {
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'publish');
     const p1 = await register(db, 'p1', event.id, event.version, 'p1');
     const p2 = await register(db, 'p2', event.id, event.version, 'p2');
     await register(db, 'p3', event.id, event.version, 'p3');
@@ -57,7 +220,7 @@ test('an offer issued before a hold cannot be accepted until release', async () 
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'offer-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'offer-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'offer-publish');
     const p1 = await register(db, 'p1', event.id, event.version, 'offer-p1');
     for (const actor of ['p2', 'p3', 'p4']) await register(db, actor, event.id, event.version, `offer-${actor}`);
     await cancelRegistration(db, 'p1', p1.id, event.version, 'offer-exit');
@@ -73,7 +236,7 @@ test('closing a hold after an event expires does not announce that recruiting re
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'expired-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'expired-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'expired-publish');
     const hold = await placeEventHold(db, 'ops', event.id, '等待安全核查结果后结案', 'expired-hold');
     await db.query("UPDATE events SET status='EXPIRED',recruiting=false WHERE id=$1", [event.id]);
     await releaseEventHold(db, 'ops', hold.id, '已记录结案结果不再招募', 'expired-release');
@@ -86,7 +249,7 @@ test('a delayed start transition cannot make a safety release announce recruitin
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'late-start-hold-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'late-start-hold-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'late-start-hold-publish');
     const hold = await placeEventHold(db, 'ops', event.id, '核查开始时间附近的风险', 'late-start-hold');
     const lateDatabaseClock = new Date(Date.parse(input.startAt) + 1000);
     const clockDb: Database = {
@@ -109,7 +272,7 @@ test('a delayed registration deadline transition cannot make a safety release an
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'late-deadline-hold-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'late-deadline-hold-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'late-deadline-hold-publish');
     const hold = await placeEventHold(db, 'ops', event.id, '核查报名截止时间附近的风险', 'late-deadline-hold');
     const lateDatabaseClock = new Date(Date.parse(input.registrationDeadline) + 1000);
     const clockDb: Database = {
@@ -132,7 +295,7 @@ test('a safety hold cannot be placed after the database start time even if statu
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'late-place-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'late-place-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'late-place-publish');
     const lateDatabaseClock = new Date(Date.parse(input.startAt) + 1000);
     const clockDb: Database = {
       ...db,
@@ -153,7 +316,7 @@ test('a safety hold cannot be inserted if the activity starts before the final w
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'place-write-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'place-write-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'place-write-publish');
     let crossed = false;
     const racingDb: Database = {
       ...db,
@@ -179,7 +342,7 @@ test('releasing a hold does not claim recruiting resumed while another activity 
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'paused-rule-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'paused-rule-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'paused-rule-publish');
     const hold = await placeEventHold(db, 'ops', event.id, '核查仍需保持招募暂停', 'paused-rule-hold');
     await db.query('UPDATE events SET recruiting=false WHERE id=$1', [event.id]);
     await releaseEventHold(db, 'ops', hold.id, '单场安全核查已经结案', 'paused-rule-release');
@@ -193,7 +356,7 @@ test('releasing a hold while the global safety gate is closed does not announce 
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'global-gate-hold-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'global-gate-hold-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'global-gate-hold-publish');
     const hold = await placeEventHold(db, 'ops', event.id, '核查全局暂停期间的活动', 'global-gate-hold');
     await setEmergencyGate(db, 'ops', 'CLOSED', '暂停所有新报名及成局操作', 'global-gate-close');
     await releaseEventHold(db, 'ops', hold.id, '本场核查已完成结案', 'global-gate-release');
@@ -206,8 +369,9 @@ test('releasing a hold while the global safety gate is closed does not announce 
 test('releasing a public activity hold while public recruitment is closed does not announce recruiting resumed', async () => {
   const db = await createDatabase();
   try {
+    await openSyntheticPublicCoverage(db, [input]);
     const draft = await createDraft(db, 'host', { ...input, visibility: 'PUBLIC', approvalMode: 'MANUAL' }, 'public-gate-hold-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'public-gate-hold-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'public-gate-hold-publish');
     await reviewEvent(db, 'ops', event.id, event.version, 'APPROVED', '审核通过公开活动', 'public-gate-review');
     const hold = await placeEventHold(db, 'ops', event.id, '核查公开活动的风险状态', 'public-gate-hold');
     await setPublicGate(db, 'ops', 'CLOSED', '暂停所有公开活动招募', 'public-gate-close');
@@ -220,6 +384,7 @@ test('releasing a public activity hold while public recruitment is closed does n
 
 test('safety hold API is operator-only and event viewers see no investigation reason', async () => {
   const db = await createDatabase();
+  await openSyntheticPublicCoverage(db, [input]);
   const server = createApp(db, { environment: 'development', devAuth: true, operationsUsers: ['ops'], checkInSecret: 'secret' });
   server.listen(0, '127.0.0.1');
   await once(server, 'listening');
@@ -234,7 +399,7 @@ test('safety hold API is operator-only and event viewers see no investigation re
   }
   try {
     const draft = await createDraft(db, 'host', { ...input, visibility: 'PUBLIC', approvalMode: 'MANUAL' }, 'api-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'api-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'api-publish');
     await reviewEvent(db, 'ops', event.id, event.version, 'APPROVED', '核对公开活动安全信息', 'api-review');
     assert.equal((await request('/ops/holds', 'host')).status, 403);
     assert.equal((await request(`/ops/events/${event.id}/hold`, 'host', 'POST', { reason: '私密举报详情不能展示' })).status, 403);

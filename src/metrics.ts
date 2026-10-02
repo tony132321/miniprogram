@@ -57,15 +57,23 @@ const missingProfitInputs = ['confirmedRevenue', 'paymentFees', 'aiCosts', 'mess
 const firstAccessiblePublication = `SELECT candidate.published_at,candidate.payload FROM (
   SELECT v.created_at AS published_at,v.payload,v.version FROM event_versions v
     WHERE v.event_id=e.id AND v.payload->>'visibility'='INVITE'
+      AND v.created_at<(SELECT applied_at FROM schema_migrations WHERE version=48)
   UNION ALL
   SELECT d.reviewed_at AS published_at,v.payload,d.event_version AS version
     FROM event_review_decisions d JOIN event_versions v ON v.event_id=d.event_id AND v.version=d.event_version
     WHERE d.event_id=e.id AND d.decision='APPROVED'
 ) candidate ORDER BY candidate.published_at,candidate.version LIMIT 1`;
 
-const eventVersionAtCutoff = `SELECT v.payload FROM event_versions v
-  WHERE v.event_id=e.id AND v.created_at<=$1::timestamptz
-  ORDER BY v.created_at DESC,v.version DESC LIMIT 1`;
+const eventVersionAtCutoff = `SELECT accessible.payload FROM (
+  SELECT v.created_at AS accessible_at,v.payload,v.version FROM event_versions v
+    WHERE v.event_id=e.id AND v.payload->>'visibility'='INVITE'
+      AND v.created_at<(SELECT applied_at FROM schema_migrations WHERE version=48)
+  UNION ALL
+  SELECT d.reviewed_at AS accessible_at,v.payload,d.event_version AS version
+    FROM event_review_decisions d JOIN event_versions v ON v.event_id=d.event_id AND v.version=d.event_version
+    WHERE d.event_id=e.id AND d.decision='APPROVED'
+) accessible WHERE accessible.accessible_at<=$1::timestamptz
+  ORDER BY accessible.version DESC,accessible.accessible_at DESC LIMIT 1`;
 
 const eventStatusAtCutoff = `SELECT h.status FROM event_status_history h
   WHERE h.event_id=e.id AND h.changed_at<=$1::timestamptz

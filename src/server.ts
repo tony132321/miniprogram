@@ -1,27 +1,36 @@
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { readFile } from 'node:fs/promises';
-import { createHash } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { isIP } from 'node:net';
 import type { Database } from './db.ts';
 import { AppError } from './errors.ts';
-import { createDraft, getEvent, publishEvent, rotateInvite, updateDraft } from './events.ts';
-import { getPublicGate, publicRecruitmentOpen, setPublicGate } from './public-gate.ts';
+import { createDraft, getEvent, hasGeneratedAiSuggestion, publishEvent, rotateInvite, updateDraft } from './events.ts';
+import { reviewHostStatus } from './host-limits.ts';
+import { confirmPublicCoverage, createPublicCoverage, getPublicGate, publicRecruitmentOpen,
+  revokePublicCoverage, setPublicGate } from './public-gate.ts';
 import { getEmergencyGate, setEmergencyGate } from './emergency-gate.ts';
-import { register, expressInterest, cancelRegistration, removeRegistration, reserveSeats, claimReservation, acceptOffer, declineOffer, approveRegistration, databaseNow } from './registrations.ts';
+import { register, expressInterest, cancelRegistration, removeRegistration, reserveSeats, claimReservation, acceptOffer, declineOffer, approveRegistration, listPendingApprovals, databaseNow } from './registrations.ts';
 import { previewEventChange, getPendingReconfirmation, changeEvent, reconfirm, confirmEvent, cancelEvent, createCheckInToken, checkIn, listCheckIns, requestManualCheckIn, respondManualCheckIn, listManualCheckIns, completeEvent, repeatEvent, listRepeatCandidates, recordExpense, listExpenses, markExpenseShare, recordOutcomeFeedback, getOutcomeEvidence } from './lifecycle.ts';
 import { localDraftSuggestion } from './ai.ts';
 import type { DraftProvider } from './ai-provider-boundary.ts';
-import { listAiDraftAlerts, runRecordedDraftProvider } from './ai-draft-requests.ts';
-import { createReport, listReports, listMyReports, changeReportStatus, createAppeal, listAppeals, listMyAppeals, changeAppealStatus, listMyRemovals, createPrivacyRequest, listPrivacyRequests, listPrivacyForOperations, getPrivacyRequestImpact } from './operations.ts';
+import { askSemanticCurrentFact, listAiSemanticAlerts, listAiSemanticAlertReviews, reviewAiSemanticAlert,
+  type SemanticFactProvider } from './ai-semantic-answer.ts';
+import { listAiDraftAlerts, listAiDraftAlertReviews, listAiEventCosts, reviewAiDraftAlert, runRecordedDraftProvider } from './ai-draft-requests.ts';
+import { approveAiAction, executeAiAction, prepareAiAction, revokeAiAction } from './ai-actions.ts';
+import { createReport, listReports, listReportTriage, listReportResponseAlerts, inspectReportForSafety, assignReport, classifyReportSeverity, listMyReports, changeReportStatus, createAppeal, listAppeals, listMyAppeals, changeAppealStatus, listMyRemovals, createPrivacyRequest, listPrivacyRequests, listPrivacyForOperations, getPrivacyRequestImpact } from './operations.ts';
+import type { ReportResponsePolicy } from './report-response-policy.ts';
 import { actorFromBearer, loginWithWechat, logoutMember, type WechatExchange } from './auth.ts';
-import { setConsent, consentNotice, markNotificationOpened, getAttentionItems, listMemberNotifications } from './notifications.ts';
+import { setConsent, consentNotice, markNotificationOpened, markAllNotificationsOpened, getAttentionItems, listMemberNotifications,
+  reconcileUnknownNotification, type NotificationLookupAdapter } from './notifications.ts';
 import { listNotificationFollowups, listNotificationFollowupHistory, recordNotificationFollowup } from './notification-followups.ts';
 import { askCurrentFact, createContent, listContent, listMyRejectedContent, listFactTodos, listPendingContent, moderateContent } from './collaboration.ts';
-import { recordShareIntent, recordAttributedOpen, getShareMetrics } from './sharing.ts';
+import { recordShareIntent, recordAttributedOpenInTransaction, getShareMetrics } from './sharing.ts';
 import { createPersonalExportTicket, downloadPersonalExport, exportPersonalData } from './privacy.ts';
+import { executePrivacyDeletionWithMarker, type DeletionMarkerStore } from './privacy-deletion-journal.ts';
+import { getPrivacyDeletionDisposition } from './privacy-deletion.ts';
 import { getPilotMetrics } from './metrics.ts';
 import { listSupportMinutes, recordSupportMinutes } from './support-minutes.ts';
-import { listEventAliases, setEventAlias } from './event-aliases.ts';
+import { eventAliasConsentStatus, listEventAliases, setEventAlias } from './event-aliases.ts';
 import { getActiveEventHold, listEventHolds, placeEventHold, releaseEventHold } from './safety.ts';
 import { consumeRateLimit, listRateLimitViolations } from './rate-limits.ts';
 import { getRegistrationAnomalyEvidence, listRegistrationAnomalies, reviewRegistrationAnomaly } from './registration-anomalies.ts';
@@ -33,6 +42,7 @@ import { blockEventMember, listMyBlocks, revokeBlock } from './blocks.ts';
 import { disabledFeatureForPath, R1_FEATURE_FLAGS } from './feature-flags.ts';
 import { requiresVerifiedPilot } from './pilot-access.ts';
 import { grantCohost, revokeCohost, listCohostGrants, hasCohostCapability } from './cohosts.ts';
+import { accessDenialRoute, recordAccessDenial, type AuthenticationClass } from './access-denial-audit.ts';
 
 export interface AppOptions {
   environment: 'development' | 'test' | 'production';
@@ -46,7 +56,11 @@ export interface AppOptions {
   trustedProxyIps?: string[];
   pilotUserIds?: string[];
   aiDraftProvider?: DraftProvider;
+  aiSemanticProvider?: SemanticFactProvider;
   aiDraftBudgetFen?: number;
+  notificationLookupAdapter?: NotificationLookupAdapter;
+  privacyDeletion?: { markerStore: DeletionMarkerStore; approvedPolicyJson: string };
+  reportResponsePolicy?: ReportResponsePolicy;
 }
 
 function send(res: ServerResponse, status: number, data: unknown): void {
@@ -78,6 +92,13 @@ async function actorFrom(req: IncomingMessage, db: Database, options: AppOptions
     if (typeof id === 'string' && /^[a-zA-Z0-9_-]{1,64}$/.test(id)) return id;
   }
   return actorFromBearer(db, req.headers.authorization);
+}
+
+async function ensureDevelopmentConsentAccount(req: IncomingMessage, db: Database,
+  options: AppOptions, actor: string): Promise<void> {
+  if (!options.devAuth || options.environment === 'production' || req.headers['x-dev-user'] !== actor) return;
+  await db.query(`INSERT INTO users(id,wechat_openid) VALUES($1,$2)
+    ON CONFLICT (id) DO NOTHING`, [actor, `dev:${actor}`]);
 }
 
 function keyFrom(req: IncomingMessage): string {
@@ -123,9 +144,12 @@ async function limitAuthenticatedRequest(db: Database, actor: string, method: st
 export function createApp(db: Database, options: AppOptions) {
   if (options.aiDraftProvider && options.environment === 'production' && !R1_FEATURE_FLAGS.ai_draft)
     throw new Error('AI draft provider disabled in production until release approval');
-  if (options.aiDraftProvider && (!Number.isSafeInteger(options.aiDraftBudgetFen) || Number(options.aiDraftBudgetFen) < 0))
-    throw new Error('AI draft budget must be a nonnegative integer fen');
-  if (options.aiDraftBudgetFen !== undefined && !options.aiDraftProvider)
+  if (options.aiSemanticProvider && options.environment !== 'test')
+    throw new Error('AI semantic provider is limited to isolated test fixtures');
+  if ((options.aiDraftProvider || options.aiSemanticProvider) &&
+    (!Number.isSafeInteger(options.aiDraftBudgetFen) || Number(options.aiDraftBudgetFen) < 0))
+    throw new Error('AI event budget must be a nonnegative integer fen');
+  if (options.aiDraftBudgetFen !== undefined && !options.aiDraftProvider && !options.aiSemanticProvider)
     throw new Error('AI draft budget requires a provider');
   if (options.environment === 'production' && options.devAuth) throw new Error('development identity must be disabled in production');
   if (options.environment === 'production' && options.clock) throw new Error('test clock must be disabled in production');
@@ -139,19 +163,25 @@ export function createApp(db: Database, options: AppOptions) {
   const permissionsByActor = new Map(operatorAccounts.map(account => [`operator:${account.username}`,
     account.permissions ?? (options.operatorAuth ? [...OPERATOR_PERMISSIONS] : [])]));
   function requireOperator(actor: string, permission: OperatorPermission): void {
-    if (!operators.has(actor) || (options.environment === 'production' && !permissionsByActor.get(actor)?.includes(permission)))
+    if (!operators.has(actor) || (permissionsByActor.has(actor) && !permissionsByActor.get(actor)?.includes(permission)))
       throw new AppError('FORBIDDEN', '无运营权限', 403);
   }
   const trustedProxyIps = new Set((options.trustedProxyIps ?? []).map(canonicalIp));
   const verifiedPilotUsers = new Set(options.pilotUserIds ?? []);
   return createServer((req, res) => withRequestFingerprint(req.method ?? 'GET', req.url ?? '/', async () => {
+    let auditPath = '/';
+    let auditActor: string | null = null;
+    let authenticationClass: AuthenticationClass = 'UNAUTHENTICATED';
     try {
       const requestUrl = new URL(req.url ?? '/', 'http://localhost');
       const path = requestUrl.pathname;
+      auditPath = path;
       const method = req.method ?? 'GET';
       if (path === '/health' && method === 'GET') return send(res, 200, { status: 'ok' });
       if (path === '/system/capabilities' && method === 'GET') return send(res, 200, { flags: R1_FEATURE_FLAGS });
       if (disabledFeatureForPath(path)) throw new AppError('FEATURE_DISABLED', '当前版本未开放此功能', 403);
+      if (path.startsWith('/ai/actions') && options.environment !== 'test')
+        throw new AppError('FEATURE_DISABLED', 'AI 动作协议仅用于隔离测试', 403);
       if (path === '/system/safety' && method === 'GET') {
         const gate = await getEmergencyGate(db);
         return send(res, 200, { status: gate.status, changedAt: gate.changedAt });
@@ -194,38 +224,73 @@ export function createApp(db: Database, options: AppOptions) {
       if (path.startsWith('/i/') && method === 'GET') {
         await consumeRateLimit(db, `invite-ip:${peerScope(req, trustedProxyIps)}`, 60, 60_000);
         const token = path.slice(3);
-        const { rows } = await db.query<{ id: string; status: string; payload: Record<string, unknown>; version: number;
-          recruiting: boolean; review_status: string }>("SELECT id,status,payload,version,recruiting,review_status FROM events WHERE invite_token=$1 AND invite_expires_at>now() AND status<>'DRAFT' AND (payload->>'visibility'<>'PUBLIC' OR (review_status='APPROVED' AND EXISTS (SELECT 1 FROM public_recruitment_gate WHERE id=1 AND status='OPEN')))", [token]);
-        const row = rows[0];
-        if (!row) throw new AppError('NOT_FOUND', '邀请已失效', 404);
+        const { rows: candidates } = await db.query<{ id: string }>("SELECT id FROM events WHERE invite_token=$1 AND invite_expires_at>now() AND status<>'DRAFT' AND review_status='APPROVED'", [token]);
+        if (!candidates[0]) throw new AppError('NOT_FOUND', '邀请已失效', 404);
         const visitor = await actorFrom(req, db, options).catch(() => null);
-        await recordAttributedOpen(db, visitor, row.id, token, requestUrl.searchParams.get('source'));
-        const payload = { title: row.payload.title, startAt: row.payload.startAt, endAt: row.payload.endAt,
-          timeZone: row.payload.timeZone, city: row.payload.city, venueName: row.payload.venueName,
-          venueStatus: row.payload.venueStatus, feeMode: row.payload.feeMode, feeCapFen: row.payload.feeCapFen,
-          cancellationRule: row.payload.cancellationRule, approvalMode: row.payload.approvalMode,
-          skillLevel: row.payload.skillLevel };
-        return send(res, 200, { id: row.id, status: row.status, version: row.version, recruiting: row.recruiting,
-          reviewStatus: row.review_status, riskPaused: Boolean(await getActiveEventHold(db, row.id)), payload,
-          title: row.payload.title,
-          startAt: row.payload.startAt, endAt: row.payload.endAt, city: row.payload.city, venueName: row.payload.venueName,
-          feeMode: row.payload.feeMode, feeCapFen: row.payload.feeCapFen, cancellationRule: row.payload.cancellationRule });
+        const card = await db.transaction(async tx => {
+          // Privacy deletion and invitation revocation update this event row.
+          // Keep it locked through every asynchronous card field read.
+          const { rows } = await tx.query<{ id: string; status: string; payload: Record<string, unknown>; version: number;
+            recruiting: boolean; review_status: string }>("SELECT id,status,payload,version,recruiting,review_status FROM events WHERE invite_token=$1 AND invite_expires_at>now() AND status<>'DRAFT' AND review_status='APPROVED' FOR SHARE", [token]);
+          const row = rows[0];
+          if (!row) throw new AppError('NOT_FOUND', '邀请已失效', 404);
+          if (row.payload.visibility === 'PUBLIC' && !(await publicRecruitmentOpen(tx, false, row.payload)))
+            throw new AppError('NOT_FOUND', '邀请已失效', 404);
+          await recordAttributedOpenInTransaction(tx, visitor, row.id, token, requestUrl.searchParams.get('source'));
+          const payload = { title: row.payload.title, startAt: row.payload.startAt, endAt: row.payload.endAt,
+            timeZone: row.payload.timeZone, city: row.payload.city, venueName: row.payload.venueName,
+            venueStatus: row.payload.venueStatus, feeMode: row.payload.feeMode, feeCapFen: row.payload.feeCapFen,
+            cancellationRule: row.payload.cancellationRule, approvalMode: row.payload.approvalMode,
+            visibility: row.payload.visibility,
+            skillLevel: row.payload.skillLevel };
+          return { id: row.id, status: row.status, version: row.version, recruiting: row.recruiting,
+            aiSuggestionGenerated: await hasGeneratedAiSuggestion(tx, row.id),
+            reviewStatus: row.review_status, riskPaused: Boolean(await getActiveEventHold(tx, row.id)), payload,
+            title: row.payload.title,
+            startAt: row.payload.startAt, endAt: row.payload.endAt, city: row.payload.city, venueName: row.payload.venueName,
+            feeMode: row.payload.feeMode, feeCapFen: row.payload.feeCapFen, cancellationRule: row.payload.cancellationRule };
+        });
+        return send(res, 200, card);
       }
       let actor: string;
-      if (path.startsWith('/ops/') && options.environment === 'production') {
+      if (path.startsWith('/ops/') && (options.environment === 'production' || req.headers.authorization?.startsWith('Bearer '))) {
         if (!operatorAccounts.length) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
         actor = await operatorFromBearer(db, req.headers.authorization, operatorAccounts);
       } else actor = await actorFrom(req, db, options);
+      auditActor = actor;
+      authenticationClass = actor.startsWith('operator:') ? 'OPERATOR' :
+        operators.has(actor) ? 'DEVELOPMENT_OPERATOR' :
+          options.devAuth && req.headers['x-dev-user'] === actor ? 'DEVELOPMENT_MEMBER' : 'MEMBER';
       if (options.environment === 'production' && requiresVerifiedPilot(method, path) && !verifiedPilotUsers.has(actor))
         throw new AppError('PILOT_NOT_VERIFIED', '仅已人工核验的成年试点成员可发起或参加活动', 403);
       await limitAuthenticatedRequest(db, actor, method, path);
+      if (path === '/ai/actions:prepare' && method === 'POST') {
+        const key = keyFrom(req); const body = await readJson(req);
+        return send(res, 201, await prepareAiAction(db, actor, {
+          kind: body.kind, eventId: body.eventId, expectedVersion: versionFrom(body.expectedVersion), payload: body.payload
+        }, key));
+      }
+      const aiAction = path.match(/^\/ai\/actions\/([a-f0-9-]{36})\/(approve|revoke|execute)$/);
+      if (aiAction && method === 'POST') {
+        const key = keyFrom(req); const body = await readJson(req); const id = aiAction[1]!;
+        if (aiAction[2] === 'approve') return send(res, 200, await approveAiAction(db, actor, id,
+          body.approved, body.payloadHash, key));
+        if (aiAction[2] === 'revoke') return send(res, 200, await revokeAiAction(db, actor, id, key));
+        return send(res, 200, await executeAiAction(db, actor, id, {
+          kind: body.kind, eventId: body.eventId, expectedVersion: versionFrom(body.expectedVersion),
+          payload: body.payload, payloadHash: body.payloadHash
+        }, key));
+      }
       if (path === '/events/drafts:suggest-local' && method === 'POST') {
         const key = keyFrom(req);
         const body = await readJson(req);
         const text = String(body.text ?? '');
+        const eventId = body.eventId;
+        if (eventId !== undefined && (typeof eventId !== 'string' || !/^[0-9a-f-]{36}$/.test(eventId)))
+          throw new AppError('BAD_REQUEST', '活动草稿 ID 无效');
         const at = options.clock?.() ?? Date.now();
         const suggestion = options.aiDraftProvider
-          ? await runRecordedDraftProvider(db, actor, key, text, at, options.aiDraftProvider, options.aiDraftBudgetFen!)
+          ? await runRecordedDraftProvider(db, actor, key, text, at, options.aiDraftProvider, options.aiDraftBudgetFen!, eventId)
           : localDraftSuggestion(text, at);
         return send(res, 200, suggestion);
       }
@@ -235,16 +300,171 @@ export function createApp(db: Database, options: AppOptions) {
           options.environment !== 'production' || !options.pilotUserIds?.includes(actor)));
       }
       if (path === '/me/events' && method === 'GET') {
-        const { rows } = await db.query<{ id: string; status: string; payload: { title?: string; startAt?: string };
-          is_host: boolean; my_status: string | null }>(`SELECT e.id,e.status,e.payload,(e.host_id=$1) AS is_host,r.status AS my_status FROM events e
-          LEFT JOIN registrations r ON r.event_id=e.id AND r.user_id=$1
-          WHERE e.host_id=$1 OR r.status IN ('INTERESTED','REQUESTED','WAITLISTED','OFFERED','CONFIRMED','RECONFIRM_REQUIRED')
-          ORDER BY e.id`, [actor]);
-        return send(res, 200, { items: rows.map(r => ({ id: r.id, status: r.status, title: r.payload.title,
-          startAt: r.payload.startAt, isHost: r.is_host, myRegistrationStatus: r.my_status })) });
+        const paged = ['limit', 'offset', 'snapshot'].some(key => requestUrl.searchParams.has(key));
+        const limitText = requestUrl.searchParams.get('limit') ?? '100';
+        const offsetText = requestUrl.searchParams.get('offset') ?? '0';
+        const requestedSnapshot = requestUrl.searchParams.get('snapshot');
+        if (paged && (!/^[1-9]\d*$/.test(limitText) || Number(limitText) > 100 ||
+          !/^(0|[1-9]\d*)$/.test(offsetText) || Number(offsetText) > 2_147_483_647 ||
+          (requestedSnapshot !== null && !/^[a-f0-9]{32}$/.test(requestedSnapshot))))
+          throw new AppError('BAD_REQUEST', '活动列表页码无效');
+        const limit = Number(limitText);
+        const offset = Number(offsetText);
+        if (paged && offset > 0 && !requestedSnapshot)
+          throw new AppError('BAD_REQUEST', '继续读取活动需要有效快照');
+        const result = await db.transaction(async tx => {
+          await tx.query('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY');
+          const now = await databaseNow(tx);
+          if (paged) {
+            // A page sorts only its visible keys. The order-independent signature still
+            // scans the actor's projection so a changed later page cannot be mixed in.
+            const scope = `WITH visible_ids AS (
+              SELECT id FROM events WHERE host_id=$1
+              UNION SELECT event_id AS id FROM registrations WHERE user_id=$1
+                AND status IN ('INTERESTED','REQUESTED','WAITLISTED','OFFERED','CONFIRMED','RECONFIRM_REQUIRED')
+              UNION SELECT event_id AS id FROM cohost_grants WHERE user_id=$1
+                AND revoked_at IS NULL AND expires_at>$2::timestamptz
+            ), actor_events AS (
+              SELECT e.id,e.status,e.version,e.created_at,e.payload,e.review_status,e.recruiting,
+                (e.host_id=$1) AS is_host,(c.id IS NOT NULL) AS is_cohost,r.status AS my_status,
+                CASE WHEN e.host_id=$1 OR e.review_status='APPROVED' OR
+                  (e.review_status='NOT_REQUIRED' AND
+                    ($2::timestamptz>=CASE WHEN e.status='RECRUITING' THEN
+                      (e.payload->>'confirmationDeadline')::timestamptz
+                    ELSE (e.payload->>'startAt')::timestamptz END OR
+                    e.status IN ('IN_PROGRESS','COMPLETED','CANCELLED','EXPIRED')))
+                  THEN true ELSE false END AS reviewed
+              FROM visible_ids v JOIN events e ON e.id=v.id
+              LEFT JOIN registrations r ON r.event_id=e.id AND r.user_id=$1
+              LEFT JOIN cohost_grants c ON c.event_id=e.id AND c.user_id=$1
+                AND c.revoked_at IS NULL AND c.expires_at>$2::timestamptz
+            ), visible_events AS (
+              SELECT *, CASE WHEN reviewed THEN (payload->>'startAt')::timestamptz
+                ELSE NULL END AS visible_start FROM actor_events
+            ), ranked AS (
+              SELECT *, CASE
+                WHEN status IN ('RECRUITING','CONFIRMED','IN_PROGRESS') AND my_status='OFFERED' THEN 0
+                WHEN status IN ('RECRUITING','CONFIRMED','IN_PROGRESS') AND
+                  (status='IN_PROGRESS' OR visible_start >= $2::timestamptz) THEN 1
+                WHEN status='DRAFT' THEN 2
+                WHEN status IN ('RECRUITING','CONFIRMED','IN_PROGRESS') AND visible_start IS NULL THEN 3
+                ELSE 4 END AS priority FROM visible_events
+            )`;
+            const nowText = new Date(now).toISOString();
+            const { rows: summaries } = await tx.query<{ total: number; snapshot: string }>(
+              `${scope} SELECT COUNT(*)::integer AS total,
+                md5($1::text || '|' || COUNT(*)::text || '|' ||
+                  COALESCE(bit_xor(('x' || md5(jsonb_build_array(
+                    id,status,reviewed,CASE WHEN reviewed THEN payload->>'title' ELSE '活动审核中' END,
+                    CASE WHEN reviewed THEN payload->>'startAt' END,
+                    CASE WHEN reviewed THEN payload->>'endAt' END,
+                    CASE WHEN reviewed THEN payload->>'city' END,
+                    CASE WHEN reviewed THEN payload->>'venueName' END,
+                    CASE WHEN reviewed THEN payload->>'feeMode' END,
+                    CASE WHEN reviewed THEN payload->'feeCapFen' END,
+                    is_host,is_cohost,my_status,priority,created_at,
+                    CASE WHEN is_host THEN review_status END,
+                    CASE WHEN is_host THEN recruiting END,
+                    CASE WHEN is_host THEN version END
+                  )::text))::bit(128))::text,repeat('0',128))) AS snapshot FROM ranked`,
+              [actor, nowText]);
+            const summary = summaries[0]!;
+            if (offset > 0 && requestedSnapshot !== summary.snapshot)
+              throw new AppError('QUEUE_CHANGED', '活动列表已变化，请从第一页刷新', 409);
+            const { rows: pageRows } = await tx.query<{ id: string; status: string; version: number;
+              payload: { title?: string; startAt?: string; endAt?: string; city?: string;
+                venueName?: string; feeMode?: string; feeCapFen?: number };
+              reviewed: boolean; review_status: string; recruiting: boolean;
+              is_host: boolean; is_cohost: boolean; my_status: string | null }>(
+              `${scope} SELECT id,status,version,payload,reviewed,review_status,recruiting,is_host,is_cohost,my_status FROM ranked
+                ORDER BY priority,
+                  CASE WHEN priority IN (0,1) THEN visible_start END ASC NULLS LAST,
+                  CASE WHEN priority=4 THEN visible_start END DESC NULLS LAST,
+                  date_trunc('milliseconds',created_at) DESC,id COLLATE "C" ASC
+                LIMIT $3 OFFSET $4`, [actor, nowText, limit, offset]);
+            const pageItems = pageRows.map(row => ({
+              id: row.id, status: row.status,
+              title: row.reviewed ? row.payload.title : '活动审核中',
+              startAt: row.reviewed ? row.payload.startAt : undefined,
+              endAt: row.reviewed ? row.payload.endAt : undefined,
+              city: row.reviewed ? row.payload.city : undefined,
+              venueName: row.reviewed ? row.payload.venueName : undefined,
+              feeMode: row.reviewed ? row.payload.feeMode : undefined,
+              feeCapFen: row.reviewed ? row.payload.feeCapFen : undefined,
+              isHost: row.is_host, isCohost: row.is_cohost,
+              myRegistrationStatus: row.my_status,
+              ...(row.is_host ? { reviewStatus: row.review_status, recruiting: row.recruiting,
+                version: row.version } : {})
+            }));
+            return { items: pageItems, total: summary.total,
+              nextOffset: offset + pageItems.length < summary.total ? offset + pageItems.length : null,
+              snapshot: summary.snapshot };
+          }
+          const { rows } = await tx.query<{ id: string; status: string; version: number;
+            recruiting: boolean; created_at: Date;
+            payload: { title?: string; startAt?: string; endAt?: string; city?: string;
+              venueName?: string; feeMode?: string; feeCapFen?: number };
+            review_status: string; legacy_review_closed: boolean | null; is_host: boolean; is_cohost: boolean;
+            my_status: string | null }>(`SELECT e.id,e.status,e.version,e.recruiting,e.created_at,e.payload,e.review_status,
+            $2::timestamptz>=CASE WHEN e.status='RECRUITING' THEN
+              (e.payload->>'confirmationDeadline')::timestamptz ELSE (e.payload->>'startAt')::timestamptz END
+              AS legacy_review_closed,
+            (e.host_id=$1) AS is_host,(c.id IS NOT NULL) AS is_cohost,r.status AS my_status FROM events e
+            LEFT JOIN registrations r ON r.event_id=e.id AND r.user_id=$1
+            LEFT JOIN cohost_grants c ON c.event_id=e.id AND c.user_id=$1
+              AND c.revoked_at IS NULL AND c.expires_at>$2::timestamptz
+            WHERE e.host_id=$1 OR c.id IS NOT NULL OR
+              r.status IN ('INTERESTED','REQUESTED','WAITLISTED','OFFERED','CONFIRMED','RECONFIRM_REQUIRED')`,
+            [actor, new Date(now).toISOString()]);
+          const items = rows.map(r => {
+            const reviewed = r.is_host || r.review_status === 'APPROVED' ||
+              (r.review_status === 'NOT_REQUIRED' &&
+                (r.legacy_review_closed === true || ['IN_PROGRESS', 'COMPLETED', 'CANCELLED', 'EXPIRED'].includes(r.status)));
+            const startAt = reviewed ? r.payload.startAt : undefined;
+            const startTime = startAt ? Date.parse(startAt) : NaN;
+            const active = ['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(r.status);
+            // An unreviewed start time must not affect list position: ordering by it would reveal private logistics.
+            const priority = active && r.my_status === 'OFFERED' ? 0 :
+              active && (r.status === 'IN_PROGRESS' || startTime >= now) ? 1 :
+                r.status === 'DRAFT' ? 2 : active && !Number.isFinite(startTime) ? 3 : 4;
+            return { item: { id: r.id, status: r.status, title: reviewed ? r.payload.title : '活动审核中',
+              startAt, endAt: reviewed ? r.payload.endAt : undefined,
+              city: reviewed ? r.payload.city : undefined,
+              venueName: reviewed ? r.payload.venueName : undefined,
+              feeMode: reviewed ? r.payload.feeMode : undefined,
+              feeCapFen: reviewed ? r.payload.feeCapFen : undefined,
+              isHost: r.is_host, isCohost: r.is_cohost, myRegistrationStatus: r.my_status,
+              ...(r.is_host ? { reviewStatus: r.review_status, recruiting: r.recruiting,
+                version: r.version } : {}) },
+            priority, startTime, createdAt: new Date(r.created_at).getTime() };
+          });
+          items.sort((a, b) => a.priority - b.priority ||
+            ((a.priority <= 1 || a.priority === 4) && Number.isFinite(a.startTime) && Number.isFinite(b.startTime)
+              ? (a.priority === 4 ? b.startTime - a.startTime : a.startTime - b.startTime) : 0) ||
+            b.createdAt - a.createdAt || a.item.id.localeCompare(b.item.id));
+          const ordered = items.map(row => row.item);
+          if (!paged) return { items: ordered };
+          // Only the actor's visible projection enters the token; changes that could shift a page reject continuation.
+          const snapshot = createHash('sha256').update(JSON.stringify([actor, ordered])).digest('hex').slice(0, 32);
+          if (offset > 0 && requestedSnapshot !== snapshot)
+            throw new AppError('QUEUE_CHANGED', '活动列表已变化，请从第一页刷新', 409);
+          const pageItems = ordered.slice(offset, offset + limit);
+          return { items: pageItems, total: ordered.length,
+            nextOffset: offset + pageItems.length < ordered.length ? offset + pageItems.length : null,
+            snapshot };
+        });
+        return send(res, 200, result);
       }
       if (path === '/me/registrations' && method === 'GET') {
-        const { rows } = await db.query('SELECT id,event_id,status,accepted_version,created_at FROM registrations WHERE user_id=$1 ORDER BY created_at DESC', [actor]);
+        const eventId = requestUrl.searchParams.get('eventId');
+        if (requestUrl.searchParams.has('eventId') &&
+          (eventId === null || !/^[a-zA-Z0-9_-]{1,128}$/.test(eventId)))
+          throw new AppError('BAD_REQUEST', '活动 ID 无效');
+        const { rows } = eventId
+          ? await db.query(`SELECT id,event_id,status,accepted_version,created_at FROM registrations
+            WHERE user_id=$1 AND event_id=$2 LIMIT 1`, [actor, eventId])
+          : await db.query(`SELECT id,event_id,status,accepted_version,created_at FROM registrations
+            WHERE user_id=$1 ORDER BY created_at DESC`, [actor]);
         return send(res, 200, { items: rows });
       }
       if (path === '/me/removals' && method === 'GET') return send(res, 200, { items: await listMyRemovals(db, actor) });
@@ -258,6 +478,14 @@ export function createApp(db: Database, options: AppOptions) {
         if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', '通知列表页码无效');
         return send(res, 200, await listMemberNotifications(db, actor, Number(offsetText), requestUrl.searchParams.get('snapshot')));
       }
+      if (path === '/me/approval-requests' && method === 'GET') {
+        const offsetText = requestUrl.searchParams.get('offset') ?? '0';
+        if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', '审核列表页码无效');
+        return send(res, 200, await listPendingApprovals(db, actor, Number(offsetText),
+          requestUrl.searchParams.get('snapshot')));
+      }
+      if (path === '/me/notifications/open-all' && method === 'POST')
+        return send(res, 200, await markAllNotificationsOpened(db, actor, keyFrom(req)));
       const openedNotification = path.match(/^\/me\/notifications\/([^/]+)\/open$/);
       if (openedNotification && method === 'POST') return send(res, 200, await markNotificationOpened(db, actor, openedNotification[1]!, keyFrom(req)));
       if (path === '/me/consents' && method === 'GET') {
@@ -272,6 +500,7 @@ export function createApp(db: Database, options: AppOptions) {
         const key = keyFrom(req); const body = await readJson(req);
         if (body.eventReminder === true && body.noticeVersion !== consentNotice('EVENT_REMINDER').version)
           throw new AppError('CONSENT_NOTICE_CHANGED', '授权说明已变化，请重新加载后再确认', 409);
+        if (body.eventReminder === true) await ensureDevelopmentConsentAccount(req, db, options, actor);
         return send(res, 200, await setConsent(db, actor, 'EVENT_REMINDER', body.eventReminder, key));
       }
       if (path === '/me/similar-invites' && method === 'GET') {
@@ -286,15 +515,33 @@ export function createApp(db: Database, options: AppOptions) {
         const key = keyFrom(req); const body = await readJson(req);
         if (body.granted === true && body.noticeVersion !== consentNotice('SIMILAR_ACTIVITY_INVITES').version)
           throw new AppError('CONSENT_NOTICE_CHANGED', '授权说明已变化，请重新加载后再确认', 409);
+        if (body.granted === true) await ensureDevelopmentConsentAccount(req, db, options, actor);
         return send(res, 200, await setConsent(db, actor, 'SIMILAR_ACTIVITY_INVITES', body.granted, key));
       }
-      if (path === '/reports' && method === 'POST') return send(res, 201, await createReport(db, actor, await readJson(req), keyFrom(req)));
+      if (path === '/reports' && method === 'POST') return send(res, 201, await createReport(db, actor,
+        await readJson(req), keyFrom(req), options.reportResponsePolicy));
       if (path === '/me/reports' && method === 'GET') return send(res, 200, { items: await listMyReports(db, actor) });
       if (path === '/ops/reports' && method === 'GET') {
         requireOperator(actor, 'REPORTS');
         const offsetText = requestUrl.searchParams.get('offset') ?? '0';
         if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', '举报列表页码无效');
-        return send(res, 200, await listReports(db, Number(offsetText), requestUrl.searchParams.get('snapshot')));
+        return send(res, 200, await listReports(db, actor, Number(offsetText), requestUrl.searchParams.get('snapshot')));
+      }
+      if (path === '/ops/reports/triage' && method === 'GET') {
+        requireOperator(actor, 'SAFETY');
+        const offsetText = requestUrl.searchParams.get('offset') ?? '0';
+        if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', '待分配举报页码无效');
+        const activeAssignees = [...permissionsByActor].filter(([, permissions]) => permissions.includes('REPORTS'))
+          .map(([operatorId]) => operatorId);
+        return send(res, 200, await listReportTriage(db, activeAssignees, Number(offsetText),
+          requestUrl.searchParams.get('snapshot')));
+      }
+      if (path === '/ops/reports/response-alerts' && method === 'GET') {
+        requireOperator(actor, 'SAFETY');
+        const offsetText = requestUrl.searchParams.get('offset') ?? '0';
+        if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', '首次响应关注列表页码无效');
+        return send(res, 200, await listReportResponseAlerts(db, Number(offsetText),
+          requestUrl.searchParams.get('snapshot')));
       }
       if (path === '/ops/holds' && method === 'GET') {
         requireOperator(actor, 'SAFETY');
@@ -303,6 +550,24 @@ export function createApp(db: Database, options: AppOptions) {
       if (path === '/ops/public-recruitment' && method === 'GET') {
         requireOperator(actor, 'SAFETY');
         return send(res, 200, await getPublicGate(db));
+      }
+      if (path === '/ops/public-coverage' && method === 'POST') {
+        requireOperator(actor, 'SAFETY');
+        const key = keyFrom(req); const body = await readJson(req);
+        return send(res, 201, await createPublicCoverage(db, actor, body.startsAt, body.endsAt,
+          body.drillReference, body.drillCompletedAt, key));
+      }
+      const coverageConfirm = path.match(/^\/ops\/public-coverage\/([a-f0-9-]{36})\/confirm$/);
+      if (coverageConfirm && method === 'POST') {
+        requireOperator(actor, 'SAFETY');
+        const key = keyFrom(req); const body = await readJson(req);
+        return send(res, 200, await confirmPublicCoverage(db, actor, coverageConfirm[1]!, body.reason, key));
+      }
+      const coverageRevoke = path.match(/^\/ops\/public-coverage\/([a-f0-9-]{36})\/revoke$/);
+      if (coverageRevoke && method === 'POST') {
+        requireOperator(actor, 'SAFETY');
+        const key = keyFrom(req); const body = await readJson(req);
+        return send(res, 200, await revokePublicCoverage(db, actor, coverageRevoke[1]!, body.reason, key));
       }
       if (path === '/ops/emergency' && method === 'GET') {
         requireOperator(actor, 'SAFETY');
@@ -316,7 +581,7 @@ export function createApp(db: Database, options: AppOptions) {
       if (path === '/ops/public-recruitment' && method === 'POST') {
         requireOperator(actor, 'SAFETY');
         const key = keyFrom(req); const body = await readJson(req);
-        return send(res, 200, await setPublicGate(db, actor, body.status, body.reason, key));
+        return send(res, 200, await setPublicGate(db, actor, body.status, body.reason, key, body.coverageId));
       }
       if (path === '/ops/rate-limits' && method === 'GET') {
         requireOperator(actor, 'RATE_LIMITS');
@@ -377,6 +642,38 @@ export function createApp(db: Database, options: AppOptions) {
         if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', 'AI 草稿异常列表页码无效');
         return send(res, 200, await listAiDraftAlerts(db, Number(offsetText), requestUrl.searchParams.get('snapshot')));
       }
+      if (path === '/ops/ai-semantic-alerts' && method === 'GET') {
+        requireOperator(actor, 'JOBS');
+        const offsetText = requestUrl.searchParams.get('offset') ?? '0';
+        if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', 'AI 语义异常列表页码无效');
+        return send(res, 200, await listAiSemanticAlerts(db, Number(offsetText), requestUrl.searchParams.get('snapshot')));
+      }
+      if (path === '/ops/ai-semantic-alerts/reviews' && method === 'GET') {
+        requireOperator(actor, 'JOBS');
+        const offsetText = requestUrl.searchParams.get('offset') ?? '0';
+        if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', 'AI 语义复核历史页码无效');
+        return send(res, 200, await listAiSemanticAlertReviews(db, Number(offsetText), requestUrl.searchParams.get('snapshot')));
+      }
+      if (path === '/ops/ai-semantic-alerts/review' && method === 'POST') {
+        requireOperator(actor, 'JOBS');
+        const key = keyFrom(req); const body = await readJson(req);
+        return send(res, 200, await reviewAiSemanticAlert(db, actor, body.userId, body.requestKey, body.note, key));
+      }
+      if (path === '/ops/ai-draft-alerts/reviews' && method === 'GET') {
+        requireOperator(actor, 'JOBS');
+        const offsetText = requestUrl.searchParams.get('offset') ?? '0';
+        if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', 'AI 草稿复核历史页码无效');
+        return send(res, 200, await listAiDraftAlertReviews(db, Number(offsetText), requestUrl.searchParams.get('snapshot')));
+      }
+      if (path === '/ops/ai-draft-alerts/review' && method === 'POST') {
+        requireOperator(actor, 'JOBS');
+        const key = keyFrom(req); const body = await readJson(req);
+        return send(res, 200, await reviewAiDraftAlert(db, actor, body.userId, body.requestKey, body.note, key));
+      }
+      if (path === '/ops/ai-event-costs' && method === 'GET') {
+        requireOperator(actor, 'JOBS');
+        return send(res, 200, await listAiEventCosts(db, requestUrl.searchParams.get('after')));
+      }
       const failedJobRetry = path.match(/^\/ops\/jobs\/([^/]+)\/retry$/);
       if (failedJobRetry && method === 'POST') {
         requireOperator(actor, 'JOBS');
@@ -388,11 +685,25 @@ export function createApp(db: Database, options: AppOptions) {
         const key = keyFrom(req); const body = await readJson(req);
         return send(res, 200, await recordNotificationFollowup(db, actor, notificationFollowup[1]!, body.note, key));
       }
+      const notificationReconciliation = path.match(/^\/ops\/notifications\/([^/]+)\/reconcile$/);
+      if (notificationReconciliation && method === 'POST') {
+        requireOperator(actor, 'NOTIFICATIONS');
+        const key = keyFrom(req); const body = await readJson(req);
+        if (Object.keys(body).length) throw new AppError('BAD_REQUEST', '通知查单不接受请求参数');
+        return send(res, 200, await reconcileUnknownNotification(db, actor, notificationReconciliation[1]!, key,
+          options.notificationLookupAdapter));
+      }
       if (path === '/ops/events/reviews' && method === 'GET') {
         requireOperator(actor, 'EVENT_REVIEWS');
         const offsetText = requestUrl.searchParams.get('offset') ?? '0';
-        if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', '公开活动审核列表页码无效');
+        if (!/^(0|[1-9]\d*)$/.test(offsetText)) throw new AppError('BAD_REQUEST', '活动审核列表页码无效');
         return send(res, 200, await listPendingEventReviews(db, Number(offsetText), requestUrl.searchParams.get('snapshot')));
+      }
+      const hostStatusReview = path.match(/^\/ops\/hosts\/([^/]+)\/status$/);
+      if (hostStatusReview && method === 'POST') {
+        requireOperator(actor, 'SAFETY');
+        const key = keyFrom(req); const body = await readJson(req);
+        return send(res, 200, await reviewHostStatus(db, actor, hostStatusReview[1]!, body.status, body.reason, key));
       }
       const eventReview = path.match(/^\/ops\/events\/([^/]+)\/review$/);
       if (eventReview && method === 'POST') {
@@ -413,6 +724,28 @@ export function createApp(db: Database, options: AppOptions) {
         return send(res, 200, await releaseEventHold(db, actor, releaseHold[1]!, body.reason, key));
       }
       const reportStatus = path.match(/^\/ops\/reports\/([^/]+)\/status$/);
+      const reportInspect = path.match(/^\/ops\/reports\/([^/]+)\/inspect$/);
+      if (reportInspect && method === 'POST') {
+        requireOperator(actor, 'SAFETY');
+        const body = await readJson(req);
+        return send(res, 200, await inspectReportForSafety(db, actor, reportInspect[1]!, body.reason));
+      }
+      const reportAssign = path.match(/^\/ops\/reports\/([^/]+)\/assign$/);
+      if (reportAssign && method === 'POST') {
+        requireOperator(actor, 'SAFETY');
+        const key = keyFrom(req); const body = await readJson(req);
+        const account = typeof body.assignee === 'string' ? operatorByName.get(body.assignee) : undefined;
+        if (!account || !(account.permissions ?? (options.operatorAuth ? [...OPERATOR_PERMISSIONS] : [])).includes('REPORTS'))
+          throw new AppError('BAD_REQUEST', '分配对象须为当前具名举报处理人员');
+        return send(res, 200, await assignReport(db, actor, reportAssign[1]!, `operator:${account.username}`, body.reason, key));
+      }
+      const reportSeverity = path.match(/^\/ops\/reports\/([^/]+)\/severity$/);
+      if (reportSeverity && method === 'POST') {
+        requireOperator(actor, 'SAFETY');
+        const key = keyFrom(req); const body = await readJson(req);
+        return send(res, 200, await classifyReportSeverity(db, actor, reportSeverity[1]!, body.severity,
+          body.expectedSeverity, body.reason, key, options.reportResponsePolicy));
+      }
       if (reportStatus && method === 'POST') {
         requireOperator(actor, 'REPORTS');
         const key = keyFrom(req); const body = await readJson(req);
@@ -445,6 +778,23 @@ export function createApp(db: Database, options: AppOptions) {
       if (privacyImpact && method === 'GET') {
         requireOperator(actor, 'PRIVACY');
         return send(res, 200, await getPrivacyRequestImpact(db, actor, privacyImpact[1]!));
+      }
+      const privacyDisposition = path.match(/^\/ops\/privacy\/([a-zA-Z0-9-]+)\/disposition$/);
+      if (privacyDisposition && method === 'GET') {
+        requireOperator(actor, 'PRIVACY');
+        const operatorActor = actor.startsWith('operator:') ? actor : `operator:${actor}`;
+        return send(res, 200, await getPrivacyDeletionDisposition(db, operatorActor, privacyDisposition[1]!));
+      }
+      const privacyExecution = path.match(/^\/ops\/privacy\/([a-zA-Z0-9-]+)\/execute$/);
+      if (privacyExecution && method === 'POST') {
+        requireOperator(actor, 'PRIVACY');
+        keyFrom(req);
+        const body = await readJson(req);
+        if (Object.keys(body).length) throw new AppError('BAD_REQUEST', '注销处置不接受请求参数');
+        if (!options.privacyDeletion) throw new AppError('DELETE_EXECUTION_UNAVAILABLE', '注销执行所需的独立标记存储未配置', 503);
+        const operatorActor = actor.startsWith('operator:') ? actor : `operator:${actor}`;
+        return send(res, 200, await executePrivacyDeletionWithMarker(db, options.privacyDeletion.markerStore,
+          operatorActor, privacyExecution[1]!, options.privacyDeletion.approvedPolicyJson));
       }
       if (path === '/ops/privacy' && method === 'GET') {
         requireOperator(actor, 'PRIVACY');
@@ -479,7 +829,7 @@ export function createApp(db: Database, options: AppOptions) {
             WHERE event_id=$1 AND claimed_by IS NULL AND released_at IS NULL AND expires_at>now()`, [id]);
           const stats = { ...(counts[0] ?? { confirmed: 0, waitlisted: 0, reconfirmRequired: 0, requested: 0 }), reserved: reservations[0]?.reserved ?? 0 };
           return send(res, 200, { ...event, stats, riskPaused: Boolean(await getActiveEventHold(db, id)) ||
-            (event.payload.visibility === 'PUBLIC' && !(await publicRecruitmentOpen(db))),
+            (event.payload.visibility === 'PUBLIC' && !(await publicRecruitmentOpen(db, false, event.payload))),
             formationRisk: event.status === 'CONFIRMED' && stats.confirmed < event.payload.minParticipants! });
         }
         if (action === 'registrations' && method === 'GET') {
@@ -494,7 +844,8 @@ export function createApp(db: Database, options: AppOptions) {
         }
         if (action === 'content' && method === 'GET') return send(res, 200, { items: await listContent(db, actor, id) });
         if (action === 'cohosts' && method === 'GET') return send(res, 200, { items: await listCohostGrants(db, actor, id) });
-        if (action === 'aliases' && method === 'GET') return send(res, 200, { items: await listEventAliases(db, actor, id) });
+        if (action === 'aliases' && method === 'GET') return send(res, 200, {
+          items: await listEventAliases(db, actor, id), ...(await eventAliasConsentStatus(db, actor, id)) });
         if (action === 'fact-todos' && method === 'GET') return send(res, 200, { items: await listFactTodos(db, actor, id) });
         if (action === 'expenses' && method === 'GET') return send(res, 200, { items: await listExpenses(db, actor, id) });
         if (action === 'manual-checkins' && method === 'GET') return send(res, 200, { items: await listManualCheckIns(db, actor, id) });
@@ -513,9 +864,13 @@ export function createApp(db: Database, options: AppOptions) {
               body.userId, body.capabilities, body.expiresAt, key));
           }
           if (action === 'content') return send(res, 201, await createContent(db, actor, id, body.kind, body.body, body.parentId ?? null, key));
-          if (action === 'aliases') return send(res, 200, await setEventAlias(db, actor, id, body.displayName, body.granted, key));
+          if (action === 'aliases') return send(res, 200, await setEventAlias(db, actor, id, body.displayName, body.granted, key,
+            body.noticeVersion));
           if (action === 'blocks') return send(res, 201, await blockEventMember(db, actor, id, body.memberId, key));
-          if (action === 'facts:ask') return send(res, 200, await askCurrentFact(db, actor, id, body.question, key));
+          if (action === 'facts:ask') return send(res, 200, options.aiSemanticProvider
+            ? await askSemanticCurrentFact(db, actor, id, body.question, key, options.aiSemanticProvider,
+              { budgetFen: options.aiDraftBudgetFen, environment: options.environment })
+            : await askCurrentFact(db, actor, id, body.question, key));
           const version = versionFrom(body.expectedVersion);
           if (action === 'publish') return send(res, 200, await publishEvent(db, actor, id, version, key));
           if (action === 'draft') return send(res, 200, await updateDraft(db, actor, id, version, body.patch ?? {}, key));
@@ -565,7 +920,11 @@ export function createApp(db: Database, options: AppOptions) {
       const regMatch = path.match(/^\/registrations\/([^/]+)\/(cancel|approve|reconfirm|remove)$/);
       if (regMatch && method === 'POST') {
         const key = keyFrom(req); const body = await readJson(req); const version = versionFrom(body.expectedVersion);
-        if (regMatch[2] === 'cancel') return send(res, 200, await cancelRegistration(db, actor, regMatch[1]!, version, key));
+        if (regMatch[2] === 'cancel') {
+          if (body.expectedStatus !== undefined && body.expectedStatus !== 'REQUESTED')
+            throw new AppError('BAD_REQUEST', 'expectedStatus 仅支持 REQUESTED', 400);
+          return send(res, 200, await cancelRegistration(db, actor, regMatch[1]!, version, key, body.expectedStatus));
+        }
         if (regMatch[2] === 'approve') return send(res, 200, await approveRegistration(db, actor, regMatch[1]!, version, key));
         if (regMatch[2] === 'remove') return send(res, 200, await removeRegistration(db, actor, regMatch[1]!, version, body.reason, key));
         return send(res, 200, await reconfirm(db, actor, regMatch[1]!, version, key, options.clock?.()));
@@ -584,7 +943,10 @@ export function createApp(db: Database, options: AppOptions) {
       const claimMatch = path.match(/^\/reservations\/([^/]+)\/claim$/);
       if (claimMatch && method === 'POST') {
         const key = keyFrom(req); const body = await readJson(req);
-        return send(res, 200, await claimReservation(db, actor, claimMatch[1]!, versionFrom(body.expectedVersion), key));
+        if (typeof body.expectedEventId !== 'string' || !body.expectedEventId.trim())
+          throw new AppError('BAD_REQUEST', 'expectedEventId 必须为活动 ID');
+        return send(res, 200, await claimReservation(db, actor, claimMatch[1]!, versionFrom(body.expectedVersion), key,
+          body.expectedEventId));
       }
       const offerMatch = path.match(/^\/offers\/([^/]+)\/(accept|decline)$/);
       if (offerMatch && method === 'POST') {
@@ -597,6 +959,20 @@ export function createApp(db: Database, options: AppOptions) {
       throw new AppError('NOT_FOUND', '接口不存在', 404);
     } catch (error) {
       if (error instanceof AppError) {
+        const route = accessDenialRoute(auditPath);
+        if (error.status === 403 || (error.status === 404 && route.protectedRoute)) {
+          const requestId = randomUUID();
+          res.setHeader('X-Request-Id', requestId);
+          try {
+            await recordAccessDenial(db, {
+              actor: auditActor, authenticationClass, routeTemplate: route.routeTemplate,
+              errorCode: error.code, requestId
+            });
+          } catch {
+            // Audit storage failure never changes the denial outcome or reveals
+            // request data in an application log.
+          }
+        }
         if (error.retryAfterSeconds) res.setHeader('Retry-After', String(error.retryAfterSeconds));
         send(res, error.status, { code: error.code, message: error.message });
       }

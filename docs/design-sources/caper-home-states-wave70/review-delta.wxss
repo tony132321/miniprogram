@@ -1,0 +1,57 @@
+
+/* Independent source review correction: Tailwind 3.4.17 roles/motion/press.
+   Native hover-class projects the source active state; bindings remain intact. */
+.home-state-pending .tab { background: #f4f3f8; transition-property: all; transition-duration: 150ms; transition-timing-function: cubic-bezier(.4,0,.2,1); }
+.home-state-pending .tab.selected { background: #1a1b1f; transition-duration: 0s; }
+.home-state-organized .tab.selected { color: #faf8fe; }
+.home-state-pending .home-reference-card .cover-poster-line { letter-spacing: .325px; }
+.home-state-reference .home-reference-card.card-organized.status-CONFIRMED .cover-poster-word,.home-state-reference .home-reference-card.card-organized.status-IN_PROGRESS .cover-poster-word { color: #faf8fe; letter-spacing: .275px; }
+.home-state-organized .reference-footer-caption { letter-spacing: .55px; }
+.home-state-reference .home-reference-card.card-history .cover-sticker { letter-spacing: .55px; }
+.home-state-reference .home-reference-card.card-history.history-feedback-card .cover-sticker { letter-spacing: .22px; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+.home-state-reference .home-reference-card.card-history .history-cover-date { letter-spacing: .55px; }
+.home-state-organized .reference-ai-heading { letter-spacing: -.17px; }
+.home-state-reference .home-reference-card.card-history .history-cover-title { letter-spacing: -.17px; }
+.home-state-reference .home-reference-card.card-organized.status-RECRUITING .pill { font-weight: 700; }
+.home-state-reference .home-reference-card.registration-WAITLISTED .cover-status { color: #424655; }
+.home-state-reference .home-reference-card.registration-RECONFIRM_REQUIRED .cover-poster-line { color: #d2f803; font-weight: 700; }
+.home-state-reference .home-reference-card.card-history.history-feedback-card .cover { filter: none; }
+.home-state-reference .home-reference-card.card-history.history-feedback-card .cover-status { padding: 2px 8px; color: #fff; background: rgba(0,0,0,.4); backdrop-filter: blur(12px); box-shadow: none; }
+.home-state-reference .home-reference-card.card-history.history-feedback-card .reference-status-dot { display: none; }
+.home-state-reference .home-reference-card.card-organized .cover-poster { filter: drop-shadow(0 4px 3px rgba(0,0,0,.07)) drop-shadow(0 2px 2px rgba(0,0,0,.06)); }
+.home-state-reference .home-reference-card.card-organized .cover-poster-word { text-shadow: none; }
+.home-state-reference .home-reference-card.card-organized.status-CONFIRMED .cover-poster,.home-state-reference .home-reference-card.card-organized.status-IN_PROGRESS .cover-poster { filter: none; }
+.home-state-pending .reference-ai-status,.home-state-organized .reference-ai-status { background: transparent; }
+.home-state-reference .reference-ai-solid { position: relative; display: block; width: 100%; height: 100%; border-radius: 9999px; background: #d2f803; }
+.home-state-reference .reference-ai-ping { position: absolute; inset: 0; display: block; border-radius: 9999px; background: #d2f803; opacity: .75; animation: caper-home-ping-wave70 1s cubic-bezier(0,0,.2,1) infinite; }
+.home-state-organized .reference-ai-orb-inner image,.home-state-history .reference-ai-orb-inner { animation: caper-home-pulse-wave70 2s cubic-bezier(.4,0,.6,1) infinite; }
+.home-state-reference .home-reference-card.registration-REQUESTED .pill::before { animation: caper-home-pulse-wave70 2s cubic-bezier(.4,0,.6,1) infinite; }
+.home-state-reference .reference-change-band .reference-glyph { animation: caper-home-bounce-wave70 1s infinite; }
+.home-state-reference .home-reference-card.card-organized.status-RECRUITING .reference-status-dot { animation: caper-home-ping-wave70 1s cubic-bezier(0,0,.2,1) infinite; }
+@keyframes caper-home-ping-wave70 { 75%,100% { transform: scale(2); opacity: 0; } }
+@keyframes caper-home-pulse-wave70 { 50% { opacity: .5; } }
+@keyframes caper-home-bounce-wave70 { 0%,100% { transform: translateY(-25%); animation-timing-function: cubic-bezier(.8,0,1,1); } 50% { transform: none; animation-timing-function: cubic-bezier(0,0,.2,1); } }
+.home-state-pending .state-ai-banner { transition-property: transform; transition-duration: 150ms; transition-timing-function: cubic-bezier(.4,0,.2,1); }
+.home-state-pending .state-ai-banner.home-reference-banner-pressed { transform: scale(.99); }
+.home-state-organized .reference-ai-arrow { transition-property: transform; transition-duration: 150ms; transition-timing-function: cubic-bezier(.4,0,.2,1); }
+.home-state-organized .home-reference-banner-pressed .reference-ai-arrow { transform: scale(.95); }
+.home-state-history .reference-ai-arrow { transition-property: color,background-color,border-color,text-decoration-color,fill,stroke; transition-duration: 150ms; transition-timing-function: cubic-bezier(.4,0,.2,1); }
+.home-state-history .home-reference-banner-pressed .reference-ai-arrow { background: rgba(255,255,255,.25); }
+.home-state-organized .tab { transition-property: transform; transition-duration: 150ms; transition-timing-function: cubic-bezier(.4,0,.2,1); }
+.home-state-history .tab { transition-property: all; transition-duration: 150ms; transition-timing-function: cubic-bezier(.4,0,.2,1); }
+.home-state-reference .tab.home-reference-tab-pressed { transform: scale(.95); }
+.home-state-reference .home-reference-card.registration-REQUESTED .card-primary { transition-property: color,background-color,border-color,text-decoration-color,fill,stroke; transition-duration: 150ms; transition-timing-function: cubic-bezier(.4,0,.2,1); }
+.home-state-reference .home-reference-card.registration-REQUESTED .card-primary.home-reference-card-pressed { background: #efedf3; }
+.home-state-reference .home-reference-card.registration-REQUESTED .card-secondary,.home-state-reference .home-reference-card.registration-RECONFIRM_REQUIRED .card-primary { transition-property: all; transition-duration: 150ms; transition-timing-function: cubic-bezier(.4,0,.2,1); }
+.home-state-reference .home-reference-card.registration-REQUESTED .card-secondary.home-reference-card-pressed,.home-state-reference .home-reference-card.registration-RECONFIRM_REQUIRED .card-primary.home-reference-card-pressed { transform: scale(.98); }
+.home-state-reference .home-reference-card.registration-RECONFIRM_REQUIRED .card-secondary { transition-property: color,background-color,border-color,text-decoration-color,fill,stroke; transition-duration: 150ms; transition-timing-function: cubic-bezier(.4,0,.2,1); }
+.home-state-reference .home-reference-card.registration-RECONFIRM_REQUIRED .card-secondary.home-reference-card-pressed { background: #efedf3; }
+.home-state-reference .home-reference-card.registration-WAITLISTED .card-actions button,.home-state-reference .home-reference-card.registration-WAITLISTED .card-shortcut { transition-property: color,background-color,border-color,text-decoration-color,fill,stroke; transition-duration: 150ms; transition-timing-function: cubic-bezier(.4,0,.2,1); }
+.home-state-reference .home-reference-card.registration-WAITLISTED .home-reference-card-pressed { transform: scale(.95); }
+.home-state-reference .home-reference-card.card-organized .card-actions button { transition-property: transform; transition-duration: 150ms; transition-timing-function: cubic-bezier(.4,0,.2,1); }
+.home-state-reference .home-reference-card.card-organized.status-RECRUITING .card-secondary.home-reference-card-pressed,.home-state-reference .home-reference-card.card-organized .card-share.home-reference-card-pressed { transform: scale(.95); }
+.home-state-reference .home-reference-card.card-history .card-actions button { transition-property: all; transition-duration: 150ms; transition-timing-function: cubic-bezier(.4,0,.2,1); }
+.home-state-reference .home-reference-card.card-history .card-actions button.home-reference-card-pressed { transform: scale(.95); }
+
+/* Source D first history card fee label geometry; neutral text, no settlement assertion. */
+.home-state-reference .home-reference-card.card-history.history-repeat-card .history-cover-fee { padding: 2px 8px; border-radius: 6px; font-weight: 700; letter-spacing: .22px; backdrop-filter: blur(12px); }

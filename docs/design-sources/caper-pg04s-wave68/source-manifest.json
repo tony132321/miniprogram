@@ -1,0 +1,139 @@
+{
+  "original": {
+    "html": {
+      "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg04_s/code.html",
+      "bytes": 17310,
+      "sha256": "168f4582264fad299c953bd377e915b38a81a2fb01001e5f5259195846f0361a"
+    },
+    "png": {
+      "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg04_s/screen.png",
+      "bytes": 426748,
+      "pixels": [
+        545,
+        1600
+      ],
+      "sha256": "0b216f3226ec3c1e0ef1c1034787f486e7a3f9013118c75bf9265feaaddbcf94"
+    },
+    "zip": "/Users/tsb/Downloads/stitch_design_system_generator (2).zip",
+    "zipSha256": "df22e733d33fda20979b75b8a7bc94717c4a5c9e41561a54e3038432fab32603",
+    "zipEntriesSame": true
+  },
+  "license": {
+    "path": "docs/licenses/material-symbols-Apache-2.0.txt",
+    "bytes": 11357,
+    "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd",
+    "type": "Apache-2.0"
+  },
+  "sourceFiles": [
+    {
+      "path": "docs/design-sources/caper-pg04s-wave68/fonttools_node_brotli_bridge.py",
+      "bytes": 1106,
+      "sha256": "5492c1f7199e933e419b38b874418741b23e7b03eb2998003b0b766cb885deac"
+    },
+    {
+      "path": "docs/design-sources/caper-pg04s-wave68/material-fill0.css",
+      "bytes": 682,
+      "sha256": "373d0b88eb88929bdefc365ee236d182dd3855a127f845025635a1457855b841"
+    },
+    {
+      "path": "docs/design-sources/caper-pg04s-wave68/material-fill0.ttf",
+      "bytes": 6396,
+      "sha256": "e45b289adaff380d9c916844948e16e337dbe71f6a55a5b097d130063285c981"
+    },
+    {
+      "path": "docs/design-sources/caper-pg04s-wave68/material-fill1.css",
+      "bytes": 630,
+      "sha256": "8c30d9a47b8c6fe1a186c7fd8433247f3d45c1b780b79e3937409c1764743169"
+    },
+    {
+      "path": "docs/design-sources/caper-pg04s-wave68/material-fill1.ttf",
+      "bytes": 2368,
+      "sha256": "32bdb46b428598f5b62851d453339ac4317c98c0f6932e0a562d2a1bc458e40a"
+    },
+    {
+      "path": "docs/design-sources/caper-pg04s-wave68/material-manifest.json",
+      "bytes": 24529,
+      "sha256": "d5a7e75fd1a86f0028f1331630f31d504f63442a7fb37e837facd45a275a874c"
+    },
+    {
+      "path": "docs/design-sources/caper-pg04s-wave68/original-range-chrome-font.woff2",
+      "bytes": 3764,
+      "sha256": "adada12de9776a90cfde3cf3ade48a8ecf86a45b7259572e96050cd8251ac847"
+    },
+    {
+      "path": "docs/design-sources/caper-pg04s-wave68/original-range-chrome.css",
+      "bytes": 650,
+      "sha256": "52a9834b7e8f60990c344f05f569376664fdf7e0fedf89adf3174a5639bfd10a"
+    },
+    {
+      "path": "docs/design-sources/caper-pg04s-wave68/original-range-decoded.ttf",
+      "bytes": 6692,
+      "sha256": "e5cd5b08961228ec5d79377306c522474cec271209b28486c8de1176df317294"
+    },
+    {
+      "path": "docs/design-sources/caper-pg04s-wave68/original-range-static-request.css",
+      "bytes": 2661,
+      "sha256": "58320513ca57e1f6f611f4bdcd39716611825cd2a5ff8753b47bf729e041cb2d"
+    },
+    {
+      "path": "docs/design-sources/caper-pg04s-wave68/original-range-static-weight400.ttf",
+      "bytes": 2492,
+      "sha256": "a3ea0c4dedc84afd95d1d71b1799047de7ea6e9ddd56532c2ea8cbf6d78b47c9"
+    },
+    {
+      "path": "docs/design-sources/caper-pg04s-wave68/original-second-decoded.ttf",
+      "bytes": 14464,
+      "sha256": "0feba53940f0cdbfb92347b1405cbcb2100a1801478ff1bc0253f6cc91c6a432"
+    },
+    {
+      "path": "docs/design-sources/caper-pg04s-wave68/original-second-request.css",
+      "bytes": 758,
+      "sha256": "83e313043a784735904773f4d2b7048613831c7bf0d926675c666c63e9414b9f"
+    },
+    {
+      "path": "docs/design-sources/caper-pg04s-wave68/original-second-request.woff2",
+      "bytes": 6812,
+      "sha256": "b4c6589ba651b7f40f2214f1cc2fc7c659f33ce290dd9e633ab3a017a4dfe9d6"
+    },
+    {
+      "path": "docs/design-sources/caper-pg04s-wave68/recommend-source-correction.json",
+      "bytes": 504,
+      "sha256": "580f4da9fa29ab63290309be6027fc46757ec6c6b5564c6b247636010998e066"
+    },
+    {
+      "path": "docs/design-sources/caper-pg04s-wave68/second-font-proof.json",
+      "bytes": 1124,
+      "sha256": "884ad8a6c99e3de2a68cb737a866c8fe60ddc8812f88c5bcafe778201f5db047"
+    },
+    {
+      "path": "docs/design-sources/caper-pg04s-wave68/success-mark-png-override.json",
+      "bytes": 4085,
+      "sha256": "d5220ec4408b097f00987cfe1a0cd9f63c01f357dddf2963286634f2f8090e9b"
+    }
+  ],
+  "material": "material-manifest.json",
+  "defaultAxisProof": "second-font-proof.json",
+  "sourcePrepareFailure": {
+    "stage": "original Chrome WOFF2 first direct TTFont read",
+    "error": "ImportError: No module named brotli",
+    "productChanged": false,
+    "resolved": "Node builtin zlib.brotliDecompressSync reader bridge; no install; original variable axes and all15 outlines then verified"
+  },
+  "selectors": [
+    ".event-page.pg04s-reference",
+    ".pg04s-native-nav",
+    ".pg04s-content",
+    ".pg04s-event-card",
+    ".pg04s-actions",
+    ".pg04s-helper",
+    ".pg04s-ctas"
+  ],
+  "scope": "loadState === 'READY' && successState === 'PUBLISHED' && display.isBadminton",
+  "pngVisualOverride": {
+    "node": "success check_circle mark",
+    "precedence": "supplied screen.png appearance, explicit root authorization",
+    "activeFILL": 0,
+    "retainedHTMLFILL": 1,
+    "proof": "success-mark-png-override.json"
+  }
+}

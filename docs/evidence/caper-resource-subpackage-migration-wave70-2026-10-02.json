@@ -1,0 +1,220 @@
+{
+  "reason": "Focused WeChat CLI main package source 2059KB exceeds2048KB after exact home source assets and PG09 byte-identical move",
+  "moves": [
+    {
+      "from": "miniprogram/vendor/qrcode.js",
+      "to": "miniprogram/subpackages/activity/vendor/qrcode.js",
+      "bytes": 56694,
+      "sha256": "79ec86f82856005b1c887905cfccfcfbec3821ca61c7fd5a952faa5f778f791c",
+      "byteIdentical": true
+    },
+    {
+      "from": "miniprogram/utils/checkin-qr.js",
+      "to": "miniprogram/subpackages/activity/utils/checkin-qr.js",
+      "bytes": 1028,
+      "sha256": "974a6c54f8813ececa17291b99099adf72610963faaad3e6949c6badaedcf31f",
+      "byteIdentical": true
+    }
+  ],
+  "imports": [
+    {
+      "path": "miniprogram/subpackages/activity/event/event.js",
+      "oldLiteral": "require('../../../utils/checkin-qr.js')",
+      "newLiteral": "require('../utils/checkin-qr.js')",
+      "replacements": 1
+    },
+    {
+      "path": "miniprogram/subpackages/activity/share/share.js",
+      "oldLiteral": "require('../../../vendor/qrcode.js')",
+      "newLiteral": "require('../vendor/qrcode.js')",
+      "replacements": 1
+    }
+  ],
+  "testAdapterPaths": [
+    "test/miniprogram-pg06-host-announcement-shortcut.test.ts",
+    "test/miniprogram-host-completion-shortcut.test.ts",
+    "test/miniprogram-pg09-expense-share.test.ts",
+    "test/pg05-confirmation.test.ts",
+    "test/checkin-qr.test.ts",
+    "test/miniprogram-event-expense-interactions.test.ts",
+    "test/miniprogram-event-action-identity.test.ts",
+    "test/miniprogram.test.ts",
+    "test/miniprogram-outcome-notice-deeplink.test.ts",
+    "test/invite-miniapp-refresh.test.ts",
+    "test/miniprogram-caper-share.test.ts",
+    "test/miniprogram-event-safety-clipboard-race.test.ts",
+    "test/event-caper-navigation.test.ts",
+    "test/miniprogram-event-controls.test.ts",
+    "test/miniprogram-pg04s-published-shortcut.test.ts",
+    "test/miniprogram-event-screen-navigation.test.ts",
+    "test/miniprogram-caper-poster.test.ts",
+    "test/miniprogram-event-resilient-detail.test.ts",
+    "test/miniprogram-event-time-controls.test.ts",
+    "test/invite-miniapp-share.test.ts",
+    "test/miniprogram-event-post-refresh-race.test.ts",
+    "test/miniprogram-event-session-isolation.test.ts"
+  ],
+  "mainRawBytesMoved": 57722,
+  "roof": {
+    "from": "miniprogram/assets/stitch/pg09_expense_rooftop.jpg",
+    "to": "miniprogram/subpackages/activity/event/assets/pg09-expense-rooftop.jpg",
+    "bytes": 70223,
+    "sha256": "169a9e7aad0497b32c48e9fca3e908c14a870d9cd023bbaed0351a899f85c77a",
+    "byteIdentical": true,
+    "reason": "Only activity expense heroes use source; reclaim main for exact R1 home scene JPEGs."
+  },
+  "initialCLI": {
+    "exitCode": 0,
+    "toolErrorCode": 10,
+    "result": "FAIL",
+    "message": "代码包大小超过限制, main package source size 2059KB exceed max limit2048KB",
+    "note": "CLI process exited0 but explicit toolError makes this gate FAILED; no info/preview file"
+  },
+  "scopedTests": {
+    "command": "node --import tsx --test --test-concurrency=1 test/checkin-qr.test.ts test/miniprogram-caper-share.test.ts test/miniprogram-caper-poster.test.ts",
+    "exitCode": 0,
+    "tests": 40,
+    "pass": 40,
+    "fail": 0,
+    "durationMs": 910.68,
+    "fullSuite": false
+  },
+  "sourceProtection": [
+    {
+      "path": "miniprogram/subpackages/activity/event/event.js",
+      "inverseEqualsBaseline": true,
+      "baselineSha256": "ccb5b5fede066ba0533b82cb564e816cc3d45ca96778a0d25ac5286d3c11a4bd",
+      "finalSha256": "97e9f505d58b4b10e4d74d0e360954a0bac4730e1ddbef3437efeba6ed17621e"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/share/share.js",
+      "inverseEqualsBaseline": true,
+      "baselineSha256": "5fdde14c88902bb18e4c045d81326974978d718c6181d94cf76c86f2177a8258",
+      "finalSha256": "8ab001ad92a8e911fc8b7e84934872d418a9d541c506ce42efbce1472373ab3d"
+    }
+  ],
+  "all22TestAdaptersOnlyImportLiteralChanges": true,
+  "secondCLIFailureAndAdditionalPhotoMigration": {
+    "reason": "Final frozen scope CLI main2050KB exceeds2048KB; only three main images used exclusively by activity pages",
+    "moves": [
+      {
+        "from": "miniprogram/assets/stitch/pg04s_badminton.jpg",
+        "to": "miniprogram/subpackages/activity/event/assets/pg04s-badminton.jpg",
+        "bytes": 63131,
+        "sha256": "8d4c18256599f7d9ab5ff629947156507b40da2315fd5e0b4a88434471c0bdbe",
+        "byteIdentical": true
+      },
+      {
+        "from": "miniprogram/assets/stitch/pg01_badminton_player.jpg",
+        "to": "miniprogram/subpackages/activity/event/assets/pg01-badminton-player.jpg",
+        "bytes": 36028,
+        "sha256": "9d3ffba93e70736ff1d8d72c3f8387e2a7f3e4fafca6c0a9f56b1be2fb03db88",
+        "byteIdentical": true
+      },
+      {
+        "from": "miniprogram/assets/stitch/itinerary_badminton.jpg",
+        "to": "miniprogram/subpackages/activity/assets/itinerary-badminton.jpg",
+        "bytes": 60640,
+        "sha256": "6dff9b8ed669c73e1ee9ea1997af6c7da3383e59dd8ec1b32c516ddbdff6d7e7",
+        "byteIdentical": true
+      }
+    ],
+    "literalChanges": [
+      {
+        "path": "miniprogram/subpackages/activity/event/event.wxml",
+        "oldLiteral": "/assets/stitch/pg04s_badminton.jpg",
+        "newLiteral": "./assets/pg04s-badminton.jpg",
+        "replacements": 2
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/event.wxml",
+        "oldLiteral": "/assets/stitch/pg01_badminton_player.jpg",
+        "newLiteral": "./assets/pg01-badminton-player.jpg",
+        "replacements": 2
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/event.wxml",
+        "oldLiteral": "/assets/stitch/itinerary_badminton.jpg",
+        "newLiteral": "../assets/itinerary-badminton.jpg",
+        "replacements": 5
+      },
+      {
+        "path": "miniprogram/subpackages/activity/itinerary/itinerary.js",
+        "oldLiteral": "/assets/stitch/itinerary_badminton.jpg",
+        "newLiteral": "/subpackages/activity/assets/itinerary-badminton.jpg",
+        "replacements": 1
+      }
+    ],
+    "CLI": {
+      "result": "FAIL",
+      "toolErrorCode": 10,
+      "reportedMainKB": 2050,
+      "limitKB": 2048,
+      "processExitCode": 0
+    },
+    "eventInverseEqualsOwnerFreeze": true,
+    "itineraryInverseEqualsWave69": true,
+    "mainRawBytesMoved": 159799
+  },
+  "allMainRawBytesMoved": 287744,
+  "oneItineraryTestExpectedAssetPathOnlyChanged": true,
+  "finalCLI": {
+    "size": {
+      "total": 4058861,
+      "packages": [
+        {
+          "name": "TOTAL",
+          "size": 4058861
+        },
+        {
+          "name": "main",
+          "size": 1939748
+        },
+        {
+          "name": "/subpackages/activity/",
+          "size": 1163805
+        },
+        {
+          "name": "/subpackages/profile/",
+          "size": 955308
+        }
+      ]
+    }
+  },
+  "targetedRuntime": {
+    "QRCanvasPassed": true,
+    "imageBindingsAndNativeResourceLoadingPassed": true,
+    "publicQRCodePixels": false
+  },
+  "testAdapterInverseProof": {
+    "baseline": "147ce97e974eb832a773e095d039bca66e949010",
+    "qrAdapterCount": 22,
+    "itineraryExpectedOnly": true,
+    "allInverseExact": true,
+    "paths": [
+      "test/miniprogram-pg06-host-announcement-shortcut.test.ts",
+      "test/miniprogram-host-completion-shortcut.test.ts",
+      "test/miniprogram-pg09-expense-share.test.ts",
+      "test/pg05-confirmation.test.ts",
+      "test/checkin-qr.test.ts",
+      "test/miniprogram-event-expense-interactions.test.ts",
+      "test/miniprogram-event-action-identity.test.ts",
+      "test/miniprogram.test.ts",
+      "test/miniprogram-outcome-notice-deeplink.test.ts",
+      "test/invite-miniapp-refresh.test.ts",
+      "test/miniprogram-caper-share.test.ts",
+      "test/miniprogram-event-safety-clipboard-race.test.ts",
+      "test/event-caper-navigation.test.ts",
+      "test/miniprogram-event-controls.test.ts",
+      "test/miniprogram-pg04s-published-shortcut.test.ts",
+      "test/miniprogram-event-screen-navigation.test.ts",
+      "test/miniprogram-caper-poster.test.ts",
+      "test/miniprogram-event-resilient-detail.test.ts",
+      "test/miniprogram-event-time-controls.test.ts",
+      "test/invite-miniapp-share.test.ts",
+      "test/miniprogram-event-post-refresh-race.test.ts",
+      "test/miniprogram-event-session-isolation.test.ts",
+      "test/miniprogram-itinerary.test.ts"
+    ]
+  }
+}

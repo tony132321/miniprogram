@@ -1,0 +1,153 @@
+✖ compact and card layouts retain the same collection, filters, approval state and paging without API reload (3.165917ms)
+✖ compact activity badge counts only loaded actual activity unread records instead of server total (0.424333ms)
+✖ both layouts keep the original guarded notification-settings destination (0.419583ms)
+✖ account or session rotation makes a pending center menu unable to switch layout or send settings intent (0.4975ms)
+✖ hide, refresh, a mode round trip and a newer menu invalidate old center menu callbacks (0.425416ms)
+✖ center entry and identity reset return to default cards and clear the loaded activity count (0.36875ms)
+✖ invalid selections, noncenter mode, unsupported platform and anonymous identity stay closed safely (0.34375ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 0
+ℹ fail 7
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 138.240583
+
+✖ failing tests:
+
+test at test/miniprogram-messages-compact-layout.test.ts:1:2504
+✖ compact and card layouts retain the same collection, filters, approval state and paging without API reload (3.165917ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - 'CARDS'
+  
+      at TestContext.<anonymous> (/Users/tsb/Documents/小程序/test/miniprogram-messages-compact-layout.test.ts:53:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'CARDS',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/miniprogram-messages-compact-layout.test.ts:1:3535
+✖ compact activity badge counts only loaded actual activity unread records instead of server total (0.424333ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  undefined !== 2
+  
+      at TestContext.<anonymous> (/Users/tsb/Documents/小程序/test/miniprogram-messages-compact-layout.test.ts:70:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/miniprogram-messages-compact-layout.test.ts:1:3962
+✖ both layouts keep the original guarded notification-settings destination (0.419583ms)
+  AssertionError [ERR_ASSERTION]: the new menu must be available in CENTER
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at Object.open (/Users/tsb/Documents/小程序/test/miniprogram-messages-compact-layout.test.ts:44:12)
+      at TestContext.<anonymous> (/Users/tsb/Documents/小程序/test/miniprogram-messages-compact-layout.test.ts:77:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/miniprogram-messages-compact-layout.test.ts:1:4312
+✖ account or session rotation makes a pending center menu unable to switch layout or send settings intent (0.4975ms)
+  AssertionError [ERR_ASSERTION]: the new menu must be available in CENTER
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at Object.open (/Users/tsb/Documents/小程序/test/miniprogram-messages-compact-layout.test.ts:44:12)
+      at TestContext.<anonymous> (/Users/tsb/Documents/小程序/test/miniprogram-messages-compact-layout.test.ts:85:20)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/miniprogram-messages-compact-layout.test.ts:1:4784
+✖ hide, refresh, a mode round trip and a newer menu invalidate old center menu callbacks (0.425416ms)
+  AssertionError [ERR_ASSERTION]: the new menu must be available in CENTER
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at Object.open (/Users/tsb/Documents/小程序/test/miniprogram-messages-compact-layout.test.ts:44:12)
+      at TestContext.<anonymous> (/Users/tsb/Documents/小程序/test/miniprogram-messages-compact-layout.test.ts:93:101)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/miniprogram-messages-compact-layout.test.ts:1:5519
+✖ center entry and identity reset return to default cards and clear the loaded activity count (0.36875ms)
+  AssertionError [ERR_ASSERTION]: the new menu must be available in CENTER
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at Object.open (/Users/tsb/Documents/小程序/test/miniprogram-messages-compact-layout.test.ts:44:12)
+      at TestContext.<anonymous> (/Users/tsb/Documents/小程序/test/miniprogram-messages-compact-layout.test.ts:106:5)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/miniprogram-messages-compact-layout.test.ts:1:6090
+✖ invalid selections, noncenter mode, unsupported platform and anonymous identity stay closed safely (0.34375ms)
+  AssertionError [ERR_ASSERTION]: the new menu must be available in CENTER
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at Object.open (/Users/tsb/Documents/小程序/test/miniprogram-messages-compact-layout.test.ts:44:12)
+      at TestContext.<anonymous> (/Users/tsb/Documents/小程序/test/miniprogram-messages-compact-layout.test.ts:114:81)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

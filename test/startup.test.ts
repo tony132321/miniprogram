@@ -27,6 +27,12 @@ test('production startup rejects missing WeChat login credentials before databas
   assert.match(result.stderr, /WECHAT_APP_ID.*WECHAT_APP_SECRET/);
 });
 
+test('production cannot use the single-writer local deletion marker rehearsal file', () => {
+  const result = startWith({ DELETION_MARKER_PATH: '/tmp/irl-local-markers.jsonl' });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /local deletion marker file.*controlled local rehearsals/);
+});
+
 test('production rejects development identity without printing configured secrets', () => {
   const sentinel = 'sensitive-secret-must-not-appear';
   const result = startWith({ DEV_AUTH: '1', WECHAT_APP_ID: 'test-appid', WECHAT_APP_SECRET: sentinel });
@@ -75,9 +81,40 @@ test('production startup accepts separately assigned review roles before checkin
   const result = startWith({ WECHAT_APP_ID: 'test-appid', WECHAT_APP_SECRET: 'test-secret',
     RETENTION_POLICY_JSON: syntheticRetentionPolicy,
     OPS_ACCOUNTS_JSON: JSON.stringify([{ ...operator, permissions: [...operator.permissions, 'JOBS'] }, { ...operator, username: 'reviewer',
-      totpSecret: 'JBSWY3DPEHPK3PXPJBSWY3DPEHPK3PXP', permissions: ['APPEALS'] }]) });
+      totpSecret: 'JBSWY3DPEHPK3PXPJBSWY3DPEHPK3PXP', permissions: ['APPEALS'] }, { ...operator, username: 'safetydispatcher',
+      totpSecret: 'KRSXG5AUKRSXG5AUKRSXG5AUKRSXG5AU', permissions: ['SAFETY'] }]) });
   assert.equal(result.status, 1);
   assert.match(result.stderr, /DATABASE_URL is required/);
+});
+
+test('production requires HTTPS deletion markers and refuses an unreachable marker service before database connection', () => {
+  const accounts = JSON.stringify([{ ...operator, permissions: [...operator.permissions, 'JOBS'] },
+    { ...operator, username: 'reviewer', totpSecret: 'JBSWY3DPEHPK3PXPJBSWY3DPEHPK3PXP', permissions: ['APPEALS'] },
+    { ...operator, username: 'safetydispatcher', totpSecret: 'KRSXG5AUKRSXG5AUKRSXG5AUKRSXG5AU', permissions: ['SAFETY'] }]);
+  const common = { WECHAT_APP_ID: 'test-appid', WECHAT_APP_SECRET: 'test-secret',
+    RETENTION_POLICY_JSON: syntheticRetentionPolicy, OPS_ACCOUNTS_JSON: accounts,
+    DATABASE_URL: 'postgres://unused:unused@127.0.0.1:1/unused' };
+  const missing = startWith(common);
+  assert.equal(missing.status, 1);
+  assert.match(missing.stderr, /durable HTTPS deletion marker service/);
+  const unavailable = startWith({ ...common, DELETION_MARKER_URL: 'https://127.0.0.1:1/',
+    DELETION_MARKER_TOKEN: 'sentinel-marker-secret' });
+  assert.equal(unavailable.status, 1);
+  assert.match(unavailable.stderr, /Deletion marker service is unavailable/);
+  assert.doesNotMatch(unavailable.stderr, /sentinel-marker-secret/);
+  assert.doesNotMatch(unavailable.stderr, /ECONNREFUSED|DATABASE_URL is required/);
+});
+
+test('production startup requires a safety dispatcher independent of the report assignee', () => {
+  const shared = { ...operator, permissions: [...operator.permissions, 'JOBS', 'SAFETY'] };
+  const appealReviewer = { ...operator, username: 'appealreviewer',
+    totpSecret: 'JBSWY3DPEHPK3PXPJBSWY3DPEHPK3PXP', permissions: ['APPEALS'] };
+  const result = startWith({ WECHAT_APP_ID: 'test-appid', WECHAT_APP_SECRET: 'test-secret',
+    RETENTION_POLICY_JSON: syntheticRetentionPolicy,
+    OPS_ACCOUNTS_JSON: JSON.stringify([shared, appealReviewer]) });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /SAFETY.*REPORTS.*independent|independent.*SAFETY.*REPORTS/);
+  assert.doesNotMatch(result.stderr, /DATABASE_URL is required/);
 });
 
 test('production refuses real data startup without owner-approved purpose retention policy', () => {

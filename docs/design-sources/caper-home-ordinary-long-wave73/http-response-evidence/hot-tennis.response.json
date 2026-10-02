@@ -1,0 +1,32 @@
+{
+  "sourceLine": 371,
+  "sourceAlt": "网球",
+  "URL": "https://lh3.googleusercontent.com/aida-public/AB6AXuDePpyfH3Fb75yA53fZ3t8EhMOiJeqX74k_O40fvGgTO0utlZm53uNSDmbc6yWofRL0FQw8yWoiR5XAugfEq1qWOUG40nLnfxdohM55l22b7PlrcPKvH3xt8xjAOAz3Sx1-YiDMJ_5IgqqRDwW5UJYZwVgFi5thLTySbmbh-RtKwVMbUm93dGEANObcszZKYzTHUuE5UQ7DMhHHpeAdy9kqCZrp8ErvuXYd2ds9Hht5Akz_OPSslGUghQ",
+  "finalURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuDePpyfH3Fb75yA53fZ3t8EhMOiJeqX74k_O40fvGgTO0utlZm53uNSDmbc6yWofRL0FQw8yWoiR5XAugfEq1qWOUG40nLnfxdohM55l22b7PlrcPKvH3xt8xjAOAz3Sx1-YiDMJ_5IgqqRDwW5UJYZwVgFi5thLTySbmbh-RtKwVMbUm93dGEANObcszZKYzTHUuE5UQ7DMhHHpeAdy9kqCZrp8ErvuXYd2ds9Hht5Akz_OPSslGUghQ",
+  "status": 200,
+  "headers": {
+    "Content-Type": "image/jpeg",
+    "Vary": "Origin",
+    "Access-Control-Allow-Origin": "*",
+    "Timing-Allow-Origin": "*",
+    "Access-Control-Expose-Headers": "Content-Length",
+    "ETag": "\"v0\"",
+    "Expires": "Sat, 03 Oct 2026 02:03:45 GMT",
+    "Cache-Control": "public, max-age=86400, no-transform",
+    "Content-Disposition": "inline;filename=\"unnamed.jpg\"",
+    "X-Content-Type-Options": "nosniff",
+    "Date": "Fri, 02 Oct 2026 02:03:45 GMT",
+    "Server": "fife",
+    "Content-Length": "46931",
+    "X-XSS-Protection": "0",
+    "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "Connection": "close"
+  },
+  "contentType": "image/jpeg",
+  "bytes": 46931,
+  "sha256": "17d3ced8567411d7b67e5643c486c1d1862aa6d154cad5613b8637545c34db30",
+  "savedPath": "/private/tmp/caper-wave73-home-long/photos/hot-tennis.jpg",
+  "noReencoding": true,
+  "fetchedAtUTC": "2026-10-02T02:03:46.141281+00:00",
+  "existingByteEqualCandidates": []
+}

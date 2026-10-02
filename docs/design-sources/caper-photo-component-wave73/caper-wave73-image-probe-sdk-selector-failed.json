@@ -1,0 +1,7 @@
+{
+  "scope": "Disposable clone-only main-to-profile asynchronous component probe; no production page mutation",
+  "checks": [],
+  "exceptions": [],
+  "pass": false,
+  "failure": "asynchronous component must actually replace placeholder"
+}

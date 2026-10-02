@@ -1,0 +1,2681 @@
+{
+  "scope": "Wave68 five reference pages only. SDK count below includes partial successful checks and repeated guards, not distinct features; original failures preserved. No full suite/CI/native/production acceptance.",
+  "sdk": {
+    "segments": [
+      {
+        "scope": "Changed PG10-A edit profile and PG10-B badge filters / modal / actual activity routes only",
+        "checks": [
+          {
+            "pass": true,
+            "label": "A original English heading retained"
+          },
+          {
+            "pass": false,
+            "label": "A source header geometry and actual 500 declaration",
+            "actual": [
+              {
+                "selector": ".pg10-header",
+                "value": {
+                  "left": 0,
+                  "right": 402,
+                  "top": 54,
+                  "bottom": 110,
+                  "width": "402px",
+                  "height": "56px",
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "102px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(250, 248, 254, 0.85)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".pg10-back",
+                "value": {
+                  "left": 12,
+                  "right": 56,
+                  "top": 60,
+                  "bottom": 104,
+                  "width": "44px",
+                  "height": "44px",
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+                  "font-size": "25px",
+                  "line-height": "25px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(23, 26, 36)"
+                }
+              },
+              {
+                "selector": ".pg10-header-title",
+                "value": {
+                  "left": 64,
+                  "right": 212,
+                  "top": 71,
+                  "bottom": 93,
+                  "width": "140px",
+                  "height": "22px",
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+                  "font-size": "17px",
+                  "line-height": "22px",
+                  "font-weight": "600",
+                  "max-width": "none",
+                  "padding-right": "4px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".bio-heading text",
+                "value": null
+              },
+              {
+                "selector": ".identity-aura",
+                "value": {
+                  "left": 129,
+                  "right": 273,
+                  "top": 173.25,
+                  "bottom": 317.25,
+                  "width": "144px",
+                  "height": "144px",
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              }
+            ]
+          }
+        ],
+        "metrics": [
+          {
+            "page": "subpackages/profile/profile-edit/profile-edit",
+            "geometry": [
+              {
+                "selector": ".pg10-header",
+                "value": {
+                  "left": 0,
+                  "right": 402,
+                  "top": 54,
+                  "bottom": 110,
+                  "width": "402px",
+                  "height": "56px",
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "102px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(250, 248, 254, 0.85)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".pg10-back",
+                "value": {
+                  "left": 12,
+                  "right": 56,
+                  "top": 60,
+                  "bottom": 104,
+                  "width": "44px",
+                  "height": "44px",
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+                  "font-size": "25px",
+                  "line-height": "25px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(23, 26, 36)"
+                }
+              },
+              {
+                "selector": ".pg10-header-title",
+                "value": {
+                  "left": 64,
+                  "right": 212,
+                  "top": 71,
+                  "bottom": 93,
+                  "width": "140px",
+                  "height": "22px",
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+                  "font-size": "17px",
+                  "line-height": "22px",
+                  "font-weight": "600",
+                  "max-width": "none",
+                  "padding-right": "4px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".bio-heading text",
+                "value": null
+              },
+              {
+                "selector": ".identity-aura",
+                "value": {
+                  "left": 129,
+                  "right": 273,
+                  "top": 173.25,
+                  "bottom": 317.25,
+                  "width": "144px",
+                  "height": "144px",
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              }
+            ]
+          }
+        ],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave 68 UI and routes. Synthetic local API identities. No full suite, CI, device, production, message send or new publication.",
+        "pass": false,
+        "failure": {
+          "phase": "edit-profile",
+          "message": "A source header geometry and actual 500 declaration",
+          "stack": "AssertionError [ERR_ASSERTION]: A source header geometry and actual 500 declaration\n    at check (/private/tmp/caper-wave68-sdk-helpers.cjs:16:80)\n    at /private/tmp/caper-wave68-profile-ab.cjs:8:2\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async run (/private/tmp/caper-wave68-sdk-helpers.cjs:22:3)"
+        },
+        "elapsedMs": 6589,
+        "segment": "profile-ab-first",
+        "sourceSHA256": "526860c7343fdaa13f5b16ff99b221f128927ba5ca0e1f09ab10e20c834c54d6"
+      },
+      {
+        "scope": "Changed PG10-A edit profile and PG10-B badge filters / modal / actual activity routes only",
+        "checks": [
+          {
+            "pass": true,
+            "label": "A original English heading retained"
+          },
+          {
+            "pass": true,
+            "label": "A source header geometry",
+            "actual": [
+              {
+                "selector": ".pg10-header",
+                "value": {
+                  "left": 0,
+                  "right": 402,
+                  "top": 54,
+                  "bottom": 110,
+                  "width": 402,
+                  "height": 56,
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "102px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(250, 248, 254, 0.85)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".pg10-back",
+                "value": {
+                  "left": 12,
+                  "right": 56,
+                  "top": 60,
+                  "bottom": 104,
+                  "width": 44,
+                  "height": 44,
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+                  "font-size": "25px",
+                  "line-height": "25px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(23, 26, 36)"
+                }
+              },
+              {
+                "selector": ".pg10-header-title",
+                "value": {
+                  "left": 64,
+                  "right": 212,
+                  "top": 71,
+                  "bottom": 93,
+                  "width": 148,
+                  "height": 22,
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+                  "font-size": "17px",
+                  "line-height": "22px",
+                  "font-weight": "600",
+                  "max-width": "none",
+                  "padding-right": "4px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".bio-heading text",
+                "value": null
+              },
+              {
+                "selector": ".identity-aura",
+                "value": {
+                  "left": 129,
+                  "right": 273,
+                  "top": 173.25,
+                  "bottom": 317.25,
+                  "width": 144,
+                  "height": 144,
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "A current confirmed member read from actual eligibility API",
+            "actual": {
+              "candidateCount": 1,
+              "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2"
+            }
+          },
+          {
+            "pass": true,
+            "label": "A alias button reaches same real event and registration section",
+            "actual": "0e51f241-3f63-439d-b59d-593549a61ac2"
+          },
+          {
+            "pass": true,
+            "label": "A city button -> real city selection"
+          },
+          {
+            "pass": true,
+            "label": "B source header and truthful award unavailable state",
+            "actual": [
+              {
+                "selector": ".pg10-header",
+                "value": {
+                  "left": 0,
+                  "right": 402,
+                  "top": 54,
+                  "bottom": 110,
+                  "width": 402,
+                  "height": 56,
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "102px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(250, 248, 254, 0.85)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".pg10-back",
+                "value": {
+                  "left": 12,
+                  "right": 56,
+                  "top": 60,
+                  "bottom": 104,
+                  "width": 44,
+                  "height": 44,
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", sans-serif",
+                  "font-size": "25px",
+                  "line-height": "35px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(23, 26, 36)"
+                }
+              },
+              {
+                "selector": ".badge-orb",
+                "value": {
+                  "left": 32,
+                  "right": 112,
+                  "top": 156,
+                  "bottom": 236,
+                  "width": 80,
+                  "height": 80,
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "4px",
+                  "padding-bottom": "4px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(255, 255, 255)"
+                }
+              },
+              {
+                "selector": ".badge-share-container",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 750,
+                  "bottom": 824,
+                  "width": 370,
+                  "height": 74,
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "448px",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "B category button filters actual concept list",
+            "actual": {
+              "count": 2
+            }
+          },
+          {
+            "pass": true,
+            "label": "B modal never reports earned award and wear stays disabled",
+            "actual": {
+              "wearDisabled": "true"
+            }
+          },
+          {
+            "pass": true,
+            "label": "B modal close button returns to wall"
+          },
+          {
+            "pass": true,
+            "label": "B activities button -> actual本人活动 with same event",
+            "actual": {
+              "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Actual seven bundled font faces loaded including new 500",
+            "actual": [
+              {
+                "family": "Caveat",
+                "weight": "700",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "400",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "600",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "700",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "800",
+                "status": "loaded"
+              },
+              {
+                "family": "Rubik Mono One",
+                "weight": "400",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "500",
+                "status": "loaded"
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [
+          {
+            "page": "subpackages/profile/profile-edit/profile-edit",
+            "geometry": [
+              {
+                "selector": ".pg10-header",
+                "value": {
+                  "left": 0,
+                  "right": 402,
+                  "top": 54,
+                  "bottom": 110,
+                  "width": 402,
+                  "height": 56,
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "102px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(250, 248, 254, 0.85)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".pg10-back",
+                "value": {
+                  "left": 12,
+                  "right": 56,
+                  "top": 60,
+                  "bottom": 104,
+                  "width": 44,
+                  "height": 44,
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+                  "font-size": "25px",
+                  "line-height": "25px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(23, 26, 36)"
+                }
+              },
+              {
+                "selector": ".pg10-header-title",
+                "value": {
+                  "left": 64,
+                  "right": 212,
+                  "top": 71,
+                  "bottom": 93,
+                  "width": 148,
+                  "height": 22,
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+                  "font-size": "17px",
+                  "line-height": "22px",
+                  "font-weight": "600",
+                  "max-width": "none",
+                  "padding-right": "4px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".bio-heading text",
+                "value": null
+              },
+              {
+                "selector": ".identity-aura",
+                "value": {
+                  "left": 129,
+                  "right": 273,
+                  "top": 173.25,
+                  "bottom": 317.25,
+                  "width": 144,
+                  "height": 144,
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              }
+            ]
+          },
+          {
+            "page": "subpackages/profile/badges/badges",
+            "geometry": [
+              {
+                "selector": ".pg10-header",
+                "value": {
+                  "left": 0,
+                  "right": 402,
+                  "top": 54,
+                  "bottom": 110,
+                  "width": 402,
+                  "height": 56,
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "102px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(250, 248, 254, 0.85)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".pg10-back",
+                "value": {
+                  "left": 12,
+                  "right": 56,
+                  "top": 60,
+                  "bottom": 104,
+                  "width": 44,
+                  "height": 44,
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", sans-serif",
+                  "font-size": "25px",
+                  "line-height": "35px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(23, 26, 36)"
+                }
+              },
+              {
+                "selector": ".badge-orb",
+                "value": {
+                  "left": 32,
+                  "right": 112,
+                  "top": 156,
+                  "bottom": 236,
+                  "width": 80,
+                  "height": 80,
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "4px",
+                  "padding-bottom": "4px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(255, 255, 255)"
+                }
+              },
+              {
+                "selector": ".badge-share-container",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 750,
+                  "bottom": 824,
+                  "width": 370,
+                  "height": 74,
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "448px",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              }
+            ]
+          }
+        ],
+        "screenshots": [
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-profile-edit-wave68-2026-10-02.png",
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-badges-top-wave68-2026-10-02.png",
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-badge-detail-wave68-2026-10-02.png"
+        ],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave 68 UI and routes. Synthetic local API identities. No full suite, CI, device, production, message send or new publication.",
+        "fonts": [
+          {
+            "family": "Caveat",
+            "weight": "700",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "600",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "700",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "800",
+            "status": "loaded"
+          },
+          {
+            "family": "Rubik Mono One",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "500",
+            "status": "loaded"
+          }
+        ],
+        "pass": true,
+        "elapsedMs": 37780,
+        "segment": "profile-ab",
+        "sourceSHA256": "f416c018484d6e001a7e5e67b13f3d578f43806432bc0653e0bf285e7375ad2c"
+      },
+      {
+        "scope": "Changed PG10-C collage / filters / CTA and PG10-D privacy / report / menu only",
+        "checks": [],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave 68 UI and routes. Synthetic local API identities. No full suite, CI, device, production, message send or new publication.",
+        "pass": false,
+        "failure": {
+          "phase": "moments",
+          "message": "Cannot read properties of undefined (reading 'some')",
+          "stack": "TypeError: Cannot read properties of undefined (reading 'some')\n    at /private/tmp/caper-wave68-profile-cd.cjs:5:17\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async run (/private/tmp/caper-wave68-sdk-helpers.cjs:22:3)"
+        },
+        "elapsedMs": 6410,
+        "segment": "profile-cd-first",
+        "sourceSHA256": "2c6a1a648f2335fc8bca23838e4ed3c40a10ebe2dc491c8d147d27c2e2bf2fc1"
+      },
+      {
+        "scope": "Changed PG10-C collage / filters / CTA and PG10-D privacy / report / menu only",
+        "checks": [
+          {
+            "pass": true,
+            "label": "C actual confirmed member activity shown",
+            "actual": {
+              "eventIds": [
+                "0e51f241-3f63-439d-b59d-593549a61ac2"
+              ]
+            }
+          },
+          {
+            "pass": true,
+            "label": "C source header / 96 glow / fixed 52 CTA geometry",
+            "actual": [
+              {
+                "selector": ".pg10-header",
+                "value": {
+                  "left": 0,
+                  "right": 402,
+                  "top": 54,
+                  "bottom": 110,
+                  "width": 402,
+                  "height": 56,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "102px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(250, 248, 254, 0.85)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".pg10-back",
+                "value": {
+                  "left": 12,
+                  "right": 56,
+                  "top": 60,
+                  "bottom": 104,
+                  "width": 44,
+                  "height": 44,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "25px",
+                  "line-height": "25px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".summary-glow",
+                "value": {
+                  "left": 306,
+                  "right": 402,
+                  "top": 172,
+                  "bottom": 268,
+                  "width": 96,
+                  "height": 96,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(210, 248, 3, 0.2)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".moments-action",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 788,
+                  "bottom": 840,
+                  "width": 370,
+                  "height": 52,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "20px",
+                  "font-weight": "600",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(29, 100, 242)",
+                  "display": "flex",
+                  "color": "rgb(255, 255, 255)"
+                }
+              },
+              {
+                "selector": ".moments-action-container",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 788,
+                  "bottom": 840,
+                  "width": 370,
+                  "height": 52,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "448px",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "C participated button only shows real confirmed registrations"
+          },
+          {
+            "pass": true,
+            "label": "C collage button -> same event through canonical redirect"
+          },
+          {
+            "pass": true,
+            "label": "C hosted button uses actual owner filtering"
+          },
+          {
+            "pass": true,
+            "label": "C fixed CTA -> real creation tab preserving valid editor state",
+            "actual": {
+              "stage": "IDEA"
+            }
+          },
+          {
+            "pass": false,
+            "label": "D real block-list response and original English heading",
+            "actual": {
+              "count": 0
+            }
+          }
+        ],
+        "metrics": [
+          {
+            "page": "subpackages/profile/moments/moments",
+            "geometry": [
+              {
+                "selector": ".pg10-header",
+                "value": {
+                  "left": 0,
+                  "right": 402,
+                  "top": 54,
+                  "bottom": 110,
+                  "width": 402,
+                  "height": 56,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "102px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(250, 248, 254, 0.85)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".pg10-back",
+                "value": {
+                  "left": 12,
+                  "right": 56,
+                  "top": 60,
+                  "bottom": 104,
+                  "width": 44,
+                  "height": 44,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "25px",
+                  "line-height": "25px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".summary-glow",
+                "value": {
+                  "left": 306,
+                  "right": 402,
+                  "top": 172,
+                  "bottom": 268,
+                  "width": 96,
+                  "height": 96,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(210, 248, 3, 0.2)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".moments-action",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 788,
+                  "bottom": 840,
+                  "width": 370,
+                  "height": 52,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "20px",
+                  "font-weight": "600",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(29, 100, 242)",
+                  "display": "flex",
+                  "color": "rgb(255, 255, 255)"
+                }
+              },
+              {
+                "selector": ".moments-action-container",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 788,
+                  "bottom": 840,
+                  "width": 370,
+                  "height": 52,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "448px",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              }
+            ]
+          }
+        ],
+        "screenshots": [
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-moments-top-wave68-2026-10-02.png"
+        ],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave 68 UI and routes. Synthetic local API identities. No full suite, CI, device, production, message send or new publication.",
+        "pass": false,
+        "failure": {
+          "phase": "privacy",
+          "message": "D real block-list response and original English heading",
+          "stack": "AssertionError [ERR_ASSERTION]: D real block-list response and original English heading\n    at check (/private/tmp/caper-wave68-sdk-helpers.cjs:16:80)\n    at /private/tmp/caper-wave68-profile-cd.cjs:11:238\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async run (/private/tmp/caper-wave68-sdk-helpers.cjs:22:3)"
+        },
+        "elapsedMs": 15879,
+        "segment": "profile-cd-second",
+        "sourceSHA256": "40ec9bd6b5fe1d549d6def84af0465fecc99348d52b7d562eae7b754ba4bec87"
+      },
+      {
+        "scope": "Investigate sole D heading API representation after confirmed block-list GET; no other route retest",
+        "checks": [
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [],
+        "screenshots": [
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-privacy-heading-probe-wave68-2026-10-02.png"
+        ],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave 68 UI and routes. Synthetic local API identities. No full suite, CI, device, production, message send or new publication.",
+        "observed": {
+          "path": "subpackages/profile/privacy-safety/privacy-safety",
+          "headerText": "Privacy &amp; Safety",
+          "wxml": "<view class=\"pg10-header-title\"><text decode=\"true\">Privacy &amp; Safety</text></view>",
+          "blocksArray": true
+        },
+        "pass": true,
+        "elapsedMs": 7289,
+        "segment": "privacy-probe",
+        "sourceSHA256": "f904babb4cfe53b92e2cfb583d9cb1d9d429e15f7cdec40e1c921ea87b03e56d"
+      },
+      {
+        "scope": "Only D pending heading / corrected spacing / menu / report checks; C successful checks not repeated",
+        "checks": [
+          {
+            "pass": true,
+            "label": "D real block-list response and original English heading",
+            "actual": {
+              "count": 0,
+              "header": {
+                "sdkRaw": "Privacy &amp; Safety",
+                "decoded": "Privacy & Safety",
+                "reason": "SDK .text returns source entity; screenshot actually shows Privacy & Safety. No product change."
+              }
+            }
+          },
+          {
+            "pass": true,
+            "label": "D source header / 144 glow / 40 shield geometry",
+            "actual": [
+              {
+                "selector": ".pg10-header",
+                "value": {
+                  "left": 0,
+                  "right": 402,
+                  "top": 54,
+                  "bottom": 110,
+                  "width": 402,
+                  "height": 56,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "102px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(250, 248, 254, 0.85)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".pg10-back",
+                "value": {
+                  "left": 12,
+                  "right": 56,
+                  "top": 60,
+                  "bottom": 104,
+                  "width": 44,
+                  "height": 44,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "25px",
+                  "line-height": "25px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(23, 26, 36)"
+                }
+              },
+              {
+                "selector": ".intro-glow",
+                "value": {
+                  "left": 274,
+                  "right": 418,
+                  "top": 90,
+                  "bottom": 234,
+                  "width": 144,
+                  "height": 144,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(29, 100, 242, 0.05)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".intro-symbol",
+                "value": {
+                  "left": 32,
+                  "right": 72,
+                  "top": 138,
+                  "bottom": 178,
+                  "width": 40,
+                  "height": 40,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "21px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(235, 242, 254)",
+                  "display": "flex",
+                  "color": "rgb(29, 100, 242)"
+                }
+              },
+              {
+                "selector": ".privacy-intro",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 122,
+                  "bottom": 285.375,
+                  "width": 370,
+                  "height": 163.375,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "16px",
+                  "padding-bottom": "16px",
+                  "background-color": "rgb(255, 255, 255)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".block-section-heading",
+                "value": {
+                  "left": 20,
+                  "right": 382,
+                  "top": 301.375,
+                  "bottom": 323.375,
+                  "width": 362,
+                  "height": 22,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".help-card",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 555.375,
+                  "bottom": 613.375,
+                  "width": 370,
+                  "height": 58,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "18px",
+                  "line-height": "25.2px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "12px",
+                  "padding-bottom": "12px",
+                  "background-color": "rgb(255, 255, 255)",
+                  "display": "flex",
+                  "color": "rgb(23, 26, 36)"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "D corrected source intro-to-list gap is 16px",
+            "actual": 16
+          },
+          {
+            "pass": true,
+            "label": "D more menu -> existing privacy explanation"
+          },
+          {
+            "pass": true,
+            "label": "D help button -> actual current-account report form, no report submitted",
+            "actual": {
+              "advancedOpen": true
+            }
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [
+          {
+            "page": "subpackages/profile/privacy-safety/privacy-safety",
+            "geometry": [
+              {
+                "selector": ".pg10-header",
+                "value": {
+                  "left": 0,
+                  "right": 402,
+                  "top": 54,
+                  "bottom": 110,
+                  "width": 402,
+                  "height": 56,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "102px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(250, 248, 254, 0.85)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".pg10-back",
+                "value": {
+                  "left": 12,
+                  "right": 56,
+                  "top": 60,
+                  "bottom": 104,
+                  "width": 44,
+                  "height": 44,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "25px",
+                  "line-height": "25px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(23, 26, 36)"
+                }
+              },
+              {
+                "selector": ".intro-glow",
+                "value": {
+                  "left": 274,
+                  "right": 418,
+                  "top": 90,
+                  "bottom": 234,
+                  "width": 144,
+                  "height": 144,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(29, 100, 242, 0.05)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".intro-symbol",
+                "value": {
+                  "left": 32,
+                  "right": 72,
+                  "top": 138,
+                  "bottom": 178,
+                  "width": 40,
+                  "height": 40,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "21px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(235, 242, 254)",
+                  "display": "flex",
+                  "color": "rgb(29, 100, 242)"
+                }
+              },
+              {
+                "selector": ".privacy-intro",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 122,
+                  "bottom": 285.375,
+                  "width": 370,
+                  "height": 163.375,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "16px",
+                  "padding-bottom": "16px",
+                  "background-color": "rgb(255, 255, 255)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".block-section-heading",
+                "value": {
+                  "left": 20,
+                  "right": 382,
+                  "top": 301.375,
+                  "bottom": 323.375,
+                  "width": 362,
+                  "height": 22,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".help-card",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 555.375,
+                  "bottom": 613.375,
+                  "width": 370,
+                  "height": 58,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "18px",
+                  "line-height": "25.2px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "12px",
+                  "padding-bottom": "12px",
+                  "background-color": "rgb(255, 255, 255)",
+                  "display": "flex",
+                  "color": "rgb(23, 26, 36)"
+                }
+              }
+            ]
+          }
+        ],
+        "screenshots": [
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-privacy-safety-wave68-2026-10-02.png"
+        ],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave 68 UI and routes. Synthetic local API identities. No full suite, CI, device, production, message send or new publication.",
+        "headerText": {
+          "sdkRaw": "Privacy &amp; Safety",
+          "decoded": "Privacy & Safety",
+          "reason": "SDK .text returns source entity; screenshot actually shows Privacy & Safety. No product change."
+        },
+        "pass": true,
+        "elapsedMs": 21189,
+        "segment": "privacy-remaining",
+        "sourceSHA256": "cc5f2e48b1384ef8bc2dfc31b3800a9c14d3448bb50422cb98509ae733840387"
+      },
+      {
+        "scope": "PG04-S existing actual approved host event rendered via success route, same-ID visible buttons only; no new publishing",
+        "checks": [
+          {
+            "pass": true,
+            "label": "PG04-S scope rendered only after actual host API qualification",
+            "actual": {
+              "id": "0e51f241-3f63-439d-b59d-593549a61ac2",
+              "isHost": true,
+              "status": "RECRUITING",
+              "reviewStatus": "APPROVED",
+              "canCopyPublishedInvite": true,
+              "confirmed": 6,
+              "max": 6
+            }
+          }
+        ],
+        "metrics": [
+          [
+            {
+              "selector": ".pg04s-native-nav",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 0,
+                "bottom": 110,
+                "width": 402,
+                "height": 110,
+                "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"Helvetica Neue\", sans-serif",
+                "font-size": "16px",
+                "line-height": "normal",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(245, 246, 248, 0.8)",
+                "display": "flex",
+                "color": "rgb(27, 30, 39)"
+              }
+            },
+            {
+              "selector": ".pg04s-native-close",
+              "value": {
+                "left": 12,
+                "right": 56,
+                "top": 60,
+                "bottom": 104,
+                "width": 44,
+                "height": 44,
+                "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"Helvetica Neue\", sans-serif",
+                "font-size": "18px",
+                "line-height": "18px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(0, 0, 0, 0)",
+                "display": "flex",
+                "color": "rgb(0, 0, 0)"
+              }
+            },
+            {
+              "selector": ".pg04s-native-close image",
+              "value": null
+            },
+            {
+              "selector": ".pg04s-cover",
+              "value": {
+                "left": 16,
+                "right": 386,
+                "top": 318.25,
+                "bottom": 494.25,
+                "width": 370,
+                "height": 176,
+                "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"Helvetica Neue\", sans-serif",
+                "font-size": "15px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(239, 237, 243)",
+                "display": "block",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".pg04s-mark",
+              "value": {
+                "left": 169,
+                "right": 233,
+                "top": 102.06824493408203,
+                "bottom": 166.0682373046875,
+                "width": 64,
+                "height": 63.99999237060547,
+                "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"Helvetica Neue\", sans-serif",
+                "font-size": "15px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(235, 249, 240)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".pg04s-mark image",
+              "value": null
+            }
+          ]
+        ],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave 68 UI and routes. Synthetic local API identities. No full suite, CI, device, production, message send or new publication.",
+        "actualEvent": {
+          "id": "0e51f241-3f63-439d-b59d-593549a61ac2",
+          "isHost": true,
+          "status": "RECRUITING",
+          "reviewStatus": "APPROVED",
+          "canCopyPublishedInvite": true,
+          "confirmed": 6,
+          "max": 6
+        },
+        "pass": false,
+        "failure": {
+          "phase": "published-actual-route",
+          "message": "Cannot read properties of null (reading 'width')",
+          "stack": "TypeError: Cannot read properties of null (reading 'width')\n    at /private/tmp/caper-wave68-published.cjs:7:247\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async run (/private/tmp/caper-wave68-sdk-helpers.cjs:22:3)"
+        },
+        "elapsedMs": 6405,
+        "segment": "published-first",
+        "sourceSHA256": "a59c026d347b5a45287148c316b203c706568333442e5caa1eff1d8118f59690"
+      },
+      {
+        "scope": "PG04-S existing actual approved host event rendered via success route, same-ID visible buttons only; no new publishing",
+        "checks": [
+          {
+            "pass": true,
+            "label": "PG04-S scope rendered only after actual host API qualification",
+            "actual": {
+              "id": "0e51f241-3f63-439d-b59d-593549a61ac2",
+              "isHost": true,
+              "status": "RECRUITING",
+              "reviewStatus": "APPROVED",
+              "canCopyPublishedInvite": true,
+              "confirmed": 6,
+              "max": 6
+            }
+          },
+          {
+            "pass": true,
+            "label": "PG04-S exact header / cover / success mark geometry",
+            "actual": [
+              {
+                "selector": ".pg04s-native-nav",
+                "value": {
+                  "left": 0,
+                  "right": 402,
+                  "top": 0,
+                  "bottom": 110,
+                  "width": 402,
+                  "height": 110,
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"Helvetica Neue\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "102px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(245, 246, 248, 0.8)",
+                  "display": "flex",
+                  "color": "rgb(27, 30, 39)"
+                }
+              },
+              {
+                "selector": ".pg04s-native-close",
+                "value": {
+                  "left": 12,
+                  "right": 56,
+                  "top": 60,
+                  "bottom": 104,
+                  "width": 44,
+                  "height": 44,
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"Helvetica Neue\", sans-serif",
+                  "font-size": "18px",
+                  "line-height": "18px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(0, 0, 0)"
+                }
+              },
+              {
+                "selector": ".pg04s-native-close image",
+                "value": {
+                  "left": 23,
+                  "top": 71,
+                  "width": 22,
+                  "height": 22,
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"Helvetica Neue\", sans-serif",
+                  "font-weight": "400"
+                },
+                "adapter": "SDK Element read fallback; native wx selector returned null"
+              },
+              {
+                "selector": ".pg04s-cover",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 318.25,
+                  "bottom": 494.25,
+                  "width": 370,
+                  "height": 176,
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"Helvetica Neue\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(239, 237, 243)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".pg04s-mark",
+                "value": {
+                  "left": 169,
+                  "right": 233,
+                  "top": 112.40419006347656,
+                  "bottom": 176.40419006347656,
+                  "width": 64,
+                  "height": 64,
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"Helvetica Neue\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(235, 249, 240)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".pg04s-mark image",
+                "value": {
+                  "left": 183,
+                  "top": 127.51001739501953,
+                  "width": 36,
+                  "height": 35.99999237060547,
+                  "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"Helvetica Neue\", sans-serif",
+                  "font-weight": "400"
+                },
+                "adapter": "SDK Element read fallback; native wx selector returned null"
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "PG04-S share button -> same real invite card and choice sheet, no recipient selected",
+            "actual": {
+              "id": "0e51f241-3f63-439d-b59d-593549a61ac2",
+              "canShare": true
+            }
+          },
+          {
+            "pass": true,
+            "label": "UI-only result restore still has actual same qualified event",
+            "actual": {
+              "id": "0e51f241-3f63-439d-b59d-593549a61ac2",
+              "status": "RECRUITING"
+            }
+          }
+        ],
+        "metrics": [
+          [
+            {
+              "selector": ".pg04s-native-nav",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 0,
+                "bottom": 110,
+                "width": 402,
+                "height": 110,
+                "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"Helvetica Neue\", sans-serif",
+                "font-size": "16px",
+                "line-height": "normal",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(245, 246, 248, 0.8)",
+                "display": "flex",
+                "color": "rgb(27, 30, 39)"
+              }
+            },
+            {
+              "selector": ".pg04s-native-close",
+              "value": {
+                "left": 12,
+                "right": 56,
+                "top": 60,
+                "bottom": 104,
+                "width": 44,
+                "height": 44,
+                "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"Helvetica Neue\", sans-serif",
+                "font-size": "18px",
+                "line-height": "18px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(0, 0, 0, 0)",
+                "display": "flex",
+                "color": "rgb(0, 0, 0)"
+              }
+            },
+            {
+              "selector": ".pg04s-native-close image",
+              "value": {
+                "left": 23,
+                "top": 71,
+                "width": 22,
+                "height": 22,
+                "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"Helvetica Neue\", sans-serif",
+                "font-weight": "400"
+              },
+              "adapter": "SDK Element read fallback; native wx selector returned null"
+            },
+            {
+              "selector": ".pg04s-cover",
+              "value": {
+                "left": 16,
+                "right": 386,
+                "top": 318.25,
+                "bottom": 494.25,
+                "width": 370,
+                "height": 176,
+                "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"Helvetica Neue\", sans-serif",
+                "font-size": "15px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(239, 237, 243)",
+                "display": "block",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".pg04s-mark",
+              "value": {
+                "left": 169,
+                "right": 233,
+                "top": 112.40419006347656,
+                "bottom": 176.40419006347656,
+                "width": 64,
+                "height": 64,
+                "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"Helvetica Neue\", sans-serif",
+                "font-size": "15px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(235, 249, 240)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".pg04s-mark image",
+              "value": {
+                "left": 183,
+                "top": 127.51001739501953,
+                "width": 36,
+                "height": 35.99999237060547,
+                "font-family": "\"Plus Jakarta Sans\", -apple-system, \"system-ui\", \"Helvetica Neue\", sans-serif",
+                "font-weight": "400"
+              },
+              "adapter": "SDK Element read fallback; native wx selector returned null"
+            }
+          ]
+        ],
+        "screenshots": [
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-published-top-wave68-2026-10-02.png"
+        ],
+        "exceptions": [],
+        "writes": [
+          {
+            "kind": "UI-only result view restore",
+            "persisted": false,
+            "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2",
+            "reason": "Independent visible button checks after prior action dismisses result; no API publication."
+          }
+        ],
+        "boundary": "Only changed Wave 68 UI and routes. Synthetic local API identities. No full suite, CI, device, production, message send or new publication.",
+        "actualEvent": {
+          "id": "0e51f241-3f63-439d-b59d-593549a61ac2",
+          "isHost": true,
+          "status": "RECRUITING",
+          "reviewStatus": "APPROVED",
+          "canCopyPublishedInvite": true,
+          "confirmed": 6,
+          "max": 6
+        },
+        "pass": false,
+        "failure": {
+          "phase": "copy",
+          "message": "#publishedInviteCopyButton",
+          "stack": "AssertionError [ERR_ASSERTION]: #publishedInviteCopyButton\n    at scroll (/private/tmp/caper-wave68-sdk-helpers.cjs:17:58)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async /private/tmp/caper-wave68-published.cjs:10:24\n    at async run (/private/tmp/caper-wave68-sdk-helpers.cjs:22:3)"
+        },
+        "elapsedMs": 21458,
+        "segment": "published-second",
+        "sourceSHA256": "3d51b495ef07e0a1767a95f044a3dfa805e494a2fc5f8ac7f4dcc762f543baac"
+      },
+      {
+        "scope": "Only PG04-S remaining copy / poster / workbench / details / close / person buttons; earlier share / geometry successful checks not repeated",
+        "checks": [
+          {
+            "pass": false,
+            "label": "PG04-S copy button -> actual current invite token clipboard",
+            "actual": {
+              "sameToken": false,
+              "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2",
+              "message": "真实邀请码与使用说明已复制。"
+            }
+          }
+        ],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave 68 UI and routes. Synthetic local API identities. No full suite, CI, device, production, message send or new publication.",
+        "pass": false,
+        "failure": {
+          "phase": "copy",
+          "message": "PG04-S copy button -> actual current invite token clipboard",
+          "stack": "AssertionError [ERR_ASSERTION]: PG04-S copy button -> actual current invite token clipboard\n    at check (/private/tmp/caper-wave68-sdk-helpers.cjs:16:80)\n    at /private/tmp/caper-wave68-published-remaining.cjs:4:352\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async run (/private/tmp/caper-wave68-sdk-helpers.cjs:22:3)"
+        },
+        "elapsedMs": 8304,
+        "segment": "published-remaining-first",
+        "sourceSHA256": "d8ede1deda284c1ab71c5848a2096da8eef4a3961e456f14a64c1b1502a42ca3"
+      },
+      {
+        "scope": "Only PG04-S remaining copy / poster / workbench / details / close / person buttons; earlier share / geometry successful checks not repeated",
+        "checks": [
+          {
+            "pass": true,
+            "label": "PG04-S copy button -> current invite token plus actual title and instructions clipboard",
+            "actual": {
+              "sameToken": true,
+              "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2",
+              "message": "真实邀请码与使用说明已复制。"
+            }
+          },
+          {
+            "pass": true,
+            "label": "PG04-S poster button -> same qualified event actual PNG export",
+            "actual": {
+              "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2",
+              "poster": {
+                "actualTempPNGExported": true,
+                "message": "",
+                "previewHook": "Only native previewImage bridge captured; canvas export and current event / safety checks unmocked. No actual preview/window/saving claim."
+              }
+            }
+          },
+          {
+            "pass": true,
+            "label": "PG04-S fourth grid button -> same real host workbench"
+          },
+          {
+            "pass": true,
+            "label": "PG04-S primary CTA -> same host workbench"
+          },
+          {
+            "pass": true,
+            "label": "PG04-S secondary CTA -> same live event details"
+          },
+          {
+            "pass": true,
+            "label": "PG04-S close -> same details, no new event"
+          },
+          {
+            "pass": true,
+            "label": "PG04-S header person -> same registration / members"
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [
+          {
+            "kind": "UI-only result view restore",
+            "persisted": false,
+            "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2",
+            "qualification": "Actual current host API, refresh READY, same RECRUITING approved event",
+            "reason": "Independent result button checks; no API publication."
+          },
+          {
+            "kind": "UI-only result view restore",
+            "persisted": false,
+            "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2",
+            "qualification": "Actual current host API, refresh READY, same RECRUITING approved event",
+            "reason": "Independent result button checks; no API publication."
+          },
+          {
+            "kind": "UI-only result view restore",
+            "persisted": false,
+            "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2",
+            "qualification": "Actual current host API, refresh READY, same RECRUITING approved event",
+            "reason": "Independent result button checks; no API publication."
+          },
+          {
+            "kind": "UI-only result view restore",
+            "persisted": false,
+            "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2",
+            "qualification": "Actual current host API, refresh READY, same RECRUITING approved event",
+            "reason": "Independent result button checks; no API publication."
+          },
+          {
+            "kind": "UI-only result view restore",
+            "persisted": false,
+            "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2",
+            "qualification": "Actual current host API, refresh READY, same RECRUITING approved event",
+            "reason": "Independent result button checks; no API publication."
+          },
+          {
+            "kind": "UI-only result view restore",
+            "persisted": false,
+            "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2",
+            "qualification": "Actual current host API, refresh READY, same RECRUITING approved event",
+            "reason": "Independent result button checks; no API publication."
+          }
+        ],
+        "boundary": "Only changed Wave 68 UI and routes. Synthetic local API identities. No full suite, CI, device, production, message send or new publication.",
+        "poster": {
+          "actualTempPNGExported": true,
+          "message": "",
+          "previewHook": "Only native previewImage bridge captured; canvas export and current event / safety checks unmocked. No actual preview/window/saving claim."
+        },
+        "pass": true,
+        "elapsedMs": 21521,
+        "segment": "published-remaining",
+        "sourceSHA256": "389a280fc096af53fb71dd21b2097ba2fb2261a001bdbfe1e1b7bb93d741969d"
+      },
+      {
+        "scope": "Only final scoped official500 alias callbacks / A and C visible consumers / PG04-S PNG-outline mark; no API flow repeat",
+        "checks": [
+          {
+            "pass": true,
+            "label": "A sole visible source500 declaration uses scoped official face",
+            "actual": {
+              "family": "\"Caper Jakarta Profile 500\", \"Plus Jakarta Sans\", sans-serif",
+              "weight": "500"
+            }
+          },
+          {
+            "pass": true,
+            "label": "C sole venue source500 declaration uses scoped official face",
+            "actual": {
+              "family": "\"Caper Jakarta Profile 500\", \"Plus Jakarta Sans\", sans-serif",
+              "weight": "500"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Final dedicated official500 face loaded",
+            "actual": [
+              {
+                "family": "Caveat",
+                "weight": "700",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "400",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "600",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "700",
+                "status": "loaded"
+              },
+              {
+                "family": "Plus Jakarta Sans",
+                "weight": "800",
+                "status": "loaded"
+              },
+              {
+                "family": "Rubik Mono One",
+                "weight": "400",
+                "status": "loaded"
+              },
+              {
+                "family": "Caper Jakarta Profile 500",
+                "weight": "500",
+                "status": "loaded"
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "Other source pages retain original Jakarta500 nearest-face matching"
+          },
+          {
+            "pass": true,
+            "label": "PG04-S accurate outlined mark matches provided PNG appearance",
+            "actual": {
+              "src": "./assets/pg04s-check_circle_fill0.svg",
+              "size": {
+                "width": 36,
+                "height": 36
+              }
+            }
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [],
+        "screenshots": [
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-profile-edit-final-wave68-2026-10-02.png",
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-moments-final-wave68-2026-10-02.png",
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-published-mark-final-wave68-2026-10-02.png"
+        ],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave 68 UI and routes. Synthetic local API identities. No full suite, CI, device, production, message send or new publication.",
+        "aFont": {
+          "family": "\"Caper Jakarta Profile 500\", \"Plus Jakarta Sans\", sans-serif",
+          "weight": "500"
+        },
+        "cFont": {
+          "family": "\"Caper Jakarta Profile 500\", \"Plus Jakarta Sans\", sans-serif",
+          "weight": "500"
+        },
+        "fonts": [
+          {
+            "family": "Caveat",
+            "weight": "700",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "600",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "700",
+            "status": "loaded"
+          },
+          {
+            "family": "Plus Jakarta Sans",
+            "weight": "800",
+            "status": "loaded"
+          },
+          {
+            "family": "Rubik Mono One",
+            "weight": "400",
+            "status": "loaded"
+          },
+          {
+            "family": "Caper Jakarta Profile 500",
+            "weight": "500",
+            "status": "loaded"
+          }
+        ],
+        "mark": {
+          "src": "./assets/pg04s-check_circle_fill0.svg",
+          "size": {
+            "width": 36,
+            "height": 36
+          }
+        },
+        "pass": true,
+        "elapsedMs": 15729,
+        "segment": "final-font-mark",
+        "sourceSHA256": "10c0b0634c22a06e069c30bdd1c5797aeec56da57dc997fc16be4930317d607b"
+      }
+    ],
+    "successfulAssertions": 45,
+    "failedAssertionRecords": 3,
+    "failedSegments": 6,
+    "runtimeExceptionCount": 0,
+    "distinctScreenshotCount": 10,
+    "screenshotsViewed": true
+  },
+  "sourceCloneProof": {
+    "files": 496,
+    "cloneFiles": 496,
+    "differences": [],
+    "excluded": [
+      "config.js cloneAPI3037/repo3000",
+      ".DS_Store"
+    ],
+    "sourceManifest": {
+      "app.json": "d8bbcd19830fd03f9cec0117cbbeddf0cdd60e49693508d4fba41696b6e4e72b",
+      "app.wxss": "020e37d59cb47e4c8f4e233dc33cefbee24d06f6e25c1ed4b5783b3b8d0534d4",
+      "package.json": "dbf8353f77358bc12169b7bb7301e1978d5b503e002ee927229a8993672818fc",
+      "app.js": "540105f1b42f5695519da2f36e4bf8e3399cbecdfc2347ffb0838965e04fce69",
+      "custom-tab-bar/index.wxml": "05bec473ca0a5e58d1ba504a360eada6925edb9938f4c3b56f3e074156c740b9",
+      "custom-tab-bar/index.js": "b5da7218741cc259ae18bb383992d40757414297a8672ca7c3a6ed3d9e7ff8fb",
+      "custom-tab-bar/index.wxss": "08efca56512ef634a49a1bc1865493c6047553c247cefce0b6e3af0387ca209b",
+      "custom-tab-bar/index.json": "e7b657f5a4b032a68e9e084639b3a5564ce552896d269c3f8c4463bf7a7fa3b5",
+      "utils/sha256.js": "29266d6b94e1c179aff5b2f692aa5dd21e6e20e3dbceb6cf192fdd7a90fd3755",
+      "utils/reference-font-data.js": "8cd1ac18d092175c22daaa5c80749251707f6b16f82d1550263b5aef875bda41",
+      "utils/city.js": "d8eacb0af597f946aaecae487097323eeba6323406c89aca4f0bd8f3df20c852",
+      "utils/reference-fonts.js": "ad556963f34c48a49d7cdf6b04c8d2f4fe02f6e38ae655d5e2dfd3416a45c33a",
+      "utils/api.js": "a299dab6c468a5a90b25dacc44d094d433eae2c448a7e60c0d0abc372e23c4a8",
+      "utils/event-entry.js": "3d15c741d34ff35c4e071b7478db13b4c6e70ed1a20616689389a4647be89d05",
+      "utils/checkin-qr.js": "974a6c54f8813ececa17291b99099adf72610963faaad3e6949c6badaedcf31f",
+      "vendor/qrcode.js": "79ec86f82856005b1c887905cfccfcfbec3821ca61c7fd5a952faa5f778f791c",
+      "vendor/README.md": "820f33982645841a1f6de2de1456ad4e982453d1562570c6334d1bf4da1fc89d",
+      "subpackages/profile/navigation.js": "e870ee7e7f2b031e0c24996d264d222dd53680d4f679e9af7286f85dfb9da59a",
+      "subpackages/profile/common.wxss": "fe936440be2d3a7b224bb6f1b7789f055b671de93ff6977730356b1ae327bbdd",
+      "subpackages/activity/itinerary/itinerary.js": "5c0e933ed6a67b7bc90d7d1f6510e84d22ecf9d9abd006456fe787dead8e61c7",
+      "subpackages/activity/itinerary/itinerary.wxss": "42faee430c7d58612c8e1c8e2f8560f8c5f1ce4c01e00de65bdf8f5e74271cf9",
+      "subpackages/activity/itinerary/itinerary.wxml": "0d66c8b675decf27bc57511d7b0935c6883438bf2dededdf26e6820d0affaeea",
+      "subpackages/activity/itinerary/itinerary.json": "ebea2eb038a15443776bc34c3f2298b18467170a7b88fbbb4abcd117ab541d16",
+      "subpackages/activity/event/event.js": "ccb5b5fede066ba0533b82cb564e816cc3d45ca96778a0d25ac5286d3c11a4bd",
+      "subpackages/activity/event/event.json": "bf33dc7da099d240642a50fe3cf44cee01a2b282f70a80a313c79317c76ad10b",
+      "subpackages/activity/event/event.wxss": "36f4980f427bdf6502ffa2f068dbd935bd028a37c5b563f6860c76715a3b742f",
+      "subpackages/activity/event/event.wxml": "06741c8056566a32f33f356ce65f9aabfcb2164d950a6c288c28e2ec48f0fdf3",
+      "subpackages/activity/share/share.json": "95f4181c4eb25045c994138c56d0741f84443d00426599975f8a3fe4f24e4262",
+      "subpackages/activity/share/share.wxml": "fa6664d9fc3a697509fee78362a4dbec909b6051cc7a6656655622a6f1560af5",
+      "subpackages/activity/share/share.wxss": "8309549f016b13b98e2496551089e88a069265c6d0b60b2ac8bb5a3b562f196c",
+      "subpackages/activity/share/share.js": "5fdde14c88902bb18e4c045d81326974978d718c6181d94cf76c86f2177a8258",
+      "subpackages/activity/itinerary/assets/person.svg": "d66a89fc9036f18a31f3804ee7b19f52a7954e31cc1cbfbd9b98f206a8299d6f",
+      "subpackages/activity/itinerary/assets/timer_fill1.svg": "c9af56a9458ee4b7fd22b42d0b5457481ab6240471cb51ac396b8d3e25f029e6",
+      "subpackages/activity/itinerary/assets/verified.svg": "3c17f5c6fc7ca9a3c980c40b2ee21f945a275b662d74f98c5d70561bdaa52653",
+      "subpackages/activity/itinerary/assets/calendar_today.svg": "963b2f6ca1ab6a31bffaaac553a98b6225174aee78bf84cd9ad380e0b6f4b9f7",
+      "subpackages/activity/itinerary/assets/info.svg": "cafa24009f60176386f7c80ad532e7fe0df28e3c623d752ec0ddbc9a21122c4c",
+      "subpackages/activity/itinerary/assets/check_circle_fill1.svg": "40e24a1c9c2512991e3b57ba7daa8862ea103ef308ed8dc612533d9d61e8bb76",
+      "subpackages/activity/itinerary/assets/payments.svg": "57cf2d2a7177c473bbabefa8f2ae0dd219cd63a3f57250128eb252ca3cf35c60",
+      "subpackages/activity/itinerary/assets/material-symbols-sources.json": "708c6d076db64c127bbfb2043baa8e574401e7c2334b66adf1856f5748029261",
+      "subpackages/activity/itinerary/assets/location_on.svg": "65f88e9064f60164f7fc0912a142b73c305bf1ef2562a82571d8284c065fe519",
+      "subpackages/activity/itinerary/assets/arrow_back_ios_new.svg": "b4d72b3ef91399480f63d49489df5b8ff1b26436974b423b3c60d11b103ff854",
+      "subpackages/activity/event/assets/pg01-share-dark.svg": "46f9fecb2acd63c650e2f36ca1509deb662e6fda54ec53e4b7839f9a686ae122",
+      "subpackages/activity/event/assets/pg01-track.svg": "37e07bb5f4c1ee571765c5452cb212b089fd08971931430d0f7f6f2ebf2ab861",
+      "subpackages/activity/event/assets/pg05s-verified_user.svg": "f6e627ed9325c0065390f22bb00ba6354eed4a9dd106351d7ff858cfe37eceef",
+      "subpackages/activity/event/assets/pg05-back.svg": "fcf8e9658cab1dac7d3657febcd4ccf24a4a290efeeb004726f3b89def48d500",
+      "subpackages/activity/event/assets/pg01-share-white.svg": "e8bb7afadf7fe8a663d6226140e2c8f1dbae5638bf88c640b302f60ce91941ae",
+      "subpackages/activity/event/assets/pg01-racket.svg": "ceae95cb399998f7cc4c96fa6a395716941790562cf79f1ba65577263da585bd",
+      "subpackages/activity/event/assets/pg05-more.svg": "ded6ef6e4079cbd7274213090123ddaa306e3ce5ac1dcc59192b3257d388c9bd",
+      "subpackages/activity/event/assets/pg05s-sports_tennis.svg": "7cb15d9ec3d6f39ca080b843318ae1237fe4fd3fc8d871ddaf9da9dc051d6289",
+      "subpackages/activity/event/assets/pg05s-navigation.svg": "4d540ef6634e8db4a3697301aeba7160dbe18fc6dba3f51445d3a4525cec9ace",
+      "subpackages/activity/event/assets/pg04s-person_add.svg": "c5a0ab529fbfa3b3458ac0a6808cd236d16dbfb707362db27712500f7c6b7ac8",
+      "subpackages/activity/event/assets/pg05s-location_on.svg": "bb176877e344f00816c6e4fb28d981471f6c8d0a5d4e61eb46871bf7452ce1ae",
+      "subpackages/activity/event/assets/pg05s-check_fill1.svg": "6e9a6f4799b124417e754b5210e0d03420f65323bf3c84ce0ece2d5a8376dc51",
+      "subpackages/activity/event/assets/pg04s-group_add.svg": "adb20fbf1168f49d7e71c2f9f8cbe95bf80ceacc68e535951f3c6a016d3a3c2c",
+      "subpackages/activity/event/assets/pg05-groups.svg": "4d7144e0988be8fe478016e6d4ad0fe9f8db37a72cec66e2f766a7e2109d6f98",
+      "subpackages/activity/event/assets/pg05-pin.svg": "b478e0e270310d7a33f39cf3619037e02e7b70271b0e5d8c75056a479211e818",
+      "subpackages/activity/event/assets/pg05s-arrow_forward.svg": "947f6c7303589519540cabb6ef8ba09e3ffa3e841f541348fda045d6854c7031",
+      "subpackages/activity/event/assets/pg04s-link.svg": "adac660f968d4ecd36d83073405204834b3aa39b01abb38baf69a1e1abeca774",
+      "subpackages/activity/event/assets/pg04s-check_circle_fill0.svg": "a4b04b9903d61e6c90cf012bdba7c6a0bc8ebc35c4b1fea4b97284a0afb1ceb6",
+      "subpackages/activity/event/assets/pg04s-check_circle_fill1.svg": "ab977649e865c7047d84bf477c341114fe10fba356750388d30adf769f0da3b2",
+      "subpackages/activity/event/assets/pg05-money.svg": "ac02d8c16cd928eb40ff133cdfeb116e0997b054fa8450c4e40a79e98229c2d7",
+      "subpackages/activity/event/assets/pg04s-celebration.svg": "cf5e29b2d83ac5a8a11865eb93cc0900d35ba3999fa282bac8e776b600a475ed",
+      "subpackages/activity/event/assets/pg05-shuttle.svg": "232a17d687332ed81598b838830e832b1a728135a4b3c7f3fbb5ae52959479c7",
+      "subpackages/activity/event/assets/pg04s-location_on.svg": "764a729c10b30b4f9f281c6992ba878f135fc69d7d8fa8e1ab80dee7c259d259",
+      "subpackages/activity/event/assets/pg05s-payments.svg": "4d1f7a5000813bc38f546c28687b54776ce968df5a0c5fdf519d24731ef4518a",
+      "subpackages/activity/event/assets/pg04s-chat.svg": "0e7591f5b931801e0bd28f211f6cf88ea215559e0e01efca4d99e2698c6e0b32",
+      "subpackages/activity/event/assets/pg04s-photo_camera_back.svg": "cd733a6e05aaf6fcd4fca3fc73c6167ee269219b294e828a662f615cf6578188",
+      "subpackages/activity/event/assets/pg01-crown.svg": "fb9f9b76aa3ca4e1786cc35b2dd0b172e6f501391cb5cb11a4955a9ecb21d28b",
+      "subpackages/activity/event/assets/pg04s-close.svg": "3512de5ac7010c150cfd2a7a134b0053cb0dee3544242328ab9f417f00261673",
+      "subpackages/activity/event/assets/pg05s-ios_share.svg": "e16c63d3d15b8195c5cddf22c5face6c0f62865b8308783c81b92331337bed22",
+      "subpackages/activity/event/assets/pg04s-arrow_forward.svg": "58c33e26c605a304e92df1ced891706a342c62c52bd506388c8776f53b7cbd9e",
+      "subpackages/activity/event/assets/pg01-seat-chevron.svg": "34fa718a8348189039d09d4f0138353309b1cd6e8fde68451682dd16ccb744ee",
+      "subpackages/activity/event/assets/pg01-calendar_today.svg": "0eb35d52aa070a121f66242fb5dd7b2e0c402f5549b9737779bc8bb5a14f0aa3",
+      "subpackages/activity/event/assets/pg01-back.svg": "936ba6e51e7ea41962e89cd2ed0f5607dad17f647d627f072a075ac2fca22c0e",
+      "subpackages/activity/event/assets/pg05s-chevron_right.svg": "f320fa0e4c76cd9e99353bb2632b578c5718fc73a5a3cdec3771f41df958ca1b",
+      "subpackages/activity/event/assets/pg01-location_on.svg": "09861c3bd72a72b766f76e539f03e19740a4a0591d68ebfa528a7fc94fbf6be2",
+      "subpackages/activity/event/assets/pg01-money.svg": "c1d837d2b54155fb586cdc88446fab690c313f38f9b815f22ffc834724d4cefc",
+      "subpackages/activity/event/assets/pg05-check.svg": "1356bf136e677aa7a9c4ec8dd75fbeb94651f263550a52722a6f49127f154bd5",
+      "subpackages/activity/event/assets/pg05s-forum.svg": "de66c37c5898a450ba8f0f48ee09e139d724de902b03969b4941a79a448baf6c",
+      "subpackages/activity/event/assets/pg01-chevron.svg": "fe8209a2c13213904b8d7b5f93b6eb0770b0f4bd6f8be28157596fcd02a33630",
+      "subpackages/activity/event/assets/pg01-groups.svg": "7389b1e9b5ae187e889de57ecb9681c0aed5ed4db3ce003f2f753eb5e857bcbd",
+      "subpackages/activity/event/assets/pg05s-calendar_today.svg": "41509ee59a21aadc07999f4548b268cbb4677a625e4587b8669a7d6aea6b70a0",
+      "subpackages/activity/event/assets/pg01-heart.svg": "ee58caf97aa97c04358c66ff19147ea48b837b54d41dfbb8d50290bd917d9dc3",
+      "subpackages/activity/event/assets/pg04s-auto_awesome.svg": "ece7add2f6e03892adaff32371d513607126cf4e07a93be752ad0745704fbff0",
+      "subpackages/activity/event/assets/pg04s-calendar_today.svg": "01250c1bde0d8f1cf5876f932e9993e4b7e52f722aca80d819b82605bda0db19",
+      "subpackages/activity/event/assets/pg05-calendar.svg": "e68bfb3ca725914459622892b17cdc972e7fc7de0ef861287dc76862982be16c",
+      "subpackages/activity/event/assets/pg04s-visibility.svg": "518731bd837cd5e42efd6157f58990d446ad89daf518bd7a68648ebc3b2173b3",
+      "subpackages/activity/event/assets/pg04s-person.svg": "dcd82b18c2b73881bc3e4abdf254f92647dfb16ae06b669f7dece7579f6eba73",
+      "subpackages/activity/event/assets/pg05s-edit_calendar.svg": "29d45c6a7980034413a081f2f0960bc39defc0b398eb5248c4e572e6daf6ffcc",
+      "subpackages/activity/event/assets/pg05s-group.svg": "2b233ae657912ae0ae2787dd08c4e24eb11fcaa1d9d296bcfd7bc2efee152146",
+      "subpackages/activity/event/assets/pg01-more.svg": "9620512c239026603281bb79f2de4e183065e223c2425cbd99fe08b572e19c3f",
+      "subpackages/activity/event/assets/pg04s-diversity_3.svg": "cc4cf1197e01524190f51b6d33e93aa3bcda5b89b8baf37fe957cfd87f932789",
+      "subpackages/activity/share/icons/poster.svg": "0868b6d957d133baa5d12a9c1871f18496d079c86b95477c3d750addbcef4bec",
+      "subpackages/activity/share/icons/group.svg": "278a87bf96cc9c8e2613986978fb7f84df196a7b518b3306ac9fd329655cb8c0",
+      "subpackages/activity/share/icons/copy.svg": "1047a97a68f9bbf5ebec3e064a57662c7a60a9ddf01eee73dcfca001aee1e9e9",
+      "subpackages/activity/share/icons/chat.svg": "9df8ad78893b44de1bf5c64bd90faf3c3fce64631091e5167119a2d358e8abe1",
+      "subpackages/activity/share/assets/person.svg": "d66a89fc9036f18a31f3804ee7b19f52a7954e31cc1cbfbd9b98f206a8299d6f",
+      "subpackages/activity/share/assets/verified.svg": "41463c802953513d26fe683ca7e33b30162ce11de8ad674caf251862f503dd3b",
+      "subpackages/activity/share/assets/groups_2_fill1.svg": "45af03ce9c37e4846994c671a3e7a075de4d2b46d62d54568a521b9965c711fb",
+      "subpackages/activity/share/assets/key.svg": "34b24d7ea802b1df0fc1ab75b1a740dda2feade1df04c1a69a2464690a2b5476",
+      "subpackages/activity/share/assets/bolt_fill1.svg": "0f8fb065eac81e0e5f8966c043af0fabb27655962804f6f0c962298cf93310bc",
+      "subpackages/activity/share/assets/calendar_today.svg": "963b2f6ca1ab6a31bffaaac553a98b6225174aee78bf84cd9ad380e0b6f4b9f7",
+      "subpackages/activity/share/assets/sports_tennis_fill1.svg": "7f676e890f604d2628dd3566031dcf1780b3e962b87f105d81d20add46c0f4fa",
+      "subpackages/activity/share/assets/photo_camera.svg": "8723335ab2f54be0a1133493e0f8021e27fc973e75b697f196f8f32f000b041f",
+      "subpackages/activity/share/assets/material-symbols-sources.json": "8151f2fd7f932ab68cbe338593212013c24f3867b00c32f36b402116831691c0",
+      "subpackages/activity/share/assets/receipt_long_fill1.svg": "163d0a4e71a5ce963551379d562b136dd75d7ae262459fa467a63c291c788c0f",
+      "subpackages/activity/share/assets/location_on.svg": "05727ad0db599d66076ba4c932c331ac01bc8fe210ae7ced01c518358e4875f2",
+      "subpackages/activity/share/assets/arrow_back_ios_new.svg": "b4d72b3ef91399480f63d49489df5b8ff1b26436974b423b3c60d11b103ff854",
+      "subpackages/profile/moments/moments.js": "8b067cadb3bd9b127fd700712f138fe4ab26d4e832dc469e1817663bf4deacdb",
+      "subpackages/profile/moments/moments.json": "e52785ddb393f087f62846072ae5780bba40241f2c11adfbf6b9bd5d481eea6f",
+      "subpackages/profile/moments/moments.wxss": "ecebfccf94fa19f71b600d591efb88fa883f3866665f0d3f95bfc613362b0b01",
+      "subpackages/profile/moments/moments.wxml": "4de915c950649f81daf256ba06f4712bb406ebbfcd82006e05a578aa786120f5",
+      "subpackages/profile/cache/cache.wxml": "ba52d36b5bf664fe92091921f1bef80e956fed557ba2bc767f883615428326c2",
+      "subpackages/profile/cache/cache.wxss": "871a01189a827f69f3cc5aba54995945a574835089bdc6ecb6acae430e5c68f5",
+      "subpackages/profile/cache/cache.js": "942ba6e489f75b80a0b679c9136aa0a7db524ffcf32035cd94f609306bb58b84",
+      "subpackages/profile/cache/cache.json": "359c2833804fd1b603738a31de3afaf95ebbc5619f9791b9b66a988ac7e4cc00",
+      "subpackages/profile/open-source/open-source.js": "a6833658f2968a2ecb3fdf9fd2d84748d3a8ef93930bdacdac37b7efec063393",
+      "subpackages/profile/open-source/open-source.wxss": "e805501ed7201b60380ef136850465792ff46285149e9582076f5bbca1e945cc",
+      "subpackages/profile/open-source/open-source.wxml": "71e8bb28a33e37fc7e7e2daef1f263027b6d0779c134cbd1c42668b2c7fc4a9d",
+      "subpackages/profile/open-source/open-source.json": "84b4b1556762d732687e0f9738b40154ddcb1927518c42c86533cab371192128",
+      "subpackages/profile/privacy-safety/privacy-safety.js": "f2da6b103cea1f88f6a9654a55708b94a0965cc9fefbf154064173f0afee37f2",
+      "subpackages/profile/privacy-safety/privacy-safety.json": "972185002186d9aa40df4e9dc00f759cbe0cccace11722e876ad53d0259ed4b3",
+      "subpackages/profile/privacy-safety/privacy-safety.wxss": "d524bbc31f686397e95d39435e808b987975f19bb99f9bb28756fff8f25b670c",
+      "subpackages/profile/privacy-safety/privacy-safety.wxml": "823a048e3d9454acb6afdcc860d87c229a0a192584e96861b7e8c4f07528c4a0",
+      "subpackages/profile/release-notes/release-notes.wxss": "3e49800ed01f8e1e8d087a50d045943cb37e18dcf70dabd14088c8d6b6878767",
+      "subpackages/profile/release-notes/release-notes.wxml": "5a5b6915a5c64d69654976f3d6ff42dc0d19f42a1f03310bce666cefaad306a6",
+      "subpackages/profile/release-notes/release-notes.js": "73934228fc72f8f43736942518a89bf08b35ae6421c7564b3d81acf87d6bde4a",
+      "subpackages/profile/release-notes/release-notes.json": "654ab219524cb45e5373f23032a16a8cd1457b773c305aa4094b237ba7ec357c",
+      "subpackages/profile/support/support.wxss": "ff8f40bea75ea042e98040725f620d23941472853605377ac988d7e842ef6146",
+      "subpackages/profile/support/support.wxml": "03fa7ef4cf37ef3d074b944719ae1770ac696fee1c01a6cc04cab0c1b86bc436",
+      "subpackages/profile/support/support.js": "54943386980c144484430d8de87b803181da75bbf0736dc781dcf5c15c80cfc3",
+      "subpackages/profile/support/support.json": "61c4a341e5a90c1619e06036b4c0199877d5506aad990ac2f5b058ff37f2d1cd",
+      "subpackages/profile/guidelines/guidelines.json": "b524057266abedd8a93649907eb53a07908dfb9ba1c32ced50849662daaee201",
+      "subpackages/profile/guidelines/guidelines.js": "9aecd0990288300443e88690a13c7405cbe7e34f2fc8811397a137bfae157cd2",
+      "subpackages/profile/guidelines/guidelines.wxml": "2e397c22469dcbb89a7b302491cb2c9e7e724010bbb801b56dcbaa549a69ec88",
+      "subpackages/profile/guidelines/guidelines.wxss": "588fbf20efbf5d9d39cb0e9cef585c4c13223a0b3a8bbba601339956b4c06254",
+      "subpackages/profile/legal/legal.wxml": "99c4dfd209d059b861c3f7063d760cb596aedd76c00f34534373852c4e60e086",
+      "subpackages/profile/legal/legal.js": "9b7a09cf6b2eaf221ec88127a27433bc2b000b638f9146b6bbf2478414f14145",
+      "subpackages/profile/legal/legal.wxss": "598aba1360a4ecb6a6eee8d7e80ee8a86eb4b06e5e9d7443fc094e8383a07386",
+      "subpackages/profile/legal/legal.json": "143930047419b2010d9f297bb1d338e83f196d8959807a7df27fdda39c17d9eb",
+      "subpackages/profile/badges/badges.wxml": "aa4af4ecafddccd99eb9fbacdf990487eaf4746d0fd99649c86e85e6930720bc",
+      "subpackages/profile/badges/badges.wxss": "f584d62c84dd8e816c469f58550c5b4f4fb588d1ed1bc6aab05f40523d9729c8",
+      "subpackages/profile/badges/badges.json": "87e891486bff9a8628468a9e96bfa072f93cde60df20d41b4f8c839e41f4b8b3",
+      "subpackages/profile/badges/badges.js": "0d3f2b9bd5b83f5dd05db67538da58a6bc219192a4681491ace56d1d6e375452",
+      "subpackages/profile/profile-edit/profile-edit.js": "2fe8db9e0ca20e5be74c78a3289da0a99c92a962483fa41e72b97c08d8b8be70",
+      "subpackages/profile/profile-edit/profile-edit.wxml": "b18e73bacecee5fb7382e50a5db40b10ff43134ad15139faaeba11ca9f12c292",
+      "subpackages/profile/profile-edit/profile-edit.wxss": "043c7f2a12f050cec6bf4505ea51f526b5388d2dc5865bc6e4d40b78c0b675a7",
+      "subpackages/profile/profile-edit/profile-edit.json": "2be9acff05f45514df7b25f6468ef08060496ddd4944ffde92ca1e52360eedc0",
+      "subpackages/profile/moments/assets/badminton-friends.jpg": "ec28d638546e96b48682d4680fd490b2af1344243d6722ecd503fd8bacfc2249",
+      "subpackages/profile/moments/assets/face.svg": "1095efc24571597f2eb00bb4d38bb736108bcf9a99d9d5c23c491d700037675d",
+      "subpackages/profile/moments/assets/person.svg": "d66a89fc9036f18a31f3804ee7b19f52a7954e31cc1cbfbd9b98f206a8299d6f",
+      "subpackages/profile/moments/assets/picnic-toast.jpg": "69221b820f13c41d6890bca66189327ae1483d9ef2e392b88ce3894bd1b21c82",
+      "subpackages/profile/moments/assets/sparkles-white.svg": "535c918226ff84fbeb1f9c1dc8c5299448ba351ca6248b1ed14d5d704937713a",
+      "subpackages/profile/moments/assets/favorite-pink-fill1.svg": "dbcadef60121ed92585f80f0a651ebfd50aa9a85660a718adab1b5d13b78d707",
+      "subpackages/profile/moments/assets/sparkles.svg": "e08d6ce6f031bc6600e67fd56605f66848d1dfd22c03d359c026ced1dba1c3f5",
+      "subpackages/profile/moments/assets/sports-tennis-lime.svg": "8eff4a29b02bc21a409121c55cf4a17248c9ef3f397be8d8ce45d524170caaae",
+      "subpackages/profile/moments/assets/crown.svg": "126e42f72651af0eeed06a39651dbbadd4c0c239ea38b83152ecc0f39b7feed5",
+      "subpackages/profile/moments/assets/groups.svg": "bb061b00cf7fcebe9c82022438fc9dbce2bd57f46d09be49e042c86ef9c917ae",
+      "subpackages/profile/moments/assets/front-camera-blue.svg": "67c35efbbfe5beea31266b7c62c46cf19a280c288608c3924f3518c11cb141fa",
+      "subpackages/profile/moments/assets/more.svg": "51e679c18d8ef69ac46b006148167c62824958920f54eced6bd828d24a3ee7c4",
+      "subpackages/profile/moments/assets/download-blue.svg": "85a9b78588191a58a910b2e34baf974d56cdb6ce460a8eefdcd74bbb3ce25800",
+      "subpackages/profile/moments/assets/picnic-friends.jpg": "bfc69cc51c546cf180cab17f5c62c0be0d92c9b7cc69232d0b7f730eae4f6b3e",
+      "subpackages/profile/moments/assets/picnic-blanket.jpg": "9481452122cadee78bd1b4e37a46200c46af107c2be3e1f0a3ec4468f1a62205",
+      "subpackages/profile/moments/assets/arrow-back.svg": "b4d72b3ef91399480f63d49489df5b8ff1b26436974b423b3c60d11b103ff854",
+      "subpackages/profile/moments/assets/badminton-smash.jpg": "34f2625ca5fcd5604eff2bbd577b1e67b4777f4d6e38b91564268c1eb7274815",
+      "subpackages/profile/moments/assets/crown-white.svg": "8efc93b6113f72f7c951cd3f2294b2404e110e6ba77f8ee5a4383692528faf16",
+      "subpackages/profile/moments/assets/boardgame-strategy.jpg": "96e88f1d35fd2cb7296a9ded185782a27f2f5cc42cb8d1025565c3d9bd15a321",
+      "subpackages/profile/moments/assets/camera-white.svg": "e73cf113b4a32be4d361f1e176ed092340511f035e9ce487eea57131cd24ab1c",
+      "subpackages/profile/moments/assets/badminton-score.jpg": "090ed647bb04c06efac182dd2a7275e1f7b02923f1f953e005db485a602cdee4",
+      "subpackages/profile/moments/assets/groups-white.svg": "c54f807b10d3cf80d4cdcee98d16bf6171f61a4d9873c1a28c31a2a30ad2800d",
+      "subpackages/profile/moments/assets/material-symbols-sources.json": "71f0fe13fcc601f3b939d1fb10a6ed6f591756f1e314acdb87e85d6be9ef0fa9",
+      "subpackages/profile/moments/assets/boardgame-friends.jpg": "7be63e8db95c6b1cddd8381b6f2c93b07d3001df86b11ebe85beb1879cac12b5",
+      "subpackages/profile/moments/assets/film.svg": "b429f939232a01c4853b44ed6020526ac2e21e14b7ca083b5394794d3a9bc073",
+      "subpackages/profile/moments/assets/reference-sources.json": "62a765de85197f10c8c22f5428e1f348ad4ea7bd5930382d7c038cb004d7dfd1",
+      "subpackages/profile/moments/assets/wave68-back.svg": "efeb362fc20c3e3a66fb6dc7be585f6ea7db8e9983609c44e148ef76807c3b24",
+      "subpackages/profile/moments/assets/heart.svg": "671480432ad1009e43ac5c2bafdf9f2a4a948be7bffd0bdae4b413257bb751cd",
+      "subpackages/profile/cache/assets/person.svg": "d66a89fc9036f18a31f3804ee7b19f52a7954e31cc1cbfbd9b98f206a8299d6f",
+      "subpackages/profile/cache/assets/forum.svg": "875cb09ed1d8b217f52940be9b6e3af93a4a3bfcc7c2ed7381f95730551787f8",
+      "subpackages/profile/cache/assets/more_horiz.svg": "51e679c18d8ef69ac46b006148167c62824958920f54eced6bd828d24a3ee7c4",
+      "subpackages/profile/cache/assets/auto_awesome.svg": "9d7af62a2dbc49a5deace5867ec68aeaa29043005f2556119b299f5b5cccafde",
+      "subpackages/profile/cache/assets/check_circle.svg": "315b53a0c587676ba46d78baa50e890e3920948b0313c7967ce96dab18f4c1d2",
+      "subpackages/profile/cache/assets/verified_user.svg": "d0c75f5550539435b0a155cdd0348111dfd5ffb20d870531ea5aa5cc1814d7cf",
+      "subpackages/profile/cache/assets/cleaning_services.svg": "d969715ec7ef0f6ca72dc7f97d868fc7d2d9b946e875eaea59578ae4afa7f07f",
+      "subpackages/profile/cache/assets/storage.svg": "58f06f940a458e6c4547eb822f505bb3cf1578e5e5a3570ca308a5482c4e6621",
+      "subpackages/profile/cache/assets/material-symbols-sources.json": "21c08ecc6ca81fab10635f4accd93be7818539550d132d189af392602f5c081e",
+      "subpackages/profile/cache/assets/photo_library.svg": "107ea047fdd95fb26eeabbf1f335626b4742b33f3ce20e98a2e189b222ddd2b3",
+      "subpackages/profile/cache/assets/arrow_back_ios_new.svg": "b4d72b3ef91399480f63d49489df5b8ff1b26436974b423b3c60d11b103ff854",
+      "subpackages/profile/open-source/assets/person.svg": "d66a89fc9036f18a31f3804ee7b19f52a7954e31cc1cbfbd9b98f206a8299d6f",
+      "subpackages/profile/open-source/assets/terminal.svg": "1b512f250a7062c6b087cdfbc29633c855a43d87dc944ebde080d59a49138913",
+      "subpackages/profile/open-source/assets/code.svg": "adb505fa8fd0d9e923d1656d34561922720fd0ec03549a5923826e7be0d75af9",
+      "subpackages/profile/open-source/assets/touch_app.svg": "b3e458c4ad292bb13a2e9fef532f2b9e75ea62d7fad50a96320ad5a1a0c60500",
+      "subpackages/profile/open-source/assets/diversity_3.svg": "89e2f363914e88326b65a3af15dd570c5b1a65070c218b5db0855a06e74af9b1",
+      "subpackages/profile/open-source/assets/more_horiz.svg": "0ddad076ae957d75bfde46ec8d44959603e0982584656894bb616f91018c33b2",
+      "subpackages/profile/open-source/assets/favorite.svg": "d89f212878e545fc2e104fd3dcac758546ad71073908a25d1e3fda2fe18f6f08",
+      "subpackages/profile/open-source/assets/ios_share.svg": "6c3a103aa10a003359f1e5caab07b6f4d3e5e54d86863872e5789a88b64b511f",
+      "subpackages/profile/open-source/assets/material-symbols-sources.json": "961c6f2d20b8edfca36f647d255636f1ac13b8ad9e1d6661a41f91111a531da8",
+      "subpackages/profile/open-source/assets/celebration.svg": "79627daf5d512d034ee29321c727f43f7c52395028102f9fe349f441800cc679",
+      "subpackages/profile/open-source/assets/arrow_back_ios_new.svg": "b4d72b3ef91399480f63d49489df5b8ff1b26436974b423b3c60d11b103ff854",
+      "subpackages/profile/open-source/assets/gavel.svg": "3422a2547a1ba1dfab2ef6e28fd26a1f923030c51820b3ade953d3600b6a3685",
+      "subpackages/profile/open-source/assets/open_in_new.svg": "df8199dcffa67f01f6f17036927cc606e5ba3fba9fe37f9c14e2e21ffab4da8d",
+      "subpackages/profile/privacy-safety/assets/arrow-forward.svg": "aad0b28fb39b0dbe2209883ce135b1387ef3038c47e75e1f823149103803b3c9",
+      "subpackages/profile/privacy-safety/assets/person.svg": "d66a89fc9036f18a31f3804ee7b19f52a7954e31cc1cbfbd9b98f206a8299d6f",
+      "subpackages/profile/privacy-safety/assets/verified-user.svg": "d0c75f5550539435b0a155cdd0348111dfd5ffb20d870531ea5aa5cc1814d7cf",
+      "subpackages/profile/privacy-safety/assets/shield-heart.svg": "997d3083562145e266837246f574707d53cb59035616f25bdb31a459a5cb7329",
+      "subpackages/profile/privacy-safety/assets/report.svg": "c0100c8c683893ef15244772fe7b22e6dc0f8f0891b15f65e9849c5eb5472302",
+      "subpackages/profile/privacy-safety/assets/more.svg": "51e679c18d8ef69ac46b006148167c62824958920f54eced6bd828d24a3ee7c4",
+      "subpackages/profile/privacy-safety/assets/arrow-back.svg": "b4d72b3ef91399480f63d49489df5b8ff1b26436974b423b3c60d11b103ff854",
+      "subpackages/profile/privacy-safety/assets/anonymous-person.svg": "6cf0fdd5b49b50fe9be6c1ee1ad3ed0ca161aba105dd8c8375f71479574a4fa2",
+      "subpackages/profile/privacy-safety/assets/wave68-report.svg": "a52c25b4c5cfb0d79e541f23d327d5b3f40a3a16af727ef7145523ab2276cdf2",
+      "subpackages/profile/privacy-safety/assets/material-symbols-sources.json": "2a9bf9f8bc4ba3e6b110d3b372a7b078c0cb9cf6a6108eb625748788fe13cd9b",
+      "subpackages/profile/privacy-safety/assets/block.svg": "c68fd41374e05ccf92cba1d8ca97e5e97d26bb5741491fd591576cc621276bd5",
+      "subpackages/profile/privacy-safety/assets/wave68-back.svg": "efeb362fc20c3e3a66fb6dc7be585f6ea7db8e9983609c44e148ef76807c3b24",
+      "subpackages/profile/release-notes/assets/graphic-eq.svg": "6d205d372855e5f277e7d3d7a85f8601bec4bd940a6d9034472d4caea1720531",
+      "subpackages/profile/release-notes/assets/photo-library.svg": "d30a7cd97370e00e3d2bb3ea9717016830d6b2b176c4e95cda3df8f41daae9c9",
+      "subpackages/profile/release-notes/assets/reference-photo-sources.json": "f745f6a09dca71c0ab6799295742d12cf9ce03ba837f91ed080b39435e2355c5",
+      "subpackages/profile/release-notes/assets/person.svg": "d66a89fc9036f18a31f3804ee7b19f52a7954e31cc1cbfbd9b98f206a8299d6f",
+      "subpackages/profile/release-notes/assets/reference-scene-2.jpg": "d7640ba550b06481d0bf784928d2e28af89b3edcbd18e8d026dd9caf8e69011b",
+      "subpackages/profile/release-notes/assets/document-scanner.svg": "94dd43981876fbcf3cf26c81de92530be9d333d35af1f0d96ee860273c2057e6",
+      "subpackages/profile/release-notes/assets/verified-user.svg": "e659455f9f1bc1015cc9b8c4484fd92ab12c6b8775bdc40a210f8bf0fc997be0",
+      "subpackages/profile/release-notes/assets/reference-scene-1.jpg": "5484a036033b0115a6a257d46c6743f75693f68ddeb1300e7663cf5bc22721ec",
+      "subpackages/profile/release-notes/assets/verified.svg": "614111055af5e8925d664e8e4cda6ceccb8a09a6e41a31e200276fe319e0045c",
+      "subpackages/profile/release-notes/assets/favorite-footer.svg": "b1d5adacb48c21cde7a938f9057d8ea7ae303e85e317290e52023d5c17d96436",
+      "subpackages/profile/release-notes/assets/shield.svg": "473bd35e64b0910bdb037c68e592e8cec6fa5fd2dc95e24e37c88cb76ea3dc54",
+      "subpackages/profile/release-notes/assets/build-circle.svg": "9496216a4b4d241b990b8ca9cbc6e57d3074b9da77dc38717d21fbce0aa8bddb",
+      "subpackages/profile/release-notes/assets/bolt.svg": "10baf9f905b55c863ce15a938547c2c6e274b5aa19c24770a572d767712f8dbc",
+      "subpackages/profile/release-notes/assets/auto-awesome.svg": "9efec7c5baf7f15e93b8daa9c2ef3eb8305c90d1cbf4c88b9beac47da2c15444",
+      "subpackages/profile/release-notes/assets/event.svg": "9b186f1a3710906e89053af123e739ffe7e72bee792db6f55a7d484e38926426",
+      "subpackages/profile/release-notes/assets/swap-horiz.svg": "6e34b0082522e001f1c96d861cb127b39e358a512769f754b15053e716e51bd0",
+      "subpackages/profile/release-notes/assets/mic.svg": "9878f89d9e11a6f91fceced5b375c44b0b70834645cd5a6bad3b96bc327f9bde",
+      "subpackages/profile/release-notes/assets/check-circle.svg": "a01d713246f3412e88a762bbbe7851a40133faf07c1a42902c3dc7e931a88869",
+      "subpackages/profile/release-notes/assets/favorite.svg": "72d15b12ea6284750c596553c8a1d8455aa52bdc8ea101899c1552ffa17f6c5d",
+      "subpackages/profile/release-notes/assets/back.svg": "b4d72b3ef91399480f63d49489df5b8ff1b26436974b423b3c60d11b103ff854",
+      "subpackages/profile/release-notes/assets/military-tech.svg": "93e53f5ba93da21447827b660cfac61751407ad116c837593e6e914351b40c9a",
+      "subpackages/profile/release-notes/assets/more.svg": "0ddad076ae957d75bfde46ec8d44959603e0982584656894bb616f91018c33b2",
+      "subpackages/profile/release-notes/assets/partly-cloudy-day.svg": "4b2a9f4465f6236767ac05241886d77ca7d00b4391ee4c839e3c162a22cfd051",
+      "subpackages/profile/release-notes/assets/stylus-note.svg": "1c93b05f3dedebd475f591babb40402e8aa153ccaaff88382b3f1778476c2152",
+      "subpackages/profile/release-notes/assets/share.svg": "6c3a103aa10a003359f1e5caab07b6f4d3e5e54d86863872e5789a88b64b511f",
+      "subpackages/profile/release-notes/assets/material-symbols-sources.json": "50aa927439cbece06f0c9929bf2ffd4f0e852eb9bf53ba7970c97940e2171893",
+      "subpackages/profile/release-notes/assets/receipt-long.svg": "e08c6057d3eee324a6430b27da08e858f6a20d645e590f013834aa5088057c90",
+      "subpackages/profile/support/assets/contact.svg": "7dad22b900736985da2e3d3d346feccdff21b3679f7d2a7e5918eae6d0c1879c",
+      "subpackages/profile/support/assets/expand-more.svg": "bdb6339f44e66e7760568c83552486b6cb6c1fd7f2cb40924f1325d4ffc0d8dd",
+      "subpackages/profile/support/assets/person.svg": "d66a89fc9036f18a31f3804ee7b19f52a7954e31cc1cbfbd9b98f206a8299d6f",
+      "subpackages/profile/support/assets/agent.svg": "6784ee3bcabb8ff7391e8ec0cd9bae508fe6006d0fb7ff099abfc45aab359d24",
+      "subpackages/profile/support/assets/smart-toy.svg": "e0967eb22a3db2da6eb88cdb52dc4d93f6d9ad3b6ae299ee2a423f7b00879d5b",
+      "subpackages/profile/support/assets/chat.svg": "4337614e49357c1687190a2131806250c2f65df378e7595e5a47c799f4a48c76",
+      "subpackages/profile/support/assets/send.svg": "03f4985351810fe35b60584b56dd68a057f7ab9f915003da416ae58ed4e0012a",
+      "subpackages/profile/support/assets/more.svg": "51e679c18d8ef69ac46b006148167c62824958920f54eced6bd828d24a3ee7c4",
+      "subpackages/profile/support/assets/edit.svg": "4c9d86a2ded8dae61daafc7e3e1df823056619b4e5827582bef4f8ffbdaf17b8",
+      "subpackages/profile/support/assets/arrow-back.svg": "b4d72b3ef91399480f63d49489df5b8ff1b26436974b423b3c60d11b103ff854",
+      "subpackages/profile/support/assets/material-symbols-sources.json": "84e311984af4f0adf9202e1d9f3ca3dda951254ab0810a40f668b54ef4abf935",
+      "subpackages/profile/support/assets/help.svg": "21214ab31d2017e9c0ae57e2210209cddd05f58c72690cf3d5ac64e048f0c57c",
+      "subpackages/profile/support/assets/photo.svg": "3327c8b0104a5ea48ab123f0ad09d1759b14ea932930816d96d97dedc18ceff0",
+      "subpackages/profile/guidelines/assets/hearing.svg": "20c5c015b8d231447cf32b4390e94e89e3a5742019bd8ac2f358e9a188c4ad4f",
+      "subpackages/profile/guidelines/assets/person.svg": "d66a89fc9036f18a31f3804ee7b19f52a7954e31cc1cbfbd9b98f206a8299d6f",
+      "subpackages/profile/guidelines/assets/visibility.svg": "206368e13abad1f5ec2865307958cb55e36e5a4da9cd70dd5ac395607ef09f38",
+      "subpackages/profile/guidelines/assets/event_busy.svg": "63bbce43845ae64d5425120255216caa1f4e933dc86184dd33bd6a895a85eea1",
+      "subpackages/profile/guidelines/assets/format_quote.svg": "3e8e8488712dcf0adb748e81d35c3667fe5b2232fc8e3cd12044a7b33b89a4d6",
+      "subpackages/profile/guidelines/assets/shield.svg": "bd5deaa35d8695f41707c8f8bebfc9b8c1a3d0bc6f965866ec86a4333fc70ad8",
+      "subpackages/profile/guidelines/assets/bolt.svg": "4f11fb368f2973299e84dba21126f86ac730070ce5f73cf494da6dd1b4c0e18d",
+      "subpackages/profile/guidelines/assets/photo_camera_front.svg": "2a5d67a55d6462012cb1065481801961458d44393c419d62ed655dd361262ac7",
+      "subpackages/profile/guidelines/assets/receipt_long.svg": "dfae002485b8bd35616b83e8d9dcde2df803115de2b4ebad7fea7017b8f77852",
+      "subpackages/profile/guidelines/assets/check.svg": "6db18814561155b57d4a71238cdafaf95bae08f4018739526171f786ff856e87",
+      "subpackages/profile/guidelines/assets/privacy_tip.svg": "b672752e835acc4b0ead17da568f5d360c6a32937e605f6a929cf69a6849a592",
+      "subpackages/profile/guidelines/assets/diversity_3.svg": "254d6abd352c681dfc19d764d0c82c51fa7e16ca9db5bed3ed7d3aa15768bb2c",
+      "subpackages/profile/guidelines/assets/more_horiz.svg": "0ddad076ae957d75bfde46ec8d44959603e0982584656894bb616f91018c33b2",
+      "subpackages/profile/guidelines/assets/check_circle.svg": "6f50cce60dbdbb7d9fa4657e97bb4d591312ab12b07ca59e86c50bf7d9f57066",
+      "subpackages/profile/guidelines/assets/favorite.svg": "1a58f7a504c4d156c5c3eb5a1a716640708d1bf11747ab6507e110669e3560c9",
+      "subpackages/profile/guidelines/assets/schedule.svg": "c70cf4562111b1be6b41a6777809f53e0b84844dca652d6af3069bb8958d5a58",
+      "subpackages/profile/guidelines/assets/handshake.svg": "5eb987496ce88696752566d193fe5dc58b9e5be307a93b803cc1a410ba93e8e1",
+      "subpackages/profile/guidelines/assets/ios_share.svg": "6c3a103aa10a003359f1e5caab07b6f4d3e5e54d86863872e5789a88b64b511f",
+      "subpackages/profile/guidelines/assets/material-symbols-sources.json": "5b7c4e47cd775dd01c6fdec13adf04a1bfe5767a0a34efc32d357dbf932ff4dc",
+      "subpackages/profile/guidelines/assets/block.svg": "0da31eff7890157ecb2eb9f1f330bc396478a72a02b994696766d229ec575ae6",
+      "subpackages/profile/guidelines/assets/arrow_back_ios_new.svg": "b4d72b3ef91399480f63d49489df5b8ff1b26436974b423b3c60d11b103ff854",
+      "subpackages/profile/guidelines/assets/gavel.svg": "927103e091a9b7421e1e1dc6adbb46f49bdf730b7738dd3f3a56a289318e1926",
+      "subpackages/profile/legal/assets/person.svg": "d66a89fc9036f18a31f3804ee7b19f52a7954e31cc1cbfbd9b98f206a8299d6f",
+      "subpackages/profile/legal/assets/group.svg": "f862e7f05441d32c511ede54b5d41f39f943a720944bc89c5f6eb01583d14587",
+      "subpackages/profile/legal/assets/shield.svg": "7ae1cc1f9a8ddb39ece68dfc73d23c880bf3a2e47004ee599a72658488776c63",
+      "subpackages/profile/legal/assets/download.svg": "c478fb7c3b8b5ef4cbdc467b819bf9c48ee7106787d19387d8eae0e2be463fa0",
+      "subpackages/profile/legal/assets/format-size.svg": "4adfdc5fe92305ddc51745302b0ecaddc58a63eb775a2f9260d0bcf61de9fc7f",
+      "subpackages/profile/legal/assets/check-circle.svg": "70c22fe8ee2a1c130a78d050be9ce6521761b997a4f441f4acce38904fbfdd8f",
+      "subpackages/profile/legal/assets/back.svg": "b4d72b3ef91399480f63d49489df5b8ff1b26436974b423b3c60d11b103ff854",
+      "subpackages/profile/legal/assets/camera.svg": "d87ce0817e06e31749293594c2c93f2abbb5b33a133193ea5642349321b73bb8",
+      "subpackages/profile/legal/assets/more.svg": "51e679c18d8ef69ac46b006148167c62824958920f54eced6bd828d24a3ee7c4",
+      "subpackages/profile/legal/assets/digest.svg": "535c918226ff84fbeb1f9c1dc8c5299448ba351ca6248b1ed14d5d704937713a",
+      "subpackages/profile/legal/assets/delete.svg": "07473c1c75beca0f969d21324a131a362b78e973a478386969ac8701091b75d6",
+      "subpackages/profile/legal/assets/location.svg": "7cf338a571451f91b973b34e2ada6e90e1c1227b8fdd1fc335af8c66235d5dec",
+      "subpackages/profile/legal/assets/share.svg": "74fbce65dc7c64099b6defe9460110844d20add3598fa32a972893d8dd508160",
+      "subpackages/profile/legal/assets/schedule.svg": "7742b662f45aa4736a5cec40757dbf702e20ff16c0c8ee8ed537e6c784fe9790",
+      "subpackages/profile/legal/assets/material-symbols-sources.json": "e1c30ff27eec221e06b73eceb4b115189b8e1dc57e50776c761bd01b689007de",
+      "subpackages/profile/badges/assets/person.svg": "d66a89fc9036f18a31f3804ee7b19f52a7954e31cc1cbfbd9b98f206a8299d6f",
+      "subpackages/profile/badges/assets/badminton.svg": "922b5d15fde68fd4e1ba1b02580bcb3aae940fc2f4a6819f3d0176b53110a536",
+      "subpackages/profile/badges/assets/showcase.svg": "06d2c51dcad9a89e3878dea6e7e541af43fdee6518b600432c50debca2e3cab9",
+      "subpackages/profile/badges/assets/partner.svg": "5eb987496ce88696752566d193fe5dc58b9e5be307a93b803cc1a410ba93e8e1",
+      "subpackages/profile/badges/assets/verified.svg": "36b4c196b6deec0bcd4b21b2fca0b4f8c46c21de333cdce67d8e39b8e8129867",
+      "subpackages/profile/badges/assets/sparkles.svg": "e051635554a4d2efb918f610c25a5817690c345ae1ecf771f3d7d45cb544bd92",
+      "subpackages/profile/badges/assets/lock.svg": "9251f969bca7fa927e3f8b4ed3a10d446f97a8da72f4baf2ae0ca263ae4b94be",
+      "subpackages/profile/badges/assets/crowd.svg": "9a3857509731b6126ade9e202c027dd442e07ec2be92ce0a182bbd2abc763817",
+      "subpackages/profile/badges/assets/host.svg": "82a831f678af06ccad6095b267a4cb453c0c45812b820a7b59ddef33c1218991",
+      "subpackages/profile/badges/assets/push-pin.svg": "31d5e93e0b778cafd903bcf467d2de61c280360cf7f068c0fb460ad2cc17492b",
+      "subpackages/profile/badges/assets/coffee.svg": "a2979bade7212b011feb8b04aa72e7672d6bf61f0520b4c34c9b97e075a01069",
+      "subpackages/profile/badges/assets/xp.svg": "b37eace9333ecb0c482582854d47832b2aa14b53c296a491468e461b892cd7ee",
+      "subpackages/profile/badges/assets/add.svg": "768e940a07466642721c7c4d40cd7ca6a70fb69df9a13ddd23be7db67a0f8624",
+      "subpackages/profile/badges/assets/close.svg": "472cb8781e3719cbaf86a215215c8afefd0d5c8f93a28b8570d7b0ca4b6d2b80",
+      "subpackages/profile/badges/assets/first.svg": "8cc86902fee4231bdb15c5bb30d30b19c689f2db927583a4fd78b7d6474e9982",
+      "subpackages/profile/badges/assets/back.svg": "b4d72b3ef91399480f63d49489df5b8ff1b26436974b423b3c60d11b103ff854",
+      "subpackages/profile/badges/assets/night.svg": "e9e3307aaf4b970a81ced9bfc804b4158abc9c660954d6010369bce42500764e",
+      "subpackages/profile/badges/assets/more.svg": "51e679c18d8ef69ac46b006148167c62824958920f54eced6bd828d24a3ee7c4",
+      "subpackages/profile/badges/assets/walk.svg": "fcfce24a8c7fd7b6ecdb8e5d70c0cf2506626378d2d33c2dab5cb48ed48e4c2a",
+      "subpackages/profile/badges/assets/material-symbols-sources.json": "408991c911c219bd083ed88dcad23d9c0c4c12d0c7c1d7d41cdc6891746be160",
+      "subpackages/profile/badges/assets/quick.svg": "82c453c3f51099d16cceef10a2c4e0ba3c74d93c17a319783163367c6d1fdf55",
+      "subpackages/profile/badges/assets/wave68-back.svg": "efeb362fc20c3e3a66fb6dc7be585f6ea7db8e9983609c44e148ef76807c3b24",
+      "subpackages/profile/profile-edit/assets/person.svg": "d66a89fc9036f18a31f3804ee7b19f52a7954e31cc1cbfbd9b98f206a8299d6f",
+      "subpackages/profile/profile-edit/assets/male.svg": "52935b2fea13bd30fa85c6ed6bf46f791a162d37e835989a34217461bde1f7c3",
+      "subpackages/profile/profile-edit/assets/close-blue.svg": "b68f0fdcaa5574610730ba1bc4e89dfa49c5f5a3b99bca05371d2232b59ed23b",
+      "subpackages/profile/profile-edit/assets/casino.svg": "f4387f791ba610779cca2e6db5438b263da7417b156c47a62cfdc5d34eeecae1",
+      "subpackages/profile/profile-edit/assets/chevron_right.svg": "b97d9f0c7f12ee74a3d1f060b665c8c98d36bf0a920067e43d6de78a6ba74c15",
+      "subpackages/profile/profile-edit/assets/check.svg": "84942e47808722b82c57efa78ab307272e592771a6d6c6c9e6d1cacf26648b9a",
+      "subpackages/profile/profile-edit/assets/close.svg": "baa5deb661857e84d57c65e800cfe6f967999fc16048e66d0a07fa5b26e08de6",
+      "subpackages/profile/profile-edit/assets/more_horiz.svg": "51e679c18d8ef69ac46b006148167c62824958920f54eced6bd828d24a3ee7c4",
+      "subpackages/profile/profile-edit/assets/sports_tennis.svg": "2c958317eeba9e57610ea968d49e000b327f42a87eb81b8c6fe0716868baf14a",
+      "subpackages/profile/profile-edit/assets/content_copy.svg": "30ca41e22713a89d89c9e1c23f2cf1a87db4b07c2a2d0a666ee03422517bffc7",
+      "subpackages/profile/profile-edit/assets/close-violet.svg": "0798d65ed9d4e6a43db012aba5773e43e4b1f6658e7ea59fca22371f0727d3a0",
+      "subpackages/profile/profile-edit/assets/photo_camera.svg": "e73cf113b4a32be4d361f1e176ed092340511f035e9ce487eea57131cd24ab1c",
+      "subpackages/profile/profile-edit/assets/visibility_off.svg": "fcf7a7c31835325a6ad86787582341547b9f6c730fc9ad97830be37ce663942d",
+      "subpackages/profile/profile-edit/assets/edit.svg": "7a99f70ad6c7553d8109f09d58e08c2e041e6f9789eff0f009665ee9013814f0",
+      "subpackages/profile/profile-edit/assets/person-anonymous.svg": "84a017d825cacf6336cfd20adbd270cdae207e6aed7b033641b9e15ebf527b8d",
+      "subpackages/profile/profile-edit/assets/add_circle.svg": "1345c114293381a544c571989e02ba9311827db791e2f13a2c8375c7efa905e0",
+      "subpackages/profile/profile-edit/assets/material-symbols-sources.json": "ac4b39144127abf09511e9064a4773e5307cefdeb4c2ef5e52e5bf19fb0bd7e5",
+      "subpackages/profile/profile-edit/assets/female.svg": "bba6f49f3cec781d1cc9a82e9be9caeb86c9044bfb155bfa14507e533b16562b",
+      "subpackages/profile/profile-edit/assets/location_on.svg": "8b772ab885d06ae54fce2df64ff6000f2b6c3a5e6cc9de9887e4d6ba59a58fac",
+      "subpackages/profile/profile-edit/assets/arrow_back_ios_new.svg": "b4d72b3ef91399480f63d49489df5b8ff1b26436974b423b3c60d11b103ff854",
+      "subpackages/profile/profile-edit/assets/wave68-back.svg": "efeb362fc20c3e3a66fb6dc7be585f6ea7db8e9983609c44e148ef76807c3b24",
+      "assets/stitch/caper_home_dinner.jpg": "2396e91306c1e2d8a152996464094f24cd7698fcdb55193771d73ab78673987f",
+      "assets/stitch/pg04s_badminton.jpg": "8d4c18256599f7d9ab5ff629947156507b40da2315fd5e0b4a88434471c0bdbe",
+      "assets/stitch/caper_discover_coffee.jpg": "8c0b55f856d8fbf2fc565b240aff905bcd4a8a0fdc5db4e2047591bebb71d07e",
+      "assets/stitch/caper_discover_camping.jpg": "583817d363bf087b5581ec58df7427c6ff1e079082bd4550ca4d2b1b6c00b621",
+      "assets/stitch/caper_discover_art.jpg": "84a0a5c6ce78fe0918d7edbaf75f010a2b255f239219344a8e65e10850745bbd",
+      "assets/stitch/caper_home_shanghai.jpg": "e618b8e7dc0348f140eb8502c33cec996a830dfbc2c4b502fef4d7f53bd69aea",
+      "assets/stitch/caper_discover_surf.jpg": "7e8d064a4d9b4f4ecd2ae282cee3089322dbe036f8bfda9f71c32ddacd768956",
+      "assets/stitch/caper_home_badminton.jpg": "df87413d3555b9f9b7cb7428a23ad2cbe1dad270fade6f53867ab29e29f2647d",
+      "assets/stitch/pg09_expense_rooftop.jpg": "169a9e7aad0497b32c48e9fca3e908c14a870d9cd023bbaed0351a899f85c77a",
+      "assets/stitch/caper_home_hiking.jpg": "59118f098cb6741ee1c6d89f152a2ae78c42c198b70a5fb9ef6526dea169f0b4",
+      "assets/stitch/itinerary_badminton.jpg": "6dff9b8ed669c73e1ee9ea1997af6c7da3383e59dd8ec1b32c516ddbdff6d7e7",
+      "assets/stitch/caper_discover_citywalk.jpg": "29ec54d0a3ad4928008e957d8229c72d0a357167098d458d749c4d391d09faa2",
+      "assets/stitch/caper_discover_basketball.jpg": "e38ebfbe65bad920fcfd9861f82b4d3c558bf8584dffbd237b1cd5a8ee1a35a2",
+      "assets/stitch/pg08_checkin_rooftop.jpg": "1dac5da7892a3a5b77e078509de87f5e5d308f0d3b04aaefcd6773f059e6b541",
+      "assets/stitch/caper_discover_boardgame.jpg": "0496a27ec5e007deba173ce6a54c882fadba2d882babf0010a3b7ade1116a070",
+      "assets/stitch/pg01_badminton_player.jpg": "9d3ffba93e70736ff1d8d72c3f8387e2a7f3e4fafca6c0a9f56b1be2fb03db88",
+      "assets/nav/f-home.svg": "1f589c2995dfc98a9127bb8e8e92c0a8af6c22b5ff2212bd913684615cbd47fb",
+      "assets/nav/f-me.svg": "ffd5c55b62069ece66fba519cd4714b11a54b00d879e532bef514f5393abb157",
+      "assets/nav/h-find.svg": "38cc7ccce5cdd0313b2dd5666308dd5b4d4b402b91b86d52837ac90cc1acd034",
+      "assets/nav/h-msg.svg": "827cb2ea6b00c71514bae57340e63ab9078442c08ac5e22efb09463479aa713f",
+      "assets/nav/p-me.svg": "0d6d462ac9e5ea77e33eea3a485d8359f3b1a651af34a76e47a7be09535a5c2f",
+      "assets/nav/d-me.svg": "7961d204b5e9beb6422ff10dcb434c688cde99ec5857be75c6f09f9d34ed1f45",
+      "assets/nav/h-me.svg": "07df44e6107f653683b7b6d6864f93c2f447fa6d91e80d52bc95ccbafa022387",
+      "assets/nav/n-find.svg": "5c59cd6f25005c28c053b1e8f15111cc345d68cd6d242caa480f9601d4b80398",
+      "assets/nav/d-find.svg": "73c02679eb661a24aebddbe19ca7f841b263a1beb0e89474ca710b617e3c9e78",
+      "assets/nav/n-me.svg": "a06abde5786d176e7bf7fac1f1cd195ba8c170cd1c37d9104b9bb89dc3cf9c09",
+      "assets/nav/p-find.svg": "4fc500eb6aae0ea2e5691b71658f074b465d5dd4001c0ca47c1585669ec8cfa1",
+      "assets/nav/n-msg.svg": "bd60addfb1541b237223ff5501db7c6272e85262ce3e17e5e3b68077edbc0faa",
+      "assets/nav/p-home.svg": "e742fa1b58c64b4a8392bfe373bdb28802a0470665f0028cc0242ee3af031865",
+      "assets/nav/h-plus.svg": "a888fce4fa766d3b6de7bf4e0b54b3956bbce14b405a2dbd06dfd9ac0cb6d3bc",
+      "assets/nav/n-home.svg": "38befba40441c61667b3ff635e5e571cbcfa29b24e2aea0269cd46fc918ea8c6",
+      "assets/nav/f-msg.svg": "93c7c2db13c0e910f6c0e1ccc659381ca23bf643ce8cdf621f5a680182cbf6f1",
+      "assets/nav/d-home.svg": "300996766af1c93c7d80b9754eb5c81d5259112fa2b76425e744687b07dd696b",
+      "assets/nav/n-plus.svg": "b363c7333810f450b119ae9de42dca6e4a353f6f74588c74f9ddf4de108edac4",
+      "assets/nav/h-home.svg": "0d93d6e45ea8a9db98d98f32c0f9edc4ee15dcf1c1c6db1b38bae89f40599127",
+      "assets/nav/d-msg.svg": "174b8ad5880db219b8e20a6d16a4d2a783e3b307b22df91bc7efb5f9159c9b40",
+      "assets/nav/d-plus.svg": "8babadde2c34a30a0b4072eb3a9c4e94470aa5cce24b99fa42be5b647df4ca0e",
+      "assets/nav/f-find.svg": "496b4f27d87c202e87f332dc5d43e4f19063bdc6e515e2786252472a356fbf17",
+      "assets/nav/p-plus.svg": "d81a595ec7464ee36709e049c84da394e0292454ddc4bb11bf1982caae03a436",
+      "assets/nav/p-msg.svg": "0ac77114e2c06e81b0dba5a53541a5e1d91ff9b6cf89076507180eaa3f4b6372",
+      "pages/messages/messages.json": "b76e69c65eadf25397e0df5c9457c5a098c1bfc714ae05be5441318bdc8ebacc",
+      "pages/messages/messages.wxml": "7b8e9bc25ee9175d68210517e9091377d0ca461df0a2e41541729f8aabdb9b9a",
+      "pages/messages/messages.wxss": "4473440860e25493bd4875a6515dce0b421e5a5a2fa06f36a8d2083e4541ad65",
+      "pages/messages/messages.js": "799d2a61281dbb9ffceca63d2fe86a467201ef6de88543c40887ecfd1f2de1e3",
+      "pages/discover/discover.js": "928b72be56fca9c7cd4d2a8fd8f76d14632ef9c315dbfb2ea62c97a9c81712b5",
+      "pages/discover/discover.json": "d09ff0a32fee5e70496a03f5c691f07462d0c9ea399dd69ae9f198e6ba1cc451",
+      "pages/discover/discover.wxml": "712b837104da4ba86ac372b2a9f2a1bad7b5aff9df40c9fa5b8b14b95f62bc8c",
+      "pages/discover/discover.wxss": "b2e7823086c5f30b69ba25bf1605136e52bcefd0d48cbb94f4c03abb65d32e13",
+      "pages/city/city.json": "1cab7364824fc6505717fe88931ec0d32fbaefdd6e417786ffff99485e70c499",
+      "pages/city/city.js": "271d93efcdadc8511751216f8e89459eac67640f5d27fa9371ee1776cb1506ae",
+      "pages/city/city.wxml": "7cec49adfb88995cbc1a9fa69adf7376d7dabf2892b43410cd6260582c163c0d",
+      "pages/city/city.wxss": "79fc9be6a07948f47530030194d098f4376cd183d629962ec7ffc362333bb361",
+      "pages/about/about.js": "71c436bcc97d4608fee8f79e3effec34c2876dd2317975f546d36e052bc3e5ad",
+      "pages/about/about.wxml": "65b2fc974c3b66972c7d6c3bbc0f2b1aef71b9256364ab99f74523317e67c4f5",
+      "pages/about/about.wxss": "5f47852e4fe9046b035a29d977528e910ed78858ad0ba829e71c06b0f90235cc",
+      "pages/about/about.json": "462dd818fbf115c81befdaed022c58ccb87327a1faeca0d69c9644e1f895f084",
+      "pages/me/me.wxml": "6b9348f72e03f955bb8c19b6c3996270eeb52d19bdcc76134a53c200eb9f2a7f",
+      "pages/me/me.wxss": "c090c16406ddcb5b85f5cea37c5fc8581df0a5f7907b23c6f423daec2e37fb7d",
+      "pages/me/me.js": "def9a36a9c46deca17cebbe95e5bd8672469eea6e759fd279b45d28c9f87021b",
+      "pages/me/me.json": "1bc6ec418e7c2ba28f9ec3a5479da2a73c9d8eb8066588dbcd128604a39a9880",
+      "pages/index/index.wxml": "fcbf2764f06abb13207f5534b51bb7c93f563fd42ad4de3ddc55bda424a60da0",
+      "pages/index/index.js": "d85b9db816163c4853bd2a7a9abec66dc62e8047d9e79c19457f4cb57dc8ac11",
+      "pages/index/index.wxss": "5fd04b24883cc3a89188e989e4d04f9ba70ece8d4d9f88916380e07dfceb6aa0",
+      "pages/index/index.json": "a082db2fcb674d4131b60f427fcb40891d00e1d2571e372df9827fa25e2f1fb1",
+      "pages/create/create.wxml": "1f43b903963036f7bfdfd0a86c108eed46e4d550a94b58110cd4745e2159700c",
+      "pages/create/create.wxss": "5daf66279379e432f3b17246b4b1fd7bf21495aae802164452285d5432623f8e",
+      "pages/create/create.js": "daaf623cbc29a562f41c58dfb4d9cb8ceebcd062456066439d835ddd68bdd18f",
+      "pages/create/create.json": "1d530473e6a60e563f80d3e9fa673a73fff5160270f3cc24fc289a55d0e2a09c",
+      "pages/event/event.js": "7794d28eb295a45de9b2015ed80747a0d22e34a0e00874636f0972e3106513d7",
+      "pages/event/event.json": "42a1a3bf4a4ae9f6f9e6e22182aaaeefeeec899b668d1b81e30eaf3ad958e01c",
+      "pages/event/event.wxss": "c05050373a172881009c76f37f54ec1830b1aa39f99ca4cfd806d5dde01e182e",
+      "pages/event/event.wxml": "7c22ffdf7bb255cd8e9dae6399e465129b65384be4dca2e3bb8b3ea7d5280ac3",
+      "pages/messages/assets/search.svg": "aeff8942a1a5a1a87f6f8dadfccba80d47d758084cc333270b360caef617c302",
+      "pages/messages/assets/settings.svg": "2f20e16cc351312cb34aa489af483fac0aac754687a8044f214a1b784c54e8ec",
+      "pages/discover/assets/ph-magnifying-glass-bold.svg": "509702096ab16a0fd1fe24372ff963aef0b935a3c0f26120d04da9e5c99e5c01",
+      "pages/discover/assets/ph-heart-bold.svg": "cc384fd9dae4781155ba9cb0639c2677eba89f6a7e68b1e0fdf0efc0e0b92360",
+      "pages/discover/assets/ph-game-controller-fill.svg": "91b70926b816b4f4e9b29000f8c77fc8ba9054a8a70fad7f48e68631634b6a08",
+      "pages/discover/assets/ph-fork-knife-fill.svg": "6f18d2b0568fd57a6c29d8ca1efff1df0968effae485d92a45ee8f004a9db299",
+      "pages/discover/assets/ph-map-pin-regular.svg": "0ef0349cab3091ab3fab8f37af6052f56ad15c466a30cbfe700f5d609308bc27",
+      "pages/discover/assets/ph-barbell-fill.svg": "d0abea57e21e83264b21b45bc5ca2bd30d506c1d9c8fde8769dc0ecd2e1328e8",
+      "pages/discover/assets/ph-calendar-blank-regular.svg": "f2205e7bb7a35c9fd3cc56a1bcb63b96cb29d94838d52b3680e73d9fd2df22de",
+      "pages/discover/assets/ph-funnel-simple-bold.svg": "fb7be574f5e7431bce225684733ef8e37af58e43d5be2ed75d4a56b7be43a08e",
+      "pages/discover/assets/ph-compass-fill.svg": "c5607060e580011be2cc0a6f3e8ecf76162862789d5652fa3e6f2e79f06b95b3",
+      "pages/city/assets/search.svg": "da405e7460356301e3417b539063f978f811ae33d0f0371e92398835cc9cb089",
+      "pages/city/assets/person.svg": "d66a89fc9036f18a31f3804ee7b19f52a7954e31cc1cbfbd9b98f206a8299d6f",
+      "pages/city/assets/search_blue.svg": "9da39f60ca2b14d1730081bea55dde724f5905f92e4c0367f69c0638ce22ccae",
+      "pages/city/assets/location_off.svg": "fca84c9f502b289fc16bbc4fd0dab483e34be8dc8b3769a75bd04071f4184081",
+      "pages/city/assets/place.svg": "b58170e4ca43375f0b2c112c12720307293b96495e7efdd98602220518cdf3bd",
+      "pages/city/assets/chevron_right.svg": "b97d9f0c7f12ee74a3d1f060b665c8c98d36bf0a920067e43d6de78a6ba74c15",
+      "pages/city/assets/near_me.svg": "7601a48abfd234908fefc56f4f1a15837606e73dfb2e009cf0630652a0d914dd",
+      "pages/city/assets/check.svg": "0c552cb3f6c6bdffc7c3041a73bc7f9f10b6af0b21c10c51ca7c1ba92277a27a",
+      "pages/city/assets/close.svg": "b96a2f52fc5f43dfee5efcd1a970bfa3ac7b7e21d46e3fd21c634dde9c39d561",
+      "pages/city/assets/more_horiz.svg": "51e679c18d8ef69ac46b006148167c62824958920f54eced6bd828d24a3ee7c4",
+      "pages/city/assets/auto_awesome.svg": "4413edc12b927dc1f90f44b1f603e26eba931b6d1c51a579447160f95f3bd0e9",
+      "pages/city/assets/explore.svg": "3d7dbdb585a74d507b996c2e26a33427c8525ab9fb8953978725f4ec6dea7840",
+      "pages/city/assets/sync.svg": "18dc01dda478a70a119f1d1590dc2a1d4c811dea996b17a218e643ad34e60898",
+      "pages/city/assets/location_on.svg": "aa64bbf7799469807f9edd8743319319f125ae663637b120b12b1fff60938004",
+      "pages/city/assets/arrow_back_ios_new.svg": "b4d72b3ef91399480f63d49489df5b8ff1b26436974b423b3c60d11b103ff854",
+      "pages/about/assets/public.svg": "443c695942716590672323d7be7ac8a1f6a4b58f64149df5c11400d8b09a6dc7",
+      "pages/about/assets/person.svg": "d66a89fc9036f18a31f3804ee7b19f52a7954e31cc1cbfbd9b98f206a8299d6f",
+      "pages/about/assets/format_quote.svg": "448c0b2b044389ae9bfa8cb261cf66a22d14a30ed6173f8b244eba51b034a71a",
+      "pages/about/assets/group_add.svg": "01dafd4aca6ec505184618bb3df012c12782e9eb4dc80ba5d36fe916d9feea4e",
+      "pages/about/assets/diversity_1.svg": "d66050442fef1053d4b0105a8c250022eae5c4655c036612c263f5b531c915cf",
+      "pages/about/assets/code.svg": "ce1e79542b6ab65a3798e9eed7b34ef96deb47d295117a7a68fdc3da3bee0394",
+      "pages/about/assets/forum.svg": "cd786fa8dbefff54a52d37fbbc307bd516114d44f3bfd914e511183eff05c65b",
+      "pages/about/assets/more_horiz.svg": "51e679c18d8ef69ac46b006148167c62824958920f54eced6bd828d24a3ee7c4",
+      "pages/about/assets/auto_awesome.svg": "4ba68ebeae806564302af9c17fff9989bbcf5f98675e65950929d7b555fa8eaa",
+      "pages/about/assets/check_circle.svg": "53a79f5cb2b5ea905d93d86c3cb45f8a0b43af1aa832dd3d6de05aaf937681fb",
+      "pages/about/assets/favorite.svg": "9cbe00a86cc1dc40860ea3ff37c6e2ce7178e0b3d8797389f3c985428db84310",
+      "pages/about/assets/chat.svg": "c0c65099a25d5873ed30ec33d014cc23a932838c53db20e79c9bef0628e54a1d",
+      "pages/about/assets/photo_camera.svg": "c68befd67d70c276275cd2f185365aa84fdb16f5b55c28c0c33e2c8656cdaf35",
+      "pages/about/assets/star.svg": "0f56cdbba4cbc330a15e3df4dae5a7b380643dbdf460a432214162a51ae668cf",
+      "pages/about/assets/arrow_back_ios_new.svg": "b4d72b3ef91399480f63d49489df5b8ff1b26436974b423b3c60d11b103ff854",
+      "pages/about/assets/arrow_forward_ios.svg": "7a91e77baba8c5789a040736afe165f6596b18e60e769cb9c788f0ccca2b1a8a",
+      "pages/about/assets/open_in_new.svg": "df8199dcffa67f01f6f17036927cc606e5ba3fba9fe37f9c14e2e21ffab4da8d",
+      "pages/about/assets/infinity-spark.svg": "d7dfd37b60c855d02b18916b888d49e268d5b042337ef0b27c000effeba324f2",
+      "pages/me/assets/privacy-invites.svg": "347e0f24aa8a7277c4ef8ff8ecbc1454b71056d5b0ae4283fa799e1a8868d84e",
+      "pages/me/assets/chevron-blue.svg": "05d932abc55313a80d26445f3a961d60802ec60de8ba27b5a3f976bcacda5e0f",
+      "pages/me/assets/settings.svg": "1b6f5d17074da1ce714b4d98939709f98e5e4b749afff06290b70211a464ad57",
+      "pages/me/assets/brand-play.svg": "4bb07851610ea4a98f73fbc931850d04f895e80e9caa8930d67202055ea943fe",
+      "pages/me/assets/privacy-reminder.svg": "a7a19bbff5a29712131038d155db446a26748698e7c8691291bd416138f9c398",
+      "pages/me/assets/scan.svg": "0e935db4d22a403f92a09eb4dbbe6513f90961dadb20f4d47b03e2126859ca1d",
+      "pages/me/assets/chevron-muted.svg": "e7d1e88552bf50d5a3c7f1e544cea2421cad607193545ef5496d122b2e306111",
+      "pages/me/assets/privacy-blocks.svg": "316f62d5f19fd1e0789c2a2a6e7a23b1221c670be5299ec89a18e1d8eb539b4b",
+      "pages/index/assets/city-chevron.svg": "e9761e5feed109364ce70d40315a31a778daa22fb827c7ff2d4a32a2e64e7603",
+      "pages/index/assets/microphone.svg": "f3d1da2e3202e33a9b57d7fd872a4c1aee327ca73775f82e0b72d3eb11b4bc3b",
+      "pages/index/assets/notification-bell.svg": "c649021a51231a33e9c17b30fd66473343b987fa47395ba341598b61638b32b6",
+      "pages/index/assets/feature-chevron.svg": "a445abcf0ee7b8370c31312dd2b8602b17775317bdf5e073f060a2786c945c01",
+      "pages/index/assets/idea-arrow.svg": "f7db5551d5d6bb5728b3c523434933809a9255dec3643e9b8429ab36ed7168e9",
+      "pages/index/assets/map-pin.svg": "9418a7d5542f51b17686ae8a7748ec97d38162b582bc7ac3f4ed0e51154734f3",
+      "pages/index/assets/calendar.svg": "a3e84154e5213e67f9e3799bac1469170a29648a19635b5e67abf0e75981103a",
+      "pages/create/assets/review-court.svg": "8175b1d61c4c67ce25ddd3c2f765686f0518d3e37d94fe6449114ce7166bac8e",
+      "pages/create/assets/review-back.svg": "296c00f0c44413badb1d5cdd2e3c22de2a35aec88fbe4f9800302f3f5f2d84b4",
+      "pages/create/assets/hero-arrow.svg": "baddd81b5d29fb371c0bc9f91597cf8a6ae02ce8e9d9f58bdd70fdc059170f16",
+      "pages/create/assets/review-banner-chevron.svg": "15d32ea16e910780f220cc6ccf070a2c31ad99e4d2a3088a778244dd7bc5bbf4",
+      "pages/create/assets/person.svg": "d66a89fc9036f18a31f3804ee7b19f52a7954e31cc1cbfbd9b98f206a8299d6f",
+      "pages/create/assets/form-pin.svg": "4af1252a61ef93cf8663e5fb35324d78fdf836c2e3fb0f92fb4b13cd947c65cc",
+      "pages/create/assets/review-more.svg": "bd9319eefea85540928c82062c5c61c4cfdfe80fe349385e4f00237684ea6a4a",
+      "pages/create/assets/review-eye.svg": "89b82515e8b99938680ef2230d531bfecea4c2fbbf30a88c15d3a721d384c8a3",
+      "pages/create/assets/form-calendar.svg": "27ab72e8f4f376d433aabbb7dc1a9f6497061f447175ef7c941f2a097b7d8964",
+      "pages/create/assets/form-arrow.svg": "ee5d20e8f0d7886b3312a84ce7e492b2bc48fbeb208947a70f98ab6adf6af066",
+      "pages/create/assets/generate-arrow.svg": "8d7cc9cb105207f6b369c2b433b8d8a22f4a1489d3c4241c5dcba59c9620bded",
+      "pages/create/assets/form-more.svg": "904d051ef5adf3414e99380f8d53ded6779157185c28126c778868bec89f860b",
+      "pages/create/assets/review-calendar.svg": "11ee7bb3c3b6cfb44325ca72322c10d7513daa0f0cee7069c514741c441af66d",
+      "pages/create/assets/auto-awesome.svg": "8bebe3d73f260df60152ac08254878e45434aa5bf19a85066314243d6931e48a",
+      "pages/create/assets/form-save.svg": "b4ec1202c8e729448eb158e088837a29ddb60890593e1460a7c0e9aaff434fe8",
+      "pages/create/assets/review-chevron.svg": "3dff4485c7dac01654e2825852959586a8585d089c28a60854135715207ae3bf",
+      "pages/create/assets/drafts.svg": "d78b8ab8a83d7e9320b4318429bd3aaaf589b70e519b509095650c85ff89cc2d",
+      "pages/create/assets/review-payment.svg": "3fb5d4b064a5d054abccca0e68d25b7ed914b6d5c955b6b39f1087b7d8cda4c3",
+      "pages/create/assets/review-deadline.svg": "04263d1f5eb406b3b61d0fe993fefcc1eae8c9a8e859e87c874b0ea508a53c95",
+      "pages/create/assets/back.svg": "b4d72b3ef91399480f63d49489df5b8ff1b26436974b423b3c60d11b103ff854",
+      "pages/create/assets/send.svg": "03f4985351810fe35b60584b56dd68a057f7ab9f915003da416ae58ed4e0012a",
+      "pages/create/assets/review-users.svg": "6bdc41954e1e7bbe7bb740bbcc53e8bd88f9e26fdb5bb7edb7a2d7aaa9eddbac",
+      "pages/create/assets/trending-flat.svg": "09abbcc6a1b69971a9daad2c11bb48baabeacdc22e454cfa4511d17bd90bbeb1",
+      "pages/create/assets/form-person.svg": "7d6bbc484e824ac0ae7f3ec2f25913bdd0f5c326438a8a07ce4e895566c9e953",
+      "pages/create/assets/review-pin.svg": "5006cc0dcdfbe5b00cbe7ce0c3e75e065b4d3ed6d00e60e1c15cb96e83232199",
+      "pages/create/assets/form-drafts.svg": "ea1082c797ee77c8d5bbee667c7a4ed587b377f6b8794a401974ace9bbc82a00",
+      "pages/create/assets/review-type.svg": "cbf47facdf897a083a32d3fceff8e93c0813007a1794a133ae5d6e1d4d383876",
+      "pages/create/assets/review-status.svg": "1a514496464136d53ae05e30faed41976187a8a856c832fcc66bc14919acf7b8",
+      "pages/create/assets/forward.svg": "e49d765d5b2fde4dd058fd2b06de021458762e09cac1de54a3f382e312c97055",
+      "pages/create/assets/form-refresh.svg": "4bfddc5ee6faf5a733075f4349ea8c30c20551d71add32f92073ba9f6fb74b8e",
+      "pages/create/assets/cached.svg": "7ac5b0ddbd174d47e5c08ce226710fab8cfa4d91257a4f2daec9f024ceaab548",
+      "pages/create/assets/form-mic.svg": "53ca7ac0f20731d21f695aeeb50282c3c5d16afcb0a5420e6230d31bc9d209a3",
+      "pages/create/assets/review-crown.svg": "041bb2117bea6935eb066ebb817f4356127198bee46e42bdf1efea1af86b2883"
+    }
+  },
+  "finalCLI": {
+    "total": 3332680,
+    "main": 1948471,
+    "activity": 428901,
+    "profile": 955308,
+    "mainMarginTo2MiB": 148681,
+    "info": {
+      "size": {
+        "total": 3332680,
+        "packages": [
+          {
+            "name": "TOTAL",
+            "size": 3332680
+          },
+          {
+            "name": "main",
+            "size": 1948471
+          },
+          {
+            "name": "/subpackages/activity/",
+            "size": 428901
+          },
+          {
+            "name": "/subpackages/profile/",
+            "size": 955308
+          }
+        ]
+      }
+    }
+  },
+  "native": {
+    "attempt": "cua.getApp(/Applications/wechatwebdevtools.app)",
+    "result": "Mac locked; manual unlock needed. Existing question pending. No native click or preview claim."
+  },
+  "bounds": [
+    "Synthetic current-member and approved-host API reads; no new publication or registration.",
+    "Actual poster canvas export and event/safety checks unmocked; only native previewImage bridge captured.",
+    "Clipboard token comparison redacted; no token content stored in this result.",
+    "PG04-S result-view restores are UI-only, same actual READY qualified host event; not a publishing event.",
+    "PENDING branch source/protected-JS review only, no fresh PENDING API runtime fixture in this batch.",
+    "All five page JS/JSON and shared app/loader/route config unchanged.",
+    "No whole39-screen pixel matching assertion; Chinese/emoji system fallback remains."
+  ]
+}

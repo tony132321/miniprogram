@@ -20,11 +20,13 @@ function convert(row: RegistrationRow): Registration {
   return { id: row.id, eventId: row.event_id, userId: row.user_id, status: row.status, acceptedVersion: row.accepted_version };
 }
 
-export async function command<T>(db: Database, actor: string, route: string, key: string, run: (tx: Queryable) => Promise<T>): Promise<T> {
+export async function command<T>(db: Database, actor: string, route: string, key: string, run: (tx: Queryable) => Promise<T>,
+  validateReplay?: (tx: Queryable, previous: T) => Promise<void>): Promise<T> {
   if (!actor || !key) throw new AppError('BAD_REQUEST', '身份与幂等键必填');
   return db.transaction(async tx => {
     if (!(await claimIdempotency(tx, actor, route, key))) {
       const previous = await tx.query<{ result: T }>('SELECT result FROM idempotency WHERE actor_id=$1 AND route=$2 AND key=$3', [actor, route, key]);
+      if (validateReplay) await validateReplay(tx, previous.rows[0]!.result);
       return previous.rows[0]!.result;
     }
     const result = await run(tx);
@@ -67,21 +69,24 @@ export async function audit(tx: Queryable, actor: string, eventId: string, actio
 
 export async function promote(tx: Queryable, event: EventRow): Promise<void> {
   if (!event.recruiting) return;
+  const { rows: reviews } = await tx.query<{ review_status: string }>('SELECT review_status FROM events WHERE id=$1', [event.id]);
+  if (reviews[0]?.review_status !== 'APPROVED') return;
   if (!(await newActionsOpen(tx, true))) return;
   if (await getActiveEventHold(tx, event.id)) return;
-  if (event.payload.visibility === 'PUBLIC' && !(await publicRecruitmentOpen(tx, true))) return;
+  if (event.payload.visibility === 'PUBLIC' && !(await publicRecruitmentOpen(tx, true, event.payload))) return;
   const deadline = Date.parse(event.payload.registrationDeadline!);
+  const notifyWindowClosed = async () => {
+    const existing = await tx.query<{ id: string }>(
+      "SELECT id FROM notifications WHERE event_id=$1 AND user_id=$2 AND kind='WAITLIST_WINDOW_CLOSED' AND event_version=$3 LIMIT 1",
+      [event.id, event.host_id, event.version]);
+    if (!existing.rows.length) await enqueueNotification(tx, event.id, event.host_id, 'WAITLIST_WINDOW_CLOSED', event.version,
+      { registrationDeadline: event.payload.registrationDeadline });
+  };
   while (await occupancy(tx, event.id) < event.payload.maxParticipants!) {
     const now = await databaseNow(tx);
     if (deadline - now < 5 * 60_000) {
       const waiting = await tx.query<{ id: string }>("SELECT id FROM registrations WHERE event_id=$1 AND status='WAITLISTED' LIMIT 1", [event.id]);
-      if (waiting.rows.length) {
-        const existing = await tx.query<{ id: string }>(
-          "SELECT id FROM notifications WHERE event_id=$1 AND user_id=$2 AND kind='WAITLIST_WINDOW_CLOSED' AND event_version=$3 LIMIT 1",
-          [event.id, event.host_id, event.version]);
-        if (!existing.rows.length) await enqueueNotification(tx, event.id, event.host_id, 'WAITLIST_WINDOW_CLOSED', event.version,
-          { registrationDeadline: event.payload.registrationDeadline });
-      }
+      if (waiting.rows.length) await notifyWindowClosed();
       return;
     }
     const { rows } = await tx.query<RegistrationRow>("SELECT * FROM registrations WHERE event_id=$1 AND status='WAITLISTED' ORDER BY enqueue_seq LIMIT 1 FOR UPDATE", [event.id]);
@@ -89,8 +94,15 @@ export async function promote(tx: Queryable, event: EventRow): Promise<void> {
     if (!next) return;
     const expiresAt = new Date(Math.min(now + 15 * 60_000, deadline));
     const offerId = randomUUID();
+    const { rows: inserted } = await tx.query<{ id: string }>(`INSERT INTO offers(id,event_id,registration_id,expires_at,status)
+      SELECT $1,$2,$3,$4,'ACTIVE' FROM events WHERE id=$2
+        AND (payload->>'registrationDeadline')::timestamptz >= clock_timestamp() + interval '5 minutes'
+      RETURNING id`, [offerId, event.id, next.id, expiresAt.toISOString()]);
+    if (!inserted.length) {
+      await notifyWindowClosed();
+      return;
+    }
     await tx.query("UPDATE registrations SET status='OFFERED',updated_at=now() WHERE id=$1", [next.id]);
-    await tx.query("INSERT INTO offers(id,event_id,registration_id,expires_at,status) VALUES($1,$2,$3,$4,'ACTIVE')", [offerId, event.id, next.id, expiresAt.toISOString()]);
     await enqueueNotification(tx, event.id, next.user_id, 'WAITLIST_OFFER', event.version, { offerId, expiresAt: expiresAt.toISOString() });
     await tx.query('INSERT INTO jobs(id,kind,event_id,due_at,payload) VALUES($1,$2,$3,$4,$5)', [randomUUID(), 'EXPIRE_OFFER', event.id, expiresAt.toISOString(), JSON.stringify({ offerId })]);
   }
@@ -102,7 +114,8 @@ export async function register(db: Database, actor: string, eventId: string, exp
     await requireInvitation(tx, event, actor, inviteToken);
     const inviteRequired = event.payload.visibility === 'INVITE' && actor !== event.host_id;
     await assertEventNotHeld(tx, eventId);
-    await assertPublicRecruitmentOpen(tx, event.payload.visibility);
+    await assertPublicRecruitmentOpen(tx, event.payload.visibility, event.payload);
+    if (event.review_status !== 'APPROVED') throw new AppError('REVIEW_PENDING', '活动内容尚未通过审核', 409);
     if (!event.recruiting || !['RECRUITING', 'CONFIRMED'].includes(event.status) ||
       await databaseNow(tx) >= Date.parse(event.payload.registrationDeadline!))
       throw new AppError('REGISTRATION_CLOSED', '当前不能报名');
@@ -142,7 +155,8 @@ export async function expressInterest(db: Database, actor: string, eventId: stri
     await requireInvitation(tx, event, actor, inviteToken);
     const inviteRequired = event.payload.visibility === 'INVITE' && actor !== event.host_id;
     await assertEventNotHeld(tx, eventId);
-    await assertPublicRecruitmentOpen(tx, event.payload.visibility);
+    await assertPublicRecruitmentOpen(tx, event.payload.visibility, event.payload);
+    if (event.review_status !== 'APPROVED') throw new AppError('REVIEW_PENDING', '活动内容尚未通过审核', 409);
     if (!event.recruiting || !['RECRUITING', 'CONFIRMED'].includes(event.status) ||
       await databaseNow(tx) >= Date.parse(event.payload.registrationDeadline!))
       throw new AppError('REGISTRATION_CLOSED', '当前不能表达待定意向');
@@ -167,13 +181,21 @@ export async function expressInterest(db: Database, actor: string, eventId: stri
   });
 }
 
-export async function cancelRegistration(db: Database, actor: string, registrationId: string, expectedVersion: number, key: string): Promise<Registration> {
-  return command(db, actor, `cancel-registration:${registrationId}`, key, async tx => {
+export async function cancelRegistration(db: Database, actor: string, registrationId: string, expectedVersion: number,
+  key: string, expectedStatus?: 'REQUESTED'): Promise<Registration> {
+  if (expectedStatus !== undefined && expectedStatus !== 'REQUESTED')
+    throw new AppError('BAD_REQUEST', '仅支持按待审申请状态取消', 400);
+  const requestOnly = expectedStatus === 'REQUESTED';
+  return command(db, actor, `${requestOnly ? 'cancel-registration-request' : 'cancel-registration'}:${registrationId}`, key, async tx => {
     const { rows: found } = await tx.query<RegistrationRow>('SELECT * FROM registrations WHERE id=$1', [registrationId]);
-    const registration = found[0];
-    if (!registration) throw new AppError('NOT_FOUND', '报名不存在', 404);
-    const event = await lockEvent(tx, registration.event_id, expectedVersion);
+    if (!found[0]) throw new AppError('NOT_FOUND', '报名不存在', 404);
+    const event = await lockEvent(tx, found[0].event_id, expectedVersion);
+    const { rows: current } = await tx.query<RegistrationRow>('SELECT * FROM registrations WHERE id=$1 FOR UPDATE', [registrationId]);
+    const registration = current[0];
+    if (!registration || registration.event_id !== event.id) throw new AppError('NOT_FOUND', '报名不存在', 404);
     if (registration.user_id !== actor) throw new AppError('FORBIDDEN', '只能退出自己的报名', 403);
+    if (requestOnly && registration.status !== 'REQUESTED')
+      throw new AppError('REGISTRATION_CHANGED', '报名状态已变化，请重新核对后操作', 409);
     if (registration.status === 'CANCELLED') return convert(registration);
     if (await databaseNow(tx) >= Date.parse(event.payload.startAt!))
       throw new AppError('INVALID_STATE', '活动开始后不能按普通退出处理');
@@ -183,13 +205,20 @@ export async function cancelRegistration(db: Database, actor: string, registrati
     const released = ['CONFIRMED', 'RECONFIRM_REQUIRED', 'OFFERED'].includes(registration.status);
     if (registration.status === 'OFFERED') await tx.query("UPDATE offers SET status='CANCELLED' WHERE registration_id=$1 AND status='ACTIVE'", [registration.id]);
     const { rows } = await tx.query<RegistrationRow>(`UPDATE registrations SET status='CANCELLED',updated_at=now()
-      WHERE id=$1 AND EXISTS (SELECT 1 FROM events WHERE id=$2
-        AND (payload->>'startAt')::timestamptz>clock_timestamp()) RETURNING *`, [registration.id, event.id]);
-    if (!rows[0]) throw new AppError('INVALID_STATE', '活动开始后不能按普通退出处理');
+      WHERE id=$1 AND ($3::boolean=false OR status='REQUESTED') AND EXISTS (SELECT 1 FROM events WHERE id=$2
+        AND (payload->>'startAt')::timestamptz>clock_timestamp()) RETURNING *`, [registration.id, event.id, requestOnly]);
+    if (!rows[0]) throw requestOnly
+      ? new AppError('REGISTRATION_CHANGED', '报名状态已变化，请重新核对后操作', 409)
+      : new AppError('INVALID_STATE', '活动开始后不能按普通退出处理');
     if (released) await promote(tx, event);
     await audit(tx, actor, event.id, 'CANCEL_REGISTRATION');
     return convert(rows[0]!);
-  });
+  }, requestOnly ? async (tx, previous) => {
+    const { rows } = await tx.query<RegistrationRow>('SELECT * FROM registrations WHERE id=$1', [registrationId]);
+    if (previous.id !== registrationId || previous.userId !== actor || previous.status !== 'CANCELLED' ||
+      rows[0]?.user_id !== actor || rows[0]?.status !== 'CANCELLED')
+      throw new AppError('REGISTRATION_CHANGED', '报名状态已变化，请重新核对后操作', 409);
+  } : undefined);
 }
 
 export async function removeRegistration(db: Database, actor: string, registrationId: string, expectedVersion: number,
@@ -227,7 +256,8 @@ export async function reserveSeats(db: Database, actor: string, eventId: string,
     const event = await lockEvent(tx, eventId, expectedVersion);
     if (event.host_id !== actor) throw new AppError('FORBIDDEN', '只有主办方可以预留', 403);
     await assertEventNotHeld(tx, eventId);
-    await assertPublicRecruitmentOpen(tx, event.payload.visibility);
+    await assertPublicRecruitmentOpen(tx, event.payload.visibility, event.payload);
+    if (event.review_status !== 'APPROVED') throw new AppError('REVIEW_PENDING', '活动内容尚未通过审核', 409);
     if (!event.recruiting || !Number.isInteger(count) || count < 1 || count > 12) throw new AppError('INVALID_RESERVATION', '预留数量无效');
     if (await occupancy(tx, eventId) + count > event.payload.maxParticipants!) throw new AppError('EVENT_FULL', '名额不足');
     const expiry = event.payload.confirmationDeadline!;
@@ -248,14 +278,20 @@ export async function reserveSeats(db: Database, actor: string, eventId: string,
   });
 }
 
-export async function claimReservation(db: Database, actor: string, token: string, expectedVersion: number, key: string): Promise<Registration> {
-  return command(db, actor, `claim-reservation:${token}`, key, async tx => {
+export async function claimReservation(db: Database, actor: string, token: string, expectedVersion: number, key: string,
+  expectedEventId: string): Promise<Registration> {
+  if (typeof expectedEventId !== 'string' || !expectedEventId.trim())
+    throw new AppError('BAD_REQUEST', 'expectedEventId 必须为活动 ID');
+  const result = await command(db, actor, `claim-reservation:${token}`, key, async tx => {
     const { rows: found } = await tx.query<Reservation>('SELECT * FROM reservations WHERE token=$1', [token]);
     const initial = found[0];
     if (!initial) throw new AppError('RESERVATION_UNAVAILABLE', '预留不存在或不可用', 404);
+    if (initial.event_id !== expectedEventId)
+      throw new AppError('RESERVATION_EVENT_MISMATCH', '此认领口令属于另一场活动，请在对应活动中打开', 409);
     const event = await lockEvent(tx, initial.event_id, expectedVersion);
     await assertEventNotHeld(tx, event.id);
-    await assertPublicRecruitmentOpen(tx, event.payload.visibility);
+    await assertPublicRecruitmentOpen(tx, event.payload.visibility, event.payload);
+    if (event.review_status !== 'APPROVED') throw new AppError('REVIEW_PENDING', '活动内容尚未通过审核', 409);
     const { rows } = await tx.query<Reservation>('SELECT * FROM reservations WHERE id=$1 FOR UPDATE', [initial.id]);
     const reservation = rows[0]!;
     if (reservation.claimed_by || reservation.released_at || new Date(reservation.expires_at).getTime() <= await databaseNow(tx) || !event.recruiting)
@@ -273,6 +309,9 @@ export async function claimReservation(db: Database, actor: string, token: strin
     await audit(tx, actor, event.id, 'CLAIM_RESERVATION');
     return convert(result.rows[0]!);
   });
+  if (result.eventId !== expectedEventId)
+    throw new AppError('RESERVATION_EVENT_MISMATCH', '此认领口令属于另一场活动，请在对应活动中打开', 409);
+  return result;
 }
 
 export async function acceptOffer(db: Database, actor: string, offerId: string, expectedVersion: number, key: string): Promise<Registration> {
@@ -282,7 +321,8 @@ export async function acceptOffer(db: Database, actor: string, offerId: string, 
     if (!initial) throw new AppError('NOT_FOUND', '补位邀请不存在', 404);
     const event = await lockEvent(tx, initial.event_id, expectedVersion);
     await assertEventNotHeld(tx, event.id);
-    await assertPublicRecruitmentOpen(tx, event.payload.visibility);
+    await assertPublicRecruitmentOpen(tx, event.payload.visibility, event.payload);
+    if (event.review_status !== 'APPROVED') throw new AppError('REVIEW_PENDING', '活动内容尚未通过审核', 409);
     const { rows } = await tx.query<Offer>('SELECT * FROM offers WHERE id=$1 FOR UPDATE', [offerId]);
     const offer = rows[0]!;
     const { rows: registrations } = await tx.query<RegistrationRow>('SELECT * FROM registrations WHERE id=$1 FOR UPDATE', [offer.registration_id]);
@@ -318,7 +358,9 @@ export async function declineOffer(db: Database, actor: string, offerId: string,
     if (offer.status !== 'ACTIVE' || registration.status !== 'OFFERED' ||
       new Date(offer.expires_at).getTime() <= await databaseNow(tx))
       throw new AppError('OFFER_UNAVAILABLE', '补位邀请已失效');
-    await tx.query("UPDATE offers SET status='DECLINED' WHERE id=$1", [offerId]);
+    const { rows: declined } = await tx.query<{ id: string }>(`UPDATE offers SET status='DECLINED'
+      WHERE id=$1 AND status='ACTIVE' AND expires_at>clock_timestamp() RETURNING id`, [offerId]);
+    if (!declined.length) throw new AppError('OFFER_UNAVAILABLE', '补位邀请已失效');
     await tx.query("UPDATE registrations SET status='CANCELLED',updated_at=now() WHERE id=$1", [registration.id]);
     await promote(tx, event);
     await audit(tx, actor, event.id, 'DECLINE_OFFER');
@@ -353,7 +395,8 @@ export async function approveRegistration(db: Database, actor: string, registrat
     if (event.host_id !== actor && !(await hasCohostCapability(tx, actor, event.id, 'APPROVE_REGISTRATION')))
       throw new AppError('FORBIDDEN', '没有本活动报名审批权限', 403);
     await assertEventNotHeld(tx, event.id);
-    await assertPublicRecruitmentOpen(tx, event.payload.visibility);
+    await assertPublicRecruitmentOpen(tx, event.payload.visibility, event.payload);
+    if (event.review_status !== 'APPROVED') throw new AppError('REVIEW_PENDING', '活动内容尚未通过审核', 409);
     if (registration.status !== 'REQUESTED') throw new AppError('INVALID_STATE', '申请不可审核');
     if (!event.recruiting || !['RECRUITING', 'CONFIRMED'].includes(event.status) ||
       await databaseNow(tx) >= Date.parse(event.payload.registrationDeadline!))
@@ -368,6 +411,56 @@ export async function approveRegistration(db: Database, actor: string, registrat
     await enqueueNotification(tx, event.id, registration.user_id, 'REGISTRATION_APPROVED', event.version);
     await audit(tx, actor, event.id, 'APPROVE_REGISTRATION');
     return convert(updated[0]!);
+  });
+}
+
+export async function listPendingApprovals(db: Database, actor: string, offset = 0, snapshot?: string | null): Promise<{
+  items: Array<{ registrationId: string; eventId: string; eventTitle: string; expectedVersion: number;
+    isHost: boolean; canApprove: boolean; createdAt: Date }>;
+  total: number; nextOffset: number | null; snapshot: string;
+}> {
+  if (!Number.isSafeInteger(offset) || offset < 0 || offset > 2_147_483_647)
+    throw new AppError('BAD_REQUEST', '审核列表页码无效');
+  if (offset > 0 && (!snapshot || !/^[a-f0-9]{32}$/.test(snapshot)))
+    throw new AppError('BAD_REQUEST', '继续读取审核列表需要有效快照');
+  return db.transaction(async tx => {
+    await tx.query('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY');
+    const from = `FROM registrations r JOIN events e ON e.id=r.event_id
+      CROSS JOIN LATERAL (SELECT
+        (SELECT count(*)::int FROM registrations occupied WHERE occupied.event_id=e.id
+          AND occupied.status IN ('CONFIRMED','RECONFIRM_REQUIRED')) +
+        (SELECT count(*)::int FROM offers o WHERE o.event_id=e.id AND o.status='ACTIVE'
+          AND o.expires_at>clock_timestamp()) +
+        (SELECT count(*)::int FROM reservations reserved WHERE reserved.event_id=e.id
+          AND reserved.claimed_by IS NULL AND reserved.released_at IS NULL
+          AND reserved.expires_at>clock_timestamp()) AS occupied) capacity
+      WHERE r.status='REQUESTED' AND e.review_status='APPROVED' AND e.recruiting=true
+        AND e.status IN ('RECRUITING','CONFIRMED')
+        AND clock_timestamp() < (e.payload->>'registrationDeadline')::timestamptz
+        AND EXISTS (SELECT 1 FROM emergency_gate g WHERE g.id=1 AND g.status='OPEN')
+        AND NOT EXISTS (SELECT 1 FROM event_safety_holds h WHERE h.event_id=e.id AND h.status='ACTIVE')
+        AND (e.payload->>'visibility'<>'PUBLIC' OR public_recruitment_covered(
+          (e.payload->>'startAt')::timestamptz,(e.payload->>'endAt')::timestamptz))
+        AND (e.host_id=$1 OR EXISTS (SELECT 1 FROM cohost_grants c WHERE c.event_id=e.id AND c.user_id=$1
+          AND c.revoked_at IS NULL AND c.expires_at>clock_timestamp()
+          AND 'APPROVE_REGISTRATION'=ANY(c.capabilities)))`;
+    const { rows: counts } = await tx.query<{ total: number; snapshot: string }>(`SELECT count(*)::int AS total,
+      md5(COALESCE(string_agg(jsonb_build_array(r.id,r.updated_at,e.version,capacity.occupied)::text,',' ORDER BY r.id),'')) AS snapshot
+      ${from}`, [actor]);
+    const currentSnapshot = counts[0]!.snapshot;
+    if (offset > 0 && snapshot !== currentSnapshot)
+      throw new AppError('QUEUE_CHANGED', '审核列表已变化，请从第一页刷新', 409);
+    const { rows } = await tx.query<{ registration_id: string; event_id: string; event_title: string;
+      expected_version: number; is_host: boolean; can_approve: boolean; created_at: Date }>(`SELECT r.id AS registration_id,e.id AS event_id,
+        e.payload->>'title' AS event_title,e.version AS expected_version,(e.host_id=$1) AS is_host,
+        (capacity.occupied < (e.payload->>'maxParticipants')::int) AS can_approve,r.created_at ${from}
+        ORDER BY r.created_at,r.id LIMIT 100 OFFSET $2`, [actor, offset]);
+    const total = counts[0]?.total ?? 0;
+    return { items: rows.map(row => ({ registrationId: row.registration_id, eventId: row.event_id,
+      eventTitle: row.event_title, expectedVersion: row.expected_version, isHost: row.is_host,
+      canApprove: row.can_approve,
+      createdAt: row.created_at })),
+    total, nextOffset: offset + rows.length < total ? offset + rows.length : null, snapshot: currentSnapshot };
   });
 }
 

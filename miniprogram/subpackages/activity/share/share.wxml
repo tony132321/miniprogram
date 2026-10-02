@@ -1,0 +1,105 @@
+<view class="share-page" style="padding-top: calc({{statusBarHeight}}px + 112rpx)">
+  <view class="share-status-cover" style="height: {{statusBarHeight}}px" aria-hidden="true"></view>
+  <view class="share-header" style="top: {{statusBarHeight}}px; padding-right: {{headerPaddingRight}}">
+    <button class="header-back" bindtap="back" aria-label="返回活动详情"><image class="header-back-glyph" src="/subpackages/activity/share/assets/arrow_back_ios_new.svg" mode="aspectFit" aria-hidden="true" /></button>
+    <text class="header-title">活动分享卡片</text>
+    <button class="header-profile" bindtap="goProfile" aria-label="打开我的页面"><image class="header-profile-glyph" src="/subpackages/activity/share/assets/person.svg" mode="aspectFit" aria-hidden="true" /></button>
+  </view>
+
+  <view wx:if="{{loadState === 'LOADING'}}" class="state-panel">正在核对活动与分享资格…</view>
+  <view wx:if="{{loadState === 'ERROR' || loadState === 'FORBIDDEN' || loadState === 'UNAUTHENTICATED'}}" class="state-panel"><view>{{message}}</view><button wx:if="{{loadState === 'ERROR'}}" bindtap="refresh">重新加载</button><button wx:else bindtap="back">返回活动详情</button></view>
+
+  <view wx:if="{{loadState === 'READY'}}" class="share-content">
+    <canvas wx:if="{{canShare}}" class="invite-poster-canvas" canvas-id="invitePoster" style="width:360px;height:600px" aria-hidden="true" />
+    <view class="intro">
+      <view class="intro-pill"><image wx:if="{{canShare}}" class="intro-glyph" src="/subpackages/activity/share/assets/verified.svg" mode="aspectFit" aria-hidden="true" /><text>{{canShare ? 'INVITE READY · 邀请已就绪' : 'INVITE STATUS · 邀请状态'}}</text></view>
+      <view class="intro-title">活动专属邀请卡</view>
+      <view class="intro-copy">{{canShare ? '邀请朋友查看活动，报名以当前规则和名额为准' : shareReason}}</view>
+    </view>
+
+    <view class="ticket">
+      <view class="ticket-topline"></view>
+      <view class="ticket-kicker"><view class="ticket-kicker-label"><image class="ticket-kicker-glyph" src="/subpackages/activity/share/assets/sports_tennis_fill1.svg" mode="aspectFit" aria-hidden="true" /><text>PROJECT IRL · EVENT INVITATION</text></view><view class="ticket-dot"></view></view>
+      <view class="ticket-body">
+        <view class="ticket-title-row"><text class="ticket-title">{{display.title}}</text><text class="ticket-status">{{display.status}}</text></view>
+        <view wx:if="{{display.confirmed !== null || display.minimum !== null}}" class="ticket-count">
+          <view wx:if="{{display.confirmed !== null}}" class="count-capsule"><view class="count-dot"></view><text>已确认 {{display.confirmed}} 人</text></view>
+          <view wx:if="{{display.minimum !== null}}" class="count-capsule minimum"><text>最低成局 {{display.minimum}} 人</text></view>
+        </view>
+        <view class="ticket-facts">
+          <view class="fact-row"><view class="fact-icon"><image class="fact-glyph" src="/subpackages/activity/share/assets/calendar_today.svg" mode="aspectFit" aria-hidden="true" /></view><view class="fact-text"><text class="fact-label">活动时间</text><text class="fact-value">{{display.date}} – {{display.end}}</text></view></view>
+          <view class="fact-divider" aria-hidden="true"></view>
+          <view class="fact-row"><view class="fact-icon location"><image class="fact-glyph" src="/subpackages/activity/share/assets/location_on.svg" mode="aspectFit" aria-hidden="true" /></view><view class="fact-text"><text class="fact-label">场地地址</text><text class="fact-value">{{display.location}}</text></view></view>
+        </view>
+      </view>
+      <view class="ticket-divider" aria-hidden="true"><view class="ticket-notch left"></view><view class="ticket-tear"></view><view class="ticket-notch right"></view></view>
+      <view wx:if="{{canShare}}" class="ticket-invite">
+        <view class="invite-qr-frame"><canvas class="invite-qr" canvas-id="inviteQr" style="width:160px;height:160px" aria-label="仅包含本场邀请码的二维码" /></view>
+        <view class="invite-label">扫码或输入真实邀请码</view>
+        <view class="invite-token"><image class="invite-key" src="/subpackages/activity/share/assets/key.svg" mode="aspectFit" aria-hidden="true" /><view class="invite-code"><text>专属邀请码：</text><text user-select="true">{{display.inviteToken}}</text></view></view>
+        <view class="invite-hint">好友可在耍起 CAPER 发现页扫码，或在首页输入此码查看活动；具体地点以活动详情为准。</view>
+        <button bindtap="copyInvite" class="invite-copy">复制邀请码　→</button>
+      </view>
+      <view wx:else class="ticket-invite unavailable"><view class="invite-symbol">⌁</view><view class="invite-label">当前邀请码不可分享</view><view class="invite-hint">请返回活动详情核对审核、招募和安全状态。</view></view>
+    </view>
+
+    <view class="info-section">
+      <view class="info-heading">邀请前请核对</view>
+      <view class="info-card"><view class="info-icon"><image class="info-glyph" src="/subpackages/activity/share/assets/bolt_fill1.svg" mode="aspectFit" aria-hidden="true" /></view><view class="info-card-content"><view class="info-card-title">以活动当前状态为准</view><text class="info-card-copy">分享资格及邀请码由服务端实时核对。</text></view></view>
+      <view class="info-card"><view class="info-icon blue"><image class="info-glyph" src="/subpackages/activity/share/assets/groups_2_fill1.svg" mode="aspectFit" aria-hidden="true" /></view><view class="info-card-content"><view class="info-card-title">报名按规则处理</view><text class="info-card-copy">收到邀请不保证席位，具体审批与候补见活动详情。</text></view></view>
+      <view class="info-card"><view class="info-icon violet"><image class="info-glyph" src="/subpackages/activity/share/assets/receipt_long_fill1.svg" mode="aspectFit" aria-hidden="true" /></view><view class="info-card-content"><view class="info-card-title">场地与费用请再确认</view><text class="info-card-copy">场地由主办方说明，费用和取消规则以活动详情为准。</text></view></view>
+    </view>
+
+    <button wx:if="{{canShare}}" class="share-main" bindtap="openShareSheet">分享活动邀请　↗</button>
+    <button wx:else class="share-main disabled" bindtap="refresh">重新核对分享状态　↻</button>
+    <view wx:if="{{message}}" class="share-message">{{message}}</view>
+    <view wx:if="{{canShare}}" class="poster-notice"><image class="poster-notice-glyph" src="/subpackages/activity/share/assets/photo_camera.svg" mode="aspectFit" aria-hidden="true" /><text>在分享选项生成并预览海报</text></view>
+    <view class="share-foot">GOOD PEOPLE · REAL MEETUPS · BRIGHTER DAYS</view>
+  </view>
+
+  <!-- Wave71 PG06-S readonly dashboard background BEGIN -->
+  <view wx:if="{{shareSheetOpen && loadState === 'READY'}}" class="share-background71" aria-hidden="true" style="padding-top: {{statusBarHeight}}px">
+    <view class="share-background71-status" style="height: {{statusBarHeight}}px"></view>
+    <view class="share-background71-header" style="top: {{statusBarHeight}}px; padding-right: {{headerPaddingRight}}">
+      <view class="share-background71-back"><image src="../event/assets/w69-arrow_back_ios_new-w400-f0-1a1b1f.svg" mode="aspectFit"/></view>
+      <text class="share-background71-title">Organizer Dashboard</text>
+      <view class="share-background71-header-actions"><view class="share-background71-more"><image src="../event/assets/w69-more_horiz-w400-f0-1a1b1f.svg" mode="aspectFit"/></view><view class="share-background71-person"><image src="../event/assets/pg04s-person.svg" mode="aspectFit"/></view></view>
+    </view>
+    <view class="share-background71-main">
+      <view class="share-background71-content">
+        <view class="share-background71-hero">
+          <image class="share-background71-hero-photo" src="{{display.cover === '/assets/stitch/caper_home_badminton.jpg' ? './assets/sheet69-badminton.jpg' : display.cover}}" mode="aspectFill" aria-label="原稿活动类型示意图"/>
+          <view class="share-background71-hero-scrim"></view>
+          <view class="share-background71-hero-head"><view class="share-background71-hero-title"><text>{{display.title}}</text><text wx:if="{{display.cover === '/assets/stitch/caper_home_badminton.jpg'}}" class="share-background71-sport">🏸</text></view><text class="share-background71-status-badge {{event.status === 'RECRUITING' || event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS' ? 'share-background71-status-active' : ''}}">{{display.status}}</text></view>
+          <view class="share-background71-hero-bottom"><view class="share-background71-facts"><view><image src="../event/assets/w69-calendar_today-w400-f0-ffffff-a80.svg" mode="aspectFit"/><text>{{display.date}} – {{display.end}}</text></view><view><image src="../event/assets/w69-location_on-w400-f0-ffffff-a80.svg" mode="aspectFit"/><text>{{event.payload.city || '城市待确认'}}</text></view></view><view class="share-background71-sticker"><text>Play More</text><text>Meet Cool People</text></view></view>
+          <text class="share-background71-photo-credit">原稿场景示意图</text>
+        </view>
+        <view wx:if="{{event.stats}}" class="share-background71-stats"><view><text>{{display.confirmed !== null ? display.confirmed : '—'}}</text><text>已确认</text></view><view><text>{{event.stats.reserved >= 0 ? event.stats.reserved : '—'}}</text><text>预留名额</text></view><view><text>{{event.stats.waitlisted >= 0 ? event.stats.waitlisted : '—'}}</text><text>候补中</text></view><view><text>{{event.stats.requested >= 0 ? event.stats.requested : '—'}}</text><text>待审核</text></view></view>
+        <view class="share-background71-members"><view class="share-background71-members-head"><view><text>报名成员</text><text wx:if="{{display.confirmed !== null}}">({{display.confirmed}})</text></view><view class="share-background71-members-more"><text>成员详情</text><image src="../event/assets/w69-chevron_right-w400-f0-424655.svg" mode="aspectFit"/></view></view><view class="share-background71-member-summary"><view class="share-background71-anonymous"><image src="../event/assets/pg04s-person.svg" mode="aspectFit"/></view><text>当前分享快照未加载成员名单；请返回工作台查看。</text></view></view>
+        <view class="share-background71-helper"><view class="share-background71-helper-icon"><image src="../event/assets/w69-lightbulb-w400-f1-ffffff.svg" mode="aspectFit"/></view><view class="share-background71-helper-main"><view class="share-background71-helper-title"><text>AI 组局助手</text><view></view></view><text class="share-background71-helper-copy">此背景只展示已授权的活动快照；提醒与成局操作请返回工作台核对。</text></view><image class="share-background71-helper-arrow" src="../event/assets/w69-chevron_right-w400-f0-424655.svg" mode="aspectFit"/></view>
+        <view wx:if="{{event.stats && display.minimum !== null}}" class="share-background71-conditions"><view class="share-background71-conditions-head"><text>成局条件</text><view class="share-background71-condition-badge {{display.confirmed !== null && display.confirmed >= display.minimum && event.payload.venueStatus === 'HOST_CONFIRMED' ? '' : 'share-background71-condition-pending'}}"><text>{{display.confirmed !== null && display.confirmed >= display.minimum && event.payload.venueStatus === 'HOST_CONFIRMED' ? '人数与场地声明已具备' : '仍需核对'}}</text><image wx:if="{{display.confirmed !== null && display.confirmed >= display.minimum && event.payload.venueStatus === 'HOST_CONFIRMED'}}" src="../event/assets/w69-check-w400-f0-34c759.svg" mode="aspectFit"/></view></view><view class="share-background71-condition-rows"><view><view><image wx:if="{{display.confirmed !== null && display.confirmed >= display.minimum}}" src="../event/assets/w69-check_circle-w400-f1-34c759.svg" mode="aspectFit"/><text wx:else class="share-background71-condition-open">○</text><text>至少 {{display.minimum}} 人确认</text></view><text>当前 {{display.confirmed !== null ? display.confirmed : '待核对'}} / {{display.minimum}}</text></view><view><view><image wx:if="{{event.payload.venueStatus === 'HOST_CONFIRMED'}}" src="../event/assets/w69-check_circle-w400-f1-34c759.svg" mode="aspectFit"/><text wx:else class="share-background71-condition-open">○</text><text>场地由主办方核实</text></view><text>{{event.payload.venueStatus === 'HOST_CONFIRMED' ? '已声明核实' : '尚未声明核实'}}</text></view></view><text class="share-background71-condition-note">成局仍需人工确认；未显示未经核实的开始倒计时或场馆锁位。</text></view>
+        <view class="share-background71-actions"><view><image src="../event/assets/w69-ios_share-w400-f0-1d64f2.svg" mode="aspectFit"/><text>分享活动</text></view><view><image src="../event/assets/w69-send-w400-f0-004cc8.svg" mode="aspectFit"/><text>发送公告</text></view><view><image src="../event/assets/w69-stop_circle-w400-f0-ff2d55.svg" mode="aspectFit"/><text>活动结项</text></view></view>
+        <view class="share-background71-footer"><text>“ 好的活动，让普通的日子发光。 ”</text><text>SAME PEOPLE. BRIGHTER DAYS.</text></view>
+      </view>
+    </view>
+  </view>
+  <!-- Wave71 PG06-S readonly dashboard background END -->
+
+  <!-- Wave69 PG06-S source sheet BEGIN -->
+  <view wx:if="{{shareSheetOpen && canShare}}" class="sheet-layer sheet-reference69"><view class="sheet-mask" bindtap="closeShareSheet"></view><view class="sheet">
+    <view class="sheet-handle"></view>
+    <view class="sheet-head"><view><view class="sheet-title">分享活动邀请 <text class="sheet-spark">✨</text></view><text class="sheet-subtitle">邀请更多好友加入，让聚会更热闹</text></view><button class="sheet-close" bindtap="closeShareSheet" aria-label="关闭分享选项"><image src="./assets/sheet69-close.svg" mode="aspectFit" aria-hidden="true"/></button></view>
+    <view class="sheet-preview"><view class="sheet-preview-art"><image src="{{display.cover === '/assets/stitch/caper_home_badminton.jpg' ? './assets/sheet69-badminton.jpg' : display.cover}}" mode="aspectFill" aria-label="原稿活动类型示意图"/><view wx:if="{{display.cover === '/assets/stitch/caper_home_badminton.jpg'}}" class="sheet-art-shade">🏸</view><text>示意图</text></view><view class="sheet-preview-details"><view class="sheet-preview-heading"><view class="sheet-preview-title">{{display.title}}</view><text class="sheet-preview-status {{display.status === '招募中' || display.status === '已成局' ? 'active' : ''}}">{{display.status}}</text></view><view class="sheet-preview-date"><image src="./assets/sheet69-calendar_today.svg" mode="aspectFit" aria-hidden="true"/><text>{{display.date}} – {{display.end}}</text></view><view wx:if="{{display.confirmed !== null && event.payload.maxParticipants > 0}}" class="sheet-preview-count"><view class="sheet-seat-track"><view style="width: {{display.confirmed / event.payload.maxParticipants * 100}}%"></view></view><text>已确认 {{display.confirmed}} / {{event.payload.maxParticipants}} 人</text></view><view wx:elif="{{display.minimum !== null}}" class="sheet-preview-minimum">最低成局 {{display.minimum}} 人</view></view></view>
+    <view class="sheet-actions">
+      <button wx:if="{{sourceToken}}" class="sheet-action" open-type="share" aria-label="通过微信分享给好友"><text class="action-recommend">推荐</text><view class="action-icon green"><image class="action-glyph" src="./assets/sheet69-chat.svg" mode="aspectFit" aria-hidden="true"/></view><text>微信好友</text></button><button wx:else class="sheet-action" bindtap="prepareShare" disabled="{{preparingShare}}" aria-label="准备微信分享"><text class="action-recommend">推荐</text><view class="action-icon green"><image class="action-glyph" src="./assets/sheet69-chat.svg" mode="aspectFit" aria-hidden="true"/></view><text>{{preparingShare ? '准备中' : '准备微信分享'}}</text></button>
+      <button id="generatePosterButton" class="sheet-action" bindtap="generatePoster" disabled="{{posterPreparing}}" aria-label="生成并预览活动海报"><view class="action-icon orange"><image class="action-glyph" src="./assets/sheet69-photo_library.svg" mode="aspectFit" aria-hidden="true"/></view><text>{{posterPreparing ? '生成中' : '生成海报'}}</text></button>
+      <button wx:if="{{sourceToken}}" class="sheet-action" open-type="share" aria-label="在微信中选择群聊分享"><view class="action-icon blue"><image class="action-glyph" src="./assets/sheet69-groups.svg" mode="aspectFit" aria-hidden="true"/></view><text>选择群聊</text></button><view wx:else class="sheet-action inactive" aria-label="先准备分享才能选择群聊"><view class="action-icon blue"><image class="action-glyph" src="./assets/sheet69-groups.svg" mode="aspectFit" aria-hidden="true"/></view><text>先准备分享</text></view>
+      <button class="sheet-action sheet-copy-action" bindtap="copyInvite" aria-label="复制活动邀请码"><view class="action-icon gray"><image class="action-glyph action-copy-glyph" src="./assets/sheet69-content_copy.svg" mode="aspectFit" aria-hidden="true"/></view><text>复制邀请码</text></button>
+    </view>
+    <view class="sheet-code"><view class="sheet-code-info"><image class="sheet-key-glyph" src="./assets/sheet69-key.svg" mode="aspectFit" aria-hidden="true"/><view class="sheet-code-text"><text>专属邀请码</text><text>{{display.inviteToken}}</text></view></view><button class="sheet-code-copy" bindtap="copyInvite"><image class="sheet-copyall-glyph" src="./assets/sheet69-copy_all.svg" mode="aspectFit" aria-hidden="true"/><text>复制文案</text></button></view>
+    <view wx:if="{{message}}" class="sheet-feedback">{{message}}</view>
+    <view class="sheet-note">海报在本机生成并打开图片预览；二维码与分享资格会重新核对。当前没有可复制的 HTTPS 链接。</view>
+    <button class="sheet-cancel" bindtap="closeShareSheet">取消</button>
+  </view></view>
+  <!-- Wave69 PG06-S source sheet END -->
+</view>

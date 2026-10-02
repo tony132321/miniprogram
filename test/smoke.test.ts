@@ -4,6 +4,7 @@ import { once } from 'node:events';
 import { createDatabase } from '../src/db.ts';
 import { runDueJobs } from '../src/jobs.ts';
 import { createApp } from '../src/server.ts';
+import { approveInviteById } from './helpers.ts';
 
 test('API workflow with four independent seats fills, promotes, checks in, completes, and repeats one activity', async () => {
   const db = await createDatabase();
@@ -32,6 +33,7 @@ test('API workflow with four independent seats fills, promotes, checks in, compl
     assert.equal(draft.status, 201);
     const e = await api(`/events/${draft.body.id}/publish`, 'host', 'POST', { expectedVersion: draft.body.version }, 'publish');
     assert.equal(e.status, 200);
+    await approveInviteById(db, 'host', e.body.id);
     assert.equal((await api(`/events/${e.body.id}`, 'host')).body.stats.confirmed, 0);
     const sourceToken = 'a'.repeat(32);
     assert.equal((await api(`/events/${e.body.id}/share-intents`, 'host', 'POST',
@@ -40,6 +42,7 @@ test('API workflow with four independent seats fills, promotes, checks in, compl
     assert.equal((await api(`/i/${e.body.inviteToken}?source=${sourceToken}`, 'p1')).status, 200);
     assert.deepEqual((await api(`/events/${e.body.id}/share-metrics`, 'host')).body,
       { shareIntents: 1, attributedOpens: 1, unknownSourceOpens: 1 });
+    await db.query("INSERT INTO users(id,wechat_openid) VALUES('waiting','smoke-waiting')");
     const consent = await api('/me/consents', 'waiting');
     assert.equal((await api('/me/consents', 'waiting', 'POST',
       { eventReminder: true, noticeVersion: consent.body.eventReminderNotice.version }, 'waiting-consent')).status, 200);
@@ -54,11 +57,11 @@ test('API workflow with four independent seats fills, promotes, checks in, compl
     const inbox = await api('/me/notifications', 'waiting');
     const offerNotice = inbox.body.items.find((item: any) => item.kind === 'WAITLIST_OFFER');
     assert.equal(offerNotice?.actionable, true);
-    assert.equal(offerNotice?.external_status, 'UNAVAILABLE');
+    assert.equal(offerNotice?.external_status, 'PURPOSE_NOT_CONFIGURED');
     const followups = await api('/ops/notifications/followups', 'ops');
     assert.equal(followups.status, 200);
     assert.equal(followups.body.items.some((item: any) => item.notificationId === offerNotice.id &&
-      item.externalStatus === 'UNAVAILABLE'), true);
+      item.externalStatus === 'PURPOSE_NOT_CONFIGURED' && item.failureCode === 'PURPOSE_NOT_CONFIGURED'), true);
     const offerId = offerNotice?.detail.offerId;
     assert.ok(offerId);
     const accepted = await api(`/offers/${offerId}/accept`, 'waiting', 'POST', { expectedVersion: e.body.version }, 'accept');

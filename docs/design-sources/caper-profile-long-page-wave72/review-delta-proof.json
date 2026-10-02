@@ -1,0 +1,31 @@
+{
+  "checkerCorrection": "Initial hover declaration regex expected unprefixed property first; cached official CSS has -webkit-text-decoration-line first. Private regex now permits prefix and still requires unprefixed underline in same rule. No product changed for harness correction.",
+  "scope": "Only two confirmed source review corrections; no repeat 26 source checks / 37 CSS observations / 63 actions / native/business tests.",
+  "source": {
+    "parentGrid": "HTML:551 same grid-cols-1 gap-3 owns all four settings cards; compiled gap3=.75rem=12px. Outer space-y4 has only this one grid child, so not a16px inter-card gap.",
+    "manualButton": "HTML:735 hover:underline; compiled exact text-decoration-line:underline. Native hover-class is pure presentation."
+  },
+  "before": {
+    "wxmlSHA": "6854799062489ef6bf70e0ae29f0f9ca2cbf0e38ff98b7b50071df5438fed949",
+    "wxssSHA": "1c5f6c235b4b36f58b1690e7d4b319cf855d1faae08620faf546b9f657601196"
+  },
+  "after": {
+    "wxml": {
+      "bytes": 24324,
+      "sha256": "d53c91bcb8e8087745f37c1e42bcbf1d877d8ffe347720211f2619475524ab05"
+    },
+    "wxss": {
+      "bytes": 32935,
+      "sha256": "88e84dd895d782257102f55c89bf5ebb374808716fddbb1e284796bda2bf1923"
+    }
+  },
+  "inverse": {
+    "wxmlEqual": true,
+    "wxssEqual": true,
+    "exactAttrCount": 1,
+    "exactRuleCount": 1,
+    "gapReplacementCount": 1
+  },
+  "newProductDeltaBytes": 127,
+  "noBusinessChange": "Removing only new hover-class recovers whole initial WXML bytes; CSS inverse recovers whole initial CSS. Prior exact action/guard/core/advanced/JSJSON protection remains historical stage proof, not repeated assertion on a new run."
+}

@@ -1,0 +1,85 @@
+{
+  "scope": "one PG04-S mark src and one exact SVG; PG04-S layout, JS, all old assets unchanged",
+  "decision": "Root observed full supplied screen.png outline circle with green tick versus HTML line17 FILL1. User requests 1:1 visual reproduction; supplied PNG appearance takes precedence for this mark only.",
+  "originalHTML": {
+    "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg04_s/code.html",
+    "bytes": 17310,
+    "sha256": "168f4582264fad299c953bd377e915b38a81a2fb01001e5f5259195846f0361a"
+  },
+  "originalPNG": {
+    "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg04_s/screen.png",
+    "bytes": 426748,
+    "sha256": "0b216f3226ec3c1e0ef1c1034787f486e7a3f9013118c75bf9265feaaddbcf94"
+  },
+  "htmlNode": "pg04_s/code.html:17 check_circle text-status-active-green text-[36px], inline font-variation-settings FILL1",
+  "pngAppearance": "green outline circle and green check, no solid green disc / white check",
+  "sourceFont": {
+    "path": "docs/design-sources/caper-pg04s-wave68/original-second-decoded.ttf",
+    "bytes": 14464,
+    "sha256": "0feba53940f0cdbfb92347b1405cbcb2100a1801478ff1bc0253f6cc91c6a432"
+  },
+  "sourceFontProof": "docs/design-sources/caper-pg04s-wave68/second-font-proof.json",
+  "materialFamily": "Material Symbols Outlined 24pt",
+  "version": "Version 2.972",
+  "glyph": "check_circle",
+  "glyphName": "uniE86C",
+  "unicode": "U+E86C",
+  "axes": {
+    "wght": 400,
+    "FILL": 0,
+    "opsz": 24,
+    "GRAD": 0
+  },
+  "runtimeColor": "#34C759",
+  "displayPx": 36,
+  "coordinateRounding": false,
+  "path": "M424 -296 706 -578 650 -634 424 -408 310 -522 254 -466ZM480 -80Q397 -80 324.0 -111.5Q251 -143 197.0 -197.0Q143 -251 111.5 -324.0Q80 -397 80 -480Q80 -563 111.5 -636.0Q143 -709 197.0 -763.0Q251 -817 324.0 -848.5Q397 -880 480 -880Q563 -880 636.0 -848.5Q709 -817 763.0 -763.0Q817 -709 848.5 -636.0Q880 -563 880 -480Q880 -397 848.5 -324.0Q817 -251 763.0 -197.0Q709 -143 636.0 -111.5Q563 -80 480 -80ZM480 -160Q614 -160 707.0 -253.0Q800 -346 800 -480Q800 -614 707.0 -707.0Q614 -800 480 -800Q346 -800 253.0 -707.0Q160 -614 160 -480Q160 -346 253.0 -253.0Q346 -160 480 -160ZM480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Z",
+  "runtime": {
+    "path": "miniprogram/subpackages/activity/event/assets/pg04s-check_circle_fill0.svg",
+    "bytes": 856,
+    "sha256": "a4b04b9903d61e6c90cf012bdba7c6a0bc8ebc35c4b1fea4b97284a0afb1ceb6"
+  },
+  "retainedHTMLFill1Asset": {
+    "path": "miniprogram/subpackages/activity/event/assets/pg04s-check_circle_fill1.svg",
+    "bytes": 856,
+    "sha256": "ab977649e865c7047d84bf477c341114fe10fba356750388d30adf769f0da3b2"
+  },
+  "wxmlBefore": {
+    "bytes": 107929,
+    "sha256": "f2c53eb42c43608f3be3b9355902598bcee270bce446fe6f6390c36d22f13c80"
+  },
+  "wxmlAfter": {
+    "path": "miniprogram/subpackages/activity/event/event.wxml",
+    "bytes": 107929,
+    "sha256": "06741c8056566a32f33f356ce65f9aabfcb2164d950a6c288c28e2ec48f0fdf3"
+  },
+  "singleReferenceInverse": {
+    "equal": true,
+    "bytes": 107929,
+    "sha256": "f2c53eb42c43608f3be3b9355902598bcee270bce446fe6f6390c36d22f13c80"
+  },
+  "notRepeated": [
+    "185 binding checks",
+    "55 asset references",
+    "source/ZIP full check",
+    "SDK/CLI/full tests"
+  ],
+  "next": "Root single-mark screenshot and final actual compilation/package measurement",
+  "protectedScopeSnapshot": {
+    "event.wxss": {
+      "path": "miniprogram/subpackages/activity/event/event.wxss",
+      "bytes": 131951,
+      "sha256": "36f4980f427bdf6502ffa2f068dbd935bd028a37c5b563f6860c76715a3b742f"
+    },
+    "event.js": {
+      "path": "miniprogram/subpackages/activity/event/event.js",
+      "bytes": 104047,
+      "sha256": "ccb5b5fede066ba0533b82cb564e816cc3d45ca96778a0d25ac5286d3c11a4bd"
+    },
+    "event.json": {
+      "path": "miniprogram/subpackages/activity/event/event.json",
+      "bytes": 69,
+      "sha256": "bf33dc7da099d240642a50fe3cf44cee01a2b282f70a80a313c79317c76ad10b"
+    }
+  }
+}

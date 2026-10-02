@@ -13,18 +13,21 @@
 | `occurred_at` | 审计写入时的数据库时间；对应事务提交后才可见 |
 | `user_id_pseudonymous` | 数据库内随机盐与内部操作者 ID 的 SHA-256 十六进制摘要；系统任务为 `NULL`。盐只存于业务库，不进入分析导出；同一库内可关联同一操作者，恢复库须连同盐备份 |
 | `activity_id` | 内部活动 ID |
-| `version` | 业务动作完成时的活动当前版本；公开审核通过使用所审版本 |
+| `version` | 业务动作完成时的活动当前版本；活动审核通过使用所审版本 |
 | `source` | `API` 用户请求、`OPS` 独立运营账号、`JOB` 后台任务 |
 | `release` | 事件结构所属产品发布线，当前固定为 `R1`；不是部署构建号 |
 | `is_test` | 业务动作时服务端保存的活动测试标记；不可由客户端指定 |
 
-`user_id_pseudonymous` 表示**执行动作的人**，并不表示被主办方审核或移除的参与者；单靠此流不能计算这些动作的参与者漏斗，须关联受控业务表。分析表不复制审计 `detail`、活动 `payload`、聊天正文、手机号、照片、精确坐标或邀请口令。直接查业务库仍须受生产数据库权限保护；不能把盐表与事件导出一起共享。更换盐会改变以后事件的用户摘要，应作为分析口径变更处理。
+除 `NOTIFICATION_PROVIDER_ACCEPTED` 表示收件人外，`user_id_pseudonymous` 表示**执行动作的人**，并不表示被主办方审核或移除的参与者；单靠此流不能计算这些动作的参与者漏斗，须关联受控业务表。分析表不复制审计 `detail`、活动 `payload`、聊天正文、手机号、照片、精确坐标或邀请口令。直接查业务库仍须受生产数据库权限保护；不能把盐表与事件导出一起共享。更换盐会改变以后事件的用户摘要，应作为分析口径变更处理。
 
 ## 当前事件
 
 | `event_name` | 成功条件 / 源审计动作 |
 | --- | --- |
-| `ACTIVITY_PUBLISHED` | 邀请活动通过服务端发布校验，源 `PUBLISH`；或公开活动当前版本由运营审核通过，源 `EVENT_REVIEW` 且 `decision=APPROVED` |
+| `ACTIVITY_PUBLISHED` | 第 48 版起，邀请制和公开活动当前版本由运营审核通过，源 `EVENT_REVIEW` 且 `decision=APPROVED`；旧版邀请活动的 `PUBLISH` 历史事件保持原样，不回填或改写 |
+| `DRAFT_CREATED`、`DRAFT_UPDATED` | 草稿创建或编辑成功写库；分别来自既有 `CREATE_DRAFT`、`UPDATE_DRAFT` 审计，不表示发布、审核通过或 AI 生成；幂等重放和失败修改不增加事件，正文不入分析表 |
+| `INVITE_REVIEW_SUBMITTED` | 邀请活动提交待审，源 `SUBMIT_INVITE_REVIEW`；不代表对外发布 |
+| `INVITE_REVIEW_REJECTED` | 邀请活动当前版本审核驳回 |
 | `PUBLIC_REVIEW_SUBMITTED` | 公开活动已提交待审，源 `SUBMIT_PUBLIC_REVIEW`；不代表对外发布 |
 | `PUBLIC_REVIEW_REJECTED` | 公开活动当前版本审核驳回 |
 | `REGISTER_REQUESTED`、`REGISTER_CONFIRMED`、`REGISTER_WAITLISTED`、`REGISTER_INTERESTED` | 报名状态成功写入；发布时主办方本人占位也产生 `REGISTER_CONFIRMED`；`CONFIRMED` 不是实际到场 |
@@ -40,7 +43,35 @@
 | `RECORD_EXPENSE` | 主办方成功创建或修订一版 AA 费用记录；不包含金额，也不表示平台收款 |
 | `EXPENSE_PARTICIPANT_HANDLED`、`EXPENSE_HOST_RECEIVED` | 参与者本人或主办方的对应费用标记确实发生变化；事件不包含标记值，不能单独据此判断最终处理状态或付款 |
 | `CREATE_REPORT` | 与本活动关联的举报已写入；不包含类型或描述，无活动 ID 的举报不进入本活动事件流 |
+| `REPORT_IN_REVIEW`、`REPORT_RESOLVED` | 第 71 版起，活动关联举报分别进入人工核查、普通结案；同键重放不重复计数。带明确结项争议裁决的结案继续只记一条 `OUTCOME_REVIEW`，不可把两类结案事件简单相加当作独立举报数；详情、原因和举报正文留在受限业务表与审计 |
 | `OUTCOME_REVIEW` | 运营人员对活动结项争议作出带结论的人工裁决并结案；不包含裁决值、理由或举报正文，详情留在受限业务表与审计 |
 | `RECORD_SUPPORT_MINUTES` | 具授权运营账号记录一笔活动人工时间；事件不包含分钟数，汇总人工时间应读受控业务表 |
+| `CONTENT_QUESTION`、`CONTENT_ANSWER`、`CONTENT_ANNOUNCEMENT` | 活动成员或主办方成功提交一条待审内容；事件不包含正文，也不表示审核通过或已对成员展示 |
+| `UNKNOWN_FACT_QUESTION` | 当前活动事实与已审核内容均不能回答时，成功创建一条人工待办；同题现存待办不重复计入 |
+| `MODERATE_APPROVED`、`MODERATE_REJECTED` | 运营人员对一条活动内容完成审核；事件不包含正文或驳回理由，状态须从受控内容表读取 |
+| `OPEN_NOTIFICATION` | 用户首次打开一条关联活动的站内通知；同一条通知以不同请求键再次打开不重复计数，不表示外部消息投递 |
+| `NOTIFICATION_PROVIDER_ACCEPTED` | 第 69 版起，关联活动的订阅消息由提供方明确接受，或原未知结果经运营复查得到明确接受；每条通知仅记一次，**不表示收件人已收到或阅读**。拒绝、未知、未发送和仅领取任务都不产生此成功事件 |
 
-迁移 31 起新增上述分享事件，不回填旧打开记录，避免把迁移时间或当前活动版本伪装成历史打开时间。匿名访客因缺少可安全去重的身份，不计入两类新打开；来源未知可能包含无来源、无效来源或已换链的旧来源。相同访客先未知后有来源会在两类中各有一次，不能把两类相加视为去重人数。迁移 34 起新增费用、活动举报和人工时间动作；迁移 39 起新增结项人工裁决，均不回填历史审计。草稿、普通页面曝光/点击、问答内容、消息尝试、无活动 ID 的举报、申诉及隐私请求仍未进入此按活动索引的业务事件表；它们的服务端原始记录仍在业务表或审计表。跨流程全量埋点和正式实验事件字典仍需补齐。收入、支付成功或预约成功没有提供方证据，绝不产生对应成功事件。
+迁移 31 起新增上述分享事件，不回填旧打开记录，避免把迁移时间或当前活动版本伪装成历史打开时间。匿名访客因缺少可安全去重的身份，不计入两类新打开；来源未知可能包含无来源、无效来源或已换链的旧来源。相同访客先未知后有来源会在两类中各有一次，不能把两类相加视为去重人数。迁移 34 起新增费用、活动举报和人工时间动作；迁移 39 起新增结项人工裁决，均不回填历史审计。迁移 48 起邀请活动亦须审核，提交和驳回用独立事件名；首次可访问发布改以批准时间为准，迁移前邀请活动仍按当时的活动版本时间保留历史指标口径。迁移 55 起补充活动内容、事实待办、内容审核和站内通知首次打开事件，不回填旧记录。迁移 68 起补充草稿创建与修订事件，旧审计不回填。迁移 69 起补充提供方接受事件，私有 `notification_provider_accepted_event_keys` 将通知 ID 唯一映射到随机事件 UUID，用户伪名盐轮换后仍不重复计数；活动事件行不存通知 ID、提供方回执、消息正文或 token。映射纳入本人字段盘点。`user_id_pseudonymous` 指收件人，`version` 为通知创建时绑定的活动版本；直接发送的 `source=JOB`，运营复查的 `source=OPS`，两者都属于开发包指标字典中的服务端来源。本人私有导出通过审计操作者关联对应事件。迁移不回填既有接受状态，不能为旧发送推断当时的收件人和活动版本。迁移 71 起补充活动级举报的人工核查与普通结案事件，不回填旧状态，既有 `OUTCOME_REVIEW` 保持单独事件名且不重复生成普通结案事件。普通页面曝光/点击仍未进入活动业务事件表；外部消息尝试、无活动 ID 的举报、申诉及隐私请求已在迁移 66 的跨活动聚合表中按不含身份或原文的口径记录。跨流程全量埋点和正式实验事件字典仍需补齐。收入、支付成功或预约成功没有提供方证据，绝不产生对应成功事件。
+
+## 跨活动或无活动 ID 的聚合事件（迁移 66）
+
+`system_business_events` 是独立的事务性、仅聚合事件流。它只有固定枚举的 `event_name`、数据库写入时间 `occurred_at`、可空的 `is_test`；**没有**用户、活动、通知、举报、申诉、隐私请求的 ID 或散列，也没有正文、token、提供方回执与错误码。活动关联通知的 `is_test` 来自服务端活动标记；无活动范围的请求为 `NULL`，分析时必须单列“测试范围未知”，不可自动当成正式样本。该表不支持个人级漏斗、单条通知去重或归因；这些问题只能由受控业务表回答。迁移不回填旧记录。
+
+迁移 69 的活动级 `NOTIFICATION_PROVIDER_ACCEPTED` 与这里的 `EXTERNAL_PROVIDER_ACCEPTED`、`EXTERNAL_RECONCILED_ACCEPTED` 描述同一类成功结果的不同分析粒度；不可将两条事件流相加当作通知数。这里的聚合表结构、字段和既有状态转移事件均未修改。
+
+| 事件 | 精确含义 |
+| --- | --- |
+| `EXTERNAL_DISPATCH_CLAIMED` | 通知从 `NOT_REQUESTED` 进入持久化 `DISPATCHING`。这是发送尝试的领取，后续校验仍可能拦截；**不表示已调用提供方** |
+| `EXTERNAL_PROVIDER_ACCEPTED`、`EXTERNAL_PROVIDER_REJECTED` | 一次已领取的发送得到提供方明确接受或拒绝并写库；接受仅是提供方接收请求，**不表示用户收到或阅读** |
+| `EXTERNAL_OUTCOME_UNKNOWN` | 发送异常、中断或超时后进入待核对；不能当作接受、拒绝或送达 |
+| `EXTERNAL_RECONCILED_ACCEPTED`、`EXTERNAL_RECONCILED_REJECTED` | 原未知结果经过提供方查询转成明确接受或拒绝；与原 `UNKNOWN` 构成两次状态转移，不能把事件条数直接相加当通知数 |
+| `EXTERNAL_RECONCILIATION_INCONCLUSIVE` | 复查仍无法确认结果；通知仍处于未知状态 |
+| `EXTERNAL_NOT_SENT` | 已领取后因账号、活动、同意、用途或提供方可用性等前置条件而未调用提供方；原因仍在受限通知表 |
+| `REPORT_CREATED_UNSCOPED`、`REPORT_IN_REVIEW_UNSCOPED`、`REPORT_RESOLVED_UNSCOPED` | 无活动 ID 的举报创建、进入复核、结案；有活动 ID 的创建事件仍走 `business_events` |
+| `APPEAL_CREATED`、`APPEAL_IN_REVIEW`、`APPEAL_RESOLVED` | 申诉创建及状态变化；不复制所申诉的工单、移除或内容 ID |
+| `PRIVACY_EXPORT_REQUESTED`、`PRIVACY_DELETE_REQUESTED`、`PRIVACY_CORRECTION_REQUESTED`、`PRIVACY_REQUESTED_OTHER` | 对应个人信息请求新行已提交；删除请求创建不代表执行完成 |
+| `PRIVACY_DELETE_PROTECTED`、`PRIVACY_DELETE_EXECUTION_INTENT`、`PRIVACY_DELETE_SAFEGUARDS_APPLIED` | 删除请求的即时保护、执行标记、保护措施状态已写入；均不宣称所有数据已删除 |
+| `PRIVACY_REQUEST_FULFILLED`、`PRIVACY_REQUEST_CANCELLED` | 请求状态明确变更；须按请求类型和受控业务记录解释 |
+
+事件由通知状态、举报、申诉、隐私请求的表触发器或复查审计在同一事务生成。幂等重试及无状态变化的重复更新不增加事件；事务回滚时对应事件也回滚。提供方拒绝、未知、未发送和已接受须分别报告，不能据此推断微信最终送达。旧表 `business_events` 的活动级指标口径不因本迁移改变。

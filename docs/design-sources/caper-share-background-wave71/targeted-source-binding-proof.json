@@ -1,0 +1,61 @@
+{
+  "kind": "One bounded source/assets/privacy/action/protection check; no business/SDK/CLI/full suite",
+  "passed": 22,
+  "checks": [
+    "Only one new readonly chunk; inverse complete WXML equals Wave69 baseline",
+    "Full old _3 and Wave69 CSS prefix byte exact; appended inverse exact",
+    "JS current QR migration baseline bytes unchanged",
+    "JSON baseline bytes unchanged",
+    "Precise READY and shareSheetOpen guard",
+    "New background has no action/button/canvas/nav attributes",
+    "No invitation/source token, precise address, user identifiers, fake source roster",
+    "Anonymity explicitly disclosed; a single generic symbol is not a per-person roster",
+    "Only coarse city bound in background; no display.location",
+    "Stats use confirmed/reserved/waitlisted/requested; no fake cancellation count",
+    "Qualification uses real minimum/venue declaration and no fake countdown",
+    "All new selector rules isolated; px literals and no new registered font",
+    "Opaque inactive layer40 below unchanged foreground50; no background click target",
+    "Real status/capsule bound; no source mock status/icons",
+    "Source negative-z art stacking preserved rather than inventing visible background photograph",
+    "All 12 reused glyph roles consumed and declared exactly",
+    "Reused glyph byte hashes stable and source contour/paint proven",
+    "Background badminton original asset reused byte exact; source URL same",
+    "Illustration disclosed; other existing cover selection kept",
+    "All real action/data/aria/disabled attributes unchanged",
+    "Root QR import is sole prior JS exception; reverse to immutable69 exact",
+    "Full original HTML/PNG bytes equal user ZIP"
+  ],
+  "originalActionNodes": 16,
+  "newActionNodes": 16,
+  "newBackgroundActionNodes": 0,
+  "productHashes": {
+    "share.wxml": {
+      "bytes": 18371,
+      "sha256": "ce0132c7578ec2b4a1b6a1d4f528c2566e29819a72e7dc7f17ffec01aa272a60"
+    },
+    "share.wxss": {
+      "bytes": 32129,
+      "sha256": "219f0221f85a46093fe19d16531a91463dec085c07a02574045de11e855de3ac"
+    },
+    "share.js": {
+      "bytes": 27268,
+      "sha256": "8ab001ad92a8e911fc8b7e84934872d418a9d541c506ce42efbce1472373ab3d"
+    },
+    "share.json": {
+      "bytes": 75,
+      "sha256": "95f4181c4eb25045c994138c56d0741f84443d00426599975f8a3fe4f24e4262"
+    }
+  },
+  "protectedWXMLSHA256": "94fcd4751620f77782db3852bb6be73668b3f82f73a8db1286c99ce0f2577fca",
+  "protectedCSSSHA256": "3f69b34649e84e0b0354038fad2be585423e7c5b33e2579f6d8bdf727c78d743",
+  "sourceHTMLSHA256": "ae332500609017a0a0d467d88b52ff0942e3b2824dc542e8f5bd65e5e18527c5",
+  "sourcePNGSHA256": "25784a100075b14dccb1f3e0b0a562df4ffc9f5ef90f5dacfa900138a4b848f0",
+  "newAssets": 0,
+  "newMainBytes": 0,
+  "netActivityRawBytes": 18656,
+  "glyphs": 12,
+  "glyphSourceComparison": "glyph-source-reuse.json; actual full outlines/paint including rclt filled substitutions prepared once",
+  "JSChange": false,
+  "nativeLayeringPrivacyAndRenderingPending": true,
+  "sourceCSSDoesNotProveChineseWrapOrCanvasOcclusion": true
+}

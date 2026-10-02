@@ -1,0 +1,199 @@
+{
+  "glyphs": [
+    {
+      "line": 10,
+      "glyph": "auto_awesome",
+      "class": "material-symbols-outlined text-[18px]",
+      "style": null
+    },
+    {
+      "line": 10,
+      "glyph": "notifications",
+      "class": "material-symbols-outlined text-[22px]",
+      "style": null
+    },
+    {
+      "line": 10,
+      "glyph": "person",
+      "class": "material-symbols-outlined text-on-primary text-[18px]",
+      "style": null
+    },
+    {
+      "line": 21,
+      "glyph": "smart_toy",
+      "class": "material-symbols-outlined text-party-violet text-[22px]",
+      "style": "font-variation-settings: 'FILL' 1;"
+    },
+    {
+      "line": 31,
+      "glyph": "arrow_forward",
+      "class": "material-symbols-outlined text-[16px] text-vibrant-lime",
+      "style": null
+    },
+    {
+      "line": 81,
+      "glyph": "hourglass_top",
+      "class": "material-symbols-outlined text-[14px]",
+      "style": null
+    },
+    {
+      "line": 101,
+      "glyph": "calendar_today",
+      "class": "material-symbols-outlined text-primary text-[18px]",
+      "style": null
+    },
+    {
+      "line": 105,
+      "glyph": "location_on",
+      "class": "material-symbols-outlined text-party-violet text-[18px]",
+      "style": null
+    },
+    {
+      "line": 133,
+      "glyph": "chat",
+      "class": "material-symbols-outlined text-[17px] text-on-surface-variant",
+      "style": null
+    },
+    {
+      "line": 146,
+      "glyph": "warning",
+      "class": "material-symbols-outlined text-party-pink text-[18px] flex-shrink-0 animate-bounce",
+      "style": null
+    },
+    {
+      "line": 165,
+      "glyph": "edit_calendar",
+      "class": "material-symbols-outlined text-[14px]",
+      "style": null
+    },
+    {
+      "line": 192,
+      "glyph": "schedule",
+      "class": "material-symbols-outlined text-[16px]",
+      "style": null
+    },
+    {
+      "line": 199,
+      "glyph": "event_busy",
+      "class": "material-symbols-outlined text-[17px]",
+      "style": null
+    },
+    {
+      "line": 203,
+      "glyph": "check_circle",
+      "class": "material-symbols-outlined text-[17px]",
+      "style": null
+    },
+    {
+      "line": 226,
+      "glyph": "filter_list",
+      "class": "material-symbols-outlined text-[14px] text-party-violet",
+      "style": null
+    },
+    {
+      "line": 244,
+      "glyph": "calendar_month",
+      "class": "material-symbols-outlined text-primary text-[18px]",
+      "style": null
+    },
+    {
+      "line": 248,
+      "glyph": "storefront",
+      "class": "material-symbols-outlined text-party-violet text-[18px]",
+      "style": null
+    },
+    {
+      "line": 255,
+      "glyph": "notifications_active",
+      "class": "material-symbols-outlined text-[15px]",
+      "style": null
+    },
+    {
+      "line": 281,
+      "glyph": "check_circle",
+      "class": "material-symbols-outlined text-[20px]",
+      "style": null
+    },
+    {
+      "line": 297,
+      "glyph": "home",
+      "class": "material-symbols-outlined text-[24px]",
+      "style": null
+    },
+    {
+      "line": 297,
+      "glyph": "explore",
+      "class": "material-symbols-outlined text-[24px]",
+      "style": null
+    },
+    {
+      "line": 297,
+      "glyph": "add",
+      "class": "material-symbols-outlined text-[28px]",
+      "style": null
+    },
+    {
+      "line": 297,
+      "glyph": "chat_bubble",
+      "class": "material-symbols-outlined text-[24px]",
+      "style": null
+    },
+    {
+      "line": 297,
+      "glyph": "person",
+      "class": "material-symbols-outlined text-[24px]",
+      "style": null
+    }
+  ],
+  "photos": [
+    {
+      "line": 68,
+      "tag": "img",
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuC_FyHKjJWYIm9pv-2vOvntXU3JQSf1XqeqzKbMGU6Y0UmZhZKjrDHW8rtb0d_atZHoevdE_5_HlPwIj_3149KUDzu2M4MnBnZCqDA9jHBl-h-RHiYBQv0ICcrtVrNbWUetioJw7nakmqPyU9YzApK_WLraq-xA2p92_CRrD3cRBTpMvseqkYTiPBWByCUlpXKy32J8zhYq6BIMPTGsjn_v1wsh6DHhN7tcgxHvwL6EU-zzZrZhOsYK7A",
+      "class": "w-full h-full object-cover",
+      "alt": "Vibrant friends playing a modern tabletop board game with custom colored dice, cards, and cocktails on a dark wooden table in a hip Shanghai cafe, energetic natural warm lighting, editorial Partiful graphic style with party atmosphere."
+    },
+    {
+      "line": 114,
+      "tag": "img",
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuAOn6D9LXxN1x0k-l-RYTajkE60PrF6RtPWwgBUXBOVvrmswtp6HMQbZRrzk-BGlBdzhX3qgnJ5udxadvZVlcP1EIi-P7RHazmyLV4zvXcGEJOatIYS_liN0xZfcemLW-pj4dyUMz1XZTwy1Ahz_SSMJqZjlctNbC3phbUFFy2HULNZQlgFbtGbMZyPnvxeQGP93jOzHr3aMG4A_-Y1Ag4zM7jpLy6muhH2fZjXtdugK_eRkSmraiHVbQ",
+      "class": "w-full h-full object-cover",
+      "alt": "Avatar of young smiling asian man wearing yellow beanie outdoor casual portrait"
+    },
+    {
+      "line": 117,
+      "tag": "img",
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuAyfLVsnqW7mF2nb5YVQo00916z5nzxPgA7mpUmX-oFBrVbd9qzpdGVpX3A1HUUZTxdTjFREgcg_WUSUqo5hurysMyBeDNiZTuwZBWjiX530jXTtV8ulcWLvQrGU5xKDhLIlygDFgHYRND4bRdKCY5bh6OwfhGa6twGAFZ4K3WKbuup8xeRiv-ZppQn5-Hkqel66-0I6HjW1Eg-I2WLe1smv7K5tWk7V24C196ua-O1BXK_D87yMXYSiw",
+      "class": "w-full h-full object-cover",
+      "alt": "Avatar of stylish young woman with bob haircut warm studio portrait smiling"
+    },
+    {
+      "line": 120,
+      "tag": "img",
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuAUePypXUCQHWGpiE1Bc3jKU2Hya65WCxftdT_U48_3eNEFFkv15DkTc3W80iekLAifhUOi6Ji_rwgoIyy80qGWdvsjTQ9FuEBCq_stoSFO8wfDLHfljzmBA20HQf6CEelNx2TiIapOKtET_IoyAUdIUziOMXI46cR7pRIGaMlORJgJ6jJLry8TTQGpmMSytfBG9sAp22FHe8auZlzzYICVc73tzpLDEWW8CZCiZPR0zZAGq_m4F7YgKQ",
+      "class": "w-full h-full object-cover",
+      "alt": "Portrait of young designer wearing round eyeglasses and blue jacket smiling"
+    },
+    {
+      "line": 123,
+      "tag": "img",
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuBdHUPt1PG_4MolYM_9G464rusAdNRi0Ty_vZ1otxFwLGInLv03GVLaCofmYnX8UVGD0-NI3VsmKFCC-Wj5RoLlmh4rAhcCzv5KBvJO_20s0ksBnr1gvFgJ5OqxMcJacHBhYKfmJ-ceQyC2xi6OMZb61nacF8NyvJkTLOWWdxCKoq6SUownd8zofvUg7py2lbpq3-eOzoODplalYRb3sA0pEI26L6WyokA0PYvlBzKhzGdoHd5C9tpzSw",
+      "class": "w-full h-full object-cover",
+      "alt": "Close-up portrait of cheerful girl outdoors with sunset rim light"
+    },
+    {
+      "line": 153,
+      "tag": "img",
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuD17KGmzvAd0bb4lPCpasHCqoFaBTAy9x3Fo_wndSlwjrFOel6OLPyrgZMX7oOYg4E0o57DcimpsvInIlE67dz1dBfI0fOy_-ZMcUPuQpUJtDCyt4cHmfDvIolaW6Hx37X-MsjzmwnsTfimozTBJAbE2cZxO5WqbwhaCCgwa478-1tyvI7Pl7yY6BF4eKacaJUtdXOOF8ZjggOW5h60wlwR3MOhJyKPYslBLwI7eHg4Y6OXrwH26uF0lQ",
+      "class": "w-full h-full object-cover",
+      "alt": "Cinematic shot of urban young adults walking along Shanghai West Bund riverside boardwalk at golden hour sunset, soft orange and violet pastel sky, reflections on water, high spirited and cinematic lifestyle photography."
+    },
+    {
+      "line": 213,
+      "tag": "img",
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuC6RT6Ka-iFpcUe4ZZ-w74dd58bAX0qLOPP9geRmj06_9939NKGQJH5h9xFlnQNej85Jn4Xdt77wbhsquGUq_ORSnIbzEeT-epFqPzSM6ttkBphQbsUuqKX6pQ5p_mKX8iaNsDRGvENsbnq3QFERVv091STGnmZxopArH4KHbGUAm1Js3x1pfFGj8M-23hQGEIj55Tu3gcMo-MFVd7hn5c31e1PgCHOS4HCb0ntrj92c0JwVRerFVOWBw",
+      "class": "w-full h-full object-cover",
+      "alt": "Artisan specialty coffee bar interior with warm cinematic lighting, espresso machine steam, stylish creative entrepreneurs chatting over pour-over coffee cups in a modern minimalist space."
+    }
+  ]
+}

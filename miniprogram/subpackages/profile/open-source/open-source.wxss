@@ -1,0 +1,72 @@
+@import "../common.wxss";
+.source-page { padding:0 32rpx calc(32rpx + env(safe-area-inset-bottom)); background:#f5f6f8; color:#1a1b1f; }
+.source-status { position:fixed; top:0; right:0; left:0; z-index:12; background:#faf8fe; pointer-events:none; }
+.source-page .pg10-header { position:sticky; z-index:11; box-sizing:border-box; height:112rpx; margin:0 -32rpx; padding-left:32rpx; background:rgba(250,248,254,.8); backdrop-filter:blur(48rpx); box-shadow:0 2rpx 16rpx rgba(0,0,0,.04); }
+.source-header button { box-sizing:border-box; display:flex; align-items:center; justify-content:center; flex:none; min-width:0; margin:0; padding:0; border:0; border-radius:0; background:transparent; }
+.source-header button::after { border:0; }
+.source-header .pg10-back { width:88rpx; min-width:88rpx; height:88rpx; margin-left:-8rpx; }
+.pg10-back image { width:48rpx; height:48rpx; }
+.source-page .pg10-header-title { flex:1; min-width:0; padding:0 8rpx; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:center; font-size:34rpx; line-height:44rpx; font-weight:600; letter-spacing:-.85rpx; }
+.source-header .pg10-header-actions { display:flex; flex:none; align-items:center; gap:8rpx; }
+.source-header .pg10-header-share,.source-header .pg10-header-more { width:88rpx; height:88rpx; }
+.pg10-header-share image,.pg10-header-more image { width:44rpx; height:44rpx; }
+.source-header .pg10-header-avatar { width:64rpx; height:64rpx; margin-left:8rpx; border-radius:50%; background:#004cc8; }
+.pg10-header-avatar image { width:36rpx; height:36rpx; }
+.source-header .pg10-header-menu { position:absolute; top:104rpx; z-index:13; width:280rpx; padding:8rpx; border:1rpx solid #edf0f5; border-radius:20rpx; background:#fff; box-shadow:0 12rpx 30rpx rgba(15,23,42,.14); }
+.source-header .pg10-header-menu button { display:block; box-sizing:border-box; width:100%; min-width:0; padding:16rpx 12rpx; border-bottom:1rpx solid #edf0f5; color:#334155; text-align:left; line-height:36rpx; font-size:26rpx; }
+.source-header .pg10-header-menu button:last-child { border-bottom:0; }
+.source-content { padding-top:24rpx; }
+.source-page .pg10-card { padding:24rpx; margin:0; border-radius:24rpx; background:#fff; box-shadow:0 2rpx 4rpx rgba(0,0,0,.05); }
+.source-page .source-intro { padding:32rpx; }
+.intro-head { display:flex; align-items:center; gap:24rpx; }
+.source-icon { display:flex; align-items:center; justify-content:center; flex:none; width:96rpx; height:96rpx; border-radius:24rpx; background:#ebf2fe; }
+.source-icon image { width:52rpx; height:52rpx; }
+.intro-heading { min-width:0; }
+.intro-title { font-size:34rpx; line-height:44rpx; font-weight:600; letter-spacing:-.85rpx; }
+.intro-head text { display:block; color:#424655; font-size:22rpx; line-height:28rpx; font-weight:700; letter-spacing:2.2rpx; }
+.intro-copy { margin-top:24rpx; color:#424655; font-size:26rpx; line-height:42.25rpx; }
+.source-section { display:flex; align-items:center; justify-content:space-between; gap:8rpx; margin:24rpx 8rpx 16rpx; }
+.source-section > view { display:flex; align-items:center; gap:8rpx; min-width:0; }
+.source-section image { flex:none; width:36rpx; height:36rpx; }
+.source-section text { font-size:30rpx; line-height:40rpx; font-weight:600; }
+.source-section .source-count { flex:none; border-radius:999rpx; padding:4rpx 16rpx; background:#efedf3; color:#424655; font-size:22rpx; line-height:28rpx; font-weight:700; letter-spacing:.44rpx; }
+.dependency-list { display:flex; flex-direction:column; gap:16rpx; }
+.dependency-head { display:flex; align-items:flex-start; justify-content:space-between; gap:16rpx; }
+.dependency-head > view { flex:1; min-width:0; }
+.dependency-title { font-size:34rpx; line-height:44rpx; font-weight:600; letter-spacing:-.34rpx; }
+.dependency-maker { color:#424655; font-size:26rpx; line-height:36rpx; }
+.dependency-head .license-badge { flex:none; border-radius:999rpx; padding:8rpx 20rpx; background:#ebf9f0; color:#34c759; font-size:22rpx; line-height:28rpx; font-weight:700; letter-spacing:.44rpx; }
+.dependency-head .license-badge.apache { background:#e2dfff; color:#4c4aca; }
+.dependency-copy { margin-top:16rpx; color:#424655; font-size:26rpx; line-height:42.25rpx; }
+.dependency-copyright { margin-top:8rpx; color:#424655; font-size:22rpx; line-height:28rpx; }
+.source-page .thanks-card { margin-top:24rpx; padding:32rpx; }
+.thanks-head { display:flex; align-items:center; gap:8rpx; }
+.thanks-icon { display:flex; align-items:center; justify-content:center; flex:none; width:64rpx; height:64rpx; border-radius:16rpx; background:#fff0f3; }
+.thanks-icon image { width:36rpx; height:36rpx; }
+.thanks-title { font-size:30rpx; line-height:40rpx; font-weight:600; }
+.thanks-head text { display:block; color:#424655; font-size:22rpx; line-height:28rpx; font-weight:700; letter-spacing:.44rpx; }
+.thanks-list { display:flex; flex-direction:column; gap:24rpx; margin-top:24rpx; }
+.thanks-row { border-radius:16rpx; padding:24rpx; background:#f4f3f8; color:#424655; font-size:26rpx; line-height:42.25rpx; }
+.thanks-row-title { display:flex; align-items:center; gap:8rpx; margin-bottom:8rpx; color:#1a1b1f; font-size:26rpx; line-height:32rpx; font-weight:600; }
+.thanks-row-title image { width:36rpx; height:36rpx; flex:none; }
+.license-section { margin-bottom:8rpx; }
+.license-section image { width:32rpx; height:32rpx; }
+.license-section text { color:#424655; font-size:26rpx; line-height:32rpx; }
+.license-note { border-radius:24rpx; padding:24rpx; background:#e3e2e7; color:#424655; font-size:22rpx; line-height:35.75rpx; letter-spacing:.44rpx; }
+.source-page .repository-card { margin-top:24rpx; }
+.repository-title { font-size:30rpx; line-height:40rpx; font-weight:600; }
+.repository-card > text { display:block; margin-top:8rpx; color:#424655; font-size:26rpx; line-height:36rpx; }
+.repository-card button { display:flex; align-items:center; justify-content:center; gap:8rpx; box-sizing:border-box; width:100%; margin:24rpx 0 0; padding:24rpx; border-radius:24rpx; background:#ebf2fe; color:#1d64f2; font-size:26rpx; line-height:32rpx; font-weight:600; }
+.repository-card button image { width:32rpx; height:32rpx; flex:none; }
+.repository-card button::after { border:0; }
+.copy-message { color:#279759; font-size:26rpx; line-height:36rpx; margin-top:16rpx; }
+.source-foot { padding:24rpx 0 32rpx; color:#424655; font-size:26rpx; line-height:32rpx; font-weight:600; text-align:center; }
+
+/* Preserve the original mono-license exception; the current summary is excluded. */
+.source-page .pg10-header-title, .intro-title, .intro-head text, .intro-copy,
+.source-section text, .dependency-title, .dependency-maker, .license-badge,
+.dependency-copy, .dependency-copyright, .thanks-title, .thanks-head text,
+.thanks-row, .repository-title, .repository-card > text,
+.repository-card button, .copy-message, .source-foot {
+  font-family:"Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", sans-serif;
+}

@@ -4,11 +4,13 @@ import { test } from 'node:test';
 import { createDatabase } from '../src/db.ts';
 import { loginWithWechat } from '../src/auth.ts';
 import { createDraft } from '../src/events.ts';
-import { publishEvent } from '../src/events.ts';
+import { publishApprovedInvite } from './helpers.ts';
 import { reviewEvent } from '../src/event-review.ts';
 import { changeEvent, repeatEvent } from '../src/lifecycle.ts';
 import { createApp } from '../src/server.ts';
 import { getPilotMetrics } from '../src/metrics.ts';
+import { reviewHostStatus } from '../src/host-limits.ts';
+import { openSyntheticPublicCoverage } from './helpers/public-coverage.ts';
 
 const valid = (startAt: string) => {
   const start = Date.parse(startAt);
@@ -24,7 +26,22 @@ const pilotUsers = ['host', 'host2', 'host3', 'host4', 'host5', 'host6', 'host7'
 async function metricEvent(db: Awaited<ReturnType<typeof createDatabase>>, host: string, key: string, startAt: string,
   isTest = false) {
   const draft = await createDraft(db, host, valid(startAt), `${key}-draft`, isTest);
-  return publishEvent(db, host, draft.id, draft.version, `${key}-publish`);
+  return publishApprovedInvite(db, host, draft.id, draft.version, `${key}-publish`);
+}
+
+async function allowMultiEventMetricFixture(db: Awaited<ReturnType<typeof createDatabase>>, host: string) {
+  await db.query('INSERT INTO users(id,wechat_openid) VALUES($1,$2) ON CONFLICT(id) DO NOTHING',
+    [host, `synthetic-metric-${host}`]);
+  await reviewHostStatus(db, 'operator:metric-fixture', host, 'ESTABLISHED',
+    '合成指标多场活动夹具，不代表真人主办资质核验', `metric-host-${host}`);
+}
+
+async function approveSyntheticInvites(db: Awaited<ReturnType<typeof createDatabase>>, idPattern: string,
+  reviewedAt: string) {
+  await db.query("UPDATE events SET review_status='APPROVED' WHERE id LIKE $1", [idPattern]);
+  await db.query(`INSERT INTO event_review_decisions(id,event_id,event_version,decision,reason,reviewed_by,reviewed_at)
+    SELECT 'fixture-review:'||id,id,version,'APPROVED','合成数据已审核','operator:fixture',$2::timestamptz
+    FROM events WHERE id LIKE $1`, [idPattern, reviewedAt]);
 }
 
 async function addEvidence(db: Awaited<ReturnType<typeof createDatabase>>, eventId: string, host: string,
@@ -209,9 +226,12 @@ test('WQCA uses first published minimum, local weeks, individual evidence and ex
 test('host reuse counts only mature non-test first-publish cohorts and does not invent profit', async () => {
   const db = await createDatabase();
   try {
+    await allowMultiEventMetricFixture(db, 'reused');
+    await allowMultiEventMetricFixture(db, 'late-repeat');
     const publishedAt = async (host: string, key: string, date: string, startAt = '2027-01-20T12:00:00.000Z', isTest = false) => {
       const event = await metricEvent(db, host, key, startAt, isTest);
       await db.query('UPDATE event_versions SET created_at=$2 WHERE event_id=$1', [event.id, date]);
+      await db.query('UPDATE event_review_decisions SET reviewed_at=$2 WHERE event_id=$1', [event.id, date]);
       return event;
     };
     await publishedAt('reused', 'first', '2026-12-01T00:00:00.000Z');
@@ -243,9 +263,12 @@ test('host reuse counts only mature non-test first-publish cohorts and does not 
 test('public review submission is not publication for the 28-day host cohort or repeat', async () => {
   const db = await createDatabase();
   try {
+    await allowMultiEventMetricFixture(db, 'approved-host');
+    await allowMultiEventMetricFixture(db, 'unapproved-repeat-host');
+    await openSyntheticPublicCoverage(db, [valid('2027-03-10T12:00:00.000Z'), valid('2027-03-13T12:00:00.000Z')]);
     const publicDraft = await createDraft(db, 'pending-host',
       { ...valid('2027-03-10T12:00:00.000Z'), visibility: 'PUBLIC', approvalMode: 'MANUAL' }, 'pending-public-draft', false);
-    const pending = await publishEvent(db, 'pending-host', publicDraft.id, publicDraft.version, 'pending-public-submit');
+    const pending = await publishApprovedInvite(db, 'pending-host', publicDraft.id, publicDraft.version, 'pending-public-submit');
     await db.query('UPDATE event_versions SET created_at=$2 WHERE event_id=$1', [pending.id, '2026-12-01T00:00:00.000Z']);
     const cutoff = Date.parse('2027-02-01T00:00:00.000Z');
     assert.equal((await getPilotMetrics(db, cutoff, ['pending-host'])).hostReuse28d.maturedHosts, 0);
@@ -253,18 +276,20 @@ test('public review submission is not publication for the 28-day host cohort or 
 
     const approvedDraft = await createDraft(db, 'approved-host',
       { ...valid('2027-03-10T12:00:00.000Z'), visibility: 'PUBLIC', approvalMode: 'MANUAL' }, 'approved-public-draft', false);
-    const submitted = await publishEvent(db, 'approved-host', approvedDraft.id, approvedDraft.version, 'approved-public-submit');
+    const submitted = await publishApprovedInvite(db, 'approved-host', approvedDraft.id, approvedDraft.version, 'approved-public-submit');
     await db.query('UPDATE event_versions SET created_at=$2 WHERE event_id=$1', [submitted.id, '2026-12-01T00:00:00.000Z']);
     await reviewEvent(db, 'operator:reviewer', submitted.id, submitted.version, 'APPROVED', '场地信息已人工核实', 'approve-public');
     await db.query('UPDATE event_review_decisions SET reviewed_at=$2 WHERE event_id=$1', [submitted.id, '2026-12-15T00:00:00.000Z']);
     const repeat = await metricEvent(db, 'approved-host', 'approved-repeat', '2027-03-11T12:00:00.000Z');
     await db.query('UPDATE event_versions SET created_at=$2 WHERE event_id=$1', [repeat.id, '2026-12-30T00:00:00.000Z']);
+    await db.query('UPDATE event_review_decisions SET reviewed_at=$2 WHERE event_id=$1', [repeat.id, '2026-12-30T00:00:00.000Z']);
 
     const initial = await metricEvent(db, 'unapproved-repeat-host', 'initial-invite', '2027-03-12T12:00:00.000Z');
     await db.query('UPDATE event_versions SET created_at=$2 WHERE event_id=$1', [initial.id, '2026-12-01T00:00:00.000Z']);
+    await db.query('UPDATE event_review_decisions SET reviewed_at=$2 WHERE event_id=$1', [initial.id, '2026-12-01T00:00:00.000Z']);
     const secondDraft = await createDraft(db, 'unapproved-repeat-host',
       { ...valid('2027-03-13T12:00:00.000Z'), visibility: 'PUBLIC', approvalMode: 'MANUAL' }, 'second-public-draft', false);
-    const secondPending = await publishEvent(db, 'unapproved-repeat-host', secondDraft.id, secondDraft.version, 'second-public-submit');
+    const secondPending = await publishApprovedInvite(db, 'unapproved-repeat-host', secondDraft.id, secondDraft.version, 'second-public-submit');
     await db.query('UPDATE event_versions SET created_at=$2 WHERE event_id=$1', [secondPending.id, '2026-12-16T00:00:00.000Z']);
 
     const report = await getPilotMetrics(db, cutoff, ['pending-host', 'approved-host', 'unapproved-repeat-host']);
@@ -278,10 +303,11 @@ test('public review submission is not publication for the 28-day host cohort or 
 test('WQCA uses the minimum in the first approved public version', async () => {
   const db = await createDatabase();
   try {
+    await openSyntheticPublicCoverage(db, [valid('2027-03-10T12:00:00.000Z')]);
     const draft = await createDraft(db, 'approved-public-host',
       { ...valid('2027-03-10T12:00:00.000Z'), visibility: 'PUBLIC', approvalMode: 'MANUAL' },
       'public-minimum-draft', false);
-    const submitted = await publishEvent(db, 'approved-public-host', draft.id, draft.version, 'public-minimum-submit');
+    const submitted = await publishApprovedInvite(db, 'approved-public-host', draft.id, draft.version, 'public-minimum-submit');
     await reviewEvent(db, 'operator:reviewer', submitted.id, submitted.version, 'REJECTED',
       '最低人数证据不足', 'public-minimum-reject');
     const changed = await changeEvent(db, 'approved-public-host', submitted.id, submitted.version,
@@ -303,6 +329,31 @@ test('WQCA uses the minimum in the first approved public version', async () => {
     assert.equal(report.weeks[0]?.reasons.INSUFFICIENT_ACTUAL_COUNT, 1);
   } finally { await db.close(); }
 });
+
+for (const reviewStatus of ['PENDING', 'REJECTED'] as const) {
+  test(`an unapproved ${reviewStatus.toLowerCase()} revision cannot move an approved activity out of its due week`, async () => {
+    const db = await createDatabase();
+    try {
+      const event = await metricEvent(db, 'host', `unapproved-${reviewStatus.toLowerCase()}`, '2027-01-02T12:00:00.000Z');
+      const revised = await changeEvent(db, 'host', event.id, event.version, {
+        startAt: '2027-01-10T12:00:00.000Z', endAt: '2027-01-10T14:00:00.000Z',
+        venueStatus: 'HOST_CONFIRMED',
+        registrationDeadline: '2027-01-10T11:30:00.000Z',
+        confirmationDeadline: '2027-01-10T10:30:00.000Z'
+      }, `unapproved-${reviewStatus.toLowerCase()}-change`);
+      assert.equal(revised.reviewStatus, 'PENDING');
+      if (reviewStatus === 'REJECTED')
+        await reviewEvent(db, 'operator:reviewer', event.id, revised.version, 'REJECTED',
+          '修改后的日期未经核实', 'reject-unapproved-revision');
+      await addEvidence(db, event.id, 'host', 4);
+      const report = await getPilotMetrics(db, Date.parse('2027-01-04T00:00:00.000Z'), ['host', 'p1', 'p2', 'p3']);
+      assert.equal(report.dueEventCompletion.dueEvents, 1);
+      assert.equal(report.dueEventCompletion.evidenceQualified, 1);
+      assert.deepEqual(report.weeks, [{ weekStart: '2026-12-28', qualified: 1, pendingReview: 0,
+        unqualified: 0, reasons: {} }]);
+    } finally { await db.close(); }
+  });
+}
 
 test('an event joined by a user outside the verified pilot allowlist is excluded from pilot metrics', async () => {
   const db = await createDatabase();
@@ -353,6 +404,7 @@ test('D30 counts distinct verified return participants only after a complete obs
       ('d30-test','host','COMPLETED',2,$2::jsonb,true)`, [base, repeat, late]);
     await db.query(`INSERT INTO event_versions(event_id,version,payload,created_at)
       SELECT id,version,payload,'2027-01-01T00:00:00.000Z' FROM events WHERE id LIKE 'd30-%'`);
+    await approveSyntheticInvites(db, 'd30-%', '2027-01-01T00:00:00.000Z');
     await db.query(`INSERT INTO outcomes(event_id,held,actual_count,completed_by,completed_at) VALUES
       ('d30-first',true,4,'host','2027-01-02T15:00:00.000Z'),
       ('d30-return',true,4,'host','2027-01-20T15:00:00.000Z'),
@@ -389,6 +441,7 @@ test('D30 counts distinct verified return participants only after a complete obs
       VALUES('d30-pending','host','IN_PROGRESS',2,$1::jsonb,false)`, [JSON.stringify(valid('2027-02-01T11:00:00.000Z'))]);
     await db.query(`INSERT INTO event_versions(event_id,version,payload,created_at)
       SELECT id,version,payload,'2027-01-01T00:00:00.000Z' FROM events WHERE id='d30-pending'`);
+    await approveSyntheticInvites(db, 'd30-pending', '2027-01-01T00:00:00.000Z');
     await db.query(`INSERT INTO checkins(id,event_id,user_id,evidence,checked_at)
       SELECT 'd30-pending-'||n,'d30-pending','d30-user-'||n,'SCAN','2027-02-01T12:00:00.000Z'
       FROM generate_series(1,30) AS n`);
@@ -412,6 +465,7 @@ test('D30 counts distinct verified return participants only after a complete obs
       VALUES('d30-first-pending','host','IN_PROGRESS',2,$1::jsonb,false)`, [base]);
     await db.query(`INSERT INTO event_versions(event_id,version,payload,created_at)
       SELECT id,version,payload,'2027-01-01T00:00:00.000Z' FROM events WHERE id='d30-first-pending'`);
+    await approveSyntheticInvites(db, 'd30-first-pending', '2027-01-01T00:00:00.000Z');
     await db.query(`INSERT INTO checkins(id,event_id,user_id,evidence,checked_at)
       VALUES('d30-first-pending-check','d30-first-pending','d30-new-user','SCAN','2027-01-02T12:30:00.000Z')`);
     const uncertain = (await getPilotMetrics(db, Date.parse('2027-02-02T14:00:00.000Z'), [...cohort, 'd30-new-user']))
@@ -437,6 +491,7 @@ test('D30 return uses check-in time when the second event ends after the window 
       ('boundary-return','host','COMPLETED',2,$2::jsonb,false)`, [firstPayload, laterPayload]);
     await db.query(`INSERT INTO event_versions(event_id,version,payload,created_at)
       SELECT id,version,payload,'2027-01-01T00:00:00.000Z' FROM events WHERE id LIKE 'boundary-%'`);
+    await approveSyntheticInvites(db, 'boundary-%', '2027-01-01T00:00:00.000Z');
     await db.query(`INSERT INTO outcomes(event_id,held,actual_count,completed_by,completed_at) VALUES
       ('boundary-first',true,4,'host','2027-01-02T15:00:00.000Z'),
       ('boundary-return',true,4,'host','2027-02-01T14:00:00.000Z')`);
@@ -459,6 +514,7 @@ test('D30 uses event time for a manual check-in confirmed after a later scanned 
       ('manual-second','host','COMPLETED',2,$2::jsonb,false)`, [firstPayload, secondPayload]);
     await db.query(`INSERT INTO event_versions(event_id,version,payload,created_at)
       SELECT id,version,payload,'2026-12-31T00:00:00.000Z' FROM events WHERE id LIKE 'manual-%'`);
+    await approveSyntheticInvites(db, 'manual-%', '2026-12-31T00:00:00.000Z');
     await db.query(`INSERT INTO outcomes(event_id,held,actual_count,completed_by,completed_at) VALUES
       ('manual-first',true,4,'host','2027-01-01T15:00:00.000Z'),
       ('manual-second',true,4,'host','2027-01-05T15:00:00.000Z')`);
@@ -479,6 +535,7 @@ test('a mature due cohort leaves the threshold undecided when pending review cou
       SELECT 'gate-'||n,'host','COMPLETED',2,$1::jsonb,false FROM generate_series(1,100) AS n`, [payload]);
     await db.query(`INSERT INTO event_versions(event_id,version,payload,created_at)
       SELECT id,2,payload,'2026-12-01T00:00:00.000Z' FROM events WHERE id LIKE 'gate-%'`);
+    await approveSyntheticInvites(db, 'gate-%', '2026-12-01T00:00:00.000Z');
     await db.query(`INSERT INTO registrations(id,event_id,user_id,status)
       SELECT 'host-'||id,id,'host','CONFIRMED' FROM events WHERE id LIKE 'gate-%'`);
     await db.query(`INSERT INTO outcomes(event_id,held,actual_count,completed_by,completed_at,disputed)
@@ -519,6 +576,7 @@ test('a mature due cohort leaves the threshold undecided when pending review cou
 test('waitlist offer diagnostic separates accepted, expired, cancelled and still active invitations', async () => {
   const db = await createDatabase();
   try {
+    await allowMultiEventMetricFixture(db, 'host');
     const asOf = Date.parse('2027-01-10T00:00:00.000Z');
     const event = await metricEvent(db, 'host', 'offer-metric', '2027-01-02T12:00:00.000Z');
     const states = [
@@ -581,10 +639,13 @@ test('later activity cancellation and schedule change do not rewrite an earlier 
       VALUES('history-checkin','history-event','p1','SCAN','2026-07-01T12:30:00Z')`);
     const { rows: cutoff } = await db.query<{ at: Date }>('SELECT clock_timestamp() AS at');
     await new Promise(resolve => setTimeout(resolve, 20));
-    await db.query(`UPDATE events SET status='CANCELLED',version=3,payload=$1::jsonb WHERE id='history-event'`,
+    await db.query(`UPDATE events SET version=3,payload=$1::jsonb,review_status='APPROVED' WHERE id='history-event'`,
       [JSON.stringify(later)]);
     await db.query(`INSERT INTO event_versions(event_id,version,payload)
       VALUES('history-event',3,$1::jsonb)`, [JSON.stringify(later)]);
+    await db.query(`INSERT INTO event_review_decisions(id,event_id,event_version,decision,reason,reviewed_by)
+      VALUES('history-change-review','history-event',3,'APPROVED','修改后的日程已人工核实','operator:fixture')`);
+    await db.query("UPDATE events SET status='CANCELLED' WHERE id='history-event'");
     const earlier = await getPilotMetrics(db, new Date(cutoff[0]!.at).getTime() + 1, ['host', 'p1']);
     assert.equal(earlier.dueEventCompletion.dueEvents, 1);
     assert.equal(earlier.participantReturn30d.pendingFirstParticipants, 1);
@@ -665,6 +726,8 @@ test('attendance diagnostic preserves the deadline cohort and separates later wi
 test('formation time uses first accessible publication and first confirmed audit, excluding test and unlisted activity', async () => {
   const db = await createDatabase();
   try {
+    await allowMultiEventMetricFixture(db, 'host');
+    await openSyntheticPublicCoverage(db, [valid('2027-01-02T12:00:00.000Z')]);
     const base = Date.parse('2027-01-01T00:00:00.000Z');
     const sample = [
       ['formation-30', false, false, 30],
@@ -676,6 +739,8 @@ test('formation time uses first accessible publication and first confirmed audit
       const event = await metricEvent(db, 'host', key, '2027-01-02T12:00:00.000Z', isTest);
       await db.query('UPDATE event_versions SET created_at=$2 WHERE event_id=$1 AND version=2',
         [event.id, new Date(base).toISOString()]);
+      await db.query('UPDATE event_review_decisions SET reviewed_at=$2 WHERE event_id=$1',
+        [event.id, new Date(base).toISOString()]);
       if (hasOutsider) await db.query('INSERT INTO registrations(id,event_id,user_id,status) VALUES($1,$2,$3,$4)',
         [`${key}-registration`, event.id, 'outsider', 'CONFIRMED']);
       await db.query('INSERT INTO audit(id,actor_id,event_id,action,created_at) VALUES($1,$2,$3,$4,$5)',
@@ -685,7 +750,7 @@ test('formation time uses first accessible publication and first confirmed audit
     }
     const publicDraft = await createDraft(db, 'public-host',
       { ...valid('2027-01-02T12:00:00.000Z'), visibility: 'PUBLIC', approvalMode: 'MANUAL' }, 'formation-public-draft', false);
-    const publicEvent = await publishEvent(db, 'public-host', publicDraft.id, publicDraft.version, 'formation-public-submit');
+    const publicEvent = await publishApprovedInvite(db, 'public-host', publicDraft.id, publicDraft.version, 'formation-public-submit');
     await reviewEvent(db, 'operator:reviewer', publicEvent.id, publicEvent.version,
       'APPROVED', '活动事实已核实', 'formation-public-approve');
     await db.query('UPDATE event_review_decisions SET reviewed_at=$2 WHERE event_id=$1',

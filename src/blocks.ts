@@ -23,7 +23,13 @@ export async function blockEventMember(db: Database, actor: string, eventId: str
 }
 
 export async function listMyBlocks(db: Database, actor: string): Promise<Array<{ id: string; eventId: string; eventTitle: string }>> {
-  const { rows } = await db.query<{ id: string; event_id: string; event_title: string }>(`SELECT b.id,b.event_id,e.payload->>'title' AS event_title
+  const { rows } = await db.query<{ id: string; event_id: string; event_title: string }>(`SELECT b.id,b.event_id,
+    CASE WHEN e.review_status='APPROVED' OR (e.review_status='NOT_REQUIRED'
+      AND e.payload->>'visibility'='INVITE' AND (
+        e.status IN ('IN_PROGRESS','COMPLETED','CANCELLED','EXPIRED') OR
+        (e.status='RECRUITING' AND (e.payload->>'confirmationDeadline')::timestamptz<=clock_timestamp()) OR
+        (e.status='CONFIRMED' AND (e.payload->>'startAt')::timestamptz<=clock_timestamp())))
+      THEN e.payload->>'title' ELSE '活动审核中' END AS event_title
     FROM user_blocks b JOIN events e ON e.id=b.event_id
     WHERE b.blocker_id=$1 AND b.revoked_at IS NULL ORDER BY b.created_at DESC,b.id`, [actor]);
   return rows.map(row => ({ id: row.id, eventId: row.event_id, eventTitle: row.event_title }));

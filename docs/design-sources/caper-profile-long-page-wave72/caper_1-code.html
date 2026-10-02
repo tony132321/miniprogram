@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>耍起 CAPER - 我的 (Profile)</title>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Custom Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              blue: '#1d64f2',
+              darkBlue: '#1248ba',
+              lime: '#c6ff00',
+              limeDark: '#a3e635',
+              surface: '#f4f6fa',
+              card: '#ffffff',
+              border: '#eef1f6',
+              textPrimary: '#0f172a',
+              textSecondary: '#64748b',
+              textMuted: '#94a3b8'
+            }
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', 'sans-serif']
+          },
+          boxShadow: {
+            'soft': '0 4px 20px -2px rgba(15, 23, 42, 0.05)',
+            'float': '0 10px 25px -5px rgba(29, 100, 242, 0.25)'
+          }
+        }
+      }
+    }
+  </script>
+<!-- Global & Custom CSS Styles -->
+<style data-purpose="base-layout">
+    body {
+      background-color: #f6f8fb;
+      color: #0f172a;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    /* Hide scrollbar for clean horizontal scrolling */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style data-purpose="custom-toggles">
+    /* iOS standard styled switch */
+    .ios-switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 26px;
+    }
+    .ios-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .ios-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #e2e8f0;
+      transition: .25s ease-in-out;
+      border-radius: 9999px;
+    }
+    .ios-slider:before {
+      position: absolute;
+      content: "";
+      height: 22px;
+      width: 22px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      transition: .25s ease-in-out;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+    input:checked + .ios-slider {
+      background-color: #1d64f2;
+    }
+    input:checked + .ios-slider:before {
+      transform: translateX(18px);
+    }
+  </style>
+</head>
+<body class="flex justify-center min-h-screen">
+<!-- Mobile Viewport Container: 390px fixed standard mobile width -->
+<main class="w-[390px] min-h-screen bg-[#f6f8fb] flex flex-col pb-28 relative">
+<!-- BEGIN: TopHeader -->
+<header class="sticky top-0 z-30 bg-[#f6f8fb]/90 backdrop-blur-md px-4 pt-3 pb-2 flex items-center justify-between" data-purpose="top-navigation-bar">
+<!-- Brand Logo -->
+<div class="flex items-center gap-1.5">
+<div class="w-7 h-7 bg-brand-blue rounded-full flex items-center justify-center text-white font-black text-sm tracking-tighter shadow-sm">
+<svg class="w-4 h-4 text-brand-lime" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"></path>
+</svg>
+</div>
+<div class="flex flex-col">
+<div class="flex items-baseline gap-1">
+<span class="text-base font-extrabold text-slate-900 tracking-tight leading-none">耍起</span>
+<span class="text-[10px] font-black tracking-widest text-brand-blue uppercase">CAPER</span>
+</div>
+</div>
+</div>
+<!-- Action Icons (Settings & Scan) -->
+<div class="flex items-center gap-3">
+<button aria-label="设置" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-700 hover:bg-white transition" type="button">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+<button aria-label="扫一扫" class="w-8 h-8 rounded-full flex items-center justify-center text-slate-700 hover:bg-white transition" type="button">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M3 7V5a2 2 0 012-2h2m10 0h2a2 2 0 012 2v2m0 10v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M7 12h10" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+</header>
+<!-- END: TopHeader -->
+<!-- BEGIN: ProfileHeroCard -->
+<section class="px-4 mt-2" data-purpose="profile-card">
+<div class="bg-white rounded-3xl p-4 shadow-soft border border-slate-100 relative overflow-hidden">
+<!-- Partiful-inspired playful sticky note sticker -->
+<div class="absolute -top-1 right-2 transform rotate-6 bg-[#fff740] text-slate-900 border border-yellow-300 px-2.5 py-1.5 rounded-lg shadow-sm font-black text-[11px] leading-tight flex flex-col items-center">
+<span class="tracking-tighter">Good</span>
+<span class="tracking-tighter">People</span>
+<span class="text-[10px] text-brand-blue font-bold">More Plans ☺</span>
+</div>
+<!-- Top Profile Info -->
+<div class="flex items-start gap-3.5 pr-20">
+<div class="relative">
+<div class="w-16 h-16 rounded-full overflow-hidden border-2 border-brand-blue/30 ring-2 ring-white">
+<img alt="Léo 头像" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5RrYDY9bpp10mAA_ISGcV1r_ojYVjyaCDjTfXHCJISeWp0OkFc2uOZF_atMmH2rA_idDwJ3xpStvlI-y4NeMrcL2va2EhTRwTpeLUIvIq2VatLgkBA_shzVSzByJc4EoG3iisG71_qVOGvhSeL1dW5LM0iFblNZTSCuywyBBagmqCXFeTC4xDQJvxLAZyj2O0gLezC9gQCBBtuYdU2EUXIEi2iyjMoSiLcRkgX2aHJXrWZ6-ACVMW6g"/>
+</div>
+<!-- Online / Active Badge -->
+<span class="absolute bottom-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full flex items-center justify-center" title="在线">
+<span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+</span>
+</div>
+<div class="flex flex-col justify-center pt-0.5">
+<div class="flex items-center gap-1.5">
+<h1 class="text-xl font-black text-slate-900 leading-none">Léo</h1>
+<span class="text-xs">✨</span>
+<span class="bg-blue-50 text-brand-blue border border-blue-200 text-[10px] px-2 py-0.5 rounded-full font-bold">
+                局长 Lv.3
+              </span>
+</div>
+<p class="text-xs text-slate-400 mt-1 font-medium">@leo_in_real_life</p>
+<p class="text-xs text-slate-600 mt-2 font-normal leading-relaxed">
+              运动爱好者🏸｜周末爱组局探店与胶片摄影📷
+            </p>
+</div>
+</div>
+<!-- Stats Grid (4 columns) -->
+<!-- Note: Updated to 9次已确认到场 per requirement -->
+<div class="grid grid-cols-4 gap-2 mt-5 pt-4 border-t border-slate-100 text-center">
+<div class="flex flex-col items-center">
+<span class="text-lg font-black text-slate-900 tracking-tight">18</span>
+<span class="text-[10px] text-slate-500 mt-0.5">已参加活动</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-lg font-black text-brand-blue tracking-tight">6</span>
+<span class="text-[10px] text-slate-500 mt-0.5">发起组局</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-lg font-black text-slate-900 tracking-tight">128</span>
+<span class="text-[10px] text-slate-500 mt-0.5">认识新朋友</span>
+</div>
+<div class="flex flex-col items-center">
+<div class="flex items-baseline">
+<span class="text-lg font-black text-emerald-600 tracking-tight">9</span>
+<span class="text-xs font-bold text-emerald-600 ml-0.5">次</span>
+</div>
+<span class="text-[10px] text-slate-500 mt-0.5 font-medium">已确认到场</span>
+</div>
+</div>
+</div>
+</section>
+<!-- END: ProfileHeroCard -->
+<!-- BEGIN: SocialBadgesSection -->
+<section class="px-4 mt-5" data-purpose="social-badges">
+<div class="flex items-center justify-between mb-2.5">
+<h2 class="text-sm font-black text-slate-900 flex items-center gap-1.5">
+<span class="w-1.5 h-3.5 bg-brand-blue rounded-full"></span>
+          我的社交印记
+        </h2>
+<a class="text-xs font-medium text-brand-blue flex items-center gap-0.5" href="#badges">
+          成就勋章馆
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+<!-- 4 Social Badges -->
+<div class="grid grid-cols-4 gap-2">
+<!-- Badge 1 -->
+<div class="bg-white rounded-2xl p-2.5 flex flex-col items-center text-center shadow-soft border border-slate-100 relative group">
+<span class="absolute top-1.5 right-1.5 bg-amber-100 text-amber-800 text-[8px] font-black px-1 rounded-sm">LV3</span>
+<div class="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center text-xl mb-1 mt-1">🏸</div>
+<span class="text-xs font-bold text-slate-900">羽球常胜</span>
+<span class="text-[9px] text-slate-400 mt-0.5">连续9局</span>
+</div>
+<!-- Badge 2 -->
+<div class="bg-white rounded-2xl p-2.5 flex flex-col items-center text-center shadow-soft border border-slate-100 relative">
+<span class="absolute top-1.5 right-1.5 bg-orange-100 text-orange-800 text-[8px] font-black px-1 rounded-sm">MAX</span>
+<div class="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center text-xl mb-1 mt-1">👑</div>
+<span class="text-xs font-bold text-slate-900">靠谱局长</span>
+<span class="text-[9px] text-slate-400 mt-0.5">满分好评</span>
+</div>
+<!-- Badge 3 -->
+<div class="bg-white rounded-2xl p-2.5 flex flex-col items-center text-center shadow-soft border border-slate-100 relative">
+<span class="absolute top-1.5 right-1.5 bg-blue-100 text-blue-700 text-[8px] font-black px-1 rounded-sm">TOP</span>
+<div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-xl mb-1 mt-1">⚡</div>
+<span class="text-xs font-bold text-slate-900">秒速成局</span>
+<span class="text-[9px] text-slate-400 mt-0.5">5分钟内</span>
+</div>
+<!-- Badge 4 -->
+<div class="bg-white rounded-2xl p-2.5 flex flex-col items-center text-center shadow-soft border border-slate-100 relative">
+<span class="absolute top-1.5 right-1.5 bg-rose-100 text-rose-700 text-[8px] font-black px-1 rounded-sm">99+</span>
+<div class="w-10 h-10 rounded-full bg-rose-50 flex items-center justify-center text-xl mb-1 mt-1">🤝</div>
+<span class="text-xs font-bold text-slate-900">神仙搭子</span>
+<span class="text-[9px] text-slate-400 mt-0.5">互动超高</span>
+</div>
+</div>
+</section>
+<!-- END: SocialBadgesSection -->
+<!-- BEGIN: InterestsSection -->
+<section class="px-4 mt-5" data-purpose="user-interests">
+<div class="flex items-center justify-between mb-2.5">
+<h2 class="text-sm font-black text-slate-900 flex items-center gap-1.5">
+<span class="w-1.5 h-3.5 bg-brand-blue rounded-full"></span>
+          兴趣偏好
+        </h2>
+<a class="text-xs font-medium text-brand-blue flex items-center gap-0.5" href="#edit-interests">
+          编辑兴趣
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+<!-- Interest Badges Wrap -->
+<div class="flex flex-wrap gap-2">
+<span class="px-3.5 py-1.5 bg-brand-blue text-white rounded-full text-xs font-medium shadow-sm">羽毛球</span>
+<span class="px-3.5 py-1.5 bg-white border border-slate-200 text-slate-700 rounded-full text-xs font-medium hover:border-slate-300">咖啡</span>
+<span class="px-3.5 py-1.5 bg-white border border-slate-200 text-slate-700 rounded-full text-xs font-medium hover:border-slate-300">桌游</span>
+<span class="px-3.5 py-1.5 bg-white border border-slate-200 text-slate-700 rounded-full text-xs font-medium hover:border-slate-300">城市漫步</span>
+<span class="px-3.5 py-1.5 bg-white border border-slate-200 text-slate-700 rounded-full text-xs font-medium hover:border-slate-300">摄影</span>
+<span class="px-3.5 py-1.5 bg-white border border-slate-200 text-slate-700 rounded-full text-xs font-medium hover:border-slate-300">美食探店</span>
+<span class="px-3.5 py-1.5 bg-white border border-slate-200 text-slate-700 rounded-full text-xs font-medium hover:border-slate-300">音乐现场</span>
+<span class="px-3.5 py-1.5 bg-white border border-slate-200 text-slate-700 rounded-full text-xs font-medium hover:border-slate-300">徒步</span>
+<span class="px-3.5 py-1.5 bg-white border border-slate-200 text-slate-700 rounded-full text-xs font-medium hover:border-slate-300">露营</span>
+<span class="px-3.5 py-1.5 bg-white border border-slate-200 text-slate-700 rounded-full text-xs font-medium hover:border-slate-300">电影</span>
+<span class="px-3.5 py-1.5 bg-white border border-slate-200 text-slate-700 rounded-full text-xs font-medium hover:border-slate-300">骑行</span>
+<button class="px-3.5 py-1.5 border border-dashed border-brand-blue text-brand-blue bg-blue-50/50 rounded-full text-xs font-bold flex items-center gap-1" type="button">
+<span>+</span> 添加
+        </button>
+</div>
+</section>
+<!-- END: InterestsSection -->
+<!-- BEGIN: PrivacyVisibilitySection -->
+<section class="px-4 mt-5" data-purpose="privacy-settings">
+<h2 class="text-sm font-black text-slate-900 flex items-center gap-1.5 mb-2.5">
+<span class="w-1.5 h-3.5 bg-brand-blue rounded-full"></span>
+        隐私与社交可见性
+      </h2>
+<div class="bg-white rounded-2xl p-3.5 shadow-soft border border-slate-100 flex flex-col gap-3.5">
+<!-- Row 1: Wechat Display -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-blue-50 text-brand-blue flex items-center justify-center shrink-0">
+<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.82.49 3.53 1.34 5L2 22l5.25-1.31C8.69 21.43 10.29 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"></path></svg>
+</div>
+<div>
+<div class="text-xs font-bold text-slate-800">在活动群展示微信号</div>
+<div class="text-[10px] text-slate-400">成员后同组队友可查看并一键复制</div>
+</div>
+</div>
+<label class="ios-switch shrink-0">
+<input checked="" type="checkbox"/>
+<span class="ios-slider"></span>
+</label>
+</div>
+<div class="h-[1px] bg-slate-100"></div>
+<!-- Row 2: Public History -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+</div>
+<div>
+<div class="text-xs font-bold text-slate-800">仅向同局参与者公开历史</div>
+<div class="text-[10px] text-slate-400">关闭后主页活动动态全平台可见</div>
+</div>
+</div>
+<label class="ios-switch shrink-0">
+<input checked="" type="checkbox"/>
+<span class="ios-slider"></span>
+</label>
+</div>
+<div class="h-[1px] bg-slate-100"></div>
+<!-- Row 3: Photo & Highlights Link -->
+<a class="flex items-center justify-between py-0.5" href="#photo-privacy">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center shrink-0">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="3"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>
+</div>
+<div class="text-xs font-bold text-slate-800">活动现场照片与精彩集锦</div>
+</div>
+<div class="flex items-center gap-1 text-[11px] text-slate-400">
+            同局好友可见
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+</a>
+<div class="h-[1px] bg-slate-100"></div>
+<!-- Row 4: Blacklist Link -->
+<a class="flex items-center justify-between py-0.5" href="#blacklist">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center shrink-0">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" x2="19.07" y1="4.93" y2="19.07"></line></svg>
+</div>
+<div class="text-xs font-bold text-slate-800">黑名单管理</div>
+</div>
+<div class="flex items-center gap-1 text-[11px] text-slate-400">
+            0 人
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+</a>
+</div>
+</section>
+<!-- END: PrivacyVisibilitySection -->
+<!-- BEGIN: ActivityHistorySection -->
+<section class="px-4 mt-5" data-purpose="activity-history">
+<div class="flex items-center justify-between mb-2">
+<h2 class="text-sm font-black text-slate-900 flex items-center gap-1.5">
+<span class="w-1.5 h-3.5 bg-brand-blue rounded-full"></span>
+          我的活动记录
+        </h2>
+<a class="text-xs font-medium text-brand-blue flex items-center gap-0.5" href="#all-activities">
+          查看全部
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+<!-- Filter Pills -->
+<div class="flex gap-2 mb-3">
+<button class="px-3 py-1 bg-brand-blue text-white rounded-full text-xs font-medium">全部</button>
+<button class="px-3 py-1 bg-white text-slate-600 border border-slate-200 rounded-full text-xs font-medium">已参加</button>
+<button class="px-3 py-1 bg-white text-slate-600 border border-slate-200 rounded-full text-xs font-medium">我发起的</button>
+<button class="px-3 py-1 bg-white text-slate-600 border border-slate-200 rounded-full text-xs font-medium">已收藏</button>
+</div>
+<!-- Horizontal Scrollable Cards or 2x2 Grid -->
+<div class="grid grid-cols-2 gap-2.5">
+<!-- Card 1 -->
+<article class="bg-white rounded-2xl p-2 shadow-soft border border-slate-100 flex flex-col">
+<div class="relative h-24 rounded-xl overflow-hidden mb-2">
+<img alt="城市漫步" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDo06p7y-J9-c7ErlMFutBC_3qbrfp7J0Zpmni4nSa1Pc2q-WdxGs_lFtu86o4jHUCUZw_48QudR48pol-RxkahHT3xK-hpJ04oBPUWmeLl3OFM40BcZs6JJgwLTr7O4ei09oKPuDT7-0w7a6yCjKAnFxgpYZx_c5DMGRgWD83YLo-UUMlbxmr6ordH0AjKWIF2tekrk0unRndOWWSlEZuD8nR4G-CxMGPLoeLJW6MbnpVvKTNp9XiEVg"/>
+<button class="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white text-xs">♥</button>
+</div>
+<h3 class="text-xs font-bold text-slate-900 truncate">城市漫步·滨江日落</h3>
+<p class="text-[10px] text-slate-400 mt-1 flex items-center gap-1 truncate">
+<span>📅 3月23日 · 已参加</span>
+</p>
+<p class="text-[10px] text-slate-400 mt-0.5 truncate">📍 上海·徐汇滨江</p>
+<div class="flex items-center -space-x-1.5 mt-2 pt-1 border-t border-slate-100">
+<div class="w-4 h-4 rounded-full bg-amber-400 border border-white"></div>
+<div class="w-4 h-4 rounded-full bg-blue-400 border border-white"></div>
+<div class="w-4 h-4 rounded-full bg-emerald-400 border border-white"></div>
+<span class="text-[9px] text-slate-400 pl-2">+8</span>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="bg-white rounded-2xl p-2 shadow-soft border border-slate-100 flex flex-col">
+<div class="relative h-24 rounded-xl overflow-hidden mb-2">
+<img alt="羽毛球局" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnHJqFfjUCT-FBJWBi4DxpNZwI-HVBuJaBV7Ks1t_Krt2pb-myT7yasNMD7H3dl-csCGjBWhNhtZqYvGrTdAsWGh5T74FXreBJLspbzNeSEILfKKV9dLbPkagHYpK50qewS-e1iYQ_bGrp2IiJHGmgRYrb39KIN9DhMxsSGj1d3Nfv5ZzLDtd39awuS_8aHCJ3XhC4vlgddaOwbHTZEsLx4I50v4Vy3I_H6tmL-R56TZlaCoRVBhBJew"/>
+<button class="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white text-xs">♥</button>
+</div>
+<h3 class="text-xs font-bold text-slate-900 truncate">周六羽毛球局</h3>
+<p class="text-[10px] text-slate-400 mt-1 flex items-center gap-1 truncate">
+<span>📅 3月16日 · 已参加</span>
+</p>
+<p class="text-[10px] text-slate-400 mt-0.5 truncate">📍 上海·静安体育中心</p>
+<div class="flex items-center -space-x-1.5 mt-2 pt-1 border-t border-slate-100">
+<div class="w-4 h-4 rounded-full bg-purple-400 border border-white"></div>
+<div class="w-4 h-4 rounded-full bg-rose-400 border border-white"></div>
+<div class="w-4 h-4 rounded-full bg-teal-400 border border-white"></div>
+<span class="text-[9px] text-slate-400 pl-2">+6</span>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="bg-white rounded-2xl p-2 shadow-soft border border-slate-100 flex flex-col">
+<div class="relative h-24 rounded-xl overflow-hidden mb-2">
+<img alt="咖啡聊天会" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuByq1CPqhIaPqAiqHO9zQcBSNoU87dhIS0gUYNFf9fr2tE_-M4lZ3241P6a8BE3kIVBruiKsdOAePOGyPyP2yqEa5ZZNrNt9msf9cprycF7Pwn6YJ053kLkSo-N9aZ3Q1SD_DqVNpOovSDnbTygrQEFNnLc7jrwZ1osjOPoG7_MXcBcDoDerhloORb1tU1oTTg5U9Pp2u-c3RK79oYSMszNEl4v_Cw_nzOUxwnHGGhkRj8jMpQZFyg2dg"/>
+<button class="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white text-xs">♥</button>
+</div>
+<h3 class="text-xs font-bold text-slate-900 truncate">咖啡聊天会</h3>
+<p class="text-[10px] text-slate-400 mt-1 flex items-center gap-1 truncate">
+<span>📅 3月10日 · 已参加</span>
+</p>
+<p class="text-[10px] text-slate-400 mt-0.5 truncate">📍 上海·某家咖啡馆</p>
+<div class="flex items-center -space-x-1.5 mt-2 pt-1 border-t border-slate-100">
+<div class="w-4 h-4 rounded-full bg-indigo-400 border border-white"></div>
+<div class="w-4 h-4 rounded-full bg-yellow-400 border border-white"></div>
+<span class="text-[9px] text-slate-400 pl-2">+4</span>
+</div>
+</article>
+<!-- Card 4 -->
+<article class="bg-white rounded-2xl p-2 shadow-soft border border-slate-100 flex flex-col">
+<div class="relative h-24 rounded-xl overflow-hidden mb-2">
+<img alt="桌游局" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_USd5_c8tV-LCxdzQFgooeNs5fi5pDikFDymYPr2wSpIiUi5XhEGsg-YF3HZwdmMlKu_BB7HwrLH1oLp2Z4vWjxolFrXM6_EYY-_PXatYfAvTMNk_WR_dXltODR1WfLYbAunBEpiwbgnop2hqCO1R8Gk2KjMlRTvqzNvDt4hGH_EB77MkvVG3iO3nay5fhI5i69NvQUYp9xmBvdc6DPbX5qrg2Z77SnhwtvxxlkV4ZIrk4XjMx3DcEA"/>
+<button class="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white text-xs">♥</button>
+</div>
+<h3 class="text-xs font-bold text-slate-900 truncate">周五桌游局</h3>
+<p class="text-[10px] text-slate-400 mt-1 flex items-center gap-1 truncate">
+<span>📅 3月8日 · 已参加</span>
+</p>
+<p class="text-[10px] text-slate-400 mt-0.5 truncate">📍 上海·The COMMUNE</p>
+<div class="flex items-center -space-x-1.5 mt-2 pt-1 border-t border-slate-100">
+<div class="w-4 h-4 rounded-full bg-cyan-400 border border-white"></div>
+<div class="w-4 h-4 rounded-full bg-red-400 border border-white"></div>
+<div class="w-4 h-4 rounded-full bg-green-400 border border-white"></div>
+<span class="text-[9px] text-slate-400 pl-2">+12</span>
+</div>
+</article>
+</div>
+</section>
+<!-- END: ActivityHistorySection -->
+<!-- BEGIN: WishlistAndHostedSection -->
+<div class="px-4 mt-5 space-y-5">
+<!-- Section 6: 我的收藏与想去 -->
+<section data-purpose="saved-activities">
+<div class="flex items-center justify-between mb-2.5">
+<h2 class="text-sm font-black text-slate-900 flex items-center gap-1.5">
+<span class="w-1.5 h-3.5 bg-brand-blue rounded-full"></span>
+            我的收藏与想去
+          </h2>
+<a class="text-xs font-medium text-brand-blue flex items-center gap-0.5" href="#wishlist">
+            查看全部
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+<div class="grid grid-cols-2 gap-2.5">
+<div class="bg-white rounded-2xl p-2 shadow-soft border border-slate-100">
+<div class="relative h-20 rounded-xl overflow-hidden mb-1.5">
+<img alt="音乐现场" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfTeH4NlY-nxeEAZQyR_nTnk0qzKhftUPVNeUmkWH-7qs4KTMEqqynMo_UQrJML4Sa-_DklawE5cX7rOeqE4dbEyLFBsZBQr60u-LtnaFNzNIZ-1kJXIO9qlcHV5DHWPS4Tli95oCalVbtecVK6v4Q1txcWKY_7270UyDI0WLdV3LcUi6YoRFb24F31qq4ee50Por0W0eI_D52EXxN5041TFtKZOflzPxqBn6v20mXf-eV5yQqodm_Ew"/>
+<button class="absolute top-1.5 right-1.5 text-xs text-rose-500 bg-white/90 rounded-full w-5 h-5 flex items-center justify-center">♥</button>
+</div>
+<div class="text-xs font-bold text-slate-900 truncate">想去: 音乐现场</div>
+<div class="text-[10px] text-slate-400 mt-0.5">32 人想去</div>
+</div>
+<div class="bg-white rounded-2xl p-2 shadow-soft border border-slate-100">
+<div class="relative h-20 rounded-xl overflow-hidden mb-1.5">
+<img alt="高山徒步" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5ZB5bHRVTRf9m3aUFrKlH0emod3hiXXIF65SEJypnapiiMDNZk78jD6eo8LYW0sSx-UfiAq-NjH-UTNqZwtxA-J2dgL70tAMo-tBR0-Ef5V4bAX2ALd7WPtyT-rhxL7tjNsEAkxACBmo-78BX_nNrTrRIgVpKAApzE5Lxn5AC7KSSDX7pbZ4lCp0AVIJ_MQUFRMkFP8WyQ7BY-EFO67H3XFFDSXpyuoUxj7d37YFH4y4Tpb7rIhST8g"/>
+<button class="absolute top-1.5 right-1.5 text-xs text-rose-500 bg-white/90 rounded-full w-5 h-5 flex items-center justify-center">♥</button>
+</div>
+<div class="text-xs font-bold text-slate-900 truncate">想去: 高山徒步</div>
+<div class="text-[10px] text-slate-400 mt-0.5">18 人想去</div>
+</div>
+</div>
+</section>
+<!-- Section 7: 我的发起活动 -->
+<section data-purpose="hosted-activities">
+<div class="flex items-center justify-between mb-2.5">
+<h2 class="text-sm font-black text-slate-900 flex items-center gap-1.5">
+<span class="w-1.5 h-3.5 bg-brand-blue rounded-full"></span>
+            我的发起活动
+          </h2>
+<a class="text-xs font-medium text-brand-blue flex items-center gap-0.5" href="#hosted">
+            查看全部
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+<div class="bg-white rounded-2xl p-3 shadow-soft border border-slate-100 flex items-center gap-3">
+<div class="w-20 h-20 rounded-xl overflow-hidden shrink-0">
+<img alt="羽毛球局" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1OgKmqXdLo-nDy-151qQ-MgzjfM8rnFGxLBbQiIU6gWFB8csFLmEuBtvMghd88W3oppYaK513jMH8ynLQT96uRMrB4cEYzCSHiM95I9LtUgGXkVmGglmzwwN0U0Idy8CjpcxCdd_xzbLR6YuZhgh7ykkkYlHza-u4Pejju_PxxB9dLysbodyggBY6VqQpHQPzeBKvXrfJK3Z5OGgLseb_9ekhUum8O4D8NGXcXbgPUgfZhH71N3Muww"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<h3 class="text-xs font-bold text-slate-900 truncate">周末羽毛球局</h3>
+<span class="bg-emerald-50 text-emerald-600 border border-emerald-200 text-[10px] px-1.5 py-0.5 rounded font-bold shrink-0">进行中</span>
+</div>
+<p class="text-[10px] text-slate-500 mt-1">📅 3月24日 (周日) 14:00</p>
+<p class="text-[10px] text-slate-400 mt-0.5 truncate">📍 上海·静安体育中心</p>
+<div class="flex items-center -space-x-1 mt-1.5">
+<div class="w-4 h-4 rounded-full bg-slate-300 border border-white"></div>
+<div class="w-4 h-4 rounded-full bg-slate-400 border border-white"></div>
+<span class="text-[9px] text-slate-400 pl-2 font-medium">+8 人已报名</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- END: WishlistAndHostedSection -->
+<!-- BEGIN: HostToolsSection -->
+<section class="px-4 mt-5" data-purpose="host-tools">
+<div class="flex items-center justify-between mb-2.5">
+<div>
+<h2 class="text-sm font-black text-slate-900 flex items-center gap-1.5">
+<span class="w-1.5 h-3.5 bg-brand-blue rounded-full"></span>
+            主理人工具
+          </h2>
+<p class="text-[10px] text-slate-400 mt-0.5">发起更多精彩活动，连接同好</p>
+</div>
+<a class="text-xs font-medium text-brand-blue flex items-center gap-0.5" href="#host-center">
+          进入主理人中心
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+<!-- 4 Host Action Buttons -->
+<div class="grid grid-cols-4 gap-2">
+<button class="bg-white rounded-2xl py-3 flex flex-col items-center justify-center shadow-soft border border-slate-100 hover:border-blue-200 transition">
+<div class="w-9 h-9 rounded-full bg-blue-50 text-brand-blue flex items-center justify-center text-lg mb-1">
+            ➕
+          </div>
+<span class="text-xs font-bold text-slate-800">发布活动</span>
+</button>
+<button class="bg-white rounded-2xl py-3 flex flex-col items-center justify-center shadow-soft border border-slate-100 hover:border-blue-200 transition">
+<div class="w-9 h-9 rounded-full bg-blue-50 text-brand-blue flex items-center justify-center text-lg mb-1">
+            📅
+          </div>
+<span class="text-xs font-bold text-slate-800">活动管理</span>
+</button>
+<button class="bg-white rounded-2xl py-3 flex flex-col items-center justify-center shadow-soft border border-slate-100 hover:border-blue-200 transition">
+<div class="w-9 h-9 rounded-full bg-blue-50 text-brand-blue flex items-center justify-center text-lg mb-1">
+            👥
+          </div>
+<span class="text-xs font-bold text-slate-800">报名管理</span>
+</button>
+<button class="bg-white rounded-2xl py-3 flex flex-col items-center justify-center shadow-soft border border-slate-100 hover:border-blue-200 transition">
+<div class="w-9 h-9 rounded-full bg-blue-50 text-brand-blue flex items-center justify-center text-lg mb-1">
+            📊
+          </div>
+<span class="text-xs font-bold text-slate-800">数据看板</span>
+</button>
+</div>
+</section>
+<!-- END: HostToolsSection -->
+<!-- BEGIN: SettingsGroupSection -->
+<div class="px-4 mt-5 space-y-4" data-purpose="settings-lists">
+<!-- 账号与安全 & 通知与提醒 (2-column card or dual cards) -->
+<div class="grid grid-cols-1 gap-3">
+<!-- 账号与安全 -->
+<div class="bg-white rounded-2xl p-3.5 shadow-soft border border-slate-100">
+<h3 class="text-xs font-black text-slate-900 flex items-center justify-between mb-2.5">
+<span class="flex items-center gap-1.5">
+<span class="w-1 h-3 bg-brand-blue rounded-full"></span>
+              账号与安全
+            </span>
+<svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</h3>
+<div class="space-y-2.5 text-xs">
+<div class="flex items-center justify-between text-slate-700 py-0.5">
+<div class="flex items-center gap-2 text-slate-500">
+<span>📱</span>
+<span>手机号</span>
+</div>
+<div class="flex items-center gap-1 font-medium text-slate-600">
+                138****8888
+                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+</div>
+<div class="flex items-center justify-between text-slate-700 py-0.5">
+<div class="flex items-center gap-2 text-slate-500">
+<span>💻</span>
+<span>登录设备</span>
+</div>
+<div class="flex items-center gap-1 font-medium text-slate-600">
+                3 台设备
+                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+</div>
+<div class="flex items-center justify-between text-slate-700 py-0.5">
+<div class="flex items-center gap-2 text-slate-500">
+<span>🪪</span>
+<span>实名认证</span>
+</div>
+<div class="flex items-center gap-1 font-bold text-emerald-600">
+                已认证 ✓
+              </div>
+</div>
+</div>
+</div>
+<!-- 通知与提醒 -->
+<div class="bg-white rounded-2xl p-3.5 shadow-soft border border-slate-100">
+<h3 class="text-xs font-black text-slate-900 flex items-center justify-between mb-2.5">
+<span class="flex items-center gap-1.5">
+<span class="w-1 h-3 bg-brand-blue rounded-full"></span>
+              通知与提醒
+            </span>
+<svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</h3>
+<div class="space-y-2 text-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2 text-slate-600">
+<span>🔔</span>
+<span>活动动态提醒</span>
+</div>
+<label class="ios-switch shrink-0 scale-75 origin-right">
+<input checked="" type="checkbox"/>
+<span class="ios-slider"></span>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2 text-slate-600">
+<span>💬</span>
+<span>新消息提醒</span>
+</div>
+<label class="ios-switch shrink-0 scale-75 origin-right">
+<input checked="" type="checkbox"/>
+<span class="ios-slider"></span>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2 text-slate-600">
+<span>📢</span>
+<span>系统通知</span>
+</div>
+<label class="ios-switch shrink-0 scale-75 origin-right">
+<input checked="" type="checkbox"/>
+<span class="ios-slider"></span>
+</label>
+</div>
+</div>
+</div>
+<!-- 帮助与反馈 -->
+<div class="bg-white rounded-2xl p-3.5 shadow-soft border border-slate-100">
+<h3 class="text-xs font-black text-slate-900 flex items-center justify-between mb-2.5">
+<span class="flex items-center gap-1.5">
+<span class="w-1 h-3 bg-brand-blue rounded-full"></span>
+              帮助与反馈
+            </span>
+<svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</h3>
+<div class="space-y-2 text-xs">
+<a class="flex items-center justify-between text-slate-600 py-1" href="#faq">
+<div class="flex items-center gap-2">
+<span>❓</span>
+<span>常见问题</span>
+</div>
+<svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+<a class="flex items-center justify-between text-slate-600 py-1" href="#feedback">
+<div class="flex items-center gap-2">
+<span>📝</span>
+<span>意见反馈</span>
+</div>
+<svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+<a class="flex items-center justify-between text-slate-600 py-1" href="#support">
+<div class="flex items-center gap-2">
+<span>🎧</span>
+<span>联系客服</span>
+</div>
+<svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+</div>
+<!-- 关于耍起 CAPER -->
+<div class="bg-white rounded-2xl p-3.5 shadow-soft border border-slate-100">
+<h3 class="text-xs font-black text-slate-900 flex items-center justify-between mb-2.5">
+<span class="flex items-center gap-1.5">
+<span class="w-1 h-3 bg-brand-blue rounded-full"></span>
+              关于耍起 CAPER
+            </span>
+<svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</h3>
+<div class="space-y-2 text-xs">
+<div class="flex items-center justify-between text-slate-600 py-1">
+<div class="flex items-center gap-2">
+<span>ℹ️</span>
+<span>当前版本</span>
+</div>
+<div class="flex items-center gap-1 text-slate-400 font-mono">
+                v1.2.0
+                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+</div>
+<a class="flex items-center justify-between text-slate-600 py-1" href="#user-agreement">
+<div class="flex items-center gap-2">
+<span>📄</span>
+<span>用户协议</span>
+</div>
+<svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+<a class="flex items-center justify-between text-slate-600 py-1" href="#community-rules">
+<div class="flex items-center gap-2">
+<span>🛡️</span>
+<span>社区公约</span>
+</div>
+<svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- END: SettingsGroupSection -->
+<!-- BEGIN: InviteFriendsBanner -->
+<section class="px-4 mt-5" data-purpose="referral-banner">
+<div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-3xl p-4 text-white shadow-float relative overflow-hidden flex items-center justify-between">
+<!-- Background decorative shape -->
+<div class="absolute -right-6 -bottom-8 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
+<div class="relative z-10 max-w-[200px]">
+<div class="flex items-center gap-1.5 mb-1">
+<span class="text-base">🎁</span>
+<span class="text-sm font-black tracking-tight">邀请好友一起耍起</span>
+</div>
+<p class="text-[11px] text-blue-100 font-medium leading-tight">
+            和朋友一起加入，发现更多有趣活动
+          </p>
+</div>
+<button class="relative z-10 px-3.5 py-1.5 bg-brand-lime hover:bg-lime-400 text-slate-900 rounded-full font-black text-xs shadow-sm transition active:scale-95 shrink-0" type="button">
+          立即邀请
+        </button>
+</div>
+</section>
+<!-- END: InviteFriendsBanner -->
+<!-- BEGIN: DangerZoneSection -->
+<section class="px-4 mt-6" data-purpose="danger-zone">
+<div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 px-1">危险区</div>
+<div class="space-y-2">
+<button class="w-full py-3 bg-white border border-rose-200 text-rose-600 font-bold text-xs rounded-2xl shadow-soft hover:bg-rose-50/50 transition active:scale-[0.99]" type="button">
+          退出登录
+        </button>
+<div class="bg-rose-50/60 border border-rose-100 rounded-2xl p-3 text-center">
+<button class="text-rose-600 font-bold text-xs hover:underline" type="button">
+            注销账号
+          </button>
+<p class="text-[10px] text-rose-400 mt-1">
+            注销后将无法恢复，请谨慎操作
+          </p>
+</div>
+</div>
+</section>
+<!-- END: DangerZoneSection -->
+<!-- Brand Philosophy Slogan Tag -->
+<div class="text-center py-6 text-[10px] font-bold text-slate-300 tracking-wider">
+      Same Interests · Brighter People ☺
+    </div>
+<!-- BEGIN: BottomTabBar -->
+<nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-[390px] bg-white/95 backdrop-blur-md border-t border-slate-100 py-1.5 px-6 flex items-center justify-between z-50" data-purpose="bottom-navigation-bar">
+<!-- Tab 1: 首页 -->
+<a class="flex flex-col items-center text-slate-400 hover:text-slate-600" href="#home">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+<span class="text-[10px] mt-0.5 font-medium">首页</span>
+</a>
+<!-- Tab 2: 发现 -->
+<a class="flex flex-col items-center text-slate-400 hover:text-slate-600" href="#discover">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+<span class="text-[10px] mt-0.5 font-medium">发现</span>
+</a>
+<!-- Tab 3: Publish Button (+) -->
+<a class="-mt-4 w-12 h-12 bg-brand-blue rounded-full flex items-center justify-center text-white shadow-lg shadow-blue-500/30 transform active:scale-95 transition" href="#create">
+<svg class="w-6 h-6 stroke-[2.5]" fill="none" stroke="currentColor" viewbox="0 0 24 24"><line x1="12" x2="12" y1="5" y2="19"></line><line x1="5" x2="19" y1="12" y2="12"></line></svg>
+</a>
+<!-- Tab 4: 消息 -->
+<a class="flex flex-col items-center text-slate-400 hover:text-slate-600 relative" href="#messages">
+<span class="absolute top-0 right-1 w-2 h-2 bg-rose-500 rounded-full"></span>
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+<span class="text-[10px] mt-0.5 font-medium">消息</span>
+</a>
+<!-- Tab 5: 我的 (ACTIVE) -->
+<a class="flex flex-col items-center text-brand-blue font-bold" href="#profile">
+<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>
+<span class="text-[10px] mt-0.5">我的</span>
+</a>
+</nav>
+<!-- END: BottomTabBar -->
+</main>
+</body></html>

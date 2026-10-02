@@ -1,0 +1,44 @@
+{
+  "scope": "one precisely observed native status-left color selector failure; noother4groups/binding/8VM rerun",
+  "failedSDKInput": {
+    "path": "/private/tmp/caper-wave70-host-source-delta.json",
+    "bytes": 2183,
+    "sha256": "8b33d0d198767320d4290b5eec621909c4b51399e55bf3512acd41721fc4d007",
+    "actualStatusColor": "rgb(26, 27, 31)",
+    "expected": "#424655",
+    "passedHeroColor": "rgb(255, 255, 255)"
+  },
+  "rootCauseBoundary": "native computed color proves structural-pseudo selector did not reach conditional actual maintext; exactnativeinternalmatcher detail notclaimed. Source4 role unchanged, explicitclass removes conditional structuralposition dependency. Native result pendingroot singleitemrecheck.",
+  "before": {
+    "WXMLBytes": 160902,
+    "WXMLSHA": "c4485f98df196bbc860fa083923184cff64d85275104444c878d36fc8addf746",
+    "CSSBytes": 194538,
+    "CSSSHA": "d6b709bb941ed8a402fc29d52d47578489d5dc01e431b26293d3666a0f1df479"
+  },
+  "after": {
+    "WXMLBytes": 160928,
+    "WXMLSHA": "69b231e3f4d506d2e3d46653bf9075e4ebaa69cdd06bcaf9b82b89d9c8fffa31",
+    "CSSBytes": 194503,
+    "CSSSHA": "d26cb609e200446af02965b5840bf1fe0f01f21b66e8841da6289022e6881ce0"
+  },
+  "inverseReplacements": [
+    {
+      "kind": "WXML",
+      "from": "<view class=\"pgd-state-dot\"></view><view><text class=\"pgd-state-primary\">主办方视图 · {{display.status}}</text>",
+      "to": "<view class=\"pgd-state-dot\"></view><view><text>主办方视图 · {{display.status}}</text>"
+    },
+    {
+      "kind": "WXSS",
+      "from": ".pgd-host-reference .pgd-state-primary{color:#424655}",
+      "to": ".pgd-host-reference .pgd-host-state>view>view:last-child>text:first-child{color:#424655}"
+    }
+  ],
+  "WXMLInverseByteEqual": true,
+  "CSSInverseByteEqual": true,
+  "netBytes": -9,
+  "textDataConditionsHandlersResourcesUnchanged": true,
+  "oldFallbackMaintextExplicitlyUnchanged": true,
+  "JSJSONWrites": 0,
+  "8VMRuns": 0,
+  "nativeRunsByOwner": 0
+}

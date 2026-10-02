@@ -1,0 +1,39 @@
+✖ fonts wait for one asynchronous package and retain global registration with independent callback results (0.759708ms)
+✖ package download rejection resolves readiness and records failure without stopping the app (0.269ms)
+✔ unsupported SDK never downloads fonts or attempts registration (0.623416ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 1
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 117.633875
+
+✖ failing tests:
+
+test at test/miniprogram-reference-font-async.test.ts:1:966
+✖ fonts wait for one asynchronous package and retain global registration with independent callback results (0.759708ms)
+  Error: synchronous cross-package loading is not allowed
+      at Object.assign.async (/Users/tsb/Documents/小程序/test/miniprogram-reference-font-async.test.ts:11:59)
+      at Object.loadReferenceFonts (evalmachine.<anonymous>:23:21)
+      at Object.load (/Users/tsb/Documents/小程序/test/miniprogram-reference-font-async.test.ts:17:39)
+      at TestContext.<anonymous> (/Users/tsb/Documents/小程序/test/miniprogram-reference-font-async.test.ts:21:32)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+
+test at test/miniprogram-reference-font-async.test.ts:1:1656
+✖ package download rejection resolves readiness and records failure without stopping the app (0.269ms)
+  Error: synchronous cross-package loading is not allowed
+      at Object.assign.async (/Users/tsb/Documents/小程序/test/miniprogram-reference-font-async.test.ts:11:59)
+      at Object.loadReferenceFonts (evalmachine.<anonymous>:23:21)
+      at Object.load (/Users/tsb/Documents/小程序/test/miniprogram-reference-font-async.test.ts:17:39)
+      at TestContext.<anonymous> (/Users/tsb/Documents/小程序/test/miniprogram-reference-font-async.test.ts:32:32)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)

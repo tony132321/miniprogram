@@ -1,0 +1,149 @@
+{
+  "protectedWxmlInverse": {
+    "bytes": 100072,
+    "sha256": "c2dd55c68a3123d9969c204df0d1e91ccca69e53dda4ae5c921a12041eeb9720",
+    "same": true
+  },
+  "oldCssPrefix": {
+    "bytes": 120006,
+    "sha256": "94049293bebaf3889760403fb43de4b0a3710f82de40d3d0655e54ef5074e6af",
+    "same": true
+  },
+  "event.js": {
+    "bytes": 104047,
+    "sha256": "ccb5b5fede066ba0533b82cb564e816cc3d45ca96778a0d25ac5286d3c11a4bd",
+    "same": true
+  },
+  "event.json": {
+    "bytes": 69,
+    "sha256": "bf33dc7da099d240642a50fe3cf44cee01a2b282f70a80a313c79317c76ad10b",
+    "same": true
+  },
+  "wxmlLegalNormalization": "ElementTree parse passed; only wx namespace, bare wx:else and attribute XML escaping normalized",
+  "bindings": {
+    "currentOccurrences": 185,
+    "baselineOccurrences": 177,
+    "new": 8,
+    "missing": []
+  },
+  "staticReferences": {
+    "literalUnique": 55,
+    "missing": []
+  },
+  "source": {
+    "code.html": {
+      "bytes": 17310,
+      "sha256": "168f4582264fad299c953bd377e915b38a81a2fb01001e5f5259195846f0361a",
+      "zipSame": true
+    },
+    "screen.png": {
+      "bytes": 426748,
+      "sha256": "0b216f3226ec3c1e0ef1c1034787f486e7a3f9013118c75bf9265feaaddbcf94",
+      "zipSame": true
+    }
+  },
+  "assets": [
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/pg04s-close.svg",
+      "bytes": 231,
+      "sha256": "3512de5ac7010c150cfd2a7a134b0053cb0dee3544242328ab9f417f00261673",
+      "sameOriginalSecondFaceOutline": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/pg04s-person.svg",
+      "bytes": 1221,
+      "sha256": "dcd82b18c2b73881bc3e4abdf254f92647dfb16ae06b669f7dece7579f6eba73",
+      "sameOriginalSecondFaceOutline": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/pg04s-check_circle_fill1.svg",
+      "bytes": 856,
+      "sha256": "ab977649e865c7047d84bf477c341114fe10fba356750388d30adf769f0da3b2",
+      "sameOriginalSecondFaceOutline": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/pg04s-celebration.svg",
+      "bytes": 726,
+      "sha256": "cf5e29b2d83ac5a8a11865eb93cc0900d35ba3999fa282bac8e776b600a475ed",
+      "sameOriginalSecondFaceOutline": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/pg04s-calendar_today.svg",
+      "bytes": 649,
+      "sha256": "01250c1bde0d8f1cf5876f932e9993e4b7e52f722aca80d819b82605bda0db19",
+      "sameOriginalSecondFaceOutline": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/pg04s-location_on.svg",
+      "bytes": 828,
+      "sha256": "764a729c10b30b4f9f281c6992ba878f135fc69d7d8fa8e1ab80dee7c259d259",
+      "sameOriginalSecondFaceOutline": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/pg04s-person_add.svg",
+      "bytes": 1277,
+      "sha256": "c5a0ab529fbfa3b3458ac0a6808cd236d16dbfb707362db27712500f7c6b7ac8",
+      "sameOriginalSecondFaceOutline": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/pg04s-group_add.svg",
+      "bytes": 1579,
+      "sha256": "adb20fbf1168f49d7e71c2f9f8cbe95bf80ceacc68e535951f3c6a016d3a3c2c",
+      "sameOriginalSecondFaceOutline": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/pg04s-chat.svg",
+      "bytes": 624,
+      "sha256": "0e7591f5b931801e0bd28f211f6cf88ea215559e0e01efca4d99e2698c6e0b32",
+      "sameOriginalSecondFaceOutline": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/pg04s-photo_camera_back.svg",
+      "bytes": 754,
+      "sha256": "cd733a6e05aaf6fcd4fca3fc73c6167ee269219b294e828a662f615cf6578188",
+      "sameOriginalSecondFaceOutline": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/pg04s-link.svg",
+      "bytes": 542,
+      "sha256": "adac660f968d4ecd36d83073405204834b3aa39b01abb38baf69a1e1abeca774",
+      "sameOriginalSecondFaceOutline": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/pg04s-diversity_3.svg",
+      "bytes": 1235,
+      "sha256": "cc4cf1197e01524190f51b6d33e93aa3bcda5b89b8baf37fe957cfd87f932789",
+      "sameOriginalSecondFaceOutline": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/pg04s-auto_awesome.svg",
+      "bytes": 422,
+      "sha256": "ece7add2f6e03892adaff32371d513607126cf4e07a93be752ad0745704fbff0",
+      "sameOriginalSecondFaceOutline": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/pg04s-arrow_forward.svg",
+      "bytes": 190,
+      "sha256": "58c33e26c605a304e92df1ced891706a342c62c52bd506388c8776f53b7cbd9e",
+      "sameOriginalSecondFaceOutline": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/pg04s-visibility.svg",
+      "bytes": 1032,
+      "sha256": "518731bd837cd5e42efd6157f58990d446ad89daf518bd7a68648ebc3b2173b3",
+      "sameOriginalSecondFaceOutline": true
+    }
+  ],
+  "font": "all 15 fixed exported outlines equal second original variable face instantiated at400/FILL0 or1, fixed opsz24/GRAD0",
+  "photoReuse": {
+    "path": "miniprogram/assets/stitch/pg04s_badminton.jpg",
+    "bytes": 63131,
+    "sha256": "8d4c18256599f7d9ab5ff629947156507b40da2315fd5e0b4a88434471c0bdbe"
+  },
+  "netProductBytes": {
+    "wxml": 7857,
+    "wxss": 11945,
+    "svg": 12166,
+    "total": 31968
+  }
+}

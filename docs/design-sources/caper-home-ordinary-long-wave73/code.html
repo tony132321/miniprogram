@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>耍起 CAPER - 让有趣的事，真的发生</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Custom Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              blue: '#1d64f2',
+              lime: '#c8f233',
+              green: '#10b981',
+              dark: '#111827',
+              gray: '#f5f7fa',
+              subtext: '#64748b'
+            }
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', '"PingFang SC"', '"Hiragino Sans GB"', 'sans-serif'],
+            hand: ['"Caveat"', '"Permanent Marker"', 'cursive', 'sans-serif']
+          },
+          boxShadow: {
+            'soft': '0 8px 24px -4px rgba(0, 0, 0, 0.06), 0 4px 12px -2px rgba(0, 0, 0, 0.03)',
+            'floating': '0 12px 32px -6px rgba(29, 100, 242, 0.35)',
+            'glow-lime': '0 0 20px -3px rgba(200, 242, 51, 0.45)'
+          }
+        }
+      }
+    }
+  </script>
+<!-- Google Fonts for handwriting sticker styling -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&amp;family=Permanent+Marker&amp;display=swap" rel="stylesheet"/>
+<style data-purpose="base-layout">
+    /* Hide scrollbar for clean mobile experience */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* Dynamic Island Safe Area */
+    .safe-top {
+      padding-top: env(safe-area-inset-top, 44px);
+    }
+    .safe-bottom {
+      padding-bottom: env(safe-area-inset-bottom, 34px);
+    }
+  </style>
+<style data-purpose="custom-decorations">
+    .sticker-rotate-left {
+      transform: rotate(-3deg);
+    }
+    .sticker-rotate-right {
+      transform: rotate(4deg);
+    }
+    .badge-blur {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+  </style>
+</head>
+<body class="bg-[#f2f4f8] text-[#1e293b] antialiased flex justify-center selection:bg-brand-lime selection:text-black">
+<!-- Mobile Container Wrapper mimicking iPhone Ultra Long Scroll -->
+<div class="w-full max-w-[440px] bg-white min-h-screen relative shadow-2xl flex flex-col pb-28">
+<!-- BEGIN: TopStatusBar -->
+<header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md px-5 pt-3 pb-2 transition-all">
+<!-- iPhone Native Header Status Bar -->
+<div class="flex justify-between items-center text-xs font-semibold tracking-tight text-gray-900 mb-2">
+<span class="pl-1 text-sm font-bold">9:41</span>
+<!-- Dynamic Island Pill Indicator -->
+<div class="w-24 h-4 bg-black rounded-full mx-auto"></div>
+<div class="flex items-center space-x-1.5 pr-1">
+<svg class="w-3.5 h-3.5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.28 19.68 10.59 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 2c3.87 0 7 3.13 7 7 0 1.52-.49 2.93-1.32 4.09L6.91 5.32C8.07 4.49 9.48 4 12 4z"></path></svg>
+<svg class="w-3.5 h-3.5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98A16.88 16.88 0 0012 4zm0 3c3.7 0 7.07 1.43 9.61 3.78L12 19.82 2.39 10.78C4.93 8.43 8.3 7 12 7z"></path></svg>
+<div class="w-5 h-2.5 border border-gray-900 rounded-[3px] p-[1px] flex items-center">
+<div class="w-full h-full bg-gray-900 rounded-[1.5px]"></div>
+</div>
+</div>
+</div>
+<!-- App Bar: Logo, Location Capsule & Profile Notification -->
+<div class="flex justify-between items-center py-1">
+<!-- Logo & City Selector -->
+<div class="flex items-center space-x-2.5">
+<div class="flex items-center space-x-1.5">
+<div class="w-7 h-7 rounded-xl bg-gradient-to-br from-brand-lime via-brand-blue to-purple-600 flex items-center justify-center shadow-sm">
+<span class="text-white text-base font-black">⁂</span>
+</div>
+<div class="leading-tight">
+<span class="text-base font-black tracking-tighter text-gray-900">耍起</span>
+<span class="text-[9px] block font-extrabold tracking-widest text-brand-blue uppercase -mt-1">CAPER</span>
+</div>
+</div>
+<button class="flex items-center space-x-1 bg-gray-100 hover:bg-gray-200/80 px-2.5 py-1 rounded-full text-xs font-semibold text-gray-800 transition">
+<span class="text-brand-blue text-[13px]">📍</span>
+<span>上海</span>
+<svg class="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path></svg>
+</button>
+</div>
+<!-- Notification & User Avatar -->
+<div class="flex items-center space-x-2.5">
+<button class="relative w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-700">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+</button>
+<div class="relative w-9 h-9 rounded-full ring-2 ring-brand-blue/30 p-[1.5px] cursor-pointer">
+<img alt="用户头像" class="w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBeV0nbHY8UciuvKhsWiAsCOMHEgtHQSUNArBCrlocwaX-fkGg3Bgu3kH5GNVYmV5vdUy4TxkqAlPeb6KyjBjtTY9ZxWQsDbI8OX2qx-XkWdB0Zh1hsSiqaZ9KJyri6WFGfTv_o6Bb5PlLL7SHJZOo1dy4AAvF8Tzp0xWrs9Y4OmvnCP91f5QRwaDDiofeYiaXHhPXDGbFiCpzyk8MXSgXOEZZPxRjhxz4pxjm8SvXN3CZGjaAHu2NGw"/>
+</div>
+</div>
+</div>
+</header>
+<!-- END: TopStatusBar -->
+<!-- BEGIN: HeroAIBanner -->
+<section class="px-4 pt-2 pb-3">
+<div class="relative rounded-[28px] overflow-hidden p-5 bg-gradient-to-br from-[#d4f84c] via-[#b6f041] to-[#3b82f6] shadow-soft border border-white/40">
+<!-- Floating Sticker Elements -->
+<div class="absolute -right-3 top-2 rotate-12 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-2xl shadow-md border border-white/60 flex items-center space-x-1.5">
+<div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+<span class="text-[11px] font-black text-gray-800 tracking-tight">Good People More Plans</span>
+</div>
+<div class="relative z-10 pt-1">
+<span class="font-hand text-lg text-emerald-950 font-bold block sticker-rotate-left opacity-90 tracking-wide">
+            More People, Brighter Days ☺
+          </span>
+<h1 class="text-2xl font-black text-gray-950 tracking-tight mt-1 mb-0.5">今晚想要什么？</h1>
+<p class="text-xs font-semibold text-gray-800/80 mb-4 tracking-normal">一句话发起，AI 帮你组局</p>
+<!-- AI Magic Input Field -->
+<div class="bg-white rounded-full p-1.5 pl-3.5 shadow-lg flex items-center space-x-2 border border-white/70">
+<svg class="w-4 h-4 text-brand-blue flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<input class="w-full text-xs font-medium text-gray-800 bg-transparent border-0 focus:ring-0 p-0 placeholder-gray-400" placeholder="比如：想找人打羽毛球..." type="text"/>
+<button class="w-8 h-8 rounded-full bg-brand-blue text-white flex items-center justify-center flex-shrink-0 shadow-md hover:bg-blue-600 transition">
+<svg class="w-4 h-4 transform rotate-45 -mt-0.5 -ml-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M5 10l7-7m0 0l7 7m-7-7v18" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- END: HeroAIBanner -->
+<!-- BEGIN: CategoryIconsRow -->
+<section class="px-4 py-2">
+<div class="flex justify-between items-center px-1">
+<!-- 运动 -->
+<a class="flex flex-col items-center space-y-1.5 group" href="#sport">
+<div class="relative w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-500/10 to-teal-500/20 flex items-center justify-center border border-emerald-100 group-hover:scale-105 transition">
+<span class="text-xl">🏸</span>
+<span class="absolute -top-1 -right-1 px-1 py-0.2 bg-rose-500 text-white text-[8px] font-black rounded-full scale-90 uppercase">HOT</span>
+</div>
+<span class="text-[11px] font-semibold text-gray-700">运动</span>
+</a>
+<!-- 美食 -->
+<a class="flex flex-col items-center space-y-1.5 group" href="#food">
+<div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500/10 to-orange-500/20 flex items-center justify-center border border-amber-100 group-hover:scale-105 transition">
+<span class="text-xl">🥘</span>
+</div>
+<span class="text-[11px] font-semibold text-gray-700">美食</span>
+</a>
+<!-- 喝一杯 -->
+<a class="flex flex-col items-center space-y-1.5 group" href="#drinks">
+<div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-yellow-500/10 to-amber-500/20 flex items-center justify-center border border-yellow-100 group-hover:scale-105 transition">
+<span class="text-xl">🍸</span>
+</div>
+<span class="text-[11px] font-semibold text-gray-700">喝一杯</span>
+</a>
+<!-- City Walk -->
+<a class="flex flex-col items-center space-y-1.5 group" href="#citywalk">
+<div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-sky-500/10 to-blue-500/20 flex items-center justify-center border border-sky-100 group-hover:scale-105 transition">
+<span class="text-xl">🏙️</span>
+</div>
+<span class="text-[11px] font-semibold text-gray-700">City Walk</span>
+</a>
+<!-- 桌游 -->
+<a class="flex flex-col items-center space-y-1.5 group" href="#boardgame">
+<div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-500/10 to-purple-500/20 flex items-center justify-center border border-indigo-100 group-hover:scale-105 transition">
+<span class="text-xl">🎲</span>
+</div>
+<span class="text-[11px] font-semibold text-gray-700">桌游</span>
+</a>
+<!-- 更多 -->
+<a class="flex flex-col items-center space-y-1.5 group" href="#more">
+<div class="w-12 h-12 rounded-2xl bg-gray-100 flex items-center justify-center border border-gray-200/60 group-hover:scale-105 transition">
+<span class="text-base text-gray-500 font-bold">•••</span>
+</div>
+<span class="text-[11px] font-semibold text-gray-600">更多</span>
+</a>
+</div>
+</section>
+<!-- END: CategoryIconsRow -->
+<!-- BEGIN: MainFeaturedCard -->
+<section class="px-4 py-3">
+<article class="bg-white rounded-3xl overflow-hidden shadow-soft border border-gray-100 flex flex-col group cursor-pointer">
+<!-- Poster Cover Image with Overlays -->
+<div class="relative h-56 w-full overflow-hidden bg-slate-900">
+<img alt="羽毛球活动" class="w-full h-full object-cover object-center group-hover:scale-105 transition duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXVxb1dksk5DFbVIK0b9eswvHCEorHWc_ykLSbBOcombAtRYkb6utJG3KtzmVC4LcwVrtx_LnWgFUMJClpVg1d6ESXK-VJAAZjyt80RVQPpLVLa1dx9GKVSo4kj-bnlgwOllmr-3LqFgZTWS22EXvvaKj6Yz2dj7A_6BYuRXjnNrQWpUFt85p1vbwsqDXJywyojG-lJ6IwDI1hFBIQ7ok_Q-SmKgB6bcl4iIk0B1NFWp7_B_eY9vgC9A"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/20"></div>
+<!-- Top Capsule Badge -->
+<div class="absolute top-3.5 left-3.5">
+<span class="badge-blur bg-black/40 text-white border border-white/20 text-[11px] font-semibold px-2.5 py-1 rounded-full flex items-center space-x-1">
+<span>🏸 运动</span>
+</span>
+</div>
+<!-- Top-right arrow -->
+<div class="absolute top-3.5 right-3.5 w-6 h-6 rounded-full bg-black/40 border border-white/20 flex items-center justify-center text-white">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path></svg>
+</div>
+<!-- Central Poster Typography -->
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+<span class="font-black text-2xl tracking-tighter text-white uppercase italic drop-shadow-md">
+              BADMINTON TOGETHER
+            </span>
+<span class="font-hand text-sm text-brand-lime font-bold tracking-wider mt-0.5 drop-shadow">
+              Same Game &amp; New Friends
+            </span>
+</div>
+</div>
+<!-- Poster Content Area -->
+<div class="p-4 bg-white">
+<div class="flex items-center justify-between mb-1.5">
+<h2 class="text-base font-extrabold text-gray-900 flex items-center space-x-1">
+<span>周六晚场羽毛球 🏸</span>
+</h2>
+<span class="px-2.5 py-0.5 text-[11px] font-bold text-emerald-600 bg-emerald-50 rounded-full border border-emerald-200">
+              招募中
+            </span>
+</div>
+<!-- Date & Location -->
+<div class="space-y-1 mb-3.5 text-xs text-gray-500 font-medium">
+<div class="flex items-center space-x-1.5">
+<svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span>3月22日 (周六) 19:00 - 21:00</span>
+</div>
+<div class="flex items-center space-x-1.5">
+<svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span class="truncate">蓝天体育中心 · 5号羽毛球馆</span>
+</div>
+</div>
+<!-- Participants Avatar Group -->
+<div class="flex items-center justify-between pt-2 border-t border-gray-100">
+<div class="flex items-center -space-x-2">
+<img alt="参与者1" class="w-6 h-6 rounded-full border-2 border-white object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOBYvBBjpD8T11xF-zp1obdzN0ZdNlcIxdnZtKNFXNFyuQs1GdxEatX1GJLsz1HzFMhtKGOMBsz1WQHJT97iSSt5ce8kf9C5uW3zyhPhwCNwat6pXmAtOiJNN4nulSg-0lzamTkN-76B-wInueKyktddOVebGgmHGMG4HJIKip8myPtDZ_F5nDK9lLS3Zt-uEVIEIMhZFTq8-H0mDlZVx0X87X6kNXqBCqhwh5iS3zvaMbcMjBqRKrJg"/>
+<img alt="参与者2" class="w-6 h-6 rounded-full border-2 border-white object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDI4VpRsrLBGT5qF8jpAvzWOl2ES4B-BgCBqZsH9DpQplE9n0WrxHtK8Jgq7a8poBDZl4Htg3zln-WiMbCrdQVuwCIvRTyhRiRdDLVUeFpa_9Td8iopymBb25wq6HXBKXfQqTtj1qOXw6JFnGYbYBO7EpCTLjvH7x_I1aGI3FgUpGjH8R2XB3Gb8jm3Fi-qwV92qjgs3cWg8Vaolj2yb56wxWF6ELKu9uBHKEFIBVfQTNic5r9uvjRsvQ"/>
+<img alt="参与者3" class="w-6 h-6 rounded-full border-2 border-white object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzZuA9zD7xLe3Xd8l00GXlaVNIjfsC1LugNKynsuL8a5lQOgh4rNhXvZXT44obsE9ZM_Z8fx7C-LFvxXoWgZKXhKYSCr65paGNmNB1Q_1GpdSoS0HZSeOkR6P8uylMjw0s0qtDPgHiIHCgcLwok6O8rW56iRXJ1e7TlI2zQRTuLFQra0UR1qWyTPOPUrCiooviauGtPmIMnsyIH-NZCoLMZGSb1ool-uJcrEFsgkXD2pFqo1RC55tU6A"/>
+<img alt="参与者4" class="w-6 h-6 rounded-full border-2 border-white object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDr1gSQWM9jywOhWM6pbYsySi9YVILJDIXdSKaDR7TcU0KIi9k302wCiYjhqeoW2eICCzA85TqEVV8afLO28wi2UZvX1S88pqwTrbW4lsRVzspQkbLilgwKdaM_zgX2qzvj5BrOwLnnVmt7IOZMz7jB98UpcNajwcuHZwNRdaQ-SqYpGzCMNms9wgCHZ8tgeLes7hw07bq7rsDayIBkDJjNsjyTipL7y5TvSnQ8BW-hI6FfmDkyEG240w"/>
+<div class="w-6 h-6 rounded-full bg-gray-100 border-2 border-white flex items-center justify-center text-[9px] font-bold text-gray-500">+12</div>
+</div>
+<span class="text-xs font-bold text-gray-400">16人已报名</span>
+</div>
+</div>
+</article>
+</section>
+<!-- END: MainFeaturedCard -->
+<!-- BEGIN: RecommendedDualColumn -->
+<section class="px-4 py-2">
+<!-- Section Header -->
+<div class="flex items-center justify-between mb-3">
+<h3 class="text-base font-black text-gray-900">为你推荐</h3>
+<button class="text-xs font-bold text-brand-blue flex items-center space-x-1 hover:opacity-80">
+<span>换一批</span>
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</button>
+</div>
+<!-- Dual Cards Grid -->
+<div class="grid grid-cols-2 gap-3">
+<!-- Card 1: Food -->
+<article class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-soft flex flex-col cursor-pointer">
+<div class="relative h-28 w-full bg-gray-200 overflow-hidden">
+<img alt="美食聚餐" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGsKmU9H-R9bAVE1ijbWn_3svsWfdse1ot9bDai0DmMf74_n1IyC5vEaPu5l-v23QP3UWCq-KBb9zTAoEiGzXGCS3LMNV3rb1EE_exkKB-enxOogf8u9AzGCz3p8-Pc4nJXC9SfKni7cy-as_mo4ctPa2QvsRsao4OOD-_IscU0jf7wcnZ7j5q5fW4spyLklZ9N6WmDDkYV6hVxQpbVNjoaG13JaHgVTimxcLYSrvjcz4rSN0JlAzfHA"/>
+<span class="absolute top-2 left-2 badge-blur bg-black/40 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full">
+              🥘 美食
+            </span>
+</div>
+<div class="p-2.5 flex-1 flex flex-col justify-between">
+<div>
+<h4 class="text-xs font-bold text-gray-900 truncate">周五晚餐局 · 城市美食探索</h4>
+<p class="text-[10px] text-gray-400 mt-1 flex items-center space-x-1">
+<span>🕒 3月21日 (周五) 19:30</span>
+</p>
+<p class="text-[10px] text-gray-400 flex items-center space-x-1 truncate mt-0.5">
+<span>📍 The COMMUNE · 静安</span>
+</p>
+</div>
+<div class="flex items-center justify-between pt-2 mt-2 border-t border-gray-100">
+<div class="flex -space-x-1.5">
+<img alt="头像" class="w-4 h-4 rounded-full border border-white object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjCy0gXPK7tQNP7xMYkhfHY_4WmIcLSirj5sBbKIYZ9d_7275IQpBP9jehtVwj3BbTeMUzekWxUZBw0U78DAQEhGw9OFbwkM8fHZoNn8jkX6h88b79Ns9mElS1NR7QvRwz3XgjuFvv9iyZmf4ix220aMaHcEqnMi1QfFn0lvTd3q2ZxtnHK-e1RHCJQF8hwUCDE5Dr7u9LSrv6E0TP44BqoaKLuFLBqsO2JVzmmvQPCNjvuNjHUhchFQ"/>
+<img alt="头像" class="w-4 h-4 rounded-full border border-white object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpJR5KGAfDqqfCw8UV5G6fdPYkx93aXWvSthktukqzDLSRTvXYeaBG_8nSzIGumsFXixlq-j0rRUJ3B_kD70-v4yckqiyY6Q4iKJ5KTdLm2N-hwJ5Fd_A4ovYmcU0uSGLWrqoZXGtdpQhcrTka79pMoQoxD8yUtqQXQO-Ol47K-Kp8NvPnCSStKZVyZlYJJWkVJKS5VfXiJ6u1TtyQpoCVWytFruw3oJI8agH_sI9OhrZl38N5gDYcpQ"/>
+<span class="text-[8px] text-gray-400 pl-1 self-center">+8</span>
+</div>
+<span class="text-[9px] font-bold text-gray-400">12人报名</span>
+</div>
+</div>
+</article>
+<!-- Card 2: Hike -->
+<article class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-soft flex flex-col cursor-pointer">
+<div class="relative h-28 w-full bg-gray-200 overflow-hidden">
+<img alt="余山徒步" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0t3GFDdAWiqvj_oA_Vmmv-mRUaE531esIRgrr4j9HtbolO2-eLXu_uB91eTV86nrCiNg5zn8yGmFsmxk2cmJQot-pGpU5UCLR9HFMBP69_-E_X3T04oaY0WtaQsCjIn8xBQgFGhTHAVJWJtueARS4FMT69uznn29X_tmcovhZkPhQ2oqWoQJ6ocTBg7kCIFRScD5QHE13skwtZwYL6qxYZEnF4covQwULR9cCcCvOHuN1ue5abBL1qg"/>
+<span class="absolute top-2 left-2 badge-blur bg-black/40 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full">
+              🏔️ 户外
+            </span>
+</div>
+<div class="p-2.5 flex-1 flex flex-col justify-between">
+<div>
+<h4 class="text-xs font-bold text-gray-900 truncate">周日余山徒步 · 看日落</h4>
+<p class="text-[10px] text-gray-400 mt-1 flex items-center space-x-1">
+<span>🕒 3月23日 (周日) 15:00</span>
+</p>
+<p class="text-[10px] text-gray-400 flex items-center space-x-1 truncate mt-0.5">
+<span>📍 余山国家森林公园</span>
+</p>
+</div>
+<div class="flex items-center justify-between pt-2 mt-2 border-t border-gray-100">
+<div class="flex -space-x-1.5">
+<img alt="头像" class="w-4 h-4 rounded-full border border-white object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhjJLACYQyvTyTO9tR80IsfqjqunE6-7FYgIMutwrCS7XPOpd6xthP0IhH3IJrRIgnoqrqPqNSJdTqRZBsQD_ALDmKumOzY4TXNzhNnzgx8N9fg4aux0DCIIKIt2aCLIvDnBkkeLiiAxvUj7nj2TuJmIebXM97Wqu7u4yDvWVYzMBg3J4DMAH4IwFhOxQZOMydj2BOKu2kl4gACR6m40dVoyKn6y4Gm9bu4lmHeZ2UzvcoONi9v4YJmA"/>
+<img alt="头像" class="w-4 h-4 rounded-full border border-white object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGJ_VFLrEj6Tz0aREUJ9CV-2zUPscQzPj87Dcwca37kh5JCaF0BQVhNHka0Fr6DDSZt8IDl0EMd12rWb4LNKvL8whIbDCeWJ4qDEGzfAGDje2hBKhAmdQKxCyS20CbE0yhuHdtrhq9nzOrCFmK4-nu72aAi_Y8UlR85wjzkeaT1fo8q74nABKSkfulJas24bDJSczWlFlmdFfCeRNGCdjWSMawnXDl1ec37N0L2JrnbwH0z0_ez_fAVg"/>
+<span class="text-[8px] text-gray-400 pl-1 self-center">+6</span>
+</div>
+<span class="text-[9px] font-bold text-gray-400">8人报名</span>
+</div>
+</div>
+</article>
+</div>
+</section>
+<!-- END: RecommendedDualColumn -->
+<!-- BEGIN: BrandStatementBanner -->
+<section class="px-4 py-3">
+<div class="relative rounded-3xl overflow-hidden h-44 shadow-soft">
+<img alt="Party Vibes" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxmupsg-D3r3vb25ROo-WuDM_-KOjPd46lFZwoIzRUcQiarFiqw2V0ev9s4LiP6Notyk8ufvsYdlvdn6PV71xErpHw-HrFdeR60oayn75qdAxBXXTp0baW7uXf9Cy9VG-CKBEGWf5Mp9hoI3PugY6inSdHuRi_fNXwBL2rYgsxtHIafGILgLG9GlNyF9bsnbdKMZEWjk7LPZR_2X0ZU33FX4uekcl9Xm4TWRdo9ozZpYJ_-IJ3r7IZ8Q"/>
+<div class="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/30"></div>
+<div class="absolute inset-0 p-5 flex flex-col justify-between">
+<div>
+<h3 class="text-xl font-black text-white tracking-tight leading-tight">
+              让有趣的事，真的发生
+            </h3>
+<span class="text-[10px] tracking-wider text-gray-300 uppercase font-semibold mt-1 block">
+              TURN PLANS INTO REAL MEETUPS.
+            </span>
+</div>
+<div class="flex items-center space-x-2">
+<div class="w-7 h-7 rounded-full bg-brand-lime flex items-center justify-center text-black font-black text-sm">
+              ☺
+            </div>
+<span class="font-hand text-white text-base font-bold sticker-rotate-left">
+              Good People Better Days
+            </span>
+</div>
+</div>
+</div>
+</section>
+<!-- END: BrandStatementBanner -->
+<!-- BEGIN: TrendingAndThemes -->
+<section class="px-4 py-2">
+<!-- 同城热门 -->
+<div class="flex items-center justify-between mb-3">
+<h3 class="text-base font-black text-gray-900">同城热门</h3>
+<a class="text-xs font-bold text-gray-400 flex items-center space-x-0.5 hover:text-gray-600" href="#hot">
+<span>查看更多</span>
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+<!-- 4 Compact Cards Row -->
+<div class="grid grid-cols-4 gap-2 mb-5">
+<!-- Item 1 -->
+<div class="flex flex-col cursor-pointer group">
+<div class="h-20 rounded-2xl overflow-hidden bg-gray-200 mb-1.5 shadow-sm">
+<img alt="网球" class="w-full h-full object-cover group-hover:scale-105 transition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDePpyfH3Fb75yA53fZ3t8EhMOiJeqX74k_O40fvGgTO0utlZm53uNSDmbc6yWofRL0FQw8yWoiR5XAugfEq1qWOUG40nLnfxdohM55l22b7PlrcPKvH3xt8xjAOAz3Sx1-YiDMJ_5IgqqRDwW5UJYZwVgFi5thLTySbmbh-RtKwVMbUm93dGEANObcszZKYzTHUuE5UQ7DMhHHpeAdy9kqCZrp8ErvuXYd2ds9Hht5Akz_OPSslGUghQ"/>
+</div>
+<span class="text-[11px] font-bold text-gray-900 truncate">网球新手局</span>
+<span class="text-[9px] text-gray-400 truncate">周六 14:00</span>
+<span class="text-[9px] font-semibold text-gray-500 mt-0.5">28人报名</span>
+</div>
+<!-- Item 2 -->
+<div class="flex flex-col cursor-pointer group">
+<div class="h-20 rounded-2xl overflow-hidden bg-gray-200 mb-1.5 shadow-sm">
+<img alt="咖啡探店" class="w-full h-full object-cover group-hover:scale-105 transition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALoSuDtWL-I3bDX5Rrgeg5sq8Ng-HllSgnrRVS-8ZPFpNj5MGlNNznEgFS_MjviiIgmxkzRSmwPteQX1Age3LSqo4k2Zq_QltqEqlX_8Cj4MsoqdCmE0-zDN2EL5BEB_W0kcDqsqoeO65RlcT_IsjpZ3Wt7SH_ko5YJyOecwQ8RO2GKE5a0CvHRY7CJZz-yk6fVCAGIHm_e0tHtnGdhTju0055rvL0Pdhu_lz_V_qtQpP63_cGAJbzGw"/>
+</div>
+<span class="text-[11px] font-bold text-gray-900 truncate">咖啡探店</span>
+<span class="text-[9px] text-gray-400 truncate">周日 10:00</span>
+<span class="text-[9px] font-semibold text-gray-500 mt-0.5">18人报名</span>
+</div>
+<!-- Item 3 -->
+<div class="flex flex-col cursor-pointer group">
+<div class="h-20 rounded-2xl overflow-hidden bg-gray-200 mb-1.5 shadow-sm">
+<img alt="飞盘局" class="w-full h-full object-cover group-hover:scale-105 transition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLELpraGHCKTVBuT4c-Ozl-tSNFtsu2HmvYNkyWSdwnTjsvXuU4n0aRI6UphTVFBJskNaOuSWRdAj1e3UKKMkWlrY7y8rNepC65uybITyKJDph_Vr3DZxvIlTWjmiOFSHLkBL81n9KC2g2HHJ0vCH9XNZsiQraH8o-1-5su6-YnPKUtnlm-bRdlf6CDjoYkgzpN4NYf5HWg2AH5SX2xxdTWN6s_iEQpeDGzH10Eh-J5jsqxfwPufdvlQ"/>
+</div>
+<span class="text-[11px] font-bold text-gray-900 truncate">飞盘局</span>
+<span class="text-[9px] text-gray-400 truncate">周六 16:00</span>
+<span class="text-[9px] font-semibold text-gray-500 mt-0.5">36人报名</span>
+</div>
+<!-- Item 4 -->
+<div class="flex flex-col cursor-pointer group">
+<div class="h-20 rounded-2xl overflow-hidden bg-gray-200 mb-1.5 shadow-sm">
+<img alt="桌游之夜" class="w-full h-full object-cover group-hover:scale-105 transition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCf8cE_-NCjN4UI8SiByUxcCxV2CXUi4UCK-0CxaDFNVWyeI5euf9k5zX-o04133VAq8MismEAskioCgBfpSlkMgZBiy7qRMapZH6fURYt22Roo4KPITVkZmBVysdbx5BrGFBO-r94IXZjWmDHT2ysKU3N-Ikg_c6Bz9X9CFSadFL3okyf17Sfdvelw7hPChJWSJopkijqINrmO2PXXeiTv0ZTfvvBrKDA0_54TYh6X6a-qEx4jBYil3A"/>
+</div>
+<span class="text-[11px] font-bold text-gray-900 truncate">桌游之夜</span>
+<span class="text-[9px] text-gray-400 truncate">周五 19:30</span>
+<span class="text-[9px] font-semibold text-gray-500 mt-0.5">20人报名</span>
+</div>
+</div>
+<!-- 主题精选 -->
+<h3 class="text-base font-black text-gray-900 mb-3">主题精选</h3>
+<div class="grid grid-cols-4 gap-2">
+<!-- Theme 1 -->
+<div class="bg-amber-50 rounded-2xl p-2.5 flex flex-col justify-between h-24 border border-amber-100 cursor-pointer hover:bg-amber-100/60 transition">
+<span class="text-xl">🍺</span>
+<div>
+<span class="text-xs font-bold text-gray-900 block leading-tight">下班快乐局</span>
+<span class="text-[8px] text-amber-700 font-semibold block mt-1">微醺认识新朋友➔</span>
+</div>
+</div>
+<!-- Theme 2 -->
+<div class="bg-sky-50 rounded-2xl p-2.5 flex flex-col justify-between h-24 border border-sky-100 cursor-pointer hover:bg-sky-100/60 transition">
+<span class="text-xl">🏔️</span>
+<div>
+<span class="text-xs font-bold text-gray-900 block leading-tight">周末出逃</span>
+<span class="text-[8px] text-sky-700 font-semibold block mt-1">城市周边轻走➔</span>
+</div>
+</div>
+<!-- Theme 3 -->
+<div class="bg-pink-50 rounded-2xl p-2.5 flex flex-col justify-between h-24 border border-pink-100 cursor-pointer hover:bg-pink-100/60 transition">
+<span class="text-xl">💖</span>
+<div>
+<span class="text-xs font-bold text-gray-900 block leading-tight">女生友好</span>
+<span class="text-[8px] text-pink-700 font-semibold block mt-1">舒适社交氛围➔</span>
+</div>
+</div>
+<!-- Theme 4 -->
+<div class="bg-emerald-50 rounded-2xl p-2.5 flex flex-col justify-between h-24 border border-emerald-100 cursor-pointer hover:bg-emerald-100/60 transition">
+<span class="text-xl">🌱</span>
+<div>
+<span class="text-xs font-bold text-gray-900 block leading-tight">新手友好</span>
+<span class="text-[8px] text-emerald-700 font-semibold block mt-1">轻松加入不怯场➔</span>
+</div>
+</div>
+</div>
+</section>
+<!-- END: TrendingAndThemes -->
+<!-- BEGIN: NearbyHappenings -->
+<section class="px-4 py-3 mt-2">
+<div class="flex items-center justify-between mb-3">
+<h3 class="text-base font-black text-gray-900">附近正在发生</h3>
+<a class="text-xs font-bold text-gray-400 flex items-center space-x-0.5 hover:text-gray-600" href="#map">
+<span>查看地图</span>
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+<!-- Horizontal Cards Row -->
+<div class="flex space-x-2.5 overflow-x-auto no-scrollbar pb-1">
+<!-- Item 1 -->
+<div class="w-28 flex-shrink-0 bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-soft">
+<div class="h-28 relative bg-gray-200">
+<img alt="篮球" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmxFsC9BWHKEqytL7i6483fFSqL9zGKdHn2ILjMeBRium8RCUpdUmBjYovGc-Hclw02CMKiRnOKmtnp1Rnh_xr7Kwbot96vvvQ94T6z94DtAILYjZcenIl7ABoMYh7nJnwM-FXnl08bpsqYaavBnKa5U_-lf6oUj_F_Hf_EezjMstQ4ZZKbpj2WU9c0VhfE_pOUQ8WWXSNoy8Qj2kSi974IYI2O9ePMhh7zarSjWK1V59MACEUWpf9tw"/>
+<span class="absolute top-1.5 left-1.5 badge-blur bg-black/40 text-white text-[9px] font-semibold px-1.5 py-0.5 rounded-full flex items-center space-x-0.5">
+<span>📍 0.8 km</span>
+</span>
+</div>
+<div class="p-2">
+<span class="text-xs font-bold text-gray-900 block truncate">篮球夜场</span>
+<span class="text-[10px] text-gray-400 block mt-0.5">今天 20:00</span>
+<div class="flex items-center text-[10px] font-semibold text-gray-500 mt-1">
+<span>👤 12人</span>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="w-28 flex-shrink-0 bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-soft">
+<div class="h-28 relative bg-gray-200">
+<img alt="跑步夜聊" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDD0bj6er-LkLFYp9p0fsIzja-m7NKtUqibFWq8eb5puHgvquCdVDHC43oWD1zgqFeYePPH-YalySMy_rVwjg8VD-lrk9BJZ4128Dei79DCT2zz7xLO6b1b6R4AqtQ32HXlFnqMdArXeUIIEkValUIav0cmufnf7cSV3pW_weGbmb6lBV-9zgcbh8wx6_hMFuL9Fyf271aNxdCmDiKATBigQzSSdBezsFIXOtDZkt8qRFBF8o2Fsy4wHg"/>
+<span class="absolute top-1.5 left-1.5 badge-blur bg-black/40 text-white text-[9px] font-semibold px-1.5 py-0.5 rounded-full flex items-center space-x-0.5">
+<span>📍 1.2 km</span>
+</span>
+</div>
+<div class="p-2">
+<span class="text-xs font-bold text-gray-900 block truncate">跑步夜聊</span>
+<span class="text-[10px] text-gray-400 block mt-0.5">今天 19:30</span>
+<div class="flex items-center text-[10px] font-semibold text-gray-500 mt-1">
+<span>👤 8人</span>
+</div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="w-28 flex-shrink-0 bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-soft">
+<div class="h-28 relative bg-gray-200">
+<img alt="飞盘新手" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvJFuYSgEQD9CnUrPqpsv6w9PYFdvDiyrhKQA0qu0KdzxVUl-Szp-29aWMPt_1KI18Gq8Ve2GJBqfqfoqRk0EdI7lcv9HgM-6dqQTwqrPTDklrXHxcHfCcAs0432It2B2rJjkHrkqIxUmMMVMQHpGZ8T2o5risGqLQd2d-WhAS2SiR97UFJ_uKrR1udWapBshWP1Sb-Rp5pVhzUP5R_EWA3_rFOZfbHIBnomJE81_l-n0k1ZW8T16eXg"/>
+<span class="absolute top-1.5 left-1.5 badge-blur bg-black/40 text-white text-[9px] font-semibold px-1.5 py-0.5 rounded-full flex items-center space-x-0.5">
+<span>📍 2.1 km</span>
+</span>
+</div>
+<div class="p-2">
+<span class="text-xs font-bold text-gray-900 block truncate">飞盘新手</span>
+<span class="text-[10px] text-gray-400 block mt-0.5">明天 16:00</span>
+<div class="flex items-center text-[10px] font-semibold text-gray-500 mt-1">
+<span>👤 16人</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: NearbyHappenings -->
+<!-- BEGIN: AIRecommendationModule -->
+<section class="px-4 py-3">
+<div class="flex items-center justify-between mb-1">
+<h3 class="text-base font-black text-gray-900">AI 为你推荐</h3>
+<button class="text-xs font-bold text-brand-blue flex items-center space-x-1 hover:opacity-80">
+<span>换一批</span>
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</button>
+</div>
+<p class="text-[11px] text-gray-400 mb-3">基于你的兴趣、位置和空闲时间</p>
+<!-- AI highlight capsule banner -->
+<div class="p-3 rounded-2xl bg-gradient-to-r from-blue-500/15 via-purple-500/15 to-pink-500/15 border border-purple-200/50 flex items-center justify-between mb-3.5 cursor-pointer">
+<div class="flex items-center space-x-2">
+<span class="text-base text-purple-600">✨</span>
+<span class="text-xs font-extrabold text-purple-900 tracking-tight">为你匹配了 3 个可能感兴趣的活动</span>
+</div>
+<svg class="w-4 h-4 text-purple-700" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path></svg>
+</div>
+<!-- Recommendation List with handwriting doodle -->
+<div class="relative bg-white rounded-3xl p-3 border border-gray-100 shadow-soft space-y-3">
+<!-- Floating handwriting label -->
+<div class="absolute -right-2 top-10 pointer-events-none sticker-rotate-right">
+<span class="font-hand text-brand-blue font-bold text-base leading-none block">Good<br/>Matches<br/>Better<br/>Friends</span>
+</div>
+<!-- List Item 1 -->
+<div class="flex items-center space-x-3 pr-14 cursor-pointer hover:bg-gray-50/60 p-1.5 rounded-2xl transition">
+<img alt="羽毛球" class="w-12 h-12 rounded-2xl object-cover flex-shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXlY-IyU8RcvQZfvh1vZeJYzJvc5vk7zwKWu-_MVNd2N3Sn28HGAQSshglkNwAR961QbUMWa6-Y5ox12Wu103zfgJOSO_t24D5aCRZWU9-L9NC27xaXYVSspyEcJsLTy8sekNynQvoZFl2rmRA39KC6kVxU5JLbEk97JZ4LB0mRC4-PXM5Fy3P8LTHKF-u8Nx3d5H_4Lrp9W3rnJVkcHNYJCAEugC9LCRI3NuWWRe_HiKJ0Cr5RIlDEg"/>
+<div class="min-w-0">
+<h4 class="text-xs font-bold text-gray-900 truncate">周三羽毛球 · 新手友好</h4>
+<p class="text-[10px] text-gray-400 mt-0.5">3月19日 19:00</p>
+<p class="text-[10px] text-gray-400 truncate">2.4km · 静安体育中心</p>
+</div>
+</div>
+<div class="border-t border-gray-100"></div>
+<!-- List Item 2 -->
+<div class="flex items-center space-x-3 pr-14 cursor-pointer hover:bg-gray-50/60 p-1.5 rounded-2xl transition">
+<img alt="咖啡局" class="w-12 h-12 rounded-2xl object-cover flex-shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYDkr0jSReEYDG4q-oaVMzS6clMO4galmaKRnAOJzcIf9qVkXOPY5glvP9ZumlkB6fiL5BE0dCbCimP5vcoQ8sBGi7w0wzCxytsk8eOmvFNAKBr-wDYHQsOehWbaeM_hGeenaFf6-i4yWLW46WoIhtd6l8pLRXoyoMTEPri0RAUbFM7SAqAI5wQYvlsqRB-GRPN5gCXPQYBh0X9oGdJ_wFfnCTQyHvq9I2GulP4bWcpc6zoRvee_TO1w"/>
+<div class="min-w-0 flex-1">
+<div class="flex items-center justify-between">
+<h4 class="text-xs font-bold text-gray-900 truncate">周六咖啡局 · 聊聊最近</h4>
+</div>
+<p class="text-[10px] text-gray-400 mt-0.5">3月22日 10:30</p>
+<div class="flex items-center justify-between text-[10px] text-gray-400 mt-0.5">
+<span>1.8km · Manner 咖啡</span>
+<span class="text-emerald-600 font-bold flex items-center space-x-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>
+<span>12人报名</span>
+</span>
+</div>
+</div>
+</div>
+<div class="border-t border-gray-100"></div>
+<!-- List Item 3 -->
+<div class="flex items-center space-x-3 pr-14 cursor-pointer hover:bg-gray-50/60 p-1.5 rounded-2xl transition">
+<img alt="骑行" class="w-12 h-12 rounded-2xl object-cover flex-shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQty30DywdNbiERtGQsmW20uvNZ8pJD_rJ4IJ_6qG4XSTlmT2E3zTxSW8R5yYfwqpBNsoRBElJH7Dx5_HzQr-_yHGWozhLjFKL7P8VKdadoqn0D2B1NdzIF5zQZE2QzutuYM04Y1PSD9KK4NBRi0Y5aljiHNoBw5elMHu857l0g89Qcqrm34fuy9tv24KuVgteH9xHAkAfE8dlp76rcAzMZ4jaPYCgREgpVgm0caAbuP6clKkPHwiOnw"/>
+<div class="min-w-0 flex-1">
+<h4 class="text-xs font-bold text-gray-900 truncate">周日城市骑行 · 滨江线</h4>
+<p class="text-[10px] text-gray-400 mt-0.5">3月23日 15:00</p>
+<div class="flex items-center justify-between text-[10px] text-gray-400 mt-0.5">
+<span>3.1km · 徐汇滨江</span>
+<span class="text-emerald-600 font-bold flex items-center space-x-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>
+<span>16人报名</span>
+</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: AIRecommendationModule -->
+<!-- BEGIN: RealMomentsCollage -->
+<section class="px-4 py-3">
+<div class="flex items-center justify-between mb-1">
+<h3 class="text-base font-black text-gray-900">真实的人，真实的瞬间</h3>
+<a class="text-xs font-bold text-gray-400 flex items-center space-x-0.5 hover:text-gray-600" href="#feed">
+<span>查看更多</span>
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+<p class="text-xs font-extrabold text-brand-blue mb-3"># 耍起现场</p>
+<!-- Photos Collage Grid -->
+<div class="relative grid grid-cols-12 gap-2 h-64 rounded-3xl overflow-hidden p-1">
+<!-- Main Big Photo -->
+<div class="col-span-7 h-full relative rounded-2xl overflow-hidden shadow-sm">
+<img alt="朋友聚会" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlO_BnR-cyEOfX8NcKDRMBoyw5xk921FHr0rw0XCjgSqPIPwAkTFXWx_4C9U8Tc_nNPnsAUynsOGRr_oEL3_RnfxELAQkOfMUxvSFx9mDrxWcqLNIlT2G6mA1zkWctJBxPGs67xYg_wmxqs9C_yn7BzUKWCuBykW8AFaOPovRLxin3sB5i4odprtTFLY301KQe-HAxdw3sctR2NRGCutqk0QhQGMCnfmddvxFhDiCblAeGj9M9mj_1hw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+<div class="absolute bottom-2.5 left-2.5 right-2">
+<span class="font-hand text-lg text-white font-bold leading-tight block drop-shadow">
+              Same People Real Vibes
+            </span>
+</div>
+</div>
+<!-- Right 2 Stacked Photos -->
+<div class="col-span-5 flex flex-col space-y-2 h-full">
+<div class="h-1/2 relative rounded-2xl overflow-hidden shadow-sm">
+<img alt="聚餐笑脸" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6ZvkSMgknQqCd220ERPS73_hfdzdEpBNCViIJkugJsVPWrJkFvhIPkCrVqwM_Xz3AnzWrPA-QWfjf2BcQdGb6dv4FXqzvxTMwkdW2g5yRlNXS-aZFZy5hqN8M6agjj1_5KF4xrcFtZpXUZkk-daaf7_5UQlaDiX97IzJ-xLIvLGCpd_ihxP79TCshygZ9ZWxKnn6W-oj_hKq3VtBcfgOo0kYZCZ7TTxJnN1kHRTV7mrzUC5Hk4eqAuA"/>
+</div>
+<div class="h-1/2 relative rounded-2xl overflow-hidden shadow-sm">
+<img alt="草地飞盘" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtR42KcvcyyArBRnw2uaXRC4p53dMI4mIBW20vfgDkqCflu2runfH5QHvMM0K09SgIe0jKRxW1Ccao6ahg3IH2uPRVq30PeZx63wgV0CsrMsLjpUZCoh8m1uYlUvG_v6_gq6foFHMyNhN4RNNn1Y_SqtT28xu9oGVnZ77ew3dnf9SyVZrEkyHaLAjiQgP3Yevaumz7GahdRAAxOOwYxvrZlDZmaEZXCzxlWKHuKjWxOxrvBCsPgjBH9g"/>
+</div>
+</div>
+<!-- Yellow Post-it Sticker Overlay -->
+<div class="absolute -bottom-2 -right-1 bg-[#fff84c] text-gray-950 p-2.5 rounded-xl shadow-lg border border-yellow-300/80 sticker-rotate-right z-10 max-w-[110px]">
+<span class="font-black text-sm block tracking-tighter">Nice!</span>
+<span class="text-[9px] font-extrabold leading-tight block mt-0.5">More People Brighter Days ☺</span>
+</div>
+</div>
+</section>
+<!-- END: RealMomentsCollage -->
+<!-- BEGIN: TestimonialsSection -->
+<section class="px-4 py-3">
+<div class="flex items-center justify-between mb-1">
+<h3 class="text-base font-black text-gray-900">大家都在说</h3>
+<a class="text-xs font-bold text-gray-400 flex items-center space-x-0.5 hover:text-gray-600" href="#reviews">
+<span>查看更多</span>
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+<p class="text-[11px] text-gray-400 mb-3">真实评价来自活动参与者</p>
+<!-- Testimonial Horizontal Cards -->
+<div class="flex space-x-3 overflow-x-auto no-scrollbar pb-1">
+<!-- Review 1 -->
+<div class="w-56 flex-shrink-0 bg-blue-50/50 rounded-2xl p-3 border border-blue-100/60 shadow-sm flex flex-col justify-between">
+<div>
+<span class="text-brand-blue text-xs font-serif leading-none block mb-1">“</span>
+<p class="text-[11px] text-gray-700 leading-relaxed font-medium">
+              通过耍起认识了一群超级合拍的球友，已经连着打了三周了！
+            </p>
+</div>
+<div class="flex items-center space-x-2 mt-3 pt-2 border-t border-blue-100/50">
+<img alt="Lina头像" class="w-7 h-7 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmwjRfSk1LcWJSrEx28uabhNA3JQ3s5EfXHHpy5RBOV9vweOBN4ybG1NAvL2lPPbFkRyllsP1lkSZXlK00TnXGLHN06H6JxNA7aH8Ifny5bm9dYrNjklmrBhthbR9GTalsHuYaKGbTG2pPW0gOyKLwrwMNAC6T_N8PjMYTNKF8wrIOjfbEBoEP0UmLxoIcoOsN49wkbapK21Jyn8WFVxnACJLjRZEWAEHF_09Hqs8eNek_6H7FFxSgBA"/>
+<div class="min-w-0">
+<span class="text-xs font-bold text-gray-900 block truncate">@Lina</span>
+<span class="text-[9px] text-gray-400 block truncate">羽毛球爱好者</span>
+</div>
+</div>
+</div>
+<!-- Review 2 -->
+<div class="w-56 flex-shrink-0 bg-emerald-50/50 rounded-2xl p-3 border border-emerald-100/60 shadow-sm flex flex-col justify-between">
+<div>
+<span class="text-emerald-600 text-xs font-serif leading-none block mb-1">“</span>
+<p class="text-[11px] text-gray-700 leading-relaxed font-medium">
+              第一次参加线下桌游局，没想到大家都好有趣，现在已经是固定局了！
+            </p>
+</div>
+<div class="flex items-center space-x-2 mt-3 pt-2 border-t border-emerald-100/50">
+<img alt="Kevin头像" class="w-7 h-7 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBL2Lg1xeaH0Z59oBwdNYqlTy28OLF_l4Jz-qcuEG2s-jmTHVkJbvYsDvd2SgkHDl2JTw7_YQj223KRkbD9xB6wBOmlBJpLH3N0AqdnrCmD2fuR6UyMVBLaf8TeOKPrWEsLAP0tMaLlrV6hHuwoe75rbJ8BqmM1ShbUTYKm4Z-MgNkT1owRjGba6cF9FVjdyr2JRMmcV_22KrzC4bd_cI4RlQz9IklfAljaSTerNS_AwZS8-pdjMSugNg"/>
+<div class="min-w-0">
+<span class="text-xs font-bold text-gray-900 block truncate">@Kevin</span>
+<span class="text-[9px] text-gray-400 block truncate">桌游新手</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: TestimonialsSection -->
+<!-- BEGIN: CitySkylineBanner -->
+<section class="px-4 py-3">
+<div class="relative rounded-3xl overflow-hidden shadow-soft">
+<img alt="上海夜景" class="w-full h-48 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCydvsuC_9SNyYBMjTYcmpzcgWvnw_Gu87XSEo2Q2TM4LjSRPsjY4yejmK_2WwNA2ZTJRK0xbzrbaD-INHEXisFLrv8XCL7mWtjjnFOol8s-LOt9r0bJv1F6FXEXnbrh0qQLYB7YjkBDFHMFxem_h03gOFkzZt7t6rC8ikw27dzbk27-ykTqOERMbkGRH8mJhN1zxAgSARuCZYKIf0fKtVmKVy3g84SXn2oADjFCf8yL3fkF4hNcKGuFg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
+<div class="absolute inset-0 p-5 flex flex-col justify-between">
+<div>
+<h3 class="text-xl font-black text-white leading-tight">
+              这座城市<br/>更好玩了
+            </h3>
+<p class="text-[10px] text-gray-300 font-medium mt-1">更多有趣的人 / 有趣的事 / 有趣的你</p>
+</div>
+<div class="flex items-center justify-between">
+<a class="bg-brand-lime hover:bg-[#b5e028] text-gray-950 px-4 py-2 rounded-full text-xs font-extrabold flex items-center space-x-1.5 shadow-glow-lime transition" href="#discover">
+<span>发现附近的活动</span>
+<span>➔</span>
+</a>
+<div class="text-right">
+<span class="font-hand text-white text-xs block sticker-rotate-left">Good People Make Better Cities ☺</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: CitySkylineBanner -->
+<!-- BEGIN: FinalCTA -->
+<section class="px-4 py-6 text-center">
+<div class="relative bg-gradient-to-b from-white to-gray-50 rounded-3xl p-6 border border-gray-100 shadow-soft">
+<div class="w-10 h-10 mx-auto rounded-2xl bg-brand-blue/10 flex items-center justify-center text-brand-blue text-xl mb-2">
+          💡
+        </div>
+<h3 class="text-lg font-black text-gray-900 tracking-tight">有想法？那就耍起！</h3>
+<p class="text-xs font-medium text-gray-400 mt-1 mb-5">让 AI 帮你把想法变成一场真实的见面</p>
+<!-- Big CTA Button -->
+<button class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-brand-blue via-blue-600 to-emerald-400 text-white font-extrabold text-sm shadow-floating hover:opacity-95 transition flex items-center justify-center space-x-2">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span>发起一个活动</span>
+</button>
+<span class="text-[9px] font-extrabold tracking-widest text-gray-400 uppercase block mt-4">
+          GOOD PEOPLE · REAL MEETUPS · BRIGHTER DAYS
+        </span>
+</div>
+</section>
+<!-- END: FinalCTA -->
+<!-- BEGIN: Footer -->
+<footer class="px-4 pt-2 pb-6 text-center text-gray-400">
+<div class="flex items-center justify-center space-x-1 mb-1">
+<span class="font-black text-gray-700 text-sm tracking-tight">耍起</span>
+<span class="text-[9px] font-extrabold text-brand-blue uppercase tracking-widest">CAPER</span>
+</div>
+<p class="text-[10px] text-gray-400">让有趣的事，真的发生</p>
+<div class="flex items-center justify-center space-x-3 text-[10px] text-gray-400 mt-3 font-medium">
+<a class="hover:text-gray-600" href="#about">关于我们</a>
+<span>|</span>
+<a class="hover:text-gray-600" href="#privacy">隐私政策</a>
+<span>|</span>
+<a class="hover:text-gray-600" href="#contact">联系我们</a>
+</div>
+</footer>
+<!-- END: Footer -->
+<!-- BEGIN: FixedBottomNav -->
+<nav class="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-[440px] bg-white/95 backdrop-blur-xl border-t border-gray-100 px-6 py-2 z-50 flex items-center justify-between safe-bottom shadow-[0_-4px_20px_rgba(0,0,0,0.04)]">
+<!-- 首页 (Active) -->
+<a class="flex flex-col items-center text-brand-blue space-y-1" href="#home">
+<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg>
+<span class="text-[10px] font-bold">首页</span>
+</a>
+<!-- 发现 -->
+<a class="flex flex-col items-center text-gray-400 hover:text-gray-600 space-y-1" href="#explore">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span class="text-[10px] font-bold">发现</span>
+</a>
+<!-- Center Floating Plus Button -->
+<div class="-mt-5">
+<button class="w-12 h-12 rounded-full bg-brand-blue text-white flex items-center justify-center shadow-floating hover:scale-105 transition transform active:scale-95">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="3" viewbox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</button>
+</div>
+<!-- 消息 -->
+<a class="flex flex-col items-center text-gray-400 hover:text-gray-600 space-y-1 relative" href="#messages">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span class="absolute top-0 right-1 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
+<span class="text-[10px] font-bold">消息</span>
+</a>
+<!-- 我的 -->
+<a class="flex flex-col items-center text-gray-400 hover:text-gray-600 space-y-1" href="#profile">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span class="text-[10px] font-bold">我的</span>
+</a>
+</nav>
+<!-- END: FixedBottomNav -->
+</div>
+</body></html>

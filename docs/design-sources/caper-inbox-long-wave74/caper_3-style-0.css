@@ -1,0 +1,17 @@
+
+    /* Hide scrollbars while allowing smooth touch scroll */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .hand-sticker {
+      transform: rotate(3deg);
+      box-shadow: 2px 4px 12px rgba(0,0,0,0.06);
+    }
+    .hand-sticker-left {
+      transform: rotate(-4deg);
+    }
+  

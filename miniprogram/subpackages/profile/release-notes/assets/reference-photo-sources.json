@@ -1,0 +1,21 @@
+{
+  "reference": "pg10_h_1/code.html",
+  "purpose": "Original supplied scene illustration, not a real IRL activity photograph",
+  "bytePolicy": "Public source response saved without resizing, recompression or pixel edits",
+  "assets": {
+    "reference-scene-1.jpg": {
+      "sourceUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuCXIKAMEdwrPXaMg1aHU6jbtVeuI8H2CmTivYeaoQcyjRpE6I06WGq8Yiu5MckznDsgRWbqQ7ctAIgz1dFzNokWYu8M2DzNquTS-0EpVnHBhUxSkQ0D7U2UDrJWxyHmP9hr2x0gBWpXrDNKXT9ufIPsgSSK9kt85fwrnQ2epnNjvJov-pssce-mfPwpsJ7B7jvkgD2w8tF-m12LsZ95HVmjt3H7Zu4gmsgNcguCvK4aEOg0MNC5--cj6Q",
+      "sha256": "5484a036033b0115a6a257d46c6743f75693f68ddeb1300e7663cf5bc22721ec",
+      "bytes": 68054,
+      "contentType": "image/jpeg",
+      "role": "场景示意配图，非真实活动照片"
+    },
+    "reference-scene-2.jpg": {
+      "sourceUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuA5mPourSkWfJZ__SZb6cuq26DVcHPem-uDUhe9izABZW9YA1Qn6gMYxjzIf3MIZA9Dn46ZSIkhidIke0hR77gZpvHo9iMpn4OdnC-M46_8N3UUlqJHYsa2PSH0WQ4J6M6N9WypoMmyHW5IuhmYrH5tO5IAVwNRBRacfdYdkgzKZyAoD3T2MYpjaJwIzNDIz87dmVzdTzCmA0PoHiW27QWK3ffF3aT2FQv7hpa-ZtIia8sVEd9nkk_OHQ",
+      "sha256": "d7640ba550b06481d0bf784928d2e28af89b3edcbd18e8d026dd9caf8e69011b",
+      "bytes": 50874,
+      "contentType": "image/jpeg",
+      "role": "场景示意配图，非真实活动照片"
+    }
+  }
+}

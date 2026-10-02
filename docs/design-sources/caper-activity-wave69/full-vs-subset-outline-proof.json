@@ -1,0 +1,289 @@
+{
+  "originalCSS": "/private/tmp/caper-wave69-activity-prep/sources/pg06-original-material-link-2.css",
+  "originalFullFont": "/private/tmp/caper-wave69-event/sources/material-up.woff2",
+  "version": [
+    "Version 2.972"
+  ],
+  "comparison": [
+    {
+      "glyph": "arrow_back_ios_new",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "more_horiz",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "person",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "calendar_today",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "location_on",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "chevron_right",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "star",
+      "axes": {
+        "wght": 700,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "lightbulb",
+      "axes": {
+        "wght": 400,
+        "FILL": 1,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "check",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "check_circle",
+      "axes": {
+        "wght": 400,
+        "FILL": 1,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "ios_share",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "send",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "stop_circle",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "sync",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "celebration",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "check_circle",
+      "axes": {
+        "wght": 700,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": false
+    },
+    {
+      "glyph": "sentiment_dissatisfied",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "task_alt",
+      "axes": {
+        "wght": 700,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": false
+    },
+    {
+      "glyph": "sentiment_neutral",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "ios_share",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "receipt_long",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "group",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "chevron_right",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "keyboard_arrow_down",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "check_circle",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "keyboard_arrow_down",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "auto_awesome",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    },
+    {
+      "glyph": "info",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "sameOutlineAsOriginalFullFace": true
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "stagePaths": 91,
+  "changedTracked": 13,
+  "new": 78,
+  "textFiles": 72,
+  "binaryFiles": 19,
+  "findings": [],
+  "scope": "Current batch staged changed files only; no full suite or repo scan.",
+  "excludedOriginalDevelopmentPackage": true,
+  "cachedWhitespaceCheckExit": 0,
+  "note": "91 staged changed paths scanned; this sanitized proof is a later metadata-only file. No full repository or business test."
+}

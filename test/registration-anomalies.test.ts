@@ -4,7 +4,8 @@ import { randomUUID } from 'node:crypto';
 import { test } from 'node:test';
 import { createDatabase } from '../src/db.ts';
 import { createApp } from '../src/server.ts';
-import { createDraft, publishEvent } from '../src/events.ts';
+import { createDraft } from '../src/events.ts';
+import { publishApprovedInvite } from './helpers.ts';
 
 const eventInput = { title: '异常报名人工复核', type: 'badminton', startAt: '2027-01-02T12:00:00.000Z', endAt: '2027-01-02T14:00:00.000Z',
   timeZone: 'Asia/Shanghai', city: '深圳', venueName: '公共球馆', venueStatus: 'HOST_CONFIRMED', minParticipants: 4,
@@ -19,7 +20,7 @@ test('repeated signup and exit is queued for human review without an automatic p
   if (!address || typeof address === 'string') throw new Error('server did not listen');
   const base = `http://127.0.0.1:${address.port}`;
   const draft = await createDraft(db, 'host', eventInput, 'draft-anomaly');
-  const eventId = (await publishEvent(db, 'host', draft.id, draft.version, 'publish-anomaly')).id;
+  const eventId = (await publishApprovedInvite(db, 'host', draft.id, draft.version, 'publish-anomaly')).id;
   const member = 'repeat-member';
   const record = async (action: string, createdAt: string | null = null) => db.query(
     'INSERT INTO audit(id,actor_id,event_id,action,created_at) VALUES($1,$2,$3,$4,coalesce($5::timestamptz,now()))',
@@ -79,7 +80,7 @@ test('repeated signup and exit is queued for human review without an automatic p
 test('anomaly queue pages beyond 100 and rejects a stale snapshot', async () => {
   const db = await createDatabase();
   const draft = await createDraft(db, 'host', eventInput, 'draft-anomaly-pages');
-  const eventId = (await publishEvent(db, 'host', draft.id, draft.version, 'publish-anomaly-pages')).id;
+  const eventId = (await publishApprovedInvite(db, 'host', draft.id, draft.version, 'publish-anomaly-pages')).id;
   await db.query(`INSERT INTO audit(id,actor_id,event_id,action)
     SELECT 'anomaly-'||g.i||'-'||a.n,'member-'||g.i,$1,a.action
     FROM generate_series(1,101) AS g(i) CROSS JOIN (VALUES

@@ -1,0 +1,2405 @@
+{
+  "batch": "Wave 66",
+  "date": "2026-10-02",
+  "baseline": {
+    "local": "d94d3aa29c7b29f80392c8788311eed39ddfce12",
+    "remote": "52d8860d9decb55d985a467da8f2a15e65adc387",
+    "tree": "63e896f5bc08f4fbe59482b12ab6529cd30b3426"
+  },
+  "scope": "Only source INBOX header/priority, create IDEA, PG01 authorized visitor. No full suite or CI.",
+  "runtime": {
+    "devtools": "2.02.2609231",
+    "sdkVersion": "3.17.2",
+    "windowWidth": 402,
+    "windowHeight": 874,
+    "statusBarHeight": 54,
+    "localAPI": 3037,
+    "testAppID": true
+  },
+  "segments": {
+    "messages": {
+      "scope": "Wave66 actual INBOX header/priority and limited changed routes; no full suite",
+      "checks": [
+        {
+          "pass": true,
+          "label": "actual INBOX state",
+          "actual": "INBOX",
+          "expected": "INBOX"
+        },
+        {
+          "pass": true,
+          "label": "real unread priority sample",
+          "actual": 2,
+          "expected": "positive"
+        },
+        {
+          "pass": true,
+          "label": "real square .brand-dot",
+          "actual": {
+            "width": 32,
+            "height": 32
+          },
+          "expected": 32
+        },
+        {
+          "pass": true,
+          "label": "real square .brand-icon",
+          "actual": {
+            "width": 32,
+            "height": 32
+          },
+          "expected": 32
+        },
+        {
+          "pass": true,
+          "label": "real square .brand-icon-glyph",
+          "actual": {
+            "width": 16,
+            "height": 16
+          },
+          "expected": 16
+        },
+        {
+          "pass": true,
+          "label": "real square .priority-icon",
+          "actual": {
+            "width": 40,
+            "height": 40
+          },
+          "expected": 40
+        },
+        {
+          "pass": true,
+          "label": "real square .priority-unread",
+          "actual": {
+            "width": 16,
+            "height": 16
+          },
+          "expected": 16
+        },
+        {
+          "pass": true,
+          "label": "real source font size .page-title",
+          "actual": "24px",
+          "expected": 24
+        },
+        {
+          "pass": true,
+          "label": "real source font size .filter",
+          "actual": "12px",
+          "expected": 12
+        },
+        {
+          "pass": true,
+          "label": "real source font size .priority-title",
+          "actual": "12px",
+          "expected": 12
+        },
+        {
+          "pass": true,
+          "label": "real source font size .priority-time",
+          "actual": "10px",
+          "expected": 10
+        },
+        {
+          "pass": true,
+          "label": "actions stay outside capsule",
+          "actual": {
+            "selector": ".brand-actions",
+            "offset": {
+              "left": 228,
+              "top": 66
+            },
+            "size": {
+              "width": 72,
+              "height": 32
+            },
+            "text": "",
+            "fontSize": "13px",
+            "lineHeight": "normal"
+          },
+          "expected": 300
+        },
+        {
+          "pass": true,
+          "label": "header below real status",
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "pass": true,
+          "label": "brand title and filters sticky together",
+          "actual": 54,
+          "expected": 54
+        },
+        {
+          "pass": true,
+          "label": "real filter ACTIVITY",
+          "actual": "ACTIVITY",
+          "expected": "ACTIVITY"
+        },
+        {
+          "pass": true,
+          "label": "real filter SYSTEM",
+          "actual": "SYSTEM",
+          "expected": "SYSTEM"
+        },
+        {
+          "pass": true,
+          "label": "real filter ALL",
+          "actual": "ALL",
+          "expected": "ALL"
+        },
+        {
+          "pass": true,
+          "label": "real search input visible",
+          "actual": true,
+          "expected": true
+        },
+        {
+          "pass": true,
+          "label": "actual loaded-notice search",
+          "actual": "不会匹配的验收文字",
+          "expected": "不会匹配的验收文字"
+        },
+        {
+          "pass": true,
+          "label": "closing search clears query",
+          "actual": "",
+          "expected": ""
+        },
+        {
+          "pass": true,
+          "label": "new INBOX header absent in CENTER",
+          "actual": null,
+          "expected": null
+        },
+        {
+          "pass": true,
+          "label": "return restores INBOX header",
+          "actual": true,
+          "expected": true
+        },
+        {
+          "pass": true,
+          "label": "settings real visible personal section",
+          "actual": {
+            "selector": "#notificationSettingsSection",
+            "offset": {
+              "left": 16,
+              "top": 610.5
+            },
+            "size": {
+              "width": 370,
+              "height": 20
+            },
+            "text": "隐私与社交可见性",
+            "fontSize": "14px",
+            "lineHeight": "20px"
+          },
+          "expected": "notificationSettingsSection"
+        },
+        {
+          "pass": true,
+          "label": "offer real profile destination",
+          "actual": "pages/me/me",
+          "expected": "pages/me/me"
+        },
+        {
+          "pass": true,
+          "label": "same notification server readback",
+          "actual": "OPENED",
+          "expected": "OPENED"
+        },
+        {
+          "pass": true,
+          "label": "scoped exception events",
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "actions": [
+        {
+          "action": "filter",
+          "value": "ACTIVITY"
+        },
+        {
+          "action": "filter",
+          "value": "SYSTEM"
+        },
+        {
+          "action": "filter",
+          "value": "ALL"
+        },
+        {
+          "action": "search input/open/close",
+          "writes": false
+        },
+        {
+          "action": "priority all CENTER and return"
+        },
+        {
+          "action": "settings",
+          "route": "pages/me/me"
+        },
+        {
+          "action": "actual priority",
+          "noticeId": "e3ea7534-2295-4ad2-96ab-fddd7e41d262",
+          "eventId": "202fdfc1-3c1f-4608-82a0-6e2cbf7c6319",
+          "kind": "WAITLIST_OFFER",
+          "route": "pages/me/me",
+          "serverStatus": "OPENED"
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-messages-top-wave66-2026-10-02.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-messages-priority-wave66-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "actualData": {
+        "total": 9,
+        "unreadTotal": 4,
+        "priorityCount": 4,
+        "priorityItems": [
+          {
+            "id": "e3ea7534-2295-4ad2-96ab-fddd7e41d262",
+            "eventId": "202fdfc1-3c1f-4608-82a0-6e2cbf7c6319",
+            "kind": "WAITLIST_OFFER",
+            "status": "IN_APP"
+          },
+          {
+            "id": "51e8cf00-945e-4922-9720-71563ca6a370",
+            "eventId": "202fdfc1-3c1f-4608-82a0-6e2cbf7c6319",
+            "kind": "REGISTRATION_STATUS",
+            "status": "IN_APP"
+          }
+        ]
+      },
+      "native": {
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      "nodes": [
+        {
+          "selector": ".brand-dot",
+          "offset": {
+            "left": 20,
+            "top": 66
+          },
+          "size": {
+            "width": 32,
+            "height": 32
+          },
+          "text": "耍",
+          "fontSize": "18px",
+          "lineHeight": "32px"
+        },
+        {
+          "selector": ".brand-icon",
+          "offset": {
+            "left": 228,
+            "top": 66
+          },
+          "size": {
+            "width": 32,
+            "height": 32
+          },
+          "text": "",
+          "fontSize": "14px",
+          "lineHeight": "14px"
+        },
+        {
+          "selector": ".brand-icon-glyph",
+          "offset": {
+            "left": 236,
+            "top": 74
+          },
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "text": "",
+          "fontSize": "14px",
+          "lineHeight": "14px"
+        },
+        {
+          "selector": ".priority-icon",
+          "offset": {
+            "left": 33,
+            "top": 370
+          },
+          "size": {
+            "width": 40,
+            "height": 40
+          },
+          "text": "ϟ",
+          "fontSize": "12px",
+          "lineHeight": "38px"
+        },
+        {
+          "selector": ".priority-unread",
+          "offset": {
+            "left": 353,
+            "top": 382
+          },
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "text": "1",
+          "fontSize": "10px",
+          "lineHeight": "16px"
+        },
+        {
+          "selector": ".page-title",
+          "offset": {
+            "left": 20,
+            "top": 118
+          },
+          "size": {
+            "width": 46.8046875,
+            "height": 32
+          },
+          "text": "消息",
+          "fontSize": "24px",
+          "lineHeight": "32px"
+        },
+        {
+          "selector": ".filter",
+          "offset": {
+            "left": 20,
+            "top": 185.5
+          },
+          "size": {
+            "width": 114,
+            "height": 28
+          },
+          "text": "全部消息",
+          "fontSize": "12px",
+          "lineHeight": "16px"
+        },
+        {
+          "selector": ".priority-title",
+          "offset": {
+            "left": 85,
+            "top": 371
+          },
+          "size": {
+            "width": 72,
+            "height": 18
+          },
+          "text": "收到补位邀请",
+          "fontSize": "12px",
+          "lineHeight": "18px"
+        },
+        {
+          "selector": ".priority-time",
+          "offset": {
+            "left": 217,
+            "top": 373.5
+          },
+          "size": {
+            "width": 124,
+            "height": 15
+          },
+          "text": "10月1日 02:47",
+          "fontSize": "10px",
+          "lineHeight": "15px"
+        }
+      ],
+      "header": {
+        "actions": {
+          "selector": ".brand-actions",
+          "offset": {
+            "left": 228,
+            "top": 66
+          },
+          "size": {
+            "width": 72,
+            "height": 32
+          },
+          "text": "",
+          "fontSize": "13px",
+          "lineHeight": "normal"
+        },
+        "h": {
+          "selector": ".inbox-reference-header",
+          "offset": {
+            "left": 0,
+            "top": 54
+          },
+          "size": {
+            "width": 402,
+            "height": 172.5
+          },
+          "text": "耍耍起CAPER消息4因一件想做的事，遇见一群有趣的人More People Brighter Days ☺GoodPeopleMore Plans ☺全部消息👥 活动相关📢 系统通知",
+          "fontSize": "16px",
+          "lineHeight": "normal"
+        }
+      },
+      "pass": true,
+      "elapsedMs": 13442
+    },
+    "idea": {
+      "scope": "Wave66 IDEA actual layout/glyph/input and limited local suggestion navigation; no saving/publishing/full suite",
+      "checks": [
+        {
+          "pass": true,
+          "label": "real source box dimensions .header-back",
+          "actual": {
+            "selector": ".header-back",
+            "offset": {
+              "left": 10,
+              "top": 60
+            },
+            "size": {
+              "width": 44,
+              "height": 44
+            },
+            "text": "",
+            "fontSize": "30px",
+            "lineHeight": "normal",
+            "width": "44px",
+            "height": "44px",
+            "transform": "none"
+          },
+          "expected": [
+            44,
+            44
+          ]
+        },
+        {
+          "pass": true,
+          "label": "real source box dimensions .idea-header-back-symbol",
+          "actual": {
+            "selector": ".idea-header-back-symbol",
+            "offset": {
+              "left": 20,
+              "top": 70
+            },
+            "size": {
+              "width": 24,
+              "height": 24
+            },
+            "text": "",
+            "fontSize": "30px",
+            "lineHeight": "normal",
+            "width": "24px",
+            "height": "24px",
+            "transform": "none"
+          },
+          "expected": [
+            24,
+            24
+          ]
+        },
+        {
+          "pass": true,
+          "label": "real source box dimensions .header-profile",
+          "actual": {
+            "selector": ".header-profile",
+            "offset": {
+              "left": 268,
+              "top": 66
+            },
+            "size": {
+              "width": 32,
+              "height": 32
+            },
+            "text": "",
+            "fontSize": "14px",
+            "lineHeight": "normal",
+            "width": "32px",
+            "height": "32px",
+            "transform": "none"
+          },
+          "expected": [
+            32,
+            32
+          ]
+        },
+        {
+          "pass": true,
+          "label": "real source box dimensions .idea-header-person-symbol",
+          "actual": {
+            "selector": ".idea-header-person-symbol",
+            "offset": {
+              "left": 275,
+              "top": 73
+            },
+            "size": {
+              "width": 18,
+              "height": 18
+            },
+            "text": "",
+            "fontSize": "14px",
+            "lineHeight": "normal",
+            "width": "18px",
+            "height": "18px",
+            "transform": "none"
+          },
+          "expected": [
+            18,
+            18
+          ]
+        },
+        {
+          "pass": true,
+          "label": "real source box dimensions .orb",
+          "actual": {
+            "selector": ".orb",
+            "offset": {
+              "left": 306,
+              "top": 159.875
+            },
+            "size": {
+              "width": 80,
+              "height": 80
+            },
+            "text": "",
+            "fontSize": "15px",
+            "lineHeight": "21px",
+            "width": "80px",
+            "height": "80px",
+            "transform": "none"
+          },
+          "expected": [
+            80,
+            80
+          ]
+        },
+        {
+          "pass": true,
+          "label": "real source box dimensions .idea-orb-eye",
+          "actual": {
+            "selector": ".idea-orb-eye",
+            "offset": {
+              "left": 333,
+              "top": 194.875
+            },
+            "size": {
+              "width": 8,
+              "height": 10
+            },
+            "text": "",
+            "fontSize": "0px",
+            "lineHeight": "21px",
+            "width": "8px",
+            "height": "10px",
+            "transform": "none"
+          },
+          "expected": [
+            8,
+            10
+          ]
+        },
+        {
+          "pass": true,
+          "label": "real source box dimensions .idea-orb-reflection",
+          "actual": {
+            "selector": ".idea-orb-reflection",
+            "offset": {
+              "left": 317.3934020996094,
+              "top": 162.26840209960938
+            },
+            "size": {
+              "width": 21.21319580078125,
+              "height": 21.21319580078125
+            },
+            "text": "",
+            "fontSize": "15px",
+            "lineHeight": "21px",
+            "width": "20px",
+            "height": "10px",
+            "transform": "matrix(0.707107, -0.707107, 0.707107, 0.707107, 0, 0)"
+          },
+          "expected": [
+            20,
+            10
+          ]
+        },
+        {
+          "pass": true,
+          "label": "real source box dimensions .idea-orb-cheek",
+          "actual": {
+            "selector": ".idea-orb-cheek",
+            "offset": {
+              "left": 330,
+              "top": 219.875
+            },
+            "size": {
+              "width": 6,
+              "height": 4
+            },
+            "text": "",
+            "fontSize": "0px",
+            "lineHeight": "21px",
+            "width": "6px",
+            "height": "4px",
+            "transform": "none"
+          },
+          "expected": [
+            6,
+            4
+          ]
+        },
+        {
+          "pass": true,
+          "label": "real source box dimensions .send-button",
+          "actual": {
+            "selector": ".send-button",
+            "offset": {
+              "left": 330,
+              "top": 419.25
+            },
+            "size": {
+              "width": 40,
+              "height": 40
+            },
+            "text": "",
+            "fontSize": "19px",
+            "lineHeight": "normal",
+            "width": "40px",
+            "height": "40px",
+            "transform": "none"
+          },
+          "expected": [
+            40,
+            40
+          ]
+        },
+        {
+          "pass": true,
+          "label": "real source box dimensions .idea-send-symbol",
+          "actual": {
+            "selector": ".idea-send-symbol",
+            "offset": {
+              "left": 340.139404296875,
+              "top": 427.389404296875
+            },
+            "size": {
+              "width": 23.72119140625,
+              "height": 23.72119140625
+            },
+            "text": "",
+            "fontSize": "19px",
+            "lineHeight": "normal",
+            "width": "20px",
+            "height": "20px",
+            "transform": "matrix(0.978148, -0.207912, 0.207912, 0.978148, 2, 0)"
+          },
+          "expected": [
+            20,
+            20
+          ]
+        },
+        {
+          "pass": true,
+          "label": "real source box dimensions .inspiration-icon",
+          "actual": {
+            "selector": ".inspiration-icon",
+            "offset": {
+              "left": 30,
+              "top": 555.25
+            },
+            "size": {
+              "width": 44,
+              "height": 44
+            },
+            "text": "🏸",
+            "fontSize": "20px",
+            "lineHeight": "28px",
+            "width": "44px",
+            "height": "44px",
+            "transform": "none"
+          },
+          "expected": [
+            44,
+            44
+          ]
+        },
+        {
+          "pass": true,
+          "label": "real source box dimensions .idea-generate-symbol",
+          "actual": {
+            "selector": ".idea-generate-symbol",
+            "offset": {
+              "left": 132.64651489257812,
+              "top": 745.1387329101562
+            },
+            "size": {
+              "width": 27.72259521484375,
+              "height": 27.72259521484375
+            },
+            "text": "",
+            "fontSize": "17px",
+            "lineHeight": "22px",
+            "width": "22px",
+            "height": "22px",
+            "transform": "matrix(0.309083, -0.951035, 0.951035, 0.309083, 0, 0)"
+          },
+          "expected": [
+            22,
+            22
+          ]
+        },
+        {
+          "pass": true,
+          "label": "profile outside native capsule",
+          "actual": {
+            "selector": ".header-profile",
+            "offset": {
+              "left": 268,
+              "top": 66
+            },
+            "size": {
+              "width": 32,
+              "height": 32
+            },
+            "text": "",
+            "fontSize": "14px",
+            "lineHeight": "normal",
+            "width": "32px",
+            "height": "32px",
+            "transform": "none"
+          },
+          "expected": 300
+        },
+        {
+          "pass": true,
+          "label": "draft profile source 8px gap",
+          "actual": {
+            "profile": {
+              "selector": ".header-profile",
+              "offset": {
+                "left": 268,
+                "top": 66
+              },
+              "size": {
+                "width": 32,
+                "height": 32
+              },
+              "text": "",
+              "fontSize": "14px",
+              "lineHeight": "normal",
+              "width": "32px",
+              "height": "32px",
+              "transform": "none"
+            },
+            "drafts": {
+              "selector": ".header-side",
+              "offset": {
+                "left": 176,
+                "top": 66
+              },
+              "size": {
+                "width": 84,
+                "height": 32
+              },
+              "text": "草稿箱",
+              "fontSize": "13px",
+              "lineHeight": "16px",
+              "width": "84px",
+              "height": "32px",
+              "transform": "none"
+            },
+            "title": {
+              "selector": ".header-title",
+              "offset": {
+                "left": 54,
+                "top": 71
+              },
+              "size": {
+                "width": 122,
+                "height": 22
+              },
+              "text": "活动构思",
+              "fontSize": "17px",
+              "lineHeight": "22px",
+              "width": "106px",
+              "height": "22px",
+              "transform": "none"
+            }
+          },
+          "expected": 8
+        },
+        {
+          "pass": true,
+          "label": "title cannot cover draft button",
+          "actual": {
+            "selector": ".header-title",
+            "offset": {
+              "left": 54,
+              "top": 71
+            },
+            "size": {
+              "width": 122,
+              "height": 22
+            },
+            "text": "活动构思",
+            "fontSize": "17px",
+            "lineHeight": "22px",
+            "width": "106px",
+            "height": "22px",
+            "transform": "none"
+          },
+          "expected": 176
+        },
+        {
+          "pass": true,
+          "label": "prompt true source 16px gutters",
+          "actual": {
+            "selector": ".prompt-card",
+            "offset": {
+              "left": 16,
+              "top": 297.75
+            },
+            "size": {
+              "width": 370,
+              "height": 177.5
+            },
+            "text": "0/300",
+            "fontSize": "15px",
+            "lineHeight": "21px",
+            "width": "370px",
+            "height": "177.5px",
+            "transform": "none"
+          },
+          "expected": [
+            16,
+            370
+          ]
+        },
+        {
+          "pass": true,
+          "label": "source min168 prompt",
+          "actual": 177.5,
+          "expected": ">=168"
+        },
+        {
+          "pass": true,
+          "label": "correct original tag 15px lineheight",
+          "actual": "15px",
+          "expected": 15
+        },
+        {
+          "pass": true,
+          "label": "correct original quote 18px lineheight",
+          "actual": "18px",
+          "expected": 18
+        },
+        {
+          "pass": true,
+          "label": "correct original party-pink-soft",
+          "actual": [
+            "rgb(255, 240, 243)",
+            "rgb(255, 240, 243)"
+          ],
+          "expected": "#FFF0F3"
+        },
+        {
+          "pass": true,
+          "label": "fixed tray bottom in actual viewport",
+          "actual": {
+            "selector": ".sticky-actions",
+            "offset": {
+              "left": 0,
+              "top": 722
+            },
+            "size": {
+              "width": 402,
+              "height": 152
+            },
+            "text": "生成活动草稿不用建议，直接手动填写",
+            "fontSize": "15px",
+            "lineHeight": "21px",
+            "width": "402px",
+            "height": "152px",
+            "transform": "none"
+          },
+          "expected": 874
+        },
+        {
+          "pass": true,
+          "label": "real count matches typed text",
+          "actual": 32,
+          "expected": 32
+        },
+        {
+          "pass": true,
+          "label": "real send enabled after input",
+          "actual": "false",
+          "expected": false
+        },
+        {
+          "pass": false,
+          "label": "closed inspiration true notice",
+          "actual": "",
+          "expected": "unavailable"
+        }
+      ],
+      "actions": [
+        {
+          "action": "input",
+          "characters": 32
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-create-idea-top-wave66-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "native": {
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      "nodes": [
+        {
+          "selector": ".header-back",
+          "offset": {
+            "left": 10,
+            "top": 60
+          },
+          "size": {
+            "width": 44,
+            "height": 44
+          },
+          "text": "",
+          "fontSize": "30px",
+          "lineHeight": "normal",
+          "width": "44px",
+          "height": "44px",
+          "transform": "none"
+        },
+        {
+          "selector": ".idea-header-back-symbol",
+          "offset": {
+            "left": 20,
+            "top": 70
+          },
+          "size": {
+            "width": 24,
+            "height": 24
+          },
+          "text": "",
+          "fontSize": "30px",
+          "lineHeight": "normal",
+          "width": "24px",
+          "height": "24px",
+          "transform": "none"
+        },
+        {
+          "selector": ".header-profile",
+          "offset": {
+            "left": 268,
+            "top": 66
+          },
+          "size": {
+            "width": 32,
+            "height": 32
+          },
+          "text": "",
+          "fontSize": "14px",
+          "lineHeight": "normal",
+          "width": "32px",
+          "height": "32px",
+          "transform": "none"
+        },
+        {
+          "selector": ".idea-header-person-symbol",
+          "offset": {
+            "left": 275,
+            "top": 73
+          },
+          "size": {
+            "width": 18,
+            "height": 18
+          },
+          "text": "",
+          "fontSize": "14px",
+          "lineHeight": "normal",
+          "width": "18px",
+          "height": "18px",
+          "transform": "none"
+        },
+        {
+          "selector": ".orb",
+          "offset": {
+            "left": 306,
+            "top": 159.875
+          },
+          "size": {
+            "width": 80,
+            "height": 80
+          },
+          "text": "",
+          "fontSize": "15px",
+          "lineHeight": "21px",
+          "width": "80px",
+          "height": "80px",
+          "transform": "none"
+        },
+        {
+          "selector": ".idea-orb-eye",
+          "offset": {
+            "left": 333,
+            "top": 194.875
+          },
+          "size": {
+            "width": 8,
+            "height": 10
+          },
+          "text": "",
+          "fontSize": "0px",
+          "lineHeight": "21px",
+          "width": "8px",
+          "height": "10px",
+          "transform": "none"
+        },
+        {
+          "selector": ".idea-orb-reflection",
+          "offset": {
+            "left": 317.3934020996094,
+            "top": 162.26840209960938
+          },
+          "size": {
+            "width": 21.21319580078125,
+            "height": 21.21319580078125
+          },
+          "text": "",
+          "fontSize": "15px",
+          "lineHeight": "21px",
+          "width": "20px",
+          "height": "10px",
+          "transform": "matrix(0.707107, -0.707107, 0.707107, 0.707107, 0, 0)"
+        },
+        {
+          "selector": ".idea-orb-cheek",
+          "offset": {
+            "left": 330,
+            "top": 219.875
+          },
+          "size": {
+            "width": 6,
+            "height": 4
+          },
+          "text": "",
+          "fontSize": "0px",
+          "lineHeight": "21px",
+          "width": "6px",
+          "height": "4px",
+          "transform": "none"
+        },
+        {
+          "selector": ".send-button",
+          "offset": {
+            "left": 330,
+            "top": 419.25
+          },
+          "size": {
+            "width": 40,
+            "height": 40
+          },
+          "text": "",
+          "fontSize": "19px",
+          "lineHeight": "normal",
+          "width": "40px",
+          "height": "40px",
+          "transform": "none"
+        },
+        {
+          "selector": ".idea-send-symbol",
+          "offset": {
+            "left": 340.139404296875,
+            "top": 427.389404296875
+          },
+          "size": {
+            "width": 23.72119140625,
+            "height": 23.72119140625
+          },
+          "text": "",
+          "fontSize": "19px",
+          "lineHeight": "normal",
+          "width": "20px",
+          "height": "20px",
+          "transform": "matrix(0.978148, -0.207912, 0.207912, 0.978148, 2, 0)"
+        },
+        {
+          "selector": ".inspiration-icon",
+          "offset": {
+            "left": 30,
+            "top": 555.25
+          },
+          "size": {
+            "width": 44,
+            "height": 44
+          },
+          "text": "🏸",
+          "fontSize": "20px",
+          "lineHeight": "28px",
+          "width": "44px",
+          "height": "44px",
+          "transform": "none"
+        },
+        {
+          "selector": ".idea-generate-symbol",
+          "offset": {
+            "left": 132.64651489257812,
+            "top": 745.1387329101562
+          },
+          "size": {
+            "width": 27.72259521484375,
+            "height": 27.72259521484375
+          },
+          "text": "",
+          "fontSize": "17px",
+          "lineHeight": "22px",
+          "width": "22px",
+          "height": "22px",
+          "transform": "matrix(0.309083, -0.951035, 0.951035, 0.309083, 0, 0)"
+        }
+      ],
+      "header": {
+        "profile": {
+          "selector": ".header-profile",
+          "offset": {
+            "left": 268,
+            "top": 66
+          },
+          "size": {
+            "width": 32,
+            "height": 32
+          },
+          "text": "",
+          "fontSize": "14px",
+          "lineHeight": "normal",
+          "width": "32px",
+          "height": "32px",
+          "transform": "none"
+        },
+        "drafts": {
+          "selector": ".header-side",
+          "offset": {
+            "left": 176,
+            "top": 66
+          },
+          "size": {
+            "width": 84,
+            "height": 32
+          },
+          "text": "草稿箱",
+          "fontSize": "13px",
+          "lineHeight": "16px",
+          "width": "84px",
+          "height": "32px",
+          "transform": "none"
+        },
+        "title": {
+          "selector": ".header-title",
+          "offset": {
+            "left": 54,
+            "top": 71
+          },
+          "size": {
+            "width": 122,
+            "height": 22
+          },
+          "text": "活动构思",
+          "fontSize": "17px",
+          "lineHeight": "22px",
+          "width": "106px",
+          "height": "22px",
+          "transform": "none"
+        }
+      },
+      "layout": {
+        "prompt": {
+          "selector": ".prompt-card",
+          "offset": {
+            "left": 16,
+            "top": 297.75
+          },
+          "size": {
+            "width": 370,
+            "height": 177.5
+          },
+          "text": "0/300",
+          "fontSize": "15px",
+          "lineHeight": "21px",
+          "width": "370px",
+          "height": "177.5px",
+          "transform": "none"
+        },
+        "tray": {
+          "selector": ".sticky-actions",
+          "offset": {
+            "left": 0,
+            "top": 722
+          },
+          "size": {
+            "width": 402,
+            "height": 152
+          },
+          "text": "生成活动草稿不用建议，直接手动填写",
+          "fontSize": "15px",
+          "lineHeight": "21px",
+          "width": "402px",
+          "height": "152px",
+          "transform": "none"
+        },
+        "tag": {
+          "selector": ".orb-tag",
+          "offset": {
+            "left": 304.4530944824219,
+            "top": 143.5779266357422
+          },
+          "size": {
+            "width": 87.09381103515625,
+            "height": 42.594146728515625
+          },
+          "text": "Your Social Copilot",
+          "fontSize": "10px",
+          "lineHeight": "15px",
+          "width": "84px",
+          "height": "34px",
+          "transform": "matrix(0.994522, 0.104528, -0.104528, 0.994522, 0, 0)"
+        },
+        "quote": {
+          "selector": ".idea-quote",
+          "offset": {
+            "left": 16,
+            "top": 797.25
+          },
+          "size": {
+            "width": 370,
+            "height": 26
+          },
+          "text": "Good Ideas Create Great People",
+          "fontSize": "12px",
+          "lineHeight": "18px",
+          "width": "370px",
+          "height": "18px",
+          "transform": "none"
+        }
+      },
+      "pink": [
+        "rgb(255, 240, 243)",
+        "rgb(255, 240, 243)"
+      ],
+      "pass": false,
+      "failure": {
+        "phase": "input-real",
+        "message": "closed inspiration true notice: \"\"",
+        "stack": "AssertionError [ERR_ASSERTION]: closed inspiration true notice: \"\"\n    at check (/private/tmp/caper-wave66-idea.cjs:2:643)\n    at /private/tmp/caper-wave66-idea.cjs:4:602\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)"
+      },
+      "elapsedMs": 4564
+    },
+    "idea-remaining": {
+      "scope": "Wave66 IDEA actual layout/glyph/input and limited local suggestion navigation; no saving/publishing/full suite",
+      "checks": [
+        {
+          "pass": true,
+          "label": "closed inspiration true notice",
+          "actual": "创业者咖啡暂未开放；当前可创建和发布受控羽毛球活动。",
+          "expected": "unavailable"
+        },
+        {
+          "pass": true,
+          "label": "closed inspiration preserves typed idea",
+          "actual": "周六下午在深圳测试羽毛球馆组织6人羽毛球活动，AA每人上限50元",
+          "expected": "周六下午在深圳测试羽毛球馆组织6人羽毛球活动，AA每人上限50元"
+        },
+        {
+          "pass": true,
+          "label": "three real rotated cards",
+          "actual": 3,
+          "expected": 3
+        },
+        {
+          "pass": true,
+          "label": "IDEA-only spacer absent FORM",
+          "actual": null,
+          "expected": null
+        },
+        {
+          "pass": true,
+          "label": "real FORM fields available",
+          "actual": true,
+          "expected": true
+        },
+        {
+          "pass": true,
+          "label": "manual return preserves typed input",
+          "actual": "周六下午在深圳测试羽毛球馆组织6人羽毛球活动，AA每人上限50元",
+          "expected": "周六下午在深圳测试羽毛球馆组织6人羽毛球活动，AA每人上限50元"
+        },
+        {
+          "pass": true,
+          "label": "real rules API extracted fields",
+          "actual": [
+            "类型：羽毛球（来自原话）",
+            "最多人数：6（来自原话）",
+            "费用模式：AA（来自原话）"
+          ],
+          "expected": "nonempty"
+        },
+        {
+          "pass": true,
+          "label": "suggestion does not save or publish",
+          "actual": {
+            "draft": null,
+            "editingEvent": null
+          },
+          "expected": "no persisted draft"
+        },
+        {
+          "pass": true,
+          "label": "scoped exception events",
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "actions": [
+        {
+          "action": "input",
+          "characters": 32
+        },
+        {
+          "action": "closed coffee inspiration",
+          "noAPISuggestion": true
+        },
+        {
+          "action": "rotate",
+          "before": [
+            "周末羽毛球",
+            "创业者咖啡",
+            "周五小酒局"
+          ],
+          "after": [
+            "周六进阶局",
+            "周日晨间球",
+            "同城轻松打"
+          ]
+        },
+        {
+          "action": "manual",
+          "stage": "FORM"
+        },
+        {
+          "action": "FORM header back",
+          "stage": "IDEA"
+        },
+        {
+          "action": "actual send suggestion",
+          "stage": "FORM",
+          "notes": [
+            "类型：羽毛球（来自原话）",
+            "最多人数：6（来自原话）",
+            "费用模式：AA（来自原话）"
+          ],
+          "form": {
+            "title": "",
+            "city": "",
+            "venueName": "",
+            "skillLevel": "",
+            "minParticipants": "4",
+            "maxParticipants": "6",
+            "feeCapYuan": "50",
+            "cancellationRule": "开始前可退出"
+          }
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-create-idea-input-wave66-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "native": {
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      "pass": true,
+      "elapsedMs": 5103
+    },
+    "visitor": {
+      "scope": "Wave66 actual authorized PG01 visitor and limited confirmation/host/member exclusion; no registration or publishing",
+      "checks": [
+        {
+          "pass": true,
+          "label": "same authorized fixture event",
+          "actual": "0e51f241-3f63-439d-b59d-593549a61ac2",
+          "expected": "0e51f241-3f63-439d-b59d-593549a61ac2"
+        },
+        {
+          "pass": true,
+          "label": "real visitor role",
+          "actual": {
+            "isHost": false,
+            "isBadminton": true
+          },
+          "expected": "visitor"
+        },
+        {
+          "pass": true,
+          "label": "only visitor reference poster present",
+          "actual": true,
+          "expected": true
+        },
+        {
+          "pass": true,
+          "label": "actual source box .pg01-nav-back",
+          "actual": {
+            "selector": ".pg01-nav-back",
+            "offset": {
+              "left": 16,
+              "top": 64
+            },
+            "size": {
+              "width": 36,
+              "height": 36
+            },
+            "text": "",
+            "width": "36px",
+            "height": "36px",
+            "fontSize": "18px",
+            "lineHeight": "18px"
+          },
+          "expected": [
+            36,
+            36
+          ]
+        },
+        {
+          "pass": true,
+          "label": "actual source box .pg01-nav-share",
+          "actual": {
+            "selector": ".pg01-nav-share",
+            "offset": {
+              "left": 230,
+              "top": 74
+            },
+            "size": {
+              "width": 16,
+              "height": 16
+            },
+            "text": "",
+            "width": "16px",
+            "height": "16px",
+            "fontSize": "18px",
+            "lineHeight": "18px"
+          },
+          "expected": [
+            16,
+            16
+          ]
+        },
+        {
+          "pass": true,
+          "label": "actual source box .pg01-nav-more",
+          "actual": {
+            "selector": ".pg01-nav-more",
+            "offset": {
+              "left": 272,
+              "top": 72
+            },
+            "size": {
+              "width": 20,
+              "height": 20
+            },
+            "text": "",
+            "width": "20px",
+            "height": "20px",
+            "fontSize": "18px",
+            "lineHeight": "18px"
+          },
+          "expected": [
+            20,
+            20
+          ]
+        },
+        {
+          "pass": true,
+          "label": "actual source box .pg01-crown",
+          "actual": {
+            "selector": ".pg01-crown",
+            "offset": {
+              "left": 21.023052215576172,
+              "top": 61.02305221557617
+            },
+            "size": {
+              "width": 37.953895568847656,
+              "height": 37.95389938354492
+            },
+            "text": "",
+            "width": "32px",
+            "height": "32px",
+            "fontSize": "16px",
+            "lineHeight": "normal"
+          },
+          "expected": [
+            32,
+            32
+          ]
+        },
+        {
+          "pass": true,
+          "label": "actual source box .pg01-fact-icon",
+          "actual": {
+            "selector": ".pg01-fact-icon",
+            "offset": {
+              "left": 20,
+              "top": 686.8984375
+            },
+            "size": {
+              "width": 40,
+              "height": 40
+            },
+            "text": "",
+            "width": "40px",
+            "height": "40px",
+            "fontSize": "16px",
+            "lineHeight": "normal"
+          },
+          "expected": [
+            40,
+            40
+          ]
+        },
+        {
+          "pass": true,
+          "label": "actual source box .pg01-host-avatar",
+          "actual": {
+            "selector": ".pg01-host-avatar",
+            "offset": {
+              "left": 35,
+              "top": 853.1484375
+            },
+            "size": {
+              "width": 48,
+              "height": 48
+            },
+            "text": "★",
+            "width": "48px",
+            "height": "48px",
+            "fontSize": "16px",
+            "lineHeight": "normal"
+          },
+          "expected": [
+            48,
+            48
+          ]
+        },
+        {
+          "pass": true,
+          "label": "source poster fills actual width",
+          "actual": 402,
+          "expected": 402
+        },
+        {
+          "pass": true,
+          "label": "actual source aspect4/4.8",
+          "actual": {
+            "width": 402,
+            "height": 482.3984375
+          },
+          "expected": 1.2
+        },
+        {
+          "pass": true,
+          "label": "real sheet overlaps source24px",
+          "actual": 458.3984375,
+          "expected": 458.3984375
+        },
+        {
+          "pass": true,
+          "label": "three source header actions fit capsule",
+          "actual": {
+            "selector": ".pg01-nav-actions",
+            "offset": {
+              "left": 220,
+              "top": 64
+            },
+            "size": {
+              "width": 80,
+              "height": 36
+            },
+            "text": "",
+            "width": "80px",
+            "height": "36px",
+            "fontSize": "16px",
+            "lineHeight": "normal"
+          },
+          "expected": 300
+        },
+        {
+          "pass": false,
+          "label": "source conflicting utility actual18/28",
+          "actual": {
+            "selector": ".pg01-poster-tagline text:last-child",
+            "offset": {
+              "left": 26.137128829956055,
+              "top": 267.9025573730469
+            },
+            "size": {
+              "width": 136.16122436523438,
+              "height": 36.17120361328125
+            },
+            "text": "运动让生活更好看！",
+            "width": "110.703px",
+            "height": "16px",
+            "fontSize": "12px",
+            "lineHeight": "16px"
+          },
+          "expected": [
+            18,
+            28
+          ]
+        }
+      ],
+      "actions": [],
+      "screenshots": [],
+      "exceptions": [],
+      "native": {
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      "actual": {
+        "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2",
+        "version": 2,
+        "status": "RECRUITING",
+        "reviewStatus": "APPROVED",
+        "recruiting": true,
+        "canJoin": true,
+        "safetyStatus": "OPEN",
+        "isHost": false
+      },
+      "nodes": [
+        {
+          "selector": ".pg01-nav-back",
+          "offset": {
+            "left": 16,
+            "top": 64
+          },
+          "size": {
+            "width": 36,
+            "height": 36
+          },
+          "text": "",
+          "width": "36px",
+          "height": "36px",
+          "fontSize": "18px",
+          "lineHeight": "18px"
+        },
+        {
+          "selector": ".pg01-nav-share",
+          "offset": {
+            "left": 230,
+            "top": 74
+          },
+          "size": {
+            "width": 16,
+            "height": 16
+          },
+          "text": "",
+          "width": "16px",
+          "height": "16px",
+          "fontSize": "18px",
+          "lineHeight": "18px"
+        },
+        {
+          "selector": ".pg01-nav-more",
+          "offset": {
+            "left": 272,
+            "top": 72
+          },
+          "size": {
+            "width": 20,
+            "height": 20
+          },
+          "text": "",
+          "width": "20px",
+          "height": "20px",
+          "fontSize": "18px",
+          "lineHeight": "18px"
+        },
+        {
+          "selector": ".pg01-crown",
+          "offset": {
+            "left": 21.023052215576172,
+            "top": 61.02305221557617
+          },
+          "size": {
+            "width": 37.953895568847656,
+            "height": 37.95389938354492
+          },
+          "text": "",
+          "width": "32px",
+          "height": "32px",
+          "fontSize": "16px",
+          "lineHeight": "normal"
+        },
+        {
+          "selector": ".pg01-fact-icon",
+          "offset": {
+            "left": 20,
+            "top": 686.8984375
+          },
+          "size": {
+            "width": 40,
+            "height": 40
+          },
+          "text": "",
+          "width": "40px",
+          "height": "40px",
+          "fontSize": "16px",
+          "lineHeight": "normal"
+        },
+        {
+          "selector": ".pg01-host-avatar",
+          "offset": {
+            "left": 35,
+            "top": 853.1484375
+          },
+          "size": {
+            "width": 48,
+            "height": 48
+          },
+          "text": "★",
+          "width": "48px",
+          "height": "48px",
+          "fontSize": "16px",
+          "lineHeight": "normal"
+        }
+      ],
+      "layout": {
+        "poster": {
+          "selector": ".pg01-reference-poster",
+          "offset": {
+            "left": 0,
+            "top": 0
+          },
+          "size": {
+            "width": 402,
+            "height": 482.3984375
+          },
+          "text": "BADMINTONTOGETHER运动让生活更好看！好球友 总会相遇！Play MoreMeet Cool People ☺SPORTS,FRIENDSGOOD VIBES☺",
+          "width": "402px",
+          "height": "482.398px",
+          "fontSize": "16px",
+          "lineHeight": "normal"
+        },
+        "sheet": {
+          "selector": ".pg01-sheet",
+          "offset": {
+            "left": 0,
+            "top": 458.3984375
+          },
+          "size": {
+            "width": 402,
+            "height": 888.21875
+          },
+          "text": "周末羽毛球 · 报名链路合成验收●招募中运动流汗，认识有趣的人！无论水平高低，都欢迎加入～# 仅邀请# 羽毛球# 深圳活动时间1月2日（周六）20:00 – 22:00活动时间以主办方最终确认版本为准场地地点深圳 · 隔离测试羽毛球馆场地状态：主办方已核实复制地点★由 主办方未设置活动内昵称 发起活动内授权昵称 · 查看报名与成员费用说明AA 制 · 每人上限 ¥50取消规则：活动开始前可申请退出报名方式：自动接受或候补 · 仅邀请➤活动公告▣签到与反馈◉费用记录如遇人身紧急危险，请先离开风险地点并联系当地应急服务；本平台不是救援机构。举报与求助复制活动信息给可信任的人",
+          "width": "402px",
+          "height": "888.219px",
+          "fontSize": "16px",
+          "lineHeight": "normal"
+        },
+        "actions": {
+          "selector": ".pg01-nav-actions",
+          "offset": {
+            "left": 220,
+            "top": 64
+          },
+          "size": {
+            "width": 80,
+            "height": 36
+          },
+          "text": "",
+          "width": "80px",
+          "height": "36px",
+          "fontSize": "16px",
+          "lineHeight": "normal"
+        },
+        "tag": {
+          "selector": ".pg01-poster-tagline text:last-child",
+          "offset": {
+            "left": 26.137128829956055,
+            "top": 267.9025573730469
+          },
+          "size": {
+            "width": 136.16122436523438,
+            "height": 36.17120361328125
+          },
+          "text": "运动让生活更好看！",
+          "width": "110.703px",
+          "height": "16px",
+          "fontSize": "12px",
+          "lineHeight": "16px"
+        },
+        "copy": {
+          "selector": ".pg01-copy-info",
+          "offset": {
+            "left": 236,
+            "top": 758.25
+          },
+          "size": {
+            "width": 146,
+            "height": 49
+          },
+          "text": "复制活动信息",
+          "width": "146px",
+          "height": "49px",
+          "fontSize": "14px",
+          "lineHeight": "21px"
+        }
+      },
+      "pass": false,
+      "failure": {
+        "phase": "source-geometries",
+        "message": "source conflicting utility actual18/28: {\"selector\":\".pg01-poster-tagline text:last-child\",\"offset\":{\"left\":26.137128829956055,\"top\":267.9025573730469},\"size\":{\"width\":136.16122436523438,\"height\":36.17120361328125},\"text\":\"运动让生活更好看！\",\"width\":\"110.703px\",\"height\":\"16px\",\"fontSize\":\"12px\",\"lineHeight\":\"16px\"}",
+        "stack": "AssertionError [ERR_ASSERTION]: source conflicting utility actual18/28: {\"selector\":\".pg01-poster-tagline text:last-child\",\"offset\":{\"left\":26.137128829956055,\"top\":267.9025573730469},\"size\":{\"width\":136.16122436523438,\"height\":36.17120361328125},\"text\":\"运动让生活更好看！\",\"width\":\"110.703px\",\"height\":\"16px\",\"fontSize\":\"12px\",\"lineHeight\":\"16px\"}\n    at check (/private/tmp/caper-wave66-visitor.cjs:2:663)\n    at /private/tmp/caper-wave66-visitor.cjs:4:1225\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)"
+      },
+      "elapsedMs": 6549
+    },
+    "visitor-remaining": {
+      "scope": "Wave66 actual authorized PG01 visitor and limited confirmation/host/member exclusion; no registration or publishing",
+      "checks": [
+        {
+          "pass": true,
+          "label": "selected actual second tagline by element list",
+          "actual": "好球友 总会相遇！",
+          "expected": "好球友"
+        },
+        {
+          "pass": true,
+          "label": "source conflicting utility actual18/28",
+          "actual": {
+            "text": "好球友 总会相遇！",
+            "fontSize": "18px",
+            "lineHeight": "28px"
+          },
+          "expected": [
+            18,
+            28
+          ]
+        },
+        {
+          "pass": true,
+          "label": "source copy natural lineheight21",
+          "actual": "21px",
+          "expected": 21
+        },
+        {
+          "pass": true,
+          "label": "legacy poster absent visitor",
+          "actual": null,
+          "expected": null
+        },
+        {
+          "pass": true,
+          "label": "actual clipboard matches current public venue",
+          "actual": "深圳 · 隔离测试羽毛球馆",
+          "expected": "深圳 · 隔离测试羽毛球馆"
+        },
+        {
+          "pass": false,
+          "label": "actual copy activity information uses current event",
+          "actual": {
+            "length": 13,
+            "sha256": "2330c73f0761c5f07337f5f518db376bd031b8178b55ea10af8b6457c3301d00"
+          },
+          "expected": "same current title and venue"
+        }
+      ],
+      "actions": [
+        {
+          "action": "copy venue",
+          "matchesCurrent": true
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-event-visitor-poster-wave66-2026-10-02.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-event-visitor-facts-wave66-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "native": {
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      "actual": {
+        "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2",
+        "version": 2,
+        "status": "RECRUITING",
+        "reviewStatus": "APPROVED",
+        "recruiting": true,
+        "canJoin": true,
+        "safetyStatus": "OPEN",
+        "isHost": false
+      },
+      "pass": false,
+      "failure": {
+        "phase": "copy-info",
+        "message": "actual copy activity information uses current event: {\"length\":13,\"sha256\":\"2330c73f0761c5f07337f5f518db376bd031b8178b55ea10af8b6457c3301d00\"}",
+        "stack": "AssertionError [ERR_ASSERTION]: actual copy activity information uses current event: {\"length\":13,\"sha256\":\"2330c73f0761c5f07337f5f518db376bd031b8178b55ea10af8b6457c3301d00\"}\n    at check (/private/tmp/caper-wave66-visitor-remaining.cjs:2:673)\n    at /private/tmp/caper-wave66-visitor-remaining.cjs:6:81\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)"
+      },
+      "elapsedMs": 15034
+    },
+    "visitor-actions-remaining": {
+      "scope": "Wave66 actual authorized PG01 visitor and limited confirmation/host/member exclusion; no registration or publishing",
+      "checks": [
+        {
+          "pass": true,
+          "label": "actual copy activity information uses current event",
+          "actual": {
+            "length": 198,
+            "sha256": "a5468884721e6ad7da8f9455c6940da8d71661b3e3b5f347b9e11f186fe51fe8"
+          },
+          "expected": "same current title and venue"
+        }
+      ],
+      "actions": [
+        {
+          "action": "copy info",
+          "matchesCurrent": true
+        }
+      ],
+      "screenshots": [],
+      "exceptions": [],
+      "native": {
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      "actual": {
+        "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2",
+        "version": 2,
+        "status": "RECRUITING",
+        "reviewStatus": "APPROVED",
+        "recruiting": true,
+        "canJoin": true,
+        "safetyStatus": "OPEN",
+        "isHost": false
+      },
+      "pass": false,
+      "failure": {
+        "phase": "menu",
+        "message": "Uncaught Error: wx.showActionSheet not exists",
+        "stack": "Error: Uncaught Error: wx.showActionSheet not exists\n    at Connection.onMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/miniprogram-automator@0.12.1/node_modules/miniprogram-automator/out/Connection.js:1:985)\n    at Transport.emit (node:events:509:28)\n    at WebSocket.<anonymous> (/private/tmp/project-irl-automator/node_modules/.pnpm/miniprogram-automator@0.12.1/node_modules/miniprogram-automator/out/Transport.js:1:220)\n    at WebSocket.onMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/event-target.js:120:16)\n    at WebSocket.emit (node:events:509:28)\n    at Receiver.receiverOnMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/websocket.js:807:20)\n    at Receiver.emit (node:events:509:28)\n    at Receiver.dataMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:448:14)\n    at Receiver.getData (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:377:17)\n    at Receiver.startLoop (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:158:22)"
+      },
+      "elapsedMs": 6585
+    },
+    "visitor-final-remaining": {
+      "scope": "Wave66 actual authorized PG01 visitor and limited confirmation/host/member exclusion; no registration or publishing",
+      "checks": [
+        {
+          "pass": true,
+          "label": "real unavailable-menu fallback keeps current report event",
+          "actual": "0e51f241-3f63-439d-b59d-593549a61ac2",
+          "expected": "0e51f241-3f63-439d-b59d-593549a61ac2"
+        },
+        {
+          "pass": true,
+          "label": "real report form exists, unsubmitted",
+          "actual": true,
+          "expected": true
+        },
+        {
+          "pass": true,
+          "label": "current invite can open real confirmation",
+          "actual": {
+            "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2",
+            "version": 2,
+            "status": "RECRUITING",
+            "reviewStatus": "APPROVED",
+            "recruiting": true,
+            "canJoin": true,
+            "safetyStatus": "OPEN",
+            "isHost": false
+          },
+          "expected": "joinButton"
+        },
+        {
+          "pass": true,
+          "label": "visitor new controls absent under confirmation",
+          "actual": null,
+          "expected": null
+        },
+        {
+          "pass": true,
+          "label": "real existing confirmation visible",
+          "actual": true,
+          "expected": true
+        },
+        {
+          "pass": true,
+          "label": "cancel does not register",
+          "expected": "not CONFIRMED"
+        },
+        {
+          "pass": true,
+          "label": "real host role",
+          "actual": true,
+          "expected": true
+        },
+        {
+          "pass": true,
+          "label": "new visitor poster/header absent real host",
+          "actual": null,
+          "expected": null
+        },
+        {
+          "pass": true,
+          "label": "real enrolled member",
+          "actual": {
+            "status": "CONFIRMED",
+            "isHost": false
+          },
+          "expected": "CONFIRMED member"
+        },
+        {
+          "pass": true,
+          "label": "new visitor poster absent existing member cover",
+          "actual": null,
+          "expected": null
+        },
+        {
+          "pass": true,
+          "label": "scoped exception events",
+          "actual": [],
+          "expected": []
+        }
+      ],
+      "actions": [
+        {
+          "action": "more without native API",
+          "availability": "undefined",
+          "route": "pages/me/me",
+          "reportEventId": "0e51f241-3f63-439d-b59d-593549a61ac2",
+          "submitted": false
+        },
+        {
+          "action": "join confirmation open/cancel",
+          "submitted": false
+        },
+        {
+          "action": "only exclusion role lookbacks",
+          "host": "0e51f241-3f63-439d-b59d-593549a61ac2",
+          "member": "97ed8055-27fb-484e-87a2-9986805fcae1"
+        }
+      ],
+      "screenshots": [],
+      "exceptions": [],
+      "native": {
+        "window": {
+          "pixelRatio": 3,
+          "safeArea": {
+            "top": 54,
+            "left": 0,
+            "right": 402,
+            "bottom": 840,
+            "width": 402,
+            "height": 786
+          },
+          "screenWidth": 402,
+          "screenHeight": 874,
+          "screenTop": 0,
+          "windowWidth": 402,
+          "windowHeight": 874,
+          "statusBarHeight": 54
+        },
+        "capsule": {
+          "width": 87,
+          "height": 32,
+          "left": 308,
+          "top": 58,
+          "right": 395,
+          "bottom": 90
+        }
+      },
+      "actual": {
+        "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2",
+        "version": 2,
+        "status": "RECRUITING",
+        "reviewStatus": "APPROVED",
+        "recruiting": true,
+        "canJoin": true,
+        "safetyStatus": "OPEN",
+        "isHost": false
+      },
+      "pass": true,
+      "elapsedMs": 20712
+    }
+  },
+  "successfulAssertionCount": 88,
+  "interactionRecordCount": 19,
+  "knownHarnessLimitations": [
+    "IDEA initially read message before asynchronous closed-category update; supplement waited actual state and put target in view.",
+    "PG01 text:last-child selected first text; supplement selected second actual element.",
+    "Copy information read clipboard before real callback; remaining action waited exact current event contents.",
+    "Mocking showActionSheet rejected wx.showActionSheet not exists. Subsequent typeof was undefined and actual fallback more button reached same-event report; this does not verify a native menu choice or prove clean device API unavailability."
+  ],
+  "postLicenseDedupPreview": {
+    "exitCode": 0,
+    "size": {
+      "total": 3102347,
+      "packages": [
+        {
+          "name": "TOTAL",
+          "size": 3102347
+        },
+        {
+          "name": "main",
+          "size": 2094089
+        },
+        {
+          "name": "/subpackages/activity/",
+          "size": 78943
+        },
+        {
+          "name": "/subpackages/profile/",
+          "size": 929315
+        }
+      ]
+    },
+    "mainRemaining": 3063
+  },
+  "overBudgetPreview": {
+    "exitCode": 0,
+    "size": {
+      "total": 3106712,
+      "packages": [
+        {
+          "name": "TOTAL",
+          "size": 3106712
+        },
+        {
+          "name": "main",
+          "size": 2098454
+        },
+        {
+          "name": "/subpackages/activity/",
+          "size": 78943
+        },
+        {
+          "name": "/subpackages/profile/",
+          "size": 929315
+        }
+      ]
+    },
+    "mainOverLimit": 1302,
+    "notAccepted": true
+  },
+  "fontsLicenseDedup": {
+    "sourceSaved": 4342,
+    "fontArrayByteEquivalent": true,
+    "modulePrefix181500ByteEquivalent": true,
+    "twoExportedLicensesByteEquivalentToPreviousAndOfficial": true
+  },
+  "images": [
+    {
+      "path": "docs/evidence/images/caper-create-idea-input-wave66-2026-10-02.png",
+      "visuallyReviewed": true
+    },
+    {
+      "path": "docs/evidence/images/caper-create-idea-top-wave66-2026-10-02.png",
+      "visuallyReviewed": true
+    },
+    {
+      "path": "docs/evidence/images/caper-event-visitor-facts-wave66-2026-10-02.png",
+      "visuallyReviewed": true
+    },
+    {
+      "path": "docs/evidence/images/caper-event-visitor-poster-wave66-2026-10-02.png",
+      "visuallyReviewed": true
+    },
+    {
+      "path": "docs/evidence/images/caper-messages-priority-wave66-2026-10-02.png",
+      "visuallyReviewed": true
+    },
+    {
+      "path": "docs/evidence/images/caper-messages-top-wave66-2026-10-02.png",
+      "visuallyReviewed": true
+    }
+  ],
+  "nativeComputerUse": {
+    "pendingMacUnlock": true,
+    "newNativeClicksVerified": false
+  },
+  "boundaries": [
+    "Messages actual opened notification server readback performed on synthetic user; prior identity restored.",
+    "IDEA rules suggestion is real local API; no persisted draft or publication.",
+    "Visitor real invite/role and current venue/information clipboard; confirmation cancelled, no registration; real host/member exclude new styles.",
+    "No production/physical-device/human-operation or 39-screen pixel-parity claim."
+  ],
+  "imageNotes": {
+    "caper-messages-priority-wave66-2026-10-02.png": "Scroll image proves entire header sticky; priority card is in top image."
+  },
+  "finalPublishPreview": {
+    "exitCode": 0,
+    "source": "complete clone sync after six source JSON relocations; diff excluding local config.js and .DS_Store was empty",
+    "info": {
+      "size": {
+        "total": 3102347,
+        "packages": [
+          {
+            "name": "TOTAL",
+            "size": 3102347
+          },
+          {
+            "name": "main",
+            "size": 2094089
+          },
+          {
+            "name": "/subpackages/activity/",
+            "size": 78943
+          },
+          {
+            "name": "/subpackages/profile/",
+            "size": 929315
+          }
+        ]
+      }
+    },
+    "infoSHA256": "c6c13c581cccbf6d3d1ccab277b7b13d95afc0f0ce6a71dc4555b8f081f3bd0e",
+    "mainLimit": 2097152,
+    "mainRemainingBytes": 3063,
+    "compiledSavingsFromSourceJSONRelocation": 0,
+    "rawSourceJSONBytesRelocated": 40291,
+    "scope": "CLI build and package budget only; no repeated business/UI/full tests"
+  }
+}

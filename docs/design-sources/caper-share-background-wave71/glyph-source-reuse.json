@@ -1,0 +1,290 @@
+{
+  "fontWOFF2": "docs/design-sources/caper-activity-wave69/original-last-material-full.woff2",
+  "fontWOFF2SHA256": "77f9711f3f896a1d7a34ab95cffc45cfb17d84c223f197c1b90faa0d043006e9",
+  "decodedTTFSHA256": "91818691ac9102722bb9417f1830cbeb4b8f46efa7128b512d10ad83dcb1ae4c",
+  "fontToolsVersion": "4.60.2",
+  "glyphs": [
+    {
+      "glyph": "arrow_back_ios_new",
+      "path": "miniprogram/subpackages/activity/event/assets/w69-arrow_back_ios_new-w400-f0-1a1b1f.svg",
+      "consumerSrc": "../event/assets/w69-arrow_back_ios_new-w400-f0-1a1b1f.svg",
+      "bytes": 153,
+      "sha256": "ca7bb7d407e7dc334ff380d8b3b4d1623f916d8d6152d0a72dc40ab2840d532b",
+      "sourcePathData": "M640 -80 240 -480 640 -880 711 -809 382 -480 711 -151Z",
+      "ligatureGlyph": "arrow_back_ios_new",
+      "renderedGlyph": "arrow_back_ios_new",
+      "rclt": [],
+      "axes": {
+        "FILL": 0,
+        "wght": 400,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "fill": "#1a1b1f",
+      "alpha": 1,
+      "sourceSizePx": 22,
+      "sameExactPathAndPaint": true,
+      "newRuntimeBytes": 0
+    },
+    {
+      "glyph": "more_horiz",
+      "path": "miniprogram/subpackages/activity/event/assets/w69-more_horiz-w400-f0-1a1b1f.svg",
+      "consumerSrc": "../event/assets/w69-more_horiz-w400-f0-1a1b1f.svg",
+      "bytes": 609,
+      "sha256": "295cd56b72e4a070b341c35331c4f965a6021ea2755371577007ff16a0e3d117",
+      "sourcePathData": "M240 -400Q207 -400 183.5 -423.5Q160 -447 160 -480Q160 -513 183.5 -536.5Q207 -560 240 -560Q273 -560 296.5 -536.5Q320 -513 320 -480Q320 -447 296.5 -423.5Q273 -400 240 -400ZM480 -400Q447 -400 423.5 -423.5Q400 -447 400 -480Q400 -513 423.5 -536.5Q447 -560 480 -560Q513 -560 536.5 -536.5Q560 -513 560 -480Q560 -447 536.5 -423.5Q513 -400 480 -400ZM720 -400Q687 -400 663.5 -423.5Q640 -447 640 -480Q640 -513 663.5 -536.5Q687 -560 720 -560Q753 -560 776.5 -536.5Q800 -513 800 -480Q800 -447 776.5 -423.5Q753 -400 720 -400Z",
+      "ligatureGlyph": "more_horiz",
+      "renderedGlyph": "more_horiz",
+      "rclt": [],
+      "axes": {
+        "FILL": 0,
+        "wght": 400,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "fill": "#1a1b1f",
+      "alpha": 1,
+      "sourceSizePx": 22,
+      "sameExactPathAndPaint": true,
+      "newRuntimeBytes": 0
+    },
+    {
+      "glyph": "person",
+      "path": "miniprogram/subpackages/activity/event/assets/pg04s-person.svg",
+      "consumerSrc": "../event/assets/pg04s-person.svg",
+      "bytes": 1221,
+      "sha256": "dcd82b18c2b73881bc3e4abdf254f92647dfb16ae06b669f7dece7579f6eba73",
+      "sourcePathData": "M480.0 -480.0Q414 -480 367.0 -527.0Q320 -574 320.0 -640.0Q320 -706 367.0 -753.0Q414 -800 480.0 -800.0Q546 -800 593.0 -753.0Q640 -706 640.0 -640.0Q640 -574 593.0 -527.0Q546 -480 480.0 -480.0ZM160 -160V-272Q160 -306 177.5 -334.5Q195 -363 224 -378Q286 -409 350.0 -424.5Q414 -440 480 -440Q546 -440 610.0 -424.5Q674 -409 736 -378Q765 -363 782.5 -334.5Q800 -306 800 -272V-160ZM240 -240H720V-272Q720 -283 714.5 -292.0Q709 -301 700 -306Q646 -333 591.0 -346.5Q536 -360 480 -360Q424 -360 369.0 -346.5Q314 -333 260 -306Q251 -301 245.5 -292.0Q240 -283 240 -272ZM480.0 -560.0Q513 -560 536.5 -583.5Q560 -607 560.0 -640.0Q560 -673 536.5 -696.5Q513 -720 480.0 -720.0Q447 -720 423.5 -696.5Q400 -673 400.0 -640.0Q400 -607 423.5 -583.5Q447 -560 480.0 -560.0ZM480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0ZM480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Z",
+      "ligatureGlyph": "person",
+      "renderedGlyph": "person",
+      "rclt": [],
+      "axes": {
+        "FILL": 0,
+        "wght": 400,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "fill": "#ffffff",
+      "alpha": 1,
+      "sourceSizePx": 18,
+      "sameExactPathAndPaint": true,
+      "newRuntimeBytes": 0
+    },
+    {
+      "glyph": "calendar_today",
+      "path": "miniprogram/subpackages/activity/event/assets/w69-calendar_today-w400-f0-ffffff-a80.svg",
+      "consumerSrc": "../event/assets/w69-calendar_today-w400-f0-ffffff-a80.svg",
+      "bytes": 645,
+      "sha256": "c33b06b87daece1946f27d87a421a54082f99c7399f2c459ff1948f5cf70d7f1",
+      "sourcePathData": "M200 -80Q167 -80 143.5 -103.5Q120 -127 120 -160V-720Q120 -753 143.5 -776.5Q167 -800 200 -800H240V-880H320V-800H640V-880H720V-800H760Q793 -800 816.5 -776.5Q840 -753 840 -720V-160Q840 -127 816.5 -103.5Q793 -80 760 -80ZM200 -160H760Q760 -160 760.0 -160.0Q760 -160 760 -160V-560H200V-160Q200 -160 200.0 -160.0Q200 -160 200 -160ZM200 -640H760V-720Q760 -720 760.0 -720.0Q760 -720 760 -720H200Q200 -720 200.0 -720.0Q200 -720 200 -720ZM200 -640V-720Q200 -720 200.0 -720.0Q200 -720 200 -720Q200 -720 200.0 -720.0Q200 -720 200 -720V-640Z",
+      "ligatureGlyph": "calendar_today",
+      "renderedGlyph": "calendar_today",
+      "rclt": [],
+      "axes": {
+        "FILL": 0,
+        "wght": 400,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "fill": "#ffffff",
+      "alpha": 0.8,
+      "sourceSizePx": 16,
+      "sameExactPathAndPaint": true,
+      "newRuntimeBytes": 0
+    },
+    {
+      "glyph": "location_on",
+      "path": "miniprogram/subpackages/activity/event/assets/w69-location_on-w400-f0-ffffff-a80.svg",
+      "consumerSrc": "../event/assets/w69-location_on-w400-f0-ffffff-a80.svg",
+      "bytes": 824,
+      "sha256": "1ef469f97ae4351407bb7bc4e5643e3617a770122c9ccacdb1f4085d4d62beab",
+      "sourcePathData": "M480.0 -480.0Q513 -480 536.5 -503.5Q560 -527 560.0 -560.0Q560 -593 536.5 -616.5Q513 -640 480.0 -640.0Q447 -640 423.5 -616.5Q400 -593 400.0 -560.0Q400 -527 423.5 -503.5Q447 -480 480.0 -480.0ZM480 -186Q602 -298 661.0 -389.5Q720 -481 720 -552Q720 -661 650.5 -730.5Q581 -800 480.0 -800.0Q379 -800 309.5 -730.5Q240 -661 240 -552Q240 -481 299.0 -389.5Q358 -298 480 -186ZM480 -80Q319 -217 239.5 -334.5Q160 -452 160 -552Q160 -702 256.5 -791.0Q353 -880 480 -880Q607 -880 703.5 -791.0Q800 -702 800 -552Q800 -452 720.5 -334.5Q641 -217 480 -80ZM480 -560Q480 -560 480.0 -560.0Q480 -560 480 -560Q480 -560 480.0 -560.0Q480 -560 480.0 -560.0Q480 -560 480.0 -560.0Q480 -560 480 -560Q480 -560 480.0 -560.0Q480 -560 480 -560Z",
+      "ligatureGlyph": "place",
+      "renderedGlyph": "place",
+      "rclt": [],
+      "axes": {
+        "FILL": 0,
+        "wght": 400,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "fill": "#ffffff",
+      "alpha": 0.8,
+      "sourceSizePx": 16,
+      "sameExactPathAndPaint": true,
+      "newRuntimeBytes": 0
+    },
+    {
+      "glyph": "chevron_right",
+      "path": "miniprogram/subpackages/activity/event/assets/w69-chevron_right-w400-f0-424655.svg",
+      "consumerSrc": "../event/assets/w69-chevron_right-w400-f0-424655.svg",
+      "bytes": 154,
+      "sha256": "b8fee48b3e833334e79aaa98e9303d3ce1086079b61d15f574891616fc19bc76",
+      "sourcePathData": "M504 -480 320 -664 376 -720 616 -480 376 -240 320 -296Z",
+      "ligatureGlyph": "chevron_right",
+      "renderedGlyph": "chevron_right",
+      "rclt": [],
+      "axes": {
+        "FILL": 0,
+        "wght": 400,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "fill": "#424655",
+      "alpha": 1,
+      "sourceSizePx": 16,
+      "sameExactPathAndPaint": true,
+      "newRuntimeBytes": 0
+    },
+    {
+      "glyph": "lightbulb",
+      "path": "miniprogram/subpackages/activity/event/assets/w69-lightbulb-w400-f1-ffffff.svg",
+      "consumerSrc": "../event/assets/w69-lightbulb-w400-f1-ffffff.svg",
+      "bytes": 392,
+      "sha256": "1c4735c5cbbe480656046b8dccea841c8fd0bde367e2a23dc227194beb4ac5a9",
+      "sourcePathData": "M400 -160H560Q560 -127 536.5 -103.5Q513 -80 480.0 -80.0Q447 -80 423.5 -103.5Q400 -127 400 -160ZM320 -200V-280H640V-200ZM330 -320Q261 -361 220.5 -430.0Q180 -499 180 -580Q180 -705 267.5 -792.5Q355 -880 480.0 -880.0Q605 -880 692.5 -792.5Q780 -705 780 -580Q780 -499 739.5 -430.0Q699 -361 630 -320Z",
+      "ligatureGlyph": "lightbulb",
+      "renderedGlyph": "lightbulb.fill",
+      "rclt": [
+        {
+          "lookup": 1,
+          "from": "lightbulb",
+          "to": "lightbulb.fill"
+        }
+      ],
+      "axes": {
+        "FILL": 1,
+        "wght": 400,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "fill": "#ffffff",
+      "alpha": 1,
+      "sourceSizePx": 20,
+      "sameExactPathAndPaint": true,
+      "newRuntimeBytes": 0
+    },
+    {
+      "glyph": "check",
+      "path": "miniprogram/subpackages/activity/event/assets/w69-check-w400-f0-34c759.svg",
+      "consumerSrc": "../event/assets/w69-check-w400-f0-34c759.svg",
+      "bytes": 154,
+      "sha256": "0f89192a79f9f361e2756fefce4f3cfbbf42fb8c25647411ebdc106cbcb55298",
+      "sourcePathData": "M382 -240 154 -468 211 -525 382 -354 749 -721 806 -664Z",
+      "ligatureGlyph": "check",
+      "renderedGlyph": "check",
+      "rclt": [],
+      "axes": {
+        "FILL": 0,
+        "wght": 400,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "fill": "#34c759",
+      "alpha": 1,
+      "sourceSizePx": 14,
+      "sameExactPathAndPaint": true,
+      "newRuntimeBytes": 0
+    },
+    {
+      "glyph": "check_circle",
+      "path": "miniprogram/subpackages/activity/event/assets/w69-check_circle-w400-f1-34c759.svg",
+      "consumerSrc": "../event/assets/w69-check_circle-w400-f1-34c759.svg",
+      "bytes": 493,
+      "sha256": "6c1cf4026c3c5a55cfd3961b6b6f64904e2a956a815db494b926bd7001ed500e",
+      "sourcePathData": "M424 -296 706 -578 650 -634 424 -408 310 -522 254 -466ZM480 -80Q397 -80 324.0 -111.5Q251 -143 197.0 -197.0Q143 -251 111.5 -324.0Q80 -397 80 -480Q80 -563 111.5 -636.0Q143 -709 197.0 -763.0Q251 -817 324.0 -848.5Q397 -880 480 -880Q563 -880 636.0 -848.5Q709 -817 763.0 -763.0Q817 -709 848.5 -636.0Q880 -563 880 -480Q880 -397 848.5 -324.0Q817 -251 763.0 -197.0Q709 -143 636.0 -111.5Q563 -80 480 -80Z",
+      "ligatureGlyph": "check_circle",
+      "renderedGlyph": "check_circle.fill",
+      "rclt": [
+        {
+          "lookup": 1,
+          "from": "check_circle",
+          "to": "check_circle.fill"
+        }
+      ],
+      "axes": {
+        "FILL": 1,
+        "wght": 400,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "fill": "#34c759",
+      "alpha": 1,
+      "sourceSizePx": 18,
+      "sameExactPathAndPaint": true,
+      "newRuntimeBytes": 0
+    },
+    {
+      "glyph": "ios_share",
+      "path": "miniprogram/subpackages/activity/event/assets/w69-ios_share-w400-f0-1d64f2.svg",
+      "consumerSrc": "../event/assets/w69-ios_share-w400-f0-1d64f2.svg",
+      "bytes": 549,
+      "sha256": "ca9210e96e1dccff489afe2877c5222d2330db645c601c06b23661d05fa0b498",
+      "sourcePathData": "M240 -80Q207 -80 183.5 -103.5Q160 -127 160 -160V-560Q160 -593 183.5 -616.5Q207 -640 240 -640H360V-560H240Q240 -560 240.0 -560.0Q240 -560 240 -560V-160Q240 -160 240.0 -160.0Q240 -160 240 -160H720Q720 -160 720.0 -160.0Q720 -160 720 -160V-560Q720 -560 720.0 -560.0Q720 -560 720 -560H600V-640H720Q753 -640 776.5 -616.5Q800 -593 800 -560V-160Q800 -127 776.5 -103.5Q753 -80 720 -80ZM440 -320V-767L376 -703L320 -760L480 -920L640 -760L584 -703L520 -767V-320Z",
+      "ligatureGlyph": "ios_share",
+      "renderedGlyph": "ios_share",
+      "rclt": [],
+      "axes": {
+        "FILL": 0,
+        "wght": 400,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "fill": "#1d64f2",
+      "alpha": 1,
+      "sourceSizePx": 22,
+      "sameExactPathAndPaint": true,
+      "newRuntimeBytes": 0
+    },
+    {
+      "glyph": "send",
+      "path": "miniprogram/subpackages/activity/event/assets/w69-send-w400-f0-004cc8.svg",
+      "consumerSrc": "../event/assets/w69-send-w400-f0-004cc8.svg",
+      "bytes": 204,
+      "sha256": "9a8644e5b42f0394571c0c1660d93d96c84a1af53606c7d6b537fa3f25063ccf",
+      "sourcePathData": "M120 -160V-800L880 -480ZM200 -280 674 -480 200 -680V-540L440 -480L200 -420ZM200 -280V-480V-680V-540V-420Z",
+      "ligatureGlyph": "send",
+      "renderedGlyph": "send",
+      "rclt": [],
+      "axes": {
+        "FILL": 0,
+        "wght": 400,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "fill": "#004cc8",
+      "alpha": 1,
+      "sourceSizePx": 22,
+      "sameExactPathAndPaint": true,
+      "newRuntimeBytes": 0
+    },
+    {
+      "glyph": "stop_circle",
+      "path": "miniprogram/subpackages/activity/event/assets/w69-stop_circle-w400-f0-ff2d55.svg",
+      "consumerSrc": "../event/assets/w69-stop_circle-w400-f0-ff2d55.svg",
+      "bytes": 801,
+      "sha256": "186caea6b6a3508815a4d9171e77b67c2f0b54682a31de8e8eaf052fac87c743",
+      "sourcePathData": "M320 -320H640V-640H320ZM480 -80Q397 -80 324.0 -111.5Q251 -143 197.0 -197.0Q143 -251 111.5 -324.0Q80 -397 80 -480Q80 -563 111.5 -636.0Q143 -709 197.0 -763.0Q251 -817 324.0 -848.5Q397 -880 480 -880Q563 -880 636.0 -848.5Q709 -817 763.0 -763.0Q817 -709 848.5 -636.0Q880 -563 880 -480Q880 -397 848.5 -324.0Q817 -251 763.0 -197.0Q709 -143 636.0 -111.5Q563 -80 480 -80ZM480 -160Q614 -160 707.0 -253.0Q800 -346 800 -480Q800 -614 707.0 -707.0Q614 -800 480 -800Q346 -800 253.0 -707.0Q160 -614 160 -480Q160 -346 253.0 -253.0Q346 -160 480 -160ZM480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Z",
+      "ligatureGlyph": "stop_circle",
+      "renderedGlyph": "stop_circle",
+      "rclt": [],
+      "axes": {
+        "FILL": 0,
+        "wght": 400,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "fill": "#ff2d55",
+      "alpha": 1,
+      "sourceSizePx": 22,
+      "sameExactPathAndPaint": true,
+      "newRuntimeBytes": 0
+    }
+  ],
+  "newRuntimeBytes": 0,
+  "chevronSizes": [
+    16,
+    20
+  ],
+  "anonymousPlaceholder": "Existing white person18 in blue44px generic symbol; never represents actual participant photo or per-person array"
+}

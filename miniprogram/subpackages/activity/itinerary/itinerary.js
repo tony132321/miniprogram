@@ -1,0 +1,126 @@
+const { api } = require('../../../utils/api.js');
+const config = require('../../../config.js');
+
+function headerPaddingRight() {
+  try {
+    const menu = wx.getMenuButtonBoundingClientRect?.();
+    const width = (wx.getWindowInfo?.() || wx.getSystemInfoSync?.() || {}).windowWidth;
+    if (Number.isFinite(menu?.left) && Number.isFinite(width) && menu.left >= 0 && menu.left < width)
+      return `${Math.ceil(width - menu.left + 8)}px`;
+  } catch (_) { /* Keep space for the native menu on older clients. */ }
+  return '112px';
+}
+
+function currentIdentity() {
+  const token = wx.getStorageSync('sessionToken');
+  if (token) return JSON.stringify(['user', token, wx.getStorageSync('userId')]);
+  const developer = wx.getStorageSync('devUser') || config.developmentUser;
+  return developer ? 'dev:' + developer : '';
+}
+function coverFor(title) {
+  if (/羽毛球/.test(title)) return '/subpackages/activity/assets/itinerary-badminton.jpg';
+  if (/篮球/.test(title)) return '/assets/stitch/caper_discover_basketball.jpg';
+  if (/咖啡|聊天|创业/.test(title)) return '/assets/stitch/caper_discover_coffee.jpg';
+  if (/展览|艺术|画/.test(title)) return '/assets/stitch/caper_discover_art.jpg';
+  if (/桌游|游戏/.test(title)) return '/assets/stitch/caper_discover_boardgame.jpg';
+  return '/assets/stitch/caper_discover_citywalk.jpg';
+}
+function shanghaiDayNumber(timestamp) {
+  return Math.floor((timestamp + 8 * 60 * 60_000) / 86_400_000);
+}
+function hostRecruitmentLabel(item) {
+  if (item.reviewStatus === 'PENDING') return '待审核';
+  if (item.reviewStatus === 'REJECTED') return '审核未通过';
+  if (item.reviewStatus === 'APPROVED') return item.recruiting === true ? '招募中' : '招募暂停';
+  return '资格待核对';
+}
+function present(item, now) {
+  const timestamp = Date.parse(item.startAt);
+  const local = new Date(timestamp + 8 * 60 * 60_000);
+  const weekday = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][local.getUTCDay()];
+  const dateLabel = `${local.getUTCMonth() + 1} 月 ${local.getUTCDate()} 日（${weekday}）`;
+  const startTime = `${String(local.getUTCHours()).padStart(2, '0')}:${String(local.getUTCMinutes()).padStart(2, '0')}`;
+  const endTimestamp = Date.parse(item.endAt);
+  const end = Number.isFinite(endTimestamp) ? new Date(endTimestamp + 8 * 60 * 60_000) : null;
+  const endTime = end && `${String(end.getUTCHours()).padStart(2, '0')}:${String(end.getUTCMinutes()).padStart(2, '0')}`;
+  const endLabel = end && (local.getUTCFullYear() === end.getUTCFullYear() &&
+    local.getUTCMonth() === end.getUTCMonth() && local.getUTCDate() === end.getUTCDate()
+    ? endTime : `${end.getUTCMonth() + 1}月${end.getUTCDate()}日 ${endTime}`);
+  const timeLabel = endLabel ? `${startTime} - ${endLabel}` : startTime;
+  const days = shanghaiDayNumber(timestamp) - shanghaiDayNumber(now);
+  const feeLabel = item.feeMode === 'FREE' ? '免费' :
+    item.feeMode === 'AA' && Number.isSafeInteger(item.feeCapFen)
+      ? `AA 制 · 每人上限 ¥${(item.feeCapFen / 100).toFixed(2)}` : '费用以活动详情为准';
+  return { ...item, dateLabel, timeLabel, feeLabel, cover: coverFor(item.title || ''),
+    monthLabel: `${String(local.getUTCMonth() + 1).padStart(2, '0')}月`,
+    dayLabel: String(local.getUTCDate()).padStart(2, '0'),
+    venueLabel: item.venueName || '具体场地以活动详情为准',
+    locationLabel: [item.city, item.venueName].filter(Boolean).join(' · ') || '具体场地以活动详情为准',
+    countdown: item.status === 'IN_PROGRESS' ? '进行中' : days <= 0 ? '今天开始' :
+      days === 1 ? '明天开始' : `约 ${days} 天后开始`,
+    stateLabel: item.status === 'IN_PROGRESS' ? '进行中' : item.status === 'CONFIRMED' ? '已成局' :
+      item.isHost ? '我组织的 · ' + hostRecruitmentLabel(item) : '已确认报名' };
+}
+function eligible(item, now) {
+  const timestamp = Date.parse(item.startAt);
+  return Number.isFinite(timestamp) && (timestamp >= now ||
+    item.status === 'IN_PROGRESS') &&
+    !['CANCELLED', 'EXPIRED', 'COMPLETED', 'DRAFT', 'REVIEW_PENDING'].includes(item.status) &&
+    (item.myRegistrationStatus === 'CONFIRMED' || item.isHost);
+}
+Page({
+  data: { statusBarHeight: 24, headerPaddingRight: '112px', loadState: 'IDLE', message: '', featured: null, later: [], total: 0 },
+  onLoad() { this.setData({ statusBarHeight: wx.getSystemInfoSync?.().statusBarHeight || 24,
+    headerPaddingRight: headerPaddingRight() }); },
+  async onShow() { this.setData({ headerPaddingRight: headerPaddingRight() }); return this.refresh(); },
+  onHide() { this._generation = (this._generation || 0) + 1; this._shownIdentity = null; },
+  onUnload() { this._generation = (this._generation || 0) + 1; this._shownIdentity = null; },
+  async onPullDownRefresh() { await this.refresh(); wx.stopPullDownRefresh?.(); },
+  async refresh() {
+    const generation = this._generation = (this._generation || 0) + 1;
+    this._shownIdentity = null;
+    this.setData({ loadState: 'LOADING', message: '', featured: null, later: [], total: 0 });
+    await getApp().globalData.ready;
+    if (generation !== this._generation) return;
+    const identity = currentIdentity();
+    if (!identity) return this.setData({ loadState: 'UNAUTHENTICATED' });
+    try {
+      const response = await api.get('/me/events');
+      if (generation !== this._generation || currentIdentity() !== identity) return;
+      if (!Array.isArray(response.items)) throw new Error('行程列表无效，请重试');
+      const now = Date.now();
+      const upcoming = response.items.filter(item => eligible(item, now))
+        .sort((left, right) => Date.parse(left.startAt) - Date.parse(right.startAt))
+        .map(item => present(item, now));
+      this._shownIdentity = identity;
+      this.setData({ featured: upcoming[0] || null, later: upcoming.slice(1), total: upcoming.length,
+        loadState: 'READY' });
+    } catch (error) {
+      if (generation === this._generation && currentIdentity() === identity)
+        this.setData({ loadState: 'ERROR', message: error.message || '行程读取失败，请重试' });
+    }
+  },
+  openSection(event, section) {
+    if (this._shownIdentity !== currentIdentity()) {
+      this._generation = (this._generation || 0) + 1;
+      this._shownIdentity = null;
+      this.setData({ featured: null, later: [], total: 0, loadState: 'ERROR',
+        message: '账号已切换，请重新加载行程。' });
+      return;
+    }
+    if (this.data.loadState !== 'READY') return;
+    const id = event?.currentTarget?.dataset?.id;
+    if (!id || ![this.data.featured, ...this.data.later].some(item => item?.id === id)) return;
+    wx.navigateTo({ url: '/pages/event/event?id=' + encodeURIComponent(id) + '&section=' + section });
+  },
+  openEvent(event) { this.openSection(event, 'detailsSection'); },
+  openRegistration(event) {
+    this.openSection(event, 'registrationSection');
+  },
+  openCheckin(event) {
+    this.openSection(event, 'checkinSection');
+  },
+  goHome() { wx.switchTab({ url: '/pages/index/index' }); },
+  goProfile() { wx.switchTab({ url: '/pages/me/me' }); },
+  back() { wx.navigateBack({ fail: () => this.goHome() }); }
+});

@@ -1,0 +1,10 @@
+{
+  "sourceHtml": "/private/tmp/irl-ui62-reference/pg10_h_project_irl/code.html",
+  "sourceHtmlSha256": "e29a2c86dc0f3584009a8b37268fba472325ff5f748c65df4e886881a815bad9",
+  "asset": "infinity-spark.svg",
+  "assetSha256": "d7dfd37b60c855d02b18916b888d49e268d5b042337ef0b27c000effeba324f2",
+  "sourceViewBox": "0 0 64 64",
+  "displayPx": 56,
+  "outerBoxPx": 96,
+  "change": "Removed HTML class; added SVG XML namespace; normalized viewBox, linearGradient, gradientUnits, feGaussianBlur, stdDeviation, feComposite casing. Original paths, circle, defs, gradient, numbers and colors unchanged; unused sparkGlow remains unused."
+}

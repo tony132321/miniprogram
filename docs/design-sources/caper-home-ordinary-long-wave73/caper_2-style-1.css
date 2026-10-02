@@ -1,0 +1,12 @@
+
+    .sticker-rotate-left {
+      transform: rotate(-3deg);
+    }
+    .sticker-rotate-right {
+      transform: rotate(4deg);
+    }
+    .badge-blur {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+  

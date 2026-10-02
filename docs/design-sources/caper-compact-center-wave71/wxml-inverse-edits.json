@@ -1,0 +1,10 @@
+[
+  {
+    "old": "viewMode === 'CHAT_UNAVAILABLE' ? 'messages-chat-reference' : 'messages-center-reference'",
+    "new": "viewMode === 'CHAT_UNAVAILABLE' ? 'messages-chat-reference' : centerLayout === 'COMPACT' ? 'messages-compact-reference' : 'messages-center-reference'"
+  },
+  {
+    "old": "<button class=\"center-settings\" bindtap=\"goNotificationSettings\" aria-label=\"通知设置\">",
+    "new": "<button class=\"center-settings\" bindtap=\"openCenterOptions\" aria-label=\"通知中心布局与设置\">"
+  }
+]

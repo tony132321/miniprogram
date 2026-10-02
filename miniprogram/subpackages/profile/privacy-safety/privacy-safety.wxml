@@ -1,0 +1,25 @@
+<view class="pg10-page privacy-page" style="padding-top: {{statusBarHeight}}px">
+  <view class="privacy-status-cover" style="height: {{statusBarHeight}}px" aria-hidden="true"></view>
+  <view class="pg10-header privacy-header" style="padding-right: {{headerPaddingRight}}; top: {{statusBarHeight}}px">
+    <button class="pg10-back" bindtap="back" aria-label="返回"><image class="back-symbol" src="./assets/wave68-back.svg" /></button>
+    <view class="pg10-header-title"><text decode="true">Privacy &amp; Safety</text></view>
+    <view class="privacy-header-actions"><button class="privacy-header-more" bindtap="toggleMore" aria-label="更多页面入口" aria-expanded="{{moreOpen}}"><image class="more-symbol" src="./assets/more.svg" /></button><button class="privacy-header-avatar" bindtap="goProfile" aria-label="返回我的页面"><image class="person-symbol" src="./assets/person.svg" /></button></view>
+    <view wx:if="{{moreOpen}}" class="privacy-header-menu" style="right: {{headerPaddingRight}}"><button bindtap="goLegal">隐私与使用说明　›</button><button bindtap="goSupport">帮助与反馈　›</button><button bindtap="goProfile">我的页面　›</button></view>
+  </view>
+
+  <view class="pg10-card privacy-intro">
+    <view class="intro-glow" aria-hidden="true"></view><view class="intro-head"><view class="intro-symbol"><image src="./assets/shield-heart.svg" /></view><view><view class="intro-title">关于黑名单机制</view><view class="intro-subtitle">由你管理的活动边界</view></view></view>
+    <view class="privacy-points"><view><view class="point-dot" aria-hidden="true"></view><text>在共同活动的成员昵称列表中，双方不会互相显示。</text></view><view><view class="point-dot" aria-hidden="true"></view><text>结项后的类似活动邀请候选名单会排除已屏蔽关系。</text></view><view><view class="point-dot" aria-hidden="true"></view><text>你可在下方撤回屏蔽；违规或安全问题请另行举报。</text></view></view>
+  </view>
+
+  <view class="block-section-heading"><view>已屏蔽成员<text wx:if="{{loadState === 'READY'}}" class="block-count">{{blocks.length}}人</text></view><text>可逐条管理</text></view>
+  <view wx:if="{{loadState === 'LOADING'}}" class="pg10-card block-state">正在加载屏蔽记录…</view>
+  <view wx:if="{{loadState === 'UNAUTHENTICATED'}}" class="pg10-card block-state"><view class="state-symbol"><image src="./assets/shield-heart.svg" /></view><view>登录后可查看本人屏蔽记录</view><button class="pg10-primary" bindtap="goProfile">前往登录</button></view>
+  <view wx:if="{{loadState === 'ERROR'}}" class="pg10-card block-state"><view class="pg10-error">{{message}}</view><button class="pg10-primary" bindtap="retry">重新加载</button></view>
+  <view wx:if="{{loadState === 'READY' && blocks.length === 0}}" class="block-state block-empty"><view class="state-symbol empty-symbol"><image src="./assets/verified-user.svg" /></view><view class="empty-title">暂无屏蔽记录</view><view class="state-copy">活动内成员的屏蔽记录会显示在这里。</view></view>
+  <view wx:for="{{blocks}}" wx:key="id" class="pg10-card block-card" style="margin-top: {{index === 0 ? 0 : 8}}px"><view class="block-avatar" aria-hidden="true"><image class="anonymous-symbol" src="./assets/anonymous-person.svg" /><view class="block-badge"><image src="./assets/block.svg" /></view></view><view class="block-copy"><view class="block-title">活动内成员</view><view class="block-chip">已屏蔽</view><view class="block-meta">来自：{{item.eventTitle || '活动'}}</view></view><button class="block-action" data-id="{{item.id}}" bindtap="revokeBlock" disabled="{{revokingId !== ''}}">{{revokingId === item.id ? '处理中…' : '解除屏蔽'}}</button></view>
+  <view wx:if="{{loadState === 'READY' && message}}" class="privacy-message">{{message}}</view>
+
+  <button class="pg10-card help-card" bindtap="goReport"><view class="help-icon"><image src="./assets/wave68-report.svg" /></view><view class="help-copy"><view>遇到违规、诈骗或不文明行为？</view><view class="help-link"><text>前往举报与求助</text><image src="./assets/arrow-forward.svg" /></view></view></button>
+  <view class="privacy-foot">屏蔽仅按当前服务规则生效；紧急人身危险请联系当地应急服务。</view>
+</view>

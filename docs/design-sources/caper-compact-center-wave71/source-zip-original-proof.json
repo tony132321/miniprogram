@@ -1,0 +1,14 @@
+{
+  "code.html": {
+    "zipEntry": "stitch_design_system_generator/pg02_n_2/code.html",
+    "bytes": 19462,
+    "sha256": "0c9f0bf0d8fcf45ef781477c3dfa0339ebfb9823080b61b530bed746ac36c32c",
+    "extractedByteExact": true
+  },
+  "screen.png": {
+    "zipEntry": "stitch_design_system_generator/pg02_n_2/screen.png",
+    "bytes": 322947,
+    "sha256": "9c0502bafef6fa63b3051e42b03c407598a6767746e713f6a51f740b60ae52de",
+    "extractedByteExact": true
+  }
+}

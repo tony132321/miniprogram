@@ -1,0 +1,142 @@
+{
+  "scope": "Wave64 ordinary home first components only; source system status and shared bottom navigation excluded",
+  "source_html_sha256": "e4e4ba417711e27838f10cef098c4da8c428d3b9d7c4217fe36d9def5761c4ca",
+  "source_png_sha256": "81028ecae6d89d2b77c70750e628c1e58a355dd52704e2a3646dcf392934f13f",
+  "source_inline_svg_count": 22,
+  "extracted_svg_count": 7,
+  "assets": [
+    {
+      "file": "city-chevron.svg",
+      "source_html": "caper_2/code.html",
+      "source_start_line": 105,
+      "source_end_line": 105,
+      "source_svg_ordinal": 3,
+      "source_node": "city selector",
+      "source_svg_sha256": "9c83da0a32f18a98bb0769aa054cb9657d1fe33295cf5ff022b0fa45a1e5a862",
+      "normalized_svg_sha256": "e9761e5feed109364ce70d40315a31a778daa22fb827c7ff2d4a32a2e64e7603",
+      "resolved_currentColor": "#6b7280",
+      "render_css_px": 12,
+      "normalization": [
+        "remove source Tailwind root class",
+        "viewbox to XML viewBox",
+        "add SVG xmlns",
+        "resolve inherited currentColor literal only"
+      ],
+      "path_geometry": "unchanged"
+    },
+    {
+      "file": "notification-bell.svg",
+      "source_html": "caper_2/code.html",
+      "source_start_line": 111,
+      "source_end_line": 111,
+      "source_svg_ordinal": 4,
+      "source_node": "messages button",
+      "source_svg_sha256": "bb0068e65dab8977269e1013f86872c11b3a5a90ff343c05df293f5bda051948",
+      "normalized_svg_sha256": "c649021a51231a33e9c17b30fd66473343b987fa47395ba341598b61638b32b6",
+      "resolved_currentColor": "#374151",
+      "render_css_px": 16,
+      "normalization": [
+        "remove source Tailwind root class",
+        "viewbox to XML viewBox",
+        "add SVG xmlns",
+        "resolve inherited currentColor literal only"
+      ],
+      "path_geometry": "unchanged"
+    },
+    {
+      "file": "microphone.svg",
+      "source_html": "caper_2/code.html",
+      "source_start_line": 137,
+      "source_end_line": 137,
+      "source_svg_ordinal": 5,
+      "source_node": "decorative text-only idea input",
+      "source_svg_sha256": "07b69ce889b4b5af08865ecf4eb98107d6d508beb8a35935165ab8986163243c",
+      "normalized_svg_sha256": "f3d1da2e3202e33a9b57d7fd872a4c1aee327ca73775f82e0b72d3eb11b4bc3b",
+      "resolved_currentColor": "#1d64f2",
+      "render_css_px": 16,
+      "normalization": [
+        "remove source Tailwind root class",
+        "viewbox to XML viewBox",
+        "add SVG xmlns",
+        "resolve inherited currentColor literal only"
+      ],
+      "path_geometry": "unchanged"
+    },
+    {
+      "file": "idea-arrow.svg",
+      "source_html": "caper_2/code.html",
+      "source_start_line": 140,
+      "source_end_line": 140,
+      "source_svg_ordinal": 6,
+      "source_node": "submit current text idea, CSS rotate 45deg",
+      "source_svg_sha256": "a346c20320887b9fc38c1ab18a861648ccd2909bc8746b381274bb9d05efb303",
+      "normalized_svg_sha256": "f7db5551d5d6bb5728b3c523434933809a9255dec3643e9b8429ab36ed7168e9",
+      "resolved_currentColor": "#ffffff",
+      "render_css_px": 16,
+      "normalization": [
+        "remove source Tailwind root class",
+        "viewbox to XML viewBox",
+        "add SVG xmlns",
+        "resolve inherited currentColor literal only"
+      ],
+      "path_geometry": "unchanged"
+    },
+    {
+      "file": "feature-chevron.svg",
+      "source_html": "caper_2/code.html",
+      "source_start_line": 211,
+      "source_end_line": 211,
+      "source_svg_ordinal": 7,
+      "source_node": "featured card arrow",
+      "source_svg_sha256": "cb3fc3d057f291340876522b51c18bc5c2ff8e702470f80417d12c4f59c12b82",
+      "normalized_svg_sha256": "a445abcf0ee7b8370c31312dd2b8602b17775317bdf5e073f060a2786c945c01",
+      "resolved_currentColor": "#ffffff",
+      "render_css_px": 14,
+      "normalization": [
+        "remove source Tailwind root class",
+        "viewbox to XML viewBox",
+        "add SVG xmlns",
+        "resolve inherited currentColor literal only"
+      ],
+      "path_geometry": "unchanged"
+    },
+    {
+      "file": "calendar.svg",
+      "source_html": "caper_2/code.html",
+      "source_start_line": 236,
+      "source_end_line": 236,
+      "source_svg_ordinal": 8,
+      "source_node": "featured date fact",
+      "source_svg_sha256": "b7dd5fc664b4a0246b812925a72fb60c8b45ddfae3830da99822cb62ed5f93f2",
+      "normalized_svg_sha256": "a3e84154e5213e67f9e3799bac1469170a29648a19635b5e67abf0e75981103a",
+      "resolved_currentColor": "#9ca3af",
+      "render_css_px": 14,
+      "normalization": [
+        "remove source Tailwind root class",
+        "viewbox to XML viewBox",
+        "add SVG xmlns",
+        "resolve inherited currentColor literal only"
+      ],
+      "path_geometry": "unchanged"
+    },
+    {
+      "file": "map-pin.svg",
+      "source_html": "caper_2/code.html",
+      "source_start_line": 240,
+      "source_end_line": 240,
+      "source_svg_ordinal": 9,
+      "source_node": "featured venue fact",
+      "source_svg_sha256": "c3457579ac5e82534ac8edf14438d42260d94c17988913d9adcf9ec6d6074587",
+      "normalized_svg_sha256": "9418a7d5542f51b17686ae8a7748ec97d38162b582bc7ac3f4ed0e51154734f3",
+      "resolved_currentColor": "#9ca3af",
+      "render_css_px": 14,
+      "normalization": [
+        "remove source Tailwind root class",
+        "viewbox to XML viewBox",
+        "add SVG xmlns",
+        "resolve inherited currentColor literal only"
+      ],
+      "path_geometry": "unchanged"
+    }
+  ]
+}

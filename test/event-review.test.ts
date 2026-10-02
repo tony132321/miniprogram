@@ -7,6 +7,7 @@ import { register } from '../src/registrations.ts';
 import { changeEvent, confirmEvent } from '../src/lifecycle.ts';
 import { listPendingEventReviews, reviewEvent } from '../src/event-review.ts';
 import { createApp } from '../src/server.ts';
+import { openSyntheticPublicCoverage } from './helpers/public-coverage.ts';
 
 const input = {
   title: '受控公开羽毛球', type: 'badminton', startAt: '2027-01-02T12:00:00.000Z',
@@ -20,13 +21,14 @@ const input = {
 test('public publication waits for human review before outsiders can view or join', async () => {
   const db = await createDatabase();
   try {
+    await openSyntheticPublicCoverage(db, [input]);
     const draft = await createDraft(db, 'host', input, 'draft');
     const published = await publishEvent(db, 'host', draft.id, draft.version, 'publish');
     assert.equal(published.reviewStatus, 'PENDING');
     assert.equal(published.recruiting, false);
     assert.equal((await listPendingEventReviews(db)).items[0]?.id, published.id);
     await assert.rejects(() => getEvent(db, 'outsider', published.id), { code: 'FORBIDDEN' });
-    await assert.rejects(() => register(db, 'p1', published.id, published.version, 'join', null), { code: 'REGISTRATION_CLOSED' });
+    await assert.rejects(() => register(db, 'p1', published.id, published.version, 'join', null), { code: 'REVIEW_PENDING' });
     await assert.rejects(() => confirmEvent(db, 'host', published.id, published.version, 'confirm'), { code: 'REVIEW_PENDING' });
 
     const approved = await reviewEvent(db, 'ops', published.id, published.version, 'APPROVED', '核对主办、公共场地、时间与费用', 'approve');
@@ -40,6 +42,7 @@ test('public publication waits for human review before outsiders can view or joi
 test('public approval uses database time for both recruiting and confirmed activities', async () => {
   const db = await createDatabase();
   try {
+    await openSyntheticPublicCoverage(db, [input]);
     for (const status of ['RECRUITING', 'CONFIRMED']) {
       const draft = await createDraft(db, 'host', input, `review-clock-${status}-draft`);
       const event = await publishEvent(db, 'host', draft.id, draft.version, `review-clock-${status}-publish`);
@@ -64,6 +67,7 @@ test('public approval uses database time for both recruiting and confirmed activ
 test('public approval cannot open recruitment if its window closes just before the final update', async () => {
   const db = await createDatabase();
   try {
+    await openSyntheticPublicCoverage(db, [input]);
     for (const status of ['RECRUITING', 'CONFIRMED']) {
       const draft = await createDraft(db, 'host', input, `review-write-${status}-draft`);
       const event = await publishEvent(db, 'host', draft.id, draft.version, `review-write-${status}-publish`);
@@ -109,6 +113,7 @@ test('public review HTTP endpoints are operator-only and invitations stay hidden
     return { status: response.status, body: await response.json() as Record<string, any> };
   }
   try {
+    await openSyntheticPublicCoverage(db, [input]);
     const draft = await createDraft(db, 'host', input, 'http-draft');
     const event = await publishEvent(db, 'host', draft.id, draft.version, 'http-publish');
     assert.equal((await request(`/i/${event.inviteToken}`, 'visitor')).status, 404);
@@ -134,6 +139,7 @@ test('operator pages every pending public review and restarts when the queue cha
   const base = `http://127.0.0.1:${address.port}`;
   const get = (query = '', actor = 'ops') => fetch(`${base}/ops/events/reviews${query}`, { headers: { 'X-Dev-User': actor } });
   try {
+    await openSyntheticPublicCoverage(db, [input]);
     const draft = await createDraft(db, 'host', input, 'queue-draft');
     const published = await publishEvent(db, 'host', draft.id, draft.version, 'queue-publish');
     await db.query(`INSERT INTO events(id,host_id,status,version,payload,recruiting,review_status,updated_at)
@@ -160,6 +166,7 @@ test('operator pages every pending public review and restarts when the queue cha
 test('editing approved public details invalidates review and stale approval cannot reopen recruitment', async () => {
   const db = await createDatabase();
   try {
+    await openSyntheticPublicCoverage(db, [input]);
     const draft = await createDraft(db, 'host', input, 'draft');
     const published = await publishEvent(db, 'host', draft.id, draft.version, 'publish');
     await reviewEvent(db, 'ops', published.id, published.version, 'APPROVED', '核对原活动信息并通过', 'approve');
@@ -184,6 +191,7 @@ test('editing approved public details invalidates review and stale approval cann
 test('approval after a material public change does not undo the separate recruitment pause', async () => {
   const db = await createDatabase();
   try {
+    await openSyntheticPublicCoverage(db, [input]);
     const draft = await createDraft(db, 'host', input, 'material-draft');
     const published = await publishEvent(db, 'host', draft.id, draft.version, 'material-publish');
     await reviewEvent(db, 'ops', published.id, published.version, 'APPROVED', '核对公开活动原始事实', 'material-approve');
@@ -201,6 +209,7 @@ test('approval after a material public change does not undo the separate recruit
 test('public events require manual participant approval before submission to review', async () => {
   const db = await createDatabase();
   try {
+    await openSyntheticPublicCoverage(db, [input]);
     const draft = await createDraft(db, 'host', { ...input, approvalMode: 'AUTO' }, 'auto-draft');
     await assert.rejects(() => publishEvent(db, 'host', draft.id, draft.version, 'auto-publish'), { code: 'INVALID_EVENT' });
   } finally { await db.close(); }
@@ -209,6 +218,7 @@ test('public events require manual participant approval before submission to rev
 test('a confirmed public event can be reviewed after formation deadline if it has not started', async () => {
   const db = await createDatabase();
   try {
+    await openSyntheticPublicCoverage(db, [input]);
     const draft = await createDraft(db, 'host', input, 'confirmed-draft');
     const published = await publishEvent(db, 'host', draft.id, draft.version, 'confirmed-publish');
     await reviewEvent(db, 'ops', published.id, published.version, 'APPROVED', '核对原活动信息和公共场地', 'confirmed-first-review');
@@ -225,6 +235,7 @@ test('a confirmed public event can be reviewed after formation deadline if it ha
 test('legacy public AUTO approval cannot pass human event review', async () => {
   const db = await createDatabase();
   try {
+    await openSyntheticPublicCoverage(db, [input]);
     const draft = await createDraft(db, 'host', input, 'legacy-draft');
     const published = await publishEvent(db, 'host', draft.id, draft.version, 'legacy-publish');
     await db.query("UPDATE events SET payload=jsonb_set(payload,'{approvalMode}',to_jsonb('AUTO'::text)) WHERE id=$1", [published.id]);

@@ -1,0 +1,32 @@
+{
+  "sourceLine": 380,
+  "sourceAlt": "咖啡探店",
+  "URL": "https://lh3.googleusercontent.com/aida-public/AB6AXuALoSuDtWL-I3bDX5Rrgeg5sq8Ng-HllSgnrRVS-8ZPFpNj5MGlNNznEgFS_MjviiIgmxkzRSmwPteQX1Age3LSqo4k2Zq_QltqEqlX_8Cj4MsoqdCmE0-zDN2EL5BEB_W0kcDqsqoeO65RlcT_IsjpZ3Wt7SH_ko5YJyOecwQ8RO2GKE5a0CvHRY7CJZz-yk6fVCAGIHm_e0tHtnGdhTju0055rvL0Pdhu_lz_V_qtQpP63_cGAJbzGw",
+  "finalURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuALoSuDtWL-I3bDX5Rrgeg5sq8Ng-HllSgnrRVS-8ZPFpNj5MGlNNznEgFS_MjviiIgmxkzRSmwPteQX1Age3LSqo4k2Zq_QltqEqlX_8Cj4MsoqdCmE0-zDN2EL5BEB_W0kcDqsqoeO65RlcT_IsjpZ3Wt7SH_ko5YJyOecwQ8RO2GKE5a0CvHRY7CJZz-yk6fVCAGIHm_e0tHtnGdhTju0055rvL0Pdhu_lz_V_qtQpP63_cGAJbzGw",
+  "status": 200,
+  "headers": {
+    "Content-Type": "image/jpeg",
+    "Vary": "Origin",
+    "Access-Control-Allow-Origin": "*",
+    "Timing-Allow-Origin": "*",
+    "Access-Control-Expose-Headers": "Content-Length",
+    "ETag": "\"v0\"",
+    "Expires": "Sat, 03 Oct 2026 02:03:47 GMT",
+    "Cache-Control": "public, max-age=86400, no-transform",
+    "Content-Disposition": "inline;filename=\"unnamed.jpg\"",
+    "X-Content-Type-Options": "nosniff",
+    "Date": "Fri, 02 Oct 2026 02:03:47 GMT",
+    "Server": "fife",
+    "Content-Length": "61237",
+    "X-XSS-Protection": "0",
+    "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "Connection": "close"
+  },
+  "contentType": "image/jpeg",
+  "bytes": 61237,
+  "sha256": "789626490bad53fe814fe1194a7ffa3dad1121719744c9a781e587e80fc4ded5",
+  "savedPath": "/private/tmp/caper-wave73-home-long/photos/hot-coffee.jpg",
+  "noReencoding": true,
+  "fetchedAtUTC": "2026-10-02T02:03:47.537854+00:00",
+  "existingByteEqualCandidates": []
+}

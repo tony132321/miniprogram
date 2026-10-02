@@ -1,0 +1,28 @@
+{
+  "requestedURL": "https://fonts.gstatic.com/s/materialsymbolsoutlined/v374/kJEPBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzBwG-RpA6RzaxHMPdY40KH8nGzv3fzfVJO1USv9ls.woff2",
+  "responseURL": "https://fonts.gstatic.com/s/materialsymbolsoutlined/v374/kJEPBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzBwG-RpA6RzaxHMPdY40KH8nGzv3fzfVJO1USv9ls.woff2",
+  "headers": {
+    "Accept-Ranges": "bytes",
+    "Access-Control-Allow-Origin": "*",
+    "Content-Security-Policy-Report-Only": "require-trusted-types-for 'script'; report-uri https://csp.withgoogle.com/csp/apps-themes",
+    "Cross-Origin-Resource-Policy": "cross-origin",
+    "Cross-Origin-Opener-Policy": "same-origin; report-to=\"apps-themes\"",
+    "Report-To": "{\"group\":\"apps-themes\",\"max_age\":2592000,\"endpoints\":[{\"url\":\"https://csp.withgoogle.com/csp/report-to/apps-themes\"}]}",
+    "Timing-Allow-Origin": "*",
+    "Content-Length": "1136920",
+    "X-Content-Type-Options": "nosniff",
+    "Server": "sffe",
+    "X-XSS-Protection": "0",
+    "Date": "Wed, 30 Sep 2026 03:14:57 GMT",
+    "Expires": "Thu, 30 Sep 2027 03:14:57 GMT",
+    "Cache-Control": "public, max-age=31536000",
+    "Last-Modified": "Mon, 21 Sep 2026 17:35:02 GMT",
+    "Content-Type": "font/woff2",
+    "Age": "158184",
+    "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "Connection": "close"
+  },
+  "bytes": 1136920,
+  "sha256": "77f9711f3f896a1d7a34ab95cffc45cfb17d84c223f197c1b90faa0d043006e9",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
+}

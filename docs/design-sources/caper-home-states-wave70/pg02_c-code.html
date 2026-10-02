@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;background-color:#faf8fe;}body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "vibrant-lime-tint": "#F3FEE7", "inverse-on-surface": "#f1f0f6", "on-tertiary": "#ffffff", "party-violet": "#5856D6", "surface-tint": "#0053d9", "secondary-container": "#6664e4", "error": "#ba1a1a", "background": "#faf8fe", "error-container": "#ffdad6", "inverse-primary": "#b3c5ff", "on-secondary": "#ffffff", "secondary": "#4c4aca", "border-glass": "rgba(255, 255, 255, 0.6)", "tertiary-fixed": "#cdf200", "on-secondary-fixed-variant": "#3631b4", "surface-container-lowest": "#ffffff", "secondary-fixed-dim": "#c2c1ff", "outline-variant": "#c3c6d8", "on-error": "#ffffff", "on-tertiary-container": "#e6ff7e", "surface-container-highest": "#e3e2e7", "on-surface-variant": "#424655", "on-surface": "#1a1b1f", "inverse-surface": "#2f3034", "tertiary-container": "#647700", "surface-bright": "#faf8fe", "primary-fixed": "#dbe1ff", "on-secondary-container": "#fffbff", "party-pink-soft": "#FFF0F3", "electric-blue": "#1D64F2", "primary-fixed-dim": "#b3c5ff", "surface-translucent": "rgba(255, 255, 255, 0.82)", "tertiary": "#4d5d00", "status-active-green": "#34C759", "surface-variant": "#e3e2e7", "surface": "#faf8fe", "on-background": "#1a1b1f", "electric-blue-soft": "#EBF2FE", "on-primary-fixed": "#00174a", "on-secondary-fixed": "#0c006a", "on-error-container": "#93000a", "on-primary": "#ffffff", "on-primary-fixed-variant": "#003ea6", "outline": "#737687", "divider-subtle": "rgba(60, 60, 67, 0.08)", "on-tertiary-fixed-variant": "#3f4c00", "vibrant-lime": "#D2F803", "party-pink": "#FF2D55", "on-primary-container": "#f1f2ff", "primary-container": "#1d64f2", "secondary-fixed": "#e2dfff", "surface-container-high": "#e9e7ed", "surface-card": "#FFFFFF", "surface-dim": "#dbd9df", "surface-container": "#efedf3", "surface-canvas": "#F5F6F8", "primary": "#004cc8", "on-tertiary-fixed": "#181e00", "party-violet-soft": "#F2F1FD", "surface-container-low": "#f4f3f8", "tertiary-fixed-dim": "#b3d400", "status-active-green-soft": "#EBF9F0" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "margin": "1rem", "space-lg": "1rem", "space-md": "0.75rem", "gutter": "0.75rem", "space-xl": "1.5rem", "space-sm": "0.5rem", "space-xs": "0.25rem" }, fontFamily: { "label-lg": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"], "display-mobile": ["Plus Jakarta Sans"], "display": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"] }, fontSize: { "label-lg": ["15px", { "lineHeight": "20px", "fontWeight": "600" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "700" }], "body-md": ["15px", { "lineHeight": "21px", "fontWeight": "400" }], "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "700" }], "headline-lg-mobile": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "display-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.025em", "fontWeight": "800" }], "display": ["34px", { "lineHeight": "42px", "letterSpacing": "-0.03em", "fontWeight": "800" }], "headline-lg": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-md": ["13px", { "lineHeight": "16px", "fontWeight": "600" }], "headline-sm": ["17px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen antialiased selection:bg-primary-fixed"><header class="fixed top-0 w-full z-50 pt-safe bg-surface-translucent backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-14 px-margin flex items-center justify-between"><div class="flex items-center gap-space-sm"><div class="w-8 h-8 rounded-full bg-electric-blue-soft flex items-center justify-center text-primary shadow-[0_0_12px_rgba(29,100,242,0.25)]"><span class="material-symbols-outlined text-[18px]">auto_awesome</span></div><h1 class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Home Feed</h1></div><div class="flex items-center gap-space-sm"><button aria-label="Notifications" class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-[22px]">notifications</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-sm"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-14 pb-28 px-margin bg-surface flex-1"><div class="flex flex-col w-full">
+<!-- AI Assist Hero Banner -->
+<section class="w-full mb-space-md">
+<div class="relative overflow-hidden rounded-xl p-space-md bg-gradient-to-r from-electric-blue-soft via-party-violet-soft to-surface-container-lowest shadow-[0_4px_20px_-2px_rgba(29,100,242,0.08)]">
+<!-- Glow Decor -->
+<div class="absolute -right-6 -bottom-6 w-28 h-28 rounded-full bg-electric-blue/10 blur-xl pointer-events-none"></div>
+<div class="relative z-10 flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<!-- Tactile Glowing Orb Avatar -->
+<div class="relative flex-shrink-0 w-11 h-11 rounded-full bg-gradient-to-tr from-electric-blue to-party-violet flex items-center justify-center shadow-[0_0_20px_rgba(88,86,214,0.35)]">
+<span class="material-symbols-outlined text-on-primary text-[22px] animate-pulse">neurology</span>
+<span class="absolute -top-0.5 -right-0.5 flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-vibrant-lime opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-vibrant-lime"></span>
+</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<h2 class="font-headline-sm text-headline-sm text-on-surface truncate">想组什么局？一句话开始</h2>
+<span class="material-symbols-outlined text-[16px] text-party-violet">auto_awesome</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate mt-0.5">AI 帮你搞定活动策划、自动算账与召集</p>
+</div>
+</div>
+<button aria-label="启动AI组局" class="flex-shrink-0 w-9 h-9 rounded-full bg-surface-container-lowest text-primary flex items-center justify-center shadow-sm active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Segmented Status Tabs -->
+<section class="w-full mb-space-lg">
+<div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
+<button class="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md whitespace-nowrap active:scale-95 transition-transform">
+<span>即将参加</span>
+<span class="px-1.5 py-0.2 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm">2</span>
+</button>
+<button class="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md whitespace-nowrap active:scale-95 transition-transform">
+<span>待确认</span>
+<span class="px-1.5 py-0.2 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm">3</span>
+</button>
+<!-- Active Tab: 我组织的 -->
+<button class="flex items-center gap-1.5 px-4 py-2 rounded-full bg-on-surface text-surface font-label-md text-label-md whitespace-nowrap shadow-sm active:scale-95 transition-transform">
+<span>我组织的</span>
+<span class="px-1.5 py-0.2 rounded-full bg-white/20 text-surface font-label-sm text-label-sm">4</span>
+</button>
+<button class="flex items-center px-3.5 py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md whitespace-nowrap active:scale-95 transition-transform">
+<span>历史归档</span>
+</button>
+</div>
+</section>
+<!-- Activity Cards Feed -->
+<div class="flex flex-col gap-space-lg w-full">
+<!-- CARD 1: 周六羽毛球局 (招募进行中) -->
+<article class="flex flex-col w-full bg-surface-card rounded-2xl shadow-[0_4px_24px_-4px_rgba(28,41,61,0.06),0_1px_3px_0_rgba(28,41,61,0.02)] overflow-hidden">
+<!-- Visual Poster Container -->
+<div class="relative w-full aspect-[16/9] overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Dynamic shot of people playing energetic indoor badminton on a vibrant blue court, shuttlecock in mid-air, dynamic rim lighting, shot on 35mm lens, high energy youth athletic meetup vibe with high contrast, soft cinematic grain and sporty atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsZUCtG97Dhg0Zie50XCK9fkpHcuuGReqOBfihkFU3oKGddeY7M7JPz2pxJiP2H2c89IX_a6KTzSbfKhc1W4CeJZwQSI_wBVwsa4EV-1ZzHxtuxh4r-E4o3LQlhvKZANnYO50v3YSB8IvgLX6t_-Nkvb-xz5lR1uLCfioZ2KZLqn2U73SOG7Pa-LZvRcBgQr8-Bc236V6N0Zko4gBv4_41htfyPn8-ZB3-Rk0i7Ywb-FJCNU0jC9VSfg"/>
+<!-- Top Badges Overlay -->
+<div class="absolute top-3 left-3 right-3 flex items-start justify-between pointer-events-none">
+<!-- Status Pill -->
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-status-active-green/90 backdrop-blur-md shadow-sm">
+<span class="w-2 h-2 rounded-full bg-surface-container-lowest animate-ping"></span>
+<span class="font-label-sm text-label-sm text-on-primary font-bold">招募中 · 还差2人成局</span>
+</div>
+<!-- Partiful-Style Playful Sticker -->
+<div class="transform rotate-3 px-2 py-1 rounded bg-vibrant-lime text-on-surface font-label-sm text-label-sm tracking-tight shadow-md flex items-center gap-1">
+<span>Good Game!</span>
+<span class="material-symbols-outlined text-[13px]">sports_tennis</span>
+</div>
+</div>
+<!-- Dynamic Typographic Sticker Overlay -->
+<div class="absolute bottom-3 left-3 pointer-events-none drop-shadow-md">
+<div class="px-2.5 py-0.5 rounded-lg bg-surface-container-lowest/90 backdrop-blur-md inline-block">
+<span class="font-headline-sm text-headline-sm text-primary font-extrabold tracking-tight">BADMINTON TOGETHER</span>
+</div>
+</div>
+</div>
+<!-- Content Details -->
+<div class="p-space-md flex flex-col w-full">
+<!-- Title & Host Role Pill -->
+<div class="flex items-center justify-between gap-2 mb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight truncate">周六晚场羽毛球 🏸</h3>
+<span class="flex-shrink-0 px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm">主理人</span>
+</div>
+<!-- Metadata Rows -->
+<div class="flex flex-col gap-1.5 mb-space-md">
+<div class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[17px] text-primary">calendar_today</span>
+<span>3月22日 (周六) 19:00 - 21:00</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[17px] text-party-violet">location_on</span>
+<span class="truncate">蓝天体育中心 · 5号羽毛球馆 (已预订)</span>
+</div>
+</div>
+<!-- Organizer Metric Grid (4 Cells) -->
+<div class="grid grid-cols-4 gap-gutter p-space-sm rounded-xl bg-surface-container-low mb-space-md">
+<div class="flex flex-col items-center justify-center p-1">
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-primary font-bold">6</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">已报名</span>
+</div>
+<div class="flex flex-col items-center justify-center p-1">
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-party-violet font-bold">2</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">预留名额</span>
+</div>
+<div class="flex flex-col items-center justify-center p-1">
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-party-pink font-bold">2</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">待审核</span>
+</div>
+<div class="flex flex-col items-center justify-center p-1">
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-status-active-green font-bold">0</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">缺口人数</span>
+</div>
+</div>
+<!-- Quick Actions Row -->
+<div class="flex items-center gap-gutter pt-space-xs">
+<!-- Primary: Enter Workspace -->
+<a class="flex-1 h-11 px-3 rounded-full bg-electric-blue text-on-primary font-label-lg text-label-lg flex items-center justify-center gap-1 shadow-[0_4px_16px_-2px_rgba(29,100,242,0.35)] active:scale-98 transition-transform" href="#">
+<span>主办工作台</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+<!-- Secondary: Broadcast Alert -->
+<button aria-label="群发通知" class="h-11 px-3.5 rounded-full bg-surface-container text-on-surface font-label-md text-label-md flex items-center justify-center gap-1 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">campaign</span>
+<span>群发</span>
+</button>
+<!-- Secondary: Invite Link -->
+<button aria-label="邀请好友" class="w-11 h-11 rounded-full bg-surface-container text-on-surface flex items-center justify-center active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[19px] text-on-surface-variant">share</span>
+</button>
+</div>
+</div>
+</article>
+<!-- CARD 2: 滨江骑行与摄影局 (已成局等待出发) -->
+<article class="flex flex-col w-full bg-surface-card rounded-2xl shadow-[0_4px_24px_-4px_rgba(28,41,61,0.06),0_1px_3px_0_rgba(28,41,61,0.02)] overflow-hidden">
+<!-- Visual Poster Container -->
+<div class="relative w-full aspect-[16/9] overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Group of stylish friends riding city road bicycles along a scenic riverside greenway at golden hour sunset, carrying camera bags and laughing together, warm natural sunlight reflections, Apple lifestyle aesthetic, high quality cinematic framing" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZ-Jwg3iaeFMp5OPmw_GJl-SohvHXwpJiV0q7XuhxKgt_zvv5nnOCje0aPxaiKK2SBsPGge21cXD50rPaYEnYdavYCI0CM-14G5jqq9K2EDGNCFthpSe1eAbap3PjH_OQTWtzv7nNepcrX4kaGvrb3N33lKJavnAsIhxC77CHq1VpjRuBLwgIOB_cPMvH9fZj742KVIngYYHt9fj-cQ8v0SQKUNRNEb4fSKxgkqjdofZOttz2gXkSqCQ"/>
+<!-- Top Badges Overlay -->
+<div class="absolute top-3 left-3 right-3 flex items-start justify-between pointer-events-none">
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-md shadow-sm">
+<span class="w-2 h-2 rounded-full bg-status-active-green"></span>
+<span class="font-label-sm text-label-sm text-on-surface font-bold">已满员 · 8/8人</span>
+</div>
+<div class="transform -rotate-2 px-2 py-0.5 rounded bg-party-pink text-on-primary font-label-sm text-label-sm tracking-tight shadow-md flex items-center gap-1">
+<span>Spring Ride</span>
+<span class="material-symbols-outlined text-[12px]">wb_sunny</span>
+</div>
+</div>
+<div class="absolute bottom-3 left-3 pointer-events-none">
+<div class="px-2.5 py-0.5 rounded-lg bg-on-surface/85 backdrop-blur-md inline-block">
+<span class="font-label-sm text-label-sm text-surface font-semibold tracking-wide uppercase">Confirmed & Ready</span>
+</div>
+</div>
+</div>
+<!-- Content Details -->
+<div class="p-space-md flex flex-col w-full">
+<div class="flex items-center justify-between gap-2 mb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight truncate">周日春日滨江骑行与摄影 🚲</h3>
+<span class="flex-shrink-0 px-2 py-0.5 rounded-full bg-status-active-green-soft text-status-active-green font-label-sm text-label-sm font-semibold">成局就绪</span>
+</div>
+<!-- Metadata Rows -->
+<div class="flex flex-col gap-1.5 mb-space-md">
+<div class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[17px] text-primary">schedule</span>
+<span>3月23日 (周日) 14:00 - 17:30</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[17px] text-party-violet">route</span>
+<span class="truncate">浦东滨江绿道 · 艺仓美术馆起点</span>
+</div>
+</div>
+<!-- Host Smart Reminder Box -->
+<div class="flex items-center gap-space-sm p-3 rounded-xl bg-vibrant-lime-tint mb-space-md">
+<span class="material-symbols-outlined text-[20px] text-tertiary flex-shrink-0">check_circle</span>
+<p class="font-body-sm text-body-sm text-on-surface flex-1">
+            已成功成局！请主办人提前确认周日天气及集合点旗帜。
+          </p>
+</div>
+<!-- Member Avatars Preview -->
+<div class="flex items-center justify-between py-1 mb-space-md">
+<div class="flex items-center -space-x-2 overflow-hidden">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center font-label-sm text-label-sm text-on-primary-fixed shadow-sm">
+<span>林</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-party-violet-soft flex items-center justify-center font-label-sm text-label-sm text-party-violet shadow-sm">
+<span>Eva</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-vibrant-lime flex items-center justify-center font-label-sm text-label-sm text-on-surface shadow-sm">
+<span>K</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-electric-blue-soft flex items-center justify-center font-label-sm text-label-sm text-primary shadow-sm">
+<span>Leo</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center font-label-sm text-label-sm text-on-surface-variant shadow-sm">
+<span>+4</span>
+</div>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">8位团员已进微信群</span>
+</div>
+<!-- Action Row -->
+<div class="flex items-center gap-gutter pt-space-xs">
+<button class="flex-1 h-11 px-4 rounded-full bg-surface-container text-on-surface font-label-lg text-label-lg flex items-center justify-center gap-1.5 active:scale-98 transition-transform">
+<span class="material-symbols-outlined text-[19px]">tune</span>
+<span>管理活动</span>
+</button>
+<button class="flex-1 h-11 px-4 rounded-full bg-electric-blue text-on-primary font-label-lg text-label-lg flex items-center justify-center gap-1.5 shadow-[0_4px_16px_-2px_rgba(29,100,242,0.3)] active:scale-98 transition-transform">
+<span class="material-symbols-outlined text-[19px]">qr_code_scanner</span>
+<span>签到核销码</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Warm Empty/Footer Note -->
+<div class="w-full py-6 flex flex-col items-center justify-center text-center">
+<div class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant mb-2">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">好的活动，让普通的日子发光 ✨</p>
+<span class="font-label-sm text-label-sm text-outline mt-0.5 tracking-wider uppercase">More People · Brighter Days</span>
+</div>
+</div>
+</div>
+<script>
+  // Simple micro-interaction for tab switching feedback
+  document.querySelectorAll('section button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      // tactile vibration if supported
+      if ('vibrate' in navigator) navigator.vibrate(8);
+    });
+  });
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface-translucent backdrop-blur-xl shadow-[0_-1px_12px_rgba(0,0,0,0.05)]" data-active-classes="text-primary font-bold"><div class="h-16 px-space-xs flex items-center justify-around"><a aria-current="page" class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-0.5 transition-colors text-primary font-bold" data-path="home-feed" href="#"><span class="material-symbols-outlined text-[24px]">home</span><span class="font-label-sm text-label-sm">首页</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors" data-path="discovery" href="#"><span class="material-symbols-outlined text-[24px]">explore</span><span class="font-label-sm text-label-sm">发现</span></a><div class="flex items-center justify-center min-w-[56px] min-h-[44px]"><a class="w-12 h-12 -mt-4 rounded-full bg-electric-blue text-on-primary flex items-center justify-center shadow-[0_8px_24px_-4px_rgba(29,100,242,0.45)] active:scale-95 transition-transform" data-path="create-activity" href="#"><span class="material-symbols-outlined text-[28px]">add</span></a></div><a class="relative flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors" data-path="messages" href="#"><div class="relative flex items-center justify-center"><span class="material-symbols-outlined text-[24px]">chat_bubble</span><span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-party-pink"></span></div><span class="font-label-sm text-label-sm">消息</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-0.5 text-on-surface-variant hover:text-on-surface transition-colors" data-path="profile" href="#"><span class="material-symbols-outlined text-[24px]">person</span><span class="font-label-sm text-label-sm">我的</span></a></div></nav></body></html>

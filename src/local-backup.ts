@@ -26,7 +26,9 @@ export async function createLocalBackup(sourceDir: string, archivePath: string):
   }
 }
 
-export async function restoreLocalBackup(archivePath: string, destinationDir: string): Promise<void> {
+// Explicitly limited to synthetic test snapshots. Real restores must use
+// restoreLocalBackupWithPrivacyReplay so an old backup cannot revive deletions.
+export async function restoreLocalBackupUnprotectedSynthetic(archivePath: string, destinationDir: string): Promise<void> {
   const bytes = await readFile(archivePath);
   await mkdir(destinationDir);
   try {

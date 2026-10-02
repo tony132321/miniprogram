@@ -1,0 +1,41 @@
+{
+  "stage": "Root font/resource final source protection; actual8callback and12image decode runtime separate",
+  "otherSixFacesWholeRecordsEqual": true,
+  "oldLicenseExportsSuffixByteEqual": true,
+  "oldFileBytes": 232987,
+  "newFileBytes": 262502,
+  "fontArrayAddedOnlyCaveat600": true,
+  "newFileSHA256": "fb39653c8663ba1bb7aa79e90df267aca6d1c6dd606ea484d8a052dbd53ad3de",
+  "source700OutlineAdvanceProof": "docs/design-sources/home-long-reference-fonts/source.json",
+  "mainPathRemoved": true,
+  "asyncPath": "../subpackages/profile/fonts/reference-font-data.js",
+  "targetedComponentVM": {
+    "pass": 3,
+    "fail": 0
+  },
+  "targetedFontAsyncVM": {
+    "pass": 3,
+    "fail": 0
+  },
+  "actualCallbackFaces": 8,
+  "actualDecodedJPEGs": 12,
+  "final700AddedUnicode": [
+    "C",
+    "V",
+    "b",
+    "c",
+    "k",
+    "E",
+    "H",
+    "O",
+    "T",
+    "u",
+    "v",
+    "W"
+  ],
+  "runtimeCallbackPhase": "Final W/y compiled payload, all8 callbacks loaded; see W73/74 final-character-font-runtime segment; earlier callbacks kept as historic phases",
+  "fontDataRawNetBytes": 29515,
+  "final600AddedUnicode": [
+    "y"
+  ]
+}

@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import { once } from 'node:events';
 import { test } from 'node:test';
 import { createDatabase } from '../src/db.ts';
-import { createDraft, getEvent, publishEvent } from '../src/events.ts';
+import { createDraft, getEvent } from '../src/events.ts';
+import { publishApprovedInvite } from './helpers.ts';
 import { acceptOffer, cancelRegistration, declineOffer, register } from '../src/registrations.ts';
 import { createReport } from '../src/operations.ts';
 import { createApp } from '../src/server.ts';
@@ -33,7 +34,7 @@ test('safety operator pauses all new activity and seats while reads, exits and r
   }
   try {
     const draft = await createDraft(db, 'host', input, 'emergency-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'emergency-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'emergency-publish');
     const member = await register(db, 'member', event.id, event.version, 'emergency-member', event.inviteToken!);
     for (const actor of ['p2', 'p3', 'p4', 'p5'])
       await register(db, actor, event.id, event.version, `emergency-${actor}`, event.inviteToken!);
@@ -61,6 +62,7 @@ test('safety operator pauses all new activity and seats while reads, exits and r
     const offerNotice = (await listMemberNotifications(db, 'w1')).items.find((item: any) => item.kind === 'WAITLIST_OFFER') as any;
     assert.equal(offerNotice?.actionable, false);
     assert.equal(offerNotice?.declinable, true);
+    await db.query("INSERT INTO users(id,wechat_openid) VALUES('w1','emergency-w1')");
     await setConsent(db, 'w1', 'EVENT_REMINDER', true, 'emergency-reminder-consent');
     let externalSends = 0;
     await dispatchNotification(db, offerNotice.id, { async send() {
@@ -96,7 +98,7 @@ test('a stale reopen job cannot promote during a second stop, and a new join can
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', { ...input, maxParticipants: 4 }, 'reopen-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'reopen-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'reopen-publish');
     const p1 = await register(db, 'p1', event.id, event.version, 'reopen-p1', event.inviteToken!);
     await register(db, 'p2', event.id, event.version, 'reopen-p2', event.inviteToken!);
     await register(db, 'p3', event.id, event.version, 'reopen-p3', event.inviteToken!);

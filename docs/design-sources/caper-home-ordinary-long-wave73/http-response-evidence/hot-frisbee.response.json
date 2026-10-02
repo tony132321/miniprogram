@@ -1,0 +1,32 @@
+{
+  "sourceLine": 389,
+  "sourceAlt": "飞盘局",
+  "URL": "https://lh3.googleusercontent.com/aida-public/AB6AXuCLELpraGHCKTVBuT4c-Ozl-tSNFtsu2HmvYNkyWSdwnTjsvXuU4n0aRI6UphTVFBJskNaOuSWRdAj1e3UKKMkWlrY7y8rNepC65uybITyKJDph_Vr3DZxvIlTWjmiOFSHLkBL81n9KC2g2HHJ0vCH9XNZsiQraH8o-1-5su6-YnPKUtnlm-bRdlf6CDjoYkgzpN4NYf5HWg2AH5SX2xxdTWN6s_iEQpeDGzH10Eh-J5jsqxfwPufdvlQ",
+  "finalURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuCLELpraGHCKTVBuT4c-Ozl-tSNFtsu2HmvYNkyWSdwnTjsvXuU4n0aRI6UphTVFBJskNaOuSWRdAj1e3UKKMkWlrY7y8rNepC65uybITyKJDph_Vr3DZxvIlTWjmiOFSHLkBL81n9KC2g2HHJ0vCH9XNZsiQraH8o-1-5su6-YnPKUtnlm-bRdlf6CDjoYkgzpN4NYf5HWg2AH5SX2xxdTWN6s_iEQpeDGzH10Eh-J5jsqxfwPufdvlQ",
+  "status": 200,
+  "headers": {
+    "Content-Type": "image/jpeg",
+    "Vary": "Origin",
+    "Access-Control-Allow-Origin": "*",
+    "Timing-Allow-Origin": "*",
+    "Access-Control-Expose-Headers": "Content-Length",
+    "ETag": "\"v0\"",
+    "Expires": "Sat, 03 Oct 2026 02:03:47 GMT",
+    "Cache-Control": "public, max-age=86400, no-transform",
+    "Content-Disposition": "inline;filename=\"unnamed.jpg\"",
+    "X-Content-Type-Options": "nosniff",
+    "Date": "Fri, 02 Oct 2026 02:03:47 GMT",
+    "Server": "fife",
+    "Content-Length": "70328",
+    "X-XSS-Protection": "0",
+    "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "Connection": "close"
+  },
+  "contentType": "image/jpeg",
+  "bytes": 70328,
+  "sha256": "1d496fa254500f6a66310fadfecbd546457bcdc6d9982313dcbcf905903bbc4f",
+  "savedPath": "/private/tmp/caper-wave73-home-long/photos/hot-frisbee.jpg",
+  "noReencoding": true,
+  "fetchedAtUTC": "2026-10-02T02:03:47.755611+00:00",
+  "existingByteEqualCandidates": []
+}

@@ -1,0 +1,1881 @@
+{
+  "at": "2026-10-02T01:19:22.538049+00:00",
+  "scope": "Only Wave70 source home B/C/D, PG07, member/host details and activity-only module/image relocation; no full suite or CI",
+  "segments": {
+    "home-pending": {
+      "scope": "Actual API REQUESTED, RECONFIRM_REQUIRED and WAITLISTED home cards, source geometry and same-ID destinations",
+      "checks": [
+        {
+          "pass": true,
+          "label": "Current API pending REQUESTED",
+          "actual": {
+            "id": "f9d82605-c618-4e3f-ae1c-e23f2730bb95",
+            "status": "REQUESTED"
+          }
+        },
+        {
+          "pass": true,
+          "label": "Both actual pending buttons render REQUESTED"
+        },
+        {
+          "pass": true,
+          "label": "PG02-B header56, source cover176 and real CTA36",
+          "actual": [
+            {
+              "selector": ".home-header",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 54,
+                "bottom": 110,
+                "width": 402,
+                "height": 56,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(255, 255, 255, 0.82)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".registration-REQUESTED .cover-wrap",
+              "value": {
+                "left": 16,
+                "right": 386,
+                "top": 254,
+                "bottom": 430,
+                "width": 370,
+                "height": 176,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "18px",
+                "line-height": "normal",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(239, 237, 243)",
+                "display": "block",
+                "color": "rgb(0, 0, 0)"
+              }
+            },
+            {
+              "selector": ".registration-REQUESTED .card-primary",
+              "value": {
+                "left": 28,
+                "right": 197,
+                "top": 614,
+                "bottom": 650,
+                "width": 169,
+                "height": 36,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "13px",
+                "line-height": "16px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "12px",
+                "padding-bottom": "10px",
+                "background-color": "rgb(244, 243, 248)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            }
+          ]
+        },
+        {
+          "pass": true,
+          "label": "Primary opens current same-event registration REQUESTED"
+        },
+        {
+          "pass": true,
+          "label": "Secondary reaches current cancellation button only; no cancellation submitted"
+        },
+        {
+          "pass": true,
+          "label": "Current API pending RECONFIRM_REQUIRED",
+          "actual": {
+            "id": "337f574b-e4d9-4835-9a3f-cf42b946a9c6",
+            "status": "RECONFIRM_REQUIRED"
+          }
+        },
+        {
+          "pass": true,
+          "label": "Both actual pending buttons render RECONFIRM_REQUIRED"
+        },
+        {
+          "pass": true,
+          "label": "Primary opens current same-event registration RECONFIRM_REQUIRED"
+        },
+        {
+          "pass": true,
+          "label": "Current API pending WAITLISTED",
+          "actual": {
+            "id": "0e51f241-3f63-439d-b59d-593549a61ac2",
+            "status": "WAITLISTED"
+          }
+        },
+        {
+          "pass": true,
+          "label": "Both actual pending buttons render WAITLISTED"
+        },
+        {
+          "pass": true,
+          "label": "Primary opens current same-event registration WAITLISTED"
+        },
+        {
+          "pass": true,
+          "label": "No SDK runtime exceptions on affected routes",
+          "actual": []
+        }
+      ],
+      "metrics": [
+        {
+          "status": "REQUESTED",
+          "geometry": [
+            {
+              "selector": ".home-header",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 54,
+                "bottom": 110,
+                "width": 402,
+                "height": 56,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(255, 255, 255, 0.82)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".registration-REQUESTED .cover-wrap",
+              "value": {
+                "left": 16,
+                "right": 386,
+                "top": 254,
+                "bottom": 430,
+                "width": 370,
+                "height": 176,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "18px",
+                "line-height": "normal",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(239, 237, 243)",
+                "display": "block",
+                "color": "rgb(0, 0, 0)"
+              }
+            },
+            {
+              "selector": ".registration-REQUESTED .card-primary",
+              "value": {
+                "left": 28,
+                "right": 197,
+                "top": 614,
+                "bottom": 650,
+                "width": 169,
+                "height": 36,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "13px",
+                "line-height": "16px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "12px",
+                "padding-bottom": "10px",
+                "background-color": "rgb(244, 243, 248)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            }
+          ]
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-home-pending-requested-wave70-2026-10-02.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-home-pending-reconfirm_required-wave70-2026-10-02.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-home-pending-waitlisted-wave70-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 70 home pending/organized/history, activity announcement and member/host details UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Only one missing WAITLISTED branch fixture is created through local API and separately recorded; no repeated publication, approval, feedback or expense writes.",
+      "pass": true,
+      "elapsedMs": 23637
+    },
+    "home-organized": {
+      "scope": "Actual recruiting and in-progress host home cards, source photo/ratio and same-ID workstation, announcement and check-in destinations",
+      "checks": [
+        {
+          "pass": true,
+          "label": "Real approved recruiting host retains real pending count",
+          "actual": {
+            "id": "f9d82605-c618-4e3f-ae1c-e23f2730bb95",
+            "counts": {
+              "confirmed": 2,
+              "reserved": 0,
+              "requested": 1,
+              "gap": 2
+            }
+          }
+        },
+        {
+          "pass": true,
+          "label": "PG02-C header56 and actual source hero16:9",
+          "actual": [
+            {
+              "selector": ".home-header",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 54,
+                "bottom": 110,
+                "width": 402,
+                "height": 56,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(255, 255, 255, 0.82)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".home-reference-card .cover-wrap",
+              "value": {
+                "left": 16,
+                "right": 386,
+                "top": 242,
+                "bottom": 450.125,
+                "width": 370,
+                "height": 208.125,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "18px",
+                "line-height": "normal",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "208.125px",
+                "background-color": "rgb(239, 237, 243)",
+                "display": "block",
+                "color": "rgb(0, 0, 0)"
+              }
+            },
+            {
+              "selector": ".home-reference-card .card-primary",
+              "value": {
+                "left": 28,
+                "right": 213,
+                "top": 706.125,
+                "bottom": 750.125,
+                "width": 185,
+                "height": 44,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "20px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "12px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(29, 100, 242)",
+                "display": "flex",
+                "color": "rgb(255, 255, 255)"
+              }
+            }
+          ]
+        },
+        {
+          "pass": true,
+          "label": "Recruiting badminton uses exact source photo with visible illustration label"
+        },
+        {
+          "pass": true,
+          "label": "Primary reaches authorized same-event workstation"
+        },
+        {
+          "pass": true,
+          "label": "Secondary reaches real announcement form; no post"
+        },
+        {
+          "pass": true,
+          "label": "Actual in-progress card retains qualified check-in action"
+        },
+        {
+          "pass": true,
+          "label": "Check-in button reaches same-event host check-in section; no token generated"
+        },
+        {
+          "pass": true,
+          "label": "No SDK runtime exceptions on affected routes",
+          "actual": []
+        }
+      ],
+      "metrics": [
+        {
+          "geometry": [
+            {
+              "selector": ".home-header",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 54,
+                "bottom": 110,
+                "width": 402,
+                "height": 56,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(255, 255, 255, 0.82)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".home-reference-card .cover-wrap",
+              "value": {
+                "left": 16,
+                "right": 386,
+                "top": 242,
+                "bottom": 450.125,
+                "width": 370,
+                "height": 208.125,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "18px",
+                "line-height": "normal",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "208.125px",
+                "background-color": "rgb(239, 237, 243)",
+                "display": "block",
+                "color": "rgb(0, 0, 0)"
+              }
+            },
+            {
+              "selector": ".home-reference-card .card-primary",
+              "value": {
+                "left": 28,
+                "right": 213,
+                "top": 706.125,
+                "bottom": 750.125,
+                "width": 185,
+                "height": 44,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "20px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "12px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(29, 100, 242)",
+                "display": "flex",
+                "color": "rgb(255, 255, 255)"
+              }
+            }
+          ]
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-home-organized-recruiting-wave70-2026-10-02.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-home-organized-in-progress-wave70-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 70 home pending/organized/history, activity announcement and member/host details UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Only one missing WAITLISTED branch fixture is created through local API and separately recorded; no repeated publication, approval, feedback or expense writes.",
+      "pass": true,
+      "elapsedMs": 17883
+    },
+    "home-history": {
+      "scope": "Actual completed host/member history cards, source bounds, member feedback route and qualified host repeat destination",
+      "checks": [
+        {
+          "pass": true,
+          "label": "Actual confirmed member history feedback action",
+          "actual": {
+            "id": "dca728a9-f387-4fbf-a301-4f8558ee2f6b",
+            "action": "checkinSection"
+          }
+        },
+        {
+          "pass": true,
+          "label": "PG02-D member source header56 and cover160",
+          "actual": [
+            {
+              "selector": ".home-header",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 54,
+                "bottom": 110,
+                "width": 402,
+                "height": 56,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(255, 255, 255, 0.82)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".history-feedback-card .cover-wrap",
+              "value": {
+                "left": 16,
+                "right": 386,
+                "top": 242,
+                "bottom": 402,
+                "width": 370,
+                "height": 160,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "18px",
+                "line-height": "normal",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(239, 237, 243)",
+                "display": "block",
+                "color": "rgb(0, 0, 0)"
+              }
+            },
+            {
+              "selector": ".history-feedback-card .card-primary",
+              "value": {
+                "left": 28,
+                "right": 197,
+                "top": 538,
+                "bottom": 576,
+                "width": 169,
+                "height": 38,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "13px",
+                "line-height": "16px",
+                "font-weight": "700",
+                "max-width": "none",
+                "padding-right": "12px",
+                "padding-bottom": "10px",
+                "background-color": "rgb(88, 86, 214)",
+                "display": "flex",
+                "color": "rgb(255, 255, 255)"
+              }
+            }
+          ]
+        },
+        {
+          "pass": true,
+          "label": "No invented album or share action on historical card"
+        },
+        {
+          "pass": true,
+          "label": "Member CTA reaches current unsubmitted feedback, no submit"
+        },
+        {
+          "pass": true,
+          "label": "Actual completed host uses existing repeat action"
+        },
+        {
+          "pass": true,
+          "label": "Repeat CTA reaches same-event qualified host repeat area; no new event or draft"
+        },
+        {
+          "pass": true,
+          "label": "No SDK runtime exceptions on affected routes",
+          "actual": []
+        }
+      ],
+      "metrics": [
+        {
+          "geometry": [
+            {
+              "selector": ".home-header",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 54,
+                "bottom": 110,
+                "width": 402,
+                "height": 56,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(255, 255, 255, 0.82)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".history-feedback-card .cover-wrap",
+              "value": {
+                "left": 16,
+                "right": 386,
+                "top": 242,
+                "bottom": 402,
+                "width": 370,
+                "height": 160,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "18px",
+                "line-height": "normal",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(239, 237, 243)",
+                "display": "block",
+                "color": "rgb(0, 0, 0)"
+              }
+            },
+            {
+              "selector": ".history-feedback-card .card-primary",
+              "value": {
+                "left": 28,
+                "right": 197,
+                "top": 538,
+                "bottom": 576,
+                "width": 169,
+                "height": 38,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "13px",
+                "line-height": "16px",
+                "font-weight": "700",
+                "max-width": "none",
+                "padding-right": "12px",
+                "padding-bottom": "10px",
+                "background-color": "rgb(88, 86, 214)",
+                "display": "flex",
+                "color": "rgb(255, 255, 255)"
+              }
+            }
+          ]
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-home-history-member-wave70-2026-10-02.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-home-history-host-wave70-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 70 home pending/organized/history, activity announcement and member/host details UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Only one missing WAITLISTED branch fixture is created through local API and separately recorded; no repeated publication, approval, feedback or expense writes.",
+      "pass": true,
+      "elapsedMs": 13424
+    },
+    "qr-runtime": {
+      "scope": "Only relocated activity QR module actual share canvas export; no screenshot, token logging, clipboard or native send",
+      "checks": [
+        {
+          "pass": true,
+          "label": "Current authorized share refresh loads relocated actual generator"
+        },
+        {
+          "pass": true,
+          "label": "Actual relocated generator paints and exports expected160 square canvas",
+          "actual": {
+            "width": 160,
+            "height": 160
+          }
+        },
+        {
+          "pass": true,
+          "label": "No SDK runtime exceptions on affected routes",
+          "actual": []
+        }
+      ],
+      "metrics": [
+        {
+          "actualCanvasExport": {
+            "width": 160,
+            "height": 160
+          },
+          "privacy": "QR exists only in mini-program temporary storage; no token or QR pixels captured"
+        }
+      ],
+      "screenshots": [],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 70 home pending/organized/history, activity announcement and member/host details UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Only one missing WAITLISTED branch fixture is created through local API and separately recorded; no repeated publication, approval, feedback or expense writes.",
+      "pass": true,
+      "elapsedMs": 6678
+    },
+    "pg07": {
+      "scope": "Actual approved announcement/question/reply timeline, source geometry and existing reply/member destinations; no content submission",
+      "checks": [
+        {
+          "pass": true,
+          "label": "Actual approved reply remains nested under exact parent",
+          "actual": {
+            "id": "02c295b8-10e0-4602-8d25-1dc0d801a5f1",
+            "questionId": "2ef4fe59-c90d-4633-8834-7384828bd038",
+            "replyId": "6ca20139-a9b2-40c6-9b66-62406ded3275"
+          }
+        },
+        {
+          "pass": true,
+          "label": "PG07 actual source header64, timeline40, reply24, send44",
+          "actual": [
+            {
+              "selector": ".pg07-native-nav",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 0,
+                "bottom": 118,
+                "width": 402,
+                "height": 118,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "16px",
+                "line-height": "normal",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(250, 248, 254, 0.8)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".pg07-avatar",
+              "value": {
+                "left": 16,
+                "right": 56,
+                "top": 209.75,
+                "bottom": 249.75,
+                "width": 40,
+                "height": 40,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "20px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(235, 242, 254)",
+                "display": "flex",
+                "color": "rgb(0, 76, 200)"
+              }
+            },
+            {
+              "selector": ".pg07-reply-avatar",
+              "value": {
+                "left": 90,
+                "right": 114,
+                "top": 508.25,
+                "bottom": 532.25,
+                "width": 24,
+                "height": 24,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "11px",
+                "line-height": "14px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(235, 242, 254)",
+                "display": "flex",
+                "color": "rgb(0, 76, 200)"
+              }
+            },
+            {
+              "selector": ".pg07-send",
+              "value": {
+                "left": 342,
+                "right": 386,
+                "top": 775,
+                "bottom": 819,
+                "width": 44,
+                "height": 44,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "13px",
+                "line-height": "18px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(88, 86, 214)",
+                "display": "flex",
+                "color": "rgb(0, 76, 200)"
+              }
+            }
+          ]
+        },
+        {
+          "pass": true,
+          "label": "Source placeholder color retained"
+        },
+        {
+          "pass": true,
+          "label": "Attachment remains disabled"
+        },
+        {
+          "pass": true,
+          "label": "Reply CTA binds current real question ID"
+        },
+        {
+          "pass": true,
+          "label": "Reply opens same-event host answer form with correct parent; no answer posted"
+        },
+        {
+          "pass": true,
+          "label": "Composer keeps existing input binding; no submit"
+        },
+        {
+          "pass": true,
+          "label": "Header person opens same-event member registration area"
+        },
+        {
+          "pass": true,
+          "label": "No SDK runtime exceptions on affected routes",
+          "actual": []
+        }
+      ],
+      "metrics": [
+        {
+          "geometry": [
+            {
+              "selector": ".pg07-native-nav",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 0,
+                "bottom": 118,
+                "width": 402,
+                "height": 118,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "16px",
+                "line-height": "normal",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(250, 248, 254, 0.8)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".pg07-avatar",
+              "value": {
+                "left": 16,
+                "right": 56,
+                "top": 209.75,
+                "bottom": 249.75,
+                "width": 40,
+                "height": 40,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "20px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(235, 242, 254)",
+                "display": "flex",
+                "color": "rgb(0, 76, 200)"
+              }
+            },
+            {
+              "selector": ".pg07-reply-avatar",
+              "value": {
+                "left": 90,
+                "right": 114,
+                "top": 508.25,
+                "bottom": 532.25,
+                "width": 24,
+                "height": 24,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "11px",
+                "line-height": "14px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(235, 242, 254)",
+                "display": "flex",
+                "color": "rgb(0, 76, 200)"
+              }
+            },
+            {
+              "selector": ".pg07-send",
+              "value": {
+                "left": 342,
+                "right": 386,
+                "top": 775,
+                "bottom": 819,
+                "width": 44,
+                "height": 44,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "13px",
+                "line-height": "18px",
+                "font-weight": "600",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(88, 86, 214)",
+                "display": "flex",
+                "color": "rgb(0, 76, 200)"
+              }
+            }
+          ]
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-announcement-timeline-wave70-2026-10-02.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-announcement-member-composer-wave70-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 70 home pending/organized/history, activity announcement and member/host details UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Only one missing WAITLISTED branch fixture is created through local API and separately recorded; no repeated publication, approval, feedback or expense writes.",
+      "pass": true,
+      "elapsedMs": 12150
+    },
+    "pg07-visual-delta": {
+      "scope": "Only independent-review PG07 animation and focused composer appearance delta; no repeated content/route assertions",
+      "checks": [
+        {
+          "pass": true,
+          "label": "Back button uses source95 percent native hover class"
+        },
+        {
+          "pass": true,
+          "label": "No SDK runtime exceptions on affected routes",
+          "actual": []
+        }
+      ],
+      "metrics": [
+        {
+          "glowAnimation": null,
+          "pingAnimation": null,
+          "pressedClass": "pg07-pressed"
+        },
+        {
+          "nativeAnimationRead": "SDK returns null for animation shorthand; source CSS independently verified; native animation pending CUA"
+        },
+        {
+          "focusedInputWrap": {
+            "inputFocus": 0,
+            "background": "rgb(239, 237, 243)",
+            "shadow": "rgba(0, 0, 0, 0.05) 0px 2px 4px 0px inset"
+          }
+        },
+        {
+          "focusBoundary": "SDK tap did not expose actual focused input; source focus-within independently verified; native focus painting pending CUA"
+        }
+      ],
+      "screenshots": [],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 70 home pending/organized/history, activity announcement and member/host details UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Only one missing WAITLISTED branch fixture is created through local API and separately recorded; no repeated publication, approval, feedback or expense writes.",
+      "pass": true,
+      "elapsedMs": 10619
+    },
+    "home-visual-delta": {
+      "scope": "Only independently corrected home source colors/tracking/filter/weight and reviewed screenshots; no repeated routes or business writes",
+      "checks": [
+        {
+          "pass": true,
+          "label": "B corrected waitlist capsule and nonselected tab colors",
+          "actual": {
+            "color": "rgb(66, 70, 85)",
+            "tabBackground": "rgb(244, 243, 248)"
+          }
+        },
+        {
+          "pass": true,
+          "label": "B corrected reconfirm poster lime and700 weight",
+          "actual": {
+            "color": "rgb(210, 248, 3)",
+            "weight": "700"
+          }
+        },
+        {
+          "pass": true,
+          "label": "C corrected inherited headline tracking and real host pill700",
+          "actual": {
+            "tracking": "-0.17px",
+            "weight": "700",
+            "filter": "drop-shadow(rgba(0, 0, 0, 0.07) 0px 4px 3px) drop-shadow(rgba(0, 0, 0, 0.06) 0px 2px 2px)"
+          }
+        },
+        {
+          "pass": true,
+          "label": "D corrected feedback image and black capsule without green dot",
+          "actual": {
+            "filter": "none",
+            "background": "rgba(0, 0, 0, 0.4)",
+            "tracking": "-0.17px",
+            "dotDisplay": "none"
+          }
+        },
+        {
+          "pass": true,
+          "label": "D corrected source history-title tracking",
+          "actual": {
+            "filter": "none",
+            "background": "rgba(0, 0, 0, 0.4)",
+            "tracking": "-0.17px",
+            "dotDisplay": "none"
+          }
+        },
+        {
+          "pass": true,
+          "label": "D corrected source wider tracking and native pressed class",
+          "actual": {
+            "tracking": "0.55px",
+            "hoverClass": "home-reference-card-pressed"
+          }
+        },
+        {
+          "pass": true,
+          "label": "No SDK runtime exceptions on affected routes",
+          "actual": []
+        }
+      ],
+      "metrics": [
+        {
+          "state": "WAITLISTED",
+          "styles": {
+            "color": "rgb(66, 70, 85)",
+            "tabBackground": "rgb(244, 243, 248)"
+          }
+        },
+        {
+          "state": "RECONFIRM_REQUIRED",
+          "styles": {
+            "color": "rgb(210, 248, 3)",
+            "weight": "700"
+          }
+        },
+        {
+          "state": "organized",
+          "styles": {
+            "tracking": "-0.17px",
+            "weight": "700",
+            "filter": "drop-shadow(rgba(0, 0, 0, 0.07) 0px 4px 3px) drop-shadow(rgba(0, 0, 0, 0.06) 0px 2px 2px)"
+          }
+        },
+        {
+          "state": "history-member",
+          "styles": {
+            "filter": "none",
+            "background": "rgba(0, 0, 0, 0.4)",
+            "tracking": "-0.17px",
+            "dotDisplay": "none"
+          }
+        },
+        {
+          "state": "history-host",
+          "styles": {
+            "tracking": "0.55px",
+            "hoverClass": "home-reference-card-pressed"
+          }
+        },
+        {
+          "nativeBoundary": "Motion and pressed source declarations reviewed; no claim of native foreground animation while Mac locked"
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-home-pending-waitlisted-reviewed-wave70-2026-10-02.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-home-pending-reconfirm-reviewed-wave70-2026-10-02.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-home-organized-recruiting-reviewed-wave70-2026-10-02.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-home-history-member-reviewed-wave70-2026-10-02.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-home-history-host-reviewed-wave70-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 70 home pending/organized/history, activity announcement and member/host details UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Only one missing WAITLISTED branch fixture is created through local API and separately recorded; no repeated publication, approval, feedback or expense writes.",
+      "pass": true,
+      "elapsedMs": 24105
+    },
+    "details-member": {
+      "scope": "Confirmed member source detail geometry, exact scene asset and existing same-event check-in/member/content/expense destinations",
+      "checks": [
+        {
+          "pass": true,
+          "label": "Actual confirmed badminton member and real six-person count",
+          "actual": {
+            "id": "0e51f241-3f63-439d-b59d-593549a61ac2",
+            "confirmed": 6
+          }
+        },
+        {
+          "pass": true,
+          "label": "Member source header56, hero224 and confirmed icon32",
+          "actual": [
+            {
+              "selector": ".pgd-native-nav",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 0,
+                "bottom": 110,
+                "width": 402,
+                "height": 110,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "16px",
+                "line-height": "normal",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(250, 248, 254, 0.8)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".pgd-hero",
+              "value": {
+                "left": 16,
+                "right": 386,
+                "top": 110,
+                "bottom": 334,
+                "width": 370,
+                "height": 224,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(233, 231, 237)",
+                "display": "block",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".pgd-confirmed-icon",
+              "value": {
+                "left": 32,
+                "right": 64,
+                "top": 371.5,
+                "bottom": 403.5,
+                "width": 32,
+                "height": 32,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(235, 249, 240)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            }
+          ]
+        },
+        {
+          "pass": true,
+          "label": "Member exact source photo and no host state controls"
+        },
+        {
+          "pass": true,
+          "label": "Member pass action opens same-event check-in without host QR generator"
+        },
+        {
+          "pass": true,
+          "label": "Member header opens same-event registration section"
+        },
+        {
+          "pass": true,
+          "label": "Detail retains real contentSection destination"
+        },
+        {
+          "pass": true,
+          "label": "Member reaches same-event contentSection; no content or ledger write"
+        },
+        {
+          "pass": true,
+          "label": "Detail retains real expenseSection destination"
+        },
+        {
+          "pass": true,
+          "label": "Member reaches same-event expenseSection; no content or ledger write"
+        },
+        {
+          "pass": true,
+          "label": "No SDK runtime exceptions on affected routes",
+          "actual": []
+        }
+      ],
+      "metrics": [
+        {
+          "geometry": [
+            {
+              "selector": ".pgd-native-nav",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 0,
+                "bottom": 110,
+                "width": 402,
+                "height": 110,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "16px",
+                "line-height": "normal",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(250, 248, 254, 0.8)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".pgd-hero",
+              "value": {
+                "left": 16,
+                "right": 386,
+                "top": 110,
+                "bottom": 334,
+                "width": 370,
+                "height": 224,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(233, 231, 237)",
+                "display": "block",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".pgd-confirmed-icon",
+              "value": {
+                "left": 32,
+                "right": 64,
+                "top": 371.5,
+                "bottom": 403.5,
+                "width": 32,
+                "height": 32,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(235, 249, 240)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            }
+          ]
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-details-confirmed-member-wave70-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 70 home pending/organized/history, activity announcement and member/host details UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Only one missing WAITLISTED branch fixture is created through local API and separately recorded; no repeated publication, approval, feedback or expense writes.",
+      "pass": true,
+      "elapsedMs": 18078
+    },
+    "details-host": {
+      "scope": "Current authorized host source detail geometry, role-aware data, venue-copy guard and same-event host/member routes",
+      "checks": [
+        {
+          "pass": true,
+          "label": "Actual host-specific detail and no manufactured member pass"
+        },
+        {
+          "pass": true,
+          "label": "Host source header56 and hero224",
+          "actual": [
+            {
+              "selector": ".pgd-native-nav",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 0,
+                "bottom": 110,
+                "width": 402,
+                "height": 110,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "16px",
+                "line-height": "normal",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(250, 248, 254, 0.8)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".pgd-hero",
+              "value": {
+                "left": 16,
+                "right": 386,
+                "top": 172,
+                "bottom": 396,
+                "width": 370,
+                "height": 224,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(233, 231, 237)",
+                "display": "block",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".pgd-map-frame",
+              "value": {
+                "left": 28,
+                "right": 374,
+                "top": 866.25,
+                "bottom": 1010.25,
+                "width": 346,
+                "height": 144,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(0, 0, 0, 0)",
+                "display": "block",
+                "color": "rgb(26, 27, 31)"
+              }
+            }
+          ]
+        },
+        {
+          "pass": true,
+          "label": "Host exact source photo"
+        },
+        {
+          "pass": true,
+          "label": "Copy button uses current authorized event venue; SDK clipboard adapter, no actual clipboard capture"
+        },
+        {
+          "pass": true,
+          "label": "Host roster button reaches same-event registration section"
+        },
+        {
+          "pass": true,
+          "label": "Qualified host retains workstation destination"
+        },
+        {
+          "pass": true,
+          "label": "Host detail opens same-event authorized workstation"
+        },
+        {
+          "pass": true,
+          "label": "No SDK runtime exceptions on affected routes",
+          "actual": []
+        }
+      ],
+      "metrics": [
+        {
+          "geometry": [
+            {
+              "selector": ".pgd-native-nav",
+              "value": {
+                "left": 0,
+                "right": 402,
+                "top": 0,
+                "bottom": 110,
+                "width": 402,
+                "height": 110,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "16px",
+                "line-height": "normal",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "102px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(250, 248, 254, 0.8)",
+                "display": "flex",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".pgd-hero",
+              "value": {
+                "left": 16,
+                "right": 386,
+                "top": 172,
+                "bottom": 396,
+                "width": 370,
+                "height": 224,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgb(233, 231, 237)",
+                "display": "block",
+                "color": "rgb(26, 27, 31)"
+              }
+            },
+            {
+              "selector": ".pgd-map-frame",
+              "value": {
+                "left": 28,
+                "right": 374,
+                "top": 866.25,
+                "bottom": 1010.25,
+                "width": 346,
+                "height": 144,
+                "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                "font-size": "15px",
+                "line-height": "21px",
+                "font-weight": "400",
+                "max-width": "none",
+                "padding-right": "0px",
+                "padding-bottom": "0px",
+                "background-color": "rgba(0, 0, 0, 0)",
+                "display": "block",
+                "color": "rgb(26, 27, 31)"
+              }
+            }
+          ]
+        }
+      ],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-details-current-host-wave70-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 70 home pending/organized/history, activity announcement and member/host details UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Only one missing WAITLISTED branch fixture is created through local API and separately recorded; no repeated publication, approval, feedback or expense writes.",
+      "pass": true,
+      "elapsedMs": 11426
+    },
+    "resource-images": {
+      "scope": "Only moved original image bindings and native packaged resource loading; no old workflow regression",
+      "checks": [
+        {
+          "pass": true,
+          "label": "PG01 original photo binding uses relocated activity asset"
+        },
+        {
+          "pass": true,
+          "label": "PG04-S current authorized projection binds relocated original photo; no publish write"
+        },
+        {
+          "pass": true,
+          "label": "Actual itinerary card binds relocated original badminton resource",
+          "actual": {
+            "src": "/subpackages/activity/assets/itinerary-badminton.jpg"
+          }
+        },
+        {
+          "pass": true,
+          "label": "Native packaged original resource loads",
+          "actual": {
+            "path": "/subpackages/activity/event/assets/pg01-badminton-player.jpg",
+            "width": 512,
+            "height": 279
+          }
+        },
+        {
+          "pass": true,
+          "label": "Native packaged original resource loads",
+          "actual": {
+            "path": "/subpackages/activity/event/assets/pg04s-badminton.jpg",
+            "width": 512,
+            "height": 279
+          }
+        },
+        {
+          "pass": true,
+          "label": "Native packaged original resource loads",
+          "actual": {
+            "path": "/subpackages/activity/assets/itinerary-badminton.jpg",
+            "width": 512,
+            "height": 279
+          }
+        },
+        {
+          "pass": true,
+          "label": "No SDK runtime exceptions on affected routes",
+          "actual": []
+        }
+      ],
+      "metrics": [
+        {
+          "path": "/subpackages/activity/event/assets/pg01-badminton-player.jpg",
+          "width": 512,
+          "height": 279
+        },
+        {
+          "path": "/subpackages/activity/event/assets/pg04s-badminton.jpg",
+          "width": 512,
+          "height": 279
+        },
+        {
+          "path": "/subpackages/activity/assets/itinerary-badminton.jpg",
+          "width": 512,
+          "height": 279
+        }
+      ],
+      "screenshots": [],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 70 home pending/organized/history, activity announcement and member/host details UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Only one missing WAITLISTED branch fixture is created through local API and separately recorded; no repeated publication, approval, feedback or expense writes.",
+      "pass": true,
+      "elapsedMs": 12931
+    },
+    "final-constants": {
+      "scope": "Only final source tracking and sticker-shadow deltas; no repeated business/navigation assertions",
+      "checks": [
+        {
+          "pass": true,
+          "label": "Final feedback sticker source shadow-sm",
+          "actual": {
+            "shadow": "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px"
+          }
+        },
+        {
+          "pass": true,
+          "label": "Final PG07 source tracking-wide is .275px",
+          "actual": {
+            "tracking": "0.275px"
+          }
+        },
+        {
+          "pass": true,
+          "label": "No SDK runtime exceptions on affected routes",
+          "actual": []
+        }
+      ],
+      "metrics": [
+        {
+          "sourceOnlyConstants": "CONFIRMED home pill and COMPLETED host AA label have no current matching exact synthetic state; independently reviewed source/inverse, no fabricated setData state or new business writes."
+        }
+      ],
+      "screenshots": [],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 70 home pending/organized/history, activity announcement and member/host details UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Only one missing WAITLISTED branch fixture is created through local API and separately recorded; no repeated publication, approval, feedback or expense writes.",
+      "pass": true,
+      "elapsedMs": 9754
+    },
+    "host-source-delta": {
+      "scope": "Only four independently corrected host source role/frame classes; no repeated destinations or business writes",
+      "checks": [
+        {
+          "pass": true,
+          "label": "Host source status-left and white hero title",
+          "actual": {
+            "status": "rgb(66, 70, 85)",
+            "title": "rgb(255, 255, 255)"
+          }
+        },
+        {
+          "pass": true,
+          "label": "Host source map inset shadow and footer extra8",
+          "actual": {
+            "mapShadow": "rgba(0, 0, 0, 0.05) 0px 2px 4px 0px inset",
+            "footerTop": "8px"
+          }
+        },
+        {
+          "pass": true,
+          "label": "Host real capacity uses separate source800 /600 /11 slots",
+          "actual": {
+            "number": "800",
+            "denominator": "600",
+            "unit": "11px"
+          }
+        },
+        {
+          "pass": true,
+          "label": "No SDK runtime exceptions on affected routes",
+          "actual": []
+        }
+      ],
+      "metrics": [],
+      "screenshots": [
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-details-host-source-reviewed-wave70-2026-10-02.png",
+        "/Users/tsb/Documents/小程序/docs/evidence/images/caper-details-host-roster-reviewed-wave70-2026-10-02.png"
+      ],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 70 home pending/organized/history, activity announcement and member/host details UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Only one missing WAITLISTED branch fixture is created through local API and separately recorded; no repeated publication, approval, feedback or expense writes.",
+      "pass": true,
+      "elapsedMs": 8758
+    },
+    "pg07-stage1-failed": {
+      "scope": "Actual approved announcement/question/reply timeline, source geometry and existing reply/member destinations; no content submission",
+      "checks": [],
+      "metrics": [],
+      "screenshots": [],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 70 home pending/organized/history, activity announcement and member/host details UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Only one missing WAITLISTED branch fixture is created through local API and separately recorded; no repeated publication, approval, feedback or expense writes.",
+      "pass": false,
+      "failure": {
+        "phase": "host-timeline",
+        "message": "Cannot read properties of undefined (reading 'some')",
+        "stack": "TypeError: Cannot read properties of undefined (reading 'some')\n    at /private/tmp/caper-wave70-pg07.cjs:4:280\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async until (/private/tmp/caper-wave70-sdk-helpers.cjs:15:85)\n    at async /private/tmp/caper-wave70-pg07.cjs:4:187\n    at async run (/private/tmp/caper-wave70-sdk-helpers.cjs:22:3)"
+      },
+      "elapsedMs": 6451
+    },
+    "pg07-visual-delta-failed": {
+      "scope": "Only independent-review PG07 animation and focused composer appearance delta; no repeated content/route assertions",
+      "checks": [],
+      "metrics": [
+        {
+          "glowAnimation": null,
+          "pingAnimation": null,
+          "pressedClass": "pg07-pressed"
+        }
+      ],
+      "screenshots": [],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 70 home pending/organized/history, activity announcement and member/host details UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Only one missing WAITLISTED branch fixture is created through local API and separately recorded; no repeated publication, approval, feedback or expense writes.",
+      "pass": false,
+      "failure": {
+        "phase": "connect",
+        "message": "Cannot read properties of null (reading 'includes')",
+        "stack": "TypeError: Cannot read properties of null (reading 'includes')\n    at /private/tmp/caper-wave70-pg07-visual-delta.cjs:4:312\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async run (/private/tmp/caper-wave70-sdk-helpers.cjs:22:3)"
+      },
+      "elapsedMs": 6480
+    },
+    "details-member-unsynced-failed": {
+      "scope": "Confirmed member source detail geometry, exact scene asset and existing same-event check-in/member/content/expense destinations",
+      "checks": [],
+      "metrics": [],
+      "screenshots": [],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 70 home pending/organized/history, activity announcement and member/host details UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Only one missing WAITLISTED branch fixture is created through local API and separately recorded; no repeated publication, approval, feedback or expense writes.",
+      "pass": false,
+      "failure": {
+        "phase": "connect",
+        "message": "Timeout real confirmed member detail",
+        "stack": "Error: Timeout real confirmed member detail\n    at until (/private/tmp/caper-wave70-sdk-helpers.cjs:15:127)\n    at async detail (/private/tmp/caper-wave70-details-member.cjs:4:171)\n    at async /private/tmp/caper-wave70-details-member.cjs:5:8\n    at async run (/private/tmp/caper-wave70-sdk-helpers.cjs:22:3)"
+      },
+      "elapsedMs": 19768
+    },
+    "details-member-launch-failed": {
+      "scope": "Confirmed member source detail geometry, exact scene asset and existing same-event check-in/member/content/expense destinations",
+      "checks": [],
+      "metrics": [],
+      "screenshots": [],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 70 home pending/organized/history, activity announcement and member/host details UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Only one missing WAITLISTED branch fixture is created through local API and separately recorded; no repeated publication, approval, feedback or expense writes.",
+      "pass": false,
+      "failure": {
+        "phase": "connect",
+        "message": "Timeout subpackages/activity/event/event",
+        "stack": "Error: Timeout subpackages/activity/event/event\n    at until (/private/tmp/caper-wave70-sdk-helpers.cjs:15:127)\n    at async route (/private/tmp/caper-wave70-sdk-helpers.cjs:20:30)\n    at async detail (/private/tmp/caper-wave70-details-member.cjs:4:123)\n    at async /private/tmp/caper-wave70-details-member.cjs:5:8\n    at async run (/private/tmp/caper-wave70-sdk-helpers.cjs:22:3)"
+      },
+      "elapsedMs": 15482
+    },
+    "resource-images-no-invitation-failed": {
+      "scope": "Only moved original image bindings and native packaged resource loading; no old workflow regression",
+      "checks": [],
+      "metrics": [],
+      "screenshots": [],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 70 home pending/organized/history, activity announcement and member/host details UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Only one missing WAITLISTED branch fixture is created through local API and separately recorded; no repeated publication, approval, feedback or expense writes.",
+      "pass": false,
+      "failure": {
+        "phase": "connect",
+        "message": "Timeout current visitor original poster",
+        "stack": "Error: Timeout current visitor original poster\n    at until (/private/tmp/caper-wave70-sdk-helpers.cjs:15:127)\n    at async /private/tmp/caper-wave70-resource-images.cjs:4:172\n    at async run (/private/tmp/caper-wave70-sdk-helpers.cjs:22:3)"
+      },
+      "elapsedMs": 15565
+    },
+    "host-source-delta-early-roster-failed": {
+      "scope": "Only four independently corrected host source role/frame classes; no repeated destinations or business writes",
+      "checks": [],
+      "metrics": [],
+      "screenshots": [],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 70 home pending/organized/history, activity announcement and member/host details UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Only one missing WAITLISTED branch fixture is created through local API and separately recorded; no repeated publication, approval, feedback or expense writes.",
+      "pass": false,
+      "failure": {
+        "phase": "connect",
+        "message": "Missing .pgd-member-grid",
+        "stack": "Error: Missing .pgd-member-grid\n    at st (/private/tmp/caper-wave70-host-source-delta.cjs:4:57)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async /private/tmp/caper-wave70-host-source-delta.cjs:4:158\n    at async run (/private/tmp/caper-wave70-sdk-helpers.cjs:22:3)"
+      },
+      "elapsedMs": 6722
+    },
+    "host-source-delta-nonempty-assumption-failed": {
+      "scope": "Only four independently corrected host source role/frame classes; no repeated destinations or business writes",
+      "checks": [],
+      "metrics": [],
+      "screenshots": [],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 70 home pending/organized/history, activity announcement and member/host details UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Only one missing WAITLISTED branch fixture is created through local API and separately recorded; no repeated publication, approval, feedback or expense writes.",
+      "pass": false,
+      "failure": {
+        "phase": "connect",
+        "message": "Timeout host source delta DOM",
+        "stack": "Error: Timeout host source delta DOM\n    at until (/private/tmp/caper-wave70-sdk-helpers.cjs:15:127)\n    at async /private/tmp/caper-wave70-host-source-delta.cjs:3:241\n    at async run (/private/tmp/caper-wave70-sdk-helpers.cjs:22:3)"
+      },
+      "elapsedMs": 15537
+    },
+    "host-source-delta-status-color-failed": {
+      "scope": "Only four independently corrected host source role/frame classes; no repeated destinations or business writes",
+      "checks": [
+        {
+          "pass": true,
+          "label": "Host transparent roster heading / separate actual white roster frame / source caption11 and700",
+          "actual": {
+            "frame": "rgba(0, 0, 0, 0)",
+            "grid": "rgb(255, 255, 255)",
+            "captionSize": "11px",
+            "captionWeight": "700",
+            "captionTracking": "0.22px"
+          }
+        },
+        {
+          "pass": false,
+          "label": "Host source status-left and white hero title",
+          "actual": {
+            "status": "rgb(26, 27, 31)",
+            "title": "rgb(255, 255, 255)"
+          }
+        }
+      ],
+      "metrics": [
+        {
+          "aliasLoadState": "READY",
+          "actualMemberCards": 0,
+          "renderedRosterFrame": ".pgd-roster-empty",
+          "boundary": "Source nonempty whitegrid independently reviewed; current API empty branch is not populated with fake aliases."
+        },
+        {
+          "roster": {
+            "frame": "rgba(0, 0, 0, 0)",
+            "grid": "rgb(255, 255, 255)",
+            "captionSize": "11px",
+            "captionWeight": "700",
+            "captionTracking": "0.22px"
+          }
+        }
+      ],
+      "screenshots": [],
+      "exceptions": [],
+      "writes": [],
+      "boundary": "Only changed Wave 70 home pending/organized/history, activity announcement and member/host details UI and routes. Synthetic local API identities. No full suite, CI, device, production, real message send, new publication, registration or feedback submission. Only one missing WAITLISTED branch fixture is created through local API and separately recorded; no repeated publication, approval, feedback or expense writes.",
+      "pass": false,
+      "failure": {
+        "phase": "connect",
+        "message": "Host source status-left and white hero title",
+        "stack": "AssertionError [ERR_ASSERTION]: Host source status-left and white hero title\n    at check (/private/tmp/caper-wave70-sdk-helpers.cjs:16:80)\n    at /private/tmp/caper-wave70-host-source-delta.cjs:5:129\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async run (/private/tmp/caper-wave70-sdk-helpers.cjs:22:3)"
+      },
+      "elapsedMs": 6525
+    }
+  },
+  "successfulChecks": 81,
+  "failedChecks": 1,
+  "passedSegments": 12,
+  "failedSegments": 8,
+  "runtimeExceptions": 0,
+  "cli": {
+    "size": {
+      "total": 4058861,
+      "packages": [
+        {
+          "name": "TOTAL",
+          "size": 4058861
+        },
+        {
+          "name": "main",
+          "size": 1939748
+        },
+        {
+          "name": "/subpackages/activity/",
+          "size": 1163805
+        },
+        {
+          "name": "/subpackages/profile/",
+          "size": 955308
+        }
+      ]
+    }
+  },
+  "mainMarginBytes": 157404,
+  "priorCLIGates": [
+    {
+      "pass": false,
+      "reportedMainKB": 2059,
+      "limitKB": 2048,
+      "toolErrorCode": 10,
+      "processExitCode": 0
+    },
+    {
+      "pass": false,
+      "reportedMainKB": 2050,
+      "limitKB": 2048,
+      "toolErrorCode": 10,
+      "processExitCode": 0
+    },
+    {
+      "size": {
+        "total": 4057055,
+        "packages": [
+          {
+            "name": "TOTAL",
+            "size": 4057055
+          },
+          {
+            "name": "main",
+            "size": 1939748
+          },
+          {
+            "name": "/subpackages/activity/",
+            "size": 1161999
+          },
+          {
+            "name": "/subpackages/profile/",
+            "size": 955308
+          }
+        ]
+      }
+    },
+    {
+      "hostFourSourceDeltaPassedBeforeOnlyNativeSelectorFix": {
+        "size": {
+          "total": 4058870,
+          "packages": [
+            {
+              "name": "TOTAL",
+              "size": 4058870
+            },
+            {
+              "name": "main",
+              "size": 1939748
+            },
+            {
+              "name": "/subpackages/activity/",
+              "size": 1163814
+            },
+            {
+              "name": "/subpackages/profile/",
+              "size": 955308
+            }
+          ]
+        }
+      },
+      "concreteRemainingRisk": "Later runtime detected status complex selector mismatch; only explicit class fixed, then final CLI and remaining4SDK checks performed."
+    }
+  ],
+  "finalProductHashes": {
+    "miniprogram/pages/index/index.wxml": {
+      "bytes": 38653,
+      "sha256": "b972b559a2c523f2b1c7ca794023595fe6fee94a90add1527a3ef1cce7204c81"
+    },
+    "miniprogram/pages/index/index.wxss": {
+      "bytes": 86165,
+      "sha256": "27b11080f2eb16d8a2280567b697a3edd0d7af3e4158bc341d7a44146dcd0cea"
+    },
+    "miniprogram/subpackages/activity/event/event.wxml": {
+      "bytes": 160928,
+      "sha256": "69b231e3f4d506d2e3d46653bf9075e4ebaa69cdd06bcaf9b82b89d9c8fffa31"
+    },
+    "miniprogram/subpackages/activity/event/event.wxss": {
+      "bytes": 194503,
+      "sha256": "d26cb609e200446af02965b5840bf1fe0f01f21b66e8841da6289022e6881ce0"
+    },
+    "miniprogram/subpackages/activity/event/event.js": {
+      "bytes": 104041,
+      "sha256": "97e9f505d58b4b10e4d74d0e360954a0bac4730e1ddbef3437efeba6ed17621e"
+    },
+    "miniprogram/subpackages/activity/share/share.js": {
+      "bytes": 27268,
+      "sha256": "8ab001ad92a8e911fc8b7e84934872d418a9d541c506ce42efbce1472373ab3d"
+    },
+    "miniprogram/subpackages/activity/itinerary/itinerary.js": {
+      "bytes": 7170,
+      "sha256": "99b15a4d1e349d572b0f05254101446fc5aaa621f0c7e9b0b2cf56f25b6b702f"
+    }
+  },
+  "localFixtureWrites": {
+    "actor": "caper-wave70-waitlisted-20261002",
+    "eventId": "0e51f241-3f63-439d-b59d-593549a61ac2",
+    "registrationStatus": "WAITLISTED",
+    "writes": [
+      {
+        "method": "POST",
+        "path": "/events/0e51f241-3f63-439d-b59d-593549a61ac2/registrations",
+        "httpStatus": 201,
+        "registrationId": "53dc9ff5-a85e-416b-b39b-fc729fbae491",
+        "status": "WAITLISTED"
+      }
+    ],
+    "scope": "Only missing Wave70 WAITLISTED source branch; actual API registration, no approval, offer or cancellation"
+  },
+  "targetedModuleTests": {
+    "files": [
+      "test/checkin-qr.test.ts",
+      "test/miniprogram-caper-share.test.ts",
+      "test/miniprogram-caper-poster.test.ts"
+    ],
+    "tests": 40,
+    "passed": 40,
+    "failed": 0,
+    "exitCode": 0,
+    "elapsedMs": 910.68,
+    "other19QRAdapterFilesNotRun": true,
+    "itineraryExpectedResourceLiteralOnly": true
+  },
+  "native": {
+    "result": "The Mac is locked and automatic unlock could not unlock it.",
+    "nativeClicks": 0,
+    "boundary": "Fresh CUA app checks twice in this turn were locked. Existing unlock question remains pending; no new bypass or repeated question. CLI/SDK continue."
+  },
+  "remaining": "N2 / _5 separate UI states and share background are next Wave71, excluded from this tested snapshot. Full39screen pixel/native/device/external acceptance not established.",
+  "clone": {
+    "sourceFiles": 624,
+    "cloneFiles": 624,
+    "differences": 0,
+    "excluded": [
+      "config.js",
+      ".DS_Store"
+    ]
+  },
+  "sourceStagingProof": "caper-wave70-final-source-staging-proof-2026-10-02.json"
+}

@@ -80,6 +80,8 @@ test('each named operator can read only the assigned queue', async () => {
       { permission: 'CONTENT', path: '/ops/content/missing/moderate', body: { status: 'REJECTED' } },
       { permission: 'NOTIFICATIONS', path: '/ops/notifications/missing/followup', body: { note: '已经人工核实消息状态' } },
       { permission: 'JOBS', path: '/ops/jobs/missing/retry', body: {} },
+      { permission: 'JOBS', path: '/ops/ai-draft-alerts/review', body: {
+        userId: 'missing', requestKey: 'missing', note: '已核查内部异常记录' } },
       { permission: 'SUPPORT_MINUTES', path: '/ops/events/missing/support-minutes', body: { minutes: 5, category: 'SUPPORT' } }
     ];
     for (const mutation of mutations) {

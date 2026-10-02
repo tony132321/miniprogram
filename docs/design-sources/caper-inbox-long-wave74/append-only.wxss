@@ -1,0 +1,109 @@
+
+/* Wave 74 caper_3 ordinary long page; source CSS px, INBOX only. */
+.messages-inbox .inbox-long-reference {
+  box-sizing: border-box;
+  margin-left: calc(16px - 26rpx);
+  margin-right: calc(16px - 26rpx);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+.messages-inbox .inbox-long-reference button { box-sizing: border-box; font-family: inherit; margin: 0; }
+.messages-inbox .inbox-long-reference button::after { border: 0; }
+.messages-inbox .inbox-long-reference.card { padding: 12px; border: 1px solid #f1f5f9; border-radius: 16px; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+.messages-inbox .inbox-long-conversation.card { min-height: 0; margin-bottom: 16px; padding: 10px; }
+.messages-inbox .inbox-long-conversation .conversation-row { box-sizing: border-box; display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 6px; border-radius: 12px; transition: color 150ms cubic-bezier(.4,0,.2,1),background-color 150ms cubic-bezier(.4,0,.2,1),border-color 150ms cubic-bezier(.4,0,.2,1); }
+.messages-inbox .inbox-long-conversation .conversation-icon { display: flex; align-items: center; justify-content: center; box-sizing: border-box; flex: none; width: 44px; height: 44px; border: 1px solid #bfdbfe; border-radius: 9999px; background: linear-gradient(to top right,#2563eb,#818cf8); color: #fff; font-size: 14px; font-weight: 700; line-height: 20px; }
+.messages-inbox .inbox-long-conversation .conversation-title { display: flex; align-items: center; gap: 6px; margin-bottom: 2px; color: #0f172a; font-size: 12px; font-weight: 700; line-height: 16px; }
+.messages-inbox .inbox-long-conversation .conversation-title text { display: block; margin: 0; padding: 0 6px; border-radius: 4px; color: #64748b; background: #f1f5f9; font-size: 10px; font-weight: 500; line-height: 15px; }
+.messages-inbox .inbox-long-conversation .hint { margin: 0; color: #475569; font-size: 12px; font-weight: 400; line-height: 16px; }
+.messages-inbox .inbox-long-conversation .conversation-row.inbox-long-conversation-hover { background: rgba(248,250,252,.8); }
+.messages-inbox .inbox-long-notice-groups { display: flex; flex-direction: column; gap: 16px; margin: 0; }
+.messages-inbox .inbox-long-notice-section.card { margin-top: 0; margin-bottom: 0; }
+.messages-inbox .inbox-long-notice-section .section-label { align-items: center; gap: 0; margin: 0 0 8px; padding: 0 4px; font-size: 12px; font-weight: 700; line-height: 16px; }
+.messages-inbox .inbox-long-notice-section .section-title { gap: 6px; }
+.messages-inbox .inbox-long-notice-section .section-title > text:first-child { font-size: 14px; font-weight: 400; line-height: 20px; }
+.messages-inbox .inbox-long-notice-section .section-number { font-size: 12px; font-weight: 700; line-height: 16px; }
+.messages-inbox .inbox-long-notice-section .section-count { color: #94a3b8; font-size: 11px; font-weight: 600; line-height: 16.5px; }
+.messages-inbox .inbox-long-notice-section .notice-list { display: flex; flex-direction: column; gap: 10px; padding: 0; }
+.messages-inbox .inbox-long-notice-section .notice-row { align-items: flex-start; gap: 12px; margin: 0; padding: 10px; border: 1px solid #f1f5f9; border-radius: 12px; background: rgba(248,250,252,.7); line-height: 24px; }
+.messages-inbox .inbox-long-notice-section .notice-badge { display: flex; align-items: center; justify-content: center; box-sizing: border-box; width: 32px; height: 32px; margin: 2px 0 0; border: 0; font-size: 14px; font-weight: 400; line-height: 20px; }
+.messages-inbox .inbox-long-notice-section .notice-badge image { display: block; width: 16px; height: 16px; }
+.messages-inbox .inbox-long-notice-section .inbox-long-notice-approved { background: #d1fae5; color: #059669; }
+.messages-inbox .inbox-long-notice-section .inbox-long-notice-update { background: #ffe4e6; color: #f43f5e; }
+.messages-inbox .inbox-long-notice-section .notice-head { align-items: baseline; gap: 8px; margin-bottom: 2px; }
+.messages-inbox .inbox-long-notice-section .notice-title { color: #0f172a; font-size: 12px; font-weight: 700; line-height: 16px; }
+.messages-inbox .inbox-long-notice-section .notice-time { color: #94a3b8; font-size: 10px; font-weight: 400; line-height: 15px; }
+.messages-inbox .inbox-long-notice-section .notice-description { margin: 0; color: #475569; font-size: 11px; font-weight: 500; line-height: 16.5px; white-space: normal; overflow: visible; text-overflow: clip; }
+.messages-inbox .inbox-long-notice-section .notice-state { margin-top: 2px; color: #64748b; font-size: 11px; font-weight: 400; line-height: 16.5px; }
+.messages-inbox .inbox-long-notice-section .unread-dot { margin-left: 4px; font-size: 10px; line-height: 15px; }
+.messages-inbox .inbox-long-notice-section .chevron { margin-left: 0; color: #94a3b8; font-size: 12px; line-height: 16px; }
+/* Real reminder / manual-checkin actions are retained additions to the source row. */
+.messages-inbox .inbox-long-notice-section .notice-actions { padding: 6px 0 0 44px; }
+.messages-inbox .inbox-long-notice-section .notice-actions button { padding: 6px 12px; border-radius: 9999px; background: #1d64f2; color: #fff; font-size: 11px; font-weight: 600; line-height: 16.5px; }
+.messages-inbox .inbox-long-load-more { margin: 16px 0 0; }
+.messages-inbox .inbox-long-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0 0 8px; padding: 0 4px; color: #0f172a; font-size: 12px; font-weight: 700; line-height: 16px; }
+.messages-inbox .inbox-long-heading > view { display: flex; align-items: center; gap: 6px; }
+.messages-inbox .inbox-long-heading-icon { font-size: 14px; font-weight: 400; line-height: 20px; }
+.messages-inbox .inbox-long-closed-link { flex: none; color: #94a3b8; font-size: 11px; font-weight: 600; line-height: 16.5px; }
+.messages-inbox .inbox-long-ai { position: relative; overflow: hidden; margin-top: 16px; padding: 14px; border-radius: 16px; background: linear-gradient(to bottom right,#312e81,#0f172a,#020617); color: #fff; box-shadow: 0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1); }
+.messages-inbox .inbox-long-ai-glow { position: absolute; top: -32px; right: -32px; width: 128px; height: 128px; border-radius: 9999px; background: rgba(59,130,246,.2); filter: blur(40px); pointer-events: none; }
+.messages-inbox .inbox-long-ai .inbox-long-heading { position: relative; margin-bottom: 12px; padding: 0; color: #fff; }
+.messages-inbox .inbox-long-ai-row { display: flex; align-items: flex-start; gap: 12px; }
+.messages-inbox .inbox-long-ai .ai-orb { display: flex; align-items: center; justify-content: center; box-sizing: border-box; flex: none; width: 40px; height: 40px; padding: 2px; border: 0; border-radius: 9999px; background: linear-gradient(to top right,#1d64f2,#a855f7); font-size: 16px; line-height: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1); }
+.messages-inbox .inbox-long-ai .ai-orb > view { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; border-radius: 9999px; background: #020617; }
+.messages-inbox .inbox-long-ai-dot { display: block; width: 10px; height: 10px; border-radius: 9999px; background: #c6ff00; box-shadow: 0 1px 2px rgba(0,0,0,.05); animation: inbox-long-source-pulse 2s cubic-bezier(.4,0,.6,1) infinite; }
+@keyframes inbox-long-source-pulse { 50% { opacity: .5; } }
+.messages-inbox .inbox-long-ai-body { flex: 1; min-width: 0; }
+.messages-inbox .inbox-long-ai-name { display: flex; align-items: center; gap: 6px; color: #fff; font-size: 12px; font-weight: 700; line-height: 16px; }
+.messages-inbox .inbox-long-ai-name > text:last-child { padding: 0 6px; border: 1px solid rgba(96,165,250,.3); border-radius: 9999px; background: rgba(59,130,246,.2); color: #93c5fd; font-size: 9px; font-weight: 500; line-height: 13.5px; }
+.messages-inbox .inbox-long-ai .ai-copy { margin: 6px 0 0; color: #cbd5e1; font-size: 12px; font-weight: 400; line-height: 19.5px; }
+.messages-inbox .inbox-long-ai-actions { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+.messages-inbox .inbox-long-ai button { display: inline-block; flex: none; margin: 0; padding: 6px 12px; border-radius: 9999px; background: #1d64f2; color: #fff; font-size: 11px; font-weight: 600; line-height: 16.5px; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+.messages-inbox .inbox-long-ai button.inbox-long-ai-primary-hover { background: #2563eb; }
+.messages-inbox .inbox-long-ai button.inbox-long-ai-secondary { flex-shrink: 1; padding: 6px 12px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.1); color: #e2e8f0; font-weight: 500; box-shadow: none; }
+.messages-inbox .inbox-long-mentions.card,.messages-inbox .inbox-long-album.card,.messages-inbox .inbox-long-closed-section.card { margin-top: 16px; }
+.messages-inbox .inbox-long-mention-symbol { color: #1d64f2; font-size: 14px; font-weight: 700; line-height: 20px; }
+.messages-inbox .inbox-long-mention-row { display: flex; align-items: center; gap: 12px; padding: 8px 4px; border-radius: 12px; }
+.messages-inbox .inbox-long-mention-avatar { display: flex; align-items: center; justify-content: center; box-sizing: border-box; flex: none; width: 40px; height: 40px; border: 1px solid #99f6e4; border-radius: 9999px; background: #ccfbf1; color: #0f766e; font-size: 12px; font-weight: 700; line-height: 16px; }
+.messages-inbox .inbox-long-closed-copy { flex: 1; min-width: 0; }
+.messages-inbox .inbox-long-closed-copy > view { color: #0f172a; font-size: 12px; font-weight: 700; line-height: 16px; }
+.messages-inbox .inbox-long-closed-copy > text { display: block; color: #475569; font-size: 12px; font-weight: 400; line-height: 16px; }
+.messages-inbox .inbox-long-album .inbox-long-heading { margin-bottom: 10px; }
+.messages-inbox .inbox-long-album .hint { margin: 0 4px 10px; color: #94a3b8; font-size: 11px; font-weight: 400; line-height: 16.5px; }
+.messages-inbox .inbox-long-album .gallery-scroll { width: 100%; margin: 0; }
+.messages-inbox .inbox-long-album .gallery-row { gap: 10px; padding: 0 0 4px; }
+.messages-inbox .inbox-long-album .gallery-item { width: 96px; }
+.messages-inbox .inbox-long-album .gallery-tile { display: flex; align-items: flex-end; justify-content: center; width: 100%; height: 64px; padding: 4px; border-radius: 12px; color: #fff; font-size: 18px; font-weight: 400; line-height: 28px; box-shadow: none; }
+.messages-inbox .inbox-long-album .gallery-blue { background: linear-gradient(to top right,#38bdf8,#2563eb); }
+.messages-inbox .inbox-long-album .gallery-orange { background: linear-gradient(to top right,#fbbf24,#ea580c); }
+.messages-inbox .inbox-long-album .gallery-green { background: linear-gradient(to top right,#2dd4bf,#059669); }
+.messages-inbox .inbox-long-album .gallery-violet { background: linear-gradient(to top right,#c084fc,#db2777); }
+.messages-inbox .inbox-long-album .inbox-long-gallery-rose { background: linear-gradient(to top right,#fb7185,#f59e0b); }
+.messages-inbox .inbox-long-album .gallery-caption { margin-top: 4px; color: #1e293b; font-size: 11px; font-weight: 700; line-height: 16.5px; }
+.messages-inbox .inbox-long-album .gallery-caption-note { margin-top: 0; color: #1d64f2; font-size: 9px; font-weight: 600; line-height: 13.5px; }
+.messages-inbox .inbox-long-history-row { display: flex; align-items: center; gap: 10px; padding: 8px 4px; }
+.messages-inbox .inbox-long-history-icon { display: flex; align-items: center; justify-content: center; flex: none; width: 32px; height: 32px; border-radius: 8px; font-size: 14px; font-weight: 700; line-height: 20px; }
+.messages-inbox .inbox-long-history-green { background: #ecfdf5; color: #047857; }
+.messages-inbox .inbox-long-history-gray { background: #f1f5f9; color: #475569; font-weight: 400; }
+.messages-inbox .inbox-long-history-amber { background: #fffbeb; color: #b45309; font-weight: 400; }
+.messages-inbox .inbox-long-history-row .inbox-long-closed-copy > text { color: #64748b; }
+.messages-inbox .inbox-long-history-amber + .inbox-long-closed-copy > text { color: #94a3b8; }
+.messages-inbox .inbox-long-completed-symbol { color: #10b981; font-weight: 700; }
+.messages-inbox .inbox-long-slogan { position: relative; overflow: hidden; gap: 0; margin-top: 16px; padding: 14px; border: 1px solid rgba(219,234,254,.7); border-radius: 16px; background: linear-gradient(to right,#eff6ff,#eef2ff,#f7fee7); box-shadow: none; }
+.messages-inbox .inbox-long-slogan .messages-slogan-copy { padding-right: 8px; }
+.messages-inbox .inbox-long-slogan .messages-slogan-copy > view { color: #1d64f2; font-size: 14px; font-weight: 900; line-height: 20px; letter-spacing: -.025em; }
+.messages-inbox .inbox-long-slogan .messages-slogan-copy > text { margin-top: 4px; color: #475569; font-size: 11px; font-weight: 500; line-height: 16.5px; }
+.messages-inbox .inbox-long-slogan .messages-slogan-sticker { padding: 6px 8px; border-radius: 4px; background: #fde047; color: #0f172a; font-size: 9px; font-weight: 900; line-height: 11.25px; transform: rotate(2deg); box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+.messages-inbox .inbox-long-settings.card { display: flex; align-items: center; justify-content: space-between; width: calc(100% + 52rpx - 32px); margin-top: 16px; padding: 12px; border-radius: 12px; box-shadow: none; font-size: 12px; font-weight: 700; line-height: 16px; }
+.messages-inbox .inbox-long-settings .inbox-long-settings-content { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.messages-inbox .inbox-long-settings .inbox-long-settings-content > view { flex: 1; min-width: 0; font-size: 16px; font-weight: 400; line-height: 24px; }
+.messages-inbox .inbox-long-settings .inbox-long-settings-title { display: inline; color: #0f172a; font-size: 12px; font-weight: 700; line-height: 16px; }
+.messages-inbox .inbox-long-settings .inbox-long-settings-hint { display: block; margin-top: 0; color: #94a3b8; font-size: 10px; font-weight: 400; line-height: 15px; }
+.messages-inbox .inbox-long-settings .inbox-long-settings-bell { flex: none; color: #0f172a; font-size: 14px; font-weight: 400; line-height: 20px; }
+.messages-inbox .inbox-long-settings > text { flex: none; color: #94a3b8; font-size: 12px; font-weight: 700; line-height: 16px; }
+.messages-inbox .inbox-long-foot { margin-top: 16px; padding: 16px 0 8px; color: #94a3b8; font-size: 9px; font-weight: 900; line-height: 13.5px; letter-spacing: .1em; text-transform: uppercase; text-align: center; }
+.messages-inbox .inbox-long-foot > text { display: block; }
+.messages-inbox .inbox-long-foot > view { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 4px; color: #64748b; font-size: 10px; font-weight: 700; line-height: 15px; letter-spacing: 0; text-transform: none; }
+.messages-inbox .inbox-long-foot-line { display: block; flex: none; width: 24px; height: 1px; background: #e2e8f0; }

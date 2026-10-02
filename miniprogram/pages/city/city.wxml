@@ -1,0 +1,43 @@
+<view class="city-page">
+  <view class="safe-area" style="height: {{statusBarHeight}}px"></view>
+  <view class="city-status" style="height: {{statusBarHeight}}px"></view>
+  <view class="city-nav" style="top: {{statusBarHeight}}px; padding-right: {{headerPaddingRight}}">
+    <button class="nav-back" bindtap="back" aria-label="返回"><image src="./assets/arrow_back_ios_new.svg" mode="aspectFit" /></button>
+    <text class="nav-title">选择城市</text>
+    <view class="nav-actions"><button class="nav-options" bindtap="showCityInfo" aria-label="城市选择说明"><image src="./assets/more_horiz.svg" mode="aspectFit" /></button><button class="nav-profile" bindtap="goProfile" aria-label="前往我的页面"><image src="./assets/person.svg" mode="aspectFit" /></button></view>
+  </view>
+  <view class="city-search-sticky" style="top: calc({{statusBarHeight}}px + 112rpx)">
+    <view class="search-wrap">
+      <image class="search-icon" src="./assets/search.svg" mode="aspectFit" />
+      <input class="search-input" placeholder="搜索城市名称 / 拼音 (如: beijing, 成都)" placeholder-style="color: #737687" value="{{query}}" focus="{{searchFocused}}" bindinput="search" />
+      <button wx:if="{{query}}" class="search-clear" bindtap="clearSearch" aria-label="清空搜索"><image src="./assets/close.svg" mode="aspectFit" /></button>
+    </view>
+  </view>
+  <view class="city-content">
+    <view wx:if="{{!query}}" class="city-browse">
+      <view class="current-card">
+        <view class="current-heading"><view class="current-label"><image class="location-mark" src="./assets/near_me.svg" mode="aspectFit" /><text>当前浏览城市</text></view><button class="relocate-hint" bindtap="locationHint"><image src="./assets/sync.svg" mode="aspectFit" /><text>位置说明</text></button></view>
+        <view class="current-main"><view class="current-city"><text class="current-name">{{currentCity}}</text><text class="selected-tag">手动选择</text></view><view class="current-pin"><image src="./assets/location_on.svg" mode="aspectFit" /></view></view>
+        <view class="current-help"><text class="green-dot"></text><text>您选择的城市仅用于本机浏览；活动地点以详情为准</text></view>
+      </view>
+      <view class="city-tip"><view class="tip-orb"><image src="./assets/auto_awesome.svg" mode="aspectFit" /></view><view class="tip-copy"><view class="tip-title"><text>IRL 城市浏览</text><text class="tip-badge">R1</text></view><view class="tip-caption">当前以邀请参与活动，公开同城找局尚未开放</view></view><image class="tip-arrow" src="./assets/chevron_right.svg" mode="aspectFit" /></view>
+      <view class="popular-section">
+        <view class="section-heading"><text>热门活动枢纽</text><text class="section-hint">常用城市</text></view>
+        <view class="popular-grid"><button wx:for="{{popularCities}}" wx:key="*this" class="popular {{currentCity === item ? 'active' : ''}}" data-city="{{item}}" bindtap="selectCity">{{item}}<text wx:if="{{currentCity === item}}" class="selected-corner"></text></button></view>
+      </view>
+      <view class="city-list">
+        <view class="section-heading"><text>全部城市列表</text><text class="section-hint">拼音检索排序</text></view>
+        <view wx:for="{{cityGroups}}" wx:for-item="group" wx:key="letter" class="city-group" id="city-group-{{group.letter}}">
+          <view class="group-letter">{{group.letter}}</view>
+          <block wx:for="{{group.items}}" wx:for-item="city" wx:for-index="cityIndex" wx:key="name"><button class="city-row" data-city="{{city.name}}" bindtap="selectCity"><view class="city-label"><text class="city-name">{{city.name}}</text><text wx:if="{{city.badge}}" class="city-badge {{city.name === '成都' ? 'lime' : ''}}">{{city.badge}}</text><image wx:if="{{currentCity === city.name}}" class="city-check" src="./assets/check.svg" mode="aspectFit" /></view><text class="province {{currentCity === city.name ? 'selected' : ''}}">{{currentCity === city.name ? '当前已选' : city.province}}</text></button><view wx:if="{{cityIndex !== group.items.length - 1}}" class="city-divider"></view></block>
+        </view>
+      </view>
+      <view class="missing-city"><view class="missing-icon"><image src="./assets/explore.svg" mode="aspectFit" /></view><view class="missing-title">找不到您的城市?</view><view class="missing-copy">还可搜索更多城市；当前活动仍以邀请参与，城市选择仅保存本机浏览偏好。</view><button bindtap="searchMoreCities"><image src="./assets/search_blue.svg" mode="aspectFit" /><text>搜索更多城市</text></button></view>
+    </view>
+    <view wx:if="{{query}}" class="city-search-state">
+      <view wx:if="{{visibleCities.length === 0}}" class="empty"><image class="empty-icon" src="./assets/location_off.svg" mode="aspectFit" /><view class="empty-title">未找到相关城市</view><text class="empty-copy">支持汉字或全拼检索，例：“成”或“chengdu”</text></view>
+      <view wx:if="{{visibleCities.length > 0}}" class="search-results"><block wx:for="{{visibleCities}}" wx:for-index="searchIndex" wx:key="name"><button class="city-row" data-city="{{item.name}}" bindtap="selectCity"><view class="city-label"><image class="search-place" src="./assets/place.svg" mode="aspectFit" /><text class="search-city-name">{{item.name}}</text></view><text class="province search-pinyin">{{item.pinyin}}</text></button><view wx:if="{{searchIndex !== visibleCities.length - 1}}" class="city-divider"></view></block></view>
+    </view>
+  </view>
+  <view wx:if="{{!query}}" class="alphabet-rail" style="top: calc({{statusBarHeight}}px + 288rpx)"><view class="alphabet-pill"><button wx:for="{{letters}}" wx:key="*this" data-letter="{{item}}" bindtap="jumpToLetter">{{item}}</button></view></view>
+</view>

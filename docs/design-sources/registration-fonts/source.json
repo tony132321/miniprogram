@@ -1,0 +1,125 @@
+{
+  "scope": "Wave67 PG05 fixed poster headline and two visible handwritten phrases; Caveat union retains original home phrases",
+  "googleFontsRepositoryCommit": "9710da1eacb3be272583c3224dcb70f9da6eadbb",
+  "fontFiles": [
+    {
+      "file": "rubik-mono-one-400-pg05.woff",
+      "cssURL": "https://fonts.googleapis.com/css2?family=Rubik+Mono+One%3Awght%40400&display=swap&text=BADMINTON+TOGETHER",
+      "cssSHA256": "63cdfc626d068751214a8b0a1af1c0e8fa60ca2b65fa3b925913ed55135d636b",
+      "userAgent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11",
+      "fontURL": "https://fonts.gstatic.com/l/font?kit=UqyJK8kPP3hjw6ANTdfRk9YSN-8zXq0DM6K4inLcKJdnXiqw&skey=ae6db2ecce22196d&v=v20",
+      "contentType": "font/woff",
+      "cors": "*",
+      "fontBytes": 4040,
+      "base64Bytes": 5388,
+      "sha256": "36faf220f9935cff89be4b5611a337202dc2a95be07df3565594ce6208c4285a",
+      "requestedText": "BADMINTON TOGETHER",
+      "requestedWeight": 400,
+      "metadata": {
+        "family": "Rubik Mono One",
+        "weightClass": 400,
+        "axes": [],
+        "glyphCount": 14,
+        "unicodeCount": 13,
+        "version": "Version 1.001",
+        "unicode": [
+          "U+0020",
+          "U+0041",
+          "U+0042",
+          "U+0044",
+          "U+0045",
+          "U+0047",
+          "U+0048",
+          "U+0049",
+          "U+004D",
+          "U+004E",
+          "U+004F",
+          "U+0052",
+          "U+0054"
+        ]
+      },
+      "missingText": []
+    },
+    {
+      "file": "caveat-700-home-pg05-union.woff",
+      "cssURL": "https://fonts.googleapis.com/css2?family=Caveat%3Awght%40700&display=swap&text=More+People%2C+Brighter+Days+Same+Game+%26+New+Friends+Good+People+Great+Rallies",
+      "cssSHA256": "eeb8969d9e73ff591b8f927f174fda6b6fc407bb11186c60738d5edbe9a8f31e",
+      "userAgent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11",
+      "fontURL": "https://fonts.gstatic.com/l/font?kit=WnznHAc5bAfYB2QRah7pcpNvOx-pjRV6SIG7eDRovkjj9LFhIbh7zFVHkLl87CHwEzvQN9GLQqs&skey=7833cd5b856b60c9&v=v23",
+      "contentType": "font/woff",
+      "cors": "*",
+      "fontBytes": 19336,
+      "base64Bytes": 25784,
+      "sha256": "e587efbee29f5e2239cf3b1e9fc63eaf71e200607b9b84c70226913bddc6cb03",
+      "requestedText": "More People, Brighter Days Same Game & New Friends Good People Great Rallies",
+      "requestedWeight": 700,
+      "metadata": {
+        "family": "Caveat",
+        "weightClass": 700,
+        "axes": [],
+        "glyphCount": 79,
+        "unicodeCount": 28,
+        "version": "Version 2.000",
+        "unicode": [
+          "U+0020",
+          "U+0026",
+          "U+002C",
+          "U+0042",
+          "U+0044",
+          "U+0046",
+          "U+0047",
+          "U+004D",
+          "U+004E",
+          "U+0050",
+          "U+0052",
+          "U+0053",
+          "U+0061",
+          "U+0064",
+          "U+0065",
+          "U+0067",
+          "U+0068",
+          "U+0069",
+          "U+006C",
+          "U+006D",
+          "U+006E",
+          "U+006F",
+          "U+0070",
+          "U+0072",
+          "U+0073",
+          "U+0074",
+          "U+0077",
+          "U+0079"
+        ]
+      },
+      "missingText": []
+    }
+  ],
+  "licensesAndMetadata": {
+    "rubikmonoone-METADATA.pb": {
+      "url": "https://raw.githubusercontent.com/google/fonts/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/rubikmonoone/METADATA.pb",
+      "bytes": 676,
+      "sha256": "98cc92553cd68a5beda29f10e8fe26436dce18e8ca6ad0549d1168049db55a5f"
+    },
+    "rubikmonoone-OFL.txt": {
+      "url": "https://raw.githubusercontent.com/google/fonts/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/rubikmonoone/OFL.txt",
+      "bytes": 4462,
+      "sha256": "43d530580461a574f6dfed9e15af6a74e95f7c04d9bfa1174a63ff036e8eee07"
+    },
+    "caveat-METADATA.pb": {
+      "url": "https://raw.githubusercontent.com/google/fonts/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/caveat/METADATA.pb",
+      "bytes": 1029,
+      "sha256": "038342ea08d3f09e11b7f08cfd1e1d556b4f56a48269b0909395aa6fecd4c4f7"
+    },
+    "caveat-OFL.txt": {
+      "url": "https://raw.githubusercontent.com/google/fonts/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/caveat/OFL.txt",
+      "bytes": 4385,
+      "sha256": "1f9d81d094273d82f3898a1ee8b598a717d050ecbf5ff7bede105b704880157b"
+    },
+    "material-symbols-Apache-2.0.txt": {
+      "copiedReadonlyFrom": "/Users/tsb/Documents/小程序/docs/licenses/material-symbols-Apache-2.0.txt",
+      "bytes": 11357,
+      "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd"
+    }
+  },
+  "note": "Exact official CSS response bytes. Rubik normal400 with source CSS synthetic italic; Caveat normal700. The source hidden sm:block phrase is not visible within max425 and adds no unseen text glyph. Existing four Jakarta faces unchanged."
+}

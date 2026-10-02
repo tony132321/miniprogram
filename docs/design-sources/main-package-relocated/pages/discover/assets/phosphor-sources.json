@@ -1,0 +1,305 @@
+{
+  "package": "@phosphor-icons/web",
+  "version": "2.0.3",
+  "proof": "docs/design-sources/phosphor-web-2.0.3/source.json",
+  "originalHtmlSha256": "514d9e5fbfbbc66e9c5c19cf33767b58b54f77a144720c4b89f3b5248356aed2",
+  "assets": {
+    "ph-magnifying-glass-bold.svg": {
+      "symbol": "magnifying-glass",
+      "style": "bold",
+      "sourceCssClass": "ph-bold",
+      "sourceLines": [
+        112
+      ],
+      "color": "#334155",
+      "sourceCssPixelSize": 18,
+      "unicode": "U+EBDD",
+      "cssUnicodeLiteral": "\\ebdd",
+      "cssDefinitionLine": 2226,
+      "glyphName": "uniEBDD",
+      "advanceWidth": 1024,
+      "assetSha256": "509702096ab16a0fd1fe24372ff963aef0b935a3c0f26120d04da9e5c99e5c01",
+      "svgPathSha256": "1b1f315d6ad5dda52a20bf378a061fd321d95181816ec40504a85832c6dd00f2",
+      "viewBox": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "coordinateTransform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "export": "Unmodified official glyph outline; only font line-box y-axis conversion and explicit original CSS color."
+    },
+    "ph-funnel-simple-bold.svg": {
+      "symbol": "funnel-simple",
+      "style": "bold",
+      "sourceCssClass": "ph-bold",
+      "sourceLines": [
+        115
+      ],
+      "color": "#334155",
+      "sourceCssPixelSize": 18,
+      "unicode": "U+EB3C",
+      "cssUnicodeLiteral": "\\eb3c",
+      "cssDefinitionLine": 1743,
+      "glyphName": "uniEB3C",
+      "advanceWidth": 1024,
+      "assetSha256": "fb7be574f5e7431bce225684733ef8e37af58e43d5be2ed75d4a56b7be43a08e",
+      "svgPathSha256": "03eb6f96507c8fd43251cbb4820b84cbb52ea611575282e0ab6d7d42d8817506",
+      "viewBox": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "coordinateTransform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "export": "Unmodified official glyph outline; only font line-box y-axis conversion and explicit original CSS color."
+    },
+    "ph-heart-bold.svg": {
+      "symbol": "heart",
+      "style": "bold",
+      "sourceCssClass": "ph-bold",
+      "sourceLines": [
+        148,
+        180,
+        210,
+        240
+      ],
+      "color": "#ffffff",
+      "sourceCssPixelSize": 14,
+      "unicode": "U+EB8A",
+      "cssUnicodeLiteral": "\\eb8a",
+      "cssDefinitionLine": 1977,
+      "glyphName": "uniEB8A",
+      "advanceWidth": 1024,
+      "assetSha256": "cc384fd9dae4781155ba9cb0639c2677eba89f6a7e68b1e0fdf0efc0e0b92360",
+      "svgPathSha256": "90c286b284513d10ef4377c8ab18faf724fbaeb08596080ac8278ed0ef87c673",
+      "viewBox": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "coordinateTransform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "export": "Unmodified official glyph outline; only font line-box y-axis conversion and explicit original CSS color."
+    },
+    "ph-compass-fill.svg": {
+      "symbol": "compass",
+      "style": "fill",
+      "sourceCssClass": "ph-fill",
+      "sourceLines": [
+        148
+      ],
+      "color": "#60a5fa",
+      "sourceCssPixelSize": 9,
+      "unicode": "U+EA63",
+      "cssUnicodeLiteral": "\\ea63",
+      "cssDefinitionLine": 1092,
+      "glyphName": "uniEA63",
+      "advanceWidth": 1024,
+      "assetSha256": "c5607060e580011be2cc0a6f3e8ecf76162862789d5652fa3e6f2e79f06b95b3",
+      "svgPathSha256": "5a92144d98b3b2b3587ee96b624f3beac0ad5f98e2be99e87f72cfefd9d1903d",
+      "viewBox": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "coordinateTransform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "export": "Unmodified official glyph outline; only font line-box y-axis conversion and explicit original CSS color."
+    },
+    "ph-barbell-fill.svg": {
+      "symbol": "barbell",
+      "style": "fill",
+      "sourceCssClass": "ph-fill",
+      "sourceLines": [
+        180
+      ],
+      "color": "#c6ff00",
+      "sourceCssPixelSize": 9,
+      "unicode": "U+E993",
+      "cssUnicodeLiteral": "\\e993",
+      "cssDefinitionLine": 468,
+      "glyphName": "uniE993",
+      "advanceWidth": 1024,
+      "assetSha256": "d0abea57e21e83264b21b45bc5ca2bd30d506c1d9c8fde8769dc0ecd2e1328e8",
+      "svgPathSha256": "ef5090220c04b764a6d8d526b269ecf7c67d2b3704a11d60c75b5b50a4d396a8",
+      "viewBox": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "coordinateTransform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "export": "Unmodified official glyph outline; only font line-box y-axis conversion and explicit original CSS color."
+    },
+    "ph-fork-knife-fill.svg": {
+      "symbol": "fork-knife",
+      "style": "fill",
+      "sourceCssClass": "ph-fill",
+      "sourceLines": [
+        210
+      ],
+      "color": "#fbbf24",
+      "sourceCssPixelSize": 9,
+      "unicode": "U+EB37",
+      "cssUnicodeLiteral": "\\eb37",
+      "cssDefinitionLine": 1728,
+      "glyphName": "uniEB37",
+      "advanceWidth": 1024,
+      "assetSha256": "6f18d2b0568fd57a6c29d8ca1efff1df0968effae485d92a45ee8f004a9db299",
+      "svgPathSha256": "cab618e09af52442cc5f85ac06e06b5b35f3a7bfe89327481495558c95e2f290",
+      "viewBox": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "coordinateTransform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "export": "Unmodified official glyph outline; only font line-box y-axis conversion and explicit original CSS color."
+    },
+    "ph-game-controller-fill.svg": {
+      "symbol": "game-controller",
+      "style": "fill",
+      "sourceCssClass": "ph-fill",
+      "sourceLines": [
+        240
+      ],
+      "color": "#c084fc",
+      "sourceCssPixelSize": 9,
+      "unicode": "U+EB3D",
+      "cssUnicodeLiteral": "\\eb3d",
+      "cssDefinitionLine": 1746,
+      "glyphName": "uniEB3D",
+      "advanceWidth": 1024,
+      "assetSha256": "91b70926b816b4f4e9b29000f8c77fc8ba9054a8a70fad7f48e68631634b6a08",
+      "svgPathSha256": "b0f77c9f5fe23614f46081002b645565f32528580db37f6bf6bc8c0f0ae9d3e8",
+      "viewBox": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "coordinateTransform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "export": "Unmodified official glyph outline; only font line-box y-axis conversion and explicit original CSS color."
+    },
+    "ph-calendar-blank-regular.svg": {
+      "symbol": "calendar-blank",
+      "style": "regular",
+      "sourceCssClass": "ph",
+      "sourceLines": [
+        155,
+        187,
+        217,
+        247
+      ],
+      "color": "#94a3b8",
+      "sourceCssPixelSize": 10,
+      "unicode": "U+E9E4",
+      "cssUnicodeLiteral": "\\e9e4",
+      "cssDefinitionLine": 711,
+      "glyphName": "uniE9E4",
+      "advanceWidth": 1024,
+      "assetSha256": "f2205e7bb7a35c9fd3cc56a1bcb63b96cb29d94838d52b3680e73d9fd2df22de",
+      "svgPathSha256": "27616371293c5f039df6c1167cfcddb0034afb099f242d6763ddadeb06c05eb8",
+      "viewBox": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "coordinateTransform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "export": "Unmodified official glyph outline; only font line-box y-axis conversion and explicit original CSS color."
+    },
+    "ph-map-pin-regular.svg": {
+      "symbol": "map-pin",
+      "style": "regular",
+      "sourceCssClass": "ph",
+      "sourceLines": [
+        159,
+        191,
+        221,
+        251
+      ],
+      "color": "#94a3b8",
+      "sourceCssPixelSize": 10,
+      "unicode": "U+EBE0",
+      "cssUnicodeLiteral": "\\ebe0",
+      "cssDefinitionLine": 2235,
+      "glyphName": "uniEBE0",
+      "advanceWidth": 1024,
+      "assetSha256": "0ef0349cab3091ab3fab8f37af6052f56ad15c466a30cbfe700f5d609308bc27",
+      "svgPathSha256": "4e9e9e17e93c0eec21cc80829652f974dc7b51593bc127a8fbd22cd02b010145",
+      "viewBox": [
+        0,
+        0,
+        1024,
+        1024
+      ],
+      "coordinateTransform": [
+        1,
+        0,
+        0,
+        -1,
+        0,
+        960
+      ],
+      "export": "Unmodified official glyph outline; only font line-box y-axis conversion and explicit original CSS color."
+    }
+  }
+}

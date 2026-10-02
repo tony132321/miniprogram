@@ -1,0 +1,37 @@
+{
+  "source": {
+    "HTML": {
+      "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg02_n_2/code.html",
+      "bytes": 19462,
+      "sha256": "0c9f0bf0d8fcf45ef781477c3dfa0339ebfb9823080b61b530bed746ac36c32c"
+    },
+    "PNG": {
+      "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg02_n_2/screen.png",
+      "bytes": 322947,
+      "sha256": "9c0502bafef6fa63b3051e42b03c407598a6767746e713f6a51f740b60ae52de"
+    },
+    "ZIP": {
+      "path": "/Users/tsb/Downloads/stitch_design_system_generator (2).zip",
+      "bytes": 24668856,
+      "sha256": "df22e733d33fda20979b75b8a7bc94717c4a5c9e41561a54e3038432fab32603"
+    }
+  },
+  "sourceGlyphs": "Material Symbols Outlined source lastface fullv374 Version2.972 wght400/FILL0..1 fixed24 GRAD0; exact FILL1 active latn rclt; no new global fonts",
+  "fontFamily": "Plus Jakarta Sans source400/600/700/800 already registered; profile500 alias not used",
+  "nativeAdaptation": "Source fixed56header starts after current statusBarHeight; existing native capsuleInset reserves actual capsule. Body0 sidepadding, main16, no N1 bigheading/read-all row. Main safe inset and source40bottom retained.",
+  "truthfulMappings": {
+    "reminder": "actual EVENT_REMINDER → old openNotice/checkinSection and guarded copyReminderVenue; exact source illustration, clearly labeled",
+    "approval": "actual API registrationId/eventId/isHost/expectedVersion/canApprove; original actual approvals separatecollection, details thenapprove, anonymous28 placeholder insteadof fakeAlex/Momo",
+    "update": "actual MATERIAL_CHANGE → old current registrationSection; no coordinate/navigation",
+    "milestone": "actual EVENT_CONFIRMED → old detailsSection; real activity CTA, no auto calendar/group",
+    "payment": "R1 has no source payment notification kind or settlement service. No wallet asset/¥45/fake payment record. Actual other present() notices use actual tone/icon/title/summary/actionLabel in samecardgeometry.",
+    "badge": "Actual loaded ACTIVITY status!=OPENED count; aria states loadedscope. Not total unreadTotal, not fixed2.",
+    "footer": "Exact sourcegeometry/Englishbrand, real CAPER stationnotification subtitle ratherthan false AIservice capability"
+  },
+  "scope": "Only N2 newlayout + required menu guards/reset/projection, old source complete inverse protected; no native claim or 39-page completion.",
+  "reusedLicense": "docs/licenses/material-symbols-Apache-2.0.txt",
+  "rawProductNetBytes": 55600,
+  "newRuntimeSVGBytes": 4476,
+  "newJPEGBytes": 28623,
+  "compiledPackage": "Root final CLI measurement pending; not inferred from raw bytes"
+}

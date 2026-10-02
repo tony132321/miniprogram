@@ -74,7 +74,7 @@ export async function releaseEventHold(db: Database, actor: string, holdId: stri
     const canResume = ['RECRUITING', 'CONFIRMED'].includes(event.status) && event.recruiting &&
       now < Date.parse(event.payload.registrationDeadline!) && now < Date.parse(event.payload.startAt!) &&
       await newActionsOpen(tx, true) &&
-      (event.payload.visibility !== 'PUBLIC' || await publicRecruitmentOpen(tx, true));
+      (event.payload.visibility !== 'PUBLIC' || await publicRecruitmentOpen(tx, true, event.payload));
     await notifyMembers(tx, event, canResume ? 'EVENT_SAFETY_RESUMED' : 'EVENT_SAFETY_REVIEW_CLOSED', holdId);
     await audit(tx, actor, event.id, 'SAFETY_HOLD_RELEASE');
     if (canResume) await promote(tx, event);

@@ -1,0 +1,116 @@
+{
+  "guard": "loadState === 'READY' && !successState && !joinConfirmation && activeSection === 'detailsSection' && display.isBadminton && (isHost || myRegistration.status === 'CONFIRMED')",
+  "fullWXMLInverseSHA": "63cf9c1d5a4c3e3917321e6a266a39144ac31a65fd7036de028c74c9ec088313",
+  "PG07BaselineWXMLSHA": "63cf9c1d5a4c3e3917321e6a266a39144ac31a65fd7036de028c74c9ec088313",
+  "CSSProtectedPrefixBytes": 172787,
+  "CSSProtectedPrefixSHA": "c72cc63700e156013af0e9b2c134e4413516167d5f7a2bfcd82a327e36d8e469",
+  "PG07ScopeWXMLSHA": "cf271bce3d4a2dfd9b11aff87f93518adbf2e2629db219109617f9eaa8100bac",
+  "PG07ScopeCSSSHA": "e6a0935eb01c774082e8dd949645884816e4298185db899a2cbdffb34bb07f89",
+  "JSCurrent": {
+    "path": "/Users/tsb/Documents/小程序/miniprogram/subpackages/activity/event/event.js",
+    "bytes": 104041,
+    "sha256": "97e9f505d58b4b10e4d74d0e360954a0bac4730e1ddbef3437efeba6ed17621e"
+  },
+  "JSRootException": {
+    "old": "require('../../../utils/checkin-qr.js')",
+    "new": "require('../utils/checkin-qr.js')",
+    "count": 1,
+    "inverseSHA": "ccb5b5fede066ba0533b82cb564e816cc3d45ca96778a0d25ac5286d3c11a4bd",
+    "baselineSHA": "ccb5b5fede066ba0533b82cb564e816cc3d45ca96778a0d25ac5286d3c11a4bd"
+  },
+  "JSON": {
+    "path": "/Users/tsb/Documents/小程序/miniprogram/subpackages/activity/event/event.json",
+    "bytes": 69,
+    "sha256": "bf33dc7da099d240642a50fe3cf44cee01a2b282f70a80a313c79317c76ad10b"
+  },
+  "oldAssetsProtected": 81,
+  "PG07AssetsProtected": 6,
+  "bindingRoleCases": [
+    {
+      "role": "host",
+      "stats": true,
+      "alias": "READY",
+      "contracts": 16,
+      "sha256": "6966bc72f07b1d31e146194b1dd2772465bcb3fbe468ac27f1d15d0c63b9a405"
+    },
+    {
+      "role": "host",
+      "stats": true,
+      "alias": "ERROR",
+      "contracts": 15,
+      "sha256": "5f30829647b365f13f08c2994f3b44faa48d07c5020c02d134a4d1d1d0705a2a"
+    },
+    {
+      "role": "host",
+      "stats": false,
+      "alias": "READY",
+      "contracts": 13,
+      "sha256": "bdd49147b32e04e17d9fca7f6c036277d18ad0ce9c1c91cb8814d70cb2616e9d"
+    },
+    {
+      "role": "host",
+      "stats": false,
+      "alias": "ERROR",
+      "contracts": 13,
+      "sha256": "bdd49147b32e04e17d9fca7f6c036277d18ad0ce9c1c91cb8814d70cb2616e9d"
+    },
+    {
+      "role": "confirmed-member",
+      "stats": true,
+      "alias": "READY",
+      "contracts": 15,
+      "sha256": "d5773768a908234e11ba7c70394b617a950c9d7615fb30a9eaaddc680e27819b"
+    },
+    {
+      "role": "confirmed-member",
+      "stats": true,
+      "alias": "ERROR",
+      "contracts": 14,
+      "sha256": "6478f27658a6b0266ed8d99e12568a3e9a90795dfa73418e37b6fb6705bb4f5c"
+    },
+    {
+      "role": "confirmed-member",
+      "stats": false,
+      "alias": "READY",
+      "contracts": 12,
+      "sha256": "6b4c5e87f515f18f52b32bde06e72060b28ec82ec08e9aabcaccffd6dbc6fd1c"
+    },
+    {
+      "role": "confirmed-member",
+      "stats": false,
+      "alias": "ERROR",
+      "contracts": 12,
+      "sha256": "6b4c5e87f515f18f52b32bde06e72060b28ec82ec08e9aabcaccffd6dbc6fd1c"
+    }
+  ],
+  "WXMLStructure": "parsed",
+  "assetReferences": 23,
+  "photosDeduplicated": "Two exact original map responses identical, one runtime PNG",
+  "rootImageMove": "two existing rooftop refs remain activity local, same authorized Wave70 PG07 exception",
+  "scopeWXMLSHA": "af20288e5d69bc3d50e564666599fbb12f5465acffb032c78b76564def3b18ee",
+  "scopeCSSSHA": "7d99e3268c407a42c67fed3dda5eea9db2ea52b54dac15cc82a8f7aee1603780",
+  "boundary": "one necessary targeted detail source/resource/binding/protection static check; no old142 rerun, SDK/CLI/Git/CI/full suite",
+  "finalSourceRoleRefinement": "final-role-refinement-proof.json; only class/CSS inverse restores prior verified final; no binding/source glyph/assets changes",
+  "nativeSourceInteraction": "native-source-interaction-proof.json; inverse of pure attrs/CSS restores prior verified files",
+  "finalTrackingProof": "final-tracking-role-proof.json",
+  "hostReviewSourceCorrection": "host-review-source-correction-proof.json; onlydelta/inverse/changedfragment check, no8VMrepeat",
+  "rootThreePhotoExceptions": [
+    {
+      "old": "/assets/stitch/pg04s_badminton.jpg",
+      "new": "./assets/pg04s-badminton.jpg",
+      "count": 2
+    },
+    {
+      "old": "/assets/stitch/pg01_badminton_player.jpg",
+      "new": "./assets/pg01-badminton-player.jpg",
+      "count": 2
+    },
+    {
+      "old": "/assets/stitch/itinerary_badminton.jpg",
+      "new": "../assets/itinerary-badminton.jpg",
+      "count": 5
+    }
+  ],
+  "rootExceptionLiteralCount": 9,
+  "nativeStatusSelectorCorrection": "native-status-selector-correction-proof.json exactinverse only, parentnativefailure preserved pendingsingleitemrecheck"
+}

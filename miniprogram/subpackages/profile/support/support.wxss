@@ -1,0 +1,80 @@
+@import "../common.wxss";
+
+/* Reference tokens use 1px = 2rpx at a 375px viewport. */
+.support-page { background: #faf8fe; padding-left: 32rpx; padding-right: 32rpx; padding-bottom: 60rpx; }
+.support-header { position: sticky; z-index: 11; box-sizing: border-box; margin-left: -32rpx; margin-right: -32rpx; padding-left: 32rpx; background: #faf8fe; margin-bottom: 20rpx; height: 112rpx; }
+.support-header .pg10-header-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 34rpx; line-height: 44rpx; }
+.support-header .pg10-header-actions { display: flex; flex: none; align-items: center; gap: 6rpx; }
+.support-header .pg10-header-more, .support-header .pg10-header-avatar { display: block; flex: none; min-width: 0; margin: 0; padding: 0; border: 0; text-align: center; }
+.support-header .pg10-header-more { width: 88rpx; height: 88rpx; background: transparent; color: #171a24; line-height: 88rpx; font-size: 32rpx; font-weight: 800; }
+.support-header .pg10-header-avatar { width: 64rpx; height: 64rpx; border-radius: 50%; background: #004cc8; color: #fff; line-height: 54rpx; font-size: 28rpx; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.support-header .pg10-header-more::after, .support-header .pg10-header-avatar::after, .support-header .pg10-header-menu button::after { border: 0; }
+.support-header .pg10-header-menu { position: absolute; top: 104rpx; z-index: 12; width: 245rpx; padding: 8rpx; border: 1rpx solid #edf0f5; border-radius: 20rpx; background: #fff; box-shadow: 0 12rpx 30rpx rgba(15,23,42,.14); }
+.support-header .pg10-header-menu button { display: block; box-sizing: border-box; width: 100%; min-width: 0; margin: 0; padding: 13rpx 10rpx; border-bottom: 1rpx solid #edf0f5; border-radius: 0; background: transparent; color: #334155; text-align: left; line-height: 1.4; font-size: 20rpx; }
+.support-header .pg10-header-menu button:last-child { border-bottom: 0; }
+.support-page .pg10-card { border-radius: 24rpx; margin-bottom: 32rpx; box-shadow: 0 5rpx 20rpx rgba(35, 39, 76, .035); }
+.support-hero { position: relative; padding: 32rpx; background: linear-gradient(135deg, #e9f1ff 0%, #fff 56%, #f2f0ff 100%); overflow: hidden; }
+.support-hero-top { display: flex; align-items: flex-start; gap: 24rpx; }
+.assistant-mark { width: 96rpx; height: 96rpx; flex: none; border-radius: 50%; background: linear-gradient(145deg, #2468f1, #6158df); box-shadow: 0 9rpx 23rpx rgba(35, 96, 224, .23); display: flex; align-items: center; justify-content: center; }
+.support-hero-copy { flex: 1; min-width: 0; }
+.support-hero-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 8rpx; color: #171a24; font-size: 29rpx; font-weight: 700; line-height: 1.35; }
+.support-unavailable { padding: 4rpx 10rpx; border-radius: 99rpx; background: #edf0f5; color: #68738a; font-size: 18rpx; font-weight: 700; white-space: nowrap; }
+.support-hero-note { color: #525c6c; font-size: 22rpx; line-height: 1.55; margin-top: 7rpx; }
+.support-hero-actions { display: flex; gap: 16rpx; margin-top: 40rpx; }
+.support-hero-actions button { height: 80rpx; min-height: 80rpx; padding: 0 16rpx; margin: 0; border-radius: 45rpx; display: flex; align-items: center; justify-content: center; font-size: 26rpx; font-weight: 700; line-height: 32rpx; box-sizing: border-box; gap: 8rpx; }
+.support-hero-actions button::after, .support-faq-trigger::after, .support-report-tag::after, .support-submit::after, .support-report-action::after { border: 0; }
+.support-ai-action { flex: 1.25; color: #fff !important; background: #6288df !important; box-shadow: 0 7rpx 17rpx rgba(34, 101, 240, .15); }
+.support-human-action { flex: 1; color: #667186 !important; background: #fff !important; box-shadow: 0 5rpx 14rpx rgba(30, 34, 68, .06); }
+.support-faq-card { padding: 30rpx; }
+.support-section-head { display: flex; align-items: center; justify-content: space-between; gap: 12rpx; margin-bottom: 16rpx; }
+.support-section-title { display: flex; align-items: center; gap: 8rpx; color: #161a23; font-size: 29rpx; font-weight: 750; white-space: nowrap; }
+.support-section-icon { width: 25rpx; height: 25rpx; display: inline-flex; align-items: center; justify-content: center; border: 3rpx solid #2465ef; border-radius: 4rpx; color: #2465ef; font-size: 18rpx; font-weight: 800; }
+.support-section-hint { color: #6d7381; font-size: 22rpx; white-space: nowrap; line-height: 28rpx; }
+.support-faq-item { background: #f2f1f6; border-radius: 16rpx; margin-bottom: 8rpx; overflow: hidden; }
+.support-faq-item:last-child { margin-bottom: 0; }
+.support-faq-trigger { display: flex; align-items: center; justify-content: space-between; gap: 10rpx; width: 100%; margin: 0; padding: 24rpx; background: transparent; text-align: left; color: #1e2029; font-size: 30rpx; line-height: 42rpx; box-sizing: border-box; }
+.support-faq-trigger text:first-child { flex: 1; }
+.support-faq-chevron { width: 40rpx; height: 40rpx; flex: none; transform: rotate(0deg); }
+.support-faq-chevron.is-open { transform: rotate(180deg); }
+.support-faq-answer { padding: 0 24rpx 24rpx; color: #606a7c; font-size: 22rpx; line-height: 1.65; }
+.support-feedback-card { padding: 30rpx; }
+.support-edit-icon { color: #5754d7; font-size: 30rpx; font-weight: 800; transform: rotate(-15deg); }
+.feedback-state { font-size: 18rpx; }
+.support-feedback-intro { color: #606a7b; font-size: 22rpx; line-height: 1.55; margin-top: -8rpx; margin-bottom: 24rpx; }
+.support-field-label { display: block; color: #1a1d25; font-size: 26rpx; font-weight: 600; line-height: 32rpx; margin-bottom: 12rpx; }
+.support-tags { display: flex; flex-wrap: wrap; gap: 10rpx; margin-bottom: 24rpx; column-gap: 16rpx; row-gap: 16rpx; }
+.support-tag { height: 56rpx; padding: 12rpx 28rpx; border-radius: 30rpx; background: #f0eff5; color: #586174; font-size: 26rpx; font-weight: 600; display: flex; align-items: center; justify-content: center; box-sizing: border-box; line-height: 32rpx; white-space: nowrap; }
+.support-report-tag { margin: 0; line-height: normal; background: #e8f0ff; color: #175be6; }
+.support-field-row { display: flex; align-items: center; justify-content: space-between; gap: 10rpx; margin-bottom: 12rpx; }
+.support-field-row .support-field-label { margin-bottom: 0; }
+.support-field-count { color: #858da0; font-size: 22rpx; white-space: nowrap; line-height: 28rpx; }
+.support-textarea { width: 100%; height: 200rpx; box-sizing: border-box; padding: 16rpx; border-radius: 24rpx; background: #f3f2f7; color: #7f8798; font-size: 30rpx; line-height: 42rpx; margin-bottom: 24rpx; }
+.support-upload-placeholder { width: 160rpx; height: 160rpx; margin-bottom: 24rpx; border-radius: 24rpx; background: #f3f2f7; color: #8a91a1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8rpx; font-size: 22rpx; font-weight: 700; line-height: 28rpx; }
+.support-upload-icon { font-size: 44rpx; line-height: 1; width: 52rpx; height: 52rpx; }
+.support-contact { height: 82rpx; display: flex; align-items: center; gap: 16rpx; padding: 0 24rpx; box-sizing: border-box; border-radius: 24rpx; background: #f3f2f7; margin-bottom: 26rpx; }
+.support-contact-icon { color: #8a91a1; font-size: 27rpx; width: 40rpx; height: 40rpx; flex: none; }
+.support-contact input { flex: 1; min-width: 0; color: #737c8d; font-size: 30rpx; line-height: 42rpx; }
+.support-submit { width: 100%; height: 96rpx; margin: 0; border-radius: 45rpx; background: #a7b9e8 !important; color: #fff !important; font-size: 34rpx; font-weight: 700; line-height: 44rpx; display: flex; align-items: center; justify-content: center; gap: 16rpx; }
+.support-safety-card { padding: 26rpx 30rpx; }
+.support-safety-row { display: flex; align-items: flex-start; gap: 17rpx; }
+.support-safety-icon { width: 53rpx; height: 53rpx; flex: none; display: flex; align-items: center; justify-content: center; border-radius: 17rpx; background: #fff0f3; color: #e83f59; font-size: 28rpx; font-weight: 800; }
+.support-safety-title { color: #20222b; font-size: 25rpx; font-weight: 750; line-height: 1.5; }
+.support-safety-note { color: #677185; font-size: 21rpx; line-height: 1.5; margin-top: 4rpx; }
+.support-report-action { width: 100%; height: 73rpx; margin: 23rpx 0 0; border-radius: 40rpx; background: #2465ef; color: #fff; font-size: 23rpx; font-weight: 700; line-height: 73rpx; }
+.support-footer { padding: 6rpx 0 40rpx; color: #9a9fad; text-align: center; font-size: 19rpx; line-height: 1.5; }
+.support-person-icon { width: 36rpx; height: 36rpx; }
+.support-hero-heading, .support-section-title { font-size: 34rpx; line-height: 44rpx; font-weight: 600; }
+.support-hero-note, .support-feedback-intro, .support-faq-answer { font-size: 26rpx; line-height: 36rpx; }
+.support-ai-action, .support-human-action { flex: 1; }
+.support-action-icon { width: 36rpx; height: 36rpx; flex: none; }
+.support-faq-card, .support-feedback-card { padding: 32rpx; }
+.support-section-icon, .support-edit-icon { width: 40rpx; height: 40rpx; flex: none; border: 0; transform: none; }
+.support-send-icon { width: 40rpx; height: 40rpx; flex: none; }
+
+/* Source symbols retain official outlines; 375px maps 1px to 2rpx. */
+.support-status-cover { position: fixed; z-index: 20; top: 0; left: 0; right: 0; background: #faf8fe; pointer-events: none; }
+.support-header .support-back { width: 88rpx; height: 88rpx; flex: none; padding: 0; margin: 0; display: flex; align-items: center; justify-content: flex-start; }
+.support-header .pg10-header-more { display: flex; align-items: center; justify-content: center; }
+.support-back-icon { width: 48rpx; height: 48rpx; }
+.support-more-icon { width: 44rpx; height: 44rpx; }
+.support-assistant-icon { width: 52rpx; height: 52rpx; }

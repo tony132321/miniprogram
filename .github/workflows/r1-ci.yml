@@ -2,6 +2,7 @@ name: R1 CI
 
 'on':
   push:
+    branches: [main]
   pull_request:
 
 permissions:
@@ -10,16 +11,136 @@ permissions:
 jobs:
   checks:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/setup@v3
         with:
           version: 11.19.0
-          runtime: node@22
+          runtime: node@22.16.0
           require-lockfile: true
           cache: true
+      - name: Scan tracked credentials
+        run: pnpm exec tsx scripts/scan-credentials.ts
       - name: Typecheck
         run: pnpm typecheck
       - name: Test
-        run: pnpm test
+        run: pnpm test:ci
+      - name: Dependency audit
+        run: pnpm audit --audit-level high
+  postgres-privacy-expiry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: irl_ci
+          POSTGRES_PASSWORD: irl_ci_only
+          POSTGRES_DB: irl_r1_test_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U irl_ci -d irl_r1_test_ci"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      IRL_PG_TEST_URL: postgresql://irl_ci:irl_ci_only@127.0.0.1:5432/irl_r1_test_ci
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/setup@v3
+        with:
+          version: 11.19.0
+          runtime: node@24.19.0
+          require-lockfile: true
+          cache: true
+      - name: Verify PostgreSQL privacy expiry, write barriers, and system business events
+        run: pnpm exec tsx scripts/verify-postgres-privacy-expiry.ts
+  postgres-ai-semantic-race:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: irl_ci
+          POSTGRES_PASSWORD: irl_ci_only
+          POSTGRES_DB: irl_r1_test_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U irl_ci -d irl_r1_test_ci"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      IRL_PG_TEST_URL: postgresql://irl_ci:irl_ci_only@127.0.0.1:5432/irl_r1_test_ci
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/setup@v3
+        with:
+          version: 11.19.0
+          runtime: node@24.19.0
+          require-lockfile: true
+          cache: true
+      - name: Verify PostgreSQL AI fact source locking and replay
+        run: pnpm exec tsx scripts/verify-postgres-ai-semantic-source-race.ts
+  postgres-event-read-lock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: irl_ci
+          POSTGRES_PASSWORD: irl_ci_only
+          POSTGRES_DB: irl_r1_test_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U irl_ci -d irl_r1_test_ci"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      IRL_PG_TEST_URL: postgresql://irl_ci:irl_ci_only@127.0.0.1:5432/irl_r1_test_ci
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/setup@v3
+        with:
+          version: 11.19.0
+          runtime: node@24.19.0
+          require-lockfile: true
+          cache: true
+      - name: Verify PostgreSQL event detail read lock
+        run: pnpm exec tsx scripts/verify-postgres-event-read-lock.ts
+  postgres-process-crash:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: irl_ci
+          POSTGRES_PASSWORD: irl_ci_only
+          POSTGRES_DB: irl_r1_test_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U irl_ci -d irl_r1_test_ci"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      IRL_PG_TEST_URL: postgresql://irl_ci:irl_ci_only@127.0.0.1:5432/irl_r1_test_ci
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/setup@v3
+        with:
+          version: 11.19.0
+          runtime: node@24.19.0
+          require-lockfile: true
+          cache: true
+      - name: Verify PostgreSQL process crash and worker restart recovery
+        run: pnpm exec tsx scripts/verify-postgres-process-crash.ts

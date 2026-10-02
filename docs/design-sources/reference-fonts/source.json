@@ -1,0 +1,240 @@
+{
+  "createdAt": "2026-10-01T18:48:57.721503+00:00",
+  "scope": "Wave65 home two fixed handwritten phrases and H/H1/H2/H3 explicit reference typography nodes",
+  "googleFontsRepositoryCommit": "9710da1eacb3be272583c3224dcb70f9da6eadbb",
+  "note": "WOFF are unchanged official CSS2 server responses; repository commit pins metadata and licenses, not a claim that generated WOFF bytes are repository blobs.",
+  "cssRequests": [
+    {
+      "family": "caveat",
+      "cssURL": "https://fonts.googleapis.com/css2?family=Caveat%3Awght%40700&display=swap&text=More+People%2C+Brighter+Days+Same+Game+%26+New+Friends",
+      "cssSHA256": "eda299e66ac89888a7bb47169d591db26bbc56ad0d19ce776b2f57c2d44a5acc",
+      "userAgent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11",
+      "text": "More People, Brighter Days Same Game & New Friends",
+      "weightDeclarations": [
+        "700"
+      ]
+    },
+    {
+      "family": "plusjakartasans",
+      "cssURL": "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans%3Awght%40400%3B600%3B700%3B800&display=swap",
+      "cssSHA256": "cc247a76d65a640e62a0a925934a8ec156d9746ba20b8ed3d23ab295cc5c4a3b",
+      "userAgent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11",
+      "text": null,
+      "weightDeclarations": [
+        "400",
+        "600",
+        "700",
+        "800"
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "file": "caveat-700-home.woff",
+      "apiFamily": "Caveat",
+      "apiStyle": "normal",
+      "apiWeight": "700",
+      "bytes": 18280,
+      "base64Bytes": 24376,
+      "sha256": "736ba5632b23a1aa7381201b8328be3ea3e286b8ede8545667f7fd6e2fbab19e",
+      "family": "Caveat",
+      "style": "Bold",
+      "weightClass": 700,
+      "axes": [],
+      "version": "Version 2.000",
+      "glyphCount": 76,
+      "unicodeCount": 27,
+      "hasChinese": false,
+      "hasSmiley": false,
+      "missingHomeLatin": [],
+      "specialCoverage": {
+        "©": false,
+        "·": false,
+        "–": false,
+        "—": false,
+        "‘": false,
+        "’": false,
+        "“": false,
+        "”": false,
+        "•": false,
+        "→": false
+      },
+      "googleCSSBinaryURL": "https://fonts.gstatic.com/l/font?kit=WnznHAc5bAfYB2QRah7pcpNvOx-pjRV6SIG7fzRovkjj9LFhIbh6_lBGkrZ96SDzEiTSNtaITA&skey=7833cd5b856b60c9&v=v23",
+      "contentType": "font/woff",
+      "cors": "*",
+      "licenseFile": "docs/licenses/caveat-OFL-1.1.txt"
+    },
+    {
+      "file": "plus-jakarta-sans-400.woff",
+      "apiFamily": "Plus Jakarta Sans",
+      "apiStyle": "normal",
+      "apiWeight": "400",
+      "bytes": 28828,
+      "base64Bytes": 38440,
+      "sha256": "3ec7f5cad1bd738387a7c9b7e18428cfb165e9b98bdd26645b9f58fceee492c0",
+      "family": "Plus Jakarta Sans",
+      "style": "Regular",
+      "weightClass": 400,
+      "axes": [],
+      "version": "Version 2.071;gftools[0.9.30]",
+      "glyphCount": 781,
+      "unicodeCount": 721,
+      "hasChinese": false,
+      "hasSmiley": false,
+      "missingHomeLatin": null,
+      "specialCoverage": {
+        "©": true,
+        "·": true,
+        "–": true,
+        "—": true,
+        "‘": true,
+        "’": true,
+        "“": true,
+        "”": true,
+        "•": true,
+        "→": true
+      },
+      "googleCSSBinaryURL": "https://fonts.gstatic.com/s/plusjakartasans/v12/LDIbaomQNQcsA88c7O9yZ4KMCoOg4IA6-91aHEjcWuA_qU7NSQ.woff",
+      "contentType": "font/woff",
+      "cors": "*",
+      "licenseFile": "docs/licenses/plus-jakarta-sans-OFL-1.1.txt"
+    },
+    {
+      "file": "plus-jakarta-sans-600.woff",
+      "apiFamily": "Plus Jakarta Sans",
+      "apiStyle": "normal",
+      "apiWeight": "600",
+      "bytes": 29604,
+      "base64Bytes": 39472,
+      "sha256": "918ce7b19d036bcd59d41ab6198bbf35d77cf46227e56b85274e1dd2522ca8be",
+      "family": "Plus Jakarta Sans SemiBold",
+      "style": "Regular",
+      "weightClass": 600,
+      "axes": [],
+      "version": "Version 2.071;gftools[0.9.30]",
+      "glyphCount": 781,
+      "unicodeCount": 721,
+      "hasChinese": false,
+      "hasSmiley": false,
+      "missingHomeLatin": null,
+      "specialCoverage": {
+        "©": true,
+        "·": true,
+        "–": true,
+        "—": true,
+        "‘": true,
+        "’": true,
+        "“": true,
+        "”": true,
+        "•": true,
+        "→": true
+      },
+      "googleCSSBinaryURL": "https://fonts.gstatic.com/s/plusjakartasans/v12/LDIbaomQNQcsA88c7O9yZ4KMCoOg4IA6-91aHEjcWuA_d0nNSQ.woff",
+      "contentType": "font/woff",
+      "cors": "*",
+      "licenseFile": "docs/licenses/plus-jakarta-sans-OFL-1.1.txt"
+    },
+    {
+      "file": "plus-jakarta-sans-700.woff",
+      "apiFamily": "Plus Jakarta Sans",
+      "apiStyle": "normal",
+      "apiWeight": "700",
+      "bytes": 29828,
+      "base64Bytes": 39772,
+      "sha256": "4f3f2b563317bc9b948f8aef3c24e01cbc11f342015eaf827f45533f8986d896",
+      "family": "Plus Jakarta Sans",
+      "style": "Bold",
+      "weightClass": 700,
+      "axes": [],
+      "version": "Version 2.071;gftools[0.9.30]",
+      "glyphCount": 781,
+      "unicodeCount": 721,
+      "hasChinese": false,
+      "hasSmiley": false,
+      "missingHomeLatin": null,
+      "specialCoverage": {
+        "©": true,
+        "·": true,
+        "–": true,
+        "—": true,
+        "‘": true,
+        "’": true,
+        "“": true,
+        "”": true,
+        "•": true,
+        "→": true
+      },
+      "googleCSSBinaryURL": "https://fonts.gstatic.com/s/plusjakartasans/v12/LDIbaomQNQcsA88c7O9yZ4KMCoOg4IA6-91aHEjcWuA_TknNSQ.woff",
+      "contentType": "font/woff",
+      "cors": "*",
+      "licenseFile": "docs/licenses/plus-jakarta-sans-OFL-1.1.txt"
+    },
+    {
+      "file": "plus-jakarta-sans-800.woff",
+      "apiFamily": "Plus Jakarta Sans",
+      "apiStyle": "normal",
+      "apiWeight": "800",
+      "bytes": 29132,
+      "base64Bytes": 38844,
+      "sha256": "7036e01f13e5c43a877d1d0db05f4dda5ba8f76641a64f1c137fa58170b48632",
+      "family": "Plus Jakarta Sans ExtraBold",
+      "style": "Regular",
+      "weightClass": 800,
+      "axes": [],
+      "version": "Version 2.071;gftools[0.9.30]",
+      "glyphCount": 781,
+      "unicodeCount": 721,
+      "hasChinese": false,
+      "hasSmiley": false,
+      "missingHomeLatin": null,
+      "specialCoverage": {
+        "©": true,
+        "·": true,
+        "–": true,
+        "—": true,
+        "‘": true,
+        "’": true,
+        "“": true,
+        "”": true,
+        "•": true,
+        "→": true
+      },
+      "googleCSSBinaryURL": "https://fonts.gstatic.com/s/plusjakartasans/v12/LDIbaomQNQcsA88c7O9yZ4KMCoOg4IA6-91aHEjcWuA_KUnNSQ.woff",
+      "contentType": "font/woff",
+      "cors": "*",
+      "licenseFile": "docs/licenses/plus-jakarta-sans-OFL-1.1.txt"
+    }
+  ],
+  "licenses": [
+    {
+      "file": "docs/licenses/caveat-OFL-1.1.txt",
+      "bytes": 4385,
+      "sha256": "1f9d81d094273d82f3898a1ee8b598a717d050ecbf5ff7bede105b704880157b",
+      "copyright": "Copyright 2014 The Caveat Project Authors (https://github.com/googlefonts/caveat)"
+    },
+    {
+      "file": "docs/licenses/plus-jakarta-sans-OFL-1.1.txt",
+      "bytes": 4402,
+      "sha256": "995c7199cab65954f545996326755daee7b63cc6b42b06c13da1f9502ab08a99",
+      "copyright": "Copyright 2020 The Plus Jakarta Sans Project Authors (https://github.com/tokotype/PlusJakartaSans)"
+    }
+  ],
+  "productModule": {
+    "file": "miniprogram/utils/reference-font-data.js",
+    "bytes": 190570,
+    "sha256": "7a33f0b38e9b273ad07ed34cd3648cf8702a299c6ce6471224d04c920784cd63",
+    "fontBytes": 135672,
+    "fontBase64Bytes": 180904,
+    "fullLicensesStoredOnceAsExportedText": true
+  },
+  "wechatAPI": {
+    "url": "https://developers.weixin.qq.com/miniprogram/dev/api/ui/font/wx.loadFontFace.html",
+    "htmlSHA256": "da9452ff6f79b85d235039c1fb0ab73da53b1d111d8fdff38c94120439a234de",
+    "dataURLMinimumSDK": "3.7.9",
+    "globalAppCallMinimumSDK": "2.10.0",
+    "scopes": [
+      "webview"
+    ]
+  },
+  "renderedGlyphAcceptance": "pending root scoped WeChat validation"
+}

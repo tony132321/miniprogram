@@ -1,0 +1,164 @@
+{
+  "glyphs": [
+    {
+      "line": 10,
+      "glyph": "auto_awesome",
+      "class": "material-symbols-outlined text-[18px]",
+      "style": null
+    },
+    {
+      "line": 10,
+      "glyph": "notifications",
+      "class": "material-symbols-outlined text-[22px]",
+      "style": null
+    },
+    {
+      "line": 10,
+      "glyph": "person",
+      "class": "material-symbols-outlined text-on-primary text-[18px]",
+      "style": null
+    },
+    {
+      "line": 20,
+      "glyph": "neurology",
+      "class": "material-symbols-outlined text-on-primary text-[22px] animate-pulse",
+      "style": null
+    },
+    {
+      "line": 29,
+      "glyph": "auto_awesome",
+      "class": "material-symbols-outlined text-[16px] text-party-violet",
+      "style": null
+    },
+    {
+      "line": 35,
+      "glyph": "arrow_forward",
+      "class": "material-symbols-outlined text-[20px]",
+      "style": null
+    },
+    {
+      "line": 78,
+      "glyph": "sports_tennis",
+      "class": "material-symbols-outlined text-[13px]",
+      "style": null
+    },
+    {
+      "line": 98,
+      "glyph": "calendar_today",
+      "class": "material-symbols-outlined text-[17px] text-primary",
+      "style": null
+    },
+    {
+      "line": 102,
+      "glyph": "location_on",
+      "class": "material-symbols-outlined text-[17px] text-party-violet",
+      "style": null
+    },
+    {
+      "line": 130,
+      "glyph": "arrow_forward",
+      "class": "material-symbols-outlined text-[18px]",
+      "style": null
+    },
+    {
+      "line": 134,
+      "glyph": "campaign",
+      "class": "material-symbols-outlined text-[18px] text-on-surface-variant",
+      "style": null
+    },
+    {
+      "line": 139,
+      "glyph": "share",
+      "class": "material-symbols-outlined text-[19px] text-on-surface-variant",
+      "style": null
+    },
+    {
+      "line": 157,
+      "glyph": "wb_sunny",
+      "class": "material-symbols-outlined text-[12px]",
+      "style": null
+    },
+    {
+      "line": 175,
+      "glyph": "schedule",
+      "class": "material-symbols-outlined text-[17px] text-primary",
+      "style": null
+    },
+    {
+      "line": 179,
+      "glyph": "route",
+      "class": "material-symbols-outlined text-[17px] text-party-violet",
+      "style": null
+    },
+    {
+      "line": 185,
+      "glyph": "check_circle",
+      "class": "material-symbols-outlined text-[20px] text-tertiary flex-shrink-0",
+      "style": null
+    },
+    {
+      "line": 214,
+      "glyph": "tune",
+      "class": "material-symbols-outlined text-[19px]",
+      "style": null
+    },
+    {
+      "line": 218,
+      "glyph": "qr_code_scanner",
+      "class": "material-symbols-outlined text-[19px]",
+      "style": null
+    },
+    {
+      "line": 227,
+      "glyph": "verified",
+      "class": "material-symbols-outlined text-[18px]",
+      "style": null
+    },
+    {
+      "line": 242,
+      "glyph": "home",
+      "class": "material-symbols-outlined text-[24px]",
+      "style": null
+    },
+    {
+      "line": 242,
+      "glyph": "explore",
+      "class": "material-symbols-outlined text-[24px]",
+      "style": null
+    },
+    {
+      "line": 242,
+      "glyph": "add",
+      "class": "material-symbols-outlined text-[28px]",
+      "style": null
+    },
+    {
+      "line": 242,
+      "glyph": "chat_bubble",
+      "class": "material-symbols-outlined text-[24px]",
+      "style": null
+    },
+    {
+      "line": 242,
+      "glyph": "person",
+      "class": "material-symbols-outlined text-[24px]",
+      "style": null
+    }
+  ],
+  "photos": [
+    {
+      "line": 67,
+      "tag": "img",
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuDsZUCtG97Dhg0Zie50XCK9fkpHcuuGReqOBfihkFU3oKGddeY7M7JPz2pxJiP2H2c89IX_a6KTzSbfKhc1W4CeJZwQSI_wBVwsa4EV-1ZzHxtuxh4r-E4o3LQlhvKZANnYO50v3YSB8IvgLX6t_-Nkvb-xz5lR1uLCfioZ2KZLqn2U73SOG7Pa-LZvRcBgQr8-Bc236V6N0Zko4gBv4_41htfyPn8-ZB3-Rk0i7Ywb-FJCNU0jC9VSfg",
+      "class": "w-full h-full object-cover",
+      "alt": "Dynamic shot of people playing energetic indoor badminton on a vibrant blue court, shuttlecock in mid-air, dynamic rim lighting, shot on 35mm lens, high energy youth athletic meetup vibe with high contrast, soft cinematic grain and sporty atmosphere"
+    },
+    {
+      "line": 148,
+      "tag": "img",
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuAZ-Jwg3iaeFMp5OPmw_GJl-SohvHXwpJiV0q7XuhxKgt_zvv5nnOCje0aPxaiKK2SBsPGge21cXD50rPaYEnYdavYCI0CM-14G5jqq9K2EDGNCFthpSe1eAbap3PjH_OQTWtzv7nNepcrX4kaGvrb3N33lKJavnAsIhxC77CHq1VpjRuBLwgIOB_cPMvH9fZj742KVIngYYHt9fj-cQ8v0SQKUNRNEb4fSKxgkqjdofZOttz2gXkSqCQ",
+      "class": "w-full h-full object-cover",
+      "alt": "Group of stylish friends riding city road bicycles along a scenic riverside greenway at golden hour sunset, carrying camera bags and laughing together, warm natural sunlight reflections, Apple lifestyle aesthetic, high quality cinematic framing"
+    }
+  ]
+}

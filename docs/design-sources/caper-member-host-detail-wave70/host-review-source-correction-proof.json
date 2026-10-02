@@ -1,0 +1,84 @@
+{
+  "scope": "only approved4 _4 host source correction classes; no8role VM/sourcechecker repeat",
+  "rootThreePhotoExceptions": [
+    {
+      "old": "/assets/stitch/pg04s_badminton.jpg",
+      "new": "./assets/pg04s-badminton.jpg",
+      "count": 2
+    },
+    {
+      "old": "/assets/stitch/pg01_badminton_player.jpg",
+      "new": "./assets/pg01-badminton-player.jpg",
+      "count": 2
+    },
+    {
+      "old": "/assets/stitch/itinerary_badminton.jpg",
+      "new": "../assets/itinerary-badminton.jpg",
+      "count": 5
+    }
+  ],
+  "rootExceptionLiteralCount": 9,
+  "beforeWXML": {
+    "bytes": 160626,
+    "sha256": "dd067d9fe4a1c1d1aa4c6c0b3f04824bbea51f87190067fda039217170628bbf"
+  },
+  "beforeCSS": {
+    "bytes": 192883,
+    "sha256": "162f22913cea00edb0e4437c57a731f5c31954200832d67d2acd8ad943e53173"
+  },
+  "afterWXML": {
+    "bytes": 160902,
+    "sha256": "c4485f98df196bbc860fa083923184cff64d85275104444c878d36fc8addf746"
+  },
+  "afterCSS": {
+    "bytes": 194538,
+    "sha256": "d6b709bb941ed8a402fc29d52d47578489d5dc01e431b26293d3666a0f1df479"
+  },
+  "WXMLInverseReplacement": {
+    "from": "<view class=\"pgd-fact-copy\"><text>报名席位</text><view wx:if=\"{{isHost}}\" class=\"pgd-host-capacity\"><text class=\"pgd-capacity-number\">{{event.stats.confirmed}}</text><text class=\"pgd-capacity-denominator\">/ {{event.payload.maxParticipants || '待定'}}</text><text class=\"pgd-capacity-unit\">人已确认</text></view><view wx:else>已确认 {{event.stats.confirmed}} / {{event.payload.maxParticipants || '待定'}} 人</view>",
+    "to": "<view class=\"pgd-fact-copy\"><text>报名席位</text><view>已确认 {{event.stats.confirmed}} / {{event.payload.maxParticipants || '待定'}} 人</view>"
+  },
+  "CSSAppend": "\n/* Wave70 _4 independent source role/frame corrections; host only. */\n.pgd-host-reference .pgd-roster{padding:0;border-radius:0;background:transparent;box-shadow:none}.pgd-host-reference .pgd-roster-heading{padding:0 4px;margin-bottom:8px}.pgd-host-reference .pgd-roster-heading>view>view{font-size:11px;line-height:14px;font-weight:700;letter-spacing:.22px}.pgd-host-reference .pgd-member-grid{padding:12px;border-radius:12px;background:#fff;box-shadow:0 1px 2px 0 rgba(0,0,0,.05)}.pgd-host-reference .pgd-roster-empty{padding:12px;border-radius:12px;background:#fff;box-shadow:0 1px 2px 0 rgba(0,0,0,.05)}.pgd-host-reference .pgd-roster>.pgd-help{background:transparent}\n.pgd-host-reference .pgd-host-state>view>view:last-child>text:first-child{color:#424655}.pgd-host-reference .pgd-hero-title{color:#fff}\n.pgd-host-reference .pgd-map-frame{box-shadow:inset 0 2px 4px rgba(0,0,0,.05)}.pgd-host-reference .pgd-map-frame:after{content:\"\";position:absolute;inset:0;border-radius:8px;pointer-events:none;box-shadow:inset 0 2px 4px rgba(0,0,0,.05)}.pgd-host-reference .pgd-terminal{margin-top:8px}\n.pgd-host-reference .pd-members .pgd-host-capacity{display:flex;align-items:baseline;gap:4px;color:#424655;font-weight:600}.pgd-host-reference .pgd-host-capacity .pgd-capacity-number{font-size:17px;line-height:22px;letter-spacing:-.17px;font-weight:800;color:#004cc8}.pgd-host-reference .pgd-host-capacity .pgd-capacity-denominator{font-size:17px;line-height:22px;letter-spacing:-.17px;font-weight:600;color:#424655}.pgd-host-reference .pgd-host-capacity .pgd-capacity-unit{font-size:11px;line-height:14px;letter-spacing:.22px;font-weight:700;color:#424655}\n",
+  "WXMLInverseMatchesImmediateRootMigratedFreeze": true,
+  "inverseRoot9PathsRestoresPrevious160675Freeze": true,
+  "CSSInverseMatchesPrevious192883Freeze": true,
+  "hostConditionalValueRoles": {
+    "confirmed": "17/22/800/#004cc8/-.17px",
+    "capacity": "17/22/600/#424655/-.17px",
+    "unit": "11/14/700/#424655/.22px with true已确认"
+  },
+  "memberMetricTextAndRenderingRoleKept": "wx:else is exact oldinnertext; all new CSS host scoped",
+  "sourceGroups": [
+    {
+      "role": "roster",
+      "source": "_4:138-150",
+      "correction": "transparentouter/headingpx4/mb8; onlygridwhitep12/r12/shadow-sm; hostcaption11/14/700/.22; emptycard same native frame, truthful helptransparent"
+    },
+    {
+      "role": "status/title color",
+      "source": "_4:16,51",
+      "correction": "status #424655; hero title#fff"
+    },
+    {
+      "role": "map/footer",
+      "source": "_4:127; TerminalStaticFooter pt-2",
+      "correction": "sourceinsetshadow0 2px4px/.05; pseudooverlay nativechildimage paint keepsinsetvisible; footer extra8px outerspacing"
+    },
+    {
+      "role": "capacity",
+      "source": "_4:106-108",
+      "correction": "source three distinct typographic roles; truecount/capacity andconfirmed semantics retained"
+    }
+  ],
+  "noJSJSONWrites": true,
+  "rootQRRequireException": {
+    "old": "require('../../../utils/checkin-qr.js')",
+    "new": "require('../utils/checkin-qr.js')",
+    "bytesDelta": -6
+  },
+  "ownerCorrectionNetBytes": 1931,
+  "bindingVMRun": 0,
+  "changedMetricFragmentXML": "parsed only new metric fragment after normalizing WXML booleanwx:else; nofullchecker/8VM",
+  "inverseRoot9PreviousFreezeSHA": "c6e223b8e57d6a3433a4c4b6a9ab994dc99ccf4082c4b0cdae515560d3b7e8ee",
+  "sourceSemantics": "unchanged member branch; hostunit人已确认 preserves existing actual qualification in original11px unitrole; nofake6/8"
+}

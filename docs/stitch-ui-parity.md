@@ -1,0 +1,286 @@
+# Stitch 39 屏与 Project IRL 小程序对照矩阵
+
+审计日期：2026-10-02。设计基准是用户提供的 `/Users/tsb/Downloads/stitch_design_system_generator (2).zip`，SHA-256 `df22e733d33fda20979b75b8a7bc94717c4a5c9e41561a54e3038432fab32603`。压缩包有 **39 组 `code.html` + `screen.png`** 和另 6 张独立场景图。本表逐组盘点 39 屏；独立场景图是素材，不算页面。每行的设计代号对应 ZIP 内 `stitch_design_system_generator/<代号>/`。本次无法通过现有工具读取云端 Stitch 项目，因此不能声称已核对云端最多 16 页的最新状态；当前可验证设计基准是上述 ZIP。
+
+当前 `miniprogram/app.json` 注册 8 个主包页面、10 个个人页分包页面，以及行程、邀请卡与活动详情 3 个活动分包页面，共 21 条路由。`pages/event/event` 保留为 canonical 邀请／深链入口，业务实现位于 `subpackages/activity/event/event`；redirectTo 替换入口，原 URL 与返回栈保留。一个路由可呈现多个设计状态，例如活动详情承载 PG01、PG04-S、PG05、PG05-S、PG06–09；**路由数与设计屏数不可直接相减作为完成率**。以下“代码”只表示当前工作区可见原生 WXML/WXSS/JS 及绑定，**不等于一比一视觉通过**。本表由 E33、E34、E35 的当前源码证据补充；后续改动须另行复核。
+
+## 验证口径
+
+| 标记 | 含义 |
+| --- | --- |
+| **代码** | 本次查看到路由、状态或按钮绑定。局部已有单元／静态测试，但本表不把它提升为模拟器验证。 |
+| **旧模拟器** | 链接证据中曾以测试 AppID、本地 API、合成身份在开发者工具点击并回读；证据对应当时的源码快照。最近 CAPER 视觉改造后须重新截图、点击。 |
+| **仅静态测试** | 有 WXML 事件绑定、注册路由或定向用例证据；尚无对应页面开发者工具实点记录。 |
+| **未实现** | 没有相应独立路由或设计中主要动作；可能有其他页面的局部替代能力。 |
+| **旗标关闭** | `src/feature-flags.ts` 中 R1 能力关闭；展示灵感或说明不得视为可用服务。 |
+
+“旧模拟器”只证明该证据列出的**具体按钮、状态和服务端回读**，不证明整个页面 1:1、不覆盖未点过的按钮。以下矩阵没有任何一行被标为“39 屏一比一已通过”。正式 AppID、HTTPS 合法域名、真机、订阅消息、真人值守和三场受控活动仍按[总验收矩阵](acceptance-matrix.md)单独验收。
+
+证据索引：
+
+- **E1**：[首轮 Stitch 页面与路由实点](evidence/stitch-ui-devtools-2026-09-28.md)：旧版五入口、城市、草稿读取与表单保存。
+- **E2**：[发布／报名成功态](evidence/stitch-r1-terminal-states-2026-09-29.md)：发布与确认报名后服务端回读；成功态受当前状态约束。
+- **E3**：[报名确认及消息交互](evidence/stitch-r1-confirmation-messages-2026-09-29.md)、[端到端明细](evidence/stitch-r1-devtools-e2e-2026-09-29.md)：确认层、审批、全部已读、提醒深链。
+- **E4**：[协办工作台实点](evidence/stitch-r1-expanded-devtools-e2e-2026-09-29.md)：协办审批与首页协办页签。
+- **E5**：[公告／签到／费用实点](evidence/stitch-r1-content-checkin-expense-devtools-2026-09-29.md)：按钮、接口及可见截图。
+- **E6**：[PG10 组代码及静态绑定](evidence/stitch-pg10-profile-integration-2026-09-29.md)、[核心页面模拟器回归](evidence/caper-core-ui-devtools-2026-09-29.md)：后者实际点击了 10 个 PG10 入口，但只验证路由可达。
+- **E7**：[发现 R1 关闭态实点](evidence/discover-r1-inactive-controls-2026-09-29.md)：旧发现页搜索／分类不可用和邀请／发起路由。
+- **E8**：[分享按钮与第二身份模拟落地](evidence/r1-share-click-devtools-2026-09-29.md)：分享意图、来源和口令撤销；未观察微信原生分享面板。
+- **E9**：[我的行程本地验证](evidence/caper-itinerary-local-2026-09-29.md)：真实空态、入口、服务端合成活动数据卡点击，以及仅供排版检查的前端合成卡。
+- **E10**：[活动详情与主办工作台模拟器回归](evidence/caper-event-ui-devtools-2026-09-29.md)：本地合成活动的服务端回读、六个分区页签及安全入口。
+- **E11**：[四入口视觉与跳转回归](evidence/caper-visual-parity-devtools-2026-09-30.md)：当前 `caper_2/4/1/3` 首屏截图、真实活动卡深链、灵感关闭态、消息筛选，以及举报入口和免费费用的限定验证。
+- **E12**：[邀请卡、分享弹层与隐私安全页](evidence/caper-share-privacy-devtools-2026-09-30.md)：活动工作台→独立邀请卡、待审阻断、弹层仅前端视觉检查、个人页→真实空屏蔽列表。
+- **E13**：[首页状态、发现长页与 PG10 实点](evidence/caper-home-discover-pg10-devtools-2026-09-30.md)：真实主办活动卡→工作台、发现本人活动→详情、帮助→举报表单、协议→公约及本机缓存读数。
+- **E14**：[PG01 活动详情与 PG05 确认层](evidence/caper-pg01-pg05-devtools-2026-09-30.md)：真实主办活动事实、复制地点及分享页跳转实点；PG05 仅视觉与取消，活动待审阻断报名。
+- **E15**：[PG10 资料、记录与关于页面](evidence/caper-pg10-remaining-devtools-2026-09-30.md)：城市、勋章筛选、本人活动筛选及详情、关于页子路由实点；未开放资料和照片功能保持诚实状态。
+- **E16**：[城市、行程与发起页底部操作](evidence/caper-city-itinerary-create-devtools-2026-09-30.md)：城市字母索引／拼音搜索与选择、真实行程→报名分区、发起页底部预览按钮触达。
+- **E17**：[CAPER 消息与通知中心实点](evidence/caper-messages-center-devtools-2026-09-30.md)：同一消息路由的通知中心四分类、真实空队列加载、返回与设置入口；旧本地 API 进程已重启。
+- **E18**：[发起页 IDEA／FORM／REVIEW 三状态实点](evidence/caper-create-three-states-devtools-2026-09-30.md)：灵感、快捷选项、真实草稿预览及逐行回填；IDEA／REVIEW 隐藏 TabBar，FORM 保留。
+- **E19**：[活动详情与运营聚焦视图](evidence/caper-event-operations-focused-devtools-2026-09-30.md)：详情进入主办、公告、签到和费用的独立画面；真实空态与安全门控；PG05-S 仅视觉检查。
+- **E20**：[“我的”长页与 PG10 隐私深链实点](evidence/caper-profile-deep-devtools-2026-09-30.md)：本人活动筛选、主办卡和分享资格页；候补通知定位，以及资料／协议页直达真实隐私请求表单。
+- **E21**：[首页分类、灵感、主办统计与页脚动作](evidence/caper-home-action-links-devtools-2026-09-30.md)：非羽毛球灵感能力提示的定向逻辑、真实主办统计和页脚三入口开发者工具实点，以及固定 TabBar 遮挡修复后的可见截图。
+- **E22**：[PG09 AA 账本交互与真实空态](evidence/caper-pg09-ledger-interactions-2026-09-30.md)：授权数据上的展开、排序定向测试；模拟器费用分区真实空态，不冒充非空账本实点。
+- **E23**：[三状态隔离开发者工具实点](evidence/caper-three-state-isolated-devtools-2026-09-30.md)：有效候补确认与 API 回读、历史活动进入本人 AA 账本、主办 5 行账本明细和排序。
+- **E24**：[首页、发现、发起长图对照与点击](evidence/caper-home-discover-create-parity-2026-09-30.md)：`caper_2/caper_4/pg03_ai/caper_ai/pg04` 的原稿结构、真实本人数据与能力提示，开发者工具截图和主办多活动邀请实点。
+- **E25**：[活动聚焦页原稿对照](evidence/caper-event-parity-2026-09-30.md)：详情、主办、公告、签到和 AA 费用在隔离真实业务数据上的可见状态、模式切换及五人账本展开。
+- **E26**：[消息首页及通知中心非空复测](evidence/caper-messages-parity-2026-09-30.md)：原稿卡片结构、主工程空态与隔离 7 条通知、候补通知打开及个人页定位。
+- **E27**：[首页多卡详情补全](evidence/caper-home-multi-card-detail-2026-09-30.md)：第 4 张及以后状态卡继续取得授权详情，含旧响应隔离；目前仅合成定向验证。
+- **E28**：[个人页站内通知中文化与深链](evidence/caper-profile-notice-labels-2026-09-30.md)：隔离 7 条通知可读卡片、首条打开后状态回读、活动详情深链。
+- **E29**：[本人活动安全摘要与排序](evidence/me-events-safe-summary-order-2026-09-30.md)：HTTP 授权回归覆盖场地／费用、待审遮盖、候补和时间排序；行程页绑定定向验证。
+- **E30**：[合并候选全量回归与首页打开](evidence/caper-integrated-regression-2026-09-30.md)：本地 784 项完整结束、CLI 编译、当前 API 与主开发者工具首页 `READY` 截图。
+- **E31**：[跨页处理入口修复与实点](evidence/caper-action-deeplinks-2026-09-30.md)：报名管理与通知设置实际点击定位；举报／申诉／内容处理分区定向测试。
+- **E32**：[当前界面整合与开发者工具复验](evidence/caper-r1-ui-integration-2026-09-30.md)：消息非空、PG06 已确认成员、PG07 经审核问答、PG08 锁定态、PG09 五人账本和 PG06-S 有当前模拟器截图及明确的点击回读；提醒卡图单列为视觉样本，全量 822/822。E32 可补充上表旧证据的状态，但没有把任何屏提升为逐像素 1:1 或真机通过。
+- **E34**：[活动记录顶栏与成功页成员入口](evidence/caper-profile-roster-actions-2026-09-30.md)：PG10-C More／个人图标避开胶囊并实点跳转；PG05-S “查看全部”以服务端已确认身份进入成员分区。两页仍不是逐像素或真机验收。
+- **E35**：[草稿箱和主办状态实点](evidence/caper-drafts-organizer-status-2026-09-30.md)：PG03 草稿箱仅列本人 DRAFT、返回编辑及退出过滤，PG02-C 主办卡封面用活动状态；隔离模拟器与服务端回读，不是逐像素验收。
+- **E36**：[PG10-B 勋章页与入口](evidence/caper-badges-actions-2026-09-30.md)：设计概念勋章详情明确“尚未授予”，顶部菜单与真实活动记录入口有模拟器实点；不代表授予或逐像素完成。
+- **E37**：[发现页摄影卡与邀请入口](evidence/caper-discover-wave5-2026-09-30.md)：`caper_4` 的信息层级与关闭态重排；顶部口令入口滚动、真实邀请打开、搜索关闭态和去发起有模拟器实点；不代表公开列表或逐像素完成。
+- **E38**：[PG10-G/H 顶部与真实路径](evidence/caper-profile-info-actions-2026-09-30.md)：客服、关于与三张说明页顶部入口避开原生胶囊；关于→版本→真实活动、客服→关于、公约→举报处理区有模拟器实点。在线客服和普通反馈仍未开放。
+- **E39**：[消息搜索、审批与处理通知](evidence/caper-message-wave5-actions-2026-09-30.md)：通知中心恢复全部已加载通知；真实待审卡详情、通过及安全工单通知跳转与已读均有隔离模拟器/API 回读。未声称私聊或逐像素完成。
+- **E40**：[首页想法与未读通知](evidence/caper-home-hero-unread-live-2026-09-30.md)：首页构思一次性预填与编辑保护、当前身份未读数。
+- **E41**：[个人页扫码及兴趣入口](evidence/caper-profile-scan-interest-live-2026-09-30.md)：扫码入口进入本人行程后选择活动，兴趣进入未开放说明区。
+- **E42**：[真实活动详情局部复验](evidence/caper-event-live-detail-wave6-2026-09-30.md)：合成主办和已确认成员分别进入当前活动签到分区。
+- **E43**：[首页与发现页摄影、长页及局部点击](evidence/caper-home-discover-wave6-2026-09-30.md)：当前本人活动事实与示意照片分离；发现灵感轮换、收藏与卡片关闭态。
+- **E44**：[发起、活动记录、行程与隐私局部实点](evidence/caper-create-moments-itinerary-wave7-2026-09-30.md)：手动填写及个人入口、本人活动拼贴详情、行程报名／签到各入正确分区、隐私顶部真实路由。
+- **E45**：[资料、勋章、协议与本地存储局部实点](evidence/caper-profile-controls-wave8-2026-09-30.md)：资料菜单进入隐私页、四个勋章展示位关闭态、字号切换和数据请求真实入口。
+- **E46**：[首页状态捷径与重大变更通知](evidence/caper-home-message-actions-wave9-2026-09-30.md)：待审活动退出入口、主办签到管理和真实重大变更通知→报名重新确认均经隔离模拟器实点及服务端回读。
+- **E47**：[本人活动结束时间、城市与账号隔离](evidence/caper-safe-summaries-wave10-2026-09-30.md)：已审活动安全摘要含起止时间／城市，行程真实按钮点击及旧身份入口阻断有隔离模拟器回读。
+- **E48**：[邀请 QR 与发现扫码](evidence/caper-invite-qr-wave11-2026-09-30.md)：邀请卡真 QR 截图解码与服务端 token 相同，发现扫码有效／无效回调经隔离模拟器实点；真机摄像头仍待验。
+- **E49**：[PG11-C 私聊关闭态](evidence/caper-private-chat-closed-wave12-2026-09-30.md)：消息最近会话进入独立关闭态，禁用输入，通知中心、本人活动与返回路径均经模拟器实点。
+- **E50**：[通知卡与开源许可页入口补核](evidence/caper-wave14-notice-source-routes-2026-09-30.md)：PG10-H3 顶部两条真实路径在隔离开发者工具实点；PG02-N1 签到通知动作经当前源码与聚焦路由测试核对，当前服务端没有费用通知种类。
+- **E51**：[PG08 当前时间窗动态码与成员签到](evidence/caper-pg08-current-dynamic-qr-wave14-2026-09-30.md)：新布局主办生成动态 QR、成员手输同码，服务端到场来源回读 `SCAN`，异常 0；真机相机未验。
+- **E52**：[PG10-C 活动记录视觉与详情实点](evidence/caper-moments-pg10c-wave14-2026-09-30.md)：按原稿重排三图活动卡、渐变摘要与固定按钮；当前合成身份的 3 场本人活动加载，首卡拼贴进入同 ID 活动详情，异常 0，聚焦测试 21/21。相册及找图维持 R1 关闭态。
+- **E53**：[发现页授权活动与邀请预览](evidence/caper-discover-authorized-wave14-2026-09-30.md)：当前身份活动卡显示真实时间／城市／场地并进入同 ID 详情；有效口令先读取安全摘要再进详情，“我的”输入邀请码定位输入区。跨账号口令清理、暂停状态和旧响应阻断有聚焦测试与隔离模拟器实点；公开找局仍关闭。
+- **E54**：[首页与发起页逐屏对照](evidence/caper-wave15-home-create-2026-09-30.md)：`caper_2`、`pg03_ai`、`caper_ai`、`pg04` 参考图对照；旧口令、旧草稿异步响应的跨账号阻断，发起顶栏“草稿箱→头像”重排；定向 50/50，隔离模拟器相关按钮实点、异常 0。仍无四屏同尺寸逐像素结论。
+- **E55**：[活动页 PG05-S 与 PG06 语义修正](evidence/caper-wave15-event-2026-09-30.md)：公开昵称不再全称为已确认同行者；非羽球场景不套羽球海报/文案，定向 23/23；新改动尚无模拟器实点。
+- **E56**：[PG10 协议与本地存储页顶栏](evidence/caper-wave15-profile-2026-09-30.md)：两页补齐避让微信胶囊的更多/个人入口，4 条真实路由模拟器实点、异常 0；定向 35/35。
+- **E57**：[消息页通知文案与审批卡](evidence/caper-wave15-messages-2026-10-01.md)：提醒动作明确进入现场签到，泛活动审核改称参与者，长标题可换行；真实审批卡“查看详情”实点进入同 ID 主办页、异常 0，定向 43/43。合成队列无提醒，提醒新文案尚未实点。
+- **E58**：[城市与行程身份边界](evidence/caper-wave15-city-itinerary-2026-10-01.md)：非法旧城市值回退、同用户换会话时旧行程卡阻断，先失败后通过的定向 13/13；此轮无新模拟器截图。
+- **E59**：[邀请卡跨账号可见性与发现“我的活动”入口](evidence/caper-share-account-bound-wave15-2026-10-01.md)：旧邀请码卡及异步来源返回在账号切换后清空，邀请卡定向 7/7；发现页错指首页的“我的活动”改到本人活动记录，发现定向 4/4。两项此轮未新增模拟器实点。
+- **E60**：[Wave 15 合并候选微信开发者工具预览](evidence/caper-wave15-integrated-2026-10-01.md)：当前代码 CLI 预览 2,194,603 Byte；隔离副本首页 `READY`、本人活动 3 条、异常 0，并留在开发者工具供检查。不是 39 屏逐像素或真机验收。
+- **E61**：[邀请卡会话身份复核](evidence/caper-share-identity-wave16-2026-10-01.md)：同一主办人更换登录会话、登录切开发身份、刷新中切换身份均不能保留旧邀请码；先失败后通过的定向 10/10。真机原生分享仍未验。
+- **E62**：[城市偏好跨页归一](evidence/caper-city-storage-wave16-2026-10-01.md)：四个城市显示页共用选择清单；无效旧值显示并写回上海，旧版可选城市保留，受影响定向 79/79。此轮尚无城市返回路径的新模拟器实点。
+- **E63**：[PG09 费用成员行紧凑布局](evidence/caper-pg09-row-density-wave16-2026-10-01.md)：真实金额、双方独立声明和身份可用操作压入成员行，88rpx 操作保留点击面积；活动页定向 10/10。第二 IDE 端口被占用，没有新版截图，尚不能声称同尺寸视觉通过。
+- **E64**：[PG02-B 补位卡直达通知](evidence/caper-pg02b-offer-focus-wave16-2026-10-01.md)：首页待确认卡传递同身份的一次性活动定位意图；个人页核对当前报名和版本，最多读 5 页通知，聚焦仍可处理的同场补位，失效或身份切换后隐藏旧操作。相关页面定向 62/62、类型检查通过；隔离模拟器跨页实点准确高亮目标通知、两个动作可见、异常 0，仍未实际提交动作或完成同尺寸视觉验收。
+- **E65**：[同用户换登录会话的数据隔离](evidence/session-identity-wave17-2026-10-01.md)：首页、发起、发现、活动、消息和活动记录在会话令牌轮换后拒绝旧响应／旧卡，举报跨页意图也校验所有者；API GET 拒绝旧会话回调，同时保留同一用户未知写入的幂等续试。定向验证通过；令牌轮换尚无模拟器实点。
+- **E66**：[CAPER 消息页最近会话层级](evidence/caper-message-hierarchy-wave17-2026-10-01.md)：仅在全部消息且已加载时，将真实的私聊关闭态卡移到通知分组之前；保留 `CHAT_UNAVAILABLE` 按钮目标，不虚构对话。消息相关定向 44/44；新版模拟器展示 9 条真实通知，卡片与通知中心往返按钮通过、异常 0，已存截图。同尺寸像素结论未得出。
+- **E67**：[PG08 已结项反馈与新局入口](evidence/caper-pg08-feedback-fresh-idea-wave18-2026-10-01.md)：真实完成态下显示双列反馈选项、独立提交、可选争议说明和“再来一局”；新局入口不复制或发布旧活动，已有编辑先确认，旧会话反馈回调及不确定写入有保护。定向代码验证通过；[隔离模拟器](evidence/caper-pg08-pg10a-wave18-devtools-2026-10-01.md)四选项、补充说明及新局 CTA 实点通过，异常 0；结项摘要与输入框修正后已复拍，没有提交反馈，同尺寸逐像素仍待验。
+- **E68**：[PG10-A 本场昵称可达入口](evidence/pg10a-alias-entry-2026-10-01.md)：资料页从真实本人活动列表进入对应活动的昵称授权表单，守住成员身份与当前会话；全局昵称仍关闭。资料页定向 25/25、深链定向 14/14；隔离模拟器活动选择→昵称表单实点通过，异常 0，已存截图；没有保存昵称。
+- **E69**：[PG10-C／PG11-C 活动入口](evidence/caper-pg10c-pg11c-activity-route-wave19-2026-10-01.md)：照片与私聊关闭态的可用按钮现在分别进入发起 Tab 和本人真实活动记录；活动分类空态可在本页切换全部，并保护当前会话身份。定向四文件 29/29、类型检查通过；本轮尚无模拟器实点。
+- **E70**：[发现页“全部”分类](evidence/caper-discover-all-category-wave20-2026-10-01.md)：原稿蓝色“全部”保留当前灵感视图；点击清除关闭分类的提示，其他分类继续显示能力边界。发现相关四文件 11/11、类型检查通过；本轮尚无模拟器实点。
+- **E71**：[发起页快捷日期同步](evidence/caper-create-quick-date-wave21-2026-10-01.md)：先选本周六再改本周日，同日结束日期随开始日期调整，仍有效的手动跨日结束保留；场地核实声明在日期变化时继续清除。发起相关三文件 24/24、类型检查通过；本轮尚无新版模拟器实点。
+- **E72**：[PG06 主办结项入口](evidence/caper-pg06-completion-shortcut-wave19-2026-10-01.md)：结项资格成立时第三快捷按钮定位现有表单，点击不提交；两处说明输入框缩为 116rpx。定向 2/2、既有结项用例 1/1；隔离模拟器点击、输入与清空通过，异常 0，API 回读仍为 `IN_PROGRESS`。同尺寸逐像素未验。
+- **E73**：[PG10-D 举报入口](evidence/caper-pg10d-report-deeplink-wave20-2026-10-01.md)：隐私安全页底部按钮从 FAQ 改为直达当前会话的真实举报工单，保留未登录门控与原顶部帮助入口。相关四文件 27/27、类型检查通过；本轮尚无模拟器实点。
+- **E74**：[`_1` 行程倒计时自然日](evidence/caper-itinerary-shanghai-calendar-wave23-2026-10-01.md)：当前支持城市按上海自然日显示今天／明天／约 N 天，修正同日晚间与跨年误报；行程定向 8/8、类型检查通过，本轮尚无新版模拟器截图。
+- **E75**：[PG10-C 底部按钮安全区](evidence/caper-pg10c-safe-area-wave22-2026-10-01.md)：固定“发起新活动”按钮和页面末尾留白按设备手势安全区调整；旧模拟器图可见遮挡，新样式尚待同设备复拍及点击。
+- **E76**：[个人页异步写入会话隔离](evidence/profile-mutation-session-fence-wave22-2026-10-01.md)：同一用户换登录令牌时旧私有数据先清除，旧授权、举报、申诉和隐私等 POST 回调不能改写新会话；授权连点串行，未知结果显式重试同 payload。相关定向 128/128、类型检查通过，本轮尚无微信开发者工具实点。
+- **E77**：[20 路由按钮与页面目标静态审计](evidence/caper-button-route-audit-wave24-2026-10-01.md)：20 条注册页面的 WXML 绑定方法和 JS 硬编码页面目标齐备；两处“回到我的活动”入口从首页改为本人活动记录。相关定向 21/21、类型检查通过；其余按钮的实际可触达性仍需开发者工具实点。
+- **E78**：[PG08／PG09 场景配图与完成态间距](evidence/caper-pg08-pg09-scene-parity-wave23-2026-10-01.md)：已结项签到页收紧反馈卡前的空带，进行中保留原留白；羽球活动签到卡和 AA 账本改用已有羽球示意图并标注非实拍。隔离开发者工具完成态、四人账本与明细展开／收起实点、异常 0；相关业务定向 17/17。仍非 39 屏同尺寸逐像素或真机验收。
+- **E79**：[PG10-C 摘要条高度与真实说明](evidence/caper-pg10c-summary-parity-wave25-2026-10-01.md)：参考稿两行摘要对应当前本人活动数与相册互动关闭态，最低 160rpx，羽球图标和状态栏遮层已补；不伪造设计稿的照片、点赞或不同类型活动。相关定向 17/17，最终同设备复拍见 E81，仍非逐像素验收。
+- **E80**：[个人页授权未知结果恢复](evidence/profile-consent-recovery-wave25-2026-10-01.md)：未知结果的原操作按用户持久保留，重启或同用户换令牌后继续锁定并显式按原幂等键核对；确定成功后 GET 回读，不一致时显示服务端实值。相关定向 132/132、类型检查通过，正式微信服务未验。
+- **E81**：[Wave 25 最新 UI 微信工具复核](evidence/caper-wave25-latest-ui-devtools-2026-10-01.md)：完整小程序源码同步隔离项目后，CLI 预览通过；PG10-C 三条真实本人活动、摘要、底部安全区、顶栏菜单及滚动遮层和个人页授权可见状态定版实点异常 0，截图存档。发起／活动错误回退、PG10-D 举报与发现“全部”在较早快照实点，非定版重复点击；原生 CUA 超时，真机与 39 屏逐像素未验。
+- **E82**：[CAPER 消息首页三筛选](evidence/caper-message-three-filters-wave26-2026-10-01.md)：首页按参考稿为全部／活动相关／系统通知三项，通知中心仍有互动分类；待审批意图直达通知中心的真实互动队列，返回首页恢复全部及 TabBar。定向 45/45、类型检查通过，新版模拟器按钮待实点。
+- **E83**：[发现页摄影卡首屏顺序](evidence/caper-discover-hero-order-wave27-2026-10-01.md)：分类条后立即是四张双列摄影灵感卡，随后才显示公开找局关闭说明与邀请码入口；口令、扫码、卡片提示和原导航保留。相关定向 11/11，定向复拍见 E84。
+- **E84**：[Wave 28 最新消息与发现页微信工具复拍](evidence/caper-wave28-latest-message-discover-devtools-2026-10-01.md)：同一小程序树完整同步、CLI 预览；消息三筛选／通知中心四筛选／个人页审批入口与返回，以及发现四卡顺序、分类提示、邀请码定位经模拟器实点，异常 0。摄影卡原生弹窗确认在本机未自动触发；模拟确认回调后的真实卡片点击与发起跳转通过。6 张截图存档，非逐像素或真机验收。
+- **E85**：[Wave 29 发现字贴／分类吸附及消息图库复拍](evidence/caper-wave29-discover-stickers-sticky-devtools-2026-10-01.md)：发现四张摄影卡的字贴换行与颜色、品牌栏滚离后的分类栏吸附、消息页四个灵感图块均在完整小程序副本中复拍；CLI 预览通过、异常 0。图片区仍为明确标注的设计灵感，不是活动实拍；3 张截图存档，非 39 屏逐像素或真机验收。
+- **E86**：[PG10-H 三个公开说明页分享入口](evidence/caper-pg10-public-info-share-wave29-2026-10-01.md)：三个顶栏分享按钮仅返回各自公开路径及标题；隔离模拟器逐页打开、点击和复拍，异常 0，CLI 预览通过。按钮实点不等于原生分享投递或接收方真机回开。
+- **E87**：[PG02-C 主办卡公告与签到入口](evidence/caper-pg02c-host-card-actions-wave30-2026-10-01.md)：招募中卡片的“发公告”进入同场活动可见的审核公告输入区；已成局卡片的“签到核销码”进入主办验码模式，未到窗口时显示时间说明。完整小程序隔离同步和 CLI 预览通过，4 张模拟器截图，异常 0；未提交公告或生成动态码。
+- **E88**：[PG10-E 当前服务说明分享入口](evidence/caper-pg10e-current-service-share-wave31-2026-10-01.md)：公开说明页在字号控制旁加入原生分享按钮，分享载荷不含私有数据；完整小程序隔离同步及 CLI 预览通过、模拟器实点异常 0。页面仍显示正式协议待核定；真机分享投递未验。
+- **E89**：[PG02-C 待审核主办卡状态校正](evidence/caper-pg02c-pending-review-fence-wave30-2026-10-01.md)：真实 `RECRUITING/PENDING/recruiting=false` 卡显示“待审核”，不出现公告或分享；主办可查看活动详情。旧列表缺字段时的保守模拟器回退异常 0，新列表字段与分页快照由独立 HTTP 定向测试验证。
+- **E90**：[PG02-D 历史主办卡“再来一局”](evidence/caper-pg02d-host-repeat-wave32-2026-10-01.md)：已结项主办卡蓝色主按钮重读同场活动和安全开关，定位既有再约草稿按钮；封面和快捷入口仍可查看结项。隔离模拟器实点后未创建草稿，异常 0；星级和相册仍无 R1 数据。
+- **E91**：[消息结项待办直达表单](evidence/caper-outcome-notice-completion-deeplink-wave32-2026-10-01.md)：真实站内 `EVENT_OUTCOME_DUE` 实点进入同场主办结项表单，站内状态 `IN_APP → OPENED`，未提交结项；最终完整树 CLI 预览通过，最后空身份守卫未重复模拟器实点。
+- **E92**：[个人页通知动作深链与真实行核验](evidence/caper-profile-notice-action-deeplinks-wave32-2026-10-01.md)：重大变更、签到、结项与反馈通知按当前列表真实行进入相应分区/表单，拒绝伪造或旧账号按钮参数；已打开的真实结项通知在模拟器进入表单。成员反馈缺合资格实点样本，最后空身份守卫未重复模拟器实点。
+- **E93**：[PG02-D 成员历史卡反馈主按钮](evidence/caper-pg02d-member-feedback-wave33-2026-10-01.md)、[隔离模拟器实点](evidence/caper-pg02d-member-feedback-devtools-wave33-2026-10-01.md)：已结项、已确认且非主办的成员点击主按钮进入同场反馈区；未提交时定位表单，已提交时定位只读记录。两名合成成员分别验证导航未提交、本人提交后再进入只读卡，异常 0；其他历史身份的安全详情路径有定向测试。
+- **E94**：[PG02-N1 审批卡主次按钮](evidence/caper-pg02n1-approval-layout-wave34-2026-10-01.md)：真实待审卡按 ZIP 原稿把蓝色“一键通过”放左侧并拓宽，灰色“查看详情”放右侧；隔离模拟器截图与详情实点到同活动主办区，申请未被批准。满员态仅代码与现有定向测试验证，未在模拟器实点。
+- **E95**：[PG05-S 成功卡场地操作](evidence/caper-pg05s-venue-action-wave35-2026-10-01.md)：场地行加入“复制地点”，先回读同场确认资格和最新场馆再复制。已确认合成成员在隔离模拟器实际点击、剪贴板与当前 API 字段一致、异常 0；成功态由自动化设置展示，未本轮重走报名或验证地图导航。
+- **E96**：[RQ02 六城一句话草稿](evidence/rq02-quick-city-alignment-wave36-2026-10-01.md)：发起页现有六个快捷城市与规则降级解析一致；明确城市与区名可推导中国本地日期，成都北路等场馆道路名不猜城市。服务端字段合约和定向 11/11 已核，无新版模拟器实点或真实模型。
+- **E97**：[PG02-B 取消报名申请入口](evidence/caper-pg02b-request-cancellation-wave36-2026-10-01.md)：待审申请卡第二按钮恢复“取消报名申请”，只导航至同场实际退出控件；隔离模拟器验证导航前后 `REQUESTED`，点击退出后 `CANCELLED`，异常 0。审批竞态由点击前回读及服务端 `REQUESTED` 条件取消阻断，代码定向验证通过、尚未模拟器重拍；非真机验收。
+- **E98**：[PG02-N1/N2 提醒卡地点操作](evidence/caper-pg02n1-reminder-place-wave38-2026-10-01.md)：真实合成 `EVENT_REMINDER` 双按钮分别进入现场签到和复制当前场馆；第二按钮实点后剪贴板与同版当前 API 地点一致，通知未标已读、异常 0。无地图导航或真机验收。
+- **E99**：[PG04-S 发布成功卡口令入口](evidence/caper-pg04s-copy-invite-entry-wave37-2026-10-01.md)：第三张卡接入同场邀请卡的一点即复制；重读审核、招募、安全及截止资格，并在活动原生分享时核当前账号、活动 ID 和主办 ID。已审核和待审卡在后续资格补丁前经隔离模拟器实点；最终代码定向 24/24、既有分享相关 4/4、类型检查通过，但补丁尚未模拟器复拍。第二张本地海报后续见 E110；常聚球友无 R1 接口，PG04-S 仍非整屏 1:1 或真机验收。
+- **E100**：[页面标题与发现邀请口令入口](evidence/caper-page-titles-invite-format-wave40-41-2026-10-01.md)：城市、关于、开源页纠正设计模板错置的顶栏标题；发现页“打开邀请”与预览／扫码共用 32 位格式检查，真实有效性仍由服务端判断。定向 10/10 与 6/6、类型和差异检查通过；本轮无新版模拟器实点或整屏 1:1 验收。
+- **E101**：[消息首页品牌卡](evidence/caper-messages-brand-card-wave43-2026-10-01.md)：按 `caper_3` 在通知设置前补上渐变文案和黄色贴纸，不改变消息权限或交互；相关定向 41/41、额外消息页定向 15/15，独立 CLI 预览遇 IDE 固定端口冲突，尚无新版截图或逐像素验收。
+- **E102**：[PG05-S 成功卡加日历](evidence/caper-pg05s-calendar-wave39-2026-10-01.md)：在活动时间行接入 `wx.addPhoneCalendar`；先重读当前本人确认席位与活动事实，避免旧账号、撤销席位或旧回调误写／误报。相邻活动页定向 33/33、类型和语法检查通过；本批没有开发者工具原生接口实点，系统日历落盘和授权仍待真机验收。
+- **E103**：[PG10-A 本场昵称空态跳转](evidence/caper-pg10a-alias-empty-navigation-wave44-2026-10-01.md)：已登录但无可设置本场昵称活动时，“查看我的活动”现在进入已有本人活动记录并关闭弹层；未登录提示仍返回登录入口。定向 4/4、类型和语法检查通过；隔离模拟器合成空账号实点到本人活动 `all` 空态，异常 0、截图已存。
+- **E104**：[首页主卡真实人数行](evidence/caper-home-feature-attendance-wave44-2026-10-01.md)：参照 `caper_2` 为已审核主办活动的主卡加入确认人数／上限行，数据从同场授权详情回读；真实摘要省略审核／版本时也可经详情确证，待审、普通成员或无效数据不显示虚构人数。首页相关定向 38/38；隔离模拟器显示 4 / 6、异常 0、截图已存。
+- **E105**：[PG09 当前账本分享](evidence/caper-pg09-expense-share-wave44-2026-10-01.md)：费用页顶栏图标复制经授权回读的当前 AA 记录摘要；主办仅总额／人数，成员仅本人份额和双方声明，均注明不是付款或结清凭证。相关定向 37/37，隔离模拟器两种身份实点及剪贴板回读通过、异常 0；非真机支付或逐像素验收。
+- **E106**：[PG02-C 主办卡封面与管理入口](evidence/caper-pg02c-organizer-cover-wave45-2026-10-01.md)：招募缺口仅在当前同场详情核实后显示，已成局／进行中主按钮为“管理活动”。定向 38/38；隔离模拟器实点进行中卡到同场主办工作台，异常 0。招募缺口分支尚无改后模拟器截图。
+- **E107**：[PG10-B 勋章墙概念分享](evidence/caper-pg10b-badge-gallery-share-wave45-2026-10-01.md)：三列卡片比例及底部分享入口贴近原稿；原生分享仅发送明确未开放的概念预览页，真实活动入口仍可达。相关定向 3/3，隔离模拟器改后截图与分享元数据回读通过、异常 0；未验证实际投递。
+- **E108**：[PG10-G 帮助页 FAQ 与发起入口](evidence/caper-pg10g-faq-route-wave46-2026-10-01.md)：按原稿恢复四项标题和顺序，说明真实付款／退款与认证能力边界，第四项可进现有发起页。相关定向 8/8；隔离模拟器第四项展开→发起页实点、异常 0、截图已存。
+- **E109**：[发现页“附近”分类入口](evidence/caper-discover-nearby-chip-wave46-2026-10-01.md)：顶部“附近”定位到现有关闭态附近模块，测量吸附分类栏后避让；隔离模拟器截图可见标题与卡片，城市按钮实点进入选择页。无公开活动或精确定位数据，发现页定向 12/12。
+- **E110**：[PG06-S／PG04-S 本地活动海报](evidence/caper-pg06s-poster-wave45-2026-10-01.md)：两处“生成海报”入口绘制当前可撤销邀请码 QR 到本机 PNG，导出前重新校验当前主办与活动／安全事实。定向 47/47；隔离模拟器两入口实点预览、异常 0，实际图片 QR 解码与服务端当前口令一致。含码图片未入仓；真机保存和正式投递未验。
+- **E111**：[PG10-E 权限使用说明页签](evidence/caper-pg10e-permissions-tab-wave47-2026-10-01.md)：四个横滑页签的第 4 项定位到真实扫码、日历与浏览城市调用说明，正式权限清单仍待核定。相关定向 9/9；隔离模拟器实点定位与截图通过、异常 0。
+- **E112**：[消息通知设置会话隔离](evidence/caper-message-settings-identity-wave47-2026-10-01.md)：消息首页和通知中心共用的设置按钮先核当前账号；令牌切换后旧卡清空且不跳转，新会话加载后仍进真实授权设置。消息相关定向 45/45；本批没有模拟器或真机实点。
+- **E113**：[个人页旧账号活动操作隔离](evidence/caper-profile-stale-action-wave48-2026-10-01.md)：旧账号活动卡、邀请横幅、报名管理与主理人入口在令牌切换后先清空本人数据并阻断旧 ID 导航；当前身份刷新后恢复。定向 16/16，尚未模拟器复拍。
+- **E114**：[发起页协办入口会话隔离](evidence/caper-create-cohost-identity-wave48-2026-10-01.md)：编辑已发布活动的“添加协办人”在令牌切换后清空旧编辑器并阻断旧活动 ID；当前身份仍进同场工作台。发起页相关定向 28/28，本批无模拟器实点。
+- **E115**：[PG06 发送公告定位](evidence/caper-pg06-host-announcement-shortcut-wave48-2026-10-01.md)：当前已审核主办资格回读后，工作台快捷按钮定位同场公告表单；隔离模拟器实点表单可见、未提交公告、异常 0，相关定向 39/39。
+- **E116**：[PG10-F 本机读取状态](evidence/caper-pg10f-storage-read-status-wave48-2026-10-01.md)：刷新本机存储读数后显示真实读取时间，失败状态不沿用旧时间；隔离模拟器实点时间更新、异常 0，定向 6/6，无一键清理。
+- **E117**：[城市搜索焦点](evidence/caper-city-search-focus-wave49-2026-10-01.md)：清空后输入完整拼音不再主动失焦，城市相关定向 12/12；隔离模拟器程序化逐字符输入结果正确且焦点属性保持 true、异常 0，原生微信输入法仍待解锁后复点。
+- **E118**：[补位通知可操作状态](evidence/notification-offer-actionable-state-wave49-2026-10-01.md)：通知按钮状态按当前活动、截止、版本与本人 OFFERED 席位计算，停止招募或取消后不误显可接受，可拒绝仍可操作；服务端定向 20/20，未做本批模拟器实点。
+- **E119**：[PG10-D 解除屏蔽会话隔离](evidence/caper-pg10d-block-revoke-identity-wave50-2026-10-01.md)：屏蔽列表按成功读取的会话归属，旧账号卡点击不能在新会话发解除请求；隐私相关定向 10/10，隔离模拟器实点旧行记录 POST=0、列表重读、异常 0，真实记录与真机未验。
+- **E120**：[PG08 扫码签到最终写入时钟](evidence/checkin-final-write-window-wave50-2026-10-01.md)：SCAN 写入同一数据库时刻核活动窗口与动态码分钟桶，过期失败不留签到与审计；PGlite 和本机独立 PostgreSQL 正反定向各 3/3，本批未真机或新模拟器实点。
+- **E121**：[PG02-N1 通知卡层级](evidence/caper-pg02n1-notification-center-wave51-2026-10-01.md)：真实通知种类、时间、状态独立眉栏，长标题换行，保留已有双 CTA；52/52 定向、隔离模拟器两组身份实数截图、异常 0。参考稿地图/群聊/付款仍无 R1 能力。
+- **E122**：[PG04-S 参考图卡与四格动作](evidence/caper-pg04s-reference-layout-wave51-2026-10-01.md)：使用用户 ZIP 本页原图，按当前资格展示邀请贴纸，四格及主次按钮在合成已审核活动共 6 个入口实点、异常 0；真实分享投递与真机未验。
+- **E123**：[活动页旧会话写入口](evidence/caper-event-write-identity-wave51-2026-10-01.md)：账号、活动或版本变后拦旧写与弹层确认，报名及费用行绑定当前活动；38/38 + 9/9 定向通过，PG04-S 模拟器初版挡板 6 入口实点，列表行收紧版待复预览。
+- **E124**：[主包 JS 压缩实测](evidence/caper-main-package-minification-wave52-2026-10-01.md)：同一隔离小程序源码仅切换 `setting.minified`，主包从 2,055,391 B 降至 1,772,505 B，CLI 预览退出 0；最终代码包体及模拟器行为仍须另行复验。
+- **E125**：[本人待审卡状态](evidence/caper-pending-host-card-status-wave51-2026-10-01.md)：发现、行程、动态三处将真实待审主办活动标为“待审核”而非“招募中”，动态草稿标为“草稿”，保留原详情路线；定向 17/17，本批无模拟器实点。
+- **E126**：[邀请剩余有效期](evidence/caper-invite-server-expiry-wave51-2026-10-01.md)：服务端数据库时钟给主办详情返回剩余时长，过期／旧响应不展示口令；邀请卡和活动页按时收起复制与分享，PG04 普通分享入口经资格核对打开选择层。服务端 15/15、邀请卡 32/32、海报 7/7、活动分享 9/9 定向；正式微信投递和真机未验。
+- **E127**：[活动信息剪贴板归属](evidence/caper-event-safety-clipboard-race-wave51-2026-10-01.md)：旧操作菜单和迟到剪贴板回调不能在切账号或活动后复制旧集合地点、污染新页提示；红绿 4/4，本批无模拟器或真机。
+- **E128**：[写入后刷新归属](evidence/caper-event-post-refresh-ownership-wave51-2026-10-01.md)：旧预留结果和复刻草稿不进入新会话，旧分享失败不覆盖新页面；红绿 4/4，相邻 43/43 定向通过。
+- **E129**：[邀请卡离页失效](evidence/caper-share-page-unload-race-wave51-2026-10-01.md)：离开邀请卡清除敏感口令、取消旧异步复制／绘码，返回时重核服务端；邀请与海报合计 39/39 定向，本批无模拟器或真机。
+- **E130**：[Wave 52 隔离微信复核](evidence/caper-wave52-final-ui-devtools-2026-10-01.md)：PG02-D 取消历史卡当前日期／状态和双 CTA，同 ID 详情／AA 账本实点；PG04-S 当前邀请剩余时长与 6 入口实点、分享弹层资格，三张截图、异常 0。并行 PG06／消息页新版不在该快照。
+- **E131**：[PG02-D 历史卡参考布局](evidence/caper-pg02d-reference-layout-wave52-2026-10-01.md)：封面真实日期、状态、长标题和 AA 标识，白卡事实并排；定向 25/25、E130 隔离模拟器当前取消活动双入口，非逐像素或已结项主办验收。
+- **E132**：[消息首页未读优先卡](evidence/caper-messages-unread-priority-wave53-2026-10-01.md)：复用当前账号真实未读通知前两条和既有 `openNotice`，过滤／搜索不重复显示；消息相关定向 42/42，E134 已用一条真实合成未读实点。
+- **E133**：[PG06 主办工作台参考层级](evidence/caper-pg06-reference-hierarchy-2026-10-01.md)：参考海报→四统计→成员→组局提示→成局条件→三快捷操作，保留真统计/资格；39/39 定向，E134 已在隔离模拟器复拍，不代表逐像素验收。
+- **E134**：[Wave 53 消息与 PG06 实点](evidence/caper-wave53-messages-pg06-devtools-2026-10-01.md)：真实合成未读卡“全部”及同 ID 通知深链、API 已读；主办 4 人确认、四统计、成员字形和“查看全部”同场报名区，三张截图、异常 0、CLI 主包 1,769,754 B。
+- **E135**：[Wave 54 历史取消态与 PG04 成员预览](evidence/caper-wave54-history-roster-devtools-2026-10-01.md)：取消活动中性状态及真实计划日期、同 ID 双入口；发布成功页两枚安全成员字形与服务端人数，两个新截图、异常 0，局部 CLI 主包 1,791,097 B。
+- **E136**：[发现页本人同城双栏](evidence/caper-discover-nearby-personal-wave53-2026-10-01.md)：只列当前账号、同城、未结束且有效的本人活动，成员未知招募状态用中性文案；有数据为非公开本人列表，无数据保留附近关闭态。发现相关定向 11/11、E137 已模拟器实点。
+- **E137**：[Wave 55 完整源码微信复核](evidence/caper-wave55-full-integrated-devtools-2026-10-01.md)：源码同步差异 0、CLI 主包 1,775,165 B，发现页深圳 2 条本人活动／北京关闭态与同 ID 点击、PG06 已取消粉色徽标实点，页面异常 0；仍未全 39 屏逐像素和真机。
+- **E138**：[PG05-S 成功卡双贴纸](evidence/caper-pg05s-success-header-2026-10-01.md)：已确认合成成员的当前成功卡渲染荧光绿与粉红贴纸；“查看活动详情”同场实点，异常 0。展示态由自动化临时设置，未再次提交报名或实点系统日历。
+- **E139**：[`_1` 行程顶栏与状态胶囊](evidence/caper-itinerary-header-parity-2026-10-01.md)：个人入口改为白色人形轮廓，后续卡状态改为胶囊圆角；行程 10/10 定向，改后无模拟器截图。
+- **E140**：[PG11-C 旧会话跳转挡板](evidence/caper-pg11c-pg10c-route-session-2026-10-01.md)：私聊关闭态“查看我的活动”在身份切换时停止旧页导航，正常路径仍指本人活动记录；定向 21/21，Automator 初始化受阻，未取得新版模拟器点击。
+- **E141**：[Wave 56 完整源码 CLI 复核](evidence/caper-wave56-focused-integration-2026-10-01.md)：源码同步差异 0、CLI 主包 1,794,388 B、五文件定向 47/47；PG05-S 当前截图与同场详情实点，其他两页新版无模拟器实点，未完成 39 屏逐像素或真机。
+- **E142**：[PG10-C 分类旧会话清理](evidence/caper-pg10c-filter-session-wave57-2026-10-01.md)：分类、详情与查看全部共用身份清理，旧缓存不能重新显示；定向 32/32，后续新版模拟器见 E145。
+- **E143**：[RQ14 AA 尾差事前说明](evidence/rq14-aa-remainder-disclosure-wave57-2026-10-01.md)：主办记录按钮前与费用说明区披露固定成员顺序及每名尾差成员多 0.01 元；现有整数分用例 1/1，实际显示与同场账本回读见 E145。
+- **E144**：[PostgreSQL 来源竞态探针](evidence/pg-ai-source-race-query-match-wave57-2026-10-01.md)：旧 CI SQL 匹配过时已修复，新空本机 PG 红绿验证五个竞争场景通过；远端修复后 CI 未验。
+- **E145**：[Wave 57 微信工具实点](evidence/caper-wave57-focused-devtools-2026-10-01.md)：恢复 Automator，补快捷日期、首卡自然日／个人按钮、PG11-C 正常及旧身份路线、PG10-C 分类清理与正常详情、AA 事前说明实点；完整源码 CLI 主包 1,794,924 B、异常 0。没有全量、真机或 39 屏逐像素验收。
+- **E146**：[旧 CI 邀请两项](evidence/ci-invite-fixture-alignment-wave57-2026-10-01.md)、[邀请与通知三项](evidence/ci-miniprogram-notice-invite-fixtures-wave57-2026-10-01.md)、[主办封面结构断言](evidence/pg02c-host-cover-test-binding-wave57-2026-10-01.md)：六项失败逐项本机红绿修复，仅对齐测试样本及结构匹配，保留格式、有效期、当前加载行与业务状态保护；整合类型检查通过，修复后的远端 CI 未验。
+- **E147**：[本地试点规模 HTTP 专项](evidence/local-pilot-http-load-wave58-2026-10-01.md)：10,000 合成用户／500 成功身份，600 次完整响应、错误 0、混合 p95 8.71 ms；调度和分端点门禁通过。仅后端本地合成证据，不提升 UI、真机或正式发布验收。
+- **E148**：[PG10-C／F／G 原稿尺寸差距](evidence/caper-pg10c-f-g-visual-gap-audit-wave58-2026-10-01.md)：只读核对字号、间距、卡片、FAQ 标签及三页人物图标，记录明确的待修值和现有按钮路径。审计没有修改 UI，下一批仍需修复与模拟器复拍。
+- **E149**：[Wave 59 三页原稿修复及实点](evidence/caper-wave59-focused-devtools-2026-10-01.md)：PG10-C 原图／字级／比例／CTA、PG10-F 真读数层级与刷新、PG10-G FAQ／标签／表单几何已并行接入；独立复核四项和编译实测三项修正后，三页路线脚本退出 0、异常 0，原生胶囊避让 8px。CLI 主包 1,796,999 B；本地轮廓图标仍是近似字形，非全 39 屏逐像素、真机或正式验收。
+- **E150**：[PG10-A／B](evidence/caper-pg10a-b-visual-gap-audit-wave60-2026-10-01.md)、[PG10-D／E](evidence/caper-pg10d-e-visual-gap-audit-wave60-2026-10-01.md)下一批只读差距：顶栏、字号、图形、卡片、勋章三列间距、协议页签／操作栏待修；只写审计，当时没有修改这些页面或提升其验收状态；后续实现见 E151。
+- **E33**：[首页、个人页与发布报名增量复验](evidence/caper-ui-wave2-wave3-2026-09-30.md)：首页铃铛／头像、编辑活动协办入口、PG10-C 真实活动卡、PG04-S 待审与通过状态、PG05 真实报名／待定意向及 PG05-S 成员深链经模拟器实点；全量本地 826/826。未声称已完成 39 屏同尺寸逐像素或真机验收。
+- **E151**：[Wave 60 四页原稿与定向实点](evidence/caper-wave60-focused-devtools-2026-10-01.md)：A／B／D／E几何、61个官方SVG、吸顶与安全区接入并独立复核；四组路由脚本PASS／异常0，A/B最后滚动修正PASS。D29项与9交互、E47项与16交互；CLI主包1,796,999 B，全量未跑，原生前台／真机／全39屏逐像素未验。
+- **E152**：[C／F／G图标差距](evidence/caper-pg10c-f-g-symbol-gap-audit-wave61-2026-10-01.md)：当时仅只读盘点原名字形／FILL／颜色／尺寸；后续实现与定向运行见 E153。
+- **E153**：[Wave 61 三页精确图形与定向实点](evidence/caper-wave61-focused-devtools-2026-10-01.md)：C17/F10/G12共39个准确SVG及安全顶栏接入、业务JS/照片不变；三组局部脚本PASS，G最后返回靠左补测PASS，异常0。CLI主包1,794,924 B；未跑全量/业务套件/CI，原生前台/真机/全39屏逐像素未验。
+- **E154**：[H四页原稿差距](evidence/caper-pg10h-reference-gap-audit-wave62-2026-10-01.md)：独立只读HTML/PNG/源码盘点，后续恢复见E155。
+- **E155**：[Wave 62 四页原稿与定向实点](evidence/caper-wave62-focused-devtools-2026-10-01.md)：73准确官方SVG、原Logo/两JPEG及明确几何恢复，独立复核；四页局部PASS/异常0，H2最后文字修正仅补11条。原生computer use实点H三个子路由与返回，Errors0/Warn19；最终CLI主包1,790,440 B。没有全量/CI、真机或全39屏逐像素结论。
+
+- **E156**：[Wave 63 三页原稿与定向微信验证](evidence/caper-wave63-focused-devtools-2026-10-01.md)：35准确官方SVG、city／itinerary／share原几何与独立复核；三页局部PASS／异常0，真实城市回填／同ID行程／160px QR实图与当前邀请码匹配／真实复制及弹层。CLI主包1,821,182 B；公开图遮口令，Mac锁屏无新增native实点，无全量／CI或逐像素结论。
+- **E157**：[Wave 64 三核心Tab差距](evidence/caper-next-reference-scope-audit-wave64-2026-10-01.md)：独立只读首页／发现／我的原HTML／PNG／尺寸／图形盘点；尚未实施和运行验证。
+- **E158**：[Wave 64 三核心Tab原稿及定向微信验证](evidence/caper-wave64-focused-devtools-2026-10-01.md)：24准确SVG与原px核心几何，三页JS字节保留、独立复核；90局部断言／14交互分段通过，harness失败和限定补测完整保留。真实卡片／城市／消息／资料／行程路径可达，6截图、CLI主包1,854,382 B。无全量／CI，弹窗为SDK回调，原字体／全长逐像素及native锁屏边界仍待验。
+
+- **E159**：[Wave 65 原稿字体与弹窗契约](evidence/caper-wave65-focused-fonts-modal-2026-10-02.md)：五个官方 WOFF、首页两句 Caveat 与 H 四页 Jakarta normal400/600/700/800、9 项真实许可；独立复核、5 场初始化 VM、15/15 灵感参数契约红绿、67 个局部字体断言和7截图，harness失败原样保留。CLI主包2,046,014 B／余51,138 B。没有全量／CI，最终原生弹窗因再锁屏未验，全长39屏／真机仍待验。
+- **E160**：[下一批 messages／IDEA／visitor 差距](evidence/caper-next-reference-gap-audit-wave65-2026-10-02.md)：只读核对3份原HTML／PNG／ZIP字节、当前9产品hash和R1保护范围，作为三代理并行实施输入；未计为本批实现或运行通过。
+- **E161**：[Wave 66 消息／IDEA／PG01访客](evidence/caper-wave66-focused-devtools-2026-10-02.md)：限定scope源几何与26准确SVG，独立6CSS订正，微信88成功断言／19交互记录／6图；harness失败和补验全保留。许可去重后最终main2,094,089 B余3,063 B；六JSON源迁出实际省0 B。无全量／CI、无本批native实点、非全39屏逐像素通过。
+- **E162**：[下一批四流程缺口](evidence/caper-next-flow-reference-gap-audit-wave66-2026-10-02.md)：FORM实际caper_ai、REVIEW pg04、报名确认pg05、成功pg05_s四完整HTML/PNG/ZIP核对和真实绑定／保护范围；只读，未实施。
+- **E163**：[全局五Tab缺口](evidence/caper-global-tab-reference-gap-audit-wave66-2026-10-02.md)：六原稿不同variant、准确图形／尺寸／隐藏契约和五静态目标，只读；未算实际点击或原稿恢复通过。
+- **E164**：[主包预算审计](evidence/caper-main-package-budget-audit-wave66-2026-10-02.md)、[六来源JSON迁移](evidence/caper-main-evidence-relocation-wave66-2026-10-02.md)：原字节及历史映射保留，运行引用0；40,291原始B迁出但CLI节省0 B，后续包体优化仍待实测。
+
+- **E165**：[Wave 67 四流程与五Tab定向验收](evidence/caper-wave67-focused-devtools-2026-10-02.md)：68准确SVG、四流程／五variant源核对；41成功SDK断言、真实草稿和CONFIRMED报名／同场成功入口、6图，失败保留；CLI主包1,908,773 B／余188,379 B。无全量／CI或native五Tab实点／全39屏逐像素结论。
+- **E166**：[报名字体实施](evidence/caper-registration-fonts-reference-ui-wave67-2026-10-02.md)、[独立复核](evidence/caper-registration-fonts-independent-review-wave67-2026-10-02.md)：准确Rubik400／Caveat增量，原4 Jakarta及两完整许可保持、实际6字体回调／H3十项；不是全部字体raster相等。
+- **E167**：[无损活动页分包迁移](evidence/caper-event-subpackage-migration-wave67-2026-10-02.md)、[独立复核](evidence/caper-event-subpackage-independent-review-wave67-2026-10-02.md)：39文件原字节／仅5require深度、旧canonical URL／21路由与21fixture保护；真实编码失败后修复，7入口＋7指定迁移通过；配置未关闭包体检查。
+- **E168**：[后续运营流程缺口](evidence/caper-next-host-checkin-aa-gap-audit-wave67-2026-10-02.md)：pg04_s／pg06／pg08／pg09完整原稿与真实按钮／guard只读审计，后续实施另验。
+
+- **E169**：[Wave 68 五页原稿与限定微信验证](evidence/caper-wave68-focused-devtools-2026-10-02.md)：22准确SVG、profile500专用alias、五页原JSJSON保护／独立审查；45成功断言含部分成功与重复guard、10已看图、6失败分段保留。当前实际昵称／活动／求助、PG04-S八按钮、邀请码和真实海报导出通过；最终main1,948,471 B余148,681 B。没有全量／CI、新发布、原生预览或全39屏逐像素结论。
+- **E170**：[Wave 68 字体来源](evidence/caper-profile-shared-fonts-wave68-2026-10-02.md)、[独立审查](evidence/caper-profile-fonts-independent-review-wave68-2026-10-02.md)：四600back准确轮廓／源色、官方500仅A/C consumer引用；旧6/许可保持，最后callback与CSS局部通过。PG04-S按提供PNG用准确400/FILL0，HTML的FILL1保留历史，来源冲突与单项修正明确。
+- **E171**：[后续消息三屏只读差距](evidence/caper-next-messages-reference-gap-audit-wave68-2026-10-02.md)、[PG08字重边界](evidence/caper-pg08-font-weight-boundary-audit-wave68-2026-10-02.md)：N1/N2版式／Alex／43glyph与真实按钮盘点；源CSS900保留、官方最高800，无新增冒充900字体。是实施输入，未算下一批已实现／运行验收。
+
+- **E172**：[Wave69六域与限定微信验证](evidence/caper-wave69-focused-devtools-2026-10-02.md)：61准确SVG、49成功局部断言／1失败断言／2失败分段保留、13已看公开图，异常0。三模式继承scroll实际修正；真实主办6人／反馈四选项与只读／新IDEA／短期QR／AA本人权限／通知deep link与OPENED通过。main1,993,189 B余103,963 B；无全量／CI、业务重复提交、native或全39pixel结论。
+- **E173**：[活动独审](evidence/caper-host-checkin-aa-independent-review-wave69-2026-10-02.md)、[消息独审](evidence/caper-messages-center-chat-independent-review-wave69-2026-10-02.md)、[分享独审](evidence/caper-share-sheet-independent-review-wave69-2026-10-02.md)：FILL1真实active rclt、原px／有效font角色与官方shadow-sm定点修正；旧scope和JSJSON保护，root三scroll callback逆除完整恢复。原full font只在docs，原生适配／示意照片／背景与字体900边界保留。
+- **E174**：[后批首页与PG07审计](evidence/caper-next-home-members-reference-gap-audit-wave69-2026-10-02.md)、[后批详情审计](evidence/caper-next-detail-roster-reference-gap-audit-wave69-2026-10-02.md)：只读来源与现有真实入口输入，不计为下一批实施／验收；N2及_5没有独立入口合同。
+
+- **E175**：[Wave70六屏与限定微信验证](evidence/caper-wave70-focused-devtools-2026-10-02.md)：61准确SVG、81成功局部SDK断言/8保留失败分段/18已看安全图/异常0；真实三报名状态、主办统计与同场路由、完成态反馈/再约入口、批准问答父子节点、详情权限及3原图加载。无全量/CI、全39屏逐像素或native结论。
+- **E176**：[首页独审](evidence/caper-home-states-independent-review-wave70-2026-10-02.md)、[PG07独审](evidence/caper-pg07-independent-review-wave70-2026-10-02.md)、[详情独审](evidence/caper-member-host-detail-independent-review-wave70-2026-10-02.md)：准确full/rclt图形、source角色/字距/滤镜/颜色和host roster/metric四类定点订正；旧绑定和业务JS保护，未重复已过执行器。不存在的头像/聊天/导航/支付保持明确状态。
+- **E177**：[活动资源无损分包](evidence/caper-resource-subpackage-migration-wave70-2026-10-02.md)：6原资源287,744原始B/22QR测试字面路径/1行程图片expected路径；三指定文件40/40及微信canvas160px/三图实际getImageInfo通过。2失败CLI gate保留，最终main1,939,748 B余157,404 B；不把原字节搬移量当编译节省量。
+- **E178**：[后续未独立布局/背景及长页盘点](evidence/caper-next-unrouted-and-background-gap-audit-wave70-2026-10-02.md)、[Wave71计划](superpowers/plans/2026-10-02-compact-center-live-monitor-and-share-background.md)：N2通过既有CENTER更多切换、_5通过当前host更多只读monitor、share sheet背后恢复原PG06只读背景，复用真实字段/守卫；是下一批明确计划，未计入本批运行或commit。
+
+## 当前真实数据／接口索引
+
+| 承载路由 | 已接入的关键接口或本地能力 | 本表中不能推断出的能力 |
+| --- | --- | --- |
+| `pages/index/index` | `GET /me/events`；按本人报名、待确认、主办、协办、历史归类；邀请口令转活动页。 | 不是公开活动列表或全站推荐。 |
+| `pages/discover/discover`、`pages/city/city` | 邀请口令转活动页；城市仅用本机 `irlSelectedCity` 保存。 | 无 `/discovery` 搜索、定位或附近活动数据。 |
+| `pages/create/create` | `GET /system/safety`、`POST /events/drafts:suggest-local`、`POST /events`、`POST /events/:id/draft`、`POST /events/:id/publish`、变更预览／提交。 | 本地规则建议不是外部模型生成；无其他运动或自动订场。 |
+| `pages/messages/messages` | `GET /me/notifications`、`POST /me/notifications/open-all`、`GET /me/approval-requests`、`POST /registrations/:id/approve`；活动深链。 | 无私聊、群聊或真实微信外部送达证明。 |
+| `pages/event/event` | 邀请摘要 `/i/:token`、受权限保护的 `/events/:id`、报名／审批、内容、签到、费用、协办、分享意图、结项反馈等当前业务端点。 | 路由内多状态共用，不自动得到设计的地图、永久凭证、人物头像、海报或付款。 |
+| `pages/me/me` 与 PG10 分包 | 本人活动／通知／屏蔽、同意、举报、申诉、隐私请求；分包中的缓存大小由 `wx.getStorageInfoSync` 读取。 | 无全局资料编辑、勋章、相册、AI 客服保存或展示接口。 |
+| `subpackages/activity/itinerary/itinerary` | `GET /me/events` 过滤本人已确认或主办的近期活动，进入既有详情页；身份切换清空旧数据。 | 无系统日历写入、永久电子票证或自动支付。 |
+| `subpackages/activity/share/share` | 主办读取 `/events/:id` 与 `/system/safety` 核对资格；符合条件时绘制当前服务端邀请码 QR，可导出本机海报 PNG 并预览；原生微信分享前写 `/events/:id/share-intents`，真实邀请码可复制。 | 没有 HTTPS 链接；本机海报只在当前合成环境验证，原生微信投递、真机相册保存和扫码尚未验收。 |
+
+- **E179**：[W71/72 限定微信验证](evidence/caper-wave71-72-focused-devtools-2026-10-02.md)：58 成功 SDK 断言/2 失败辅助或错误预期、7 已看安全图、异常0/业务写入0；个人可用18入口与N2/host monitor/readonly背景通过。最终CLI main2,010,442 B余86,710 B；无全量/CI/native结论。
+- **E180**：[N2 独审](evidence/caper-messages-compact-center-independent-review-wave71-2026-10-02.md)、[_5 独审](evidence/caper-host-monitor-independent-review-wave71-2026-10-02.md)、[PG06-S 背景独审](evidence/caper-share-background-independent-review-wave71-2026-10-02.md)：原角色/glyph/投影/权限与旧绑定核验，N2 7项、monitor6项新增行为定向红绿；原图示意/未知字段保持诚实关闭。
+- **E181**：[个人长页独审](evidence/caper-profile-ordinary-long-page-independent-review-wave72-2026-10-02.md)、[发现/消息普通长页只读盘点](evidence/caper-discover-inbox-ordinary-long-page-gap-audit-wave72-2026-10-02.md)：个人long原CSS/glyph与63旧绑定保护，仅订正grid gap/hover两delta；后两个长页仅后续实施输入，不算本批完工。
+- **E182**：[W73/74限定微信验证](evidence/caper-wave73-74-focused-devtools-2026-10-02.md)：三普通长页实际绑定/图源/字体，117成功局部断言/5保留失败辅助断言、9已看图；消息条件按钮及两个匿名样式native边界明确，main1,887,500 B/profile2,025,308 B。无全量/CI/39屏pixel或native结论。
+- **E183**：[首页独审](evidence/caper-home-ordinary-long-page-independent-review-wave73-2026-10-02.md)、[发现独审](evidence/caper-discover-ordinary-long-page-independent-review-wave74-2026-10-02.md)、[消息独审](evidence/caper-messages-inbox-ordinary-long-independent-review-wave74-2026-10-02.md)：31最终冻结产品、准确source/SVG、原业务JS与事件契约保护；三类具体source订正，手机scope无遗留source整改，跨core大屏和native未验。
+- **E184**：[共享照片/异步字体独审](evidence/caper-reference-photo-font-async-independent-review-wave73-2026-10-02.md)、[最后W/y增量独审](evidence/caper-reference-font-final-character-delta-independent-review-wave74-2026-10-02.md)：12准确原JPEG、whitelist/异步只读组件；最终262,502 B字体模块、旧轮廓/metrics/其余6face/许可保持，8回调为E182最后编译版本。
+
+## 逐屏矩阵：主入口、首页和消息（12 屏）
+
+| 设计屏与关键视觉／按钮 | 当前小程序入口与实际动作 | 能力及差距 | 验证层级 |
+| --- | --- | --- | --- |
+| `caper_2` CAPER 首页：城市、今晚想要什么、灵感、热门与主题 | `pages/index/index`；城市→`pages/city/city`；Hero 一句话→当前身份一次性预填 `pages/create/create` IDEA，已有草稿／活动编辑不会被覆盖；铃铛红点取当前身份服务端未读数。本人羽球活动主卡以现有羽球照片示意，真实标题／状态／时间／场地仍来自 `/me/events`；已审核主办卡可从同场授权详情补充已确认人数／上限。长横幅采用原稿聚会节奏。运动→发起，其他分类与灵感提示当前能力，更多→发现，消息／我的→对应标签；页脚关于、隐私、联系进入现有路由。 | 主卡和其他照片均标为示意；没有可报名的公开榜单、真实评价或个性化推荐数据，使用相应的灵感和当前能力说明。普通成员或待审主办卡没有可信人数时不展示该行。`public_discovery=false`。本地构思不会自动生成或发布。 | **代码＋模拟器局部实点**：E43 首页首屏、长图与真实活动事实；E40 Hero 预填、编辑保护及未读铃铛；E33 顶部按钮；E104 人数行已用真实合成主办摘要复拍，异常 0。  E158本批首屏核心准确图形／明确几何与所列实际路径通过；该批尚无字体，无整长页逐像素结论。 E159当前首页两句Caveat实际加载／字形局部通过；原生灵感弹窗仍未验。 E182/E183/E184后续普通长页源布局/原照片跨包组件及最后字体接入；15灵感提示、12长页路由和真实member同ID卡局部通过。全页max440大屏/core约束与native/逐像素仍未验。 |
+| `pg02_b` 首页“待确认”状态：候补、时间变更、联系主办 | `pages/index/index` 的“待确认”页签→真实本人活动卡→`pages/event/event`；`REQUESTED` 卡第二主按钮“取消报名申请”直达同场实际退出控件，待审和已开始状态分别核资格；`OFFERED` 卡传一次性意图到“我的”通知区。详情按 3 个并发一批处理全部可见卡。 | `/me/events` 有待审批／候补归类，活动页处理退出与重大变更重新确认；设计中的聊天和时间冲突操作未实现。点击卡片只导航，真正取消由详情按钮提交。 | **代码＋模拟器非空实点**：E97 `REQUESTED` 卡第二按钮→同场退出→API `CANCELLED`；E46 旧待审卡路径；E23 合成有效候补卡→通知→主动接受，API 回读 `CONFIRMED`；E27 第 4 张详情仅定向测试。 E175/E176本批仅真实REQUESTED/RECONFIRM_REQUIRED/WAITLISTED原稿scope与明确几何/准确glyph/CTA通过局部SDK；OFFERED现有流程保持，不重复接受/退出写入，原生motion未验。 |
+| `pg02_c` 首页“我组织的”：统计、工作台、分享、签到 | `pages/index/index` 的“我组织的”专属状态卡读取当前活动摘要；招募中主办卡“发公告”进入同场已授权主办分区的审核公告输入区，已成局／进行中卡的“签到核销码”进入主办验码模式。当前已审核招募卡在详情事实充足且截止未到时显示成局缺口；已成局／进行中“管理活动”进入主办分区；封面优先显示活动状态，即使主办本人也报名。 | 活动标题、时间、状态与人数来自授权 API；原稿摄影／骑行数据不存在，卡图为示意。 | **代码＋模拟器局部实点**：E46 已成局主办→签到管理；E35 已报名主办人的招募中状态；E13 工作台跳转；E87 招募中公告输入区及已成局主办验码模式模拟器实点，异常 0；E89 待审真实状态组合与旧 API 保守回退验证；E106 进行中管理入口实点，招募缺口仅定向测试。 E175/E176本批招募2确认/1待审/缺2与IN_PROGRESS actualhost通过源几何及同场主办/公告输入/签到路由；原C羽球照片同字节，其他主题不伪造。 |
+| `pg02_d` 首页“历史”：再来一局、评价、相册、AA 清单 | `pages/index/index` 历史专属状态视图→`pages/event/event`；已结项主办卡“再来一局”重核当前活动和安全开关后直达同场“再约一场草稿”按钮，封面和快捷入口仍可读结项；卡片点击不生成草稿。已结项且已确认成员的“查看结项与反馈”主按钮进入同场反馈区，目标页按当前资格定位表单或已提交记录；其他历史身份进详情。 | 真实独立反馈与 AA 记录存在；当前合成 `CANCELLED` 活动可读历史账本。星级评价、活动相册、同步朋友圈未实现，`photo_album=false`。 | **代码＋局部模拟器实点**：E90 已结项主办卡→同场再约按钮、异常 0，未生成草稿；E23 历史卡→成员 AA，本人仅见自己一行；E93 两名合成成员的历史卡→未提交表单及提交后只读记录、异常 0；此前 E13 空态。 E175/E176本批COMPLETED真实成员/主办源布局和反馈/再约目标局部通过；5reviewed截图之一为历史，未提交反馈/创建草稿，相册关闭。 |
+| `_1` “我的行程”：倒计时、行程卡、日历同步 | 首页“我的行程”→`subpackages/activity/itinerary/itinerary`；真实 `/me/events` 行程卡读取授权的起止时间、城市、场地和费用上限，按上海自然日显示今天／明天倒计时；封面进入当前活动详情，“报名与成员”“签到与到场”分别进入对应分区；服务端仍标为进行中的长活动保留显示。 | 时间、状态和主办身份来自服务端，待审活动对其他身份隐藏物流摘要；无系统日历同步、固定 IRL-PASS、锁定队友或已支付 AA 断言。 | **代码＋模拟器局部实点**：E47 已审活动时间／城市、行程按钮及账号切换拦截；E44 已报名身份两分区与当前 ID；E16 旧服务进程报名分区；E29 字段 HTTP 验证；E74 自然日修正仅有定向代码验证；E139 顶栏与状态徽标局部修正，尚无这两项新版模拟器截图。  E156本轮准确图形／明确几何和所列真实交互局部通过；无全页逐像素或真机结论。 |
+| `caper_3` CAPER 消息：动态、提醒、互动、AI、群内瞬间 | `pages/messages/messages`；`/me/notifications` 分页、筛选、逐条／全部已读、真实审批、详情及签到深链；结项待办按当前通知行直达主办表单，成员结项反馈直达现有反馈表单且活动页再核资格；首页按原稿为三筛选；“通知中心”打开同路由四分类独立视图并清除隐藏搜索词，设置→个人页真实授权开关且旧会话不能带入聚焦意图；处理类通知→个人页对应记录区且成功跳转后标已读。 | 真实通知分组呈现，UUID 不直接显示；AI 消息、提及、群聊、活动相册明确标为尚未开放。隔离合成队列有 7 条通知，但原稿人物对话不能凭空补入。 | **代码＋模拟器非空实点**：E91 真实结项待办卡→主办表单及 API 未提交；E39 搜索重置、处理通知与 API 已读；E26 首页、通知中心、候补打开；E31 设置入口；旧审批流程见 E3；E82 三筛选和审批目标为定向代码验证；E84 新版模拟器已实点三筛选、中心四筛选、审批入口与返回，异常 0；E85 四个灵感图块尺寸与图块下方标题已复拍；E112 设置按钮身份边界仅定向代码验证。成员反馈表单新深链只有定向代码验证。 E161本批INBOX header／priority准确图形与明确几何、滚动sticky、真实三筛选／搜索清空／CENTER往返／设置和OPENED局部通过；其他长页与native未验。 E182/E183普通INBOX长页已恢复原源角色/SVG及真实通知；四实际入口、13可选geometry节点/摘要/settings子节点通过，条件提醒/分页当前未出现；匿名父字体和archive颜色仅source核。无新业务数据，旧OPENED通知仍走幂等open源路径；native/全屏pixel待验。 |
+| `pg02_n_1` 通知中心卡片版：入场凭证、审批、导航、结算 | 同一 `pages/messages/messages` 的 `CENTER` 视图；真实活动提醒双按钮分别进入当前活动现场签到区、复制当前服务端地点，待审报名→真实审批接口；待审卡标识取真实 `canApprove`。审批卡蓝色“一键通过”在左侧、灰色“查看详情”在右侧；进入时隐藏标签栏，返回时恢复。AA 记录从活动详情进入费用区，当前服务端不生成费用通知卡。 | 入场凭证是活动签到区动态口令，不是图中永久 PASS；第二按钮是复制地点，不是地图导航；支付结算和临时群聊未实现。原稿费用通知 CTA 不能算作已接通。 | **代码＋局部模拟器实点**：E98 真实合成提醒双按钮与地点复制、未读状态；E94 待审卡按钮布局与详情实点，未执行批准或满员态；E50 通知种类/导航测试；E39 旧待审卡处理；E26 候补通知卡；E121 通知卡层级与长标题改后两组合成身份截图、异常 0；旧签到业务见 E3。 E172本轮N1明确source几何与准确glyph、真实filters／同场成员反馈deep link／OPENED及关闭私聊通过局部SDK；初继承scroll失败外观与修正回顶证据都保留，未执行审批或复制地点重复业务。 |
+| `pg02_n_2` 通知中心紧凑版：四分类及五条 CTA | 同一消息路由，顶部四筛选和卡片 CTA 绑定现有通知与活动详情；活动提醒地点按钮复制经资格和版本回读的场馆，重大变更卡进入同一活动的报名重新确认分区，通知设置定位个人页实际通知区。 | 图中“群专属临时交流室”、立即支付不可用；地点复制不提供地图导航；费用仅双方状态记账，未有支付。 | **代码＋模拟器非空实点**：E98 活动提醒地点复制；E46 真实变更通知→待重新确认及已读 API 回读；E39 “全部”、审核 CTA 及处理通知；E26 四分类、通知卡和返回；E118 补位按钮服务端状态与实际操作条件已定向核验，尚无本批模拟器复点；其余原稿 CTA 无法声称可用。 E179/E180已由既有CENTER更多进入N2，布局返回与设置焦点、实际审批详情同IDhostSection局部通过；只显示实际已加载未读统计，状态/身份变化失效旧菜单。native弹窗与整屏逐像素待验。 |
+| `caper_4` “找局／发现”：搜索、分类、精选、附近、AI 推荐 | `pages/discover/discover`；同排导航、分类条后四张双列原图、主题条、城市卡和长页拼贴按原稿重排；蓝色“全部”保留当前灵感视图并清除其他分类的关闭提示，“附近”定位到同页附近关闭态及城市选择；中段“换一批”在两组本地灵感照片间切换，卡片点击仍走当前能力说明，收藏提示未开放。本人活动区从 `/me/events` 读取授权安全摘要，显示真实时间／城市／场地并进入同 ID 详情；有效口令可先预览当前安全摘要，跨账号旧口令和旧卡均会清理或阻断；“我的”输入邀请码直达输入区。城市→城市页，扫码按钮接受本产品邀请码 QR，“去发起”→发起页。 | 长页照片和主题均为静态灵感，不是实时招募；卡片不虚构活动时间或场地；无公开列表、搜索筛选、附近定位或推荐接口。`public_discovery=false`、`open_matching=false`。 | **代码＋模拟器局部实点**：E53 当前授权卡、邀请预览、输入区定位与跨账号阻断；E48 邀请扫码回调与旧账号防护；E43 “换一批”、卡片与收藏关闭态；E37 顶部口令、真实活动打开、搜索与发起；E24 长页及本人活动；E70 定向代码验证，E81 较早快照已实点清除提示，定版未重跑；E83 摄影卡顺序、E84 新版模拟器四卡和邀请入口、E85 四卡字贴及分类栏吸附复拍通过；E109 “附近”目标可见与城市跳转改后实点；卡片确认分支使用自动化弹窗回调，原生确认未实点。  E158本批首屏核心准确图形／明确几何与所列实际路径通过；该批尚无字体，无整长页逐像素结论。 E159仅补本页灵感弹窗官方参数／失败提示契约15项共同红绿，最终原生取消／确认未验。 E182/E183/E184后续普通长页11模块/准确SVG与原公园跨包组件已接；轮换后18实际灵感提示、收藏catchtap、六长页入口和两真实同ID卡局部通过。路线/地图/场地/社区为明确示意关闭态，native与整长页pixel未验。 |
+| `pg02_loc_city_selection` 城市列表／拼音筛选 | `pages/city/city`；按原稿重排当前城市、热门、九组分组与侧边字母索引，搜索拼音并保存 `irlSelectedCity`，返回首页／发现显示。 | 仅本机浏览偏好，无定位授权、精确位置或账户城市同步。 | **代码＋模拟器实点**：E16 字母 S、`bei` 搜索、选择北京回首页；E117 改后程序化输入 `beijing` 结果和焦点属性已复点，原生输入法待验。  E156本轮准确图形／明确几何和所列真实交互局部通过；无全页逐像素或真机结论。 |
+| `caper_1` 我的主页：身份、统计、勋章、兴趣、活动记录 | `pages/me/me`；活动与通知读取真实接口；顶部扫码按钮说明活动级签到后进入本人行程，再选择活动；兴趣两按钮进入资料页的未开放说明区。活动记录按全部／已确认参加／我发起的筛选，主办预览卡进真实详情；邀请横幅按真实资格分流。个人通知以中文标题、真实活动名和已读状态显示；按钮核对当前列表真实行，重大变更、签到、结项和成员反馈进入对应现有分区或表单。账号、通知、帮助与关于菜单可达。 | 不显示原稿虚构等级／获奖数／人物照片；兴趣、收藏和相册无保存接口。扫码入口不代表真机摄像头或现场核验已验证；邀请仍需当前活动资格核验。 | **代码＋模拟器实点**：E92 已打开结项通知→主办表单，成员反馈新入口仅定向代码验证；E41 扫码入口→本人行程及兴趣说明；E11 活动卡与安全表单；E20 筛选与通知焦点；E28 通知打开和活动详情；E113 旧账号活动卡与邀请操作隔离仅定向代码验证。  E158本批首屏核心准确图形／明确几何与所列实际路径通过；E179/E181后续恢复普通长页源CSS角色，可用18入口限定通过，字体继承已核；开发身份退出未显示、整长页逐像素/native仍待验。 |
+| `pg11_c_alex` 与 Alex 的私聊、快捷问候、语音 | 消息页“最近会话”进入同路由的独立 `CHAT_UNAVAILABLE` 关闭态：保留会话式头部、活动语境和底部禁用输入，提供返回消息、本人活动记录和通知中心真实路径；“查看我的活动”进入 PG10-C 本人记录，不显示虚构人物或对话。 | 私聊消息、实时状态、语音和预设问候没有后端及隐私／留存能力。当前只是设计屏对应的清晰关闭态，不是可用私聊。 | **关闭态代码＋模拟器局部实点**：E49 原关闭态按钮与禁用输入；E69 新活动目标与 E140 旧会话跳转挡板有定向代码验证，E145 已在新版实点正常活动路线、返回及旧身份阻断；正式私聊功能不在 R1。 E172／E173本轮准确source外围／glyph、禁用composer／回顶／返回局部通过；原生胶囊导致工具放独立行、场景为明示示意，不含真实私聊／虚构Alex。 |
+
+## 逐屏矩阵：发起、详情、报名、运营（16 屏）
+
+| 设计屏与关键视觉／按钮 | 当前小程序入口与实际动作 | 能力及差距 | 验证层级 |
+| --- | --- | --- | --- |
+| `pg03_ai` AI 想法入口：输入、灵感、草稿箱、生成 | `pages/create/create` 的 IDEA 状态；灵感填入原话并可换一批，“草稿箱”进入首页仅本人 DRAFT 视图，可回到原草稿编辑或退出过滤；生成→`/events/drafts:suggest-local`，也可直接手填。参考稿咖啡／小酒局灵感可见，点击显示当前不支持而不改羽毛球草稿。顶部个人入口进入“我的”。 | 当前使用本地规则建议；真实模型生成端点 `/events/drafts:generate` 被 `ai_draft=false` 关闭，咖啡／小酒局不可发布。 | **代码＋模拟器实点**：E44 手动填写及个人入口；E35 草稿箱实点；E24 IDEA、手填和未开放提示；E18 早期路径。 E161本批IDEA准确图形／明确几何、输入保持、关闭卡提示、换一批、手填往返、真实本地规则→FORM局部通过；900／italic字形和全长逐像素未验。 |
+| `caper_ai` 完整建局表单：类别、时间地点、人数、费用、协办 | 同一 `pages/create/create` FORM 状态；顶部和灵感区按原稿压缩，日期／时段快捷按钮、原生选择器、主办参与、可见性、费用、截止时间、场地声明、草稿与预览都有绑定；切换快捷日期时维护有效起止日期，编辑已发布活动时“添加协办人”可进入该活动主办工作台授权。 | 当前后端只支持羽毛球与受控 R1 字段；新活动尚无可授权成员，发布后才选择协办。语音、其他运动／地点偏好、AI 一键海报、自动订场未开放。`auto_booking=false`；真实 AI 生成关闭。 | **代码＋模拟器局部实点**：E33 编辑活动协办入口；E24 FORM 布局、语音提示；E71 快捷日期修正仅有定向代码验证，尚未新版模拟器实点；E114 协办入口旧会话隔离仅定向代码验证。  E165本批新建FORM准确源结构／图形、真实字段／日期／参与／草稿→REVIEW和header入口局部通过；编辑已发布流程保护，native及全长逐像素仍待验。 |
+| `pg04` 草稿确认：信息逐项核对、保存、确认发布 | 同一发起页 REVIEW 状态；新建草稿→`/events`、续编→`/events/:id/draft`，发布→`/events/:id/publish`，成功后带参数进入活动页；顶部更多菜单返回编辑或打开草稿箱。 | 目前用真实时间、地点、人数、费用、场地声明和版本；图中“已预订”只有主办真实声明时才显示“已核实”，不冒充平台锁场。视觉尚非逐像素验收。 | **代码＋模拟器局部实点**：E24 REVIEW 布局与菜单；E18 草稿预览；旧发布证据 E2。  E165本批新建REVIEW源图形／几何、真实draft版本／payload／返回FORM通过，滚动继承已修复并复拍；未发布或全长逐像素验收。 |
+| `pg04_s` 发布成功：活动卡、分享／海报／主办工作台 | `pages/event/event` 的 `successState=PUBLISHED`；发布 API 成功且服务端回读当前主办活动后显示照片活动卡、真实席位与四个管理动作；待审文案为“已提交审核”，通过后才显示招募就绪。分享卡与第二张“生成活动海报”均按当前资格阻断；通过后可生成本机 PNG 并预览。 | 海报是本机当前邀请码，不是 AI 个性化成图；好友群发和 AI 自动拉群未实现。待审不能分享。 | **代码＋模拟器局部实点**：E33 待审与通过两种真实状态及分享入口；E110 已审合成主办第二张卡生成并预览，图片 QR 与服务端口令一致；E122 原参考照片和四格改后同场 6 入口实点、两张截图、异常 0；E123 写入口旧会话挡板定向通过。非逐像素或真机。  E169本轮PG04-S source几何／准确图形及真实APPROVED八按钮局部通过；PNG描边mark最终复拍。PENDING没有本批真实fixture，原生海报预览未验。 |
+| `pg01` 活动详情总览：海报、时间地点、报名按钮 | `pages/event/event`；现按 ZIP 的羽毛球／蓝色海报、白卡、席位卡和底部动作布局；邀请摘要／本人权限判断后读取活动、报名和现有分区；地点可复制、分享进邀请卡。 | 活动事实、状态、版本、审核、风险暂停和人员统计来自 API；原稿地图、人物头像、私聊、真实场馆预订未接入，海报照片仅为示意。 | **代码＋模拟器局部实点**：E25 真实合成详情；E14 地点复制与分享；E10 六分区。 E161本批READY羽毛球普通访客准确图形／明确几何、真实复制地点／信息／求助回退、确认开／取消及host/member保护局部通过；菜单原生选择／全长逐像素未验。 |
+| `pg05` 报名确认弹层：时间地点规则、取消／确认 | 活动页 `joinConfirmation` 按 ZIP 重排；“参加这次活动”调用报名接口，“先标记待定”调用 `/events/:id/interests`，两者均在核对当前版本后提交；取消关闭。 | 待定意向不占名额也不进入候补队列，故不能照搬原稿“先加入候补”；给主办人留言缺少服务端契约。 | **代码＋模拟器实点**：E33 真实报名、待定意向与服务端回读；E14 早期视觉。  E165本批羽毛球新确认原稿及Rubik/Caveat回调、开／取消无提交、真实最终报名→服务端CONFIRMED局部通过；其他活动generic保护。 |
+| `pg05_s` 报名成功：已锁席位、活动详情、去喊人 | 活动页 `successState=JOINED` 仅在 `/me/registrations` 回读 `CONFIRMED` 后显示；新版将真实已确认人数、已授权活动昵称及成员入口提前，详情／签到／公告／行程 CTA 进入现有视图；时间行可按当前活动事实一次性调用系统日历。 | 无永久 IRL PASS、真实群聊、地图、海报或日历自动同步；不能以静态码冒充现场动态签到。原生日历实际落盘待真机验。 | **代码＋旧模拟器局部实点**：E33 两次真实报名成功及成员区点击；E102 加日历仅定向测试；E138 当前成功卡双贴纸与同场详情入口已模拟器实点，原生日历仍无真机实点。  E165本批真实新CONFIRMED触发原稿成功页，同ID复制／签到／公告／成员／详情／行程通过；后续UI-only恢复明确记录，日历落盘和native仍待验。 |
+| `_2` 已报名活动详情：入场码、球友、地图、须知 | `pages/event/event` 已确认成员状态显示照片示意封面、一次真实活动标题、确认席位卡、真实时间／场地／费用／人数卡；签到按钮进入动态签到区，成员按钮进入授权名单。 | 有活动规则、场地声明、动态签到令牌；没有永久 IRL-PASS 编号、地图导航、人物阵容照或群聊；授权昵称可能包含候补，不能当全部已确认成员。 | **代码＋模拟器实点**：E42 已确认成员详情→签到，确认人数 5、异常 0；E19 早期局部视图。 E175/E176本批成员source hero224/确认icon32/header56、原hero字节、真实6确认与同场签到/名单/内容/费用局部通过；没有永久PASS或host生成器。 |
+| `_4` 招募中活动实时详情：时间、场地、阵容、地图 | 同一活动页主办状态显示照片示意封面、一次真实活动标题、主办状态卡、真实时间／场地和并列费用／席位卡；签到管理进入当前活动签到区。 | 招募数由服务端统计；授权昵称预览单独标识且本场为真实空态。实时球友头像、交通地图、自动支付状态不具备。 | **代码＋模拟器实点**：E42 合成主办详情→签到管理、异常 0；E19 早期局部视图。 E175/E176本批currenthost source hero224/header56/原图及名单/host同场路线通过，最后roster透明heading/独立白frame（当前真实empty）、角色色/map/footer/capacity800/600/11四类delta已限定补验；地点copy为mock桥，非native剪贴板。 |
+| `_5` 主办“实时看板”：成局、席位、场地证据 | 活动页原主办更多→当前身份/同ID READY授权的独立 `hostMonitorSection`；源hero、实际四项人数/成局条件与当前已确认名单，返回同场主办区。 | 没有 15 秒实时同步、天气监测、自动订场、会员信用分或实际付款证明；不可照搬动态承诺。 | **代码＋模拟器实点**：E25 已成局合成主办数据；旧操作见 E2/E4/E5。 E179/E180本批独立_5源布局、6确认/1候补/名单与同ID返回/授权深链/普通成员拒绝局部通过；weather/自动提醒/付款/地图均不可用、原15秒同步未实现，native和逐像素待验。 |
+| `pg06` Organizer Dashboard：报名、成局条件、分享／公告／结束 | 活动页 `hostSection` 聚焦视图；报名审批、成局数据、公告、结项／取消按当前权限及状态可用，分组卡片按原稿重排；结项资格成立时第三快捷按钮定位同页真实表单，点击不直接提交。 | 同路由聚焦视图而非独立路由；AI 组织管家、自动预订与未审人物头像是设计概念。 | **代码＋模拟器局部实点**：E115 发送公告快捷按钮已在隔离模拟器定位同场主办表单，服务端公告数未变、异常 0；E72 结项快捷按钮、表单定位与可编辑说明、未提交回读；E25 主办分组和真统计；E19 早期路径；旧操作见 E2/E4/E5。同尺寸逐像素未验。 E172／E173本轮source明确几何／准确glyph、真实6确认／5+1授权名单、同场成员／公告输入／分享路径通过；原图hero近白外观忠实保留，未提交公告／取消／结项。 |
+| `pg06_s` 分享活动弹层：微信好友、海报、群聊、复制链接 | 工作台→独立邀请卡→自定义底部弹层；符合服务端资格后先 `POST /events/:id/share-intents` 再以 `open-type="share"` 进入微信原生选择器；真实口令可复制。“生成海报”按当前资格绘制本机 PNG 并预览。 | 好友与群聊同属微信原生分享；没有 HTTPS 链接，原生分享投递未验。海报不是永久凭证，活动或口令变化后需重生。 | **代码＋模拟器局部实点**：E12 邀请卡入口、阻断和弹层视觉；E110 当前合成活动弹层海报实点、二维码解码匹配，真机分享和保存未验。 E172／E173仅前景弹层source恢复，64px场景／48px工具／32px关闭／48px取消与当前口令复制通过；E179/E180后续仅弹层打开时恢复原PG06只读背景，投影同场实际统计/城市并排除口令与精确场地，旧_3闭态不变；原生分享投递／海报重验／整屏逐像素未验。 |
+| `_3` 活动专属邀请卡：二维码、分享口令、受邀特权 | `subpackages/activity/share/share` 从工作台打开；主办身份与审核/安全/招募条件由服务端当前活动核对，有资格时绘制仅含服务端 token 的真实 QR 并可复制口令。截图仅显示粗略城市，具体场馆留在受权限保护的活动详情。 | QR 截图可被转发，过期或撤销仍由服务端拒绝；没有永久 PASS、优先席位、HTTPS 链接或自动成局保证。 | **代码＋模拟器实点**：E48 QR 截图解码与当前 token 相同、扫码回调；E12 本机待审活动的分享阻断。真机摄像头仍待验。  E156本轮准确图形／明确几何和所列真实交互局部通过；无全页逐像素或真机结论。 |
+| `pg07` 活动公告与问答 | 活动页 `contentSection` 聚焦视图；成员问题、主办公告和回答、事实查询、审核后可见。 | 与原稿一样有底部提问输入；E32 已在隔离业务环境提交并审核成员问题、主办公告和回复，展示非空时间线；普通私聊／群聊没有实现。 | **代码＋模拟器非空实点**：E32 真实业务接口提交、审核、截图和“回复此问题”点击；E25 新布局空态；E19 早期路径；旧非空业务见 E5。 E175/E176本批准问答确切parent、header64/avatars40/24/send44与host回答输入/member composer局部通过；最后sourcechip .275px补验，动画/focus SDK不可观察而native待验。 |
+| `pg08` 签到与反馈 | 活动页 `checkinSection` 聚焦视图及完成态双列反馈卡；参与者扫码／主办验码双模式、动态口令、`wx.scanCode`、人工补记与独立反馈；“再来一局”进入带未保存编辑保护的发起 IDEA。 | 当前时间窗内的已审、已成局合成活动在新布局实点主办生成动态二维码及成员手输同一动态口令，服务端回读到场来源 `SCAN`；真机摄像头／原生弹窗仍未验。原稿离线码、勋章／群聊不在 R1。 | **代码＋模拟器局部业务实点**：E51 主办生成码→成员手输→API `SCAN`、异常 0；E25 旧锁定态与双模式；旧补记路径 E5；E67 新版完成态反馈四选项及“再来一局”实点、视觉修正复拍；E78 完成态间距与羽球示意图复拍、异常 0；E120 SCAN 最终写入时间挡板已在 PGlite 和本机 PostgreSQL 定向验证，本批无新模拟器或真机扫码；E93 已在合成成员实点选择并提交独立反馈，API 从未提交变为已提交，返回后显示只读卡；该证据只覆盖对应版本及成员，其他反馈组合和同尺寸视觉仍待验。 E172／E173本轮source反馈／两模式准确glyph与实际短期码240canvas通过；null／false／true／已提交关闭态和下一局新IDEA实点，无新签到或反馈提交，API前后相同。 |
+| `pg09` AA 费用记录 | 活动页 `expenseSection` 聚焦视图；主办记录／修订分摊，成员标记本人处理，主办标记已收到，历史版本保留。已授权账本可看明细、展开可见成员并按实际分摊金额排序；成员只见本人份额。顶栏分享图标复制当前记录摘要，主办只得总额／人数，成员只得本人份额。`feeMode=FREE` 时显示免费说明。 | 服务端按账本总额分摊到本人份额，并记录双方声明；摘要明确不是付款或结清凭证，不发起真实付款、代收或清算。原稿 AI 拆账和商户收据未接入，`merchant_payments=false`。 | **代码＋模拟器非空实点**：E105 主办／成员顶栏图标实点与剪贴板脱敏回读；E25 新图文账本及五行展开，E23 成员 1 行；E19/E22 空态；旧 AA 写入流程见 E5；E78 羽球示意图和四人账本明细展开／收起实点、异常 0；E143／E145 尾差事前说明与现有四人账本合计实点，未新写账本。 E172／E173本轮source4:3／native header／准确glyph、五份额明细／展开／排序和成员仅本人份额通过局部SDK；首插入DOM即读失败及限定剩余补验保留，无AA声明写入。 |
+
+## 逐屏矩阵：个人、设置和关于（11 屏）
+
+| 设计屏与关键视觉／按钮 | 当前小程序入口与实际动作 | 能力及差距 | 验证层级 |
+| --- | --- | --- | --- |
+| `pg10_a_edit_profile` 资料编辑、兴趣标签、注销 | `subpackages/profile/profile-edit/profile-edit`；按稿重排后城市选择可回填，个人页兴趣入口可直接定位到本页说明区；昵称区可选本人有权限的活动并直达该场昵称表单，空态“查看我的活动”进入本人活动记录；顶部更多和个人按钮进入真实隐私／说明／个人页；头像、性别与全局水平认证显示未开放；“申请注销账号”展开本人真实隐私请求表单。 | 无全局头像、昵称、签名、兴趣或等级保存接口；活动内昵称仅限本人授权的活动；E20 未提交删除请求。 | **代码＋模拟器局部实点**：E45 顶部隐私路径与关闭态；E41 兴趣说明深链；E15 城市跳转；E20 注销入口深链；E68 本人活动选择→本场昵称表单实点，未保存昵称；E103 空态跳转已用合成空账号实点；E151新版几何、官方图形与所列R1交互通过局部模拟器验证，全屏逐像素未验。  E169本轮最终header／alias实际资格／同ID昵称入口与城市通过；E170最后专用500字体消费者局部复拍通过，不影响其他source500匹配。 |
+| `pg10_b_social_badges` 成就勋章馆、筛选 | `subpackages/profile/badges/badges`；设计概念勋章分类切换与详情层可用，顶部 More／个人图标避开原生胶囊；四个主页展示位明确不可佩戴，活动入口直达本人真实活动记录，底部原生分享仅发送未开放概念预览页。 | 无勋章授予／级别／分类数量接口；详情明确未授予，参考稿“28 枚”等不是真实数据。 | **代码＋模拟器局部实点**：E45 展示位关闭态；E36 详情、活动记录及菜单；E15 类别筛选；E107 改后卡片和分享入口截图与元数据已核，实际分享发送未验；E151新版几何、官方图形与所列R1交互通过局部模拟器验证，全屏逐像素未验。  E169本轮header／分类／未授予详情／disabled佩戴／关闭和实际活动入口通过，未发送原生分享。 |
+| `pg10_c` 活动相册、打包、找我 | `subpackages/profile/moments/moments`；从 `/me/events` 展示本人真实活动及类别适配的 Stitch 三图拼贴，图上明示“示意配图／活动相册未开放”；渐变摘要、卡片与固定底部按钮按原稿重排，按钮避开设备手势安全区。参与／主办筛选与拼贴详情跳转可用；分类空态可切换全部，底部按钮进入真实发起 Tab。原图顶部标题 `Edit Profile` 按图保留。 | `photo_album=false`；上传、同场可见、打包、点赞、评论与人脸检索皆未实现，示意图不被称为真实活动照片。 | **代码＋模拟器局部实点**：E52 旧版当前合成身份 3 场活动及首卡拼贴→同 ID 详情、截图、异常 0；E44 本人活动拼贴→详情；E33 主办活动卡和详情点击；E15 旧筛选；E69 新 CTA 与空态、E75 安全区样式与 E81 定版模拟器实点已核对。E142／E145 当前旧身份分类清空及恢复身份后的同 ID 详情实点；E153本轮官方图形、筛选和首卡同ID详情局部实点通过；非同尺寸逐像素验收。  E169本轮完整source几何／真实筛选／同ID拼贴／固定CTA局部通过；E170最后场地500专用alias复拍，8原JPEG保持，非真实相册。 |
+| `pg10_d` 隐私安全、屏蔽列表与解除 | `subpackages/profile/privacy-safety/privacy-safety`；账号就绪后读取 `/me/blocks`、撤回屏蔽；顶部更多进入真实隐私说明或帮助页，个人按钮返回“我的”；底部“举报与求助”直接定位当前会话的真实举报工单。 | 仅真实本人数据，换身份会清空；参考稿虚构头像、姓名和违规原因不会展示。 | **代码＋模拟器局部实点**：E44 顶部菜单和真实空态；E12 个人入口→本机真实空列表；E73 目标定向验证，E81 较早快照已实点举报表单，定版未重跑；E119 隔离模拟器实点旧会话合成行解除拦截、POST=0，真实有记录的当前会话撤销仍由定向测试约束；E151新版几何、官方图形与所列R1交互通过局部模拟器验证，全屏逐像素未验。  E169本轮原英文header／16px实测／真实空列表／更多隐私与举报表单局部通过；28px源修正有单项保护证明，未新撤销实际屏蔽。 |
+| `pg10_e` 公约、协议、第三方清单 | `subpackages/profile/legal/legal`；当前服务说明可读，Aa 可切换阅读字号；字号控制同排的分享按钮仅发送公开说明页路径及当前服务标题。四个可横滑页签中“权限使用说明”定位到本页当前工程设备调用说明；社区公约按钮进入真实页面，“管理账号与隐私请求”直达展开的本人请求表单。 | 正式主体、备案、协议批准版本、联系方式未提供；正式协议、第三方清单、PDF 和确认按钮明确未发布。 | **代码＋模拟器局部实点**：E45 字号切换；E13 协议页和公约；E20 隐私请求深链；E88 字号控制旁分享模拟器实点，真机投递待验；E111 第四页签定位和内容改后实点；E151新版几何、官方图形与所列R1交互通过局部模拟器验证，全屏逐像素未验。 |
+| `pg10_f` 缓存管理／清理确认 | `subpackages/profile/cache/cache`；读 `wx.getStorageInfoSync` 的本机使用量与限额，可手动刷新；“管理账号与数据请求”进入本人真实隐私请求表单。 | 不把业务凭证与资料一键清空；参考稿按照片／聊天拆分及 MB 清理按钮无安全实现。 | **代码＋模拟器实点**：E116 本机读取时间更新已在隔离模拟器实点、异常 0；E45 数据请求入口；E13 原生读数和刷新；E153精确图形/实际读数刷新/安全顶栏/所列路径局部实点通过。 |
+| `pg10_g` 客服、常见问题、反馈 | `subpackages/profile/support/support`；四项 FAQ 按稿排序并展开，第四项有“发起受控活动”入口；违规举报转个人页真实工单表单；顶部 More→关于或个人页并避开原生胶囊。 | AI 客服、人工在线客服、一般反馈提交和图片上传没有接口，控件说明未开放；费用页不处理真实付款／退款，主理人认证未开放。 | **代码＋模拟器局部实点**：E38 顶部→关于；E13 FAQ、举报表单跳转；E108 第四项展开与发起入口改后实点、异常 0；E153精确图形/四FAQ旋转/关闭按钮/发起/最后顶部修正局部实点通过。 |
+| `pg10_h_project_irl` 关于 Project IRL | `pages/about/about`；按原稿重排当前能力、三个说明页入口和首页／发现／发起返回；顶部 More／个人入口避开原生胶囊。 | 版本标为 R1 本地候选，不沿用设计稿未经核实的备案、日期或公司。 | **代码＋模拟器实点**：E38 更多→版本说明；E15 三条子路由。 E155本轮原稿几何/准确图形/所列关键交互局部通过，原生三个入口和返回实点；全页逐像素未验。 E159当前Jakarta准确字重／英文和数字、中文回退、胶囊局部字体实测通过；H3补实际9资源与完整字体许可，全页／真机逐像素未验。 |
+| `pg10_h_1` AI 与真实相聚介绍／版本能力 | `subpackages/profile/release-notes/release-notes`；从关于页进入，说明当前 R1 能力和关闭项；“查看我的活动”直达真实本人活动记录。 | 多模态语音建局、自动 AA 支付等原稿概念不作为已上线能力。 | **代码＋模拟器实点**：E38 本人活动 `READY`；E15 旧截图；E86 顶栏公开页分享按钮实点。 E155本轮原稿几何/准确图形/所列关键交互局部通过，原生三个入口和返回实点；全页逐像素未验。 E159当前Jakarta准确字重／英文和数字、中文回退、胶囊局部字体实测通过；H3补实际9资源与完整字体许可，全页／真机逐像素未验。 |
+| `pg10_h_2` 安全与线下社交守则 | `subpackages/profile/guidelines/guidelines`；从关于页进入，举报转现有工单表单，保留未登录后的处理区焦点。 | 说明性质，不是线下安全担保或真人运营验收。 | **代码＋模拟器实点**：E38 公约→个人举报处理区；E15 关于页跳转；E86 顶栏公开页分享按钮实点。 E155本轮原稿几何/准确图形/所列关键交互局部通过，原生三个入口和返回实点；全页逐像素未验。 E159当前Jakarta准确字重／英文和数字、中文回退、胶囊局部字体实测通过；H3补实际9资源与完整字体许可，全页／真机逐像素未验。 |
+| `pg10_h_3` 开源许可与致谢 | `subpackages/profile/open-source/open-source`；从关于页进入，列真实工程依赖与许可摘要；顶部 More／个人入口避开原生胶囊。 | 许可证正文与版权所有者以项目安装包为准；参考稿虚构组件未照抄。 | **代码＋模拟器实点**：E50 更多→关于、头像→我的并恢复首页，异常 0；E15 原页截图；E38 顶部入口聚焦测试；E86 顶栏公开页分享按钮实点。 E155本轮原稿几何/准确图形/所列关键交互局部通过，原生三个入口和返回实点；全页逐像素未验。 E159当前Jakarta准确字重／英文和数字、中文回退、胶囊局部字体实测通过；H3补实际9资源与完整字体许可，全页／真机逐像素未验。 |
+
+> 计数校验：上表 12 + 16 + 11 = **39** 个 ZIP 设计屏。`src/feature-flags.ts` 还关闭 `paid_pro`；本 ZIP 没有对应独立 R1 路由。设计图中的商业支付、自动预订、个人相册、公开找局和真实 AI 生成，不能因为有视觉入口就算功能完成。
+
+## 下一批优先工作
+
+1. 按同一设备宽度逐段对照剩余设计屏与当前小程序；E32 只复验了重点非空状态，不能代替全 39 屏逐像素验收。
+2. 在主办、协办、访客、已报名及终态身份下继续逐项实点可用按钮并保留 API 回读；关闭的 R1 能力维持可见的不可用说明。
+3. 正式 AppID、HTTPS 域名、订阅模板、真机、真人值守和三场受控活动到位后，再做外部链路和发布验收。

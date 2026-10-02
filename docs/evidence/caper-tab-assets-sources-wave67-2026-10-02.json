@@ -1,0 +1,1554 @@
+{
+  "scope": "Implemented exact SVG assets in the custom-tab-bar only; proof data docs-only; runtime and package size pending root.",
+  "inlineVariants": [
+    {
+      "sourcePage": "caper_2",
+      "slot": "home",
+      "sourceHtmlLine": 725,
+      "sourceHtmlSha256": "e4e4ba417711e27838f10cef098c4da8c428d3b9d7c4217fe36d9def5761c4ca",
+      "sourceSvgSha256": "8d81bb1f7f22f28cf8806a2cab415667d2ee0f87cb219dc2832cc6fa554c5aa7",
+      "sourceClass": "w-5 h-5",
+      "sourceViewBox": "0 0 24 24",
+      "sourceCssSize": 20,
+      "sourceResolvedColor": "#1d64f2",
+      "sourceChildNodes": [
+        {
+          "tag": "path",
+          "attributes": {
+            "d": "M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"
+          }
+        }
+      ],
+      "effectiveStyleCanonical": {
+        "tag": "svg",
+        "geometry": {
+          "viewbox": "0 0 24 24"
+        },
+        "effectiveStyle": {},
+        "children": [
+          {
+            "tag": "path",
+            "geometry": {
+              "d": "M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"
+            },
+            "effectiveStyle": {
+              "fill": "#1d64f2",
+              "stroke": "none",
+              "stroke-width": "1",
+              "stroke-linecap": "butt",
+              "stroke-linejoin": "miter"
+            },
+            "children": []
+          }
+        ]
+      },
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_2-home.svg",
+        "bytes": 152,
+        "sha256": "87cb477cf156da6c88cdbc3fa4bc216710bf71024ec2f4a5eb0bfb58c4386667"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_2-home.svg",
+        "bytes": 129,
+        "sha256": "0d93d6e45ea8a9db98d98f32c0f9edc4ee15dcf1c1c6db1b38bae89f40599127"
+      },
+      "proof": "child geometry attribute values unchanged; inherited styles normalized only after canonical equivalence"
+    },
+    {
+      "sourcePage": "caper_2",
+      "slot": "discover",
+      "sourceHtmlLine": 730,
+      "sourceHtmlSha256": "e4e4ba417711e27838f10cef098c4da8c428d3b9d7c4217fe36d9def5761c4ca",
+      "sourceSvgSha256": "262330b8f7000ae6783e5ab0e3273e43cbe3f708749064ffd673a59b20403a01",
+      "sourceClass": "w-5 h-5",
+      "sourceViewBox": "0 0 24 24",
+      "sourceCssSize": 20,
+      "sourceResolvedColor": "#9ca3af",
+      "sourceChildNodes": [
+        {
+          "tag": "path",
+          "attributes": {
+            "d": "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round"
+          }
+        }
+      ],
+      "effectiveStyleCanonical": {
+        "tag": "svg",
+        "geometry": {
+          "viewbox": "0 0 24 24"
+        },
+        "effectiveStyle": {},
+        "children": [
+          {
+            "tag": "path",
+            "geometry": {
+              "d": "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            },
+            "effectiveStyle": {
+              "fill": "none",
+              "stroke": "#9ca3af",
+              "stroke-width": "2",
+              "stroke-linecap": "round",
+              "stroke-linejoin": "round"
+            },
+            "children": []
+          }
+        ]
+      },
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_2-discover.svg",
+        "bytes": 238,
+        "sha256": "da8138ca2ff1cd0b95a85ace95cc3cf67b991f79f6613bfb9713b70d58b9e35d"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_2-discover.svg",
+        "bytes": 215,
+        "sha256": "38cc7ccce5cdd0313b2dd5666308dd5b4d4b402b91b86d52837ac90cc1acd034"
+      },
+      "proof": "child geometry attribute values unchanged; inherited styles normalized only after canonical equivalence"
+    },
+    {
+      "sourcePage": "caper_2",
+      "slot": "create",
+      "sourceHtmlLine": 736,
+      "sourceHtmlSha256": "e4e4ba417711e27838f10cef098c4da8c428d3b9d7c4217fe36d9def5761c4ca",
+      "sourceSvgSha256": "11368c2c86d45c7a81a9db7d6fbc5d84b3b9728dfa2c3ca9e0431aaf21d51972",
+      "sourceClass": "w-6 h-6",
+      "sourceViewBox": "0 0 24 24",
+      "sourceCssSize": 24,
+      "sourceResolvedColor": "#ffffff",
+      "sourceChildNodes": [
+        {
+          "tag": "path",
+          "attributes": {
+            "d": "M12 4v16m8-8H4",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round"
+          }
+        }
+      ],
+      "effectiveStyleCanonical": {
+        "tag": "svg",
+        "geometry": {
+          "viewbox": "0 0 24 24"
+        },
+        "effectiveStyle": {},
+        "children": [
+          {
+            "tag": "path",
+            "geometry": {
+              "d": "M12 4v16m8-8H4"
+            },
+            "effectiveStyle": {
+              "fill": "none",
+              "stroke": "#ffffff",
+              "stroke-width": "3",
+              "stroke-linecap": "round",
+              "stroke-linejoin": "round"
+            },
+            "children": []
+          }
+        ]
+      },
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_2-create.svg",
+        "bytes": 209,
+        "sha256": "f8bd326546c6a8a640f61864836fb870c95e997a7619042d6d04f4243043935f"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_2-create.svg",
+        "bytes": 183,
+        "sha256": "a888fce4fa766d3b6de7bf4e0b54b3956bbce14b405a2dbd06dfd9ac0cb6d3bc"
+      },
+      "proof": "child geometry attribute values unchanged; inherited styles normalized only after canonical equivalence"
+    },
+    {
+      "sourcePage": "caper_2",
+      "slot": "messages",
+      "sourceHtmlLine": 741,
+      "sourceHtmlSha256": "e4e4ba417711e27838f10cef098c4da8c428d3b9d7c4217fe36d9def5761c4ca",
+      "sourceSvgSha256": "3cba6985acccfd93c993e70f4d5be0fef508f6abdad2a22abe43c5e48d1004b4",
+      "sourceClass": "w-5 h-5",
+      "sourceViewBox": "0 0 24 24",
+      "sourceCssSize": 20,
+      "sourceResolvedColor": "#9ca3af",
+      "sourceChildNodes": [
+        {
+          "tag": "path",
+          "attributes": {
+            "d": "M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round"
+          }
+        }
+      ],
+      "effectiveStyleCanonical": {
+        "tag": "svg",
+        "geometry": {
+          "viewbox": "0 0 24 24"
+        },
+        "effectiveStyle": {},
+        "children": [
+          {
+            "tag": "path",
+            "geometry": {
+              "d": "M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+            },
+            "effectiveStyle": {
+              "fill": "none",
+              "stroke": "#9ca3af",
+              "stroke-width": "2",
+              "stroke-linecap": "round",
+              "stroke-linejoin": "round"
+            },
+            "children": []
+          }
+        ]
+      },
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_2-messages.svg",
+        "bytes": 352,
+        "sha256": "d425ac823f6edcb4c9cd80fb1614ea87f68dac25b76d87ffad3ce93d79028469"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_2-messages.svg",
+        "bytes": 329,
+        "sha256": "827cb2ea6b00c71514bae57340e63ab9078442c08ac5e22efb09463479aa713f"
+      },
+      "proof": "child geometry attribute values unchanged; inherited styles normalized only after canonical equivalence"
+    },
+    {
+      "sourcePage": "caper_2",
+      "slot": "me",
+      "sourceHtmlLine": 747,
+      "sourceHtmlSha256": "e4e4ba417711e27838f10cef098c4da8c428d3b9d7c4217fe36d9def5761c4ca",
+      "sourceSvgSha256": "70440497a333c3d24561c8607d4dc8e6885085005c85a516a3e031c41529bd0b",
+      "sourceClass": "w-5 h-5",
+      "sourceViewBox": "0 0 24 24",
+      "sourceCssSize": 20,
+      "sourceResolvedColor": "#9ca3af",
+      "sourceChildNodes": [
+        {
+          "tag": "path",
+          "attributes": {
+            "d": "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round"
+          }
+        }
+      ],
+      "effectiveStyleCanonical": {
+        "tag": "svg",
+        "geometry": {
+          "viewbox": "0 0 24 24"
+        },
+        "effectiveStyle": {},
+        "children": [
+          {
+            "tag": "path",
+            "geometry": {
+              "d": "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            },
+            "effectiveStyle": {
+              "fill": "none",
+              "stroke": "#9ca3af",
+              "stroke-width": "2",
+              "stroke-linecap": "round",
+              "stroke-linejoin": "round"
+            },
+            "children": []
+          }
+        ]
+      },
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_2-me.svg",
+        "bytes": 262,
+        "sha256": "3478f54e2f41f89fe932a1cb33c406e8a186e178ec5410a7c49e81a8575eec5c"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_2-me.svg",
+        "bytes": 239,
+        "sha256": "07df44e6107f653683b7b6d6864f93c2f447fa6d91e80d52bc95ccbafa022387"
+      },
+      "proof": "child geometry attribute values unchanged; inherited styles normalized only after canonical equivalence"
+    },
+    {
+      "sourcePage": "caper_3",
+      "slot": "home",
+      "sourceHtmlLine": 558,
+      "sourceHtmlSha256": "18fab22c6b92592673e19574739eb2ed86cbfb0fe628023ec5dcd3b843a1aa6b",
+      "sourceSvgSha256": "e9977231d4af78037eb079807f9ace9d781dbff8cfc435a8527359c5d593a5e9",
+      "sourceClass": "w-5 h-5 mb-0.5",
+      "sourceViewBox": "0 0 24 24",
+      "sourceCssSize": 20,
+      "sourceResolvedColor": "#94a3b8",
+      "sourceChildNodes": [
+        {
+          "tag": "path",
+          "attributes": {
+            "d": "m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+          }
+        },
+        {
+          "tag": "polyline",
+          "attributes": {
+            "points": "9 22 9 12 15 12 15 22"
+          }
+        }
+      ],
+      "effectiveStyleCanonical": {
+        "tag": "svg",
+        "geometry": {
+          "viewbox": "0 0 24 24"
+        },
+        "effectiveStyle": {},
+        "children": [
+          {
+            "tag": "path",
+            "geometry": {
+              "d": "m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+            },
+            "effectiveStyle": {
+              "fill": "none",
+              "stroke": "#94a3b8",
+              "stroke-width": "1.8",
+              "stroke-linecap": "butt",
+              "stroke-linejoin": "miter"
+            },
+            "children": []
+          },
+          {
+            "tag": "polyline",
+            "geometry": {
+              "points": "9 22 9 12 15 12 15 22"
+            },
+            "effectiveStyle": {
+              "fill": "none",
+              "stroke": "#94a3b8",
+              "stroke-width": "1.8",
+              "stroke-linecap": "butt",
+              "stroke-linejoin": "miter"
+            },
+            "children": []
+          }
+        ]
+      },
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_3-home.svg",
+        "bytes": 238,
+        "sha256": "5f2a601db4791b2979506ee14f6e1088745606f13581324e724a0ced5e191e46"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_3-home.svg",
+        "bytes": 215,
+        "sha256": "38befba40441c61667b3ff635e5e571cbcfa29b24e2aea0269cd46fc918ea8c6"
+      },
+      "proof": "child geometry attribute values unchanged; inherited styles normalized only after canonical equivalence"
+    },
+    {
+      "sourcePage": "caper_3",
+      "slot": "discover",
+      "sourceHtmlLine": 563,
+      "sourceHtmlSha256": "18fab22c6b92592673e19574739eb2ed86cbfb0fe628023ec5dcd3b843a1aa6b",
+      "sourceSvgSha256": "7011a2b90320e2c4f84954483cf6072ec4f93fc024efd522489096fd01f47989",
+      "sourceClass": "w-5 h-5 mb-0.5",
+      "sourceViewBox": "0 0 24 24",
+      "sourceCssSize": 20,
+      "sourceResolvedColor": "#94a3b8",
+      "sourceChildNodes": [
+        {
+          "tag": "circle",
+          "attributes": {
+            "cx": "12",
+            "cy": "12",
+            "r": "10"
+          }
+        },
+        {
+          "tag": "polygon",
+          "attributes": {
+            "points": "16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"
+          }
+        }
+      ],
+      "effectiveStyleCanonical": {
+        "tag": "svg",
+        "geometry": {
+          "viewbox": "0 0 24 24"
+        },
+        "effectiveStyle": {},
+        "children": [
+          {
+            "tag": "circle",
+            "geometry": {
+              "cx": "12",
+              "cy": "12",
+              "r": "10"
+            },
+            "effectiveStyle": {
+              "fill": "none",
+              "stroke": "#94a3b8",
+              "stroke-width": "1.8",
+              "stroke-linecap": "butt",
+              "stroke-linejoin": "miter"
+            },
+            "children": []
+          },
+          {
+            "tag": "polygon",
+            "geometry": {
+              "points": "16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"
+            },
+            "effectiveStyle": {
+              "fill": "none",
+              "stroke": "#94a3b8",
+              "stroke-width": "1.8",
+              "stroke-linecap": "butt",
+              "stroke-linejoin": "miter"
+            },
+            "children": []
+          }
+        ]
+      },
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_3-discover.svg",
+        "bytes": 244,
+        "sha256": "b30c4a7b94d075b6e662da2e223645d2db134be84e4e578c316d45169ca4365b"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_3-discover.svg",
+        "bytes": 221,
+        "sha256": "5c59cd6f25005c28c053b1e8f15111cc345d68cd6d242caa480f9601d4b80398"
+      },
+      "proof": "child geometry attribute values unchanged; inherited styles normalized only after canonical equivalence"
+    },
+    {
+      "sourcePage": "caper_3",
+      "slot": "create",
+      "sourceHtmlLine": 569,
+      "sourceHtmlSha256": "18fab22c6b92592673e19574739eb2ed86cbfb0fe628023ec5dcd3b843a1aa6b",
+      "sourceSvgSha256": "a7be408cd38b92bb0010b73dfcec21f14ccf2c7a7e24a04d0d03a65b94483fa6",
+      "sourceClass": "w-6 h-6",
+      "sourceViewBox": "0 0 24 24",
+      "sourceCssSize": 24,
+      "sourceResolvedColor": "#ffffff",
+      "sourceChildNodes": [
+        {
+          "tag": "path",
+          "attributes": {
+            "d": "M12 4v16m8-8H4",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round"
+          }
+        }
+      ],
+      "effectiveStyleCanonical": {
+        "tag": "svg",
+        "geometry": {
+          "viewbox": "0 0 24 24"
+        },
+        "effectiveStyle": {},
+        "children": [
+          {
+            "tag": "path",
+            "geometry": {
+              "d": "M12 4v16m8-8H4"
+            },
+            "effectiveStyle": {
+              "fill": "none",
+              "stroke": "#ffffff",
+              "stroke-width": "2.5",
+              "stroke-linecap": "round",
+              "stroke-linejoin": "round"
+            },
+            "children": []
+          }
+        ]
+      },
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_3-create.svg",
+        "bytes": 211,
+        "sha256": "91b2e55d357553a9889d54a021372a680f07898738150122e462760d4be237b7"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_3-create.svg",
+        "bytes": 185,
+        "sha256": "b363c7333810f450b119ae9de42dca6e4a353f6f74588c74f9ddf4de108edac4"
+      },
+      "proof": "child geometry attribute values unchanged; inherited styles normalized only after canonical equivalence"
+    },
+    {
+      "sourcePage": "caper_3",
+      "slot": "messages",
+      "sourceHtmlLine": 575,
+      "sourceHtmlSha256": "18fab22c6b92592673e19574739eb2ed86cbfb0fe628023ec5dcd3b843a1aa6b",
+      "sourceSvgSha256": "7bd9fa10a4d44cb31c16a2a5a647f6b1599dd2a40151edd20cdf5eff99b16af9",
+      "sourceClass": "w-5 h-5 mb-0.5",
+      "sourceViewBox": "0 0 24 24",
+      "sourceCssSize": 20,
+      "sourceResolvedColor": "#1d64f2",
+      "sourceChildNodes": [
+        {
+          "tag": "path",
+          "attributes": {
+            "d": "M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"
+          }
+        }
+      ],
+      "effectiveStyleCanonical": {
+        "tag": "svg",
+        "geometry": {
+          "viewbox": "0 0 24 24"
+        },
+        "effectiveStyle": {},
+        "children": [
+          {
+            "tag": "path",
+            "geometry": {
+              "d": "M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"
+            },
+            "effectiveStyle": {
+              "fill": "#1d64f2",
+              "stroke": "none",
+              "stroke-width": "1",
+              "stroke-linecap": "butt",
+              "stroke-linejoin": "miter"
+            },
+            "children": []
+          }
+        ]
+      },
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_3-messages.svg",
+        "bytes": 183,
+        "sha256": "2131b365abfa404bd8ec9b0882a5e4b09ca82d4a993eed5615fd078680a036b9"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_3-messages.svg",
+        "bytes": 160,
+        "sha256": "bd60addfb1541b237223ff5501db7c6272e85262ce3e17e5e3b68077edbc0faa"
+      },
+      "proof": "child geometry attribute values unchanged; inherited styles normalized only after canonical equivalence"
+    },
+    {
+      "sourcePage": "caper_3",
+      "slot": "me",
+      "sourceHtmlLine": 582,
+      "sourceHtmlSha256": "18fab22c6b92592673e19574739eb2ed86cbfb0fe628023ec5dcd3b843a1aa6b",
+      "sourceSvgSha256": "c4dd3c5b3d38730f59d4ea4a489df7c6b3bd756cd88f8cb2dfbd8138fdaed46b",
+      "sourceClass": "w-5 h-5 mb-0.5",
+      "sourceViewBox": "0 0 24 24",
+      "sourceCssSize": 20,
+      "sourceResolvedColor": "#94a3b8",
+      "sourceChildNodes": [
+        {
+          "tag": "path",
+          "attributes": {
+            "d": "M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
+          }
+        },
+        {
+          "tag": "circle",
+          "attributes": {
+            "cx": "12",
+            "cy": "7",
+            "r": "4"
+          }
+        }
+      ],
+      "effectiveStyleCanonical": {
+        "tag": "svg",
+        "geometry": {
+          "viewbox": "0 0 24 24"
+        },
+        "effectiveStyle": {},
+        "children": [
+          {
+            "tag": "path",
+            "geometry": {
+              "d": "M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
+            },
+            "effectiveStyle": {
+              "fill": "none",
+              "stroke": "#94a3b8",
+              "stroke-width": "1.8",
+              "stroke-linecap": "butt",
+              "stroke-linejoin": "miter"
+            },
+            "children": []
+          },
+          {
+            "tag": "circle",
+            "geometry": {
+              "cx": "12",
+              "cy": "7",
+              "r": "4"
+            },
+            "effectiveStyle": {
+              "fill": "none",
+              "stroke": "#94a3b8",
+              "stroke-width": "1.8",
+              "stroke-linecap": "butt",
+              "stroke-linejoin": "miter"
+            },
+            "children": []
+          }
+        ]
+      },
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_3-me.svg",
+        "bytes": 221,
+        "sha256": "0d67bb668e35a29e394769150a8bb4535a6b0fcdc4f106771edb8f984e5ccf37"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_3-me.svg",
+        "bytes": 198,
+        "sha256": "a06abde5786d176e7bf7fac1f1cd195ba8c170cd1c37d9104b9bb89dc3cf9c09"
+      },
+      "proof": "child geometry attribute values unchanged; inherited styles normalized only after canonical equivalence"
+    },
+    {
+      "sourcePage": "caper_1",
+      "slot": "home",
+      "sourceHtmlLine": 753,
+      "sourceHtmlSha256": "37088f60630a26b0c2711c9ef018076d3ede9128cf33e5b7bf399fb66217faf9",
+      "sourceSvgSha256": "a03e2f75032461185844e9bd5531f32cc8031fcbef07bea5b963ac06059af5d9",
+      "sourceClass": "w-5 h-5",
+      "sourceViewBox": "0 0 24 24",
+      "sourceCssSize": 20,
+      "sourceResolvedColor": "#94a3b8",
+      "sourceChildNodes": [
+        {
+          "tag": "path",
+          "attributes": {
+            "d": "m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+          }
+        },
+        {
+          "tag": "polyline",
+          "attributes": {
+            "points": "9 22 9 12 15 12 15 22"
+          }
+        }
+      ],
+      "effectiveStyleCanonical": {
+        "tag": "svg",
+        "geometry": {
+          "viewbox": "0 0 24 24"
+        },
+        "effectiveStyle": {},
+        "children": [
+          {
+            "tag": "path",
+            "geometry": {
+              "d": "m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+            },
+            "effectiveStyle": {
+              "fill": "none",
+              "stroke": "#94a3b8",
+              "stroke-width": "2",
+              "stroke-linecap": "butt",
+              "stroke-linejoin": "miter"
+            },
+            "children": []
+          },
+          {
+            "tag": "polyline",
+            "geometry": {
+              "points": "9 22 9 12 15 12 15 22"
+            },
+            "effectiveStyle": {
+              "fill": "none",
+              "stroke": "#94a3b8",
+              "stroke-width": "2",
+              "stroke-linecap": "butt",
+              "stroke-linejoin": "miter"
+            },
+            "children": []
+          }
+        ]
+      },
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_1-home.svg",
+        "bytes": 236,
+        "sha256": "dfe9d5d2b9926ea879bba6256c0f171c9b6ea94337955c6b2e7a02c371cd46cc"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_1-home.svg",
+        "bytes": 213,
+        "sha256": "e742fa1b58c64b4a8392bfe373bdb28802a0470665f0028cc0242ee3af031865"
+      },
+      "proof": "child geometry attribute values unchanged; inherited styles normalized only after canonical equivalence"
+    },
+    {
+      "sourcePage": "caper_1",
+      "slot": "discover",
+      "sourceHtmlLine": 758,
+      "sourceHtmlSha256": "37088f60630a26b0c2711c9ef018076d3ede9128cf33e5b7bf399fb66217faf9",
+      "sourceSvgSha256": "aa3a7e24de1c8b56c1387a6ed1d4dce059a75fb2614c7f4dc4c02e71b58e8272",
+      "sourceClass": "w-5 h-5",
+      "sourceViewBox": "0 0 24 24",
+      "sourceCssSize": 20,
+      "sourceResolvedColor": "#94a3b8",
+      "sourceChildNodes": [
+        {
+          "tag": "circle",
+          "attributes": {
+            "cx": "12",
+            "cy": "12",
+            "r": "10"
+          }
+        },
+        {
+          "tag": "polygon",
+          "attributes": {
+            "points": "16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"
+          }
+        }
+      ],
+      "effectiveStyleCanonical": {
+        "tag": "svg",
+        "geometry": {
+          "viewbox": "0 0 24 24"
+        },
+        "effectiveStyle": {},
+        "children": [
+          {
+            "tag": "circle",
+            "geometry": {
+              "cx": "12",
+              "cy": "12",
+              "r": "10"
+            },
+            "effectiveStyle": {
+              "fill": "none",
+              "stroke": "#94a3b8",
+              "stroke-width": "2",
+              "stroke-linecap": "butt",
+              "stroke-linejoin": "miter"
+            },
+            "children": []
+          },
+          {
+            "tag": "polygon",
+            "geometry": {
+              "points": "16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"
+            },
+            "effectiveStyle": {
+              "fill": "none",
+              "stroke": "#94a3b8",
+              "stroke-width": "2",
+              "stroke-linecap": "butt",
+              "stroke-linejoin": "miter"
+            },
+            "children": []
+          }
+        ]
+      },
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_1-discover.svg",
+        "bytes": 242,
+        "sha256": "7517febfccbd679db7eb6515dfc2ea8cff16d9522389b04d71d98e427f2a2498"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_1-discover.svg",
+        "bytes": 219,
+        "sha256": "4fc500eb6aae0ea2e5691b71658f074b465d5dd4001c0ca47c1585669ec8cfa1"
+      },
+      "proof": "child geometry attribute values unchanged; inherited styles normalized only after canonical equivalence"
+    },
+    {
+      "sourcePage": "caper_1",
+      "slot": "create",
+      "sourceHtmlLine": 763,
+      "sourceHtmlSha256": "37088f60630a26b0c2711c9ef018076d3ede9128cf33e5b7bf399fb66217faf9",
+      "sourceSvgSha256": "bcbea7ccbf443354170159b25180512ec1dd6ca288e447dc5171fb6b58378e69",
+      "sourceClass": "w-6 h-6 stroke-[2.5]",
+      "sourceViewBox": "0 0 24 24",
+      "sourceCssSize": 24,
+      "sourceResolvedColor": "#ffffff",
+      "sourceChildNodes": [
+        {
+          "tag": "line",
+          "attributes": {
+            "x1": "12",
+            "x2": "12",
+            "y1": "5",
+            "y2": "19"
+          }
+        },
+        {
+          "tag": "line",
+          "attributes": {
+            "x1": "5",
+            "x2": "19",
+            "y1": "12",
+            "y2": "12"
+          }
+        }
+      ],
+      "effectiveStyleCanonical": {
+        "tag": "svg",
+        "geometry": {
+          "viewbox": "0 0 24 24"
+        },
+        "effectiveStyle": {},
+        "children": [
+          {
+            "tag": "line",
+            "geometry": {
+              "x1": "12",
+              "x2": "12",
+              "y1": "5",
+              "y2": "19"
+            },
+            "effectiveStyle": {
+              "fill": "none",
+              "stroke": "#ffffff",
+              "stroke-width": "2.5",
+              "stroke-linecap": "butt",
+              "stroke-linejoin": "miter"
+            },
+            "children": []
+          },
+          {
+            "tag": "line",
+            "geometry": {
+              "x1": "5",
+              "x2": "19",
+              "y1": "12",
+              "y2": "12"
+            },
+            "effectiveStyle": {
+              "fill": "none",
+              "stroke": "#ffffff",
+              "stroke-width": "2.5",
+              "stroke-linecap": "butt",
+              "stroke-linejoin": "miter"
+            },
+            "children": []
+          }
+        ]
+      },
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_1-create.svg",
+        "bytes": 214,
+        "sha256": "ef6ac312a6695f684f955e0ffb33c5ca51e4d4bdc5786e9b3c3982b73bdfa74c"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_1-create.svg",
+        "bytes": 188,
+        "sha256": "d81a595ec7464ee36709e049c84da394e0292454ddc4bb11bf1982caae03a436"
+      },
+      "proof": "child geometry attribute values unchanged; inherited styles normalized only after canonical equivalence"
+    },
+    {
+      "sourcePage": "caper_1",
+      "slot": "messages",
+      "sourceHtmlLine": 768,
+      "sourceHtmlSha256": "37088f60630a26b0c2711c9ef018076d3ede9128cf33e5b7bf399fb66217faf9",
+      "sourceSvgSha256": "0592b57f4b2df3f69e3d1674708b8f449fc82d2b3aa5d5db3f7e0a72e9eeabab",
+      "sourceClass": "w-5 h-5",
+      "sourceViewBox": "0 0 24 24",
+      "sourceCssSize": 20,
+      "sourceResolvedColor": "#94a3b8",
+      "sourceChildNodes": [
+        {
+          "tag": "path",
+          "attributes": {
+            "d": "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+          }
+        }
+      ],
+      "effectiveStyleCanonical": {
+        "tag": "svg",
+        "geometry": {
+          "viewbox": "0 0 24 24"
+        },
+        "effectiveStyle": {},
+        "children": [
+          {
+            "tag": "path",
+            "geometry": {
+              "d": "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+            },
+            "effectiveStyle": {
+              "fill": "none",
+              "stroke": "#94a3b8",
+              "stroke-width": "2",
+              "stroke-linecap": "butt",
+              "stroke-linejoin": "miter"
+            },
+            "children": []
+          }
+        ]
+      },
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_1-messages.svg",
+        "bytes": 209,
+        "sha256": "c3f15f16292986e0f1cd320bf640548f1cbd184a903ea870de3726b0697d621e"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_1-messages.svg",
+        "bytes": 186,
+        "sha256": "0ac77114e2c06e81b0dba5a53541a5e1d91ff9b6cf89076507180eaa3f4b6372"
+      },
+      "proof": "child geometry attribute values unchanged; inherited styles normalized only after canonical equivalence"
+    },
+    {
+      "sourcePage": "caper_1",
+      "slot": "me",
+      "sourceHtmlLine": 773,
+      "sourceHtmlSha256": "37088f60630a26b0c2711c9ef018076d3ede9128cf33e5b7bf399fb66217faf9",
+      "sourceSvgSha256": "0ab448bf3c8f716f61d6c77ad5f0cd724142aaca2dddd63a33f8a076ef8da672",
+      "sourceClass": "w-5 h-5",
+      "sourceViewBox": "0 0 24 24",
+      "sourceCssSize": 20,
+      "sourceResolvedColor": "#1d64f2",
+      "sourceChildNodes": [
+        {
+          "tag": "path",
+          "attributes": {
+            "d": "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+          }
+        }
+      ],
+      "effectiveStyleCanonical": {
+        "tag": "svg",
+        "geometry": {
+          "viewbox": "0 0 24 24"
+        },
+        "effectiveStyle": {},
+        "children": [
+          {
+            "tag": "path",
+            "geometry": {
+              "d": "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+            },
+            "effectiveStyle": {
+              "fill": "#1d64f2",
+              "stroke": "none",
+              "stroke-width": "1",
+              "stroke-linecap": "butt",
+              "stroke-linejoin": "miter"
+            },
+            "children": []
+          }
+        ]
+      },
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_1-me.svg",
+        "bytes": 226,
+        "sha256": "8b722350c1ca7a98b1a3f104637095471f2a66e6a5e7e6a0f484ccb87a9fa354"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_1-me.svg",
+        "bytes": 203,
+        "sha256": "0d6d462ac9e5ea77e33eea3a485d8359f3b1a651af34a76e47a7be09535a5c2f"
+      },
+      "proof": "child geometry attribute values unchanged; inherited styles normalized only after canonical equivalence"
+    },
+    {
+      "sourcePage": "caper_ai",
+      "slot": "home",
+      "sourceHtmlLine": 711,
+      "sourceHtmlSha256": "baa9cbbb84c513529e4df1f7efdaec4057a9585993242983565fd58d5b461628",
+      "sourceSvgSha256": "8d81bb1f7f22f28cf8806a2cab415667d2ee0f87cb219dc2832cc6fa554c5aa7",
+      "sourceClass": "w-5 h-5",
+      "sourceViewBox": "0 0 24 24",
+      "sourceCssSize": 20,
+      "sourceResolvedColor": "#94a3b8",
+      "sourceChildNodes": [
+        {
+          "tag": "path",
+          "attributes": {
+            "d": "M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"
+          }
+        }
+      ],
+      "effectiveStyleCanonical": {
+        "tag": "svg",
+        "geometry": {
+          "viewbox": "0 0 24 24"
+        },
+        "effectiveStyle": {},
+        "children": [
+          {
+            "tag": "path",
+            "geometry": {
+              "d": "M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"
+            },
+            "effectiveStyle": {
+              "fill": "#94a3b8",
+              "stroke": "none",
+              "stroke-width": "1",
+              "stroke-linecap": "butt",
+              "stroke-linejoin": "miter"
+            },
+            "children": []
+          }
+        ]
+      },
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_ai-home.svg",
+        "bytes": 152,
+        "sha256": "18d20ea5aee943670eaa1af3d19ca9bfe401b9a8c2239ddf86c3323944fd0567"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_ai-home.svg",
+        "bytes": 129,
+        "sha256": "1f589c2995dfc98a9127bb8e8e92c0a8af6c22b5ff2212bd913684615cbd47fb"
+      },
+      "proof": "child geometry attribute values unchanged; inherited styles normalized only after canonical equivalence"
+    },
+    {
+      "sourcePage": "caper_ai",
+      "slot": "discover",
+      "sourceHtmlLine": 716,
+      "sourceHtmlSha256": "baa9cbbb84c513529e4df1f7efdaec4057a9585993242983565fd58d5b461628",
+      "sourceSvgSha256": "09c430a154e7c96ac117fa7557a7f6c0e2c6985dfca509081adf1b67c252b4fd",
+      "sourceClass": "w-5 h-5",
+      "sourceViewBox": "0 0 24 24",
+      "sourceCssSize": 20,
+      "sourceResolvedColor": "#94a3b8",
+      "sourceChildNodes": [
+        {
+          "tag": "path",
+          "attributes": {
+            "d": "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            "stroke-width": "2"
+          }
+        }
+      ],
+      "effectiveStyleCanonical": {
+        "tag": "svg",
+        "geometry": {
+          "viewbox": "0 0 24 24"
+        },
+        "effectiveStyle": {},
+        "children": [
+          {
+            "tag": "path",
+            "geometry": {
+              "d": "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            },
+            "effectiveStyle": {
+              "fill": "none",
+              "stroke": "#94a3b8",
+              "stroke-width": "2",
+              "stroke-linecap": "round",
+              "stroke-linejoin": "round"
+            },
+            "children": []
+          }
+        ]
+      },
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_ai-discover.svg",
+        "bytes": 238,
+        "sha256": "12154f19bf35e6c0757da12d68ce5b74474120efb8bd88a955b425c36892091d"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_ai-discover.svg",
+        "bytes": 215,
+        "sha256": "496b4f27d87c202e87f332dc5d43e4f19063bdc6e515e2786252472a356fbf17"
+      },
+      "proof": "child geometry attribute values unchanged; inherited styles normalized only after canonical equivalence"
+    },
+    {
+      "sourcePage": "caper_ai",
+      "slot": "create",
+      "sourceHtmlLine": 722,
+      "sourceHtmlSha256": "baa9cbbb84c513529e4df1f7efdaec4057a9585993242983565fd58d5b461628",
+      "sourceSvgSha256": "be228b301db2dd9bb5b768d1865c29947c6c68d16390c7b95ceeff7bd641efff",
+      "sourceClass": "w-6 h-6",
+      "sourceViewBox": "0 0 24 24",
+      "sourceCssSize": 24,
+      "sourceResolvedColor": "#ffffff",
+      "sourceChildNodes": [
+        {
+          "tag": "path",
+          "attributes": {
+            "d": "M12 4v16m8-8H4",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            "stroke-width": "2.5"
+          }
+        }
+      ],
+      "effectiveStyleCanonical": {
+        "tag": "svg",
+        "geometry": {
+          "viewbox": "0 0 24 24"
+        },
+        "effectiveStyle": {},
+        "children": [
+          {
+            "tag": "path",
+            "geometry": {
+              "d": "M12 4v16m8-8H4"
+            },
+            "effectiveStyle": {
+              "fill": "none",
+              "stroke": "#ffffff",
+              "stroke-width": "2.5",
+              "stroke-linecap": "round",
+              "stroke-linejoin": "round"
+            },
+            "children": []
+          }
+        ]
+      },
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_ai-create.svg",
+        "bytes": 211,
+        "sha256": "356dc5f9a95c124ff8354d532523fa18591688b432d9ea2034cc314c52803557"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_3-create.svg",
+        "bytes": 185,
+        "sha256": "b363c7333810f450b119ae9de42dca6e4a353f6f74588c74f9ddf4de108edac4"
+      },
+      "proof": "child geometry attribute values unchanged; inherited styles normalized only after canonical equivalence"
+    },
+    {
+      "sourcePage": "caper_ai",
+      "slot": "messages",
+      "sourceHtmlLine": 728,
+      "sourceHtmlSha256": "baa9cbbb84c513529e4df1f7efdaec4057a9585993242983565fd58d5b461628",
+      "sourceSvgSha256": "5ece878c1161ed44483bb28f61a8c5000578a1afe2042987009b3d0cc4394d55",
+      "sourceClass": "w-5 h-5",
+      "sourceViewBox": "0 0 24 24",
+      "sourceCssSize": 20,
+      "sourceResolvedColor": "#94a3b8",
+      "sourceChildNodes": [
+        {
+          "tag": "path",
+          "attributes": {
+            "d": "M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            "stroke-width": "2"
+          }
+        }
+      ],
+      "effectiveStyleCanonical": {
+        "tag": "svg",
+        "geometry": {
+          "viewbox": "0 0 24 24"
+        },
+        "effectiveStyle": {},
+        "children": [
+          {
+            "tag": "path",
+            "geometry": {
+              "d": "M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+            },
+            "effectiveStyle": {
+              "fill": "none",
+              "stroke": "#94a3b8",
+              "stroke-width": "2",
+              "stroke-linecap": "round",
+              "stroke-linejoin": "round"
+            },
+            "children": []
+          }
+        ]
+      },
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_ai-messages.svg",
+        "bytes": 352,
+        "sha256": "b4b18e9cab54d5c4a9b7a71d4fd4d8474671e3bd5b491aa4728ad954b82d5308"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_ai-messages.svg",
+        "bytes": 329,
+        "sha256": "93c7c2db13c0e910f6c0e1ccc659381ca23bf643ce8cdf621f5a680182cbf6f1"
+      },
+      "proof": "child geometry attribute values unchanged; inherited styles normalized only after canonical equivalence"
+    },
+    {
+      "sourcePage": "caper_ai",
+      "slot": "me",
+      "sourceHtmlLine": 734,
+      "sourceHtmlSha256": "baa9cbbb84c513529e4df1f7efdaec4057a9585993242983565fd58d5b461628",
+      "sourceSvgSha256": "14e156a912e201f07cf0a427791697baec19ef55be07f4dfe99bde7a56067eeb",
+      "sourceClass": "w-5 h-5",
+      "sourceViewBox": "0 0 24 24",
+      "sourceCssSize": 20,
+      "sourceResolvedColor": "#94a3b8",
+      "sourceChildNodes": [
+        {
+          "tag": "path",
+          "attributes": {
+            "d": "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            "stroke-width": "2"
+          }
+        }
+      ],
+      "effectiveStyleCanonical": {
+        "tag": "svg",
+        "geometry": {
+          "viewbox": "0 0 24 24"
+        },
+        "effectiveStyle": {},
+        "children": [
+          {
+            "tag": "path",
+            "geometry": {
+              "d": "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            },
+            "effectiveStyle": {
+              "fill": "none",
+              "stroke": "#94a3b8",
+              "stroke-width": "2",
+              "stroke-linecap": "round",
+              "stroke-linejoin": "round"
+            },
+            "children": []
+          }
+        ]
+      },
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_ai-me.svg",
+        "bytes": 262,
+        "sha256": "abb1c343fbfaea0bb7ff6bf43fc0c62078a4551e70640faeddd741601545baa4"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_ai-me.svg",
+        "bytes": 239,
+        "sha256": "ffd5c55b62069ece66fba519cd4714b11a54b00d879e532bef514f5393abb157"
+      },
+      "proof": "child geometry attribute values unchanged; inherited styles normalized only after canonical equivalence"
+    }
+  ],
+  "phosphorVariants": [
+    {
+      "sourcePage": "caper_4",
+      "sourceHtmlLine": 797,
+      "symbol": "house",
+      "style": "regular",
+      "class": "ph",
+      "unicode": "U+EB9C",
+      "cssPath": "/Users/tsb/Documents/小程序/docs/design-sources/phosphor-web-2.0.3/regular/style.css",
+      "cssDefinitionLine": 2031,
+      "cssSha256": "ae360472b03f686e8327d0440ac943bbf3e25ae3a833e7ff530aef1ce33ab44d",
+      "fontPath": "/Users/tsb/Documents/小程序/docs/design-sources/phosphor-web-2.0.3/regular/Phosphor.ttf",
+      "fontSha256": "83034c352ef88208a6433526ebe04139caa3fabc28912c465992d791e29a4593",
+      "glyphName": "uniEB9C",
+      "advance": 1024,
+      "unitsPerEm": 1024,
+      "ascent": 960,
+      "descent": -64,
+      "sourceColor": "#94a3b8",
+      "sourceCssSize": 20,
+      "pathSha256": "f00cf7d04d345cf8cdaeb0ebf57de12fe442f2f350afb5f7cd13ea95052af391",
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_4-ph-house-regular.svg",
+        "bytes": 692,
+        "sha256": "f7d2f761ab4382dfa14eb6a8f95b8203b4735784e02904f66fb24f9946828b4f"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_4-ph-house-regular.svg",
+        "bytes": 669,
+        "sha256": "300996766af1c93c7d80b9754eb5c81d5259112fa2b76425e744687b07dd696b"
+      },
+      "proof": "exact official 2.0.3 glyph outline; only line-box y conversion; no path rounding/simplification"
+    },
+    {
+      "sourcePage": "caper_4",
+      "sourceHtmlLine": 802,
+      "symbol": "compass",
+      "style": "fill",
+      "class": "ph-fill",
+      "unicode": "U+EA63",
+      "cssPath": "/Users/tsb/Documents/小程序/docs/design-sources/phosphor-web-2.0.3/fill/style.css",
+      "cssDefinitionLine": 1092,
+      "cssSha256": "2d2b5281299a3a849ac8d3ceb42b8e3107b820c20e4e82687bfc8ec4f7e9a0fc",
+      "fontPath": "/Users/tsb/Documents/小程序/docs/design-sources/phosphor-web-2.0.3/fill/Phosphor-Fill.ttf",
+      "fontSha256": "3a8fd92374be66aa4c58db0caea81d3be4b6058288351550bcb4f946ae324267",
+      "glyphName": "uniEA63",
+      "advance": 1024,
+      "unitsPerEm": 1024,
+      "ascent": 960,
+      "descent": -64,
+      "sourceColor": "#1d64f2",
+      "sourceCssSize": 20,
+      "pathSha256": "5a92144d98b3b2b3587ee96b624f3beac0ad5f98e2be99e87f72cfefd9d1903d",
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_4-ph-compass-fill.svg",
+        "bytes": 724,
+        "sha256": "8cf28d54e6db0aaecabd19ad1c9622b0b6b0ff78aebd504dd5a90ef57b0e4a44"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_4-ph-compass-fill.svg",
+        "bytes": 701,
+        "sha256": "73c02679eb661a24aebddbe19ca7f841b263a1beb0e89474ca710b617e3c9e78"
+      },
+      "proof": "exact official 2.0.3 glyph outline; only line-box y conversion; no path rounding/simplification"
+    },
+    {
+      "sourcePage": "caper_4",
+      "sourceHtmlLine": 808,
+      "symbol": "plus",
+      "style": "bold",
+      "class": "ph-bold",
+      "unicode": "U+EC86",
+      "cssPath": "/Users/tsb/Documents/小程序/docs/design-sources/phosphor-web-2.0.3/bold/style.css",
+      "cssDefinitionLine": 2733,
+      "cssSha256": "c2b4f3dbe9960e4ed9ffa0c78b19a2210f946cfb4bb01b53b4fce64afaee2961",
+      "fontPath": "/Users/tsb/Documents/小程序/docs/design-sources/phosphor-web-2.0.3/bold/Phosphor-Bold.ttf",
+      "fontSha256": "b0b27f810a2646b0b48d243b119bc4f3ed727f1e4162e05bfe6e4f85018f4b7b",
+      "glyphName": "uniEC86",
+      "advance": 1024,
+      "unitsPerEm": 1024,
+      "ascent": 960,
+      "descent": -64,
+      "sourceColor": "#ffffff",
+      "sourceCssSize": 24,
+      "pathSha256": "15632fd2e17bf5b7a085ae0e4b2507de4cd23230985815ecbcc3720852ad6de1",
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_4-ph-plus-bold.svg",
+        "bytes": 450,
+        "sha256": "3d76c0550225183d00d4be4bbb5874f2e60155c5ac0b530cbe023943f0394f2b"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_4-ph-plus-bold.svg",
+        "bytes": 424,
+        "sha256": "8babadde2c34a30a0b4072eb3a9c4e94470aa5cce24b99fa42be5b647df4ca0e"
+      },
+      "proof": "exact official 2.0.3 glyph outline; only line-box y conversion; no path rounding/simplification"
+    },
+    {
+      "sourcePage": "caper_4",
+      "sourceHtmlLine": 814,
+      "symbol": "chat-teardrop-dots",
+      "style": "regular",
+      "class": "ph",
+      "unicode": "U+EA2D",
+      "cssPath": "/Users/tsb/Documents/小程序/docs/design-sources/phosphor-web-2.0.3/regular/style.css",
+      "cssDefinitionLine": 930,
+      "cssSha256": "ae360472b03f686e8327d0440ac943bbf3e25ae3a833e7ff530aef1ce33ab44d",
+      "fontPath": "/Users/tsb/Documents/小程序/docs/design-sources/phosphor-web-2.0.3/regular/Phosphor.ttf",
+      "fontSha256": "83034c352ef88208a6433526ebe04139caa3fabc28912c465992d791e29a4593",
+      "glyphName": "uniEA2D",
+      "advance": 1024,
+      "unitsPerEm": 1024,
+      "ascent": 960,
+      "descent": -64,
+      "sourceColor": "#94a3b8",
+      "sourceCssSize": 20,
+      "pathSha256": "2dd82dbfc976e7c56eb693c511770857e75a03d291b0f542dafb74209395799b",
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_4-ph-chat-teardrop-dots-regular.svg",
+        "bytes": 1054,
+        "sha256": "95b797ffa98aab2c7384feaf18768ae6c99150f8d7d3b10a4256ac8ca706247b"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_4-ph-chat-teardrop-dots-regular.svg",
+        "bytes": 1031,
+        "sha256": "174b8ad5880db219b8e20a6d16a4d2a783e3b307b22df91bc7efb5f9159c9b40"
+      },
+      "proof": "exact official 2.0.3 glyph outline; only line-box y conversion; no path rounding/simplification"
+    },
+    {
+      "sourcePage": "caper_4",
+      "sourceHtmlLine": 821,
+      "symbol": "user",
+      "style": "regular",
+      "class": "ph",
+      "unicode": "U+EDA0",
+      "cssPath": "/Users/tsb/Documents/小程序/docs/design-sources/phosphor-web-2.0.3/regular/style.css",
+      "cssDefinitionLine": 3579,
+      "cssSha256": "ae360472b03f686e8327d0440ac943bbf3e25ae3a833e7ff530aef1ce33ab44d",
+      "fontPath": "/Users/tsb/Documents/小程序/docs/design-sources/phosphor-web-2.0.3/regular/Phosphor.ttf",
+      "fontSha256": "83034c352ef88208a6433526ebe04139caa3fabc28912c465992d791e29a4593",
+      "glyphName": "uniEDA0",
+      "advance": 1024,
+      "unitsPerEm": 1024,
+      "ascent": 960,
+      "descent": -64,
+      "sourceColor": "#94a3b8",
+      "sourceCssSize": 20,
+      "pathSha256": "6e9808c4524a062a56b0f70fca3ef0f7d46261ac925f131eacbda357e80285ad",
+      "sourceVariant": {
+        "path": "/private/tmp/caper-wave67-tab-prep/source-variants/caper_4-ph-user-regular.svg",
+        "bytes": 1103,
+        "sha256": "a9950cb23bfaf06a04d19fa4b592b0e86abc5741e2bd81ea16345b8828c8e62a"
+      },
+      "compactCandidate": {
+        "path": "/private/tmp/caper-wave67-tab-prep/compact-assets/caper_4-ph-user-regular.svg",
+        "bytes": 1080,
+        "sha256": "7961d204b5e9beb6422ff10dcb434c688cde99ec5857be75c6f09f9d34ed1f45"
+      },
+      "proof": "exact official 2.0.3 glyph outline; only line-box y conversion; no path rounding/simplification"
+    }
+  ],
+  "rawSvgCount": 25,
+  "rawSvgBytes": 8675,
+  "compactSvgCount": 24,
+  "compactSvgBytes": 7900,
+  "oldNavSvgBytes": 2039,
+  "compactLessOldNavBytes": 5861,
+  "latestMainRemainingBytesFromRoot": 3063,
+  "budgetIsActualPackageAcceptance": false,
+  "sourceVariantsPreserveIntrinsicDimensions": true,
+  "compactCandidatesRequireSourceCssSizeInImageWxmlWxss": true,
+  "normalization": "Only unanimous inherited graphic style moved to SVG root; source d/points/coordinates unchanged. Omits width/height for fixed-size mini image candidate; #fff equals #ffffff.",
+  "applicationAssets": [
+    {
+      "path": "miniprogram/assets/nav/h-home.svg",
+      "bytes": 129,
+      "sha256": "0d93d6e45ea8a9db98d98f32c0f9edc4ee15dcf1c1c6db1b38bae89f40599127"
+    },
+    {
+      "path": "miniprogram/assets/nav/h-find.svg",
+      "bytes": 215,
+      "sha256": "38cc7ccce5cdd0313b2dd5666308dd5b4d4b402b91b86d52837ac90cc1acd034"
+    },
+    {
+      "path": "miniprogram/assets/nav/h-plus.svg",
+      "bytes": 183,
+      "sha256": "a888fce4fa766d3b6de7bf4e0b54b3956bbce14b405a2dbd06dfd9ac0cb6d3bc"
+    },
+    {
+      "path": "miniprogram/assets/nav/h-msg.svg",
+      "bytes": 329,
+      "sha256": "827cb2ea6b00c71514bae57340e63ab9078442c08ac5e22efb09463479aa713f"
+    },
+    {
+      "path": "miniprogram/assets/nav/h-me.svg",
+      "bytes": 239,
+      "sha256": "07df44e6107f653683b7b6d6864f93c2f447fa6d91e80d52bc95ccbafa022387"
+    },
+    {
+      "path": "miniprogram/assets/nav/n-home.svg",
+      "bytes": 215,
+      "sha256": "38befba40441c61667b3ff635e5e571cbcfa29b24e2aea0269cd46fc918ea8c6"
+    },
+    {
+      "path": "miniprogram/assets/nav/n-find.svg",
+      "bytes": 221,
+      "sha256": "5c59cd6f25005c28c053b1e8f15111cc345d68cd6d242caa480f9601d4b80398"
+    },
+    {
+      "path": "miniprogram/assets/nav/n-plus.svg",
+      "bytes": 185,
+      "sha256": "b363c7333810f450b119ae9de42dca6e4a353f6f74588c74f9ddf4de108edac4"
+    },
+    {
+      "path": "miniprogram/assets/nav/n-msg.svg",
+      "bytes": 160,
+      "sha256": "bd60addfb1541b237223ff5501db7c6272e85262ce3e17e5e3b68077edbc0faa"
+    },
+    {
+      "path": "miniprogram/assets/nav/n-me.svg",
+      "bytes": 198,
+      "sha256": "a06abde5786d176e7bf7fac1f1cd195ba8c170cd1c37d9104b9bb89dc3cf9c09"
+    },
+    {
+      "path": "miniprogram/assets/nav/p-home.svg",
+      "bytes": 213,
+      "sha256": "e742fa1b58c64b4a8392bfe373bdb28802a0470665f0028cc0242ee3af031865"
+    },
+    {
+      "path": "miniprogram/assets/nav/p-find.svg",
+      "bytes": 219,
+      "sha256": "4fc500eb6aae0ea2e5691b71658f074b465d5dd4001c0ca47c1585669ec8cfa1"
+    },
+    {
+      "path": "miniprogram/assets/nav/p-plus.svg",
+      "bytes": 188,
+      "sha256": "d81a595ec7464ee36709e049c84da394e0292454ddc4bb11bf1982caae03a436"
+    },
+    {
+      "path": "miniprogram/assets/nav/p-msg.svg",
+      "bytes": 186,
+      "sha256": "0ac77114e2c06e81b0dba5a53541a5e1d91ff9b6cf89076507180eaa3f4b6372"
+    },
+    {
+      "path": "miniprogram/assets/nav/p-me.svg",
+      "bytes": 203,
+      "sha256": "0d6d462ac9e5ea77e33eea3a485d8359f3b1a651af34a76e47a7be09535a5c2f"
+    },
+    {
+      "path": "miniprogram/assets/nav/f-home.svg",
+      "bytes": 129,
+      "sha256": "1f589c2995dfc98a9127bb8e8e92c0a8af6c22b5ff2212bd913684615cbd47fb"
+    },
+    {
+      "path": "miniprogram/assets/nav/f-find.svg",
+      "bytes": 215,
+      "sha256": "496b4f27d87c202e87f332dc5d43e4f19063bdc6e515e2786252472a356fbf17"
+    },
+    {
+      "path": "miniprogram/assets/nav/f-msg.svg",
+      "bytes": 329,
+      "sha256": "93c7c2db13c0e910f6c0e1ccc659381ca23bf643ce8cdf621f5a680182cbf6f1"
+    },
+    {
+      "path": "miniprogram/assets/nav/f-me.svg",
+      "bytes": 239,
+      "sha256": "ffd5c55b62069ece66fba519cd4714b11a54b00d879e532bef514f5393abb157"
+    },
+    {
+      "path": "miniprogram/assets/nav/d-home.svg",
+      "bytes": 669,
+      "sha256": "300996766af1c93c7d80b9754eb5c81d5259112fa2b76425e744687b07dd696b"
+    },
+    {
+      "path": "miniprogram/assets/nav/d-find.svg",
+      "bytes": 701,
+      "sha256": "73c02679eb661a24aebddbe19ca7f841b263a1beb0e89474ca710b617e3c9e78"
+    },
+    {
+      "path": "miniprogram/assets/nav/d-plus.svg",
+      "bytes": 424,
+      "sha256": "8babadde2c34a30a0b4072eb3a9c4e94470aa5cce24b99fa42be5b647df4ca0e"
+    },
+    {
+      "path": "miniprogram/assets/nav/d-msg.svg",
+      "bytes": 1031,
+      "sha256": "174b8ad5880db219b8e20a6d16a4d2a783e3b307b22df91bc7efb5f9159c9b40"
+    },
+    {
+      "path": "miniprogram/assets/nav/d-me.svg",
+      "bytes": 1080,
+      "sha256": "7961d204b5e9beb6422ff10dcb434c688cde99ec5857be75c6f09f9d34ed1f45"
+    }
+  ],
+  "applicationNameMap": {
+    "caper_2-home": "h-home",
+    "caper_2-discover": "h-find",
+    "caper_2-create": "h-plus",
+    "caper_2-messages": "h-msg",
+    "caper_2-me": "h-me",
+    "caper_3-home": "n-home",
+    "caper_3-discover": "n-find",
+    "caper_3-create": "n-plus",
+    "caper_3-messages": "n-msg",
+    "caper_3-me": "n-me",
+    "caper_1-home": "p-home",
+    "caper_1-discover": "p-find",
+    "caper_1-create": "p-plus",
+    "caper_1-messages": "p-msg",
+    "caper_1-me": "p-me",
+    "caper_ai-home": "f-home",
+    "caper_ai-discover": "f-find",
+    "caper_ai-messages": "f-msg",
+    "caper_ai-me": "f-me",
+    "caper_4-ph-house-regular": "d-home",
+    "caper_4-ph-compass-fill": "d-find",
+    "caper_4-ph-plus-bold": "d-plus",
+    "caper_4-ph-chat-teardrop-dots-regular": "d-msg",
+    "caper_4-ph-user-regular": "d-me"
+  },
+  "rootApprovedPlan": "docs/superpowers/plans/2026-10-02-tab-form-registration-reference-ui.md",
+  "sourceZipSha256": "df22e733d33fda20979b75b8a7bc94717c4a5c9e41561a54e3038432fab32603"
+}

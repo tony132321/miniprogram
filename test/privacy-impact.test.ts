@@ -5,6 +5,9 @@ import { createDatabase } from '../src/db.ts';
 import { createApp } from '../src/server.ts';
 import { createDraft } from '../src/events.ts';
 import { setConsent } from '../src/notifications.ts';
+import { prepareAiAction } from '../src/ai-actions.ts';
+import { reviewAiDraftAlert } from '../src/ai-draft-requests.ts';
+import { eventAliasNotice, setEventAlias } from '../src/event-aliases.ts';
 
 test('privacy impact inventory is operator-only, counted by purpose, and audited without raw content', async () => {
   const db = await createDatabase();
@@ -15,12 +18,15 @@ test('privacy impact inventory is operator-only, counted by purpose, and audited
   try {
     const event = await createDraft(db, 'p1', { title: '本人的草稿' }, 'impact-event');
     await db.query("INSERT INTO users(id,wechat_openid) VALUES('p1','private-openid')");
+    await db.query(`INSERT INTO host_publication_status(host_id,status,reviewed_by,reviewed_at,reason)
+      VALUES('p1','ESTABLISHED','operator:safety',now(),'本人主办资质复核')`);
     await db.query("INSERT INTO registrations(id,event_id,user_id,status) VALUES('registration-1',$1,'p1','CONFIRMED')", [event.id]);
     await db.query("INSERT INTO offers(id,event_id,registration_id,expires_at,status) VALUES('offer-1',$1,'registration-1',now()+interval '15 minutes','ACTIVE')", [event.id]);
     await db.query("INSERT INTO activity_content(id,event_id,author_id,kind,body) VALUES('content-1',$1,'p1','QUESTION','private question')", [event.id]);
-    await db.query("INSERT INTO reports(id,reporter_id,kind,description) VALUES('report-1','p1','SAFETY','private report')");
+    await db.query("INSERT INTO reports(id,reporter_id,event_id,kind,description) VALUES('report-1','p1',$1,'ATTENDANCE','private report')", [event.id]);
+    await db.query("INSERT INTO outcome_reviews(id,event_id,report_id,decision,reason,reviewed_by) VALUES('review-1',$1,'report-1','HELD_CONFIRMED','private operator reason','ops')", [event.id]);
     await setConsent(db, 'p1', 'EVENT_REMINDER', true, 'impact-reminder-consent');
-    await db.query("INSERT INTO event_aliases(event_id,user_id,display_name) VALUES($1,'p1','private alias')", [event.id]);
+    await setEventAlias(db, 'p1', event.id, 'private alias', true, 'private-alias-grant', eventAliasNotice(event.id).version);
     await db.query("INSERT INTO share_intents(source_token,event_id,sender_id,invite_token_hash) VALUES('source-1',$1,'p1','private-hash')", [event.id]);
     await db.query("INSERT INTO personal_export_tickets(id,user_id,expires_at) VALUES('ticket-1','p1',now() + interval '1 hour')");
     await db.query("INSERT INTO user_blocks(id,blocker_id,blocked_id,event_id) VALUES('block-1','p1','p2',$1),('block-2','p2','p1',$1)", [event.id]);
@@ -30,7 +36,11 @@ test('privacy impact inventory is operator-only, counted by purpose, and audited
     await db.query("INSERT INTO outcome_feedback(event_id,user_id,held,would_repeat) VALUES($1,'p1',true,true)", [event.id]);
     await db.query("INSERT INTO cohost_grants(id,event_id,user_id,granted_by,capabilities,expires_at) VALUES('grant-1',$1,'p1','p2',ARRAY['CHECK_IN'],now()+interval '1 day')", [event.id]);
     await db.query("INSERT INTO idempotency(actor_id,route,key,result) VALUES('p1','test','private-key','{}')");
-    await db.query("INSERT INTO ai_draft_requests(actor_id,request_key,request_hash,status,budget_fen,known_cost_fen,result) VALUES('p1','private-ai-key',$1,'COMPLETED',20,7,'{}')", ['a'.repeat(64)]);
+    await db.query("INSERT INTO ai_draft_requests(actor_id,request_key,request_hash,status,budget_fen,known_cost_fen,cost_status,result) VALUES('p1','private-ai-key',$1,'COMPLETED',20,7,'LOWER_BOUND','{}')", ['a'.repeat(64)]);
+    await reviewAiDraftAlert(db, 'operator:jobs', 'p1', 'private-ai-key',
+      '本人异常记录待人工复核', 'impact-ai-review');
+    await prepareAiAction(db, 'p1', { kind: 'SAVE_DRAFT', eventId: event.id,
+      expectedVersion: event.version, payload: { title: '仅本人的建议' } }, 'private-ai-action');
     await db.query("INSERT INTO privacy_requests(id,user_id,kind) VALUES('request-1','p1','DELETE')");
     assert.equal((await get('/ops/privacy/request-1/impact', 'p1')).status, 403);
     assert.equal((await get('/ops/privacy/missing/impact', 'ops')).status, 404);
@@ -43,6 +53,7 @@ test('privacy impact inventory is operator-only, counted by purpose, and audited
     assert.equal(body.inventoryScope, 'SELECTED_CATEGORIES_ONLY');
     assert.equal(body.counts.profile, 1);
     assert.equal(body.counts.hostedEvents, 1);
+    assert.equal(body.counts.hostPublicationStatus, 1);
     assert.equal(body.counts.registrations, 1);
     assert.equal(body.counts.registrationStatusHistory, 1);
     assert.equal(body.counts.hostedEventStatusHistory, 1);
@@ -50,9 +61,12 @@ test('privacy impact inventory is operator-only, counted by purpose, and audited
     assert.equal(body.counts.waitlistOfferHistory, 1);
     assert.equal(body.counts.authoredContent, 1);
     assert.equal(body.counts.reportedDisputes, 1);
+    assert.equal(body.counts.reportedOutcomeReviews, 1);
+    assert.equal(body.counts.hostedOutcomeReviews, 1);
     assert.equal(body.counts.notificationConsents, 1);
     assert.equal(body.counts.notificationConsentHistory, 1);
     assert.equal(body.counts.eventAliases, 1);
+    assert.equal(body.counts.eventAliasConsentHistory, 1);
     assert.equal(body.counts.shareIntents, 1);
     assert.equal(body.counts.personalExportTickets, 1);
     assert.equal(body.counts.blocksCreated, 1);
@@ -63,8 +77,10 @@ test('privacy impact inventory is operator-only, counted by purpose, and audited
     assert.equal(body.counts.outcomeFeedback, 1);
     assert.equal(body.counts.cohostGrants, 1);
     assert.equal(body.counts.privacyRequests, 1);
-    assert.equal(body.counts.idempotencyRecords, 3);
+    assert.equal(body.counts.idempotencyRecords, 5);
     assert.equal(body.counts.aiDraftRequests, 1);
+    assert.equal(body.counts.aiDraftAlertReviews, 1);
+    assert.equal(body.counts.aiActionProposals, 1);
     assert.doesNotMatch(JSON.stringify(body), /private-openid|private question|private report|private alias|private-hash/);
     const audit = await db.query<{ actor_id: string; detail: { requestId: string } }>(
       "SELECT actor_id,detail FROM audit WHERE action='READ_PRIVACY_IMPACT'");

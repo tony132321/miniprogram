@@ -1,0 +1,32 @@
+{
+  "sourceLine": 398,
+  "sourceAlt": "桌游之夜",
+  "URL": "https://lh3.googleusercontent.com/aida-public/AB6AXuCf8cE_-NCjN4UI8SiByUxcCxV2CXUi4UCK-0CxaDFNVWyeI5euf9k5zX-o04133VAq8MismEAskioCgBfpSlkMgZBiy7qRMapZH6fURYt22Roo4KPITVkZmBVysdbx5BrGFBO-r94IXZjWmDHT2ysKU3N-Ikg_c6Bz9X9CFSadFL3okyf17Sfdvelw7hPChJWSJopkijqINrmO2PXXeiTv0ZTfvvBrKDA0_54TYh6X6a-qEx4jBYil3A",
+  "finalURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuCf8cE_-NCjN4UI8SiByUxcCxV2CXUi4UCK-0CxaDFNVWyeI5euf9k5zX-o04133VAq8MismEAskioCgBfpSlkMgZBiy7qRMapZH6fURYt22Roo4KPITVkZmBVysdbx5BrGFBO-r94IXZjWmDHT2ysKU3N-Ikg_c6Bz9X9CFSadFL3okyf17Sfdvelw7hPChJWSJopkijqINrmO2PXXeiTv0ZTfvvBrKDA0_54TYh6X6a-qEx4jBYil3A",
+  "status": 200,
+  "headers": {
+    "Content-Type": "image/jpeg",
+    "Vary": "Origin",
+    "Access-Control-Allow-Origin": "*",
+    "Timing-Allow-Origin": "*",
+    "Access-Control-Expose-Headers": "Content-Length",
+    "ETag": "\"v0\"",
+    "Expires": "Sat, 03 Oct 2026 02:03:47 GMT",
+    "Cache-Control": "public, max-age=86400, no-transform",
+    "Content-Disposition": "inline;filename=\"unnamed.jpg\"",
+    "X-Content-Type-Options": "nosniff",
+    "Date": "Fri, 02 Oct 2026 02:03:47 GMT",
+    "Server": "fife",
+    "Content-Length": "62758",
+    "X-XSS-Protection": "0",
+    "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "Connection": "close"
+  },
+  "contentType": "image/jpeg",
+  "bytes": 62758,
+  "sha256": "dfe5dc41e9e955bae653a9c1095c00675f17bf96d96bdef42bbfc8223c2d98e2",
+  "savedPath": "/private/tmp/caper-wave73-home-long/photos/hot-boardgame.jpg",
+  "noReencoding": true,
+  "fetchedAtUTC": "2026-10-02T02:03:47.736078+00:00",
+  "existingByteEqualCandidates": []
+}

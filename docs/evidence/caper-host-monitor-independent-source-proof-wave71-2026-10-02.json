@@ -1,0 +1,1240 @@
+{
+  "stage": "Wave71 independent source and current-owner readonly monitor review",
+  "sourceProtection": {
+    "scope": "One independent freeze/inverse/read-only-contract/source asset verification, not owner 82 checker or 6 tests rerun. JavaScript behavior reviewed statically; no VM/native/business/API action run.",
+    "manifest": {
+      "path": "/private/tmp/caper-wave71-host-monitor/frozen-owned-paths.json",
+      "bytes": 18123,
+      "sha256": "4af895e0116b1d78e2607902aad9030e1dff0c785ef425213adc0dde523e2c58"
+    },
+    "frozenProducts": [
+      {
+        "path": "miniprogram/subpackages/activity/event/event.js",
+        "bytes": 106348,
+        "sha256": "85db2c73f3b832944782f8913a1ee9cf3a2d4468b54b4ea709e108c76ab26634"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/event.wxml",
+        "bytes": 172013,
+        "sha256": "c23f5ee9f7b9d3238d6597fcf92ef18ff69bd9615e601d65261afeba3dc18680"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/event.wxss",
+        "bytes": 206812,
+        "sha256": "a62ec5123dcf1a4866023d83571a06968fae3377c8e374b19044ca874e2b26b8"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/hm-sensors-w400-f0-004cc8.svg",
+        "bytes": 1020,
+        "sha256": "ff294d2194a6be292bcf5d8b998977e75f8e1455c891016b54695bd89c31d715"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/hm-location_on-w400-f0-737687.svg",
+        "bytes": 805,
+        "sha256": "c3c1426c3af77d35192e680041b31dc8c25857d28c82af765e9b58c5ec71d0fc"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/hm-sports_tennis-w400-f1-004cc8.svg",
+        "bytes": 720,
+        "sha256": "06e91653964b56587bdc1c5ec4e73499028317914a46610f9f5a5f60958ebc77"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/hm-check-w700-f0-ffffff.svg",
+        "bytes": 154,
+        "sha256": "05d4bd3285fc41f0eb75e2a5f14c4e32345b9f8cf82059e8213e903217fce1b2"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/hm-cloud_done-w400-f0-34c759.svg",
+        "bytes": 925,
+        "sha256": "c0f6d39faff93f9601923ea2a155bd35401d5f5677367ddb7010bf81260e63c8"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/hm-schedule_send-w400-f0-004cc8.svg",
+        "bytes": 616,
+        "sha256": "f77b24b25e7c530b2cf0c6e794c474a0d1968c658d7148ba4fe45fa40fc3a816"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/hm-group-w400-f0-004cc8.svg",
+        "bytes": 1588,
+        "sha256": "d3042e90529edaa0f1e1d164af385ff995ece20888945898ca1c51455318008f"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/hm-map-illustrative.png",
+        "bytes": 152683,
+        "sha256": "8c4881b9d74ec892c8549613ab1426b0a11c54793cdb073ffd6540c2805d02f4"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/event.json",
+        "bytes": 69,
+        "sha256": "bf33dc7da099d240642a50fe3cf44cee01a2b282f70a80a313c79317c76ad10b"
+      }
+    ],
+    "sourceArchive": {
+      "path": "/Users/tsb/Downloads/stitch_design_system_generator (2).zip",
+      "bytes": 24668856,
+      "sha256": "df22e733d33fda20979b75b8a7bc94717c4a5c9e41561a54e3038432fab32603",
+      "files": [
+        {
+          "archivePath": "stitch_design_system_generator/_5/code.html",
+          "bytes": 25760,
+          "sha256": "e2a2ce2fb2266283f7762dca23592c732eca385d88ce1772f1e22a41bec8b024",
+          "zipOriginalEqual": true
+        },
+        {
+          "archivePath": "stitch_design_system_generator/_5/screen.png",
+          "bytes": 377418,
+          "sha256": "c304525527f9fcab9c7e6646ed13e8b63a3febeff3c34880f8f1ff91f7b7b3cb",
+          "zipOriginalEqual": true
+        }
+      ]
+    },
+    "wholeInverse": [
+      {
+        "path": "miniprogram/subpackages/activity/event/event.js",
+        "changeCount": 14,
+        "inverseBytes": 104041,
+        "inverseSHA256": "97e9f505d58b4b10e4d74d0e360954a0bac4730e1ddbef3437efeba6ed17621e",
+        "wholeBaselineEqual": true
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/event.wxml",
+        "changeCount": 3,
+        "inverseBytes": 160928,
+        "inverseSHA256": "69b231e3f4d506d2e3d46653bf9075e4ebaa69cdd06bcaf9b82b89d9c8fffa31",
+        "wholeBaselineEqual": true
+      }
+    ],
+    "oldCSSPrefix": {
+      "bytes": 194503,
+      "sha256": "d26cb609e200446af02965b5840bf1fe0f01f21b66e8841da6289022e6881ce0",
+      "byteEqual": true,
+      "appendBytes": 12309
+    },
+    "JSONBaselineByteEqual": true,
+    "oldAssets": [
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-ios_share-w400-f0-1d64f2.svg",
+        "bytes": 549,
+        "sha256": "ca9210e96e1dccff489afe2877c5222d2330db645c601c06b23661d05fa0b498"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pgd-check_circle-w400-f0-faf8fe.svg",
+        "bytes": 833,
+        "sha256": "f97e53d605d03c1c30291d91325f50fc2b8a38257fd957572fe8c0eba01647f6"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg01-share-dark.svg",
+        "bytes": 244,
+        "sha256": "46f9fecb2acd63c650e2f36ca1509deb662e6fda54ec53e4b7839f9a686ae122"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg01-track.svg",
+        "bytes": 341,
+        "sha256": "37e07bb5f4c1ee571765c5452cb212b089fd08971931430d0f7f6f2ebf2ab861"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg05s-verified_user.svg",
+        "bytes": 337,
+        "sha256": "f6e627ed9325c0065390f22bb00ba6354eed4a9dd106351d7ff858cfe37eceef"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg05-back.svg",
+        "bytes": 220,
+        "sha256": "fcf8e9658cab1dac7d3657febcd4ccf24a4a290efeeb004726f3b89def48d500"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg01-share-white.svg",
+        "bytes": 244,
+        "sha256": "e8bb7afadf7fe8a663d6226140e2c8f1dbae5638bf88c640b302f60ce91941ae"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-chevron_right-w400-f0-ffffff-a90.svg",
+        "bytes": 173,
+        "sha256": "80f86acc8fe60c0f88accfa10fd9180ed8a12689c7e89d8c45e005e8ce9d806e"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg07-arrow_upward-w400-f0-ffffff.svg",
+        "bytes": 173,
+        "sha256": "71d6fc2ac4aad613e672f353a0fce7286ac7fc715d855329b3df1c6915473ba5"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg01-racket.svg",
+        "bytes": 501,
+        "sha256": "ceae95cb399998f7cc4c96fa6a395716941790562cf79f1ba65577263da585bd"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-lightbulb-w400-f1-ffffff.svg",
+        "bytes": 392,
+        "sha256": "1c4735c5cbbe480656046b8dccea841c8fd0bde367e2a23dc227194beb4ac5a9"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg07-campaign-w400-f1-34c759.svg",
+        "bytes": 433,
+        "sha256": "808d3bd9c993f39a955da5e2502741e89f5a578c67a7a08d1bd0509d5127c888"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg05-more.svg",
+        "bytes": 225,
+        "sha256": "ded6ef6e4079cbd7274213090123ddaa306e3ce5ac1dcc59192b3257d388c9bd"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg05s-sports_tennis.svg",
+        "bytes": 574,
+        "sha256": "7cb15d9ec3d6f39ca080b843318ae1237fe4fd3fc8d871ddaf9da9dc051d6289"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pgd-calendar_clock-w400-f1-1d64f2.svg",
+        "bytes": 722,
+        "sha256": "09d35b503725535007ee1c07e6e277aa95fa2b261b7c8f8e8bcf428f8f30e365"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pgd-host-hero.jpg",
+        "bytes": 59343,
+        "sha256": "1783413ef8fb173f0525e5362bb2066aa89ed974a399e6ffa91ae7638d573432"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg04s-badminton.jpg",
+        "bytes": 63131,
+        "sha256": "8d4c18256599f7d9ab5ff629947156507b40da2315fd5e0b4a88434471c0bdbe"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg05s-navigation.svg",
+        "bytes": 220,
+        "sha256": "4d540ef6634e8db4a3697301aeba7160dbe18fc6dba3f51445d3a4525cec9ace"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-celebration-w400-f0-ff2d55.svg",
+        "bytes": 703,
+        "sha256": "28bc5c2f7de9a0916e30e4db4a697e7be8b50650bf01264ad01d5a5e024cd7d5"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-info-w400-f0-004cc8.svg",
+        "bytes": 975,
+        "sha256": "aa16342b69d0c8c8bfeb3f8e889a0b6a41f36a1243a5d98aa51d34c99902584b"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg04s-person_add.svg",
+        "bytes": 1277,
+        "sha256": "c5a0ab529fbfa3b3458ac0a6808cd236d16dbfb707362db27712500f7c6b7ac8"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg05s-location_on.svg",
+        "bytes": 441,
+        "sha256": "bb176877e344f00816c6e4fb28d981471f6c8d0a5d4e61eb46871bf7452ce1ae"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg05s-check_fill1.svg",
+        "bytes": 174,
+        "sha256": "6e9a6f4799b124417e754b5210e0d03420f65323bf3c84ce0ece2d5a8376dc51"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-stop_circle-w400-f0-ff2d55.svg",
+        "bytes": 801,
+        "sha256": "186caea6b6a3508815a4d9171e77b67c2f0b54682a31de8e8eaf052fac87c743"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg04s-group_add.svg",
+        "bytes": 1579,
+        "sha256": "adb20fbf1168f49d7e71c2f9f8cbe95bf80ceacc68e535951f3c6a016d3a3c2c"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-keyboard_arrow_down-w400-f0-424655.svg",
+        "bytes": 154,
+        "sha256": "17c172fcf47f1f8662d8d681496b360f3d263661bd49da0f037ed9cb33e1280b"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg05-groups.svg",
+        "bytes": 465,
+        "sha256": "4d7144e0988be8fe478016e6d4ad0fe9f8db37a72cec66e2f766a7e2109d6f98"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg05-pin.svg",
+        "bytes": 400,
+        "sha256": "b478e0e270310d7a33f39cf3619037e02e7b70271b0e5d8c75056a479211e818"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-chevron_right-w400-f0-424655.svg",
+        "bytes": 154,
+        "sha256": "b8fee48b3e833334e79aaa98e9303d3ce1086079b61d15f574891616fc19bc76"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-receipt_long-w400-f0-ffffff-a80.svg",
+        "bytes": 958,
+        "sha256": "84fdafead1f7a12aec2921803bfbe35a01758344a5d399fa0db612e550f53d27"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-star-w700-f0-181e00.svg",
+        "bytes": 288,
+        "sha256": "be489b40b207ee8bfe0070ae42ce6c62562db9b042a79cb9314ce444cd875260"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-arrow_back_ios_new-w400-f0-1a1b1f.svg",
+        "bytes": 153,
+        "sha256": "ca7bb7d407e7dc334ff380d8b3b4d1623f916d8d6152d0a72dc40ab2840d532b"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-sentiment_neutral-w700-f0-5856d6.svg",
+        "bytes": 1213,
+        "sha256": "5b0cf5cf68d23e658904ffcb94af2800267768728f2a05af3ac325fff389b367"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-group-w400-f0-ffffff-a80.svg",
+        "bytes": 1607,
+        "sha256": "c02447192554e216b7ea0146c34675e94d968727fed3ad832dcffc0467ce1ea6"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg05s-arrow_forward.svg",
+        "bytes": 186,
+        "sha256": "947f6c7303589519540cabb6ef8ba09e3ffa3e841f541348fda045d6854c7031"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-check_circle-w400-f0-737687.svg",
+        "bytes": 833,
+        "sha256": "f67c219e4ec571f0189fe7026b5991709765e9634c3b14c46fa7c8bde050d151"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg09-expense-rooftop.jpg",
+        "bytes": 70223,
+        "sha256": "169a9e7aad0497b32c48e9fca3e908c14a870d9cd023bbaed0351a899f85c77a"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pgd-near_me-w400-f1-ff2d55.svg",
+        "bytes": 150,
+        "sha256": "c6e32ad191e2bc60f503b044f69457f1258fbe7835bee7a6cd3b5cb57b95c7b9"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg04s-link.svg",
+        "bytes": 542,
+        "sha256": "adac660f968d4ecd36d83073405204834b3aa39b01abb38baf69a1e1abeca774"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg04s-check_circle_fill0.svg",
+        "bytes": 856,
+        "sha256": "a4b04b9903d61e6c90cf012bdba7c6a0bc8ebc35c4b1fea4b97284a0afb1ceb6"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-sentiment_dissatisfied-w400-f0-737687.svg",
+        "bytes": 1376,
+        "sha256": "2f0f85e04d8412a0f7b05424bde3f5e34906189cbdcbe36fe17e8d43d5332cdd"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg07-star-w400-f1-181e00.svg",
+        "bytes": 189,
+        "sha256": "8eaead5cd1f6e63865d3cad0ceaf21d2668f373d2a6689a65563fa885f688196"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pgd-map-w400-f0-1d64f2.svg",
+        "bytes": 449,
+        "sha256": "cb44ac4d488f1a26b30afb3b29783cafb828ae91a2a8011b2bd3dacd4f8f4763"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg04s-check_circle_fill1.svg",
+        "bytes": 856,
+        "sha256": "ab977649e865c7047d84bf477c341114fe10fba356750388d30adf769f0da3b2"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pgd-map-illustrative.png",
+        "bytes": 152383,
+        "sha256": "e1d1bcce15bff6996ff3a7bd9f3bb25061ab760221376a7fe8f1523b6b587e64"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg07-favorite-w400-f0-737687.svg",
+        "bytes": 1122,
+        "sha256": "98ef77319113f83c937ebcde4aea34fa47fca63f0269a99ba27830302911162a"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pgd-info-w400-f0-424655.svg",
+        "bytes": 975,
+        "sha256": "747bb7fb723cdfe000b91f4a20455ea02944e9fc650409b81131f23f4c4b1bfe"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-check_circle-w700-f0-34c759.svg",
+        "bytes": 1321,
+        "sha256": "7b931ca55b641886fc22545b1a22c25f0dd4e40e1e61630dd678484e6db5bd5d"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pgd-payments-w400-f0-4d5d00.svg",
+        "bytes": 929,
+        "sha256": "6391151c44877a139bc015093f73d48cdd577a386eceaddaa4c12cccc1d4149c"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg05-money.svg",
+        "bytes": 288,
+        "sha256": "ac02d8c16cd928eb40ff133cdfeb116e0997b054fa8450c4e40a79e98229c2d7"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-sentiment_dissatisfied-w700-f0-34c759.svg",
+        "bytes": 1372,
+        "sha256": "24d19580debeafd1dc39453217134f310065c34e3feb81e8f79d71f12528c507"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-check_circle-w400-f1-34c759.svg",
+        "bytes": 493,
+        "sha256": "6c1cf4026c3c5a55cfd3961b6b6f64904e2a956a815db494b926bd7001ed500e"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-sentiment_neutral-w400-f0-737687.svg",
+        "bytes": 1217,
+        "sha256": "8d7692f0326caddd5cca379d6821013df4bfbfa337dc0433e6e0dc40c4b5b424"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg04s-celebration.svg",
+        "bytes": 726,
+        "sha256": "cf5e29b2d83ac5a8a11865eb93cc0900d35ba3999fa282bac8e776b600a475ed"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg05-shuttle.svg",
+        "bytes": 289,
+        "sha256": "232a17d687332ed81598b838830e832b1a728135a4b3c7f3fbb5ae52959479c7"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg04s-location_on.svg",
+        "bytes": 828,
+        "sha256": "764a729c10b30b4f9f281c6992ba878f135fc69d7d8fa8e1ab80dee7c259d259"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg05s-payments.svg",
+        "bytes": 510,
+        "sha256": "4d1f7a5000813bc38f546c28687b54776ce968df5a0c5fdf519d24731ef4518a"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg04s-chat.svg",
+        "bytes": 624,
+        "sha256": "0e7591f5b931801e0bd28f211f6cf88ea215559e0e01efca4d99e2698c6e0b32"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg07-image-w400-f0-737687.svg",
+        "bytes": 692,
+        "sha256": "8defc04cf085ef24db4f2b53e1d8c4a6e63e38f86b39cf540f5c87acc7bcd85b"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg04s-photo_camera_back.svg",
+        "bytes": 754,
+        "sha256": "cd733a6e05aaf6fcd4fca3fc73c6167ee269219b294e828a662f615cf6578188"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pgd-sports_score-w400-f0-4d5d00.svg",
+        "bytes": 470,
+        "sha256": "889c9d2d9ddb3ed159fa576fb6f900fd95dc8bd46026f46d10f41cc06153dba4"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-keyboard_arrow_down-w400-f0-4c4aca.svg",
+        "bytes": 154,
+        "sha256": "1a130f0ebbb7580c9e6cf0c4a243b2a4b9a937b0747cc4932f0740b7304e50a0"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg01-crown.svg",
+        "bytes": 255,
+        "sha256": "fb9f9b76aa3ca4e1786cc35b2dd0b172e6f501391cb5cb11a4955a9ecb21d28b"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg01-badminton-player.jpg",
+        "bytes": 36028,
+        "sha256": "9d3ffba93e70736ff1d8d72c3f8387e2a7f3e4fafca6c0a9f56b1be2fb03db88"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-location_on-w400-f0-ffffff-a80.svg",
+        "bytes": 824,
+        "sha256": "1ef469f97ae4351407bb7bc4e5643e3617a770122c9ccacdb1f4085d4d62beab"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg04s-close.svg",
+        "bytes": 231,
+        "sha256": "3512de5ac7010c150cfd2a7a134b0053cb0dee3544242328ab9f417f00261673"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg05s-ios_share.svg",
+        "bytes": 333,
+        "sha256": "e16c63d3d15b8195c5cddf22c5face6c0f62865b8308783c81b92331337bed22"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pgd-verified-w400-f1-34c759.svg",
+        "bytes": 332,
+        "sha256": "69e7ed9e0491949eb2548794f24a7411f3f43b375b0f0ee264b9fb49e38ce9aa"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg04s-arrow_forward.svg",
+        "bytes": 190,
+        "sha256": "58c33e26c605a304e92df1ced891706a342c62c52bd506388c8776f53b7cbd9e"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-more_horiz-w400-f0-1a1b1f.svg",
+        "bytes": 609,
+        "sha256": "295cd56b72e4a070b341c35331c4f965a6021ea2755371577007ff16a0e3d117"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg01-seat-chevron.svg",
+        "bytes": 192,
+        "sha256": "34fa718a8348189039d09d4f0138353309b1cd6e8fde68451682dd16ccb744ee"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pgd-qr_code_2-w400-f0-424655.svg",
+        "bytes": 621,
+        "sha256": "07b4660c60f1d266fc8e5cf5972acb60766187777a0a2abb703965d76a5d85b8"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-check-w400-f0-34c759.svg",
+        "bytes": 154,
+        "sha256": "0f89192a79f9f361e2756fefce4f3cfbbf42fb8c25647411ebdc106cbcb55298"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-sync-w400-f0-1d64f2.svg",
+        "bytes": 535,
+        "sha256": "bc4354d9f3c2837999d7954b4e85b856e32c6dab18e00998f1eab502dc799609"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pgd-rule-w400-f0-424655.svg",
+        "bytes": 309,
+        "sha256": "7aab221398a8f180f9f671584f07f509cbf940c779005642dba177a03e3afa67"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg07-smile.svg",
+        "bytes": 350,
+        "sha256": "837c56493cd003e543ad2a179d2c698700dc462f58055c84463470fc8178594d"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg01-calendar_today.svg",
+        "bytes": 321,
+        "sha256": "0eb35d52aa070a121f66242fb5dd7b2e0c402f5549b9737779bc8bb5a14f0aa3"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg01-back.svg",
+        "bytes": 197,
+        "sha256": "936ba6e51e7ea41962e89cd2ed0f5607dad17f647d627f072a075ac2fca22c0e"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg05s-chevron_right.svg",
+        "bytes": 174,
+        "sha256": "f320fa0e4c76cd9e99353bb2632b578c5718fc73a5a3cdec3771f41df958ca1b"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg01-location_on.svg",
+        "bytes": 441,
+        "sha256": "09861c3bd72a72b766f76e539f03e19740a4a0591d68ebfa528a7fc94fbf6be2"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg01-money.svg",
+        "bytes": 351,
+        "sha256": "c1d837d2b54155fb586cdc88446fab690c313f38f9b815f22ffc834724d4cefc"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg05-check.svg",
+        "bytes": 217,
+        "sha256": "1356bf136e677aa7a9c4ec8dd75fbeb94651f263550a52722a6f49127f154bd5"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pgd-group-w400-f0-5856d6.svg",
+        "bytes": 1588,
+        "sha256": "75c39f2ad587d7a70a6e2df2ffd40301d0655342f7abf4daf47d4e5df8c1a739"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg05s-forum.svg",
+        "bytes": 353,
+        "sha256": "de66c37c5898a450ba8f0f48ee09e139d724de902b03969b4941a79a448baf6c"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg01-chevron.svg",
+        "bytes": 194,
+        "sha256": "fe8209a2c13213904b8d7b5f93b6eb0770b0f4bd6f8be28157596fcd02a33630"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg01-groups.svg",
+        "bytes": 442,
+        "sha256": "7389b1e9b5ae187e889de57ecb9681c0aed5ed4db3ce003f2f753eb5e857bcbd"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pgd-verified-w400-f0-faf8fe.svg",
+        "bytes": 523,
+        "sha256": "d997566fbc9523508011d72741899d295467015e8b9e2dfa44abd98ae15e611c"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-task_alt-w400-f0-737687.svg",
+        "bytes": 707,
+        "sha256": "46d93ee34ec602e2ff1d5d93c89ccd154f2322fbfba9d7ddeef6c50e2bc8ca86"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pgd-verified-w400-f1-1d64f2.svg",
+        "bytes": 332,
+        "sha256": "87ea229b08354deaf3dc26658e65c656555be3f79204d254a347579bdb42ad9e"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg05s-calendar_today.svg",
+        "bytes": 321,
+        "sha256": "41509ee59a21aadc07999f4548b268cbb4677a625e4587b8669a7d6aea6b70a0"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg01-heart.svg",
+        "bytes": 303,
+        "sha256": "ee58caf97aa97c04358c66ff19147ea48b837b54d41dfbb8d50290bd917d9dc3"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg04s-auto_awesome.svg",
+        "bytes": 422,
+        "sha256": "ece7add2f6e03892adaff32371d513607126cf4e07a93be752ad0745704fbff0"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pgd-payments-w400-f0-34c759.svg",
+        "bytes": 929,
+        "sha256": "edef7ef79fc1dfc6ebe384bb4a33207ec670ffbad94ecf984fdb97def60cf5ea"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-task_alt-w700-f0-5856d6.svg",
+        "bytes": 1248,
+        "sha256": "caad54b17c9488629bacc180f6b0a198cbdf6418e5a38589e7dd7d1efc2e98c5"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg04s-calendar_today.svg",
+        "bytes": 649,
+        "sha256": "01250c1bde0d8f1cf5876f932e9993e4b7e52f722aca80d819b82605bda0db19"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg05-calendar.svg",
+        "bytes": 428,
+        "sha256": "e68bfb3ca725914459622892b17cdc972e7fc7de0ef861287dc76862982be16c"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg04s-visibility.svg",
+        "bytes": 1032,
+        "sha256": "518731bd837cd5e42efd6157f58990d446ad89daf518bd7a68648ebc3b2173b3"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg04s-person.svg",
+        "bytes": 1221,
+        "sha256": "dcd82b18c2b73881bc3e4abdf254f92647dfb16ae06b669f7dece7579f6eba73"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-calendar_today-w400-f0-ffffff-a80.svg",
+        "bytes": 645,
+        "sha256": "c33b06b87daece1946f27d87a421a54082f99c7399f2c459ff1948f5cf70d7f1"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-keyboard_arrow_up-w400-f0-4c4aca.svg",
+        "bytes": 154,
+        "sha256": "2092964894a73227ebd56026d31b6359b9adcc2251150882f3d445e8e9d1c647"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg05s-edit_calendar.svg",
+        "bytes": 502,
+        "sha256": "29d45c6a7980034413a081f2f0960bc39defc0b398eb5248c4e572e6daf6ffcc"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg05s-group.svg",
+        "bytes": 762,
+        "sha256": "2b233ae657912ae0ae2787dd08c4e24eb11fcaa1d9d296bcfd7bc2efee152146"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pgd-member-hero.jpg",
+        "bytes": 61951,
+        "sha256": "c15f89f32e5d3566cfc04e3013af6f30517f84117bbcbaeaf5834fd4103e7754"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg01-more.svg",
+        "bytes": 202,
+        "sha256": "9620512c239026603281bb79f2de4e183065e223c2425cbd99fe08b572e19c3f"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pgd-location_on-w400-f1-ff2d55.svg",
+        "bytes": 457,
+        "sha256": "a53b09a45ed3ba2186700b313625ec4f424b3f17f8997365608ed1f24066a795"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/pg04s-diversity_3.svg",
+        "bytes": 1235,
+        "sha256": "cc4cf1197e01524190f51b6d33e93aa3bcda5b89b8baf37fe957cfd87f932789"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-send-w400-f0-004cc8.svg",
+        "bytes": 204,
+        "sha256": "9a8644e5b42f0394571c0c1660d93d96c84a1af53606c7d6b537fa3f25063ccf"
+      },
+      {
+        "path": "miniprogram/subpackages/activity/event/assets/w69-ios_share-w400-f0-424655.svg",
+        "bytes": 549,
+        "sha256": "4b8a0fd1e2dd664eb2d6c51563f555eed1bb2f67321c99627263482079f32e03"
+      }
+    ],
+    "oldAssetCount": 108,
+    "readonlyBody": {
+      "newBodyBytes": 9913,
+      "businessBindingCount": 0,
+      "interactiveInputFormCanvasMapCount": 0,
+      "newHeaderBindings": [
+        [
+          "bindtap",
+          "goBack"
+        ],
+        [
+          "bindtap",
+          "jumpToSection"
+        ]
+      ],
+      "personTarget": "registrationSection",
+      "nativeHeaderGuard": "loadState === 'READY' && !successState && !joinConfirmation && activeSection === 'hostMonitorSection' && isHost"
+    },
+    "newJSChangeRoles": [
+      {
+        "change": 1,
+        "oldBytes": 111,
+        "newBytes": 1225,
+        "newSHA256": "b17160862475085ce99016cecc0cc731f8f1a382931e28585790667a4a10c052"
+      },
+      {
+        "change": 2,
+        "oldBytes": 44,
+        "newBytes": 96,
+        "newSHA256": "5b926e7c314fccc25176f2de60ba5dd5e854090cdc9157cda4420f1d1410764d"
+      },
+      {
+        "change": 3,
+        "oldBytes": 72,
+        "newBytes": 149,
+        "newSHA256": "b6c1ee767f261c2819062f2a32373199dc1b262d79edfc65993bd34bf952805d"
+      },
+      {
+        "change": 4,
+        "oldBytes": 30,
+        "newBytes": 56,
+        "newSHA256": "7e6e404a65e01652b98f723867593c76765eca918acfecf20263c430148e9a37"
+      },
+      {
+        "change": 5,
+        "oldBytes": 82,
+        "newBytes": 187,
+        "newSHA256": "05a9bb7a05552156c8f490a387bfbfd9b27b1fde1a5011e43fed42d412016d55"
+      },
+      {
+        "change": 6,
+        "oldBytes": 76,
+        "newBytes": 102,
+        "newSHA256": "b7b9641dcaef008a9d5a9a182a5a19e0134c2022b3104ca68ccdc1efc87079ce"
+      },
+      {
+        "change": 7,
+        "oldBytes": 61,
+        "newBytes": 124,
+        "newSHA256": "c2c233cb00ed7d800af0f2a650a685611647c61c4de81a560efa13f19bf81d10"
+      },
+      {
+        "change": 8,
+        "oldBytes": 54,
+        "newBytes": 191,
+        "newSHA256": "b4b839fdeca48c76d73f2c05f7dab5ec965042df81647e50365a5ffea3ffbb64"
+      },
+      {
+        "change": 9,
+        "oldBytes": 124,
+        "newBytes": 150,
+        "newSHA256": "6f4d8db4bedf137ada885292e4779a2abdea5c9b50fd478ae6392c0a95331a0a"
+      },
+      {
+        "change": 10,
+        "oldBytes": 100,
+        "newBytes": 254,
+        "newSHA256": "7b7aa0514ed3416e8936e57b5c3619546169140cdd7ec8ddec6bc9f1e281b00f"
+      },
+      {
+        "change": 11,
+        "oldBytes": 51,
+        "newBytes": 125,
+        "newSHA256": "4b947ae082c582b2977947080a74ebe7edccf4b17e8158bfa39adb300fb74a24"
+      },
+      {
+        "change": 12,
+        "oldBytes": 77,
+        "newBytes": 224,
+        "newSHA256": "9c7a47558d3a4a6c82a980741cc43763923334de833443ea63dfa6db17e2e33c"
+      },
+      {
+        "change": 13,
+        "oldBytes": 95,
+        "newBytes": 230,
+        "newSHA256": "63bb0f01cc4a3eae64dd474e880f097815b4e8eaeb88310235fdc9d1674fb6c8"
+      },
+      {
+        "change": 14,
+        "oldBytes": 96,
+        "newBytes": 267,
+        "newSHA256": "eaa4bb3f87e3f1c0b42ade152898d6c9a16798e113e782815471fa3655c5b354"
+      }
+    ],
+    "sourceMapByteEqual": {
+      "bytes": 152683,
+      "sha256": "8c4881b9d74ec892c8549613ab1426b0a11c54793cdb073ffd6540c2805d02f4",
+      "locationIllustrativeOnly": true
+    },
+    "nativeTopEdgeObservation": {
+      "screenshot": "docs/evidence/images/caper-host-monitor-actual-top-wave71-2026-10-02.png",
+      "viewed": true,
+      "oldTextLookingFragmentAtUpperLeft": true,
+      "staticOldPosterAndDetailsHaveSectionHiddenDisplayNoneImportant": true,
+      "originNotYetConfirmed": true,
+      "rootRequestedOneDOMMeasurement": true,
+      "zeroScrollDiagnostic": {
+        "path": "/private/tmp/caper-wave71-host-monitor-top-diagnostic.json",
+        "bytes": 2082,
+        "sha256": "c676b70052f99f10b9721ab4fe1f741b54af8f9b9e10621ee489ca549dab6b9e",
+        "checksPassed": 2,
+        "nav": {
+          "left": 0,
+          "right": 402,
+          "top": 0,
+          "bottom": 110,
+          "width": 402,
+          "height": 110,
+          "background-color": "rgba(250, 248, 254, 0.8)",
+          "position": "sticky",
+          "z-index": "50",
+          "padding-top": "54px"
+        },
+        "scroll": {
+          "id": "",
+          "dataset": {},
+          "scrollLeft": 0,
+          "scrollTop": 0,
+          "scrollWidth": 402,
+          "scrollHeight": 1823
+        },
+        "nearTopTextCount": 0
+      },
+      "secondScreenshot": "docs/evidence/images/caper-host-monitor-top-diagnostic-wave71-2026-10-02.png",
+      "secondScreenshotViewed": true,
+      "exactOriginUnresolved": true,
+      "noProductCorrectionWithoutOrigin": true,
+      "rootFinalTargetedViewDiagnostic": {
+        "path": "/private/tmp/caper-wave71-host-monitor-view-edge-diagnostic.json",
+        "bytes": 1709,
+        "sha256": "1c9b9d0fb8b98d2ba9631c9e5ae9b3ece27ef15a36c17e1c5647d34ec3ffd5d3",
+        "nativeNearTopViews": [],
+        "sdkNearTopViews": [],
+        "hiddenOld": {
+          "details": {
+            "left": 0,
+            "right": 0,
+            "top": 0,
+            "bottom": 0,
+            "width": 0,
+            "height": 0,
+            "display": "none",
+            "position": "relative"
+          },
+          "poster": {
+            "left": 0,
+            "right": 0,
+            "top": 0,
+            "bottom": 0,
+            "width": 0,
+            "height": 0,
+            "display": "none",
+            "position": "relative"
+          }
+        },
+        "rawPass": false,
+        "failure": {
+          "phase": "connect",
+          "message": "Only intended native monitor navigation has nonempty view rect at top edge",
+          "stack": "AssertionError [ERR_ASSERTION]: Only intended native monitor navigation has nonempty view rect at top edge\n    at check (/private/tmp/caper-wave71-sdk-helpers.cjs:16:80)\n    at /private/tmp/caper-wave71-host-monitor-view-edge-diagnostic.cjs:4:834\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async run (/private/tmp/caper-wave71-sdk-helpers.cjs:22:3)",
+          "currentPage": "subpackages/activity/event/event"
+        },
+        "diagnosticAssertionBoundary": "One auxiliary assertion incorrectly assumed near-top selectAll view bridge would contain native nav. Actual explicit nav prior measurement succeeded; empty collection is a bridge limitation, not a proven product failure. No product change or repeated diagnostic."
+      },
+      "pendingDOMOriginRequest": false,
+      "disposition": "Capture fringe not located; hidden old poster/details are display:none and zero-sized. No visible page-node evidence, no source fix. Preserve native foreground/pixel boundary."
+    }
+  },
+  "independentOfficialFullGlyphs": {
+    "harnessCorrection": "Initial fvar-axis assertion assumed axis array order; corrected to keyed/sorted comparison. Initial SVG pen omitted source coordinate flip; corrected to TransformPen(1,0,0,-1,0,0). Initial runtime hash assertion confused a canonical exported SVG hash with reused runtime serialization; final proof independently checks canonical export hash, exact path/paint/viewBox, and unchanged reused baseline bytes. No rounding/normalization is used in final exact comparison. Actual axes/ranges/source hash unchanged; no product change.",
+    "scope": "Independent only current monitor glyph consumers against official full face; no font install, drawing/browser/native/business tests or owner82 rerun.",
+    "font": "/Users/tsb/Documents/小程序/docs/design-sources/caper-activity-wave69/original-last-material-full.woff2",
+    "fontSHA": "77f9711f3f896a1d7a34ab95cffc45cfb17d84c223f197c1b90faa0d043006e9",
+    "actualAxes": [
+      {
+        "tag": "FILL",
+        "min": 0.0,
+        "default": 0.0,
+        "max": 1.0
+      },
+      {
+        "tag": "wght",
+        "min": 100.0,
+        "default": 400.0,
+        "max": 700.0
+      }
+    ],
+    "fontToolsVersion": "4.60.2",
+    "instances": [
+      [
+        400,
+        0
+      ],
+      [
+        400,
+        1
+      ],
+      [
+        700,
+        0
+      ]
+    ],
+    "variants": [
+      {
+        "name": "arrow_back_ios_new",
+        "runtime": "miniprogram/subpackages/activity/event/assets/w69-arrow_back_ios_new-w400-f0-1a1b1f.svg",
+        "bytes": 153,
+        "sha256": "ca7bb7d407e7dc334ff380d8b3b4d1623f916d8d6152d0a72dc40ab2840d532b",
+        "unicodeGlyph": "arrow_back_ios_new",
+        "actualRenderedGlyph": "arrow_back_ios_new",
+        "actualActiveRclt": [],
+        "actualChanges": [],
+        "exactFullOutline": true,
+        "sourceExportSHA256": "ca7bb7d407e7dc334ff380d8b3b4d1623f916d8d6152d0a72dc40ab2840d532b",
+        "runtimeSerializationSameAsExport": true,
+        "reusedBaselineByteEqual": true,
+        "axes": {
+          "wght": 400,
+          "FILL": 0,
+          "opsz": 24,
+          "GRAD": 0
+        },
+        "paint": "#1a1b1f",
+        "sourceNodes": [
+          {
+            "line": 9,
+            "displayPx": 24
+          }
+        ]
+      },
+      {
+        "name": "person",
+        "runtime": "miniprogram/subpackages/activity/event/assets/pg04s-person.svg",
+        "bytes": 1221,
+        "sha256": "dcd82b18c2b73881bc3e4abdf254f92647dfb16ae06b669f7dece7579f6eba73",
+        "unicodeGlyph": "person",
+        "actualRenderedGlyph": "person",
+        "actualActiveRclt": [],
+        "actualChanges": [],
+        "exactFullOutline": true,
+        "sourceExportSHA256": "110856b1348d0fb1cf2fbb59cf27a390c7e259ec186dcfc4dd970826b40bb14b",
+        "runtimeSerializationSameAsExport": false,
+        "reusedBaselineByteEqual": true,
+        "axes": {
+          "wght": 400,
+          "FILL": 0,
+          "opsz": 24,
+          "GRAD": 0
+        },
+        "paint": "#FFFFFF",
+        "sourceNodes": [
+          {
+            "line": 9,
+            "displayPx": 18
+          }
+        ]
+      },
+      {
+        "name": "sensors",
+        "runtime": "miniprogram/subpackages/activity/event/assets/hm-sensors-w400-f0-004cc8.svg",
+        "bytes": 1020,
+        "sha256": "ff294d2194a6be292bcf5d8b998977e75f8e1455c891016b54695bd89c31d715",
+        "unicodeGlyph": "sensors",
+        "actualRenderedGlyph": "sensors",
+        "actualActiveRclt": [],
+        "actualChanges": [],
+        "exactFullOutline": true,
+        "sourceExportSHA256": "ff294d2194a6be292bcf5d8b998977e75f8e1455c891016b54695bd89c31d715",
+        "runtimeSerializationSameAsExport": true,
+        "reusedBaselineByteEqual": null,
+        "axes": {
+          "wght": 400,
+          "FILL": 0,
+          "opsz": 24,
+          "GRAD": 0
+        },
+        "paint": "#004cc8",
+        "sourceNodes": [
+          {
+            "line": 20,
+            "displayPx": 15
+          }
+        ]
+      },
+      {
+        "name": "location_on",
+        "runtime": "miniprogram/subpackages/activity/event/assets/hm-location_on-w400-f0-737687.svg",
+        "bytes": 805,
+        "sha256": "c3c1426c3af77d35192e680041b31dc8c25857d28c82af765e9b58c5ec71d0fc",
+        "unicodeGlyph": "place",
+        "actualRenderedGlyph": "place",
+        "actualActiveRclt": [],
+        "actualChanges": [],
+        "exactFullOutline": true,
+        "sourceExportSHA256": "c3c1426c3af77d35192e680041b31dc8c25857d28c82af765e9b58c5ec71d0fc",
+        "runtimeSerializationSameAsExport": true,
+        "reusedBaselineByteEqual": null,
+        "axes": {
+          "wght": 400,
+          "FILL": 0,
+          "opsz": 24,
+          "GRAD": 0
+        },
+        "paint": "#737687",
+        "sourceNodes": [
+          {
+            "line": 37,
+            "displayPx": 16
+          }
+        ]
+      },
+      {
+        "name": "sports_tennis",
+        "runtime": "miniprogram/subpackages/activity/event/assets/hm-sports_tennis-w400-f1-004cc8.svg",
+        "bytes": 720,
+        "sha256": "06e91653964b56587bdc1c5ec4e73499028317914a46610f9f5a5f60958ebc77",
+        "unicodeGlyph": "sports_tennis",
+        "actualRenderedGlyph": "sports_tennis.fill",
+        "actualActiveRclt": [
+          "rclt"
+        ],
+        "actualChanges": [
+          {
+            "tag": "rclt",
+            "lookup": 1,
+            "from": "sports_tennis",
+            "to": "sports_tennis.fill"
+          }
+        ],
+        "exactFullOutline": true,
+        "sourceExportSHA256": "06e91653964b56587bdc1c5ec4e73499028317914a46610f9f5a5f60958ebc77",
+        "runtimeSerializationSameAsExport": true,
+        "reusedBaselineByteEqual": null,
+        "axes": {
+          "wght": 400,
+          "FILL": 1,
+          "opsz": 24,
+          "GRAD": 0
+        },
+        "paint": "#004cc8",
+        "sourceNodes": [
+          {
+            "line": 42,
+            "displayPx": 28
+          }
+        ]
+      },
+      {
+        "name": "verified",
+        "runtime": "miniprogram/subpackages/activity/event/assets/pgd-verified-w400-f1-34c759.svg",
+        "bytes": 332,
+        "sha256": "69e7ed9e0491949eb2548794f24a7411f3f43b375b0f0ee264b9fb49e38ce9aa",
+        "unicodeGlyph": "verified",
+        "actualRenderedGlyph": "verified.fill",
+        "actualActiveRclt": [
+          "rclt"
+        ],
+        "actualChanges": [
+          {
+            "tag": "rclt",
+            "lookup": 1,
+            "from": "verified",
+            "to": "verified.fill"
+          }
+        ],
+        "exactFullOutline": true,
+        "sourceExportSHA256": "69e7ed9e0491949eb2548794f24a7411f3f43b375b0f0ee264b9fb49e38ce9aa",
+        "runtimeSerializationSameAsExport": true,
+        "reusedBaselineByteEqual": true,
+        "axes": {
+          "wght": 400,
+          "FILL": 1,
+          "opsz": 24,
+          "GRAD": 0
+        },
+        "paint": "#34c759",
+        "sourceNodes": [
+          {
+            "line": 91,
+            "displayPx": 18
+          }
+        ]
+      },
+      {
+        "name": "check",
+        "runtime": "miniprogram/subpackages/activity/event/assets/hm-check-w700-f0-ffffff.svg",
+        "bytes": 154,
+        "sha256": "05d4bd3285fc41f0eb75e2a5f14c4e32345b9f8cf82059e8213e903217fce1b2",
+        "unicodeGlyph": "check",
+        "actualRenderedGlyph": "check",
+        "actualActiveRclt": [],
+        "actualChanges": [],
+        "exactFullOutline": true,
+        "sourceExportSHA256": "05d4bd3285fc41f0eb75e2a5f14c4e32345b9f8cf82059e8213e903217fce1b2",
+        "runtimeSerializationSameAsExport": true,
+        "reusedBaselineByteEqual": null,
+        "axes": {
+          "wght": 700,
+          "FILL": 0,
+          "opsz": 24,
+          "GRAD": 0
+        },
+        "paint": "#ffffff",
+        "sourceNodes": [
+          {
+            "line": 101,
+            "displayPx": 16
+          },
+          {
+            "line": 114,
+            "displayPx": 16
+          },
+          {
+            "line": 127,
+            "displayPx": 16
+          }
+        ]
+      },
+      {
+        "name": "auto_awesome",
+        "runtime": "miniprogram/subpackages/activity/event/assets/pg04s-auto_awesome.svg",
+        "bytes": 422,
+        "sha256": "ece7add2f6e03892adaff32371d513607126cf4e07a93be752ad0745704fbff0",
+        "unicodeGlyph": "auto_awesome",
+        "actualRenderedGlyph": "auto_awesome",
+        "actualActiveRclt": [],
+        "actualChanges": [],
+        "exactFullOutline": true,
+        "sourceExportSHA256": "2ec2cf21a175c8ddced2c71df5055cc1f06cec784ac4a47ceaa133314fb3ab83",
+        "runtimeSerializationSameAsExport": false,
+        "reusedBaselineByteEqual": true,
+        "axes": {
+          "wght": 400,
+          "FILL": 0,
+          "opsz": 24,
+          "GRAD": 0
+        },
+        "paint": "#FFFFFF",
+        "sourceNodes": [
+          {
+            "line": 143,
+            "displayPx": 16
+          }
+        ]
+      },
+      {
+        "name": "cloud_done",
+        "runtime": "miniprogram/subpackages/activity/event/assets/hm-cloud_done-w400-f0-34c759.svg",
+        "bytes": 925,
+        "sha256": "c0f6d39faff93f9601923ea2a155bd35401d5f5677367ddb7010bf81260e63c8",
+        "unicodeGlyph": "cloud_done",
+        "actualRenderedGlyph": "cloud_done",
+        "actualActiveRclt": [],
+        "actualChanges": [],
+        "exactFullOutline": true,
+        "sourceExportSHA256": "c0f6d39faff93f9601923ea2a155bd35401d5f5677367ddb7010bf81260e63c8",
+        "runtimeSerializationSameAsExport": true,
+        "reusedBaselineByteEqual": null,
+        "axes": {
+          "wght": 400,
+          "FILL": 0,
+          "opsz": 24,
+          "GRAD": 0
+        },
+        "paint": "#34c759",
+        "sourceNodes": [
+          {
+            "line": 153,
+            "displayPx": 15
+          },
+          {
+            "line": 294,
+            "displayPx": 16
+          }
+        ]
+      },
+      {
+        "name": "schedule_send",
+        "runtime": "miniprogram/subpackages/activity/event/assets/hm-schedule_send-w400-f0-004cc8.svg",
+        "bytes": 616,
+        "sha256": "f77b24b25e7c530b2cf0c6e794c474a0d1968c658d7148ba4fe45fa40fc3a816",
+        "unicodeGlyph": "schedule_send",
+        "actualRenderedGlyph": "schedule_send",
+        "actualActiveRclt": [],
+        "actualChanges": [],
+        "exactFullOutline": true,
+        "sourceExportSHA256": "f77b24b25e7c530b2cf0c6e794c474a0d1968c658d7148ba4fe45fa40fc3a816",
+        "runtimeSerializationSameAsExport": true,
+        "reusedBaselineByteEqual": null,
+        "axes": {
+          "wght": 400,
+          "FILL": 0,
+          "opsz": 24,
+          "GRAD": 0
+        },
+        "paint": "#004cc8",
+        "sourceNodes": [
+          {
+            "line": 157,
+            "displayPx": 15
+          }
+        ]
+      },
+      {
+        "name": "group",
+        "runtime": "miniprogram/subpackages/activity/event/assets/hm-group-w400-f0-004cc8.svg",
+        "bytes": 1588,
+        "sha256": "d3042e90529edaa0f1e1d164af385ff995ece20888945898ca1c51455318008f",
+        "unicodeGlyph": "group",
+        "actualRenderedGlyph": "group",
+        "actualActiveRclt": [],
+        "actualChanges": [],
+        "exactFullOutline": true,
+        "sourceExportSHA256": "d3042e90529edaa0f1e1d164af385ff995ece20888945898ca1c51455318008f",
+        "runtimeSerializationSameAsExport": true,
+        "reusedBaselineByteEqual": null,
+        "axes": {
+          "wght": 400,
+          "FILL": 0,
+          "opsz": 24,
+          "GRAD": 0
+        },
+        "paint": "#004cc8",
+        "sourceNodes": [
+          {
+            "line": 166,
+            "displayPx": 20
+          }
+        ]
+      }
+    ],
+    "variantCount": 11,
+    "sourceConsumers": 14,
+    "newRuntimeFonts": 0
+  },
+  "manualSourceReview": {
+    "wholeOriginalHTMLPNGViewed": true,
+    "CSSBasis": "Actual full _5 HTML config/classes, source cached effective CSS and final appended WXSS read once; no new CSS mirror test or full source checker.",
+    "nativeInset": "Source 56px content row retained. Actual status bar/capsule inset through existing statusBarHeight/headerPaddingRight; source decorative status mock not copied. Sticky native adaptation is deliberate; measurements belong to root SDK.",
+    "newSourceScope": ".hm-native-*, .event-page.hm-reference, .hm-* only; old CSS prefix intact",
+    "currentOwnerEntry": {
+      "ready": true,
+      "joinReviewBlocked": true,
+      "actorHostIdMatches": true,
+      "sessionOwnerMatches": true,
+      "eventIdMatches": true,
+      "deepURLAfterRefreshAndIdentityChecked": true,
+      "menuActorEventObjectVersionCurrentUserLoadStateRefreshGenerationGuardUnchanged": true,
+      "thirdMenuRechecksSameActionContextAndHostEligibility": true,
+      "backTargetCurrentHostElseDetails": true,
+      "identityAndRefreshErrorClearMetrics": true
+    },
+    "actualDataRules": [
+      "Unknown or unsafe statistics/min/max returns null; no zero fabrication.",
+      "occupancy confirmed/max, clamp visual width<=100, minimum progress confirmed/min; no inference actual formation.",
+      "Venue HOST_CONFIRMED is host statement, not venue service lock or payment.",
+      "Review/risk/safety statuses use actual event fields; no source 48h timer.",
+      "Roster uses old consented alias/anonymous projection for actual CONFIRMED registrations, not source portraits/skill/payment.",
+      "Cloud/weather/automatic messaging unavailable; readonly snapshot/version, no15 second real-time promise.",
+      "Original source map is clearly illustrative, no actual coordinate/geolocation claim."
+    ],
+    "unmodifiedLifecycle": "onHide/onUnload retain prior cleanup and business behavior by whole JS inverse; this review does not claim a new unload generation contract."
+  },
+  "scopeBoundary": "Independent source protection and static safety review complete without source defects in this frozen scope. Root-reported11 scoped native actions/compiler gate are external observations, not executed here. Screenshot fringe remains unlocated capture/native-foreground boundary; explicit old hidden regions have display:none/zero rect. No full/CI/physical-device/production or complete pixel PASS."
+}

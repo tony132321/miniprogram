@@ -1,0 +1,907 @@
+{
+  "review": "Wave74 final W / y character delta only",
+  "date": "2026-10-02",
+  "verdict": "PASS — no source or preservation discrepancy in this delta",
+  "scope": "Read-only font delta; no former source/VM tests, SDK, CLI, Git, or app mutation",
+  "previousPayloadModule": {
+    "path": "/private/tmp/caper-wave73-shared-independent/font-data-captured.js",
+    "bytes": 260198,
+    "sha256": "1702d6644db3e5998132bacfe7d7067e37367148d6b8668327b5f066e7379b32"
+  },
+  "currentPayloadModule": {
+    "path": "/Users/tsb/Documents/小程序/miniprogram/subpackages/profile/fonts/reference-font-data.js",
+    "bytes": 262502,
+    "sha256": "fb39653c8663ba1bb7aa79e90df267aca6d1c6dd606ea484d8a052dbd53ad3de"
+  },
+  "rawModuleNetBytes": 2304,
+  "rawTwoWOFFNetBytes": 1728,
+  "cumulativeModuleNetVs232987Baseline": 29515,
+  "faces": [
+    {
+      "family": "Caveat",
+      "weight": 700,
+      "previousWOFF": {
+        "path": "/private/tmp/caper-wave73-shared-independent/official-caveat-700.woff",
+        "bytes": 28076,
+        "sha256": "f2fb6438cd2a04f9bcbb67fea2f9136208a99693156a533d1e2d8f28fb9628cd"
+      },
+      "currentWOFF": {
+        "path": "/Users/tsb/Documents/小程序/docs/design-sources/home-long-reference-fonts/caveat-700-complete-fixed-ui.woff",
+        "bytes": 29172,
+        "sha256": "2ae8d170291eac2235cb55d6a5b06983c130ecf40ee8c6e792b48d433f2ce3a8"
+      },
+      "currentCSS": {
+        "path": "/Users/tsb/Documents/小程序/docs/design-sources/home-long-reference-fonts/caveat-700-complete-fixed-ui.css",
+        "bytes": 289,
+        "sha256": "3f05d70aeef03e49d04285bd2dbc4773a90bf6d75e5a1f1d841038c71edeedec"
+      },
+      "cssURL": "https://fonts.googleapis.com/css2?family=Caveat%3Awght%40700&display=swap&text=+%26%2CBCDEFGHMNOPRSTVWabcdeghiklmnoprstuvwy",
+      "fontURL": "https://fonts.gstatic.com/l/font?kit=WnznHAc5bAfYB2QRah7pcpNvOx-pjRV6SIG7TDRovkjk9rNqKKBk0Xtzp41A0xr8HzfEIMWXXLnExAAtOJ896XCd_DA&skey=7833cd5b856b60c9&v=v23",
+      "userAgent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11",
+      "previousUnicodeCount": 39,
+      "currentUnicodeCount": 40,
+      "addedCharacters": [
+        {
+          "unicode": "U+0057",
+          "character": "W",
+          "glyph": "W",
+          "decomposedOutlineSHA256": "0af387d8496adc2da1493942ae8e342be8fa1638ad68cebbf7ca2300c9578dca",
+          "advanceWidth": 720,
+          "leftSideBearing": 130
+        }
+      ],
+      "removedUnicode": [],
+      "requiredFixedText": "Wukang Road",
+      "requiredFixedTextCovered": true,
+      "commonCharacters": [
+        {
+          "unicode": "U+0020",
+          "character": " ",
+          "decomposedOutlineSHA256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "advanceWidth": 242,
+          "leftSideBearing": 0,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0026",
+          "character": "&",
+          "decomposedOutlineSHA256": "282ec981c6bc0514a6598d88ae9efc0e67db31f721282358ec359f33a71842d8",
+          "advanceWidth": 564,
+          "leftSideBearing": 54,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+002C",
+          "character": ",",
+          "decomposedOutlineSHA256": "4fd5dc89b40e81b799ce454df228d6080ebe9049edf437fc802b40a03d3a945c",
+          "advanceWidth": 198,
+          "leftSideBearing": 25,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0042",
+          "character": "B",
+          "decomposedOutlineSHA256": "f970b37d136f5ff943126244f2533ee7f009f3a3d57c49c7d611eba8b1930aad",
+          "advanceWidth": 523,
+          "leftSideBearing": 72,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0043",
+          "character": "C",
+          "decomposedOutlineSHA256": "968496604d89053624100821174ca7ffced5778426338f95876380a56f82f650",
+          "advanceWidth": 477,
+          "leftSideBearing": 103,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0044",
+          "character": "D",
+          "decomposedOutlineSHA256": "044740c3f01a3adfdda112f311283d061f336a8a424db80398642d440d36adb6",
+          "advanceWidth": 587,
+          "leftSideBearing": 49,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0045",
+          "character": "E",
+          "decomposedOutlineSHA256": "c4b957f1ab49cf0eda805f404a490be8847b9ba8c0c05e19f9002904c406e4e1",
+          "advanceWidth": 534,
+          "leftSideBearing": 75,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0046",
+          "character": "F",
+          "decomposedOutlineSHA256": "ef448a0fca22690a409b79cc139ea4676d97af3523e575c96f2516bbc80f8ba8",
+          "advanceWidth": 466,
+          "leftSideBearing": 73,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0047",
+          "character": "G",
+          "decomposedOutlineSHA256": "aaab633d8cc8b7327bee84b6c256dabda58e958a989d1ce03775bef0ee369b87",
+          "advanceWidth": 494,
+          "leftSideBearing": 103,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0048",
+          "character": "H",
+          "decomposedOutlineSHA256": "c6c3fe156f5bc28a392906f4a71d2cc8cd96a7d145dac5e1cba67e8b8a9d4e23",
+          "advanceWidth": 574,
+          "leftSideBearing": 74,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+004D",
+          "character": "M",
+          "decomposedOutlineSHA256": "eca8143c5182a48e16bf301d447338cd93b575d67cd14aeba2d2f9bd023634ac",
+          "advanceWidth": 729,
+          "leftSideBearing": 36,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+004E",
+          "character": "N",
+          "decomposedOutlineSHA256": "65119016c2bfb12633dea94fe95273f0ed7b7849eb676c67ef8d6ae2ef065183",
+          "advanceWidth": 619,
+          "leftSideBearing": 76,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+004F",
+          "character": "O",
+          "decomposedOutlineSHA256": "f8a7c17db9a4f3731e36af107893cae8f15f95cdd717031facf490dd480c376a",
+          "advanceWidth": 505,
+          "leftSideBearing": 103,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0050",
+          "character": "P",
+          "decomposedOutlineSHA256": "f37afd41e1ed147d2601a5a1294bd04956cdc7174fe5c1c2bb24de42ab10337e",
+          "advanceWidth": 468,
+          "leftSideBearing": 75,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0052",
+          "character": "R",
+          "decomposedOutlineSHA256": "1277d9b6325e2963be7a80ef84fd9d4c8ccac5e8d1a9bd0e153bb2bff440bfb0",
+          "advanceWidth": 544,
+          "leftSideBearing": 74,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0053",
+          "character": "S",
+          "decomposedOutlineSHA256": "be7767bfe5c0cdf5dec1d921fcbd73ce5785ae3d541c5e93584820afc7fefca8",
+          "advanceWidth": 495,
+          "leftSideBearing": 128,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0054",
+          "character": "T",
+          "decomposedOutlineSHA256": "2c79bbd0121577e47ce89016364cb6af78ff1cadb1069b8d23278d9488818712",
+          "advanceWidth": 458,
+          "leftSideBearing": 163,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0056",
+          "character": "V",
+          "decomposedOutlineSHA256": "9677a9f802ef51c81163c36620781e4e515b706ed87d358623075d602b306764",
+          "advanceWidth": 490,
+          "leftSideBearing": 187,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0061",
+          "character": "a",
+          "decomposedOutlineSHA256": "b32dd2dd72c03bbc541c9ab6575ffeab4fd3baadddcd3d2e5312f069ba58d608",
+          "advanceWidth": 446,
+          "leftSideBearing": 75,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0062",
+          "character": "b",
+          "decomposedOutlineSHA256": "874f04ec8ed4006f9a95734f5b286ceb5110f7b83af849ad736fa9afdd01abf2",
+          "advanceWidth": 444,
+          "leftSideBearing": 118,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0063",
+          "character": "c",
+          "decomposedOutlineSHA256": "d441ee815aa9a3175d1438cfcf5257e9bdf79d4f80ebf811a0f6effa69a37cfe",
+          "advanceWidth": 364,
+          "leftSideBearing": 95,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0064",
+          "character": "d",
+          "decomposedOutlineSHA256": "e1d978f4fd39547af9ddbacf15b794681a70ca371abf45b593bece5a6c7b401b",
+          "advanceWidth": 402,
+          "leftSideBearing": 84,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0065",
+          "character": "e",
+          "decomposedOutlineSHA256": "d412a993aaae1d9930e98d55ad38c853c067bba0d8b676e388fae3276f6ca49e",
+          "advanceWidth": 334,
+          "leftSideBearing": 92,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0067",
+          "character": "g",
+          "decomposedOutlineSHA256": "3b738e90723a021cf29e52e8885edecc23af5ee4fe1ecc210c739a49ed89786f",
+          "advanceWidth": 364,
+          "leftSideBearing": 61,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0068",
+          "character": "h",
+          "decomposedOutlineSHA256": "0f37fc00bee85b695b4d0bd27b3b25b4373aa23ccd6495ee637849489757dead",
+          "advanceWidth": 473,
+          "leftSideBearing": 90,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0069",
+          "character": "i",
+          "decomposedOutlineSHA256": "73b7dfb7573a867302c80639f9fcfc4f121d583e24d3bcf0fb0a66cde793e327",
+          "advanceWidth": 196,
+          "leftSideBearing": 88,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+006B",
+          "character": "k",
+          "decomposedOutlineSHA256": "dadbdfee8aa661ab8ef3025b426d56cf0b47f654dd1f0faa069f470218f77993",
+          "advanceWidth": 374,
+          "leftSideBearing": 74,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+006C",
+          "character": "l",
+          "decomposedOutlineSHA256": "0b2175fb99d7d85e92a994410dc49954ea631266eb32fb54babd69e45ee2f384",
+          "advanceWidth": 178,
+          "leftSideBearing": 81,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+006D",
+          "character": "m",
+          "decomposedOutlineSHA256": "5f55bbfc465c87ae415c03d81fe12d7a2cb5548d08884df4dceffad2cc9291d3",
+          "advanceWidth": 569,
+          "leftSideBearing": 86,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+006E",
+          "character": "n",
+          "decomposedOutlineSHA256": "4778b184a32d85600ea7af4b4033ee64862cedd5cc24a87fb967a2a86530a9e6",
+          "advanceWidth": 459,
+          "leftSideBearing": 89,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+006F",
+          "character": "o",
+          "decomposedOutlineSHA256": "10f107386e07a046ac178d2bea3260e526967719e1812acf699b4077746046ae",
+          "advanceWidth": 362,
+          "leftSideBearing": 87,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0070",
+          "character": "p",
+          "decomposedOutlineSHA256": "6d0cb0384bb5b126fd4cc09f74ebdd032044172701f8e320634fb99c25c185a4",
+          "advanceWidth": 378,
+          "leftSideBearing": 17,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0072",
+          "character": "r",
+          "decomposedOutlineSHA256": "1e4b695b27f294627c8a4252774c78898f9b290112c129b7b82a4f61af9e284b",
+          "advanceWidth": 360,
+          "leftSideBearing": 89,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0073",
+          "character": "s",
+          "decomposedOutlineSHA256": "61784be217dd2f2ff76b369f87984f3efdf87376818439c0c11ee2e240f90c1a",
+          "advanceWidth": 350,
+          "leftSideBearing": 88,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0074",
+          "character": "t",
+          "decomposedOutlineSHA256": "526ba3da241f35965bac9d6c17cb035ad5e68c6cd60ab2a69e37823e1308d989",
+          "advanceWidth": 331,
+          "leftSideBearing": 100,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0075",
+          "character": "u",
+          "decomposedOutlineSHA256": "ba67b72f81daebcc23d57b96ace9fc3e546e226da75eb01394f265b53db2c78b",
+          "advanceWidth": 370,
+          "leftSideBearing": 99,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0076",
+          "character": "v",
+          "decomposedOutlineSHA256": "f814e1b2866fa640d3df1e628de4c9141f6922c84ba67f832777c1b9e213deb3",
+          "advanceWidth": 331,
+          "leftSideBearing": 101,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0077",
+          "character": "w",
+          "decomposedOutlineSHA256": "3516925b9dbeab1e6eb66e9ccc37bedf78138e486cf24038a7457fda2904d0f5",
+          "advanceWidth": 517,
+          "leftSideBearing": 108,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0079",
+          "character": "y",
+          "decomposedOutlineSHA256": "09949ed79e74d8dbcaa16fc5e8fa93348a38c78cd82c87deb7584aaa1e85d39a",
+          "advanceWidth": 341,
+          "leftSideBearing": -72,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        }
+      ],
+      "globalMetricsPrevious": {
+        "head": {
+          "unitsPerEm": 1000,
+          "xMin": -118,
+          "yMin": -315,
+          "xMax": 1252,
+          "yMax": 974
+        },
+        "hhea": {
+          "ascent": 960,
+          "descent": -300,
+          "lineGap": 0,
+          "advanceWidthMax": 1100,
+          "minLeftSideBearing": -118,
+          "minRightSideBearing": -694,
+          "xMaxExtent": 1252,
+          "caretSlopeRise": 1,
+          "caretSlopeRun": 0,
+          "caretOffset": 0
+        },
+        "OS/2": {
+          "usWeightClass": 700,
+          "usWidthClass": 5,
+          "sTypoAscender": 960,
+          "sTypoDescender": -300,
+          "sTypoLineGap": 0,
+          "usWinAscent": 974,
+          "usWinDescent": 315,
+          "sxHeight": 400,
+          "sCapHeight": 610,
+          "ySubscriptXSize": 650,
+          "ySubscriptYSize": 600,
+          "ySubscriptXOffset": 0,
+          "ySubscriptYOffset": 75,
+          "ySuperscriptXSize": 650,
+          "ySuperscriptYSize": 600,
+          "ySuperscriptXOffset": 0,
+          "ySuperscriptYOffset": 350,
+          "yStrikeoutSize": 50,
+          "yStrikeoutPosition": 240
+        },
+        "post": {
+          "italicAngle": 0.0,
+          "underlinePosition": -75,
+          "underlineThickness": 50,
+          "isFixedPitch": 0
+        }
+      },
+      "globalMetricsCurrent": {
+        "head": {
+          "unitsPerEm": 1000,
+          "xMin": -118,
+          "yMin": -315,
+          "xMax": 1252,
+          "yMax": 974
+        },
+        "hhea": {
+          "ascent": 960,
+          "descent": -300,
+          "lineGap": 0,
+          "advanceWidthMax": 1100,
+          "minLeftSideBearing": -118,
+          "minRightSideBearing": -694,
+          "xMaxExtent": 1252,
+          "caretSlopeRise": 1,
+          "caretSlopeRun": 0,
+          "caretOffset": 0
+        },
+        "OS/2": {
+          "usWeightClass": 700,
+          "usWidthClass": 5,
+          "sTypoAscender": 960,
+          "sTypoDescender": -300,
+          "sTypoLineGap": 0,
+          "usWinAscent": 974,
+          "usWinDescent": 315,
+          "sxHeight": 400,
+          "sCapHeight": 610,
+          "ySubscriptXSize": 650,
+          "ySubscriptYSize": 600,
+          "ySubscriptXOffset": 0,
+          "ySubscriptYOffset": 75,
+          "ySuperscriptXSize": 650,
+          "ySuperscriptYSize": 600,
+          "ySuperscriptXOffset": 0,
+          "ySuperscriptYOffset": 350,
+          "yStrikeoutSize": 50,
+          "yStrikeoutPosition": 240
+        },
+        "post": {
+          "italicAngle": 0.0,
+          "underlinePosition": -75,
+          "underlineThickness": 50,
+          "isFixedPitch": 0
+        }
+      },
+      "globalMetricsEqual": true,
+      "previousBase64Bytes": 37436,
+      "currentBase64Bytes": 38896,
+      "rawWOFFNetBytes": 1096,
+      "payloadNetBytes": 1460,
+      "otherRecordFieldsEqual": true,
+      "runtimePayloadEqualsStoredOfficialWOFF": true,
+      "sourceMetadataAndCSSMatch": true
+    },
+    {
+      "family": "Caveat",
+      "weight": 600,
+      "previousWOFF": {
+        "path": "/private/tmp/caper-wave73-shared-independent/official-caveat-600.woff",
+        "bytes": 11624,
+        "sha256": "65a31f27c6f651920868421bc775a63546e843e478f66b137fe52f5069098379"
+      },
+      "currentWOFF": {
+        "path": "/Users/tsb/Documents/小程序/docs/design-sources/home-long-reference-fonts/caveat-600-city-visitor-union.woff",
+        "bytes": 12256,
+        "sha256": "ca1da3b722f5e58054147d2e98974c6cbda73cfa33ac7e76ebaa133dedc785d1"
+      },
+      "currentCSS": {
+        "path": "/Users/tsb/Documents/小程序/docs/design-sources/home-long-reference-fonts/caveat-600-city-visitor-union.css",
+        "bytes": 260,
+        "sha256": "8440513d7f8f44f40a111b00073fa70c32e2df6f0206e1d42c475cd19bcd0abe"
+      },
+      "cssURL": "https://fonts.googleapis.com/css2?family=Caveat%3Awght%40600&display=swap&text=+BCGMPadeikloprsty",
+      "fontURL": "https://fonts.gstatic.com/l/font?kit=WnznHAc5bAfYB2QRah7pcpNvOx-pjSx6SIG7djQM0U3q4pdICoFC81tTh61g_A&skey=7833cd5b856b60c9&v=v23",
+      "userAgent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11",
+      "previousUnicodeCount": 17,
+      "currentUnicodeCount": 18,
+      "addedCharacters": [
+        {
+          "unicode": "U+0079",
+          "character": "y",
+          "glyph": "y",
+          "decomposedOutlineSHA256": "8b087b269fdc98e92a07b152e88afda9d876edec29e99cd89441f4705cd0eeca",
+          "advanceWidth": 341,
+          "leftSideBearing": -64
+        }
+      ],
+      "removedUnicode": [],
+      "requiredFixedText": "Play More",
+      "requiredFixedTextCovered": true,
+      "commonCharacters": [
+        {
+          "unicode": "U+0020",
+          "character": " ",
+          "decomposedOutlineSHA256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "advanceWidth": 242,
+          "leftSideBearing": 0,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0042",
+          "character": "B",
+          "decomposedOutlineSHA256": "b0ce57589859b7d1d1a6cd41a4d9491ad91a0a74ee9eac5fa12fea0d227d2ff5",
+          "advanceWidth": 522,
+          "leftSideBearing": 75,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0043",
+          "character": "C",
+          "decomposedOutlineSHA256": "2bc50928ec07e73cf275acca1a1661ae90ab78ff1c0de1b2442f14e7f82b67b6",
+          "advanceWidth": 475,
+          "leftSideBearing": 107,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0047",
+          "character": "G",
+          "decomposedOutlineSHA256": "c6b96166e334c7132d56feb1c38022ea70c8150603c465dd46de84a531337983",
+          "advanceWidth": 492,
+          "leftSideBearing": 107,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+004D",
+          "character": "M",
+          "decomposedOutlineSHA256": "9c3f11c06bb6c868d8802c6f70814554b1968000fa03675b71f95f9108e58e18",
+          "advanceWidth": 726,
+          "leftSideBearing": 36,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0050",
+          "character": "P",
+          "decomposedOutlineSHA256": "47df6b181e8ea11a24c18268da927c0d87d62213946360b4e37395b15953e617",
+          "advanceWidth": 467,
+          "leftSideBearing": 77,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0061",
+          "character": "a",
+          "decomposedOutlineSHA256": "af5e39289ece200d3288f5507ad0a2a0dc451aa5cfca70c5e012092ad64c715b",
+          "advanceWidth": 443,
+          "leftSideBearing": 77,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0064",
+          "character": "d",
+          "decomposedOutlineSHA256": "546f7ce0be7be9e3f053f5373dce5df34207261733f0e77aa42176b9f5f93d86",
+          "advanceWidth": 399,
+          "leftSideBearing": 88,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0065",
+          "character": "e",
+          "decomposedOutlineSHA256": "b36394cf508b30e381ff0f2683a6e64452f7788bca96cb2f8c5db65d627bd2ca",
+          "advanceWidth": 331,
+          "leftSideBearing": 96,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0069",
+          "character": "i",
+          "decomposedOutlineSHA256": "b92ba2c3474ed91414c4eb30fe7de3cbfc64c170523afdcad3b080059a0747b7",
+          "advanceWidth": 193,
+          "leftSideBearing": 91,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+006B",
+          "character": "k",
+          "decomposedOutlineSHA256": "b732feb33099e46e5c47fd4f8e195beea1e25a64407f9bfa6ca67f098890e4db",
+          "advanceWidth": 371,
+          "leftSideBearing": 74,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+006C",
+          "character": "l",
+          "decomposedOutlineSHA256": "7dff668abd57f43e5fd4e4b4eac7584dbb09baeda781e28df2b938f6e0a12c19",
+          "advanceWidth": 175,
+          "leftSideBearing": 82,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+006F",
+          "character": "o",
+          "decomposedOutlineSHA256": "b424a9f7329b0a5d1714a4a7c1fa2ece50c6f65daeeaf975b94e058c08b48abb",
+          "advanceWidth": 359,
+          "leftSideBearing": 90,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0070",
+          "character": "p",
+          "decomposedOutlineSHA256": "bb9e5be3eeee243a62b8a41b2ba56a1b76eb40f1427ce76ef0ca6fe8ac3984ee",
+          "advanceWidth": 378,
+          "leftSideBearing": 23,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0072",
+          "character": "r",
+          "decomposedOutlineSHA256": "2cf74bcf46f9330f19a355cd961b71e440bd6417ffbee69eb7c56289c86a3eb8",
+          "advanceWidth": 360,
+          "leftSideBearing": 94,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0073",
+          "character": "s",
+          "decomposedOutlineSHA256": "253ee3b787c8928b8944bd2f3bd19b7825ffb3a5dbcec46063dca819ab1431bc",
+          "advanceWidth": 347,
+          "leftSideBearing": 95,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        },
+        {
+          "unicode": "U+0074",
+          "character": "t",
+          "decomposedOutlineSHA256": "35eb5e94c399b60a8d00010f3013b7e132c705d81ba834631a53d13ed9cd8438",
+          "advanceWidth": 331,
+          "leftSideBearing": 105,
+          "outlineEqual": true,
+          "advanceAndLSBEqual": true
+        }
+      ],
+      "globalMetricsPrevious": {
+        "head": {
+          "unitsPerEm": 1000,
+          "xMin": -116,
+          "yMin": -310,
+          "xMax": 1246,
+          "yMax": 968
+        },
+        "hhea": {
+          "ascent": 960,
+          "descent": -300,
+          "lineGap": 0,
+          "advanceWidthMax": 1100,
+          "minLeftSideBearing": -116,
+          "minRightSideBearing": -685,
+          "xMaxExtent": 1246,
+          "caretSlopeRise": 1,
+          "caretSlopeRun": 0,
+          "caretOffset": 0
+        },
+        "OS/2": {
+          "usWeightClass": 600,
+          "usWidthClass": 5,
+          "sTypoAscender": 960,
+          "sTypoDescender": -300,
+          "sTypoLineGap": 0,
+          "usWinAscent": 974,
+          "usWinDescent": 315,
+          "sxHeight": 400,
+          "sCapHeight": 610,
+          "ySubscriptXSize": 650,
+          "ySubscriptYSize": 600,
+          "ySubscriptXOffset": 0,
+          "ySubscriptYOffset": 75,
+          "ySuperscriptXSize": 650,
+          "ySuperscriptYSize": 600,
+          "ySuperscriptXOffset": 0,
+          "ySuperscriptYOffset": 350,
+          "yStrikeoutSize": 50,
+          "yStrikeoutPosition": 240
+        },
+        "post": {
+          "italicAngle": 0.0,
+          "underlinePosition": -75,
+          "underlineThickness": 50,
+          "isFixedPitch": 0
+        }
+      },
+      "globalMetricsCurrent": {
+        "head": {
+          "unitsPerEm": 1000,
+          "xMin": -116,
+          "yMin": -310,
+          "xMax": 1246,
+          "yMax": 968
+        },
+        "hhea": {
+          "ascent": 960,
+          "descent": -300,
+          "lineGap": 0,
+          "advanceWidthMax": 1100,
+          "minLeftSideBearing": -116,
+          "minRightSideBearing": -685,
+          "xMaxExtent": 1246,
+          "caretSlopeRise": 1,
+          "caretSlopeRun": 0,
+          "caretOffset": 0
+        },
+        "OS/2": {
+          "usWeightClass": 600,
+          "usWidthClass": 5,
+          "sTypoAscender": 960,
+          "sTypoDescender": -300,
+          "sTypoLineGap": 0,
+          "usWinAscent": 974,
+          "usWinDescent": 315,
+          "sxHeight": 400,
+          "sCapHeight": 610,
+          "ySubscriptXSize": 650,
+          "ySubscriptYSize": 600,
+          "ySubscriptXOffset": 0,
+          "ySubscriptYOffset": 75,
+          "ySuperscriptXSize": 650,
+          "ySuperscriptYSize": 600,
+          "ySuperscriptXOffset": 0,
+          "ySuperscriptYOffset": 350,
+          "yStrikeoutSize": 50,
+          "yStrikeoutPosition": 240
+        },
+        "post": {
+          "italicAngle": 0.0,
+          "underlinePosition": -75,
+          "underlineThickness": 50,
+          "isFixedPitch": 0
+        }
+      },
+      "globalMetricsEqual": true,
+      "previousBase64Bytes": 15500,
+      "currentBase64Bytes": 16344,
+      "rawWOFFNetBytes": 632,
+      "payloadNetBytes": 844,
+      "otherRecordFieldsEqual": true,
+      "runtimePayloadEqualsStoredOfficialWOFF": true,
+      "sourceMetadataAndCSSMatch": true
+    }
+  ],
+  "otherSixFontRecords": [
+    {
+      "family": "Plus Jakarta Sans",
+      "weight": "400",
+      "rawWOFFBytes": 28828,
+      "rawWOFFSHA256": "3ec7f5cad1bd738387a7c9b7e18428cfb165e9b98bdd26645b9f58fceee492c0",
+      "wholeRecordEqual": true
+    },
+    {
+      "family": "Plus Jakarta Sans",
+      "weight": "600",
+      "rawWOFFBytes": 29604,
+      "rawWOFFSHA256": "918ce7b19d036bcd59d41ab6198bbf35d77cf46227e56b85274e1dd2522ca8be",
+      "wholeRecordEqual": true
+    },
+    {
+      "family": "Plus Jakarta Sans",
+      "weight": "700",
+      "rawWOFFBytes": 29828,
+      "rawWOFFSHA256": "4f3f2b563317bc9b948f8aef3c24e01cbc11f342015eaf827f45533f8986d896",
+      "wholeRecordEqual": true
+    },
+    {
+      "family": "Plus Jakarta Sans",
+      "weight": "800",
+      "rawWOFFBytes": 29132,
+      "rawWOFFSHA256": "7036e01f13e5c43a877d1d0db05f4dda5ba8f76641a64f1c137fa58170b48632",
+      "wholeRecordEqual": true
+    },
+    {
+      "family": "Rubik Mono One",
+      "weight": "400",
+      "rawWOFFBytes": 4040,
+      "rawWOFFSHA256": "36faf220f9935cff89be4b5611a337202dc2a95be07df3565594ce6208c4285a",
+      "wholeRecordEqual": true
+    },
+    {
+      "family": "Caper Jakarta Profile 500",
+      "weight": "500",
+      "rawWOFFBytes": 29728,
+      "rawWOFFSHA256": "1ed396140566c054e9330fbddc30fbc479f674fd3bc2ecc237b2255ba7d2c7f4",
+      "wholeRecordEqual": true
+    }
+  ],
+  "licenseSuffix": {
+    "marker": "const OFL_COMMON_BODY",
+    "bytes": 4862,
+    "sha256": "472f1e4120cc5b914790513422152df3d62b97681f7716a7c04075a6d311e42a",
+    "wholeSuffixEqual": true
+  },
+  "twoBase64Inverse": {
+    "equalsWholePreviousModule": true,
+    "inverseBytes": 260198,
+    "inverseSHA256": "1702d6644db3e5998132bacfe7d7067e37367148d6b8668327b5f066e7379b32"
+  },
+  "metadata": {
+    "path": "/Users/tsb/Documents/小程序/docs/design-sources/home-long-reference-fonts/source.json",
+    "bytes": 8607,
+    "sha256": "79445bb95774d5850883e097fa0ec0c84771f0581d33d70aa4eb9a128c5ee6de"
+  },
+  "fixedConsumerAudit": {
+    "path": "/Users/tsb/Documents/小程序/docs/evidence/caper-fixed-handwriting-character-audit-wave74-2026-10-02.json",
+    "bytes": 26505,
+    "sha256": "fc6cd1cb2e6f6a5fc447ea0436d17d3eadb04bdbdf35a903c553763a52ac0ca8"
+  },
+  "priorSharedReviewUnchanged": [
+    {
+      "path": "/Users/tsb/Documents/小程序/docs/evidence/caper-reference-photo-font-async-independent-review-wave73-2026-10-02.md",
+      "bytes": 5413,
+      "sha256": "1c17aaf36ab00505f314b68ac1c5fbde74cea544c96e864e34ae53d3bd48832b"
+    },
+    {
+      "path": "/Users/tsb/Documents/小程序/docs/evidence/caper-reference-photo-font-async-independent-review-wave73-2026-10-02.json",
+      "bytes": 31711,
+      "sha256": "35944ec4fdb96d71bef9e6e40f6fb6043d7c5b98ea7f9ee685f1cec5cfd115e8"
+    }
+  ],
+  "boundaries": [
+    "No repeated prior source checker or VM tests",
+    "No native callback / rendering run",
+    "No claim of pixel-for-pixel visual acceptance",
+    "Official Google CSS/WOFF provenance evaluated from stored current source responses; no repeated network fetch"
+  ],
+  "immutableReviewedPayloadCopy": {
+    "path": "/private/tmp/caper-wave74-final-font-delta-independent/font-data-reviewed.js",
+    "bytes": 262502,
+    "sha256": "fb39653c8663ba1bb7aa79e90df267aca6d1c6dd606ea484d8a052dbd53ad3de"
+  },
+  "method": {
+    "tool": "FontTools 4.60.2",
+    "python": "/Users/tsb/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "fontToolsPath": "/private/tmp/irl-material-symbols-wave60/fonttools",
+    "script": "/private/tmp/caper-wave74-final-font-delta-independent/audit_delta.py",
+    "outlineComparison": "DecomposingRecordingPen command lists for every previous cmap Unicode; hmtx advanceWidth and LSB; global fields enumerated in faces",
+    "comparisonRun": "one narrow read-only delta pass; no old checks or VM tests"
+  }
+}

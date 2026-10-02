@@ -5,9 +5,11 @@
   "scripts": {
     "dev": "tsx watch src/main.ts",
     "start": "tsx src/main.ts",
-    "test": "tsx --test test/*.test.ts",
+    "test": "node --import tsx --test --test-isolation=none --test-concurrency=1 test/*.test.ts",
+    "test:ci": "node --import tsx --test --test-concurrency=1 test/*.test.ts",
     "typecheck": "tsc --noEmit",
-    "preflight:release": "tsx scripts/preflight-release.ts"
+    "preflight:release": "tsx scripts/preflight-release.ts",
+    "preflight:candidate": "tsx scripts/check-candidate-gate.ts"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.5.8",

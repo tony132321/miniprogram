@@ -1,0 +1,581 @@
+{
+  "scope": "One necessary source/resource/whole-inverse and real action condition preservation check only; not style mirror test, SDK/native/glyph paint/API/full suite.",
+  "pass": true,
+  "checks": [
+    {
+      "name": "original source HTML exact expected byte/hash",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "inverse replacement occurrences 1",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "inverse replacement occurrences 2",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "inverse replacement occurrences 3",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "inverse replacement occurrences 4",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "inverse replacement occurrences 5",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "inverse replacement occurrences 6",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "inverse replacement occurrences 7",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "inverse replacement occurrences 8",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "inverse replacement occurrences 9",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "inverse replacement occurrences 10",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "inverse replacement occurrences 11",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "inverse replacement occurrences 12",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "inverse replacement occurrences 13",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "inverse replacement occurrences 14",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "whole WXML inverse exactly restores baseline",
+      "pass": true,
+      "evidence": {
+        "baselineBytes": 34914,
+        "baselineSHA": "69208a8ae7b49fef663ac51ef723f45248959b29aa0c3ad649507d174c0c1e13",
+        "edits": 14
+      }
+    },
+    {
+      "name": "whole old CSS prefix and exact append",
+      "pass": true,
+      "evidence": {
+        "prefixBytes": 67613,
+        "prefixSHA": "2b8787c83c01314c1a23b5d2549984c251e842180cd8206ee4553304f3907c7a",
+        "appendBytes": 14709,
+        "appendSHA": "11be17420f6ce8be3d2b589549e202d4468d6f40f0bd2ba7a02d5efc36393b33"
+      }
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/messages.js",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/messages.json",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/search.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/settings.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-activity.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-add.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-alarm.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-approve.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-arrow-forward.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-back.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-call.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-celebration.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-chevron.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-done-all.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-edit-location.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-emoji.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-group.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-mic.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-more-vert.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-more.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-navigation.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-person-blue.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-person-white.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-qr.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-shield.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-sparkle-footer.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave69-sparkle-white.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave71-compact-alarm.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave71-compact-badminton.jpg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave71-compact-bolt.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave71-compact-chevron.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave71-compact-confirmed.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave71-compact-location.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave71-compact-near-me.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave71-compact-ticket.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "protected bytes miniprogram/pages/messages/assets/wave71-compact-update.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "full action attributes and effective wx conditions unchanged",
+      "pass": true,
+      "evidence": {
+        "templateActionNodes": 63,
+        "uniqueContracts": 62
+      }
+    },
+    {
+      "name": "whole CHAT/N1/N2/non-INBOX suffix byte exact",
+      "pass": true,
+      "evidence": {
+        "bytes": 23282,
+        "sha256": "c38173522a35fefec876eab293b7e25db1e6d70019d9952462857cd8fde6025f"
+      }
+    },
+    {
+      "name": "INBOX header/status/root byte exact",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "INBOX priority source paragraph byte exact",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "search/approval/identity/loading/empty paragraph byte exact",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "every new ordinary CSS selector is INBOX and distinct long scope",
+      "pass": true,
+      "evidence": {
+        "selectors": 98,
+        "noBareSharedSelectors": true
+      }
+    },
+    {
+      "name": "only newly named pulse animation",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "source SVG original children miniprogram/pages/messages/assets/wave74-inbox-people.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "source SVG root dimensions/paint miniprogram/pages/messages/assets/wave74-inbox-people.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "new source SVG hash miniprogram/pages/messages/assets/wave74-inbox-people.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "new source SVG referenced miniprogram/pages/messages/assets/wave74-inbox-people.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "source SVG original children miniprogram/pages/messages/assets/wave74-inbox-pin.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "source SVG root dimensions/paint miniprogram/pages/messages/assets/wave74-inbox-pin.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "new source SVG hash miniprogram/pages/messages/assets/wave74-inbox-pin.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "new source SVG referenced miniprogram/pages/messages/assets/wave74-inbox-pin.svg",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "only two SVG additions; no new photo/font/assets",
+      "pass": true,
+      "evidence": {
+        "newAssets": [
+          "miniprogram/pages/messages/assets/wave74-inbox-people.svg",
+          "miniprogram/pages/messages/assets/wave74-inbox-pin.svg"
+        ],
+        "rawBytes": 618
+      }
+    },
+    {
+      "name": "new one-click source visual explicitly disabled with no handler",
+      "pass": true,
+      "evidence": null
+    },
+    {
+      "name": "no new network photo URI in product",
+      "pass": true,
+      "evidence": null
+    }
+  ],
+  "protected": [
+    {
+      "path": "miniprogram/pages/messages/messages.js",
+      "bytes": 32969,
+      "sha256": "b297f95f560581abc5718b4fe35cb66453601f1e0948e6940800e4eb8e10a8c0"
+    },
+    {
+      "path": "miniprogram/pages/messages/messages.json",
+      "bytes": 63,
+      "sha256": "b76e69c65eadf25397e0df5c9457c5a098c1bfc714ae05be5441318bdc8ebacc"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/search.svg",
+      "bytes": 207,
+      "sha256": "aeff8942a1a5a1a87f6f8dadfccba80d47d758084cc333270b360caef617c302"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/settings.svg",
+      "bytes": 758,
+      "sha256": "2f20e16cc351312cb34aa489af483fac0aac754687a8044f214a1b784c54e8ec"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-activity.svg",
+      "bytes": 1395,
+      "sha256": "769ba801dafb8b772bc1bea7ee03d8becc9eda6bd0754b3bb48078a680b96ade"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-add.svg",
+      "bytes": 181,
+      "sha256": "e2faf4b9c911528052d722c14b0961aa4d349fda1b0b37333331d624d2f80e66"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-alarm.svg",
+      "bytes": 941,
+      "sha256": "f18b2634a1f413e46d9b64a01ccb51dd378686c8b0ad0c3c6ccd51bddc066e49"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-approve.svg",
+      "bytes": 856,
+      "sha256": "2936873419db7812916d5b3b47b9f211ae73e2cd06abdb7fbfbfe48bd96a6b90"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-arrow-forward.svg",
+      "bytes": 176,
+      "sha256": "edb7f148b1799ca9adbc9e8fd7ebb298cfc99d268763e942e358eea95a51ec64"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-back.svg",
+      "bytes": 176,
+      "sha256": "a7c95a2ef8b451189ba7e0d0a834542c257a97375d36c6dca15daa6d86b2ad6b"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-call.svg",
+      "bytes": 1293,
+      "sha256": "39164588544d4db755047e2a7edecbeb83a6a7ac9350c15bb5dbe6e3343f6f6b"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-celebration.svg",
+      "bytes": 726,
+      "sha256": "d256e0bc235c5fea8ed0d53906d42611dc1ad2337a97a6ed5c5bd51647a94565"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-chevron.svg",
+      "bytes": 177,
+      "sha256": "9e59fde3efc83f8237eec2f357cdfe56bc43fbe53acbdc8cc47659b3f2240140"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-done-all.svg",
+      "bytes": 258,
+      "sha256": "a195b0500b3e2ca74b21ec10aa1e88ae78a65703b1a143f8d8682e3b30a957a4"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-edit-location.svg",
+      "bytes": 921,
+      "sha256": "62dd04e8a1178b61cd34531b6b6b1121b4d964fd46812f939c96494d28f9e337"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-emoji.svg",
+      "bytes": 1399,
+      "sha256": "a962b55f7fdb3a4a6add35210d77548889ba6777e316e1719b5df1c07fb802aa"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-group.svg",
+      "bytes": 1579,
+      "sha256": "553f097fc8bc67ba60c07d574249bb6be9959460f24bcb0f6eea1b3a508a28a8"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-mic.svg",
+      "bytes": 868,
+      "sha256": "b3dd100ae3398c95d70f25d2a7c6a4b7ad7692c7f8e538bda803faf814b48898"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-more-vert.svg",
+      "bytes": 632,
+      "sha256": "638c8fe797f56e63826824e20eb94dedca72186d99532b9c43d57ac60c306364"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-more.svg",
+      "bytes": 632,
+      "sha256": "5daf6d8ba0b8a1e4537b3a7d4b6ebef020aacbc6f3eca04cc75b376677e46768"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-navigation.svg",
+      "bytes": 224,
+      "sha256": "42bcc67ff797e35f473164aeeeda6dc578a13098495b4ae6d5f2a52085ae568e"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-person-blue.svg",
+      "bytes": 1221,
+      "sha256": "374b6dc0497b9b312a135ad9c32f2d906f5bf4214bf2f65217b58eeafb816fd3"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-person-white.svg",
+      "bytes": 1221,
+      "sha256": "eb9f584cd54abceb581a241bba6492adc6781bccd5dff96f7b48d63fcec34488"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-qr.svg",
+      "bytes": 644,
+      "sha256": "8762f0820ad71d80c9d266c83c94672397c66f42896148039d55bb5aff957847"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-shield.svg",
+      "bytes": 293,
+      "sha256": "77edac762d11873c5c2d2615a2dc86170d83a860f6ffa3efe7ae77852a8e06d2"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-sparkle-footer.svg",
+      "bytes": 422,
+      "sha256": "0c317fc323fe8e7490c7dbde09eb9e7235c29d5b06cda0f9a329906a918ae49c"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave69-sparkle-white.svg",
+      "bytes": 422,
+      "sha256": "8b98eec6e75f3dbb537690fa3d73085eb8d4e6630a09c09ee190a3aeea6d3936"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave71-compact-alarm.svg",
+      "bytes": 565,
+      "sha256": "9e24f4e43a66ee1f14971603d57423f4cb864e1f633dc3ba4056191f9fcd798c"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave71-compact-badminton.jpg",
+      "bytes": 28623,
+      "sha256": "36c2ece6538bb2cd91a5be6a218c9380bc70c8e02cb87a9de015fdb56246eb10"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave71-compact-bolt.svg",
+      "bytes": 155,
+      "sha256": "b2818f18f50f2cf8225d2bfd26b14cfbf8db56c71928cb3fe8923a97556bab81"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave71-compact-chevron.svg",
+      "bytes": 154,
+      "sha256": "0c30c3621ee14d7d3ab4307fae3959327b88cf8b2c2a7d540b674580a88ce44d"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave71-compact-confirmed.svg",
+      "bytes": 493,
+      "sha256": "6c1cf4026c3c5a55cfd3961b6b6f64904e2a956a815db494b926bd7001ed500e"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave71-compact-location.svg",
+      "bytes": 805,
+      "sha256": "d273092201cb391308453bbbf1844de7f308fd8061bbe62b70e986ec481a5558"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave71-compact-near-me.svg",
+      "bytes": 197,
+      "sha256": "2e9617e3f92cd71cfaa5dafe923ebe4fc44ba1f5ac1223938b1e5dc90582d9a9"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave71-compact-ticket.svg",
+      "bytes": 1647,
+      "sha256": "db363fdd5dfcebe2d62aa6a4417823691480e6095893ce5332ecc812ac6b02a0"
+    },
+    {
+      "path": "miniprogram/pages/messages/assets/wave71-compact-update.svg",
+      "bytes": 460,
+      "sha256": "a60164b7aee2a3c595a10aa523b250feec00fd4b76b12a18ae637aec17abdb00"
+    }
+  ],
+  "sourceCssObservation": "source-css-observation.json (48 original-source roles; no product CSS projected or compared)",
+  "products": [
+    {
+      "path": "miniprogram/pages/messages/messages.wxml",
+      "bytes": 38729,
+      "sha256": "6e0c3b0d43c509797f4be92921afb5e87c35db45d363f509ea21bbcbecd5e788"
+    },
+    {
+      "path": "miniprogram/pages/messages/messages.wxss",
+      "bytes": 82322,
+      "sha256": "3cbee13c77e1a071b933998c0cd33143ca7ce863c40388886e61910efda8a6b2"
+    }
+  ],
+  "rawNetBytes": 19142
+}

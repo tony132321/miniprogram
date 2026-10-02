@@ -1,0 +1,9 @@
+# Wave71 `_5` source package
+
+Original complete `_5-code.html` and `_5-screen.png` are ZIP input artifacts. `source-layout-tokens.json` and `_5-style-{0,1,2}.css` preserve effective CSS px, source cascade and undefined-token boundaries; the prior CSS-only observation blocked fonts/images and is not product/native paint evidence. Original map bytes/HTTP response are retained and copied exactly to the activity subpackage as an explicitly illustrative map.
+
+`runtime-material-manifest.json` records all 14 original Material consumers, 11 official fullface variants, exact Unicode/path/colors/axes, active GSUB/rclt substitutions and runtime/reuse paths. `export_original_assets.py` is the original preparatory exporter; do not rerun it as a product checker. The common last Material face is the same source import retained in Wave69: `docs/design-sources/caper-activity-wave69/original-last-material-full.woff2`; no duplicate full font is created here or inside the app. Its existing CSS and response metadata are reused, not a claim of a new `_5` HTTP font download. Apache-2.0 license remains in `docs/licenses/material-symbols-Apache-2.0.txt`.
+
+`js-transforms.json` / `ui-transforms.json` reproduce exact minimal inverses to immutable70. `check_scope.py` produced `scoped-source-binding-protection-check.json` once (82/82), including raw active-GSUB font path comparison, readonly bindings, source token roles and complete old-byte preservation. It needs the documented bundled Python + existing FontTools and immutable70/tmp baseline; no package installation. `targeted-green-tool-result.json` is the real successful new six-group tool result. Pre-freeze CSS role refinements are recorded separately and did not change JS or old product scopes.
+
+Owner evidence: `docs/evidence/caper-host-monitor-reference-ui-wave71-2026-10-02.md` and `.json`. Root owns independent/native/CLI/Git/aggregate gates; these source records do not claim those passes.

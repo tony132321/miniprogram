@@ -1,0 +1,1470 @@
+{
+  "schemaVersion": 1,
+  "generatedAtUTC": "2026-10-02T03:29:35.059082+00:00",
+  "purpose": "Read-only integration summary of W73/74 three frozen ordinary long page scopes; no matrix/Git/product changes and no test/SDK/CLI execution",
+  "repo": "/Users/tsb/Documents/小程序",
+  "pages": [
+    {
+      "key": "home-W73",
+      "wave": 73,
+      "owner": "/root/ui64_discover_impl",
+      "independentReviewer": "/root/ui65_font_audit",
+      "originalReference": "caper_2",
+      "manifest": {
+        "path": "/private/tmp/caper-wave73-home-long/frozen-owned-paths.json",
+        "repoRelativePath": null,
+        "bytes": 12342,
+        "sha256": "6c98030c5b51d27ad84a3907dcbf7ff5fd0e6f7a884e26156ba9ff92834f8a9d"
+      },
+      "manifestPhaseFlags": {
+        "scope": "Wave73 ordinary long page final owner freeze after root-approved11 async consumers and3-source-review corrections"
+      },
+      "phaseFlagBoundary": "Owner manifest flags record owner-freeze phase; existing final independent reports are the authoritative independent-review scope. Do not treat stale noIndependentReviewYet=true/status=FROZEN_FOR_INDEPENDENT_REVIEW as absence of final review.",
+      "frozenProductCount": 7,
+      "frozenProducts": [
+        {
+          "path": "miniprogram/pages/index/assets/w73-chevron-gray-hover.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/index/assets/w73-chevron-gray-hover.svg",
+          "expectedBytes": 185,
+          "expectedSHA256": "b67239d32edd6382c1070e026501b0c4e28c10c17c0bce82aea0826985075634",
+          "observedBytes": 185,
+          "observedSHA256": "b67239d32edd6382c1070e026501b0c4e28c10c17c0bce82aea0826985075634",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave73-home-long/frozen-product/miniprogram/pages/index/assets/w73-chevron-gray-hover.svg",
+          "copyBytes": 185,
+          "copySHA256": "b67239d32edd6382c1070e026501b0c4e28c10c17c0bce82aea0826985075634",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/index/assets/w73-chevron-gray.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/index/assets/w73-chevron-gray.svg",
+          "expectedBytes": 185,
+          "expectedSHA256": "17dce00d9bce7f9ab6d95af53a15a823b8d52dc9207a11f21b672449c73ed7d8",
+          "observedBytes": 185,
+          "observedSHA256": "17dce00d9bce7f9ab6d95af53a15a823b8d52dc9207a11f21b672449c73ed7d8",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave73-home-long/frozen-product/miniprogram/pages/index/assets/w73-chevron-gray.svg",
+          "copyBytes": 185,
+          "copySHA256": "17dce00d9bce7f9ab6d95af53a15a823b8d52dc9207a11f21b672449c73ed7d8",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/index/assets/w73-chevron-purple.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/index/assets/w73-chevron-purple.svg",
+          "expectedBytes": 187,
+          "expectedSHA256": "3c7658a5751fda953ea81b6c37b26cd326a792fafaf94c40de92b0808586b5f8",
+          "observedBytes": 187,
+          "observedSHA256": "3c7658a5751fda953ea81b6c37b26cd326a792fafaf94c40de92b0808586b5f8",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave73-home-long/frozen-product/miniprogram/pages/index/assets/w73-chevron-purple.svg",
+          "copyBytes": 187,
+          "copySHA256": "3c7658a5751fda953ea81b6c37b26cd326a792fafaf94c40de92b0808586b5f8",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/index/assets/w73-plus-white.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/index/assets/w73-plus-white.svg",
+          "expectedBytes": 189,
+          "expectedSHA256": "b32b35e119356e82d38ab2e542aa06668cb9b5e5fcd67ef26cb5d585a2057c21",
+          "observedBytes": 189,
+          "observedSHA256": "b32b35e119356e82d38ab2e542aa06668cb9b5e5fcd67ef26cb5d585a2057c21",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave73-home-long/frozen-product/miniprogram/pages/index/assets/w73-plus-white.svg",
+          "copyBytes": 189,
+          "copySHA256": "b32b35e119356e82d38ab2e542aa06668cb9b5e5fcd67ef26cb5d585a2057c21",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/index/assets/w73-refresh-blue.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/index/assets/w73-refresh-blue.svg",
+          "expectedBytes": 280,
+          "expectedSHA256": "5c3156e0797781eeb3895931da1308423de0adf27f872f17ea9cf4d866d153e8",
+          "observedBytes": 280,
+          "observedSHA256": "5c3156e0797781eeb3895931da1308423de0adf27f872f17ea9cf4d866d153e8",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave73-home-long/frozen-product/miniprogram/pages/index/assets/w73-refresh-blue.svg",
+          "copyBytes": 280,
+          "copySHA256": "5c3156e0797781eeb3895931da1308423de0adf27f872f17ea9cf4d866d153e8",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/index/index.wxml",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/index/index.wxml",
+          "expectedBytes": 43747,
+          "expectedSHA256": "9c35f217aefeaebfb33a003b996f127de9850e486ee431704d6480f816249f4e",
+          "observedBytes": 43747,
+          "observedSHA256": "9c35f217aefeaebfb33a003b996f127de9850e486ee431704d6480f816249f4e",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave73-home-long/frozen-product/miniprogram/pages/index/index.wxml",
+          "copyBytes": 43747,
+          "copySHA256": "9c35f217aefeaebfb33a003b996f127de9850e486ee431704d6480f816249f4e",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/index/index.wxss",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/index/index.wxss",
+          "expectedBytes": 110058,
+          "expectedSHA256": "9c370a6b694c57ee508e8c6c8a698094a1892c91d45e8b7f73a2b4244e8c9d87",
+          "observedBytes": 110058,
+          "observedSHA256": "9c370a6b694c57ee508e8c6c8a698094a1892c91d45e8b7f73a2b4244e8c9d87",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave73-home-long/frozen-product/miniprogram/pages/index/index.wxss",
+          "copyBytes": 110058,
+          "copySHA256": "9c370a6b694c57ee508e8c6c8a698094a1892c91d45e8b7f73a2b4244e8c9d87",
+          "copyMatchesFreeze": true
+        }
+      ],
+      "protectedJSJSON": [
+        {
+          "path": "miniprogram/pages/index/index.js",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/index/index.js",
+          "expectedBytes": 32598,
+          "expectedSHA256": "d85b9db816163c4853bd2a7a9abec66dc62e8047d9e79c19457f4cb57dc8ac11",
+          "observedBytes": 32598,
+          "observedSHA256": "d85b9db816163c4853bd2a7a9abec66dc62e8047d9e79c19457f4cb57dc8ac11",
+          "matchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/index/index.json",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/index/index.json",
+          "expectedBytes": 340,
+          "expectedSHA256": "3f3022dfdd20e7a99f602b8f8fc6af5b0082e8d99a56d3e67a6d170300ec198a",
+          "observedBytes": 340,
+          "observedSHA256": "3f3022dfdd20e7a99f602b8f8fc6af5b0082e8d99a56d3e67a6d170300ec198a",
+          "matchesFreeze": true
+        }
+      ],
+      "rawOwnerNetBytes": 30013,
+      "rawNetBoundary": "owner raw file delta only; no inferred compiled main/total size, no root shared photo/font/registration delta doublecount",
+      "sourceFrozenPaths": [
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/README.md",
+          "bytes": 2854,
+          "sha256": "65eb1c2c39e8a42bd4ca92c578ae318f239d705b12f2b14595dcba07455196eb"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/blocked-resources.json",
+          "bytes": 9979,
+          "sha256": "c8d8c88740ba27c93f2173ece498cac9265215d4e9a9e76574368c0ff2203139"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/caper_2-source-css-observation.json",
+          "bytes": 367927,
+          "sha256": "3c3d693030109cb5c97f05d5e03d643a31ea0f0f3246df8d41e537e3f1ccdc6b"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/caper_2-style-0.css",
+          "bytes": 399,
+          "sha256": "1a4b268b70e1d03e57c1e107d5003263701270b3851341ae009d92f5fab6c6e5"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/caper_2-style-1.css",
+          "bytes": 235,
+          "sha256": "7a29e6526de56e15926af7fd0d4a5adb07b96eeeaf5b3984682533eda7ffc30f"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/caper_2-style-2.css",
+          "bytes": 33041,
+          "sha256": "79abe017e69df1c2db029ae6b16664da55ddae573a720a4a4f238a27013ed056"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/code.html",
+          "bytes": 48084,
+          "sha256": "e4e4ba417711e27838f10cef098c4da8c428d3b9d7c4217fe36d9def5761c4ca"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/brand-party.response.json",
+          "bytes": 1681,
+          "sha256": "0368da5bfa0352469dc8043abb839f5ed7b32c613a897e13510def63b6e1c382"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/city-shanghai.response.json",
+          "bytes": 1743,
+          "sha256": "2674cba7f4d7caedd38414121d5159175ab27ec4968f28041dc586bcfdfc89ab"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/collage-dinner.response.json",
+          "bytes": 1685,
+          "sha256": "3835f97175c015066a1a04c020193346c77db054a326a85d976d61d46ade2db3"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/collage-grass.response.json",
+          "bytes": 1684,
+          "sha256": "2f77d88730a1ea0aa5c7a2d8fd72066c57323f4e1a485ad271c4610340138d12"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/collage-main.response.json",
+          "bytes": 1683,
+          "sha256": "691dcd462a683124520211bff893f17446abeb325433f061fd4781c6c8ede327"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/hot-boardgame.response.json",
+          "bytes": 1684,
+          "sha256": "9e34f995de6d8cc5239b9c2f00a8cbbf9d67f252828fe30986b0a2af5b4e4396"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/hot-coffee.response.json",
+          "bytes": 1681,
+          "sha256": "1dca3cf000993cdeba11bee0996a6db207a861204af636f4cdda5dc0f12a09be"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/hot-frisbee.response.json",
+          "bytes": 1679,
+          "sha256": "24f4d1414082a91614c520abe8b75e47fd5025d62595d3ce570653e895c71702"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/hot-tennis.response.json",
+          "bytes": 1675,
+          "sha256": "1ad48469c17344f91c6059fc005bae11fa26824ae26d2fb73afcf97888268b61"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/idea-badminton.response.json",
+          "bytes": 1682,
+          "sha256": "5b85a9f839223afe98b31d339aa3bee0c4c00f64b7a0cc89f0a44acee6b1808e"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/idea-coffee.response.json",
+          "bytes": 1679,
+          "sha256": "5ce563dbfc538f527e23e2ac2acf276f2de34700145cbda431f91ae0f15d450f"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/idea-cycling-illustration.response.json",
+          "bytes": 1690,
+          "sha256": "5670ae875e64296b7c8bbc4457b92c6c023024bfe7432753807ef1bbd70287c6"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/recommended-food.response.json",
+          "bytes": 1744,
+          "sha256": "4fb194d4759080e8f29fde0e7cdf6b39f4deb8b2f27c92bd7d2644c42a6a4789"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/recommended-hike.response.json",
+          "bytes": 1744,
+          "sha256": "621f3be50df2ae1424b230d0376dfed2c26d0a9f3fa47714846c3b2cb5f8a85d"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/inline-svg-manifest.json",
+          "bytes": 5623,
+          "sha256": "92e6ab5554d147d55d79f8b1adfb9d83be0944c43822696adac3366e2f5568bb"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/photo-consumer-manifest.json",
+          "bytes": 20769,
+          "sha256": "9a06e5964916bbcb8f7438621b77fd136c30792d7a24c9a0c8032d9ac0151509"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/photo-pack-integration.json",
+          "bytes": 10918,
+          "sha256": "ed3b2543682bc00d878aaf3fdc47ac617fd966c4cb2b6b5333b1efef6ef548fb"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/photo-response-manifest.json",
+          "bytes": 25825,
+          "sha256": "43adee56af40ec3173cebd0b537995a762fc86da0219ffe0975311fc45c11422"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/screen.png",
+          "bytes": 278231,
+          "sha256": "81028ecae6d89d2b77c70750e628c1e58a355dd52704e2a3646dcf392934f13f"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/source-hand-consumers.json",
+          "bytes": 1047,
+          "sha256": "322e61c8a17abc94bc6a49109b0fef7221706898254d432ba5cca70f262957fd"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/source-review-delta-proof-initial-failed.json",
+          "bytes": 2282,
+          "sha256": "d6a3fde1eeed490be946aaced38e4b479ef5adbe70c8f5d69aff60850298b4c1"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/source-review-delta-proof.json",
+          "bytes": 2730,
+          "sha256": "b64a462894a37e9fb39a51aba9c0bab4a611e7fd1db0764f291edd3952135920"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/source-review-delta.json",
+          "bytes": 9227,
+          "sha256": "48eb516a8d2b36f3e4b6a6bc4769cdfa11c0ad891e24b2dd691fdabafac5224f"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/source-role-projection.json",
+          "bytes": 35140,
+          "sha256": "648b6ca6e1f3f568fe70f713bd4adb5e9106cbc4c0b611811481f324b603f3fe"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/source-scenes.json",
+          "bytes": 6547,
+          "sha256": "e930e397b17bb5315508fce73a45f07375caadf37d66a2cf23627adc7dd7a8c3"
+        },
+        {
+          "path": "docs/design-sources/caper-home-ordinary-long-wave73/ui-transforms.json",
+          "bytes": 47170,
+          "sha256": "eb63bc737b3b5067566048bf3271a64620a7bc407b9228d00766b2e3dde7a2da"
+        }
+      ],
+      "sourceDirectoryInventory": {
+        "directory": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73",
+        "files": [
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/README.md",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/README.md",
+            "bytes": 2854,
+            "sha256": "65eb1c2c39e8a42bd4ca92c578ae318f239d705b12f2b14595dcba07455196eb"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/blocked-resources.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/blocked-resources.json",
+            "bytes": 9979,
+            "sha256": "c8d8c88740ba27c93f2173ece498cac9265215d4e9a9e76574368c0ff2203139"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/caper_2-source-css-observation.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/caper_2-source-css-observation.json",
+            "bytes": 367927,
+            "sha256": "3c3d693030109cb5c97f05d5e03d643a31ea0f0f3246df8d41e537e3f1ccdc6b"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/caper_2-style-0.css",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/caper_2-style-0.css",
+            "bytes": 399,
+            "sha256": "1a4b268b70e1d03e57c1e107d5003263701270b3851341ae009d92f5fab6c6e5"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/caper_2-style-1.css",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/caper_2-style-1.css",
+            "bytes": 235,
+            "sha256": "7a29e6526de56e15926af7fd0d4a5adb07b96eeeaf5b3984682533eda7ffc30f"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/caper_2-style-2.css",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/caper_2-style-2.css",
+            "bytes": 33041,
+            "sha256": "79abe017e69df1c2db029ae6b16664da55ddae573a720a4a4f238a27013ed056"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/code.html",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/code.html",
+            "bytes": 48084,
+            "sha256": "e4e4ba417711e27838f10cef098c4da8c428d3b9d7c4217fe36d9def5761c4ca"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/brand-party.response.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/brand-party.response.json",
+            "bytes": 1681,
+            "sha256": "0368da5bfa0352469dc8043abb839f5ed7b32c613a897e13510def63b6e1c382"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/city-shanghai.response.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/city-shanghai.response.json",
+            "bytes": 1743,
+            "sha256": "2674cba7f4d7caedd38414121d5159175ab27ec4968f28041dc586bcfdfc89ab"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/collage-dinner.response.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/collage-dinner.response.json",
+            "bytes": 1685,
+            "sha256": "3835f97175c015066a1a04c020193346c77db054a326a85d976d61d46ade2db3"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/collage-grass.response.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/collage-grass.response.json",
+            "bytes": 1684,
+            "sha256": "2f77d88730a1ea0aa5c7a2d8fd72066c57323f4e1a485ad271c4610340138d12"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/collage-main.response.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/collage-main.response.json",
+            "bytes": 1683,
+            "sha256": "691dcd462a683124520211bff893f17446abeb325433f061fd4781c6c8ede327"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/hot-boardgame.response.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/hot-boardgame.response.json",
+            "bytes": 1684,
+            "sha256": "9e34f995de6d8cc5239b9c2f00a8cbbf9d67f252828fe30986b0a2af5b4e4396"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/hot-coffee.response.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/hot-coffee.response.json",
+            "bytes": 1681,
+            "sha256": "1dca3cf000993cdeba11bee0996a6db207a861204af636f4cdda5dc0f12a09be"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/hot-frisbee.response.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/hot-frisbee.response.json",
+            "bytes": 1679,
+            "sha256": "24f4d1414082a91614c520abe8b75e47fd5025d62595d3ce570653e895c71702"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/hot-tennis.response.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/hot-tennis.response.json",
+            "bytes": 1675,
+            "sha256": "1ad48469c17344f91c6059fc005bae11fa26824ae26d2fb73afcf97888268b61"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/idea-badminton.response.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/idea-badminton.response.json",
+            "bytes": 1682,
+            "sha256": "5b85a9f839223afe98b31d339aa3bee0c4c00f64b7a0cc89f0a44acee6b1808e"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/idea-coffee.response.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/idea-coffee.response.json",
+            "bytes": 1679,
+            "sha256": "5ce563dbfc538f527e23e2ac2acf276f2de34700145cbda431f91ae0f15d450f"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/idea-cycling-illustration.response.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/idea-cycling-illustration.response.json",
+            "bytes": 1690,
+            "sha256": "5670ae875e64296b7c8bbc4457b92c6c023024bfe7432753807ef1bbd70287c6"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/recommended-food.response.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/recommended-food.response.json",
+            "bytes": 1744,
+            "sha256": "4fb194d4759080e8f29fde0e7cdf6b39f4deb8b2f27c92bd7d2644c42a6a4789"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/recommended-hike.response.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/http-response-evidence/recommended-hike.response.json",
+            "bytes": 1744,
+            "sha256": "621f3be50df2ae1424b230d0376dfed2c26d0a9f3fa47714846c3b2cb5f8a85d"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/inline-svg-manifest.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/inline-svg-manifest.json",
+            "bytes": 5623,
+            "sha256": "92e6ab5554d147d55d79f8b1adfb9d83be0944c43822696adac3366e2f5568bb"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/photo-consumer-manifest.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/photo-consumer-manifest.json",
+            "bytes": 20769,
+            "sha256": "9a06e5964916bbcb8f7438621b77fd136c30792d7a24c9a0c8032d9ac0151509"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/photo-pack-integration.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/photo-pack-integration.json",
+            "bytes": 10918,
+            "sha256": "ed3b2543682bc00d878aaf3fdc47ac617fd966c4cb2b6b5333b1efef6ef548fb"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/photo-response-manifest.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/photo-response-manifest.json",
+            "bytes": 25825,
+            "sha256": "43adee56af40ec3173cebd0b537995a762fc86da0219ffe0975311fc45c11422"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/screen.png",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/screen.png",
+            "bytes": 278231,
+            "sha256": "81028ecae6d89d2b77c70750e628c1e58a355dd52704e2a3646dcf392934f13f"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/source-hand-consumers.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/source-hand-consumers.json",
+            "bytes": 1047,
+            "sha256": "322e61c8a17abc94bc6a49109b0fef7221706898254d432ba5cca70f262957fd"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/source-review-delta-proof-initial-failed.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/source-review-delta-proof-initial-failed.json",
+            "bytes": 2282,
+            "sha256": "d6a3fde1eeed490be946aaced38e4b479ef5adbe70c8f5d69aff60850298b4c1"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/source-review-delta-proof.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/source-review-delta-proof.json",
+            "bytes": 2730,
+            "sha256": "b64a462894a37e9fb39a51aba9c0bab4a611e7fd1db0764f291edd3952135920"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/source-review-delta.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/source-review-delta.json",
+            "bytes": 9227,
+            "sha256": "48eb516a8d2b36f3e4b6a6bc4769cdfa11c0ad891e24b2dd691fdabafac5224f"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/source-role-projection.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/source-role-projection.json",
+            "bytes": 35140,
+            "sha256": "648b6ca6e1f3f568fe70f713bd4adb5e9106cbc4c0b611811481f324b603f3fe"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/source-scenes.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/source-scenes.json",
+            "bytes": 6547,
+            "sha256": "e930e397b17bb5315508fce73a45f07375caadf37d66a2cf23627adc7dd7a8c3"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-home-ordinary-long-wave73/ui-transforms.json",
+            "repoRelativePath": "docs/design-sources/caper-home-ordinary-long-wave73/ui-transforms.json",
+            "bytes": 47170,
+            "sha256": "eb63bc737b3b5067566048bf3271a64620a7bc407b9228d00766b2e3dde7a2da"
+          }
+        ],
+        "excludedPythonCachePaths": []
+      },
+      "ownerEvidence": [
+        {
+          "path": "/Users/tsb/Documents/小程序/docs/evidence/caper-home-ordinary-long-reference-ui-wave73-2026-10-02.md",
+          "repoRelativePath": "docs/evidence/caper-home-ordinary-long-reference-ui-wave73-2026-10-02.md",
+          "bytes": 10685,
+          "sha256": "0b110b65c7ed57b865097b93e5546ff3e345c95a8f2361409cf857919e93614a"
+        },
+        {
+          "path": "/Users/tsb/Documents/小程序/docs/evidence/caper-home-ordinary-long-reference-ui-wave73-2026-10-02.json",
+          "repoRelativePath": "docs/evidence/caper-home-ordinary-long-reference-ui-wave73-2026-10-02.json",
+          "bytes": 39059,
+          "sha256": "ef422ad495f725a9542a430f730cad8b7a6297961b30bdb134a90a53f6e4a680"
+        }
+      ],
+      "independentEvidence": [
+        {
+          "path": "/Users/tsb/Documents/小程序/docs/evidence/caper-home-ordinary-long-page-independent-review-wave73-2026-10-02.md",
+          "repoRelativePath": "docs/evidence/caper-home-ordinary-long-page-independent-review-wave73-2026-10-02.md",
+          "bytes": 15268,
+          "sha256": "f84937784aa50940025cd8651c7f6255fe7feb9065a34dcfd9fa8c57580ee839"
+        },
+        {
+          "path": "/Users/tsb/Documents/小程序/docs/evidence/caper-home-ordinary-long-page-independent-review-wave73-2026-10-02.json",
+          "repoRelativePath": "docs/evidence/caper-home-ordinary-long-page-independent-review-wave73-2026-10-02.json",
+          "bytes": 24796,
+          "sha256": "a769e7a25ba7547b35b7bf3a5efb3c5ba7f9cf4b0baf8bf19908789964796acc"
+        }
+      ],
+      "sourceEvidenceScope": {
+        "originalHTMLRange": "caper_2 ordinary RecommendedDualColumn through Footer, lines259–720",
+        "sourceCSSObservation": "362 original nodes, fonts/images blocked, zero pageErrors; 34 projected roles includes2 protected core references",
+        "originalSVG": "5 exact source geometry/attributes/paint; self-closing serialization differs, do not claim literal child bytes",
+        "photoScope": "14 original URL JPEG responses896066 B;3 pre-existing exact originals reused;11 root profile component JPEG consumers683581 B"
+      },
+      "ownerCheckEvidenceScope": {
+        "type": "historical owner targeted source/resources/actions/inverse only",
+        "initialPasses": 80,
+        "initialFailures": 0,
+        "postReviewDeltaPasses": 19,
+        "deltaFailuresFinal": 0,
+        "rerunInSummary": false,
+        "scope": "two bounded WXML inverse ranges, complete old CSSprefix86165 B, actualdata/guard/action preservation,5SVG and source photos/11 component keys;3 reviewer source corrections"
+      },
+      "independentCheckEvidenceScope": {
+        "type": "historical independent source/cascade/protection plus final limited delta review",
+        "sourceRolesRead": 34,
+        "protectedActionNodes": 62,
+        "uniqueActionContracts": 52,
+        "scope": "initial immutable stage inverse to entire oldWXML38653 B and oldCSS86165 B; exact JS;5SVG; final3 source corrections,11 component tags/photo bytes,JSON registration exception and historical shared font payload only",
+        "rerunInSummary": false
+      },
+      "scopeSelectors": [
+        ".home-long-reference",
+        ".home-long-footer"
+      ],
+      "protectedScopes": [
+        "ordinary core/header and Wave70 B/C/D state pages",
+        "cohost/invite and real extra safety states",
+        "existing JS/identity/generation/list/id/routes",
+        "shared Tab and page global source font declarations"
+      ],
+      "limitations": [
+        "R1 real activities/explicit closed states replace sample avatars/distances/testimonials/counts; not identical content or full PNG height",
+        "source max440 global wrapper not restored by bounded long-page scope; larger screen/core boundary remains",
+        "source CSS observations do not prove native font/emoji/image/text wrapping/animation/pixels",
+        "root-owned photo component/registration/font payload and compiled package net excluded from owner raw net"
+      ],
+      "nativeEvidenceBoundary": "Root owns bounded WeChat source geometry, actions, font/image loading, and actual compiled package gates. This summary only reads existing source evidence and hashes frozen page products; it does not execute or replace those gates.",
+      "rawOwnerDeltaBreakdownBytes": {
+        "wxml": 5094,
+        "wxss": 23893,
+        "newSVG": 1026
+      },
+      "sourceInventoryBoundary": {
+        "inventoryExactlyMatchesManifestSourcePaths": true,
+        "extraCurrentPathsOutsideFreeze": [],
+        "frozenSourcePathsAbsentFromInventory": [],
+        "sourceHashesNotRecheckedBySummary": "Paths and current file metadata listed for integration; this summary explicitly revalidates product/protected hashes, not reruns source or glyph checkers."
+      }
+    },
+    {
+      "key": "discover-W74",
+      "wave": 74,
+      "owner": "/root/ui64_review",
+      "independentReviewer": "/root",
+      "originalReference": "caper_4",
+      "manifest": {
+        "path": "/private/tmp/caper-wave74-discover/frozen-owned-paths.json",
+        "repoRelativePath": null,
+        "bytes": 10572,
+        "sha256": "7a6ba973611bde990bd5e17833edd2bd8d183516cacb67b01380f4f274f780c0"
+      },
+      "manifestPhaseFlags": {
+        "status": "FROZEN_FOR_INDEPENDENT_REVIEW"
+      },
+      "phaseFlagBoundary": "Owner manifest flags record owner-freeze phase; existing final independent reports are the authoritative independent-review scope. Do not treat stale noIndependentReviewYet=true/status=FROZEN_FOR_INDEPENDENT_REVIEW as absence of final review.",
+      "frozenProductCount": 20,
+      "frozenProducts": [
+        {
+          "path": "miniprogram/pages/discover/discover.wxml",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/discover/discover.wxml",
+          "expectedBytes": 28263,
+          "expectedSHA256": "9a5ef290ad126f61e7539efa8353c26f781d65f198da4e6a3c0afd678c9ae810",
+          "observedBytes": 28263,
+          "observedSHA256": "9a5ef290ad126f61e7539efa8353c26f781d65f198da4e6a3c0afd678c9ae810",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-discover/frozen-product/miniprogram/pages/discover/discover.wxml",
+          "copyBytes": 28263,
+          "copySHA256": "9a5ef290ad126f61e7539efa8353c26f781d65f198da4e6a3c0afd678c9ae810",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/discover/discover.wxss",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/discover/discover.wxss",
+          "expectedBytes": 45436,
+          "expectedSHA256": "6d8d44cf1ff77d77d5158ada0857f7f4f74c2a4f6d816460cb343cc29e89d350",
+          "observedBytes": 45436,
+          "observedSHA256": "6d8d44cf1ff77d77d5158ada0857f7f4f74c2a4f6d816460cb343cc29e89d350",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-discover/frozen-product/miniprogram/pages/discover/discover.wxss",
+          "copyBytes": 45436,
+          "copySHA256": "6d8d44cf1ff77d77d5158ada0857f7f4f74c2a4f6d816460cb343cc29e89d350",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/discover/assets/w74-ph-arrow-right-bold-1d64f2.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/discover/assets/w74-ph-arrow-right-bold-1d64f2.svg",
+          "expectedBytes": 530,
+          "expectedSHA256": "824bf805f5d6f6336875d21005394fe29f920a01eb51c9f21e7a695d40902726",
+          "observedBytes": 530,
+          "observedSHA256": "824bf805f5d6f6336875d21005394fe29f920a01eb51c9f21e7a695d40902726",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-discover/frozen-product/miniprogram/pages/discover/assets/w74-ph-arrow-right-bold-1d64f2.svg",
+          "copyBytes": 530,
+          "copySHA256": "824bf805f5d6f6336875d21005394fe29f920a01eb51c9f21e7a695d40902726",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/discover/assets/w74-ph-arrows-clockwise-bold-1d64f2.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/discover/assets/w74-ph-arrows-clockwise-bold-1d64f2.svg",
+          "expectedBytes": 1199,
+          "expectedSHA256": "cdf4f23e57b68e0353235ab84d5ca8d514f6214cffc73ff9391afe2b681612e3",
+          "observedBytes": 1199,
+          "observedSHA256": "cdf4f23e57b68e0353235ab84d5ca8d514f6214cffc73ff9391afe2b681612e3",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-discover/frozen-product/miniprogram/pages/discover/assets/w74-ph-arrows-clockwise-bold-1d64f2.svg",
+          "copyBytes": 1199,
+          "copySHA256": "cdf4f23e57b68e0353235ab84d5ca8d514f6214cffc73ff9391afe2b681612e3",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/discover/assets/w74-ph-buildings-fill-4f46e5.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/discover/assets/w74-ph-buildings-fill-4f46e5.svg",
+          "expectedBytes": 2283,
+          "expectedSHA256": "98deb52817a1c07898a2e4ba5ca222b9a55073f80968ee800fd94dfc0c0507af",
+          "observedBytes": 2283,
+          "observedSHA256": "98deb52817a1c07898a2e4ba5ca222b9a55073f80968ee800fd94dfc0c0507af",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-discover/frozen-product/miniprogram/pages/discover/assets/w74-ph-buildings-fill-4f46e5.svg",
+          "copyBytes": 2283,
+          "copySHA256": "98deb52817a1c07898a2e4ba5ca222b9a55073f80968ee800fd94dfc0c0507af",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/discover/assets/w74-ph-calendar-blank-regular-64748b.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/discover/assets/w74-ph-calendar-blank-regular-64748b.svg",
+          "expectedBytes": 650,
+          "expectedSHA256": "e46000b352dcc7a8e6e8f3b9c4bf4799707a4065cfd3f28aaf76a08eb120d5cc",
+          "observedBytes": 650,
+          "observedSHA256": "e46000b352dcc7a8e6e8f3b9c4bf4799707a4065cfd3f28aaf76a08eb120d5cc",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-discover/frozen-product/miniprogram/pages/discover/assets/w74-ph-calendar-blank-regular-64748b.svg",
+          "copyBytes": 650,
+          "copySHA256": "e46000b352dcc7a8e6e8f3b9c4bf4799707a4065cfd3f28aaf76a08eb120d5cc",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/discover/assets/w74-ph-camera-bold-1d64f2.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/discover/assets/w74-ph-camera-bold-1d64f2.svg",
+          "expectedBytes": 1094,
+          "expectedSHA256": "04f8dfd5991b297c34840982f8fcdfe78fc685172643c545d239ab34dcd8a581",
+          "observedBytes": 1094,
+          "observedSHA256": "04f8dfd5991b297c34840982f8fcdfe78fc685172643c545d239ab34dcd8a581",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-discover/frozen-product/miniprogram/pages/discover/assets/w74-ph-camera-bold-1d64f2.svg",
+          "copyBytes": 1094,
+          "copySHA256": "04f8dfd5991b297c34840982f8fcdfe78fc685172643c545d239ab34dcd8a581",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/discover/assets/w74-ph-caret-right-bold-1d64f2.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/discover/assets/w74-ph-caret-right-bold-1d64f2.svg",
+          "expectedBytes": 450,
+          "expectedSHA256": "7197659f91b0c4d4f9517e807aa8b1af64dac377562e1b972fa73ff1a1af4423",
+          "observedBytes": 450,
+          "observedSHA256": "7197659f91b0c4d4f9517e807aa8b1af64dac377562e1b972fa73ff1a1af4423",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-discover/frozen-product/miniprogram/pages/discover/assets/w74-ph-caret-right-bold-1d64f2.svg",
+          "copyBytes": 450,
+          "copySHA256": "7197659f91b0c4d4f9517e807aa8b1af64dac377562e1b972fa73ff1a1af4423",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/discover/assets/w74-ph-caret-right-bold-94a3b8.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/discover/assets/w74-ph-caret-right-bold-94a3b8.svg",
+          "expectedBytes": 450,
+          "expectedSHA256": "90051749b447935bded4ae2b47794086f6f615ace800123e2ddce3c547c6e052",
+          "observedBytes": 450,
+          "observedSHA256": "90051749b447935bded4ae2b47794086f6f615ace800123e2ddce3c547c6e052",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-discover/frozen-product/miniprogram/pages/discover/assets/w74-ph-caret-right-bold-94a3b8.svg",
+          "copyBytes": 450,
+          "copySHA256": "90051749b447935bded4ae2b47794086f6f615ace800123e2ddce3c547c6e052",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/discover/assets/w74-ph-chat-circle-dots-fill-1d64f2.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/discover/assets/w74-ph-chat-circle-dots-fill-1d64f2.svg",
+          "expectedBytes": 1020,
+          "expectedSHA256": "be41440bd56d99b16536355b22bb730386f453e84fb958eba314db7564d7e862",
+          "observedBytes": 1020,
+          "observedSHA256": "be41440bd56d99b16536355b22bb730386f453e84fb958eba314db7564d7e862",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-discover/frozen-product/miniprogram/pages/discover/assets/w74-ph-chat-circle-dots-fill-1d64f2.svg",
+          "copyBytes": 1020,
+          "copySHA256": "be41440bd56d99b16536355b22bb730386f453e84fb958eba314db7564d7e862",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/discover/assets/w74-ph-compass-bold-000000.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/discover/assets/w74-ph-compass-bold-000000.svg",
+          "expectedBytes": 1038,
+          "expectedSHA256": "9029ee41374dec22cc732b17c0196df9b5b84b0d0288d40b491734c6178083b9",
+          "observedBytes": 1038,
+          "observedSHA256": "9029ee41374dec22cc732b17c0196df9b5b84b0d0288d40b491734c6178083b9",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-discover/frozen-product/miniprogram/pages/discover/assets/w74-ph-compass-bold-000000.svg",
+          "copyBytes": 1038,
+          "copySHA256": "9029ee41374dec22cc732b17c0196df9b5b84b0d0288d40b491734c6178083b9",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/discover/assets/w74-ph-compass-fill-9333ea.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/discover/assets/w74-ph-compass-fill-9333ea.svg",
+          "expectedBytes": 724,
+          "expectedSHA256": "dd402abb938be1e898b328c992e77550c88d3544f55681fbfcb7814981a45ccb",
+          "observedBytes": 724,
+          "observedSHA256": "dd402abb938be1e898b328c992e77550c88d3544f55681fbfcb7814981a45ccb",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-discover/frozen-product/miniprogram/pages/discover/assets/w74-ph-compass-fill-9333ea.svg",
+          "copyBytes": 724,
+          "copySHA256": "dd402abb938be1e898b328c992e77550c88d3544f55681fbfcb7814981a45ccb",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/discover/assets/w74-ph-map-pin-fill-1d64f2.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/discover/assets/w74-ph-map-pin-fill-1d64f2.svg",
+          "expectedBytes": 621,
+          "expectedSHA256": "e31b4fcf89c0abf451e49d3acfb7e0dad5b7a44a8c58743dbe29459f23ac77a8",
+          "observedBytes": 621,
+          "observedSHA256": "e31b4fcf89c0abf451e49d3acfb7e0dad5b7a44a8c58743dbe29459f23ac77a8",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-discover/frozen-product/miniprogram/pages/discover/assets/w74-ph-map-pin-fill-1d64f2.svg",
+          "copyBytes": 621,
+          "copySHA256": "e31b4fcf89c0abf451e49d3acfb7e0dad5b7a44a8c58743dbe29459f23ac77a8",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/discover/assets/w74-ph-map-pin-regular-64748b.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/discover/assets/w74-ph-map-pin-regular-64748b.svg",
+          "expectedBytes": 1143,
+          "expectedSHA256": "3cc516f28ed5c7f2df4a6c0fb8d49d9330fe3ffc2d07ed58572cdb8d6b8fb69f",
+          "observedBytes": 1143,
+          "observedSHA256": "3cc516f28ed5c7f2df4a6c0fb8d49d9330fe3ffc2d07ed58572cdb8d6b8fb69f",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-discover/frozen-product/miniprogram/pages/discover/assets/w74-ph-map-pin-regular-64748b.svg",
+          "copyBytes": 1143,
+          "copySHA256": "3cc516f28ed5c7f2df4a6c0fb8d49d9330fe3ffc2d07ed58572cdb8d6b8fb69f",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/discover/assets/w74-ph-map-pin-regular-e2e8f0.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/discover/assets/w74-ph-map-pin-regular-e2e8f0.svg",
+          "expectedBytes": 1143,
+          "expectedSHA256": "148aa500fe47f815941b2ddcbe4221e1f3124dac744e9780e80379c4c6257fa6",
+          "observedBytes": 1143,
+          "observedSHA256": "148aa500fe47f815941b2ddcbe4221e1f3124dac744e9780e80379c4c6257fa6",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-discover/frozen-product/miniprogram/pages/discover/assets/w74-ph-map-pin-regular-e2e8f0.svg",
+          "copyBytes": 1143,
+          "copySHA256": "148aa500fe47f815941b2ddcbe4221e1f3124dac744e9780e80379c4c6257fa6",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/discover/assets/w74-ph-moon-stars-bold-000000.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/discover/assets/w74-ph-moon-stars-bold-000000.svg",
+          "expectedBytes": 1660,
+          "expectedSHA256": "9565ea61028c247ad3f81ba5e8b6e229575ed78092cdec32ebfd2fded202e531",
+          "observedBytes": 1660,
+          "observedSHA256": "9565ea61028c247ad3f81ba5e8b6e229575ed78092cdec32ebfd2fded202e531",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-discover/frozen-product/miniprogram/pages/discover/assets/w74-ph-moon-stars-bold-000000.svg",
+          "copyBytes": 1660,
+          "copySHA256": "9565ea61028c247ad3f81ba5e8b6e229575ed78092cdec32ebfd2fded202e531",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/discover/assets/w74-ph-navigation-arrow-fill-ffffff.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/discover/assets/w74-ph-navigation-arrow-fill-ffffff.svg",
+          "expectedBytes": 532,
+          "expectedSHA256": "2cf1a94e4d65e11d08918d7675ace7c7c3c02f43205837fb01c349c68f881bc0",
+          "observedBytes": 532,
+          "observedSHA256": "2cf1a94e4d65e11d08918d7675ace7c7c3c02f43205837fb01c349c68f881bc0",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-discover/frozen-product/miniprogram/pages/discover/assets/w74-ph-navigation-arrow-fill-ffffff.svg",
+          "copyBytes": 532,
+          "copySHA256": "2cf1a94e4d65e11d08918d7675ace7c7c3c02f43205837fb01c349c68f881bc0",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/discover/assets/w74-ph-sparkle-bold-ffffff.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/discover/assets/w74-ph-sparkle-bold-ffffff.svg",
+          "expectedBytes": 1368,
+          "expectedSHA256": "091df03561c05847019294bb665dec4a5d9aa8a7efcf098d6795da0572aa2601",
+          "observedBytes": 1368,
+          "observedSHA256": "091df03561c05847019294bb665dec4a5d9aa8a7efcf098d6795da0572aa2601",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-discover/frozen-product/miniprogram/pages/discover/assets/w74-ph-sparkle-bold-ffffff.svg",
+          "copyBytes": 1368,
+          "copySHA256": "091df03561c05847019294bb665dec4a5d9aa8a7efcf098d6795da0572aa2601",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/discover/assets/w74-ph-sparkle-fill-1d64f2.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/discover/assets/w74-ph-sparkle-fill-1d64f2.svg",
+          "expectedBytes": 1180,
+          "expectedSHA256": "9d5ffcc26368058a1fe659dc3bc7169275578eed4744a57c507fe4701a4506d3",
+          "observedBytes": 1180,
+          "observedSHA256": "9d5ffcc26368058a1fe659dc3bc7169275578eed4744a57c507fe4701a4506d3",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-discover/frozen-product/miniprogram/pages/discover/assets/w74-ph-sparkle-fill-1d64f2.svg",
+          "copyBytes": 1180,
+          "copySHA256": "9d5ffcc26368058a1fe659dc3bc7169275578eed4744a57c507fe4701a4506d3",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/discover/assets/w74-ph-users-three-fill-1d64f2.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/discover/assets/w74-ph-users-three-fill-1d64f2.svg",
+          "expectedBytes": 1702,
+          "expectedSHA256": "8e02aa3690b7c6c5acc986dd58af529f8e9244b4576702dc8102be07357a08f8",
+          "observedBytes": 1702,
+          "observedSHA256": "8e02aa3690b7c6c5acc986dd58af529f8e9244b4576702dc8102be07357a08f8",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-discover/frozen-product/miniprogram/pages/discover/assets/w74-ph-users-three-fill-1d64f2.svg",
+          "copyBytes": 1702,
+          "copySHA256": "8e02aa3690b7c6c5acc986dd58af529f8e9244b4576702dc8102be07357a08f8",
+          "copyMatchesFreeze": true
+        }
+      ],
+      "protectedJSJSON": [
+        {
+          "path": "miniprogram/pages/discover/discover.js",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/discover/discover.js",
+          "expectedBytes": 17758,
+          "expectedSHA256": "928b72be56fca9c7cd4d2a8fd8f76d14632ef9c315dbfb2ea62c97a9c81712b5",
+          "observedBytes": 17758,
+          "observedSHA256": "928b72be56fca9c7cd4d2a8fd8f76d14632ef9c315dbfb2ea62c97a9c81712b5",
+          "matchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/discover/discover.json",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/discover/discover.json",
+          "expectedBytes": 344,
+          "expectedSHA256": "f762dcbb0800c487704c08a1464150b21e8b27e4dc5e4072bfab8616fa89964e",
+          "observedBytes": 344,
+          "observedSHA256": "f762dcbb0800c487704c08a1464150b21e8b27e4dc5e4072bfab8616fa89964e",
+          "matchesFreeze": true
+        }
+      ],
+      "rawOwnerNetBytes": 54551,
+      "rawNetBoundary": "owner raw file delta only; no inferred compiled main/total size, no root shared photo/font/registration delta doublecount",
+      "sourceFrozenPaths": [
+        {
+          "path": "docs/design-sources/caper-discover-long-page-wave74/code.html",
+          "bytes": 63270,
+          "sha256": "514d9e5fbfbbc66e9c5c19cf33767b58b54f77a144720c4b89f3b5248356aed2",
+          "product": false
+        },
+        {
+          "path": "docs/design-sources/caper-discover-long-page-wave74/original-photo-response-manifest.json",
+          "bytes": 18422,
+          "sha256": "5ebc917abba5d6f358f4d4b09a2788df8a097ebc7054e287eae4f1e00ecfb344",
+          "product": false
+        },
+        {
+          "path": "docs/design-sources/caper-discover-long-page-wave74/screen.png",
+          "bytes": 265845,
+          "sha256": "15ffd670e926b6f508dac5223bb00e3beee8301a6a712a3836d468893a95d63e",
+          "product": false
+        },
+        {
+          "path": "docs/design-sources/caper-discover-long-page-wave74/source-css-observation.json",
+          "bytes": 852223,
+          "sha256": "42ba36328b3a01d9fbaa50df3cc81bb13d9ad5c56004117c8b4e40c6cd492c27",
+          "product": false
+        },
+        {
+          "path": "docs/design-sources/caper-discover-long-page-wave74/source-css-observer.cjs",
+          "bytes": 3725,
+          "sha256": "448a6d10309460757578f583a292403e031d98c23d671938c70ab860b24206e6",
+          "product": false
+        },
+        {
+          "path": "docs/design-sources/caper-discover-long-page-wave74/source.json",
+          "bytes": 28367,
+          "sha256": "db1ffc5ab57f11de94a8f17e3954ef33b463d00da60b914858960b8acaba8727",
+          "product": false
+        },
+        {
+          "path": "docs/design-sources/caper-discover-long-page-wave74/targeted-source-check.json",
+          "bytes": 68474,
+          "sha256": "c703982e0b0f48d636818e57dc906420196c83c18d06c53f676e0d7d9a7dd31d",
+          "product": false
+        },
+        {
+          "path": "docs/design-sources/caper-discover-long-page-wave74/targeted-source-check.py",
+          "bytes": 10307,
+          "sha256": "0f44642ec2cad8d4348631d439319c188502f8e9db1c71a48929555972dccead",
+          "product": false
+        },
+        {
+          "path": "docs/design-sources/caper-discover-long-page-wave74/wxml-inverse-edits.json",
+          "bytes": 34534,
+          "sha256": "7dc4f053b9483ff882ded4766d3500fec818da20d15775565557c7522f321a8c",
+          "product": false
+        }
+      ],
+      "sourceDirectoryInventory": {
+        "directory": "/Users/tsb/Documents/小程序/docs/design-sources/caper-discover-long-page-wave74",
+        "files": [
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-discover-long-page-wave74/code.html",
+            "repoRelativePath": "docs/design-sources/caper-discover-long-page-wave74/code.html",
+            "bytes": 63270,
+            "sha256": "514d9e5fbfbbc66e9c5c19cf33767b58b54f77a144720c4b89f3b5248356aed2"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-discover-long-page-wave74/original-photo-response-manifest.json",
+            "repoRelativePath": "docs/design-sources/caper-discover-long-page-wave74/original-photo-response-manifest.json",
+            "bytes": 18422,
+            "sha256": "5ebc917abba5d6f358f4d4b09a2788df8a097ebc7054e287eae4f1e00ecfb344"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-discover-long-page-wave74/screen.png",
+            "repoRelativePath": "docs/design-sources/caper-discover-long-page-wave74/screen.png",
+            "bytes": 265845,
+            "sha256": "15ffd670e926b6f508dac5223bb00e3beee8301a6a712a3836d468893a95d63e"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-discover-long-page-wave74/source-css-observation.json",
+            "repoRelativePath": "docs/design-sources/caper-discover-long-page-wave74/source-css-observation.json",
+            "bytes": 852223,
+            "sha256": "42ba36328b3a01d9fbaa50df3cc81bb13d9ad5c56004117c8b4e40c6cd492c27"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-discover-long-page-wave74/source-css-observer.cjs",
+            "repoRelativePath": "docs/design-sources/caper-discover-long-page-wave74/source-css-observer.cjs",
+            "bytes": 3725,
+            "sha256": "448a6d10309460757578f583a292403e031d98c23d671938c70ab860b24206e6"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-discover-long-page-wave74/source.json",
+            "repoRelativePath": "docs/design-sources/caper-discover-long-page-wave74/source.json",
+            "bytes": 28367,
+            "sha256": "db1ffc5ab57f11de94a8f17e3954ef33b463d00da60b914858960b8acaba8727"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-discover-long-page-wave74/targeted-source-check.json",
+            "repoRelativePath": "docs/design-sources/caper-discover-long-page-wave74/targeted-source-check.json",
+            "bytes": 68474,
+            "sha256": "c703982e0b0f48d636818e57dc906420196c83c18d06c53f676e0d7d9a7dd31d"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-discover-long-page-wave74/targeted-source-check.py",
+            "repoRelativePath": "docs/design-sources/caper-discover-long-page-wave74/targeted-source-check.py",
+            "bytes": 10307,
+            "sha256": "0f44642ec2cad8d4348631d439319c188502f8e9db1c71a48929555972dccead"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-discover-long-page-wave74/wxml-inverse-edits.json",
+            "repoRelativePath": "docs/design-sources/caper-discover-long-page-wave74/wxml-inverse-edits.json",
+            "bytes": 34534,
+            "sha256": "7dc4f053b9483ff882ded4766d3500fec818da20d15775565557c7522f321a8c"
+          }
+        ],
+        "excludedPythonCachePaths": []
+      },
+      "ownerEvidence": [
+        {
+          "path": "/Users/tsb/Documents/小程序/docs/evidence/caper-discover-ordinary-long-page-reference-ui-wave74-2026-10-02.md",
+          "repoRelativePath": "docs/evidence/caper-discover-ordinary-long-page-reference-ui-wave74-2026-10-02.md",
+          "bytes": 4956,
+          "sha256": "69bfa0eec37f5cabc57dc2bfd53345a4f198c152e655b7f3f689653b39a37b49"
+        }
+      ],
+      "independentEvidence": [
+        {
+          "path": "/Users/tsb/Documents/小程序/docs/evidence/caper-discover-ordinary-long-page-independent-review-wave74-2026-10-02.md",
+          "repoRelativePath": "docs/evidence/caper-discover-ordinary-long-page-independent-review-wave74-2026-10-02.md",
+          "bytes": 2183,
+          "sha256": "25a4087919849ea6f183d2324a9e41440bf2c569f693a6cf9528e31db755cc3a"
+        },
+        {
+          "path": "/Users/tsb/Documents/小程序/docs/evidence/caper-discover-ordinary-long-page-independent-proof-wave74-2026-10-02.json",
+          "repoRelativePath": "docs/evidence/caper-discover-ordinary-long-page-independent-proof-wave74-2026-10-02.json",
+          "bytes": 18040,
+          "sha256": "fffe522b22ab8d0a26eaee85668496359c5abfcf33e9de87bf6ddb914642e9a3"
+        }
+      ],
+      "sourceEvidenceScope": {
+        "originalHTMLRange": "all11 ordinary long modules, original caper_4 complete HTML/PNG read and ZIPbyte comparison",
+        "sourceCSSObservation": "448 original nodes /11 sections; fonts/images blocked, CSS-only cascade",
+        "glyphScope": "18 new exact Phosphor web2.0.3 regular/bold/fill SVG plus2 exact reused glyphs; no new runtime font library",
+        "photoScope": "8 original URL responses;7 existing JPEG529067 B exact reused; park122735 B root profile component used twice"
+      },
+      "ownerCheckEvidenceScope": {
+        "type": "historical owner targeted source/glyph/resources/action/inverse only",
+        "initialPasses": 138,
+        "initialFailures": 0,
+        "rerunInSummary": false,
+        "scope": "original fullHTML/PNG bytes; complete oldWXML15967 B inverse and oldCSS21968 B prefix,JSbyte/JSONoldkeys preservation;28 affected long actions and whole existing declarations;20 glyph consumers;2 park keys"
+      },
+      "independentCheckEvidenceScope": {
+        "type": "historical independent root source/cascade/freeze/actualguard read",
+        "frozenOwnedPlusProtectedPaths": 32,
+        "sourceModulesRead": 11,
+        "scope": "direct source11modules, full oldCSSprefix/JS, whole action/dataset/currentnodewx/disabled multiset and actual ancestor READY/length/empty/error eligibility; original and existing graphic/photo provenance read; no owner138 rerun",
+        "rerunInSummary": false
+      },
+      "scopeSelectors": [
+        ".d74-long",
+        ".d74-cta-scope"
+      ],
+      "protectedScopes": [
+        "Wave64 core and native status/capsule",
+        "invite token/preview/scanner guards and entire existing ordinary business JS",
+        "fiveTab behavior",
+        "real account activity ID/identity/generation and28 actual long-page actions"
+      ],
+      "limitations": [
+        "no public organizer/friend/review/AI/route/map/merchant/community facts invented; source slots are explicitly illustrative/closed",
+        "existing data-title semantics preserved when source scene differs;visible real action target given",
+        "CSS-only448-node observation is not native typography/pixel evidence",
+        "root-only park/JSON/font payload excluded from raw owner delta"
+      ],
+      "nativeEvidenceBoundary": "Root owns bounded WeChat source geometry, actions, font/image loading, and actual compiled package gates. This summary only reads existing source evidence and hashes frozen page products; it does not execute or replace those gates.",
+      "rawOwnerDeltaBreakdownBytes": {
+        "wxml": 12296,
+        "wxss": 23468,
+        "newSVG": 18787
+      },
+      "sourceInventoryBoundary": {
+        "inventoryExactlyMatchesManifestSourcePaths": true,
+        "extraCurrentPathsOutsideFreeze": [],
+        "frozenSourcePathsAbsentFromInventory": [],
+        "sourceHashesNotRecheckedBySummary": "Paths and current file metadata listed for integration; this summary explicitly revalidates product/protected hashes, not reruns source or glyph checkers."
+      }
+    },
+    {
+      "key": "messages-W74",
+      "wave": 74,
+      "owner": "/root/ui65_font_audit",
+      "independentReviewer": "/root/ui64_review",
+      "originalReference": "caper_3",
+      "manifest": {
+        "path": "/private/tmp/caper-wave74-inbox-long/frozen-owned-paths.json",
+        "repoRelativePath": null,
+        "bytes": 4924,
+        "sha256": "acf81ad34d47af0e6a5a9c9e816026ec9ae921118b43998ac22becba64165e4a"
+      },
+      "manifestPhaseFlags": {
+        "noIndependentReviewYet": true,
+        "frozen": true
+      },
+      "phaseFlagBoundary": "Owner manifest flags record owner-freeze phase; existing final independent reports are the authoritative independent-review scope. Do not treat stale noIndependentReviewYet=true/status=FROZEN_FOR_INDEPENDENT_REVIEW as absence of final review.",
+      "frozenProductCount": 4,
+      "frozenProducts": [
+        {
+          "path": "miniprogram/pages/messages/assets/wave74-inbox-people.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/messages/assets/wave74-inbox-people.svg",
+          "expectedBytes": 364,
+          "expectedSHA256": "73eb0f340370629c4852237533cea9751888524a15b085e42b6f9c94f5f8adc6",
+          "observedBytes": 364,
+          "observedSHA256": "73eb0f340370629c4852237533cea9751888524a15b085e42b6f9c94f5f8adc6",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-inbox-long/frozen-product/miniprogram/pages/messages/assets/wave74-inbox-people.svg",
+          "copyBytes": 364,
+          "copySHA256": "73eb0f340370629c4852237533cea9751888524a15b085e42b6f9c94f5f8adc6",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/messages/assets/wave74-inbox-pin.svg",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/messages/assets/wave74-inbox-pin.svg",
+          "expectedBytes": 254,
+          "expectedSHA256": "4fd6d2c2fb7de30ec688d4fec4b27d67c6e9b84a2b2aa77a9154ce88b3c22e50",
+          "observedBytes": 254,
+          "observedSHA256": "4fd6d2c2fb7de30ec688d4fec4b27d67c6e9b84a2b2aa77a9154ce88b3c22e50",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-inbox-long/frozen-product/miniprogram/pages/messages/assets/wave74-inbox-pin.svg",
+          "copyBytes": 254,
+          "copySHA256": "4fd6d2c2fb7de30ec688d4fec4b27d67c6e9b84a2b2aa77a9154ce88b3c22e50",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/messages/messages.wxml",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/messages/messages.wxml",
+          "expectedBytes": 38796,
+          "expectedSHA256": "db32d3f3a4061d472f579953efdbe4fd5af71ae8af5e5e4c5fb171f141ac4dd7",
+          "observedBytes": 38796,
+          "observedSHA256": "db32d3f3a4061d472f579953efdbe4fd5af71ae8af5e5e4c5fb171f141ac4dd7",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-inbox-long/frozen-product/miniprogram/pages/messages/messages.wxml",
+          "copyBytes": 38796,
+          "copySHA256": "db32d3f3a4061d472f579953efdbe4fd5af71ae8af5e5e4c5fb171f141ac4dd7",
+          "copyMatchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/messages/messages.wxss",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/messages/messages.wxss",
+          "expectedBytes": 82556,
+          "expectedSHA256": "ca8454e7cc3e9f8892d14fbf9a5c5ac79517db8c4045222012c14e54456b6a89",
+          "observedBytes": 82556,
+          "observedSHA256": "ca8454e7cc3e9f8892d14fbf9a5c5ac79517db8c4045222012c14e54456b6a89",
+          "matchesFreeze": true,
+          "frozenCopy": "/private/tmp/caper-wave74-inbox-long/frozen-product/miniprogram/pages/messages/messages.wxss",
+          "copyBytes": 82556,
+          "copySHA256": "ca8454e7cc3e9f8892d14fbf9a5c5ac79517db8c4045222012c14e54456b6a89",
+          "copyMatchesFreeze": true
+        }
+      ],
+      "protectedJSJSON": [
+        {
+          "path": "miniprogram/pages/messages/messages.js",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/messages/messages.js",
+          "expectedBytes": 32969,
+          "expectedSHA256": "b297f95f560581abc5718b4fe35cb66453601f1e0948e6940800e4eb8e10a8c0",
+          "observedBytes": 32969,
+          "observedSHA256": "b297f95f560581abc5718b4fe35cb66453601f1e0948e6940800e4eb8e10a8c0",
+          "matchesFreeze": true
+        },
+        {
+          "path": "miniprogram/pages/messages/messages.json",
+          "absolutePath": "/Users/tsb/Documents/小程序/miniprogram/pages/messages/messages.json",
+          "expectedBytes": 63,
+          "expectedSHA256": "b76e69c65eadf25397e0df5c9457c5a098c1bfc714ae05be5441318bdc8ebacc",
+          "observedBytes": 63,
+          "observedSHA256": "b76e69c65eadf25397e0df5c9457c5a098c1bfc714ae05be5441318bdc8ebacc",
+          "matchesFreeze": true
+        }
+      ],
+      "rawOwnerNetBytes": 19443,
+      "rawNetBoundary": "owner raw file delta only; no inferred compiled main/total size, no root shared photo/font/registration delta doublecount",
+      "sourceFrozenPaths": [
+        {
+          "path": "docs/design-sources/caper-inbox-long-wave74/append-only.wxss",
+          "bytes": 14943,
+          "sha256": "51983ed373fd241085cc9accb71e4e3a9873fd1352032be8b421918f5c9f1cee",
+          "product": false
+        },
+        {
+          "path": "docs/design-sources/caper-inbox-long-wave74/caper_3-code.html",
+          "bytes": 32137,
+          "sha256": "18fab22c6b92592673e19574739eb2ed86cbfb0fe628023ec5dcd3b843a1aa6b",
+          "product": false
+        },
+        {
+          "path": "docs/design-sources/caper-inbox-long-wave74/caper_3-style-0.css",
+          "bytes": 386,
+          "sha256": "d1e9a7373cb2dbe5beb27562e188c728cd7553e437d362b358ec9d8318dfcf4c",
+          "product": false
+        },
+        {
+          "path": "docs/design-sources/caper-inbox-long-wave74/caper_3-style-1.css",
+          "bytes": 25823,
+          "sha256": "d2f94577e58aaeee533701c7a364c77172233dbe2119a07b9d33cd3f42033fce",
+          "product": false
+        },
+        {
+          "path": "docs/design-sources/caper-inbox-long-wave74/check_source_protection.py",
+          "bytes": 6959,
+          "sha256": "c96e1f43958abbfedddab955e56b587bf06c56eca02d9a9295b1524018b844e4",
+          "product": false
+        },
+        {
+          "path": "docs/design-sources/caper-inbox-long-wave74/final-box-sizing-proof.json",
+          "bytes": 733,
+          "sha256": "4a7358d7c7127b48dce2fd99db5cdfb081348111d38dc1d4674c2656d80d2234",
+          "product": false
+        },
+        {
+          "path": "docs/design-sources/caper-inbox-long-wave74/inline-svg-source.json",
+          "bytes": 1352,
+          "sha256": "7dff69a97419376e315b89950050eca9e64ceb0077cce82761e1a6974e9799af",
+          "product": false
+        },
+        {
+          "path": "docs/design-sources/caper-inbox-long-wave74/observe_source.js",
+          "bytes": 5530,
+          "sha256": "5202ec4aed56819d14ab585f61bb5a5ae42e05aa257253eca0c1c3a730c0f645",
+          "product": false
+        },
+        {
+          "path": "docs/design-sources/caper-inbox-long-wave74/review-source-correction-proof.json",
+          "bytes": 3055,
+          "sha256": "91938481514ea2578172f56b57c3c76f7dc0b3166138cc9ddec7ca97832605d9",
+          "product": false
+        },
+        {
+          "path": "docs/design-sources/caper-inbox-long-wave74/source-css-observation.json",
+          "bytes": 68150,
+          "sha256": "9b5338d01ef95c9a0f94a0d1205feb01d69e1a57f7400ab4059af5be99e2efbb",
+          "product": false
+        },
+        {
+          "path": "docs/design-sources/caper-inbox-long-wave74/source-manifest.json",
+          "bytes": 10826,
+          "sha256": "ab14750399a09bc40df1eea4cd3d58284c25b81ec1a76320bc94f17c3a504693",
+          "product": false
+        },
+        {
+          "path": "docs/design-sources/caper-inbox-long-wave74/targeted-source-protection-proof.json",
+          "bytes": 17825,
+          "sha256": "d91315c1a17a584eb02ee62b05e87f95e6234aa35a5015ff3b7778bc1d3c1c2f",
+          "product": false
+        },
+        {
+          "path": "docs/design-sources/caper-inbox-long-wave74/wxml-inverse-edits.json",
+          "bytes": 10626,
+          "sha256": "654f4b2f251907e7ab2fab1fca1d221e9b097d2930772d0fcef879a31421c20b",
+          "product": false
+        }
+      ],
+      "sourceDirectoryInventory": {
+        "directory": "/Users/tsb/Documents/小程序/docs/design-sources/caper-inbox-long-wave74",
+        "files": [
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-inbox-long-wave74/append-only.wxss",
+            "repoRelativePath": "docs/design-sources/caper-inbox-long-wave74/append-only.wxss",
+            "bytes": 14943,
+            "sha256": "51983ed373fd241085cc9accb71e4e3a9873fd1352032be8b421918f5c9f1cee"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-inbox-long-wave74/caper_3-code.html",
+            "repoRelativePath": "docs/design-sources/caper-inbox-long-wave74/caper_3-code.html",
+            "bytes": 32137,
+            "sha256": "18fab22c6b92592673e19574739eb2ed86cbfb0fe628023ec5dcd3b843a1aa6b"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-inbox-long-wave74/caper_3-style-0.css",
+            "repoRelativePath": "docs/design-sources/caper-inbox-long-wave74/caper_3-style-0.css",
+            "bytes": 386,
+            "sha256": "d1e9a7373cb2dbe5beb27562e188c728cd7553e437d362b358ec9d8318dfcf4c"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-inbox-long-wave74/caper_3-style-1.css",
+            "repoRelativePath": "docs/design-sources/caper-inbox-long-wave74/caper_3-style-1.css",
+            "bytes": 25823,
+            "sha256": "d2f94577e58aaeee533701c7a364c77172233dbe2119a07b9d33cd3f42033fce"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-inbox-long-wave74/check_source_protection.py",
+            "repoRelativePath": "docs/design-sources/caper-inbox-long-wave74/check_source_protection.py",
+            "bytes": 6959,
+            "sha256": "c96e1f43958abbfedddab955e56b587bf06c56eca02d9a9295b1524018b844e4"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-inbox-long-wave74/final-box-sizing-proof.json",
+            "repoRelativePath": "docs/design-sources/caper-inbox-long-wave74/final-box-sizing-proof.json",
+            "bytes": 733,
+            "sha256": "4a7358d7c7127b48dce2fd99db5cdfb081348111d38dc1d4674c2656d80d2234"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-inbox-long-wave74/inline-svg-source.json",
+            "repoRelativePath": "docs/design-sources/caper-inbox-long-wave74/inline-svg-source.json",
+            "bytes": 1352,
+            "sha256": "7dff69a97419376e315b89950050eca9e64ceb0077cce82761e1a6974e9799af"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-inbox-long-wave74/observe_source.js",
+            "repoRelativePath": "docs/design-sources/caper-inbox-long-wave74/observe_source.js",
+            "bytes": 5530,
+            "sha256": "5202ec4aed56819d14ab585f61bb5a5ae42e05aa257253eca0c1c3a730c0f645"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-inbox-long-wave74/review-source-correction-proof.json",
+            "repoRelativePath": "docs/design-sources/caper-inbox-long-wave74/review-source-correction-proof.json",
+            "bytes": 3055,
+            "sha256": "91938481514ea2578172f56b57c3c76f7dc0b3166138cc9ddec7ca97832605d9"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-inbox-long-wave74/source-css-observation.json",
+            "repoRelativePath": "docs/design-sources/caper-inbox-long-wave74/source-css-observation.json",
+            "bytes": 68150,
+            "sha256": "9b5338d01ef95c9a0f94a0d1205feb01d69e1a57f7400ab4059af5be99e2efbb"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-inbox-long-wave74/source-manifest.json",
+            "repoRelativePath": "docs/design-sources/caper-inbox-long-wave74/source-manifest.json",
+            "bytes": 10826,
+            "sha256": "ab14750399a09bc40df1eea4cd3d58284c25b81ec1a76320bc94f17c3a504693"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-inbox-long-wave74/targeted-source-protection-proof.json",
+            "repoRelativePath": "docs/design-sources/caper-inbox-long-wave74/targeted-source-protection-proof.json",
+            "bytes": 17825,
+            "sha256": "d91315c1a17a584eb02ee62b05e87f95e6234aa35a5015ff3b7778bc1d3c1c2f"
+          },
+          {
+            "path": "/Users/tsb/Documents/小程序/docs/design-sources/caper-inbox-long-wave74/wxml-inverse-edits.json",
+            "repoRelativePath": "docs/design-sources/caper-inbox-long-wave74/wxml-inverse-edits.json",
+            "bytes": 10626,
+            "sha256": "654f4b2f251907e7ab2fab1fca1d221e9b097d2930772d0fcef879a31421c20b"
+          }
+        ],
+        "excludedPythonCachePaths": []
+      },
+      "ownerEvidence": [
+        {
+          "path": "/Users/tsb/Documents/小程序/docs/evidence/caper-messages-inbox-ordinary-long-reference-ui-wave74-2026-10-02.md",
+          "repoRelativePath": "docs/evidence/caper-messages-inbox-ordinary-long-reference-ui-wave74-2026-10-02.md",
+          "bytes": 12935,
+          "sha256": "0a34046c350e51042dec844c79c9bf51df05979e78e6a88313ce25617e25fc9c"
+        }
+      ],
+      "independentEvidence": [
+        {
+          "path": "/Users/tsb/Documents/小程序/docs/evidence/caper-messages-inbox-ordinary-long-independent-review-wave74-2026-10-02.md",
+          "repoRelativePath": "docs/evidence/caper-messages-inbox-ordinary-long-independent-review-wave74-2026-10-02.md",
+          "bytes": 9092,
+          "sha256": "83c802c8dd20a9cab00dd2cf90f4772146d43f9285dcf567035b84aa8ea9987f"
+        },
+        {
+          "path": "/Users/tsb/Documents/小程序/docs/evidence/caper-messages-inbox-ordinary-long-independent-source-proof-wave74-2026-10-02.json",
+          "repoRelativePath": "docs/evidence/caper-messages-inbox-ordinary-long-independent-source-proof-wave74-2026-10-02.json",
+          "bytes": 23758,
+          "sha256": "97c99de066de967d2d2d0a94e1a14e54bef690c1417b66bffa7bff1a8a8a65bd"
+        }
+      ],
+      "sourceEvidenceScope": {
+        "originalHTMLRange": "original caper_3 ordinary long modules after protected header/priority; fullHTML/PNG read and ZIPbyte comparison",
+        "sourceCSSObservation": "48 sourceCSS roles from existing original observation; fonts/images blocked",
+        "glyphScope": "2 exact inline source SVG children16px/viewBox0 0 20 20/accurate green and pink fill618 B",
+        "photoScope": "no new photos or fonts;5 original gradient emoji illustrative album slots, no fake album API"
+      },
+      "ownerCheckEvidenceScope": {
+        "type": "historical owner targeted source/asset/protection/inverse only",
+        "initialPasses": 71,
+        "initialFailuresFinal": 0,
+        "rerunInSummary": false,
+        "scope": "full63 action nodes/62 uniquecontracts,14 markup inverse to34914 B,entire oldCSS67613 B,34 oldassets/JSJSON/header/priority/23,282 B CHAT+N2+N1 suffix;6 affected long actions;3 source review groups local inverse"
+      },
+      "independentCheckEvidenceScope": {
+        "type": "historical independent direct source/cascade/protection and final3delta-only review",
+        "initialNecessaryAssertions": 17,
+        "finalLocalDeltaAssertions": 13,
+        "sourceRolesRead": 48,
+        "protectedActionNodes": 63,
+        "affectedActionContracts": 6,
+        "scope": "first freeze direct17 necessary checks,2 source children exact and full63 action/ancestor multiset/wholeWXMLinverse;final3 corrections and277 B exact inverse to first reviewed snapshot;temporary24 B completelyreverted",
+        "rerunInSummary": false
+      },
+      "scopeSelectors": [
+        ".messages-inbox .inbox-long…",
+        "one new scoped pulse keyframe"
+      ],
+      "protectedScopes": [
+        "ordinary INBOX header/status/root/priority/search/identity/error/loading/approval/empty state",
+        "entire old CENTER N1/N2 and CHAT_UNAVAILABLE suffix",
+        "all63 event/data/disabled/value/aria/wx contracts",
+        "business JS/JSON and34 oldassets samebyte"
+      ],
+      "limitations": [
+        "recent conversation and mentions are explicitly closed;neutral tag/no clickable hover differ from source available demo intentionally",
+        "no sample people,read receipts,times,private chat,AI batchconfirm,pushgrant,album/history/archive/mute facts or operations added",
+        "63 declarations/6 actual contracts are not63/6 native clicks or E2E passes",
+        "font/emoji/native layout/source extra truthful notices change long PNG content/height"
+      ],
+      "nativeEvidenceBoundary": "Root owns bounded WeChat source geometry, actions, font/image loading, and actual compiled package gates. This summary only reads existing source evidence and hashes frozen page products; it does not execute or replace those gates.",
+      "rawOwnerDeltaBreakdownBytes": {
+        "wxml": 3882,
+        "wxss": 14943,
+        "newSVG": 618
+      },
+      "sourceInventoryBoundary": {
+        "inventoryExactlyMatchesManifestSourcePaths": true,
+        "extraCurrentPathsOutsideFreeze": [],
+        "frozenSourcePathsAbsentFromInventory": [],
+        "sourceHashesNotRecheckedBySummary": "Paths and current file metadata listed for integration; this summary explicitly revalidates product/protected hashes, not reruns source or glyph checkers."
+      }
+    }
+  ],
+  "freezeHashAudit": {
+    "method": "SHA256/bytes of only three manifests-owned product files and their frozen copies; protected pageJS/JSON checked against manifest or independent evidence",
+    "ownedProductFilesChecked": 31,
+    "protectedJSJSONFilesChecked": 6,
+    "allCurrentOwnedProductsMatchFreeze": true,
+    "allFrozenCopiesMatchFreeze": true,
+    "allProtectedPageJSJSONMatchRecordedFreeze": true,
+    "mismatches": []
+  },
+  "ownerRawTotals": {
+    "threePageOwnerRawNetBytes": 104007,
+    "productPathCount": 31,
+    "newSVGCount": 25,
+    "newSVGBytes": 20431,
+    "rootSharedAssetsNotIncluded": "12 exact JPEGs, 806,316 B, in the profile component: home 11 / 683,581 B and park / 122,735 B. Component, JSON registration, asynchronous loader, and final shared font payload are root-owned and excluded. The actual compiled package gate belongs to root."
+  },
+  "sourceInventoryExcludedPythonCaches": [],
+  "sharedFontPhaseBoundary": {
+    "historicalEvidence": [
+      {
+        "path": "/Users/tsb/Documents/小程序/docs/evidence/caper-reference-photo-font-async-independent-review-wave73-2026-10-02.md",
+        "repoRelativePath": "docs/evidence/caper-reference-photo-font-async-independent-review-wave73-2026-10-02.md",
+        "bytes": 5413,
+        "sha256": "1c17aaf36ab00505f314b68ac1c5fbde74cea544c96e864e34ae53d3bd48832b"
+      },
+      {
+        "path": "/Users/tsb/Documents/小程序/docs/evidence/caper-reference-photo-font-async-independent-review-wave73-2026-10-02.json",
+        "repoRelativePath": "docs/evidence/caper-reference-photo-font-async-independent-review-wave73-2026-10-02.json",
+        "bytes": 31711,
+        "sha256": "35944ec4fdb96d71bef9e6e40f6fb6043d7c5b98ea7f9ee685f1cec5cfd115e8"
+      },
+      {
+        "path": "/Users/tsb/Documents/小程序/docs/evidence/caper-fixed-handwriting-character-audit-wave74-2026-10-02.md",
+        "repoRelativePath": "docs/evidence/caper-fixed-handwriting-character-audit-wave74-2026-10-02.md",
+        "bytes": 4799,
+        "sha256": "5d59cfdd89ee5fa1131005794a1d9b8e647f81f40f2dba3e16d5f75002a01b75"
+      },
+      {
+        "path": "/Users/tsb/Documents/小程序/docs/evidence/caper-fixed-handwriting-character-audit-wave74-2026-10-02.json",
+        "repoRelativePath": "docs/evidence/caper-fixed-handwriting-character-audit-wave74-2026-10-02.json",
+        "bytes": 26505,
+        "sha256": "fc6cd1cb2e6f6a5fc447ea0436d17d3eadb04bdbdf35a903c553763a52ac0ca8"
+      }
+    ],
+    "historicalSharedReview": "260198 B/1702d664… module,700 f2fb6438… and60065a31f27… stage; these are historical before final W/y union",
+    "fixedCharacterReadOnlyAudit": "The 13 Caveat roles / 21 fixed Latin fragments audit found exactly uppercase W (U+0057) at weight 700 in Wukang Road and lowercase y (U+0079) at weight 600 in Play More. Symbol and Chinese fallback remains unchanged.",
+    "finalCorrectionStatus": "Root explicitly reported both W at 700 and y at 600 supplemented. Another agent owns the latest independent font increment review, which was in progress when this summary was assigned. This summarizer did not repeat glyph, outline, advance, or runtime verification.",
+    "doNotReuseOldNativeCallbacksAsFinal": "Earlier 8 font callbacks prove only their recorded payload phase. Final 700 / 600 source proof, runtime callback, and CLI evidence must reference the final payload."
+  },
+  "retainedSummaryHarnessDiagnostic": {
+    "initialRun": "Python SyntaxError from missing space in else74, before any reads/hash checks; corrected only temporary summarizer, no product/test failure"
+  },
+  "claimLimits": [
+    "No assertion that all UI is 100% complete or that all 39 screens match exact pixels.",
+    "This summary ran no full test suite, CI, SDK, or CLI.",
+    "Source, owner, and independent static review scopes are separate evidence; they do not prove every button, font, or image passed native validation.",
+    "No physical device, formal AppID, HTTPS, subscription message, real operations, or three controlled activities acceptance claim.",
+    "Root must integrate the latest shared font independent increment review and actual bounded runtime / package evidence separately."
+  ]
+}

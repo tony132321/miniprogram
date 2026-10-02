@@ -1,17 +1,19 @@
 import { randomUUID } from 'node:crypto';
 import type { Database, Queryable } from './db.ts';
-import { getEvent } from './events.ts';
+import { getEvent, reviewedContentSourceVersion } from './events.ts';
 import { AppError } from './errors.ts';
 import { audit, command } from './registrations.ts';
 import { parseAnnouncementFaq } from './announcement-faq.ts';
 import { hasCohostCapability } from './cohosts.ts';
+import { requireAiActorActive } from './ai-account-fence.ts';
+import { actorReadableActivityContentSql, reviewedActivityContentSql } from './content-source-visibility.ts';
 
 export type ContentKind = 'ANNOUNCEMENT' | 'QUESTION' | 'ANSWER';
 export type ContentStatus = 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED';
 export type ContentRow = { id: string; event_id: string; author_id: string; kind: ContentKind; parent_id: string | null; body: string; status: ContentStatus;
   moderation_reason?: string | null; event_version?: number | null; fact_event_version?: number | null; created_at: Date };
 
-async function requireMember(db: Queryable, actor: string, eventId: string) {
+export async function requireMember(db: Queryable, actor: string, eventId: string) {
   const event = await getEvent(db, actor, eventId);
   if (event.hostId !== actor && !event.cohostCapabilities?.length) {
     const { rows } = await db.query("SELECT 1 FROM registrations WHERE event_id=$1 AND user_id=$2 AND status IN ('CONFIRMED','RECONFIRM_REQUIRED','WAITLISTED','OFFERED')", [eventId, actor]);
@@ -24,57 +26,117 @@ function localTime(value: string): string {
   return new Date(Date.parse(value) + 8 * 60 * 60_000).toISOString().slice(0, 16).replace('T', ' ');
 }
 
-function answerFromCurrentEvent(question: string, event: Awaited<ReturnType<typeof getEvent>>): string | null {
+export function answerFromCurrentEvent(question: string, event: Awaited<ReturnType<typeof getEvent>>): string | null {
   const p = event.payload;
+  const sourceVersion = event.visibleContentVersion;
+  const versionLabel = sourceVersion !== undefined && sourceVersion !== null && sourceVersion !== event.version
+    ? `已审核版本 ${sourceVersion}（当前版本 ${event.version}${event.reviewStatus === 'REJECTED' ? '未通过审核' : '待审核'}）`
+    : `当前版本 ${event.version}`;
   if (/几点开始|什么时候开始|开始时间/.test(question) && p.startAt)
-    return `当前版本 ${event.version}：活动开始时间为 ${localTime(p.startAt)}（Asia/Shanghai）。`;
+    return `${versionLabel}：活动开始时间为 ${localTime(p.startAt)}（Asia/Shanghai）。`;
   if (/几点结束|什么时候结束|结束时间/.test(question) && p.endAt)
-    return `当前版本 ${event.version}：活动结束时间为 ${localTime(p.endAt)}（Asia/Shanghai）。`;
+    return `${versionLabel}：活动结束时间为 ${localTime(p.endAt)}（Asia/Shanghai）。`;
   if (/地点|场地|球馆|在哪里/.test(question) && p.venueStatus === 'HOST_CONFIRMED' && p.venueName)
-    return `当前版本 ${event.version}：主办方已确认公共场地为 ${p.city} ${p.venueName}；平台未核验场馆库存。`;
+    return `${versionLabel}：主办方已确认公共场地为 ${p.city} ${p.venueName}；平台未核验场馆库存。`;
   if (/费用|多少钱|收费|免费/.test(question) && p.feeMode)
-    return p.feeMode === 'FREE' ? `当前版本 ${event.version}：活动规则写明免费。`
-      : p.feeCapFen !== undefined ? `当前版本 ${event.version}：AA，每人费用上限 ${p.feeCapFen / 100} 元；实际费用以结项记录为准。` : null;
+    return p.feeMode === 'FREE' ? `${versionLabel}：活动规则写明免费。`
+      : p.feeCapFen !== undefined ? `${versionLabel}：AA，每人费用上限 ${p.feeCapFen / 100} 元；实际费用以结项记录为准。` : null;
   return null;
 }
 
 export type FactAnswer = { answer: string; source: 'CURRENT_EVENT' | 'APPROVED_ANSWER' | 'APPROVED_ANNOUNCEMENT' | 'UNKNOWN';
   eventVersion: number; todoId?: string; sourceContentId?: string };
 
+export async function currentApprovedAnswerBody(tx: Queryable, eventId: string, eventVersion: number,
+  question: string, actor: string, todoId?: string, lock = false): Promise<string | undefined> {
+  const { rows } = await tx.query<{ body: string; parent_id: string | null }>(`SELECT a.body,a.parent_id FROM activity_content a WHERE a.parent_id=(
+    SELECT t.question_content_id FROM activity_fact_todos t WHERE t.id=$1 AND t.event_id=$2
+      AND t.event_version=$3 AND t.question_text=$4 AND t.status='RESOLVED')
+    AND a.kind='ANSWER' AND a.status='APPROVED' AND ${actorReadableActivityContentSql('a', '$5')}
+    ORDER BY a.created_at DESC,a.id DESC LIMIT 1
+    ${lock ? 'FOR SHARE' : ''}`, [todoId ?? null, eventId, eventVersion, question.trim(), actor]);
+  if (!lock || !rows[0]) return rows[0]?.body;
+  const { rows: todos } = await tx.query<{ question_content_id: string }>(`SELECT question_content_id
+    FROM activity_fact_todos WHERE id=$1 AND event_id=$2 AND event_version=$3
+      AND question_text=$4 AND status='RESOLVED' FOR SHARE`,
+  [todoId ?? null, eventId, eventVersion, question.trim()]);
+  if (todos[0]?.question_content_id !== rows[0].parent_id) return undefined;
+  return rows[0]?.body;
+}
+
+async function factResultStillCurrent(tx: Queryable, event: Awaited<ReturnType<typeof getEvent>>,
+  actor: string, question: string, result: FactAnswer): Promise<boolean> {
+  const sourceVersion = reviewedContentSourceVersion(event);
+  const cleanQuestion = question.trim();
+  if (result.source === 'UNKNOWN') {
+    if (result.eventVersion !== event.version) return false;
+    const { rows: todos } = await tx.query(`SELECT 1 FROM activity_fact_todos WHERE id=$1
+      AND event_id=$2 AND event_version=$3 AND requester_id=$4 AND question_text=$5`,
+    [result.todoId ?? null, event.id, event.version, actor, cleanQuestion]);
+    return todos.length > 0;
+  }
+  if (sourceVersion === null || result.eventVersion !== sourceVersion) return false;
+  const label = sourceVersion === event.version ? `当前版本 ${event.version}` : `已审核版本 ${sourceVersion}`;
+  if (result.source === 'CURRENT_EVENT')
+    return answerFromCurrentEvent(cleanQuestion, event) === result.answer;
+  if (result.source === 'APPROVED_ANSWER') {
+    const body = await currentApprovedAnswerBody(tx, event.id, sourceVersion, cleanQuestion, actor, result.todoId);
+    return body !== undefined && result.answer === `${label}，主办方已审核回答：${body}`;
+  }
+  if (result.source === 'APPROVED_ANNOUNCEMENT') {
+    const { rows } = await tx.query<{ body: string }>(`SELECT c.body FROM activity_content c
+      WHERE c.id=$1 AND c.event_id=$2 AND c.event_version=$3 AND c.kind='ANNOUNCEMENT'
+        AND c.status='APPROVED' AND ${actorReadableActivityContentSql('c', '$4')}`,
+    [result.sourceContentId, event.id, sourceVersion, actor]);
+    const faq = rows[0] && parseAnnouncementFaq(rows[0].body);
+    return !!faq && faq.question === cleanQuestion && result.answer === `${label}，已审核公告：${faq.answer}`;
+  }
+  return false;
+}
+
 export async function askCurrentFact(db: Database, actor: string, eventId: string, question: string, key: string): Promise<FactAnswer> {
-  return command(db, actor, `current-fact:${eventId}`, key, async tx => {
-    if (typeof question !== 'string' || !question.trim() || question.length > 200) throw new AppError('BAD_REQUEST', '问题需为 1 至 200 字');
-    const event = await requireMember(tx, actor, eventId);
+  if (typeof question !== 'string' || !question.trim() || question.length > 200)
+    throw new AppError('BAD_REQUEST', '问题需为 1 至 200 字');
+  const result = await command<FactAnswer>(db, actor, `current-fact:${eventId}`, key, async tx => {
+    await requireAiActorActive(tx, actor);
     const { rows: locked } = await tx.query<{ version: number }>('SELECT version FROM events WHERE id=$1 FOR SHARE', [eventId]);
+    const event = await requireMember(tx, actor, eventId);
     if (locked[0]?.version !== event.version) throw new AppError('VERSION_CONFLICT', '活动规则已更新，请刷新', 409);
     if (!['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(event.status)) throw new AppError('INVALID_STATE', '当前活动不能提问');
     const cleanQuestion = question.trim();
-    const answer = answerFromCurrentEvent(cleanQuestion, event);
-    if (answer) return { answer, source: 'CURRENT_EVENT', eventVersion: event.version };
-    const { rows: approved } = await tx.query<{ id: string; body: string }>(
+    const factSourceVersion = reviewedContentSourceVersion(event);
+    const factSourceLabel = factSourceVersion === event.version ? `当前版本 ${event.version}`
+      : `已审核版本 ${factSourceVersion}`;
+    const answer = factSourceVersion === null ? null : answerFromCurrentEvent(cleanQuestion, event);
+    if (answer && factSourceVersion !== null) return { answer, source: 'CURRENT_EVENT', eventVersion: factSourceVersion };
+    const { rows: approved } = factSourceVersion === null ? { rows: [] as Array<{ id: string; body: string }> } : await tx.query<{ id: string; body: string }>(
       `SELECT t.id,a.body FROM activity_fact_todos t JOIN activity_content a ON a.parent_id=t.question_content_id
         AND a.kind='ANSWER' AND a.status='APPROVED' WHERE t.event_id=$1 AND t.event_version=$2
-        AND t.question_text=$3 AND t.status='RESOLVED' ORDER BY a.created_at DESC,a.id DESC LIMIT 1`,
-      [eventId, event.version, cleanQuestion]);
-    if (approved[0]) return { answer: `当前版本 ${event.version}，主办方已审核回答：${approved[0].body}`,
-      source: 'APPROVED_ANSWER', eventVersion: event.version, todoId: approved[0].id };
-    const { rows: announcements } = await tx.query<{ id: string; body: string }>(
-      `SELECT id,body FROM activity_content WHERE event_id=$1 AND event_version=$2
-       AND kind='ANNOUNCEMENT' AND status='APPROVED' ORDER BY created_at DESC,id DESC`, [eventId, event.version]);
+        AND t.question_text=$3 AND t.status='RESOLVED' AND ${actorReadableActivityContentSql('a', '$4')}
+        ORDER BY a.created_at DESC,a.id DESC LIMIT 1`,
+      [eventId, factSourceVersion, cleanQuestion, actor]);
+    if (approved[0] && factSourceVersion !== null) return { answer: `${factSourceLabel}，主办方已审核回答：${approved[0].body}`,
+      source: 'APPROVED_ANSWER', eventVersion: factSourceVersion, todoId: approved[0].id };
+    const { rows: announcements } = factSourceVersion === null ? { rows: [] as Array<{ id: string; body: string }> } : await tx.query<{ id: string; body: string }>(
+      `SELECT c.id,c.body FROM activity_content c WHERE c.event_id=$1 AND c.event_version=$2
+       AND c.kind='ANNOUNCEMENT' AND c.status='APPROVED' AND ${actorReadableActivityContentSql('c', '$3')}
+       ORDER BY c.created_at DESC,c.id DESC`, [eventId, factSourceVersion, actor]);
     for (const announcement of announcements) {
       const faq = parseAnnouncementFaq(announcement.body);
-      if (faq?.question === cleanQuestion) return { answer: `当前版本 ${event.version}，已审核公告：${faq.answer}`,
-        source: 'APPROVED_ANNOUNCEMENT', eventVersion: event.version, sourceContentId: announcement.id };
+      if (faq?.question === cleanQuestion && factSourceVersion !== null) return { answer: `${factSourceLabel}，已审核公告：${faq.answer}`,
+        source: 'APPROVED_ANNOUNCEMENT', eventVersion: factSourceVersion, sourceContentId: announcement.id };
     }
     const previous = await tx.query<{ id: string; status: string; question_content_id: string }>(
       'SELECT id,status,question_content_id FROM activity_fact_todos WHERE event_id=$1 AND event_version=$2 AND requester_id=$3 AND question_text=$4',
       [eventId, event.version, actor, cleanQuestion]);
     if (previous.rows[0]) {
       const todo = previous.rows[0];
-      if (todo.status === 'RESOLVED') {
+      if (todo.status === 'RESOLVED' && factSourceVersion === event.version) {
         const { rows: reviewed } = await tx.query<{ body: string }>(
-          "SELECT body FROM activity_content WHERE parent_id=$1 AND kind='ANSWER' AND status='APPROVED' ORDER BY created_at DESC,id DESC LIMIT 1",
-          [todo.question_content_id]);
+          `SELECT a.body FROM activity_content a WHERE a.parent_id=$1 AND a.kind='ANSWER'
+            AND a.status='APPROVED' AND ${actorReadableActivityContentSql('a', '$2')}
+            ORDER BY a.created_at DESC,a.id DESC LIMIT 1`,
+          [todo.question_content_id, actor]);
         if (reviewed[0]) return { answer: `当前版本 ${event.version}，主办方已审核回答：${reviewed[0].body}`,
           source: 'APPROVED_ANSWER', eventVersion: event.version, todoId: todo.id };
       }
@@ -104,25 +166,38 @@ export async function askCurrentFact(db: Database, actor: string, eventId: strin
     return { answer: '尚未确认。问题已进入人工审核与主办方待办，审核通过后可由主办方回答。', source: 'UNKNOWN',
       eventVersion: event.version, todoId };
   });
+  return db.transaction(async tx => {
+    await requireAiActorActive(tx, actor);
+    const { rows: locked } = await tx.query<{ version: number }>('SELECT version FROM events WHERE id=$1 FOR SHARE', [eventId]);
+    const event = await requireMember(tx, actor, eventId);
+    if (locked[0]?.version !== event.version ||
+      !['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(event.status) ||
+      !(await factResultStillCurrent(tx, event, actor, question, result)))
+      throw new AppError('VERSION_CONFLICT', '事实来源已更新，请使用新请求键重新提问', 409);
+    return result;
+  });
 }
 
 export async function listFactTodos(db: Database, actor: string, eventId: string): Promise<Array<{
   id: string; questionContentId: string; question: string; eventVersion: number; status: string
 }>> {
-  const event = await getEvent(db, actor, eventId);
-  if (event.hostId !== actor) throw new AppError('FORBIDDEN', '只有主办方可查看事实待办', 403);
-  const { rows } = await db.query<{ id: string; question_content_id: string; body: string; event_version: number; status: string }>(
-    `SELECT t.id,t.question_content_id,c.body,t.event_version,t.status FROM activity_fact_todos t
+  return db.transaction(async tx => {
+    await tx.query('SELECT id FROM events WHERE id=$1 FOR SHARE', [eventId]);
+    const event = await getEvent(tx, actor, eventId);
+    if (event.hostId !== actor) throw new AppError('FORBIDDEN', '只有主办方可查看事实待办', 403);
+    const { rows } = await tx.query<{ id: string; question_content_id: string; body: string; event_version: number; status: string }>(
+      `SELECT t.id,t.question_content_id,c.body,t.event_version,t.status FROM activity_fact_todos t
       JOIN activity_content c ON c.id=t.question_content_id WHERE t.event_id=$1 AND t.event_version=$2 AND c.status='APPROVED'
       ORDER BY t.created_at DESC LIMIT 100`, [eventId, event.version]);
-  return rows.map(row => ({ id: row.id, questionContentId: row.question_content_id, question: row.body,
-    eventVersion: row.event_version, status: row.status }));
+    return rows.map(row => ({ id: row.id, questionContentId: row.question_content_id, question: row.body,
+      eventVersion: row.event_version, status: row.status }));
+  });
 }
 
 export async function createContent(db: Database, actor: string, eventId: string, kind: ContentKind, body: string, parentId: string | null, key: string): Promise<ContentRow> {
   return command(db, actor, `content:${eventId}`, key, async tx => {
-    const event = await requireMember(tx, actor, eventId);
     const { rows: locked } = await tx.query<{ version: number }>('SELECT version FROM events WHERE id=$1 FOR SHARE', [eventId]);
+    const event = await requireMember(tx, actor, eventId);
     if (locked[0]?.version !== event.version) throw new AppError('VERSION_CONFLICT', '活动规则已更新，请刷新', 409);
     if (!['RECRUITING', 'CONFIRMED', 'IN_PROGRESS'].includes(event.status)) throw new AppError('INVALID_STATE', '当前活动不能发布内容');
     if (!['ANNOUNCEMENT', 'QUESTION', 'ANSWER'].includes(kind) || typeof body !== 'string' || !body.trim() || body.length > 1000)
@@ -148,12 +223,21 @@ export async function createContent(db: Database, actor: string, eventId: string
 }
 
 export async function listContent(db: Database, actor: string, eventId: string): Promise<ContentRow[]> {
-  await requireMember(db, actor, eventId);
-  const { rows } = await db.query<ContentRow>(`SELECT c.id,c.event_id,c.author_id,c.kind,c.parent_id,c.body,c.status,c.event_version,
+  return db.transaction(async tx => {
+    await tx.query('SELECT id FROM events WHERE id=$1 FOR SHARE', [eventId]);
+    const event = await requireMember(tx, actor, eventId);
+    const trustedVersion = reviewedContentSourceVersion(event);
+    const isHost = event.hostId === actor;
+    const { rows } = await tx.query<ContentRow>(`SELECT c.id,c.event_id,c.author_id,c.kind,c.parent_id,c.body,c.status,c.event_version,
     CASE WHEN c.author_id=$2 THEN c.moderation_reason ELSE NULL END AS moderation_reason,t.event_version AS fact_event_version,c.created_at
     FROM activity_content c LEFT JOIN activity_fact_todos t ON t.question_content_id=c.id
-    WHERE c.event_id=$1 AND (c.status='APPROVED' OR c.author_id=$2) ORDER BY c.created_at,c.id`, [eventId, actor]);
-  return rows;
+    WHERE c.event_id=$1 AND (c.status='APPROVED' OR c.author_id=$2)
+      AND (c.author_id=$2 OR $3::boolean OR
+        (c.author_id='system' AND c.kind='ANNOUNCEMENT') OR
+        (c.event_version IS NOT NULL AND c.event_version<=$4::integer AND ${reviewedActivityContentSql('c')}))
+    ORDER BY c.created_at,c.id`, [eventId, actor, isHost, trustedVersion]);
+    return rows;
+  });
 }
 
 export async function listMyRejectedContent(db: Database, actor: string) {

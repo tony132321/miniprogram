@@ -4,7 +4,8 @@ import { test } from 'node:test';
 import { createDatabase } from '../src/db.ts';
 import { loginWithWechat } from '../src/auth.ts';
 import { createApp } from '../src/server.ts';
-import { createDraft, publishEvent } from '../src/events.ts';
+import { createDraft } from '../src/events.ts';
+import { publishApprovedInvite } from './helpers.ts';
 import { requiresVerifiedPilot } from '../src/pilot-access.ts';
 
 const eventInput = {
@@ -47,7 +48,7 @@ test('production login alone cannot create or join a controlled adult pilot', as
     assert.equal(deniedDraft.body.code, 'PILOT_NOT_VERIFIED');
     assert.equal((await db.query('SELECT id FROM events')).rows.length, 0);
     const draft = await createDraft(db, host.userId, eventInput, 'pilot-draft', false);
-    const event = await publishEvent(db, host.userId, draft.id, draft.version, 'pilot-publish');
+    const event = await publishApprovedInvite(db, host.userId, draft.id, draft.version, 'pilot-publish');
     const deniedJoin = await post(`/events/${event.id}/registrations`, stranger.token,
       { expectedVersion: event.version, inviteToken: event.inviteToken, acceptedRules: true }, 'stranger-join');
     assert.equal(deniedJoin.status, 403);

@@ -1,0 +1,609 @@
+{
+  "scope": "Wave68 PG10-A/PG10-B WXML/WXSS and required exact SVG only",
+  "sourceZip": {
+    "path": "/Users/tsb/Downloads/stitch_design_system_generator (2).zip",
+    "sha256": "df22e733d33fda20979b75b8a7bc94717c4a5c9e41561a54e3038432fab32603",
+    "sourceHtmlCount": 39
+  },
+  "sourceFiles": [
+    {
+      "zipEntry": "stitch_design_system_generator/pg10_a_edit_profile/code.html",
+      "bytes": 22207,
+      "sha256": "3a237335c3861eab11574f5a3b0272f3fc902c0c51c151edfc9bd57e80e0c5fb",
+      "cachePath": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg10_a_edit_profile/code.html"
+    },
+    {
+      "zipEntry": "stitch_design_system_generator/pg10_a_edit_profile/screen.png",
+      "bytes": 215687,
+      "sha256": "3df4c4ed490eecbfd900df894f6d0687fb148662e757f52f82f2023477a1dbd7",
+      "cachePath": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg10_a_edit_profile/screen.png"
+    },
+    {
+      "zipEntry": "stitch_design_system_generator/pg10_b_social_badges/code.html",
+      "bytes": 29737,
+      "sha256": "6bdd03d9c691ca3fedc1824c29eb38592ca60dc10384aca3437e0311f1ee4b0b",
+      "cachePath": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg10_b_social_badges/code.html"
+    },
+    {
+      "zipEntry": "stitch_design_system_generator/pg10_b_social_badges/screen.png",
+      "bytes": 471245,
+      "sha256": "e8feb63c376df934bbb9247742ac849734b8cb77739a096a8b8c5b542b6a839c",
+      "cachePath": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg10_b_social_badges/screen.png"
+    }
+  ],
+  "baselineFiles": [
+    {
+      "path": "miniprogram/subpackages/profile/profile-edit/profile-edit.js",
+      "bytes": 5210,
+      "sha256": "2fe8db9e0ca20e5be74c78a3289da0a99c92a962483fa41e72b97c08d8b8be70"
+    },
+    {
+      "path": "miniprogram/subpackages/profile/profile-edit/profile-edit.json",
+      "bytes": 69,
+      "sha256": "2be9acff05f45514df7b25f6468ef08060496ddd4944ffde92ca1e52360eedc0"
+    },
+    {
+      "path": "miniprogram/subpackages/profile/profile-edit/profile-edit.wxml",
+      "bytes": 8690,
+      "sha256": "42d609fc13afc1060bbe2580756840fe383bc2f886733301028661c11cbcde39"
+    },
+    {
+      "path": "miniprogram/subpackages/profile/profile-edit/profile-edit.wxss",
+      "bytes": 11837,
+      "sha256": "21c396330f448da8b55e4f1a85bcfcb1e0998bbfa6ecc4861069d7d08609c890"
+    },
+    {
+      "path": "miniprogram/subpackages/profile/badges/badges.js",
+      "bytes": 4094,
+      "sha256": "0d3f2b9bd5b83f5dd05db67538da58a6bc219192a4681491ace56d1d6e375452"
+    },
+    {
+      "path": "miniprogram/subpackages/profile/badges/badges.json",
+      "bytes": 69,
+      "sha256": "87e891486bff9a8628468a9e96bfa072f93cde60df20d41b4f8c839e41f4b8b3"
+    },
+    {
+      "path": "miniprogram/subpackages/profile/badges/badges.wxml",
+      "bytes": 5481,
+      "sha256": "57e60e66f91fc822477017c7d66378841e5f668045058947365cf6114bebf6fe"
+    },
+    {
+      "path": "miniprogram/subpackages/profile/badges/badges.wxss",
+      "bytes": 17289,
+      "sha256": "2a43b1be9b241dbf4e197c15fe4db803c7a4e781ba9dcf5df22facc380d339b2"
+    }
+  ],
+  "newAssetsRawBytes": 720,
+  "productRawNetBytes": 8064,
+  "pin": {
+    "sourceUrl": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/push_pin/materialsymbolsoutlined/push_pin_24px.svg",
+    "license": "Apache-2.0",
+    "licenseUrl": "https://github.com/google/material-design-icons/blob/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/LICENSE",
+    "family": "Material Symbols Outlined",
+    "axes": {
+      "FILL": 0,
+      "wght": 400,
+      "opsz": 24,
+      "GRAD": 0
+    },
+    "sourceBytes": 173,
+    "sourceSha256": "8b95c9b784cd4901f1fe09d5c4076f42f5af3f9e7173fc49a93eb1bd82377bcd",
+    "sourceSvgUtf8": "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24\" width=\"24\"><path d=\"m16 12 2 2v2h-5v6l-1 1-1-1v-6H6v-2l2-2V5H7V3h10v2h-1Zm-7.15 2h6.3L14 12.85V5h-4v7.85ZM12 14Z\"/></svg>",
+    "assetPath": "miniprogram/subpackages/profile/badges/assets/push-pin.svg",
+    "assetBytes": 188,
+    "assetSha256": "31d5e93e0b778cafd903bcf467d2de61c280360cf7f068c0fb460ad2cc17492b",
+    "change": "root fill #ffffff only; every original child/path byte retained"
+  },
+  "back600": {
+    "sourceOwner": "root",
+    "inputPath": "/private/tmp/caper-wave68-shared-fonts/profile-back-wght600.svg",
+    "bytes": 266,
+    "sha256": "efeb362fc20c3e3a66fb6dc7be585f6ea7db8e9983609c44e148ef76807c3b24",
+    "svgUtf8": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 -960 960 960\" fill=\"#1a1b1f\"><path d=\"M641.1304931640625 -61.912109375 222.47735595703125 -480.0 641.1304931640625 -898.087890625 730.2183837890625 -809.0 401.2183837890625 -480.0 730.2183837890625 -151.0Z\"/></svg>\n",
+    "sourceProofPath": "docs/design-sources/profile-reference-fonts/inspection.json array index 1",
+    "sourceDescription": "Source later Material face with FILL/wght variable axes; wght600/FILL0 instance; fixed opsz24/GRAD0; U+E2EA original outline without rounding; root-generated exact source",
+    "family": "Material Symbols Outlined",
+    "glyph": "arrow_back_ios_new",
+    "codepoint": "U+E2EA",
+    "weight": 600,
+    "fillAxis": 0,
+    "rootFill": "#1a1b1f",
+    "change": "exact byte copies; original 400 assets/manifests retained for traceability",
+    "sourceManifestPath": "docs/design-sources/profile-reference-fonts/source.json",
+    "sourceSummaryPath": "docs/evidence/caper-profile-shared-fonts-wave68-2026-10-02.md"
+  },
+  "jakartaVisibleWeights": {
+    "profile-edit": {
+      "source500Node": ".bio-heading text / original bio-counter font-medium; current closed label 暂不可编辑",
+      "otherSourceWeights": [
+        400,
+        600,
+        700
+      ],
+      "source500Family": "Caper Jakarta Profile 500; final .bio-heading text only; root-owned face uses same official 500 WOFF bytes under alias"
+    },
+    "badges": {
+      "sourceWeights": [
+        400,
+        600,
+        700,
+        800
+      ],
+      "notRendered900": "MAX-XP font-black is unawarded source demonstration; omitted",
+      "notKept500": "legacy showcase-head text 500 changed to original label-sm 700"
+    },
+    "globalLoaderOwner": "root; no global loader/data modifications by this task"
+  },
+  "verification": {
+    "scope": "Initial bounded 101 source/resource/binding/protection checks; followed only by one-declaration inverse-byte alias adjustment; no rerun/business VM/full tests/SDK/CLI",
+    "initialFailure": {
+      "check": "profile-edit all bindings exist in unchanged Page methods",
+      "cause": "checker regex omitted async Page methods including existing openAliasPicker",
+      "productChangedToFix": false,
+      "correction": "include async in static declaration lookup"
+    },
+    "passed": 101,
+    "failed": 0,
+    "checks": [
+      {
+        "name": "profile-edit protected js",
+        "passed": true
+      },
+      {
+        "name": "profile-edit protected json",
+        "passed": true
+      },
+      {
+        "name": "profile-edit WXML tag structure",
+        "passed": true
+      },
+      {
+        "name": "profile-edit old binding names and multiplicities",
+        "passed": true
+      },
+      {
+        "name": "profile-edit all bindings exist in unchanged Page methods",
+        "passed": true
+      },
+      {
+        "name": "profile-edit old conditional/list/dataset expressions unchanged",
+        "passed": true
+      },
+      {
+        "name": "profile-edit fixed px in owned CSS",
+        "passed": true
+      },
+      {
+        "name": "profile-edit CSS balanced blocks",
+        "passed": true
+      },
+      {
+        "name": "profile-edit referenced asset ./assets/add_circle.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit referenced asset ./assets/casino.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit referenced asset ./assets/check.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit referenced asset ./assets/chevron_right.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit referenced asset ./assets/close-blue.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit referenced asset ./assets/close-violet.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit referenced asset ./assets/close.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit referenced asset ./assets/content_copy.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit referenced asset ./assets/edit.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit referenced asset ./assets/female.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit referenced asset ./assets/location_on.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit referenced asset ./assets/male.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit referenced asset ./assets/more_horiz.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit referenced asset ./assets/person-anonymous.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit referenced asset ./assets/person.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit referenced asset ./assets/photo_camera.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit referenced asset ./assets/sports_tennis.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit referenced asset ./assets/visibility_off.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit referenced asset ./assets/wave68-back.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit old source asset unchanged add_circle.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit old source asset unchanged arrow_back_ios_new.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit old source asset unchanged casino.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit old source asset unchanged check.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit old source asset unchanged chevron_right.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit old source asset unchanged close-blue.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit old source asset unchanged close-violet.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit old source asset unchanged close.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit old source asset unchanged content_copy.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit old source asset unchanged edit.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit old source asset unchanged female.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit old source asset unchanged location_on.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit old source asset unchanged male.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit old source asset unchanged more_horiz.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit old source asset unchanged person-anonymous.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit old source asset unchanged person.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit old source asset unchanged photo_camera.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit old source asset unchanged sports_tennis.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit old source asset unchanged visibility_off.svg",
+        "passed": true
+      },
+      {
+        "name": "profile-edit exact 600 back copy",
+        "passed": true
+      },
+      {
+        "name": "profile-edit inverse owned WXML changes = exact baseline",
+        "passed": true
+      },
+      {
+        "name": "profile-edit disabled-control count preserved or wear added",
+        "passed": true
+      },
+      {
+        "name": "badges protected js",
+        "passed": true
+      },
+      {
+        "name": "badges protected json",
+        "passed": true
+      },
+      {
+        "name": "badges WXML tag structure",
+        "passed": true
+      },
+      {
+        "name": "badges old binding names and multiplicities",
+        "passed": true
+      },
+      {
+        "name": "badges all bindings exist in unchanged Page methods",
+        "passed": true
+      },
+      {
+        "name": "badges old conditional/list/dataset expressions unchanged",
+        "passed": true
+      },
+      {
+        "name": "badges fixed px in owned CSS",
+        "passed": true
+      },
+      {
+        "name": "badges CSS balanced blocks",
+        "passed": true
+      },
+      {
+        "name": "badges referenced asset ./assets/push-pin.svg",
+        "passed": true
+      },
+      {
+        "name": "badges referenced asset ./assets/wave68-back.svg",
+        "passed": true
+      },
+      {
+        "name": "badges referenced asset /subpackages/profile/badges/assets/add.svg",
+        "passed": true
+      },
+      {
+        "name": "badges referenced asset /subpackages/profile/badges/assets/badminton.svg",
+        "passed": true
+      },
+      {
+        "name": "badges referenced asset /subpackages/profile/badges/assets/coffee.svg",
+        "passed": true
+      },
+      {
+        "name": "badges referenced asset /subpackages/profile/badges/assets/crowd.svg",
+        "passed": true
+      },
+      {
+        "name": "badges referenced asset /subpackages/profile/badges/assets/first.svg",
+        "passed": true
+      },
+      {
+        "name": "badges referenced asset /subpackages/profile/badges/assets/host.svg",
+        "passed": true
+      },
+      {
+        "name": "badges referenced asset /subpackages/profile/badges/assets/lock.svg",
+        "passed": true
+      },
+      {
+        "name": "badges referenced asset /subpackages/profile/badges/assets/more.svg",
+        "passed": true
+      },
+      {
+        "name": "badges referenced asset /subpackages/profile/badges/assets/night.svg",
+        "passed": true
+      },
+      {
+        "name": "badges referenced asset /subpackages/profile/badges/assets/partner.svg",
+        "passed": true
+      },
+      {
+        "name": "badges referenced asset /subpackages/profile/badges/assets/person.svg",
+        "passed": true
+      },
+      {
+        "name": "badges referenced asset /subpackages/profile/badges/assets/quick.svg",
+        "passed": true
+      },
+      {
+        "name": "badges referenced asset /subpackages/profile/badges/assets/showcase.svg",
+        "passed": true
+      },
+      {
+        "name": "badges referenced asset /subpackages/profile/badges/assets/sparkles.svg",
+        "passed": true
+      },
+      {
+        "name": "badges referenced asset /subpackages/profile/badges/assets/verified.svg",
+        "passed": true
+      },
+      {
+        "name": "badges referenced asset /subpackages/profile/badges/assets/walk.svg",
+        "passed": true
+      },
+      {
+        "name": "badges referenced asset /subpackages/profile/badges/assets/xp.svg",
+        "passed": true
+      },
+      {
+        "name": "badges old source asset unchanged add.svg",
+        "passed": true
+      },
+      {
+        "name": "badges old source asset unchanged back.svg",
+        "passed": true
+      },
+      {
+        "name": "badges old source asset unchanged badminton.svg",
+        "passed": true
+      },
+      {
+        "name": "badges old source asset unchanged close.svg",
+        "passed": true
+      },
+      {
+        "name": "badges old source asset unchanged coffee.svg",
+        "passed": true
+      },
+      {
+        "name": "badges old source asset unchanged crowd.svg",
+        "passed": true
+      },
+      {
+        "name": "badges old source asset unchanged first.svg",
+        "passed": true
+      },
+      {
+        "name": "badges old source asset unchanged host.svg",
+        "passed": true
+      },
+      {
+        "name": "badges old source asset unchanged lock.svg",
+        "passed": true
+      },
+      {
+        "name": "badges old source asset unchanged more.svg",
+        "passed": true
+      },
+      {
+        "name": "badges old source asset unchanged night.svg",
+        "passed": true
+      },
+      {
+        "name": "badges old source asset unchanged partner.svg",
+        "passed": true
+      },
+      {
+        "name": "badges old source asset unchanged person.svg",
+        "passed": true
+      },
+      {
+        "name": "badges old source asset unchanged quick.svg",
+        "passed": true
+      },
+      {
+        "name": "badges old source asset unchanged showcase.svg",
+        "passed": true
+      },
+      {
+        "name": "badges old source asset unchanged sparkles.svg",
+        "passed": true
+      },
+      {
+        "name": "badges old source asset unchanged verified.svg",
+        "passed": true
+      },
+      {
+        "name": "badges old source asset unchanged walk.svg",
+        "passed": true
+      },
+      {
+        "name": "badges old source asset unchanged xp.svg",
+        "passed": true
+      },
+      {
+        "name": "badges exact 600 back copy",
+        "passed": true
+      },
+      {
+        "name": "badges inverse owned WXML changes = exact baseline",
+        "passed": true
+      },
+      {
+        "name": "badges disabled-control count preserved or wear added",
+        "passed": true
+      },
+      {
+        "name": "pin root-fill-only exact original",
+        "passed": true
+      },
+      {
+        "name": "pin source original 24 viewport",
+        "passed": true
+      },
+      {
+        "name": "600 back original on-surface fill",
+        "passed": true
+      }
+    ],
+    "productFiles": [
+      {
+        "path": "miniprogram/subpackages/profile/profile-edit/profile-edit.wxml",
+        "bytes": 8737,
+        "sha256": "b18e73bacecee5fb7382e50a5db40b10ff43134ad15139faaeba11ca9f12c292"
+      },
+      {
+        "path": "miniprogram/subpackages/profile/profile-edit/profile-edit.wxss",
+        "bytes": 13454,
+        "sha256": "043c7f2a12f050cec6bf4505ea51f526b5388d2dc5865bc6e4d40b78c0b675a7"
+      },
+      {
+        "path": "miniprogram/subpackages/profile/profile-edit/assets/wave68-back.svg",
+        "bytes": 266,
+        "sha256": "efeb362fc20c3e3a66fb6dc7be585f6ea7db8e9983609c44e148ef76807c3b24"
+      },
+      {
+        "path": "miniprogram/subpackages/profile/badges/badges.wxml",
+        "bytes": 6169,
+        "sha256": "aa4af4ecafddccd99eb9fbacdf990487eaf4746d0fd99649c86e85e6930720bc"
+      },
+      {
+        "path": "miniprogram/subpackages/profile/badges/badges.wxss",
+        "bytes": 22281,
+        "sha256": "f584d62c84dd8e816c469f58550c5b4f4fb588d1ed1bc6aab05f40523d9729c8"
+      },
+      {
+        "path": "miniprogram/subpackages/profile/badges/assets/wave68-back.svg",
+        "bytes": 266,
+        "sha256": "efeb362fc20c3e3a66fb6dc7be585f6ea7db8e9983609c44e148ef76807c3b24"
+      },
+      {
+        "path": "miniprogram/subpackages/profile/badges/assets/push-pin.svg",
+        "bytes": 188,
+        "sha256": "31d5e93e0b778cafd903bcf467d2de61c280360cf7f068c0fb460ad2cc17492b"
+      }
+    ],
+    "postFreezeFontAliasAdjustment": {
+      "scope": "root-authorized profile-only 500 alias; add one final selector family declaration only",
+      "selector": ".bio-heading text",
+      "family": "Caper Jakarta Profile 500",
+      "beforeBytes": 13379,
+      "beforeSha256": "258427f5fb036ff3da89c8eea77f7eeee6b091c2c5318e1e12b06b7dc936b6ad",
+      "afterBytes": 13454,
+      "afterSha256": "043c7f2a12f050cec6bf4505ea51f526b5388d2dc5865bc6e4d40b78c0b675a7",
+      "addedBytes": 75,
+      "inverseRemoveAddedDeclarationByteExact": true,
+      "verification": "one declaration inverse equals original freeze; did not rerun 101 checks or SDK routes",
+      "sourceNode": "pg10_a/code.html:77 #bio-counter; sole font-medium candidate; source label-sm700 / font-medium500 cascade retained; product mapped closed-state text"
+    }
+  },
+  "boundaries": [
+    "No business VM/full tests/SDK/CLI/Git mutation",
+    "Rendering, actual glyphs, native capsule, safe-area and click destinations await root Developer Tools checks",
+    "Source raw byte delta is not compiled package evidence"
+  ]
+}

@@ -1,0 +1,1029 @@
+{
+  "baseline": {
+    "wxml": {
+      "path": "/private/tmp/caper-wave69-messages/baseline.wxml",
+      "bytes": 21339,
+      "sha256": "7b8e9bc25ee9175d68210517e9091377d0ca461df0a2e41541729f8aabdb9b9a"
+    },
+    "wxss": {
+      "path": "/private/tmp/caper-wave69-messages/baseline.wxss",
+      "bytes": 33781,
+      "sha256": "4473440860e25493bd4875a6515dce0b421e5a5a2fa06f36a8d2083e4541ad65"
+    },
+    "js": {
+      "path": "/private/tmp/caper-wave69-messages/baseline.js",
+      "bytes": 30759,
+      "sha256": "799d2a61281dbb9ffceca63d2fe86a467201ef6de88543c40887ecfd1f2de1e3"
+    },
+    "json": {
+      "path": "/private/tmp/caper-wave69-messages/baseline.json",
+      "bytes": 63,
+      "sha256": "b76e69c65eadf25397e0df5c9457c5a098c1bfc714ae05be5441318bdc8ebacc"
+    }
+  },
+  "current": {
+    "wxml": {
+      "path": "miniprogram/pages/messages/messages.wxml",
+      "bytes": 25349,
+      "sha256": "016d85c858bceb0cedc77f3d276d9c8737fe2d2ff91f02f3188bd64d6f16f41c"
+    },
+    "wxss": {
+      "path": "miniprogram/pages/messages/messages.wxss",
+      "bytes": 56674,
+      "sha256": "a6ba47ac7cade2ec7b42187a803207a7b7165c4a1e914f57fd233c8157cc98e0"
+    },
+    "js": {
+      "path": "miniprogram/pages/messages/messages.js",
+      "bytes": 30759,
+      "sha256": "799d2a61281dbb9ffceca63d2fe86a467201ef6de88543c40887ecfd1f2de1e3"
+    },
+    "json": {
+      "path": "miniprogram/pages/messages/messages.json",
+      "bytes": 63,
+      "sha256": "b76e69c65eadf25397e0df5c9457c5a098c1bfc714ae05be5441318bdc8ebacc"
+    }
+  },
+  "protectedInbox": {
+    "bytes": 11485,
+    "sha256": "2d894789f70c2174044a0191a4cd940c8dec44f0a64d595f446db706b58cb7f4",
+    "inverseOnlyRootModeClass": true
+  },
+  "oldCssPrefix": {
+    "bytes": 33781,
+    "sha256": "4473440860e25493bd4875a6515dce0b421e5a5a2fa06f36a8d2083e4541ad65",
+    "equal": true
+  },
+  "bindingCount": {
+    "INBOX": 21,
+    "CHAT_UNAVAILABLE": 4,
+    "CENTER": 19
+  },
+  "bindingRows": [
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "toggleSearch",
+        "aria-label": "搜索已加载的站内通知"
+      },
+      "conditions": [
+        {
+          "wx:if": "{{viewMode === 'INBOX'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goNotificationSettings",
+        "aria-label": "通知设置"
+      },
+      "conditions": [
+        {
+          "wx:if": "{{viewMode === 'INBOX'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "data-filter": "ALL",
+        "bindtap": "setFilter"
+      },
+      "conditions": [
+        {
+          "wx:if": "{{viewMode === 'INBOX'}}"
+        },
+        {
+          "wx:if": "{{loadState === 'READY'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "data-filter": "ACTIVITY",
+        "bindtap": "setFilter"
+      },
+      "conditions": [
+        {
+          "wx:if": "{{viewMode === 'INBOX'}}"
+        },
+        {
+          "wx:if": "{{loadState === 'READY'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "data-filter": "SYSTEM",
+        "bindtap": "setFilter"
+      },
+      "conditions": [
+        {
+          "wx:if": "{{viewMode === 'INBOX'}}"
+        },
+        {
+          "wx:if": "{{loadState === 'READY'}}"
+        }
+      ]
+    },
+    {
+      "tag": "input",
+      "attributes": {
+        "bindinput": "searchInput"
+      },
+      "conditions": [
+        {
+          "wx:if": "{{viewMode === 'INBOX'}}"
+        },
+        {
+          "wx:if": "{{searchOpen}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "openNotificationCenter"
+      },
+      "conditions": [
+        {
+          "wx:if": "{{viewMode === 'INBOX'}}"
+        },
+        {
+          "wx:if": "{{loadState === 'READY'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "id": "markAllReadButton",
+        "wx:if": "{{unreadTotal > 0}}",
+        "bindtap": "markAllRead",
+        "disabled": "{{markingAllRead}}"
+      },
+      "conditions": [
+        {
+          "wx:if": "{{viewMode === 'INBOX'}}"
+        },
+        {
+          "wx:if": "{{loadState === 'READY'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{loadState === 'ERROR'}}",
+        "bindtap": "refresh"
+      },
+      "conditions": [
+        {
+          "wx:if": "{{viewMode === 'INBOX'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goProfile"
+      },
+      "conditions": [
+        {
+          "wx:if": "{{viewMode === 'INBOX'}}"
+        },
+        {
+          "wx:if": "{{loadState === 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "loadApprovals"
+      },
+      "conditions": [
+        {
+          "wx:if": "{{viewMode === 'INBOX'}}"
+        },
+        {
+          "wx:if": "{{filter === 'INTERACTION' && approvalLoadState === 'ERROR'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "data-event-id": "{{item.eventId}}",
+        "data-is-host": "{{item.isHost}}",
+        "bindtap": "viewApproval"
+      },
+      "conditions": [
+        {
+          "wx:if": "{{viewMode === 'INBOX'}}"
+        },
+        {
+          "wx:if": "{{filter === 'INTERACTION' && approvalLoadState === 'READY' && approvals.length > 0}}"
+        },
+        {
+          "wx:for": "{{approvals}}",
+          "wx:key": "registrationId"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{item.canApprove}}",
+        "data-id": "{{item.registrationId}}",
+        "data-version": "{{item.expectedVersion}}",
+        "bindtap": "approveRequest",
+        "disabled": "{{approvingId !== ''}}"
+      },
+      "conditions": [
+        {
+          "wx:if": "{{viewMode === 'INBOX'}}"
+        },
+        {
+          "wx:if": "{{filter === 'INTERACTION' && approvalLoadState === 'READY' && approvals.length > 0}}"
+        },
+        {
+          "wx:for": "{{approvals}}",
+          "wx:key": "registrationId"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{approvalNextOffset !== null}}",
+        "bindtap": "loadMoreApprovals",
+        "disabled": "{{loadingMoreApprovals}}"
+      },
+      "conditions": [
+        {
+          "wx:if": "{{viewMode === 'INBOX'}}"
+        },
+        {
+          "wx:if": "{{filter === 'INTERACTION' && approvalLoadState === 'READY' && approvals.length > 0}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "openPrivateChatPreview",
+        "aria-label": "查看私聊功能状态"
+      },
+      "conditions": [
+        {
+          "wx:if": "{{viewMode === 'INBOX'}}"
+        },
+        {
+          "wx:if": "{{loadState === 'READY' && filter === 'ALL'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "openNotificationCenter",
+        "aria-label": "查看全部站内通知"
+      },
+      "conditions": [
+        {
+          "wx:if": "{{viewMode === 'INBOX'}}"
+        },
+        {
+          "wx:if": "{{loadState === 'READY' && filter === 'ALL' && !searchQuery && priorityItems.length > 0}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:for": "{{priorityItems}}",
+        "wx:key": "id",
+        "data-id": "{{item.id}}",
+        "data-event-id": "{{item.event_id}}",
+        "data-kind": "{{item.kind}}",
+        "bindtap": "openNotice"
+      },
+      "conditions": [
+        {
+          "wx:if": "{{viewMode === 'INBOX'}}"
+        },
+        {
+          "wx:if": "{{loadState === 'READY' && filter === 'ALL' && !searchQuery && priorityItems.length > 0}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "data-id": "{{notice.id}}",
+        "data-event-id": "{{notice.event_id}}",
+        "data-kind": "{{notice.kind}}",
+        "bindtap": "openNotice"
+      },
+      "conditions": [
+        {
+          "wx:if": "{{viewMode === 'INBOX'}}"
+        },
+        {
+          "wx:if": "{{loadState === 'READY' && filteredCount > 0}}"
+        },
+        {
+          "wx:for": "{{noticeGroups}}",
+          "wx:key": "key",
+          "wx:for-item": "group"
+        },
+        {
+          "wx:if": "{{group.items.length > 0}}"
+        },
+        {
+          "wx:for": "{{group.items}}",
+          "wx:key": "id",
+          "wx:for-item": "notice"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "data-id": "{{notice.id}}",
+        "data-event-id": "{{notice.event_id}}",
+        "data-kind": "{{notice.kind}}",
+        "data-section": "checkinSection",
+        "bindtap": "openNotice"
+      },
+      "conditions": [
+        {
+          "wx:if": "{{viewMode === 'INBOX'}}"
+        },
+        {
+          "wx:if": "{{loadState === 'READY' && filteredCount > 0}}"
+        },
+        {
+          "wx:for": "{{noticeGroups}}",
+          "wx:key": "key",
+          "wx:for-item": "group"
+        },
+        {
+          "wx:if": "{{group.items.length > 0}}"
+        },
+        {
+          "wx:for": "{{group.items}}",
+          "wx:key": "id",
+          "wx:for-item": "notice"
+        },
+        {
+          "wx:if": "{{notice.kind === 'EVENT_REMINDER' || notice.kind === 'MANUAL_CHECKIN_REQUEST'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{loadState === 'READY' && nextOffset !== null}}",
+        "bindtap": "loadMore",
+        "disabled": "{{loadingMore}}"
+      },
+      "conditions": [
+        {
+          "wx:if": "{{viewMode === 'INBOX'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goDiscover"
+      },
+      "conditions": [
+        {
+          "wx:if": "{{viewMode === 'INBOX'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goNotificationSettings"
+      },
+      "conditions": [
+        {
+          "wx:if": "{{viewMode === 'INBOX'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "backToInbox",
+        "aria-label": "返回消息"
+      },
+      "conditions": [
+        {
+          "wx:elif": "{{viewMode === 'CHAT_UNAVAILABLE'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goMyActivities"
+      },
+      "conditions": [
+        {
+          "wx:elif": "{{viewMode === 'CHAT_UNAVAILABLE'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goMyActivities"
+      },
+      "conditions": [
+        {
+          "wx:elif": "{{viewMode === 'CHAT_UNAVAILABLE'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "openNotificationCenter"
+      },
+      "conditions": [
+        {
+          "wx:elif": "{{viewMode === 'CHAT_UNAVAILABLE'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "backToInbox",
+        "aria-label": "返回消息"
+      },
+      "conditions": [
+        {
+          "wx:else": null
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goNotificationSettings",
+        "aria-label": "通知设置"
+      },
+      "conditions": [
+        {
+          "wx:else": null
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{loadState === 'READY' && unreadTotal > 0}}",
+        "bindtap": "markAllRead",
+        "disabled": "{{markingAllRead}}"
+      },
+      "conditions": [
+        {
+          "wx:else": null
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "data-filter": "ALL",
+        "bindtap": "setFilter"
+      },
+      "conditions": [
+        {
+          "wx:else": null
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "data-filter": "ACTIVITY",
+        "bindtap": "setFilter"
+      },
+      "conditions": [
+        {
+          "wx:else": null
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "data-filter": "INTERACTION",
+        "bindtap": "setFilter"
+      },
+      "conditions": [
+        {
+          "wx:else": null
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "data-filter": "SYSTEM",
+        "bindtap": "setFilter"
+      },
+      "conditions": [
+        {
+          "wx:else": null
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{loadState === 'ERROR'}}",
+        "bindtap": "refresh"
+      },
+      "conditions": [
+        {
+          "wx:else": null
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "goProfile"
+      },
+      "conditions": [
+        {
+          "wx:else": null
+        },
+        {
+          "wx:if": "{{loadState === 'UNAUTHENTICATED'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "loadApprovals"
+      },
+      "conditions": [
+        {
+          "wx:else": null
+        },
+        {
+          "wx:if": "{{(filter === 'ALL' || filter === 'INTERACTION') && approvalLoadState === 'ERROR'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{item.canApprove}}",
+        "data-id": "{{item.registrationId}}",
+        "data-version": "{{item.expectedVersion}}",
+        "bindtap": "approveRequest",
+        "disabled": "{{approvingId !== ''}}"
+      },
+      "conditions": [
+        {
+          "wx:else": null
+        },
+        {
+          "wx:if": "{{(filter === 'ALL' || filter === 'INTERACTION') && approvalLoadState === 'READY' && approvals.length > 0}}"
+        },
+        {
+          "wx:for": "{{approvals}}",
+          "wx:key": "registrationId"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "data-event-id": "{{item.eventId}}",
+        "data-is-host": "{{item.isHost}}",
+        "bindtap": "viewApproval"
+      },
+      "conditions": [
+        {
+          "wx:else": null
+        },
+        {
+          "wx:if": "{{(filter === 'ALL' || filter === 'INTERACTION') && approvalLoadState === 'READY' && approvals.length > 0}}"
+        },
+        {
+          "wx:for": "{{approvals}}",
+          "wx:key": "registrationId"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{approvalNextOffset !== null}}",
+        "bindtap": "loadMoreApprovals",
+        "disabled": "{{loadingMoreApprovals}}"
+      },
+      "conditions": [
+        {
+          "wx:else": null
+        },
+        {
+          "wx:if": "{{(filter === 'ALL' || filter === 'INTERACTION') && approvalLoadState === 'READY' && approvals.length > 0}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{notice.cardVariant === 'update'}}",
+        "data-id": "{{notice.id}}",
+        "data-event-id": "{{notice.event_id}}",
+        "data-kind": "{{notice.kind}}",
+        "data-section": "{{notice.actionSection}}",
+        "bindtap": "openNotice"
+      },
+      "conditions": [
+        {
+          "wx:else": null
+        },
+        {
+          "wx:if": "{{loadState === 'READY'}}"
+        },
+        {
+          "wx:for": "{{centerItems}}",
+          "wx:key": "id",
+          "wx:for-item": "notice"
+        },
+        {
+          "wx:if": "{{notice.visible}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{notice.cardVariant === 'milestone'}}",
+        "data-id": "{{notice.id}}",
+        "data-event-id": "{{notice.event_id}}",
+        "data-kind": "{{notice.kind}}",
+        "data-section": "{{notice.actionSection}}",
+        "bindtap": "openNotice"
+      },
+      "conditions": [
+        {
+          "wx:else": null
+        },
+        {
+          "wx:if": "{{loadState === 'READY'}}"
+        },
+        {
+          "wx:for": "{{centerItems}}",
+          "wx:key": "id",
+          "wx:for-item": "notice"
+        },
+        {
+          "wx:if": "{{notice.visible}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "data-id": "{{notice.id}}",
+        "data-event-id": "{{notice.event_id}}",
+        "data-kind": "{{notice.kind}}",
+        "data-section": "{{notice.actionSection}}",
+        "bindtap": "openNotice"
+      },
+      "conditions": [
+        {
+          "wx:else": null
+        },
+        {
+          "wx:if": "{{loadState === 'READY'}}"
+        },
+        {
+          "wx:for": "{{centerItems}}",
+          "wx:key": "id",
+          "wx:for-item": "notice"
+        },
+        {
+          "wx:if": "{{notice.visible}}"
+        },
+        {
+          "wx:if": "{{notice.cardVariant === 'reminder'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{notice.event_id}}",
+        "data-id": "{{notice.id}}",
+        "data-event-id": "{{notice.event_id}}",
+        "data-kind": "{{notice.kind}}",
+        "bindtap": "copyReminderVenue"
+      },
+      "conditions": [
+        {
+          "wx:else": null
+        },
+        {
+          "wx:if": "{{loadState === 'READY'}}"
+        },
+        {
+          "wx:for": "{{centerItems}}",
+          "wx:key": "id",
+          "wx:for-item": "notice"
+        },
+        {
+          "wx:if": "{{notice.visible}}"
+        },
+        {
+          "wx:if": "{{notice.cardVariant === 'reminder'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "data-id": "{{notice.id}}",
+        "data-event-id": "{{notice.event_id}}",
+        "data-kind": "{{notice.kind}}",
+        "data-section": "{{notice.actionSection}}",
+        "bindtap": "openNotice"
+      },
+      "conditions": [
+        {
+          "wx:else": null
+        },
+        {
+          "wx:if": "{{loadState === 'READY'}}"
+        },
+        {
+          "wx:for": "{{centerItems}}",
+          "wx:key": "id",
+          "wx:for-item": "notice"
+        },
+        {
+          "wx:if": "{{notice.visible}}"
+        },
+        {
+          "wx:if": "{{notice.cardVariant === 'standard'}}"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{loadState === 'READY' && nextOffset !== null}}",
+        "bindtap": "loadMore",
+        "disabled": "{{loadingMore}}"
+      },
+      "conditions": [
+        {
+          "wx:else": null
+        }
+      ]
+    }
+  ],
+  "allBindingAttributesAndConditionAncestorsEqual": true,
+  "newSelectors": [
+    ".messages-page.messages-center-reference",
+    ".messages-page.messages-chat-reference",
+    ".messages-page.messages-center-reference",
+    ".messages-page.messages-chat-reference",
+    ".messages-center-reference .messages-status-shield",
+    ".messages-chat-reference .messages-status-shield",
+    ".messages-center-reference button",
+    ".messages-chat-reference button",
+    ".messages-center-reference .center-shell",
+    ".messages-center-reference .center-header",
+    ".messages-center-reference .center-back",
+    ".messages-center-reference .center-settings",
+    ".messages-center-reference .center-back image",
+    ".messages-center-reference .center-settings image",
+    ".messages-center-reference .center-header-title",
+    ".messages-center-reference .center-header-actions",
+    ".messages-center-reference .center-header-person",
+    ".messages-center-reference .center-header-person image",
+    ".messages-center-reference .center-heading",
+    ".messages-center-reference .center-heading>view",
+    ".messages-center-reference .center-heading-title",
+    ".messages-center-reference .center-heading-count",
+    ".messages-center-reference .center-read-all",
+    ".messages-center-reference .center-read-all image",
+    ".messages-center-reference .center-filter-scroll",
+    ".messages-center-reference .center-filter-row",
+    ".messages-center-reference .center-filter",
+    ".messages-center-reference .center-filter.selected",
+    ".messages-center-reference .center-all-dot",
+    ".messages-center-reference .center-feed",
+    ".messages-center-reference .center-approval-list",
+    ".messages-center-reference .center-notices",
+    ".messages-center-reference .center-card",
+    ".messages-center-reference .center-highlight::before",
+    ".messages-center-reference .center-card-topline",
+    ".messages-center-reference .center-card-icon",
+    ".messages-center-reference .center-card-icon image",
+    ".messages-center-reference .center-pink",
+    ".messages-center-reference .center-reminder .center-card-icon",
+    ".messages-center-reference .center-blue",
+    ".messages-center-reference .center-update .center-card-icon",
+    ".messages-center-reference .center-violet",
+    ".messages-center-reference .center-green",
+    ".messages-center-reference .center-gray",
+    ".messages-center-reference .center-card-meta",
+    ".messages-center-reference .center-card-kind",
+    ".messages-center-reference .center-reminder .center-card-kind",
+    ".messages-center-reference .center-update .center-card-kind",
+    ".messages-center-reference .center-milestone .center-card-kind",
+    ".messages-center-reference .center-card-kind.center-approval-kind",
+    ".messages-center-reference .center-card-time",
+    ".messages-center-reference .center-unread-dot",
+    ".messages-center-reference .center-card-status",
+    ".messages-center-reference .center-card-status-new",
+    ".messages-center-reference .center-card-status-read",
+    ".messages-center-reference .center-approval-pill",
+    ".messages-center-reference .center-card-layout",
+    ".messages-center-reference .center-approval-body",
+    ".messages-center-reference .center-card-title",
+    ".messages-center-reference .center-reminder .center-card-title",
+    ".messages-center-reference .center-card-summary",
+    ".messages-center-reference .center-reminder .center-card-summary",
+    ".messages-center-reference .center-card-state",
+    ".messages-center-reference .center-reminder-thumb",
+    ".messages-center-reference .center-reminder-thumb-label",
+    ".messages-center-reference .center-primary",
+    ".messages-center-reference .center-secondary",
+    ".messages-center-reference .center-reminder-actions",
+    ".messages-center-reference .center-approval-actions",
+    ".messages-center-reference .center-reminder-actions button",
+    ".messages-center-reference .center-approval-actions button",
+    ".messages-center-reference .center-card-actions button",
+    ".messages-center-reference .center-reminder-actions button image",
+    ".messages-center-reference .center-approval-actions button image",
+    ".messages-center-reference .center-reminder-actions .center-primary",
+    ".messages-center-reference .center-approval-actions .center-primary",
+    ".messages-center-reference .center-reminder-actions .center-secondary",
+    ".messages-center-reference .center-approval-actions .center-secondary",
+    ".messages-center-reference .center-approval-actions",
+    ".messages-center-reference .center-approval-actions .center-primary",
+    ".messages-center-reference .center-capacity",
+    ".messages-center-reference .center-applicant-strip",
+    ".messages-center-reference .center-applicant-strip>text:first-child",
+    ".messages-center-reference .center-applicant-strip>text:last-child",
+    ".messages-center-reference .center-inline-link",
+    ".messages-center-reference .center-location-placeholder",
+    ".messages-center-reference .center-location-caption",
+    ".messages-center-reference .center-location-caption>text:last-child",
+    ".messages-center-reference .center-status-link",
+    ".messages-center-reference .center-status-main",
+    ".messages-center-reference .center-status-target",
+    ".messages-center-reference .center-status-main",
+    ".messages-center-reference .center-status-orb",
+    ".messages-center-reference .center-status-orb image",
+    ".messages-center-reference .center-status-target image",
+    ".messages-center-reference .center-status-main text:first-child",
+    ".messages-center-reference .center-status-target",
+    ".messages-center-reference .center-status-target text:first-child",
+    ".messages-center-reference .center-card-actions",
+    ".messages-center-reference .center-inline-status",
+    ".messages-center-reference .center-inline-status button",
+    ".messages-center-reference .center-empty",
+    ".messages-center-reference .center-empty .empty-symbol",
+    ".messages-center-reference .center-empty .hint",
+    ".messages-center-reference .center-empty button",
+    ".messages-center-reference .center-load-more",
+    ".messages-center-reference .center-load-more",
+    ".messages-center-reference .message-banner",
+    ".messages-center-reference .retry",
+    ".messages-center-reference .center-footer",
+    ".messages-center-reference .center-footer .center-footer-orb",
+    ".messages-center-reference .center-footer-orb image",
+    ".messages-center-reference .center-footer .center-footer-title",
+    ".messages-center-reference .center-footer .center-footer-copy",
+    ".messages-chat-reference .private-chat-shell",
+    ".messages-chat-reference .private-chat-header",
+    ".messages-chat-reference .private-chat-back",
+    ".messages-chat-reference .private-chat-back .chat-back-glyph",
+    ".messages-chat-reference .private-chat-identity",
+    ".messages-chat-reference .private-chat-avatar",
+    ".messages-chat-reference .private-chat-avatar image",
+    ".messages-chat-reference .private-chat-heading",
+    ".messages-chat-reference .private-chat-heading>view",
+    ".messages-chat-reference .private-chat-heading>text",
+    ".messages-chat-reference .private-chat-native-tools",
+    ".messages-chat-reference .private-chat-native-tools button",
+    ".messages-chat-reference .private-chat-native-tools button::after",
+    ".messages-chat-reference .private-chat-native-tools button image",
+    ".messages-chat-reference .private-chat-native-person",
+    ".messages-chat-reference .private-chat-native-person image",
+    ".messages-chat-reference .private-chat-context",
+    ".messages-chat-reference .private-chat-context-photo",
+    ".messages-chat-reference .private-chat-context .private-chat-context-photo>image",
+    ".messages-chat-reference .private-chat-photo-shade",
+    ".messages-chat-reference .private-chat-context-photo>text",
+    ".messages-chat-reference .private-chat-context-copy>view:first-child",
+    ".messages-chat-reference .private-chat-context-copy>text",
+    ".messages-chat-reference .private-chat-context-bottom",
+    ".messages-chat-reference .private-chat-closed-tag",
+    ".messages-chat-reference .private-chat-context-copy button",
+    ".messages-chat-reference .private-chat-context-copy button image",
+    ".messages-chat-reference .private-chat-timeline",
+    ".messages-chat-reference .private-chat-time",
+    ".messages-chat-reference .private-chat-safety",
+    ".messages-chat-reference .private-chat-safety-icon",
+    ".messages-chat-reference .private-chat-safety-icon image",
+    ".messages-chat-reference .private-chat-empty",
+    ".messages-chat-reference .private-chat-empty-title",
+    ".messages-chat-reference .private-chat-empty-copy",
+    ".messages-chat-reference .private-chat-links",
+    ".messages-chat-reference .private-chat-links button",
+    ".messages-chat-reference .private-chat-links button:first-child",
+    ".messages-chat-reference .private-chat-help",
+    ".messages-chat-reference .private-chat-help>view",
+    ".messages-chat-reference .private-chat-help-dot",
+    ".messages-chat-reference .private-chat-help>text",
+    ".messages-chat-reference .private-chat-composer",
+    ".messages-chat-reference .private-chat-composer-row",
+    ".messages-chat-reference .private-chat-composer button",
+    ".messages-chat-reference .private-chat-attach image",
+    ".messages-chat-reference .private-chat-input-wrap",
+    ".messages-chat-reference .private-chat-composer input",
+    ".messages-chat-reference .private-chat-composer .private-chat-emoji",
+    ".messages-chat-reference .private-chat-emoji image",
+    ".messages-chat-reference .private-chat-composer .private-chat-voice",
+    ".messages-chat-reference .private-chat-voice image"
+  ],
+  "newAssets": 23,
+  "newAssetBytes": 16657,
+  "mainRawNetBytes": 43560,
+  "sourceArchive": {
+    "path": "/Users/tsb/Downloads/stitch_design_system_generator (2).zip",
+    "bytes": 24668856,
+    "sha256": "df22e733d33fda20979b75b8a7bc94717c4a5c9e41561a54e3038432fab32603"
+  },
+  "sources": [
+    {
+      "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg02_n_1/code.html",
+      "bytes": 25023,
+      "sha256": "2e9fba3bed3e6a075be13b75d0c3d4af75ad000e6f50c6f799828472c17a1583",
+      "zipEntry": "stitch_design_system_generator/pg02_n_1/code.html",
+      "zipBytesEqual": true
+    },
+    {
+      "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg02_n_1/screen.png",
+      "bytes": 330041,
+      "sha256": "5b4094ff4604eefdb8af7a83f5896612a2d1967f58f6c32ea211718a74cdf4ba",
+      "zipEntry": "stitch_design_system_generator/pg02_n_1/screen.png",
+      "zipBytesEqual": true
+    },
+    {
+      "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg11_c_alex/code.html",
+      "bytes": 20410,
+      "sha256": "a08e381cfc4ff5a2af57bb8341cfafc85937175c86cd1ea3d29f2a4e91f9dc04",
+      "zipEntry": "stitch_design_system_generator/pg11_c_alex/code.html",
+      "zipBytesEqual": true
+    },
+    {
+      "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg11_c_alex/screen.png",
+      "bytes": 320991,
+      "sha256": "c7a62c63d50e5713e43becdd80cc6cdf0bd02bc3c208e7843414262b14cd9c44",
+      "zipEntry": "stitch_design_system_generator/pg11_c_alex/screen.png",
+      "zipBytesEqual": true
+    }
+  ],
+  "noRuntimeOrBusinessTests": true,
+  "closedComposerDisabled": true,
+  "scopeCSSOnly": true,
+  "localFinalSourceCorrections": [
+    {
+      "path": "miniprogram/pages/messages/messages.wxml",
+      "sourceCorrection": "source outline placeholder color",
+      "inverseSha256": "b0d9cb728061bc8d456c65aa81a82a28def3982a66938009894160db2bed5b7a",
+      "matchesCompletedCheck": true
+    },
+    {
+      "path": "miniprogram/pages/messages/messages.wxss",
+      "sourceCorrection": "source inner pb-6=24px + main pb-24=96px",
+      "inverseSha256": "ef863a96a309786a0d0634c02f17359792f1cf73b2b23299e3fd32a0e2b0177d",
+      "matchesCompletedCheck": true
+    }
+  ]
+}

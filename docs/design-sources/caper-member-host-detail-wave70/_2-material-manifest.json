@@ -1,0 +1,1169 @@
+{
+  "sourceHTMLSHA256": "80302149355f18cbde31733cea7da909f6ba1a31cd66e4d651a81a75986ede1c",
+  "lastMaterialURL": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap",
+  "originalMaterialURLs": [
+    "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap",
+    "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+  ],
+  "fixedSourceFace": "docs/design-sources/caper-activity-wave69/original-last-material-full.woff2",
+  "fullFontSHA256": "77f9711f3f896a1d7a34ab95cffc45cfb17d84c223f197c1b90faa0d043006e9",
+  "version": "Version2.972",
+  "activeRcltApplied": true,
+  "nodes": [
+    {
+      "line": 10,
+      "attributes": {
+        "class": "material-symbols-outlined text-[22px]"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "zh-CN"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "header",
+          "attributes": {
+            "class": "fixed top-0 inset-x-0 z-50 bg-surface/80 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "h-14 px-margin flex items-center justify-between"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex items-center gap-space-xs"
+          }
+        },
+        {
+          "tag": "button",
+          "attributes": {
+            "aria-label": "返回",
+            "class": "w-11 h-11 flex items-center justify-center text-on-surface rounded-full active:bg-surface-container transition-colors",
+            "onclick": "history.back()"
+          }
+        }
+      ],
+      "name": "arrow_back_ios_new",
+      "displayPx": 22,
+      "exactSVG": "arrow_back_ios_new-w400-f0-1a1b1f.svg"
+    },
+    {
+      "line": 10,
+      "attributes": {
+        "class": "material-symbols-outlined text-on-primary text-[18px]"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "zh-CN"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "header",
+          "attributes": {
+            "class": "fixed top-0 inset-x-0 z-50 bg-surface/80 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "h-14 px-margin flex items-center justify-between"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex items-center justify-center"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-8 h-8 rounded-full bg-primary flex items-center justify-center"
+          }
+        }
+      ],
+      "name": "person",
+      "displayPx": 18,
+      "exactSVG": "person-w400-f0-ffffff.svg"
+    },
+    {
+      "line": 28,
+      "attributes": {
+        "class": "material-symbols-outlined text-[14px]"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "zh-CN"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex flex-col relative w-full pt-14 pb-safe bg-surface min-h-screen"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full px-margin pb-space-xl space-y-space-lg"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "relative w-full rounded-xl overflow-hidden shadow-md bg-surface-container-high"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "absolute top-space-md right-space-md pointer-events-none"
+          }
+        },
+        {
+          "tag": "span",
+          "attributes": {
+            "class": "inline-flex items-center gap-1 px-space-sm py-1 rounded-full bg-status-active-green text-surface font-label-sm text-label-sm shadow-sm"
+          }
+        }
+      ],
+      "name": "check_circle",
+      "displayPx": 14,
+      "exactSVG": "check_circle-w400-f0-faf8fe.svg"
+    },
+    {
+      "line": 52,
+      "attributes": {
+        "class": "material-symbols-outlined text-status-active-green text-[20px]",
+        "style": "font-variation-settings: 'FILL' 1;"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "zh-CN"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex flex-col relative w-full pt-14 pb-safe bg-surface min-h-screen"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full px-margin pb-space-xl space-y-space-lg"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-full rounded-xl bg-surface-container-lowest p-space-lg shadow-sm space-y-space-md"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex items-center justify-between pb-space-sm border-none"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex items-center gap-space-xs"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-8 h-8 rounded-full bg-status-active-green-soft flex items-center justify-center"
+          }
+        }
+      ],
+      "name": "verified",
+      "displayPx": 20,
+      "exactSVG": "verified-w400-f1-34c759.svg"
+    },
+    {
+      "line": 69,
+      "attributes": {
+        "class": "material-symbols-outlined text-[18px]"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "zh-CN"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex flex-col relative w-full pt-14 pb-safe bg-surface min-h-screen"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full px-margin pb-space-xl space-y-space-lg"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-full rounded-xl bg-surface-container-lowest p-space-lg shadow-sm space-y-space-md"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-full bg-surface-container rounded-lg p-space-md flex items-center justify-between"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex items-center gap-1 text-on-surface-variant"
+          }
+        }
+      ],
+      "name": "qr_code_2",
+      "displayPx": 18,
+      "exactSVG": "qr_code_2-w400-f0-424655.svg"
+    },
+    {
+      "line": 88,
+      "attributes": {
+        "class": "material-symbols-outlined text-[20px]"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "zh-CN"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex flex-col relative w-full pt-14 pb-safe bg-surface min-h-screen"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full px-margin pb-space-xl space-y-space-lg"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-full rounded-xl bg-surface-container-lowest p-space-lg shadow-sm space-y-space-md"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "space-y-space-sm"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-9 h-9 rounded-full bg-surface-card flex items-center justify-center shrink-0 text-electric-blue shadow-sm"
+          }
+        }
+      ],
+      "name": "calendar_today",
+      "displayPx": 20,
+      "exactSVG": "calendar_today-w400-f0-1d64f2.svg"
+    },
+    {
+      "line": 99,
+      "attributes": {
+        "class": "material-symbols-outlined text-[20px]"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "zh-CN"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex flex-col relative w-full pt-14 pb-safe bg-surface min-h-screen"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full px-margin pb-space-xl space-y-space-lg"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-full rounded-xl bg-surface-container-lowest p-space-lg shadow-sm space-y-space-md"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "space-y-space-sm"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-9 h-9 rounded-full bg-surface-card flex items-center justify-center shrink-0 text-party-violet shadow-sm"
+          }
+        }
+      ],
+      "name": "location_on",
+      "displayPx": 20,
+      "exactSVG": "location_on-w400-f0-5856d6.svg"
+    },
+    {
+      "line": 110,
+      "attributes": {
+        "class": "material-symbols-outlined text-[20px]"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "zh-CN"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex flex-col relative w-full pt-14 pb-safe bg-surface min-h-screen"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full px-margin pb-space-xl space-y-space-lg"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-full rounded-xl bg-surface-container-lowest p-space-lg shadow-sm space-y-space-md"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "space-y-space-sm"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-9 h-9 rounded-full bg-surface-card flex items-center justify-center shrink-0 text-tertiary shadow-sm"
+          }
+        }
+      ],
+      "name": "payments",
+      "displayPx": 20,
+      "exactSVG": "payments-w400-f0-4d5d00.svg"
+    },
+    {
+      "line": 128,
+      "attributes": {
+        "class": "material-symbols-outlined text-[16px]"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "zh-CN"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex flex-col relative w-full pt-14 pb-safe bg-surface min-h-screen"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full px-margin pb-space-xl space-y-space-lg"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-full rounded-xl overflow-hidden bg-surface-container-lowest shadow-sm p-space-md space-y-space-xs"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex items-center gap-space-xs pt-1 text-on-surface-variant"
+          }
+        }
+      ],
+      "name": "info",
+      "displayPx": 16,
+      "exactSVG": "info-w400-f0-424655.svg"
+    },
+    {
+      "line": 138,
+      "attributes": {
+        "class": "material-symbols-outlined text-[12px]"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "zh-CN"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex flex-col relative w-full pt-14 pb-safe bg-surface min-h-screen"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full px-margin pb-space-xl space-y-space-lg"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-full rounded-xl bg-surface-container-lowest p-space-lg shadow-sm space-y-space-md"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex items-center gap-space-md"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "relative"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-status-active-green flex items-center justify-center text-surface"
+          }
+        }
+      ],
+      "name": "verified",
+      "displayPx": 12,
+      "exactSVG": "verified-w400-f0-faf8fe.svg"
+    },
+    {
+      "line": 215,
+      "attributes": {
+        "class": "material-symbols-outlined text-on-surface-variant text-[20px]"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "zh-CN"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex flex-col relative w-full pt-14 pb-safe bg-surface min-h-screen"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full px-margin pb-space-xl space-y-space-lg"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-full rounded-xl bg-surface-container-lowest p-space-lg shadow-sm space-y-space-md"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex items-center gap-space-xs"
+          }
+        }
+      ],
+      "name": "rule",
+      "displayPx": 20,
+      "exactSVG": "rule-w400-f0-424655.svg"
+    },
+    {
+      "line": 244,
+      "attributes": {
+        "class": "material-symbols-outlined text-[20px]",
+        "style": "font-variation-settings: 'FILL' 1;"
+      },
+      "ancestors": [
+        {
+          "tag": "html",
+          "attributes": {
+            "lang": "zh-CN"
+          }
+        },
+        {
+          "tag": "body",
+          "attributes": {
+            "class": "bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen"
+          }
+        },
+        {
+          "tag": "main",
+          "attributes": {
+            "class": "flex flex-col relative w-full pt-14 pb-safe bg-surface min-h-screen"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "flex flex-col w-full px-margin pb-space-xl space-y-space-lg"
+          }
+        },
+        {
+          "tag": "div",
+          "attributes": {
+            "class": "w-full rounded-xl bg-status-active-green-soft p-space-md text-center flex items-center justify-center gap-space-xs text-status-active-green shadow-sm"
+          }
+        }
+      ],
+      "name": "check_circle",
+      "displayPx": 20,
+      "exactSVG": "check_circle-w400-f1-34c759.svg"
+    }
+  ],
+  "exports": [
+    {
+      "name": "arrow_back_ios_new",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#1a1b1f",
+      "unicode": [
+        "U+E2EA"
+      ],
+      "ligatureGlyph": "arrow_back_ios_new",
+      "renderedGlyph": "arrow_back_ios_new",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M640 -80 240 -480 640 -880 711 -809 382 -480 711 -151Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "arrow_back_ios_new-w400-f0-1a1b1f.svg",
+      "bytes": 153,
+      "sha256": "ca7bb7d407e7dc334ff380d8b3b4d1623f916d8d6152d0a72dc40ab2840d532b",
+      "sourceNodes": [
+        {
+          "line": 10,
+          "displayPx": 22
+        }
+      ],
+      "reusedRuntime": "miniprogram/subpackages/activity/event/assets/w69-arrow_back_ios_new-w400-f0-1a1b1f.svg",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/w69-arrow_back_ios_new-w400-f0-1a1b1f.svg"
+    },
+    {
+      "name": "person",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#ffffff",
+      "unicode": [
+        "U+E7FD",
+        "U+E7FF",
+        "U+E8A6",
+        "U+F0D3"
+      ],
+      "ligatureGlyph": "person",
+      "renderedGlyph": "person",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M480.0 -480.0Q414 -480 367.0 -527.0Q320 -574 320.0 -640.0Q320 -706 367.0 -753.0Q414 -800 480.0 -800.0Q546 -800 593.0 -753.0Q640 -706 640.0 -640.0Q640 -574 593.0 -527.0Q546 -480 480.0 -480.0ZM160 -160V-272Q160 -306 177.5 -334.5Q195 -363 224 -378Q286 -409 350.0 -424.5Q414 -440 480 -440Q546 -440 610.0 -424.5Q674 -409 736 -378Q765 -363 782.5 -334.5Q800 -306 800 -272V-160ZM240 -240H720V-272Q720 -283 714.5 -292.0Q709 -301 700 -306Q646 -333 591.0 -346.5Q536 -360 480 -360Q424 -360 369.0 -346.5Q314 -333 260 -306Q251 -301 245.5 -292.0Q240 -283 240 -272ZM480.0 -560.0Q513 -560 536.5 -583.5Q560 -607 560.0 -640.0Q560 -673 536.5 -696.5Q513 -720 480.0 -720.0Q447 -720 423.5 -696.5Q400 -673 400.0 -640.0Q400 -607 423.5 -583.5Q447 -560 480.0 -560.0ZM480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0Q480 -640 480.0 -640.0ZM480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Q480 -240 480.0 -240.0Q480 -240 480 -240Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "person-w400-f0-ffffff.svg",
+      "bytes": 1198,
+      "sha256": "110856b1348d0fb1cf2fbb59cf27a390c7e259ec186dcfc4dd970826b40bb14b",
+      "sourceNodes": [
+        {
+          "line": 10,
+          "displayPx": 18
+        }
+      ],
+      "reusedRuntime": "miniprogram/subpackages/activity/event/assets/pg04s-person.svg",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg04s-person.svg"
+    },
+    {
+      "name": "check_circle",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#faf8fe",
+      "unicode": [
+        "U+E86C",
+        "U+E92D",
+        "U+F0BE"
+      ],
+      "ligatureGlyph": "check_circle",
+      "renderedGlyph": "check_circle",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M424 -296 706 -578 650 -634 424 -408 310 -522 254 -466ZM480 -80Q397 -80 324.0 -111.5Q251 -143 197.0 -197.0Q143 -251 111.5 -324.0Q80 -397 80 -480Q80 -563 111.5 -636.0Q143 -709 197.0 -763.0Q251 -817 324.0 -848.5Q397 -880 480 -880Q563 -880 636.0 -848.5Q709 -817 763.0 -763.0Q817 -709 848.5 -636.0Q880 -563 880 -480Q880 -397 848.5 -324.0Q817 -251 763.0 -197.0Q709 -143 636.0 -111.5Q563 -80 480 -80ZM480 -160Q614 -160 707.0 -253.0Q800 -346 800 -480Q800 -614 707.0 -707.0Q614 -800 480 -800Q346 -800 253.0 -707.0Q160 -614 160 -480Q160 -346 253.0 -253.0Q346 -160 480 -160ZM480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "check_circle-w400-f0-faf8fe.svg",
+      "bytes": 833,
+      "sha256": "f97e53d605d03c1c30291d91325f50fc2b8a38257fd957572fe8c0eba01647f6",
+      "sourceNodes": [
+        {
+          "line": 28,
+          "displayPx": 14
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pgd-check_circle-w400-f0-faf8fe.svg"
+    },
+    {
+      "name": "verified",
+      "axes": {
+        "wght": 400,
+        "FILL": 1,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#34c759",
+      "unicode": [
+        "U+E031",
+        "U+EF76"
+      ],
+      "ligatureGlyph": "verified",
+      "renderedGlyph": "verified.fill",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rclt",
+            "lookups": [
+              1
+            ]
+          },
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": [
+          {
+            "feature": "rclt",
+            "lookup": 1,
+            "from": "verified",
+            "to": "verified.fill"
+          }
+        ]
+      },
+      "path": "M344 -60 268 -188 124 -220 138 -368 40 -480 138 -592 124 -740 268 -772 344 -900 480 -842 616 -900 692 -772 836 -740 822 -592 920 -480 822 -368 836 -220 692 -188 616 -60 480 -118ZM438 -338 664 -564 608 -622 438 -452 352 -536 296 -480Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "verified-w400-f1-34c759.svg",
+      "bytes": 332,
+      "sha256": "69e7ed9e0491949eb2548794f24a7411f3f43b375b0f0ee264b9fb49e38ce9aa",
+      "sourceNodes": [
+        {
+          "line": 52,
+          "displayPx": 20
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pgd-verified-w400-f1-34c759.svg"
+    },
+    {
+      "name": "qr_code_2",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#424655",
+      "unicode": [
+        "U+E00A"
+      ],
+      "ligatureGlyph": "qr_code_2",
+      "renderedGlyph": "qr_code_2",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M520 -120V-200H600V-120ZM440 -200V-400H520V-200ZM760 -320V-480H840V-320ZM680 -480V-560H760V-480ZM200 -400V-480H280V-400ZM120 -480V-560H200V-480ZM480 -760V-840H560V-760ZM180 -660H300V-780H180ZM120 -600V-840H360V-600ZM180 -180H300V-300H180ZM120 -120V-360H360V-120ZM660 -660H780V-780H660ZM600 -600V-840H840V-600ZM680 -120V-240H600V-320H760V-200H840V-120ZM520 -400V-480H680V-400ZM360 -400V-480H280V-560H520V-480H440V-400ZM400 -600V-760H480V-680H560V-600ZM210 -690V-750H270V-690ZM210 -210V-270H270V-210ZM690 -690V-750H750V-690Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "qr_code_2-w400-f0-424655.svg",
+      "bytes": 621,
+      "sha256": "07b4660c60f1d266fc8e5cf5972acb60766187777a0a2abb703965d76a5d85b8",
+      "sourceNodes": [
+        {
+          "line": 69,
+          "displayPx": 18
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pgd-qr_code_2-w400-f0-424655.svg"
+    },
+    {
+      "name": "calendar_today",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#1d64f2",
+      "unicode": [
+        "U+E935"
+      ],
+      "ligatureGlyph": "calendar_today",
+      "renderedGlyph": "calendar_today",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M200 -80Q167 -80 143.5 -103.5Q120 -127 120 -160V-720Q120 -753 143.5 -776.5Q167 -800 200 -800H240V-880H320V-800H640V-880H720V-800H760Q793 -800 816.5 -776.5Q840 -753 840 -720V-160Q840 -127 816.5 -103.5Q793 -80 760 -80ZM200 -160H760Q760 -160 760.0 -160.0Q760 -160 760 -160V-560H200V-160Q200 -160 200.0 -160.0Q200 -160 200 -160ZM200 -640H760V-720Q760 -720 760.0 -720.0Q760 -720 760 -720H200Q200 -720 200.0 -720.0Q200 -720 200 -720ZM200 -640V-720Q200 -720 200.0 -720.0Q200 -720 200 -720Q200 -720 200.0 -720.0Q200 -720 200 -720V-640Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "calendar_today-w400-f0-1d64f2.svg",
+      "bytes": 626,
+      "sha256": "8734c2a7a3e660971a8fbe3aed1bc37125ec60258e3dc5b582c0ba1cc213e5b8",
+      "sourceNodes": [
+        {
+          "line": 88,
+          "displayPx": 20
+        }
+      ],
+      "reusedRuntime": "miniprogram/subpackages/activity/event/assets/pg04s-calendar_today.svg",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg04s-calendar_today.svg"
+    },
+    {
+      "name": "location_on",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#5856d6",
+      "unicode": [
+        "U+E0C8",
+        "U+E55F",
+        "U+E8B4",
+        "U+F00F",
+        "U+F1DB"
+      ],
+      "ligatureGlyph": "place",
+      "renderedGlyph": "place",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M480.0 -480.0Q513 -480 536.5 -503.5Q560 -527 560.0 -560.0Q560 -593 536.5 -616.5Q513 -640 480.0 -640.0Q447 -640 423.5 -616.5Q400 -593 400.0 -560.0Q400 -527 423.5 -503.5Q447 -480 480.0 -480.0ZM480 -186Q602 -298 661.0 -389.5Q720 -481 720 -552Q720 -661 650.5 -730.5Q581 -800 480.0 -800.0Q379 -800 309.5 -730.5Q240 -661 240 -552Q240 -481 299.0 -389.5Q358 -298 480 -186ZM480 -80Q319 -217 239.5 -334.5Q160 -452 160 -552Q160 -702 256.5 -791.0Q353 -880 480 -880Q607 -880 703.5 -791.0Q800 -702 800 -552Q800 -452 720.5 -334.5Q641 -217 480 -80ZM480 -560Q480 -560 480.0 -560.0Q480 -560 480 -560Q480 -560 480.0 -560.0Q480 -560 480.0 -560.0Q480 -560 480.0 -560.0Q480 -560 480 -560Q480 -560 480.0 -560.0Q480 -560 480 -560Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "location_on-w400-f0-5856d6.svg",
+      "bytes": 805,
+      "sha256": "ef0eb5b0b9e68565aa023ce4107c29286fbe8caa7992a463ef26bee6fdd3c2e9",
+      "sourceNodes": [
+        {
+          "line": 99,
+          "displayPx": 20
+        }
+      ],
+      "reusedRuntime": "miniprogram/subpackages/activity/event/assets/pg04s-location_on.svg",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg04s-location_on.svg"
+    },
+    {
+      "name": "payments",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#4d5d00",
+      "unicode": [
+        "U+EF63"
+      ],
+      "ligatureGlyph": "payments",
+      "renderedGlyph": "payments",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M560 -440Q510 -440 475.0 -475.0Q440 -510 440 -560Q440 -610 475.0 -645.0Q510 -680 560 -680Q610 -680 645.0 -645.0Q680 -610 680 -560Q680 -510 645.0 -475.0Q610 -440 560 -440ZM280 -320Q247 -320 223.5 -343.5Q200 -367 200 -400V-720Q200 -753 223.5 -776.5Q247 -800 280 -800H840Q873 -800 896.5 -776.5Q920 -753 920 -720V-400Q920 -367 896.5 -343.5Q873 -320 840 -320ZM360 -400H760Q760 -433 783.5 -456.5Q807 -480 840 -480V-640Q807 -640 783.5 -663.5Q760 -687 760 -720H360Q360 -687 336.5 -663.5Q313 -640 280 -640V-480Q313 -480 336.5 -456.5Q360 -433 360 -400ZM800 -160H120Q87 -160 63.5 -183.5Q40 -207 40 -240V-680H120V-240Q120 -240 120.0 -240.0Q120 -240 120 -240H800ZM280 -400Q280 -400 280.0 -400.0Q280 -400 280 -400V-720Q280 -720 280.0 -720.0Q280 -720 280 -720Q280 -720 280.0 -720.0Q280 -720 280 -720V-400Q280 -400 280.0 -400.0Q280 -400 280 -400Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "payments-w400-f0-4d5d00.svg",
+      "bytes": 929,
+      "sha256": "6391151c44877a139bc015093f73d48cdd577a386eceaddaa4c12cccc1d4149c",
+      "sourceNodes": [
+        {
+          "line": 110,
+          "displayPx": 20
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pgd-payments-w400-f0-4d5d00.svg"
+    },
+    {
+      "name": "info",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#424655",
+      "unicode": [
+        "U+E88E"
+      ],
+      "ligatureGlyph": "info",
+      "renderedGlyph": "info",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M440 -280H520V-520H440ZM520 -640Q520 -657 508.5 -668.5Q497 -680 480 -680Q463 -680 451.5 -668.5Q440 -657 440 -640Q440 -623 451.5 -611.5Q463 -600 480.0 -600.0Q497 -600 508.5 -611.5Q520 -623 520 -640ZM480 -80Q397 -80 324.0 -111.5Q251 -143 197.0 -197.0Q143 -251 111.5 -324.0Q80 -397 80 -480Q80 -563 111.5 -636.0Q143 -709 197.0 -763.0Q251 -817 324.0 -848.5Q397 -880 480 -880Q563 -880 636.0 -848.5Q709 -817 763.0 -763.0Q817 -709 848.5 -636.0Q880 -563 880 -480Q880 -397 848.5 -324.0Q817 -251 763.0 -197.0Q709 -143 636.0 -111.5Q563 -80 480 -80ZM480 -160Q614 -160 707.0 -253.0Q800 -346 800 -480Q800 -614 707.0 -707.0Q614 -800 480 -800Q346 -800 253.0 -707.0Q160 -614 160 -480Q160 -346 253.0 -253.0Q346 -160 480 -160ZM480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Q480 -480 480.0 -480.0Q480 -480 480 -480Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "info-w400-f0-424655.svg",
+      "bytes": 975,
+      "sha256": "747bb7fb723cdfe000b91f4a20455ea02944e9fc650409b81131f23f4c4b1bfe",
+      "sourceNodes": [
+        {
+          "line": 128,
+          "displayPx": 16
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pgd-info-w400-f0-424655.svg"
+    },
+    {
+      "name": "verified",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#faf8fe",
+      "unicode": [
+        "U+E031",
+        "U+EF76"
+      ],
+      "ligatureGlyph": "verified",
+      "renderedGlyph": "verified",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M344 -60 268 -188 124 -220 138 -368 40 -480 138 -592 124 -740 268 -772 344 -900 480 -842 616 -900 692 -772 836 -740 822 -592 920 -480 822 -368 836 -220 692 -188 616 -60 480 -118ZM378 -162 480 -206 584 -162 640 -258 750 -284 740 -396 814 -480 740 -566 750 -678 640 -702 582 -798 480 -754 376 -798 320 -702 210 -678 220 -566 146 -480 220 -396 210 -282 320 -258ZM480 -480ZM438 -338 664 -564 608 -622 438 -452 352 -536 296 -480Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "verified-w400-f0-faf8fe.svg",
+      "bytes": 523,
+      "sha256": "d997566fbc9523508011d72741899d295467015e8b9e2dfa44abd98ae15e611c",
+      "sourceNodes": [
+        {
+          "line": 138,
+          "displayPx": 12
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pgd-verified-w400-f0-faf8fe.svg"
+    },
+    {
+      "name": "rule",
+      "axes": {
+        "wght": 400,
+        "FILL": 0,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#424655",
+      "unicode": [
+        "U+F1C2"
+      ],
+      "ligatureGlyph": "rule",
+      "renderedGlyph": "rule",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": []
+      },
+      "path": "M576 -160 520 -216 624 -320 520 -424 576 -480 680 -376 784 -480 840 -424 736 -320 840 -216 784 -160 680 -264ZM655 -520 513 -662 569 -718 654 -633 824 -803 880 -746ZM80 -280V-360H440V-280ZM80 -600V-680H440V-600Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "rule-w400-f0-424655.svg",
+      "bytes": 309,
+      "sha256": "7aab221398a8f180f9f671584f07f509cbf940c779005642dba177a03e3afa67",
+      "sourceNodes": [
+        {
+          "line": 215,
+          "displayPx": 20
+        }
+      ],
+      "reusedRuntime": null,
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pgd-rule-w400-f0-424655.svg"
+    },
+    {
+      "name": "check_circle",
+      "axes": {
+        "wght": 400,
+        "FILL": 1,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "color": "#34c759",
+      "unicode": [
+        "U+E86C",
+        "U+E92D",
+        "U+F0BE"
+      ],
+      "ligatureGlyph": "check_circle",
+      "renderedGlyph": "check_circle.fill",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rclt",
+            "lookups": [
+              1
+            ]
+          },
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": [
+          {
+            "feature": "rclt",
+            "lookup": 1,
+            "from": "check_circle",
+            "to": "check_circle.fill"
+          }
+        ]
+      },
+      "path": "M424 -296 706 -578 650 -634 424 -408 310 -522 254 -466ZM480 -80Q397 -80 324.0 -111.5Q251 -143 197.0 -197.0Q143 -251 111.5 -324.0Q80 -397 80 -480Q80 -563 111.5 -636.0Q143 -709 197.0 -763.0Q251 -817 324.0 -848.5Q397 -880 480 -880Q563 -880 636.0 -848.5Q709 -817 763.0 -763.0Q817 -709 848.5 -636.0Q880 -563 880 -480Q880 -397 848.5 -324.0Q817 -251 763.0 -197.0Q709 -143 636.0 -111.5Q563 -80 480 -80Z",
+      "viewBox": "0 -960 960 960",
+      "filename": "check_circle-w400-f1-34c759.svg",
+      "bytes": 493,
+      "sha256": "6c1cf4026c3c5a55cfd3961b6b6f64904e2a956a815db494b926bd7001ed500e",
+      "sourceNodes": [
+        {
+          "line": 244,
+          "displayPx": 20
+        }
+      ],
+      "reusedRuntime": "miniprogram/subpackages/activity/event/assets/w69-check_circle-w400-f1-34c759.svg",
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/w69-check_circle-w400-f1-34c759.svg"
+    }
+  ]
+}

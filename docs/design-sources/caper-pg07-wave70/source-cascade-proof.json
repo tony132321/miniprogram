@@ -1,0 +1,39 @@
+{
+  "replyClass": "ml-2 pl-3 py-1 border-l-2 border-primary-fixed flex items-start gap-2.5 bg-surface-card/80 rounded-xl p-2.5 shadow-2xs",
+  "replyComputed": {
+    "paddingTop": "4px",
+    "paddingBottom": "4px",
+    "paddingLeft": "12px",
+    "paddingRight": "10px",
+    "marginLeft": "8px",
+    "borderLeftWidth": "2px",
+    "fontSize": "16px",
+    "lineHeight": "24px",
+    "boxShadow": "none"
+  },
+  "rules": [
+    {
+      "selector": ".p-2\\.5",
+      "css": ".p-2\\.5 { padding: 0.625rem; }"
+    },
+    {
+      "selector": ".py-1",
+      "css": ".py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }"
+    },
+    {
+      "selector": ".pl-3",
+      "css": ".pl-3 { padding-left: 0.75rem; }"
+    },
+    {
+      "selector": ".shadow-md",
+      "css": ".shadow-md { --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color); box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow); }"
+    },
+    {
+      "selector": ".shadow-sm",
+      "css": ".shadow-sm { --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color); box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow); }"
+    }
+  ],
+  "scope": "one original PG07 source CSS cascade observation; fonts/images network blocked; no app/SDK/test",
+  "sourceSHA": "435b969b25bdfcde866d7d83d4cabf50eeae09cdc10bbd8bff10b7a2f22036d1",
+  "generatedCSSSHA": "c673748964cc929a9178388d49e419a842ff935659e26c06e1923c46ebd3e843"
+}

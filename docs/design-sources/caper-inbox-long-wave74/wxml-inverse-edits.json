@@ -1,0 +1,72 @@
+[
+  {
+    "old": "  <view wx:if=\"{{loadState === 'READY' && filter === 'ALL'}}\" class=\"card conversation-card\"><view class=\"conversation-icon\">✉</view><view class=\"conversation-copy\"><view class=\"conversation-title\">最近会话<text>尚未开放</text></view><view class=\"hint\">当前仅展示真实站内通知；私聊功能尚未开放。</view></view><button class=\"conversation-jump\" bindtap=\"openPrivateChatPreview\" aria-label=\"查看私聊功能状态\">›</button></view>",
+    "new": "  <view wx:if=\"{{loadState === 'READY' && filter === 'ALL'}}\" class=\"card conversation-card inbox-long-reference inbox-long-conversation\"><view class=\"conversation-row\"><view class=\"conversation-icon\">✉</view><view class=\"conversation-copy\"><view class=\"conversation-title\">最近会话<text>尚未开放</text></view><view class=\"hint\">当前仅展示真实站内通知；私聊功能尚未开放。</view></view><button class=\"conversation-jump\" bindtap=\"openPrivateChatPreview\" aria-label=\"查看私聊功能状态\" hover-class=\"inbox-long-conversation-hover\">›</button></view></view>",
+    "count": 1
+  },
+  {
+    "old": "class=\"notice-groups\"",
+    "new": "class=\"notice-groups inbox-long-notice-groups\"",
+    "count": 1
+  },
+  {
+    "old": "class=\"card notice-section\"",
+    "new": "class=\"card notice-section inbox-long-reference inbox-long-notice-section\"",
+    "count": 1
+  },
+  {
+    "old": "<view class=\"notice-badge badge-{{group.tone}}\">{{group.badge}}</view>",
+    "new": "<view class=\"notice-badge badge-{{group.tone}} {{notice.kind === 'REGISTRATION_APPROVED' ? 'inbox-long-notice-approved' : notice.kind === 'MATERIAL_CHANGE' ? 'inbox-long-notice-update' : ''}}\"><image wx:if=\"{{notice.kind === 'REGISTRATION_APPROVED'}}\" src=\"./assets/wave74-inbox-people.svg\" mode=\"aspectFit\"/><image wx:elif=\"{{notice.kind === 'MATERIAL_CHANGE'}}\" src=\"./assets/wave74-inbox-pin.svg\" mode=\"aspectFit\"/><text wx:else>{{group.badge}}</text></view>",
+    "count": 1
+  },
+  {
+    "old": "class=\"load-more inbox-load-more\"",
+    "new": "class=\"load-more inbox-load-more inbox-long-load-more\"",
+    "count": 1
+  },
+  {
+    "old": "  <view class=\"ai-card\"><view class=\"ai-heading\"><view class=\"ai-orb\">✦</view><view><view>🤖 AI 助手消息</view><text>尚未开放</text></view></view><view class=\"ai-copy\">R1 还没有 AI 对话与推荐消息接口。活动状态以站内通知和活动详情为准。</view><button bindtap=\"goDiscover\">前往活动灵感 ›</button></view>",
+    "new": "  <view class=\"ai-card inbox-long-reference inbox-long-ai\">\n    <view class=\"inbox-long-ai-glow\"></view>\n    <view class=\"inbox-long-heading\"><view><text class=\"inbox-long-heading-icon\">🤖</text><text>AI 助手消息</text></view><text class=\"inbox-long-closed-link\">尚未开放</text></view>\n    <view class=\"inbox-long-ai-row\"><view class=\"ai-orb\"><view><text class=\"inbox-long-ai-dot\"></text></view></view><view class=\"inbox-long-ai-body\"><view class=\"inbox-long-ai-name\"><text>耍起 AI 助手</text><text>尚未开放</text></view><view class=\"ai-copy\">R1 还没有 AI 对话与推荐消息接口。活动状态以站内通知和活动详情为准。</view><view class=\"inbox-long-ai-actions\"><button bindtap=\"goDiscover\" hover-class=\"inbox-long-ai-primary-hover\">前往活动灵感 ›</button><button class=\"inbox-long-ai-secondary\" disabled=\"{{true}}\" aria-label=\"AI 一键确认暂未开放\">一键确认未开放</button></view></view></view>\n  </view>",
+    "count": 1
+  },
+  {
+    "old": "  <view class=\"card preview-card\"><view class=\"preview-title\">@ 提到我 <text>尚未开放</text></view><view class=\"hint\">当前没有群聊、提及和私聊记录接口。</view></view>",
+    "new": "  <view class=\"card preview-card inbox-long-reference inbox-long-mentions\"><view class=\"inbox-long-heading\"><view><text class=\"inbox-long-mention-symbol\">@</text><text>提到我</text></view><text class=\"inbox-long-closed-link\">尚未开放</text></view><view class=\"inbox-long-mention-row\"><view class=\"inbox-long-mention-avatar\">@</view><view class=\"inbox-long-closed-copy\"><view>群聊提及尚未开放</view><text>当前没有群聊、提及和私聊记录接口。</text></view></view></view>",
+    "count": 1
+  },
+  {
+    "old": "  <view class=\"card preview-card\"><view class=\"preview-title\">🖼 群内精彩瞬间 <text>尚未开放</text></view><view class=\"hint\">活动相册尚未开放；下方仅为设计灵感，不是真实活动照片。</view><scroll-view class=\"gallery-scroll\" scroll-x=\"true\" show-scrollbar=\"false\"><view class=\"gallery-row\"><view class=\"gallery-item\"><view class=\"gallery-tile gallery-blue\">🏸</view><text class=\"gallery-caption\">一起运动</text><text class=\"gallery-caption-note\">灵感示意</text></view><view class=\"gallery-item\"><view class=\"gallery-tile gallery-orange\">☕</view><text class=\"gallery-caption\">咖啡时光</text><text class=\"gallery-caption-note\">灵感示意</text></view><view class=\"gallery-item\"><view class=\"gallery-tile gallery-green\">🚶</view><text class=\"gallery-caption\">城市漫步</text><text class=\"gallery-caption-note\">灵感示意</text></view><view class=\"gallery-item\"><view class=\"gallery-tile gallery-violet\">🎲</view><text class=\"gallery-caption\">桌游之夜</text><text class=\"gallery-caption-note\">灵感示意</text></view></view></scroll-view></view>",
+    "new": "  <view class=\"card preview-card inbox-long-reference inbox-long-album\"><view class=\"inbox-long-heading\"><view><text class=\"inbox-long-heading-icon\">🖼️</text><text>群内精彩瞬间</text></view><text class=\"inbox-long-closed-link\">尚未开放</text></view><view class=\"hint\">活动相册尚未开放；下方仅为设计灵感，不是真实活动照片。</view><scroll-view class=\"gallery-scroll\" scroll-x=\"true\" show-scrollbar=\"false\"><view class=\"gallery-row\"><view class=\"gallery-item\"><view class=\"gallery-tile gallery-blue\">🏸</view><text class=\"gallery-caption\">一起运动</text><text class=\"gallery-caption-note\">灵感示意</text></view><view class=\"gallery-item\"><view class=\"gallery-tile gallery-orange\">☕</view><text class=\"gallery-caption\">咖啡时光</text><text class=\"gallery-caption-note\">灵感示意</text></view><view class=\"gallery-item\"><view class=\"gallery-tile gallery-green\">🚶</view><text class=\"gallery-caption\">城市漫步</text><text class=\"gallery-caption-note\">灵感示意</text></view><view class=\"gallery-item\"><view class=\"gallery-tile gallery-violet\">🎲</view><text class=\"gallery-caption\">桌游之夜</text><text class=\"gallery-caption-note\">灵感示意</text></view><view class=\"gallery-item\"><view class=\"gallery-tile inbox-long-gallery-rose\">🌅</view><text class=\"gallery-caption\">日落时光</text><text class=\"gallery-caption-note\">灵感示意</text></view></view></scroll-view></view>",
+    "count": 1
+  },
+  {
+    "old": "  <view class=\"messages-slogan\">",
+    "new": "  <view class=\"card inbox-long-reference inbox-long-closed-section\"><view class=\"inbox-long-heading\"><view><text class=\"inbox-long-heading-icon\">🕒</text><text>历史会话</text></view><text class=\"inbox-long-closed-link\">尚未开放</text></view><view class=\"inbox-long-history-row\"><view class=\"inbox-long-history-icon inbox-long-history-green\">🏔️</view><view class=\"inbox-long-closed-copy\"><view>历史会话尚未开放</view><text>当前没有可读取的历史会话记录。</text></view></view></view>\n  <view class=\"card inbox-long-reference inbox-long-closed-section\"><view class=\"inbox-long-heading\"><view><text class=\"inbox-long-heading-icon inbox-long-completed-symbol\">✓</text><text>已结束活动会话</text></view><text class=\"inbox-long-closed-link\">尚未开放</text></view><view class=\"inbox-long-history-row\"><view class=\"inbox-long-history-icon inbox-long-history-gray\">🎲</view><view class=\"inbox-long-closed-copy\"><view>活动会话尚未开放</view><text>真实活动结项记录以本人活动详情为准。</text></view></view></view>\n  <view class=\"card inbox-long-reference inbox-long-closed-section\"><view class=\"inbox-long-heading\"><view><text class=\"inbox-long-heading-icon\">🗄️</text><text>归档 / 免打扰</text></view><text class=\"inbox-long-closed-link\">尚未开放</text></view><view class=\"inbox-long-history-row\"><view class=\"inbox-long-history-icon inbox-long-history-amber\">📕</view><view class=\"inbox-long-closed-copy\"><view>会话归档与免打扰尚未开放</view><text>当前没有会话归档或免打扰记录。</text></view></view></view>\n  <view class=\"messages-slogan inbox-long-reference inbox-long-slogan\">",
+    "count": 1
+  },
+  {
+    "old": "class=\"card settings-row\"",
+    "new": "class=\"card settings-row inbox-long-reference inbox-long-settings\"",
+    "count": 1
+  },
+  {
+    "old": "  <view class=\"messages-foot\">GOOD PEOPLE · REAL MEETUPS · BRIGHTER DAYS<view>耍起 CAPER · 让有趣的人，在真实世界相聚</view></view>",
+    "new": "  <view class=\"messages-foot inbox-long-reference inbox-long-foot\"><text>GOOD PEOPLE · REAL MEETUPS · BRIGHTER DAYS</text><view><text class=\"inbox-long-foot-line\"></text><text>耍起 CAPER · 让有趣的人，在真实世界相聚</text><text class=\"inbox-long-foot-line\"></text></view></view>",
+    "count": 1
+  },
+  {
+    "old": "<view class=\"conversation-row\">",
+    "new": "<view class=\"conversation-row\" hover-class=\"inbox-long-conversation-hover\">",
+    "count": 1
+  },
+  {
+    "old": " aria-label=\"查看私聊功能状态\" hover-class=\"inbox-long-conversation-hover\"",
+    "new": " aria-label=\"查看私聊功能状态\"",
+    "count": 1
+  },
+  {
+    "old": "<button class=\"card settings-row inbox-long-reference inbox-long-settings\" bindtap=\"goNotificationSettings\"><view><view>🔔 消息通知设置</view><text>管理活动提醒、类似邀请与个人隐私</text></view><text>›</text></button>",
+    "new": "<button class=\"card settings-row inbox-long-reference inbox-long-settings\" bindtap=\"goNotificationSettings\"><view class=\"inbox-long-settings-content\"><text class=\"inbox-long-settings-bell\">🔔</text><view><text class=\"inbox-long-settings-title\">消息通知设置</text><text class=\"inbox-long-settings-hint\">管理活动提醒、类似邀请与个人隐私</text></view></view><text>›</text></button>",
+    "count": 1
+  }
+]

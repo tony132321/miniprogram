@@ -10,6 +10,7 @@ import { assertEventNotHeld } from './safety.ts';
 import { assertPublicRecruitmentOpen } from './public-gate.ts';
 import { assertNewActionsOpen } from './emergency-gate.ts';
 import { hasCohostCapability } from './cohosts.ts';
+import { assertHostParticipantCap } from './host-limits.ts';
 
 type EventDatabaseRow = { id: string; host_id: string; status: string; version: number; payload: EventInput; recruiting: boolean;
   invite_token: string | null; updated_at: Date; review_status: string; review_reason: string | null; is_test: boolean };
@@ -52,6 +53,7 @@ export async function previewEventChange(db: Database, actor: string, eventId: s
   const next = { ...event.payload, ...patch };
   assertVenueReassertion(event.payload, patch);
   validatePublish(next);
+  await assertHostParticipantCap(db, eventId, actor, next.maxParticipants!);
   if (Date.parse(next.startAt!) <= now) throw new AppError('INVALID_EVENT', '活动开始时间必须在未来');
   if (await occupancy(db, eventId) > next.maxParticipants!) throw new AppError('EVENT_FULL', '新人数上限小于已占名额');
   const changes = eventChanges(event.payload, next);
@@ -65,17 +67,23 @@ export async function previewEventChange(db: Database, actor: string, eventId: s
 export async function getPendingReconfirmation(db: Database, actor: string, eventId: string): Promise<{
   fromVersion: number; toVersion: number; deadline: string; changes: ReturnType<typeof eventChanges>
 } | null> {
-  const event = await getEvent(db, actor, eventId);
-  const { rows: registrations } = await db.query<{ accepted_version: number | null; status: string }>(
-    'SELECT accepted_version,status FROM registrations WHERE event_id=$1 AND user_id=$2', [eventId, actor]);
-  const registration = registrations[0];
-  if (registration?.status !== 'RECONFIRM_REQUIRED') return null;
-  if (!registration.accepted_version) throw new AppError('VERSION_NOT_FOUND', '旧活动版本不存在', 500);
-  const { rows: versions } = await db.query<{ payload: EventInput }>('SELECT payload FROM event_versions WHERE event_id=$1 AND version=$2',
-    [eventId, registration.accepted_version]);
-  if (!versions[0]) throw new AppError('VERSION_NOT_FOUND', '旧活动版本不存在', 500);
-  return { fromVersion: registration.accepted_version, toVersion: event.version,
-    deadline: event.payload.confirmationDeadline!, changes: eventChanges(versions[0].payload, event.payload) };
+  return db.transaction(async tx => {
+    // Shared-activity deidentification keeps the event version unchanged. Lock
+    // the event through both the current and prior-version reads.
+    await tx.query('SELECT id FROM events WHERE id=$1 FOR SHARE', [eventId]);
+    const event = await getEvent(tx, actor, eventId);
+    if (event.reviewStatus !== 'APPROVED') return null;
+    const { rows: registrations } = await tx.query<{ accepted_version: number | null; status: string }>(
+      'SELECT accepted_version,status FROM registrations WHERE event_id=$1 AND user_id=$2', [eventId, actor]);
+    const registration = registrations[0];
+    if (registration?.status !== 'RECONFIRM_REQUIRED') return null;
+    if (!registration.accepted_version) throw new AppError('VERSION_NOT_FOUND', '旧活动版本不存在', 500);
+    const { rows: versions } = await tx.query<{ payload: EventInput }>('SELECT payload FROM event_versions WHERE event_id=$1 AND version=$2',
+      [eventId, registration.accepted_version]);
+    if (!versions[0]) throw new AppError('VERSION_NOT_FOUND', '旧活动版本不存在', 500);
+    return { fromVersion: registration.accepted_version, toVersion: event.version,
+      deadline: event.payload.confirmationDeadline!, changes: eventChanges(versions[0].payload, event.payload) };
+  });
 }
 
 export async function changeEvent(db: Database, actor: string, eventId: string, expectedVersion: number, patch: Partial<EventInput>, key: string): Promise<EventRecord> {
@@ -89,27 +97,26 @@ export async function changeEvent(db: Database, actor: string, eventId: string, 
     if (next.maxParticipants! > event.payload.maxParticipants! ||
       Date.parse(next.registrationDeadline!) > Date.parse(event.payload.registrationDeadline!))
       await assertNewActionsOpen(tx);
-    if (next.visibility === 'PUBLIC' && event.payload.visibility !== 'PUBLIC') await assertPublicRecruitmentOpen(tx, next.visibility);
+    if (next.visibility === 'PUBLIC' && event.payload.visibility !== 'PUBLIC') await assertPublicRecruitmentOpen(tx, next.visibility, next);
     validatePublish(next);
+    await assertHostParticipantCap(tx, eventId, actor, next.maxParticipants!, true);
     if (Date.parse(next.startAt!) <= now) throw new AppError('INVALID_EVENT', '活动开始时间必须在未来');
     if (await occupancy(tx, eventId) > next.maxParticipants!) throw new AppError('EVENT_FULL', '新人数上限小于已占名额');
     const changes = eventChanges(event.payload, next);
     if (!changes.length) throw new AppError('BAD_REQUEST', '活动内容没有变化');
     const material = changes.some(change => materialFields.includes(change.field));
     if (material && Date.parse(next.confirmationDeadline!) <= now) throw new AppError('INVALID_EVENT', '重大变更需设置未来的确认截止时间');
-    const publicReview = next.visibility === 'PUBLIC';
-    const resumeAfterReview = !material && (event.review_status === 'APPROVED' || event.review_status === 'NOT_REQUIRED'
+    const resumeAfterReview = !material && (event.review_status === 'APPROVED'
       ? event.recruiting : event.resume_recruiting_after_review);
     const { rows } = await tx.query<EventDatabaseRow>(`UPDATE events SET payload=$2,version=version+1,
       status=CASE WHEN $3 THEN 'RECRUITING' ELSE status END,
-      recruiting=CASE WHEN $3 OR $4 THEN false ELSE recruiting END,
-      review_status=CASE WHEN $4 THEN 'PENDING' ELSE 'NOT_REQUIRED' END,
-      review_reason=NULL,resume_recruiting_after_review=CASE WHEN $4 THEN $5 ELSE false END,
-      invite_expires_at=$6,
+      recruiting=false,review_status='PENDING',
+      review_reason=NULL,resume_recruiting_after_review=$4,
+      invite_expires_at=$5,
       updated_at=now() WHERE id=$1 AND clock_timestamp() < (payload->>'startAt')::timestamptz
-        AND clock_timestamp() < $7::timestamptz
-        AND (NOT $3::boolean OR clock_timestamp() < $8::timestamptz) RETURNING *`,
-    [eventId, JSON.stringify(next), material, publicReview, resumeAfterReview, next.registrationDeadline,
+        AND clock_timestamp() < $6::timestamptz
+        AND (NOT $3::boolean OR clock_timestamp() < $7::timestamptz) RETURNING *`,
+    [eventId, JSON.stringify(next), material, resumeAfterReview, next.registrationDeadline,
       next.startAt, next.confirmationDeadline]);
     if (!rows[0]) throw new AppError('INVALID_STATE', '活动开始时间或重大变更确认截止时间已过，请刷新');
     const result = eventResult(rows[0]!);
@@ -119,7 +126,9 @@ export async function changeEvent(db: Database, actor: string, eventId: string, 
         VALUES($1,$2,$3,'HOST_STATEMENT','CHANGE',$4,$5,$6)`,
         [eventId, result.version, next.venueName, actor, next.startAt, next.endAt]);
     await tx.query("INSERT INTO activity_content(id,event_id,author_id,kind,body,status,event_version) VALUES($1,$2,'system','ANNOUNCEMENT',$3,'APPROVED',$4)",
-      [randomUUID(), eventId, material ? `活动规则已更新至版本 ${result.version}，参与者需要重新确认。` : `活动信息已更新至版本 ${result.version}，请以当前详情为准。`, result.version]);
+      [randomUUID(), eventId, material
+        ? `活动规则新版本 ${result.version} 审核中；审核通过后参与者需要重新确认。审核前请查看活动页的已审核信息。`
+        : `活动信息新版本 ${result.version} 审核中；审核前请查看活动页的已审核信息。`, result.version]);
     await tx.query('INSERT INTO jobs(id,kind,event_id,due_at,payload) VALUES($1,$2,$3,$4,$5)', [randomUUID(), 'FORMATION_DEADLINE', eventId, next.confirmationDeadline, JSON.stringify({ version: result.version })]);
     await tx.query('INSERT INTO jobs(id,kind,event_id,due_at,payload) VALUES($1,$2,$3,$4,$5)', [randomUUID(), 'REGISTRATION_DEADLINE', eventId, next.registrationDeadline, JSON.stringify({ version: result.version })]);
     if (material) {
@@ -152,6 +161,7 @@ export async function reconfirm(db: Database, actor: string, registrationId: str
     if (!registration) throw new AppError('NOT_FOUND', '报名不存在', 404);
     const event = await lockEvent(tx, registration.event_id, expectedVersion);
     if (registration.user_id !== actor) throw new AppError('FORBIDDEN', '只能确认自己的报名', 403);
+    if (event.review_status !== 'APPROVED') throw new AppError('REVIEW_PENDING', '活动内容尚未通过审核', 409);
     const now = at ?? await databaseNow(tx);
     if (event.status !== 'RECRUITING' || registration.status !== 'RECONFIRM_REQUIRED' || now >= Date.parse(event.payload.confirmationDeadline!))
       throw new AppError('INVALID_STATE', '重新确认期限已结束');
@@ -169,9 +179,9 @@ export async function confirmEvent(db: Database, actor: string, eventId: string,
   return command(db, actor, `confirm-event:${eventId}`, key, async tx => {
     const event = await lockEvent(tx, eventId, expectedVersion);
     if (event.host_id !== actor) throw new AppError('FORBIDDEN', '只有主办方可以确认成局', 403);
-    if (event.review_status === 'PENDING' || event.review_status === 'REJECTED') throw new AppError('REVIEW_PENDING', '公开活动尚未通过人工审核', 409);
+    if (event.review_status !== 'APPROVED') throw new AppError('REVIEW_PENDING', '活动内容尚未通过人工审核', 409);
     await assertEventNotHeld(tx, eventId);
-    await assertPublicRecruitmentOpen(tx, event.payload.visibility);
+    await assertPublicRecruitmentOpen(tx, event.payload.visibility, event.payload);
     if (event.status !== 'RECRUITING' || await databaseNow(tx) >= Date.parse(event.payload.confirmationDeadline!))
       throw new AppError('INVALID_STATE', '当前不能确认成局');
     const { rows: counts } = await tx.query<{ n: number }>("SELECT count(*)::int AS n FROM registrations WHERE event_id=$1 AND status='CONFIRMED' AND accepted_version=$2", [eventId, event.version]);
@@ -249,9 +259,31 @@ export async function checkIn(db: Database, actor: string, eventId: string, expe
     if (!registered[0]) throw new AppError('NOT_REGISTERED', '只有已确认参与者可以签到', 403);
     if (!verifyCheckInToken(eventId, token, secret, now)) throw new AppError('INVALID_CHECKIN_TOKEN', '签到码已失效');
     const id = randomUUID();
-    const { rows: inserted } = await tx.query<{ id: string; event_id: string; user_id: string; evidence: string }>("INSERT INTO checkins(id,event_id,user_id,evidence,checked_at) VALUES($1,$2,$3,'SCAN',$4) ON CONFLICT(event_id,user_id) DO NOTHING RETURNING *", [id, eventId, actor, new Date(now).toISOString()]);
-    const row = inserted[0] ?? (await tx.query<{ id: string; event_id: string; user_id: string; evidence: string }>(
-      'SELECT id,event_id,user_id,evidence FROM checkins WHERE event_id=$1 AND user_id=$2', [eventId, actor])).rows[0]!;
+    const { rows: writes } = await tx.query<{ id: string | null; event_id: string | null;
+      user_id: string | null; evidence: string | null; in_window: boolean; token_current: boolean }>(`WITH write_time AS MATERIALIZED (
+        SELECT coalesce($4::timestamptz,clock_timestamp()) AS current_time
+      ), eligibility AS MATERIALIZED (
+        SELECT e.status IN ('CONFIRMED','IN_PROGRESS')
+          AND write_time.current_time >= (e.payload->>'startAt')::timestamptz - interval '30 minutes'
+          AND write_time.current_time <= (e.payload->>'endAt')::timestamptz + interval '30 minutes' AS in_window,
+          floor(extract(epoch FROM write_time.current_time)/60)::bigint=$5::bigint AS token_current
+        FROM events e CROSS JOIN write_time WHERE e.id=$2
+      ), inserted AS (
+        INSERT INTO checkins(id,event_id,user_id,evidence,checked_at)
+        SELECT $1,$2,$3,'SCAN',write_time.current_time FROM eligibility CROSS JOIN write_time
+        WHERE eligibility.in_window AND eligibility.token_current
+        ON CONFLICT(event_id,user_id) DO NOTHING RETURNING id,event_id,user_id,evidence
+      ) SELECT inserted.id,inserted.event_id,inserted.user_id,inserted.evidence,
+          eligibility.in_window,eligibility.token_current
+        FROM eligibility LEFT JOIN inserted ON true`,
+    [id, eventId, actor, at === undefined ? null : new Date(at).toISOString(), Math.floor(now / 60_000)]);
+    const write = writes[0];
+    if (!write?.in_window) throw new AppError('CHECKIN_CLOSED', '当前不在签到时间内');
+    if (!write.token_current) throw new AppError('INVALID_CHECKIN_TOKEN', '签到码已失效');
+    const row = write.id && write.evidence ? { id: write.id, evidence: write.evidence }
+      : (await tx.query<{ id: string; evidence: string }>(
+        'SELECT id,evidence FROM checkins WHERE event_id=$1 AND user_id=$2', [eventId, actor])).rows[0]!;
+    if (!row) throw new AppError('CHECKIN_CLOSED', '当前不在签到时间内');
     if (now >= start && event.status === 'CONFIRMED') {
       const { rows: started } = await tx.query<{ id: string }>(`UPDATE events
         SET status='IN_PROGRESS',recruiting=false,updated_at=now()
@@ -259,7 +291,7 @@ export async function checkIn(db: Database, actor: string, eventId: string, expe
         RETURNING id`, [eventId]);
       if (started.length) await audit(tx, actor, eventId, 'EVENT_STARTED');
     }
-    if (inserted.length) await audit(tx, actor, eventId, 'CHECK_IN');
+    if (write.id) await audit(tx, actor, eventId, 'CHECK_IN');
     return { id: row.id, eventId, userId: actor, evidence: row.evidence };
   });
 }
@@ -458,9 +490,12 @@ export async function listRepeatCandidates(db: Database, actor: string, eventId:
   if (event.hostId !== actor) throw new AppError('FORBIDDEN', '只有主办方可查看候选名单', 403);
   if (event.status !== 'COMPLETED') throw new AppError('INVALID_STATE', '活动结项后才能查看候选名单');
   const { rows } = await db.query<{ user_id: string }>(`SELECT r.user_id FROM registrations r
+    JOIN users u ON u.id=r.user_id AND u.status='ACTIVE'
     JOIN notification_consents c ON c.user_id=r.user_id AND c.purpose='SIMILAR_ACTIVITY_INVITES' AND c.granted=true
       AND c.notice_version=$3
     WHERE r.event_id=$1 AND r.status='CONFIRMED' AND r.user_id<>$2
+      AND NOT EXISTS (SELECT 1 FROM privacy_requests pr WHERE pr.user_id=r.user_id
+        AND pr.kind='DELETE' AND pr.status NOT IN ('FULFILLED','CANCELLED'))
       AND NOT EXISTS (SELECT 1 FROM user_blocks b WHERE b.revoked_at IS NULL
         AND ((b.blocker_id=$2 AND b.blocked_id=r.user_id) OR (b.blocker_id=r.user_id AND b.blocked_id=$2)))
     ORDER BY r.created_at,r.id`, [eventId, actor, consentNotice('SIMILAR_ACTIVITY_INVITES').version]);

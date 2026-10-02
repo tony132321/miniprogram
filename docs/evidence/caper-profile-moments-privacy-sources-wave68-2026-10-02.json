@@ -1,0 +1,364 @@
+{
+  "scope": "One necessary source/binding/asset preservation check; no business tests/VM/SDK/CLI/Git/CI/matrix changes; followed by a two-value source-verified spacing correction whose inverse equals previous freeze, without repeating the complete check",
+  "baseline": "a72ba3e",
+  "sourceZipProof": [
+    {
+      "path": "pg10_c/code.html",
+      "bytes": 29565,
+      "sha256": "cdf5a961530cf79b5678b45cef5dfb2347e6f5c0de442b871f5c6aba5bb49d5e",
+      "originalZipByteEqual": true
+    },
+    {
+      "path": "pg10_c/screen.png",
+      "bytes": 686754,
+      "sha256": "836659cfbca0fac930e6bdef69955d9485aa752f361098e3a667c1444ad4352b",
+      "originalZipByteEqual": true
+    },
+    {
+      "path": "pg10_d/code.html",
+      "bytes": 16674,
+      "sha256": "0c947827be5b24cf753dc84a06c3cd8fa9af3937be05cd4f9a7ac2cc981d4af2",
+      "originalZipByteEqual": true
+    },
+    {
+      "path": "pg10_d/screen.png",
+      "bytes": 276091,
+      "sha256": "01158ae45ca5979f5680ad7cf7a9d422347df151e02669477596c24f0ec07dc8",
+      "originalZipByteEqual": true
+    }
+  ],
+  "pages": [
+    {
+      "page": "moments",
+      "jsBytes": 8564,
+      "jsSha256": "8b067cadb3bd9b127fd700712f138fe4ab26d4e832dc469e1817663bf4deacdb",
+      "jsonSha256": "e52785ddb393f087f62846072ae5780bba40241f2c11adfbf6b9bd5d481eea6f",
+      "eventBindings": 15,
+      "bindingMultisetByteEqual": true,
+      "businessExpressionMultisetExactExceptOnlySourceMarginLiteral": true,
+      "fullMarkupInverseSha256": "bffe4c9e2d82c56c97243f09a36ce5f05c4bfdccb44fb3a485b950ac1b7aa5c3",
+      "inverseOperations": [
+        {
+          "old": "",
+          "new": "w",
+          "currentStart": 388,
+          "currentEnd": 389
+        },
+        {
+          "old": "rrow",
+          "new": "ve68",
+          "currentStart": 390,
+          "currentEnd": 394
+        },
+        {
+          "old": "",
+          "new": "glow\" aria-hidden=\"true\"></view><view class=\"summary-content\"><view class=\"summary-",
+          "currentStart": 1700,
+          "currentEnd": 1783
+        },
+        {
+          "old": "",
+          "new": "</view>",
+          "currentStart": 2152,
+          "currentEnd": 2159
+        },
+        {
+          "old": "",
+          "new": "<text>",
+          "currentStart": 3348,
+          "currentEnd": 3354
+        },
+        {
+          "old": "",
+          "new": "</text><text",
+          "currentStart": 3372,
+          "currentEnd": 3384
+        },
+        {
+          "old": "·",
+          "new": "class=\"moment-meta-dot\"",
+          "currentStart": 3385,
+          "currentEnd": 3408
+        },
+        {
+          "old": "",
+          "new": "aria-hidden=\"true\"></text><text class=\"moment-venue\">",
+          "currentStart": 3409,
+          "currentEnd": 3462
+        },
+        {
+          "old": "",
+          "new": "</text></view><view",
+          "currentStart": 3515,
+          "currentEnd": 3534
+        },
+        {
+          "old": "· ",
+          "new": "class=\"moment-status\">",
+          "currentStart": 3535,
+          "currentEnd": 3557
+        },
+        {
+          "old": "",
+          "new": "content\"><view class=\"privacy-",
+          "currentStart": 4783,
+          "currentEnd": 4813
+        },
+        {
+          "old": "",
+          "new": " class=\"privacy-copy\"",
+          "currentStart": 4880,
+          "currentEnd": 4901
+        },
+        {
+          "old": "",
+          "new": "></view",
+          "currentStart": 4962,
+          "currentEnd": 4969
+        },
+        {
+          "old": "",
+          "new": "<view class=\"moments-action-backdrop\"><view class=\"moments-action-container\">",
+          "currentStart": 5148,
+          "currentEnd": 5225
+        },
+        {
+          "old": "",
+          "new": "</view></view>",
+          "currentStart": 5447,
+          "currentEnd": 5461
+        }
+      ],
+      "staticImageOccurrences": 11,
+      "allPreexistingAssetsByteEqual": true,
+      "usesSourcePxNoRpx": true,
+      "xmlParsesAfterWxAndMoustacheNormalization": true
+    },
+    {
+      "page": "privacy-safety",
+      "jsBytes": 4209,
+      "jsSha256": "f2da6b103cea1f88f6a9654a55708b94a0965cc9fefbf154064173f0afee37f2",
+      "jsonSha256": "972185002186d9aa40df4e9dc00f759cbe0cccace11722e876ad53d0259ed4b3",
+      "eventBindings": 10,
+      "bindingMultisetByteEqual": true,
+      "businessExpressionMultisetExactExceptOnlySourceMarginLiteral": true,
+      "fullMarkupInverseSha256": "ba1e711c70e64d703a5f8aaf3f409e85009987d5a8b9526d6774edc7f1917524",
+      "inverseOperations": [
+        {
+          "old": "",
+          "new": "w",
+          "currentStart": 403,
+          "currentEnd": 404
+        },
+        {
+          "old": "rrow",
+          "new": "ve68",
+          "currentStart": 405,
+          "currentEnd": 409
+        },
+        {
+          "old": "隐私与安全",
+          "new": "<text decode=\"true\">Privacy &amp; Safety</text>",
+          "currentStart": 468,
+          "currentEnd": 515
+        },
+        {
+          "old": "",
+          "new": "人",
+          "currentStart": 1908,
+          "currentEnd": 1909
+        },
+        {
+          "old": "16",
+          "new": "8",
+          "currentStart": 2863,
+          "currentEnd": 2864
+        },
+        {
+          "old": "r",
+          "new": "",
+          "currentStart": 2866,
+          "currentEnd": 2866
+        },
+        {
+          "old": "",
+          "new": "wave68-",
+          "currentStart": 3593,
+          "currentEnd": 3600
+        }
+      ],
+      "staticImageOccurrences": 10,
+      "allPreexistingAssetsByteEqual": true,
+      "usesSourcePxNoRpx": true,
+      "xmlParsesAfterWxAndMoustacheNormalization": true
+    }
+  ],
+  "ownedProductChanges": [
+    {
+      "path": "miniprogram/subpackages/profile/moments/moments.wxml",
+      "bytes": 6077,
+      "sha256": "4de915c950649f81daf256ba06f4712bb406ebbfcd82006e05a578aa786120f5",
+      "netBytes": 370
+    },
+    {
+      "path": "miniprogram/subpackages/profile/moments/moments.wxss",
+      "bytes": 21993,
+      "sha256": "ecebfccf94fa19f71b600d591efb88fa883f3866665f0d3f95bfc613362b0b01",
+      "netBytes": 11104
+    },
+    {
+      "path": "miniprogram/subpackages/profile/moments/assets/wave68-back.svg",
+      "bytes": 266,
+      "sha256": "efeb362fc20c3e3a66fb6dc7be585f6ea7db8e9983609c44e148ef76807c3b24",
+      "netBytes": 266
+    },
+    {
+      "path": "miniprogram/subpackages/profile/privacy-safety/privacy-safety.wxml",
+      "bytes": 4366,
+      "sha256": "823a048e3d9454acb6afdcc860d87c229a0a192584e96861b7e8c4f07528c4a0",
+      "netBytes": 41
+    },
+    {
+      "path": "miniprogram/subpackages/profile/privacy-safety/privacy-safety.wxss",
+      "bytes": 12921,
+      "sha256": "d524bbc31f686397e95d39435e808b987975f19bb99f9bb28756fff8f25b670c",
+      "netBytes": 4642
+    },
+    {
+      "path": "miniprogram/subpackages/profile/privacy-safety/assets/wave68-back.svg",
+      "bytes": 266,
+      "sha256": "efeb362fc20c3e3a66fb6dc7be585f6ea7db8e9983609c44e148ef76807c3b24",
+      "netBytes": 266
+    },
+    {
+      "path": "miniprogram/subpackages/profile/privacy-safety/assets/wave68-report.svg",
+      "bytes": 395,
+      "sha256": "a52c25b4c5cfb0d79e541f23d327d5b3f40a3a16af727ef7145523ab2276cdf2",
+      "netBytes": 395
+    }
+  ],
+  "netRawProductBytes": 17084,
+  "newAssetBytes": 927,
+  "jpegCount": 8,
+  "jpegTotalBytes": 544960,
+  "dynamicImageLiteralCount": 27,
+  "rootBackAsset": {
+    "bytes": 266,
+    "sha256": "efeb362fc20c3e3a66fb6dc7be585f6ea7db8e9983609c44e148ef76807c3b24",
+    "sourceSourceCondition": "original header 24px + explicit font-semibold; postposed variable Material face wght100..700/FILL0..1; instance wght600 FILL0, opsz24 and GRAD0 fixed; fill #1a1b1f"
+  },
+  "reportRecolorOnly": true,
+  "status": "FROZEN C/D owner source-only implementation; not native or business PASS",
+  "sharedFontProof": "docs/design-sources/profile-reference-fonts/source.json",
+  "referenceInputs": {
+    "plan": "docs/superpowers/plans/2026-10-02-profile-four-and-published-reference-ui.md",
+    "audit": "docs/evidence/caper-next-profile-reference-gap-audit-wave67-2026-10-02.md"
+  },
+  "originalResourceManifestsPreserved": [
+    "miniprogram/subpackages/profile/moments/assets/material-symbols-sources.json",
+    "miniprogram/subpackages/profile/moments/assets/reference-sources.json",
+    "miniprogram/subpackages/profile/privacy-safety/assets/material-symbols-sources.json"
+  ],
+  "rootMaterial600Inspection": {
+    "file": "material-profile-back-variable-0.woff2",
+    "weightClass": 400,
+    "unitsPerEm": 960,
+    "axes": [
+      {
+        "tag": "FILL",
+        "min": 0.0,
+        "default": 0.0,
+        "max": 1.0
+      },
+      {
+        "tag": "wght",
+        "min": 100.0,
+        "default": 400.0,
+        "max": 700.0
+      }
+    ],
+    "unicodeCount": 14,
+    "names": [
+      "Material Symbols Outlined 24pt",
+      "Regular",
+      "Version 2.972"
+    ],
+    "instancedAxes": {
+      "wght": 600,
+      "FILL": 0
+    },
+    "implicitFixedAxes": {
+      "opsz": 24,
+      "GRAD": 0
+    },
+    "glyph": "uniE2EA",
+    "unicode": "U+E2EA",
+    "svgBytes": 266,
+    "svgSHA256": "efeb362fc20c3e3a66fb6dc7be585f6ea7db8e9983609c44e148ef76807c3b24",
+    "path": "M641.1304931640625 -61.912109375 222.47735595703125 -480.0 641.1304931640625 -898.087890625 730.2183837890625 -809.0 401.2183837890625 -480.0 730.2183837890625 -151.0Z",
+    "fill": "#1a1b1f",
+    "colorSource": "parent text-on-surface in all four original headers"
+  },
+  "adaptationRulings": [
+    "Preserve truthful extra statusLabel in a small third card-head line, without copying fake source photo/person/statistics.",
+    "Restore source caption decoration with retained demonstration/closed-album text instead of fictitious winner claims.",
+    "Keep closed photo/like/AI controls as existing views, without adding fake callbacks or green online indicator.",
+    "No new behavior/JS/JSON; user explicitly disallows full suites and implementation-mirroring tests, so use one necessary source/binding/asset check and root native gate.",
+    "Common navigation/styles/app/global-font files remain root-owned; old source manifests and 400 SVG bytes remain historical assets."
+  ],
+  "postReviewSpacingCorrection": {
+    "reviewer": "/root/ui65_font_audit",
+    "source": "pg10_d/code.html",
+    "sourceTokenValues": {
+      "space-lg": "1rem = 16px",
+      "space-md": ".75rem = 12px"
+    },
+    "sourceNodes": {
+      "parent": "line 11 gap-space-lg",
+      "help": "line 123 mt-space-md"
+    },
+    "twoCorrections": [
+      {
+        "selector": ".privacy-page .block-section-heading",
+        "property": "margin-top",
+        "beforePx": 24,
+        "afterPx": 16
+      },
+      {
+        "selector": ".privacy-page .help-card",
+        "property": "margin-top",
+        "beforePx": 36,
+        "afterPx": 28
+      }
+    ],
+    "oldCSSSHA256": "19c4e7bb5d8d28970be10bc22ec0c2a06af39fa3126170bba82f76b3f04cf0b0",
+    "finalCSSSHA256": "d524bbc31f686397e95d39435e808b987975f19bb99f9bb28756fff8f25b670c",
+    "cssBytes": 12921,
+    "inverseTwoReplacementsEqualsPreviousFreeze": true,
+    "fullCheckRepeated": false,
+    "scope": "Only two authorized numeric values changed, old business protections inherit the original single source check."
+  },
+  "postReviewProfileAliasCorrection": {
+    "scope": "One C selector plus one root register family; no full checker/test/fontTools repeat",
+    "consumerSelector": ".moments-page .moment-venue",
+    "oldCSSSHA256": "235566361ef68067ee22c90d81f2c70c1e5d4138f36532309b71402620e24e4d",
+    "finalCSSSHA256": "ecebfccf94fa19f71b600d591efb88fa883f3866665f0d3f95bfc613362b0b01",
+    "bytesDelta": 72,
+    "inverseConsumerEqualsPreviousFreeze": true,
+    "register": {
+      "family": "Caper Jakarta Profile 500",
+      "weight": "500",
+      "bytes": 29728,
+      "dataSHA256": "1ed396140566c054e9330fbddc30fbc479f674fd3bc2ecc237b2255ba7d2c7f4"
+    },
+    "rootModuleBytes": 232987,
+    "rootModuleSHA256": "8cd1ac18d092175c22daaa5c80749251707f6b16f82d1550263b5aef875bda41",
+    "inverseFamilyOnlyRootModuleSHA256": "41284603a66d75bef587fc40a68df86cd1b0daf119d7694c653531abae57294e",
+    "oldSixAndAllOtherModuleBytesPreservedByFullInverse": true,
+    "localInspectionFailures": [
+      "Initial property inverse expected spaces after colon; actual added record is compact JSON. Corrected literal only.",
+      "Second heredoc failed before execution with Non-UTF-8 diagnostic. Shorter command with configured Python used."
+    ],
+    "productChangesAfterInitialInsertion": false
+  }
+}

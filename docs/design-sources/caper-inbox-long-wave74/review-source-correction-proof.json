@@ -1,0 +1,46 @@
+{
+  "authorization": "root explicit 3 verified source corrections; pure scoped CSS / non-action markup only",
+  "sourceLines": [
+    292,
+    306,
+    505,
+    535,
+    536
+  ],
+  "WXMLChanges": [
+    {
+      "old": "<view><view>消息通知设置</view><text>管理活动提醒、类似邀请与个人隐私</text></view>",
+      "new": "<view><text class=\"inbox-long-settings-title\">消息通知设置</text><text class=\"inbox-long-settings-hint\">管理活动提醒、类似邀请与个人隐私</text></view>"
+    }
+  ],
+  "CSSChanges": [
+    {
+      "old": ".messages-inbox .inbox-long-notice-section .notice-description { margin: 0; color: #475569; font-size: 11px; font-weight: 500; line-height: 16.5px; }",
+      "new": ".messages-inbox .inbox-long-notice-section .notice-description { margin: 0; color: #475569; font-size: 11px; font-weight: 500; line-height: 16.5px; white-space: normal; overflow: visible; text-overflow: clip; }"
+    },
+    {
+      "old": ".messages-inbox .inbox-long-history-row .inbox-long-closed-copy > text { color: #64748b; }",
+      "new": ".messages-inbox .inbox-long-history-row .inbox-long-closed-copy > text { color: #64748b; }\n.messages-inbox .inbox-long-history-amber + .inbox-long-closed-copy > text { color: #94a3b8; }"
+    },
+    {
+      "old": ".messages-inbox .inbox-long-settings .inbox-long-settings-content > view { flex: 1; min-width: 0; }\n.messages-inbox .inbox-long-settings .inbox-long-settings-content > view > view { color: #0f172a; font-size: 12px; font-weight: 700; line-height: 16px; }\n.messages-inbox .inbox-long-settings .inbox-long-settings-content > view > text { margin-top: 0; color: #94a3b8; font-size: 10px; font-weight: 400; line-height: 15px; }",
+      "new": ".messages-inbox .inbox-long-settings .inbox-long-settings-content > view { flex: 1; min-width: 0; font-size: 16px; font-weight: 400; line-height: 24px; }\n.messages-inbox .inbox-long-settings .inbox-long-settings-title { display: inline; color: #0f172a; font-size: 12px; font-weight: 700; line-height: 16px; }\n.messages-inbox .inbox-long-settings .inbox-long-settings-hint { display: block; margin-top: 0; color: #94a3b8; font-size: 10px; font-weight: 400; line-height: 15px; }"
+    }
+  ],
+  "inverse": {
+    "WXMLExact": true,
+    "WXSSExact": true,
+    "WXMLSHA256": "6e0c3b0d43c509797f4be92921afb5e87c35db45d363f509ea21bbcbecd5e788",
+    "WXSSSHA256": "f9eff614c4e6802518b9eda6a42b38cd0f724ff6a5a9c9005461708fc6a1621f"
+  },
+  "final": {
+    "WXMLBytes": 38796,
+    "WXMLSHA256": "db32d3f3a4061d472f579953efdbe4fd5af71ae8af5e5e4c5fb171f141ac4dd7",
+    "WXSSBytes": 82556,
+    "WXSSSHA256": "ca8454e7cc3e9f8892d14fbf9a5c5ac79517db8c4045222012c14e54456b6a89"
+  },
+  "protectedCSSPrefixSame": true,
+  "rawDeltaBytes": 277,
+  "scope": "notice summary wrap only; amber adjacent archive helper only; settings anonymous line box from inline title and 16/24 parent; no fixed65px",
+  "verificationBoundary": "one local inverse/source verification; earlier71/source48 not rerun; native anonymous line height root SDK pending"
+}

@@ -1,0 +1,917 @@
+{
+  "reviewedAtUTC": "2026-10-02T03:12:15.429380+00:00",
+  "scope": "Independent read-only shared reference-image / async-font source review after final700 discover6-glyph delta. Owner homepage product frozen; no product mutation or VM/SDK/CLI/Git/full/old tests",
+  "findings": [],
+  "checks": {
+    "currentOfficial700PayloadExact": true,
+    "twoIndependentOfficialWOFFResponsesExact": true,
+    "otherSixWholeRecordsEqual": true,
+    "oldLicenseSuffixByteEqual": true,
+    "old700All28OutlinesAndAdvancesEqual": true,
+    "oldGlobalLineMetricsEqual": true,
+    "onlyAppendedFaceIsCaveat600": true,
+    "twelveFixedWhiteListKeys": true,
+    "all12OriginalJPEGResponsesExact": true,
+    "oldSdkApiEarlyGuardsByteEqual": true,
+    "AppByteUnchangedAndLoginIndependent": true
+  },
+  "fontSourceProjection": {
+    "scope": "Read-only source projection/one necessary newest700 fontTools outline+advance audit; not re-running root3+3 VM/native checks",
+    "actualFile": {
+      "path": "miniprogram/subpackages/profile/fonts/reference-font-data.js",
+      "bytes": 260198,
+      "sha256": "1702d6644db3e5998132bacfe7d7067e37367148d6b8668327b5f066e7379b32"
+    },
+    "baselineFile": {
+      "path": "/private/tmp/caper-ui70-immutable-illt8q2z/miniprogram/utils/reference-font-data.js",
+      "bytes": 232987,
+      "sha256": "8cd1ac18d092175c22daaa5c80749251707f6b16f82d1550263b5aef875bda41"
+    },
+    "profileFaces": [
+      {
+        "family": "Caveat",
+        "weight": "700",
+        "bytes": 28076,
+        "sha256": "f2fb6438cd2a04f9bcbb67fea2f9136208a99693156a533d1e2d8f28fb9628cd",
+        "base64Bytes": 37436
+      },
+      {
+        "family": "Plus Jakarta Sans",
+        "weight": "400",
+        "bytes": 28828,
+        "sha256": "3ec7f5cad1bd738387a7c9b7e18428cfb165e9b98bdd26645b9f58fceee492c0",
+        "base64Bytes": 38440
+      },
+      {
+        "family": "Plus Jakarta Sans",
+        "weight": "600",
+        "bytes": 29604,
+        "sha256": "918ce7b19d036bcd59d41ab6198bbf35d77cf46227e56b85274e1dd2522ca8be",
+        "base64Bytes": 39472
+      },
+      {
+        "family": "Plus Jakarta Sans",
+        "weight": "700",
+        "bytes": 29828,
+        "sha256": "4f3f2b563317bc9b948f8aef3c24e01cbc11f342015eaf827f45533f8986d896",
+        "base64Bytes": 39772
+      },
+      {
+        "family": "Plus Jakarta Sans",
+        "weight": "800",
+        "bytes": 29132,
+        "sha256": "7036e01f13e5c43a877d1d0db05f4dda5ba8f76641a64f1c137fa58170b48632",
+        "base64Bytes": 38844
+      },
+      {
+        "family": "Rubik Mono One",
+        "weight": "400",
+        "bytes": 4040,
+        "sha256": "36faf220f9935cff89be4b5611a337202dc2a95be07df3565594ce6208c4285a",
+        "base64Bytes": 5388
+      },
+      {
+        "family": "Caper Jakarta Profile 500",
+        "weight": "500",
+        "bytes": 29728,
+        "sha256": "1ed396140566c054e9330fbddc30fbc479f674fd3bc2ecc237b2255ba7d2c7f4",
+        "base64Bytes": 39640
+      },
+      {
+        "family": "Caveat",
+        "weight": "600",
+        "bytes": 11624,
+        "sha256": "65a31f27c6f651920868421bc775a63546e843e478f66b137fe52f5069098379",
+        "base64Bytes": 15500
+      }
+    ],
+    "otherSixWholeRecordsEqual": true,
+    "oldSevenFaceOrderAndMetadataPreserved": true,
+    "addedOnlyCaveat600": true,
+    "licenseRawSuffixEqual": true,
+    "old700UnicodeCount": 28,
+    "current700UnicodeCount": 39,
+    "addedUnicode": [
+      "U+0043",
+      "U+0045",
+      "U+0048",
+      "U+004F",
+      "U+0054",
+      "U+0056",
+      "U+0062",
+      "U+0063",
+      "U+006B",
+      "U+0075",
+      "U+0076"
+    ],
+    "glyphs": [
+      {
+        "unicode": "U+0020",
+        "oldGlyph": "space",
+        "newGlyph": "space",
+        "outlineEqual": true,
+        "oldHmtx": [
+          242,
+          0
+        ],
+        "newHmtx": [
+          242,
+          0
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+0026",
+        "oldGlyph": "ampersand",
+        "newGlyph": "ampersand",
+        "outlineEqual": true,
+        "oldHmtx": [
+          564,
+          54
+        ],
+        "newHmtx": [
+          564,
+          54
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+002C",
+        "oldGlyph": "comma",
+        "newGlyph": "comma",
+        "outlineEqual": true,
+        "oldHmtx": [
+          198,
+          25
+        ],
+        "newHmtx": [
+          198,
+          25
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+0042",
+        "oldGlyph": "B",
+        "newGlyph": "B",
+        "outlineEqual": true,
+        "oldHmtx": [
+          523,
+          72
+        ],
+        "newHmtx": [
+          523,
+          72
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+0044",
+        "oldGlyph": "D",
+        "newGlyph": "D",
+        "outlineEqual": true,
+        "oldHmtx": [
+          587,
+          49
+        ],
+        "newHmtx": [
+          587,
+          49
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+0046",
+        "oldGlyph": "F",
+        "newGlyph": "F",
+        "outlineEqual": true,
+        "oldHmtx": [
+          466,
+          73
+        ],
+        "newHmtx": [
+          466,
+          73
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+0047",
+        "oldGlyph": "G",
+        "newGlyph": "G",
+        "outlineEqual": true,
+        "oldHmtx": [
+          494,
+          103
+        ],
+        "newHmtx": [
+          494,
+          103
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+004D",
+        "oldGlyph": "M",
+        "newGlyph": "M",
+        "outlineEqual": true,
+        "oldHmtx": [
+          729,
+          36
+        ],
+        "newHmtx": [
+          729,
+          36
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+004E",
+        "oldGlyph": "N",
+        "newGlyph": "N",
+        "outlineEqual": true,
+        "oldHmtx": [
+          619,
+          76
+        ],
+        "newHmtx": [
+          619,
+          76
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+0050",
+        "oldGlyph": "P",
+        "newGlyph": "P",
+        "outlineEqual": true,
+        "oldHmtx": [
+          468,
+          75
+        ],
+        "newHmtx": [
+          468,
+          75
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+0052",
+        "oldGlyph": "R",
+        "newGlyph": "R",
+        "outlineEqual": true,
+        "oldHmtx": [
+          544,
+          74
+        ],
+        "newHmtx": [
+          544,
+          74
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+0053",
+        "oldGlyph": "S",
+        "newGlyph": "S",
+        "outlineEqual": true,
+        "oldHmtx": [
+          495,
+          128
+        ],
+        "newHmtx": [
+          495,
+          128
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+0061",
+        "oldGlyph": "a",
+        "newGlyph": "a",
+        "outlineEqual": true,
+        "oldHmtx": [
+          446,
+          75
+        ],
+        "newHmtx": [
+          446,
+          75
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+0064",
+        "oldGlyph": "d",
+        "newGlyph": "d",
+        "outlineEqual": true,
+        "oldHmtx": [
+          402,
+          84
+        ],
+        "newHmtx": [
+          402,
+          84
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+0065",
+        "oldGlyph": "e",
+        "newGlyph": "e",
+        "outlineEqual": true,
+        "oldHmtx": [
+          334,
+          92
+        ],
+        "newHmtx": [
+          334,
+          92
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+0067",
+        "oldGlyph": "g",
+        "newGlyph": "g",
+        "outlineEqual": true,
+        "oldHmtx": [
+          364,
+          61
+        ],
+        "newHmtx": [
+          364,
+          61
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+0068",
+        "oldGlyph": "h",
+        "newGlyph": "h",
+        "outlineEqual": true,
+        "oldHmtx": [
+          473,
+          90
+        ],
+        "newHmtx": [
+          473,
+          90
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+0069",
+        "oldGlyph": "i",
+        "newGlyph": "i",
+        "outlineEqual": true,
+        "oldHmtx": [
+          196,
+          88
+        ],
+        "newHmtx": [
+          196,
+          88
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+006C",
+        "oldGlyph": "l",
+        "newGlyph": "l",
+        "outlineEqual": true,
+        "oldHmtx": [
+          178,
+          81
+        ],
+        "newHmtx": [
+          178,
+          81
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+006D",
+        "oldGlyph": "m",
+        "newGlyph": "m",
+        "outlineEqual": true,
+        "oldHmtx": [
+          569,
+          86
+        ],
+        "newHmtx": [
+          569,
+          86
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+006E",
+        "oldGlyph": "n",
+        "newGlyph": "n",
+        "outlineEqual": true,
+        "oldHmtx": [
+          459,
+          89
+        ],
+        "newHmtx": [
+          459,
+          89
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+006F",
+        "oldGlyph": "o",
+        "newGlyph": "o",
+        "outlineEqual": true,
+        "oldHmtx": [
+          362,
+          87
+        ],
+        "newHmtx": [
+          362,
+          87
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+0070",
+        "oldGlyph": "p",
+        "newGlyph": "p",
+        "outlineEqual": true,
+        "oldHmtx": [
+          378,
+          17
+        ],
+        "newHmtx": [
+          378,
+          17
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+0072",
+        "oldGlyph": "r",
+        "newGlyph": "r",
+        "outlineEqual": true,
+        "oldHmtx": [
+          360,
+          89
+        ],
+        "newHmtx": [
+          360,
+          89
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+0073",
+        "oldGlyph": "s",
+        "newGlyph": "s",
+        "outlineEqual": true,
+        "oldHmtx": [
+          350,
+          88
+        ],
+        "newHmtx": [
+          350,
+          88
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+0074",
+        "oldGlyph": "t",
+        "newGlyph": "t",
+        "outlineEqual": true,
+        "oldHmtx": [
+          331,
+          100
+        ],
+        "newHmtx": [
+          331,
+          100
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+0077",
+        "oldGlyph": "w",
+        "newGlyph": "w",
+        "outlineEqual": true,
+        "oldHmtx": [
+          517,
+          108
+        ],
+        "newHmtx": [
+          517,
+          108
+        ],
+        "advanceAndLSBEqual": true
+      },
+      {
+        "unicode": "U+0079",
+        "oldGlyph": "y",
+        "newGlyph": "y",
+        "outlineEqual": true,
+        "oldHmtx": [
+          341,
+          -72
+        ],
+        "newHmtx": [
+          341,
+          -72
+        ],
+        "advanceAndLSBEqual": true
+      }
+    ],
+    "globalLineMetrics": {
+      "unitsPerEmEqual": true,
+      "hheaEqual": true,
+      "OS2LineMetricsEqual": true
+    },
+    "sourceNewFaces": [
+      {
+        "file": "caveat-700-home-discover-pg05-union.woff",
+        "runtimeRawEqualsOriginalOfficialSource": true,
+        "runtimeAndSourceSHA256": "f2fb6438cd2a04f9bcbb67fea2f9136208a99693156a533d1e2d8f28fb9628cd",
+        "metadataSHA256Equal": true,
+        "cssSHA256": "a7c442c583eddf65a95a226d69960a15e8d87280ec7c16374a8bf445bfb88379",
+        "cssSHA256Equal": true,
+        "actualWeight": 700,
+        "unicode": [
+          "U+0020",
+          "U+0026",
+          "U+002C",
+          "U+0042",
+          "U+0043",
+          "U+0044",
+          "U+0045",
+          "U+0046",
+          "U+0047",
+          "U+0048",
+          "U+004D",
+          "U+004E",
+          "U+004F",
+          "U+0050",
+          "U+0052",
+          "U+0053",
+          "U+0054",
+          "U+0056",
+          "U+0061",
+          "U+0062",
+          "U+0063",
+          "U+0064",
+          "U+0065",
+          "U+0067",
+          "U+0068",
+          "U+0069",
+          "U+006B",
+          "U+006C",
+          "U+006D",
+          "U+006E",
+          "U+006F",
+          "U+0070",
+          "U+0072",
+          "U+0073",
+          "U+0074",
+          "U+0075",
+          "U+0076",
+          "U+0077",
+          "U+0079"
+        ],
+        "missingFallbackSymbols": [
+          "☺",
+          "♡",
+          "⚡"
+        ]
+      },
+      {
+        "file": "caveat-600-city.woff",
+        "runtimeRawEqualsOriginalOfficialSource": true,
+        "runtimeAndSourceSHA256": "65a31f27c6f651920868421bc775a63546e843e478f66b137fe52f5069098379",
+        "metadataSHA256Equal": true,
+        "cssSHA256": "b1a901b08ad7f97881224da63e400d488455c731fd8498dbd36a2e419cacd3df",
+        "cssSHA256Equal": true,
+        "actualWeight": 600,
+        "unicode": [
+          "U+0020",
+          "U+0042",
+          "U+0043",
+          "U+0047",
+          "U+004D",
+          "U+0050",
+          "U+0061",
+          "U+0064",
+          "U+0065",
+          "U+0069",
+          "U+006B",
+          "U+006C",
+          "U+006F",
+          "U+0070",
+          "U+0072",
+          "U+0073",
+          "U+0074"
+        ],
+        "missingFallbackSymbols": [
+          "☺",
+          "♡",
+          "⚡"
+        ]
+      }
+    ],
+    "stageMetadataBoundary": "Root warned its old source proof253314B/e7f... is home-only5glyph phase; current module260198B has final discover6 furtherglyphs. This is phase metadata to update, not product mismatch."
+  },
+  "componentLoaderSourceProjection": {
+    "boundary": "Independent read-only source mapping and fixed original byte comparisons; not root VM/native test reruns",
+    "mappingCount": 12,
+    "mappingExactlyManifestKeys": true,
+    "allMappingValuesFixedProfileJPEGs": true,
+    "photos": [
+      {
+        "key": "home-brand-party",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-brand-party.jpg",
+        "bytes": 67934,
+        "sha256": "3365ce00ca5e741f4cbfbd5cf9ed76b8e0f821f83a5235e7182a6b41164e1d6a",
+        "mapEqualsExactRuntimePath": true,
+        "runtimeEqualsOriginalResponse": true,
+        "manifestSHA256Equal": true,
+        "sourceURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuAxmupsg-D3r3vb25ROo-WuDM_-KOjPd46lFZwoIzRUcQiarFiqw2V0ev9s4LiP6Notyk8ufvsYdlvdn6PV71xErpHw-HrFdeR60oayn75qdAxBXXTp0baW7uXf9Cy9VG-CKBEGWf5Mp9hoI3PugY6inSdHuRi_fNXwBL2rYgsxtHIafGILgLG9GlNyF9bsnbdKMZEWjk7LPZR_2X0ZU33FX4uekcl9Xm4TWRdo9ozZpYJ_-IJ3r7IZ8Q",
+        "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/brand-party.jpg"
+      },
+      {
+        "key": "home-hot-tennis",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-hot-tennis.jpg",
+        "bytes": 46931,
+        "sha256": "17d3ced8567411d7b67e5643c486c1d1862aa6d154cad5613b8637545c34db30",
+        "mapEqualsExactRuntimePath": true,
+        "runtimeEqualsOriginalResponse": true,
+        "manifestSHA256Equal": true,
+        "sourceURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuDePpyfH3Fb75yA53fZ3t8EhMOiJeqX74k_O40fvGgTO0utlZm53uNSDmbc6yWofRL0FQw8yWoiR5XAugfEq1qWOUG40nLnfxdohM55l22b7PlrcPKvH3xt8xjAOAz3Sx1-YiDMJ_5IgqqRDwW5UJYZwVgFi5thLTySbmbh-RtKwVMbUm93dGEANObcszZKYzTHUuE5UQ7DMhHHpeAdy9kqCZrp8ErvuXYd2ds9Hht5Akz_OPSslGUghQ",
+        "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/hot-tennis.jpg"
+      },
+      {
+        "key": "home-hot-coffee",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-hot-coffee.jpg",
+        "bytes": 61237,
+        "sha256": "789626490bad53fe814fe1194a7ffa3dad1121719744c9a781e587e80fc4ded5",
+        "mapEqualsExactRuntimePath": true,
+        "runtimeEqualsOriginalResponse": true,
+        "manifestSHA256Equal": true,
+        "sourceURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuALoSuDtWL-I3bDX5Rrgeg5sq8Ng-HllSgnrRVS-8ZPFpNj5MGlNNznEgFS_MjviiIgmxkzRSmwPteQX1Age3LSqo4k2Zq_QltqEqlX_8Cj4MsoqdCmE0-zDN2EL5BEB_W0kcDqsqoeO65RlcT_IsjpZ3Wt7SH_ko5YJyOecwQ8RO2GKE5a0CvHRY7CJZz-yk6fVCAGIHm_e0tHtnGdhTju0055rvL0Pdhu_lz_V_qtQpP63_cGAJbzGw",
+        "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/hot-coffee.jpg"
+      },
+      {
+        "key": "home-hot-frisbee",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-hot-frisbee.jpg",
+        "bytes": 70328,
+        "sha256": "1d496fa254500f6a66310fadfecbd546457bcdc6d9982313dcbcf905903bbc4f",
+        "mapEqualsExactRuntimePath": true,
+        "runtimeEqualsOriginalResponse": true,
+        "manifestSHA256Equal": true,
+        "sourceURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuCLELpraGHCKTVBuT4c-Ozl-tSNFtsu2HmvYNkyWSdwnTjsvXuU4n0aRI6UphTVFBJskNaOuSWRdAj1e3UKKMkWlrY7y8rNepC65uybITyKJDph_Vr3DZxvIlTWjmiOFSHLkBL81n9KC2g2HHJ0vCH9XNZsiQraH8o-1-5su6-YnPKUtnlm-bRdlf6CDjoYkgzpN4NYf5HWg2AH5SX2xxdTWN6s_iEQpeDGzH10Eh-J5jsqxfwPufdvlQ",
+        "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/hot-frisbee.jpg"
+      },
+      {
+        "key": "home-hot-boardgame",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-hot-boardgame.jpg",
+        "bytes": 62758,
+        "sha256": "dfe5dc41e9e955bae653a9c1095c00675f17bf96d96bdef42bbfc8223c2d98e2",
+        "mapEqualsExactRuntimePath": true,
+        "runtimeEqualsOriginalResponse": true,
+        "manifestSHA256Equal": true,
+        "sourceURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuCf8cE_-NCjN4UI8SiByUxcCxV2CXUi4UCK-0CxaDFNVWyeI5euf9k5zX-o04133VAq8MismEAskioCgBfpSlkMgZBiy7qRMapZH6fURYt22Roo4KPITVkZmBVysdbx5BrGFBO-r94IXZjWmDHT2ysKU3N-Ikg_c6Bz9X9CFSadFL3okyf17Sfdvelw7hPChJWSJopkijqINrmO2PXXeiTv0ZTfvvBrKDA0_54TYh6X6a-qEx4jBYil3A",
+        "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/hot-boardgame.jpg"
+      },
+      {
+        "key": "home-idea-badminton",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-idea-badminton.jpg",
+        "bytes": 33316,
+        "sha256": "85c9aae86f539cab1e6f06254f49165c6e6c1fe5e688c5341bf202c8a4146189",
+        "mapEqualsExactRuntimePath": true,
+        "runtimeEqualsOriginalResponse": true,
+        "manifestSHA256Equal": true,
+        "sourceURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuCXlY-IyU8RcvQZfvh1vZeJYzJvc5vk7zwKWu-_MVNd2N3Sn28HGAQSshglkNwAR961QbUMWa6-Y5ox12Wu103zfgJOSO_t24D5aCRZWU9-L9NC27xaXYVSspyEcJsLTy8sekNynQvoZFl2rmRA39KC6kVxU5JLbEk97JZ4LB0mRC4-PXM5Fy3P8LTHKF-u8Nx3d5H_4Lrp9W3rnJVkcHNYJCAEugC9LCRI3NuWWRe_HiKJ0Cr5RIlDEg",
+        "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/idea-badminton.jpg"
+      },
+      {
+        "key": "home-idea-coffee",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-idea-coffee.jpg",
+        "bytes": 72113,
+        "sha256": "5c0350df75d28b6a38499477eabd40e6889f8400f9e34708aae54b1419608131",
+        "mapEqualsExactRuntimePath": true,
+        "runtimeEqualsOriginalResponse": true,
+        "manifestSHA256Equal": true,
+        "sourceURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuDYDkr0jSReEYDG4q-oaVMzS6clMO4galmaKRnAOJzcIf9qVkXOPY5glvP9ZumlkB6fiL5BE0dCbCimP5vcoQ8sBGi7w0wzCxytsk8eOmvFNAKBr-wDYHQsOehWbaeM_hGeenaFf6-i4yWLW46WoIhtd6l8pLRXoyoMTEPri0RAUbFM7SAqAI5wQYvlsqRB-GRPN5gCXPQYBh0X9oGdJ_wFfnCTQyHvq9I2GulP4bWcpc6zoRvee_TO1w",
+        "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/idea-coffee.jpg"
+      },
+      {
+        "key": "home-idea-cycling",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-idea-cycling.jpg",
+        "bytes": 51100,
+        "sha256": "d24a483e4f1042c527f414c436edcc895a68c2709f9dbc269cdca2c7ac77e745",
+        "mapEqualsExactRuntimePath": true,
+        "runtimeEqualsOriginalResponse": true,
+        "manifestSHA256Equal": true,
+        "sourceURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuDQty30DywdNbiERtGQsmW20uvNZ8pJD_rJ4IJ_6qG4XSTlmT2E3zTxSW8R5yYfwqpBNsoRBElJH7Dx5_HzQr-_yHGWozhLjFKL7P8VKdadoqn0D2B1NdzIF5zQZE2QzutuYM04Y1PSD9KK4NBRi0Y5aljiHNoBw5elMHu857l0g89Qcqrm34fuy9tv24KuVgteH9xHAkAfE8dlp76rcAzMZ4jaPYCgREgpVgm0caAbuP6clKkPHwiOnw",
+        "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/idea-cycling-illustration.jpg"
+      },
+      {
+        "key": "home-collage-main",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-collage-main.jpg",
+        "bytes": 77396,
+        "sha256": "e990073eed579ac88dd91be60ff6c1e4888fe803fb53ab1ac9383ab7164d9dca",
+        "mapEqualsExactRuntimePath": true,
+        "runtimeEqualsOriginalResponse": true,
+        "manifestSHA256Equal": true,
+        "sourceURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuDlO_BnR-cyEOfX8NcKDRMBoyw5xk921FHr0rw0XCjgSqPIPwAkTFXWx_4C9U8Tc_nNPnsAUynsOGRr_oEL3_RnfxELAQkOfMUxvSFx9mDrxWcqLNIlT2G6mA1zkWctJBxPGs67xYg_wmxqs9C_yn7BzUKWCuBykW8AFaOPovRLxin3sB5i4odprtTFLY301KQe-HAxdw3sctR2NRGCutqk0QhQGMCnfmddvxFhDiCblAeGj9M9mj_1hw",
+        "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/collage-main.jpg"
+      },
+      {
+        "key": "home-collage-dinner",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-collage-dinner.jpg",
+        "bytes": 67130,
+        "sha256": "e111454a86e9b5ef33a7fe5774092f74f39cfbe574e356baf74f0432bf8829af",
+        "mapEqualsExactRuntimePath": true,
+        "runtimeEqualsOriginalResponse": true,
+        "manifestSHA256Equal": true,
+        "sourceURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuA6ZvkSMgknQqCd220ERPS73_hfdzdEpBNCViIJkugJsVPWrJkFvhIPkCrVqwM_Xz3AnzWrPA-QWfjf2BcQdGb6dv4FXqzvxTMwkdW2g5yRlNXS-aZFZy5hqN8M6agjj1_5KF4xrcFtZpXUZkk-daaf7_5UQlaDiX97IzJ-xLIvLGCpd_ihxP79TCshygZ9ZWxKnn6W-oj_hKq3VtBcfgOo0kYZCZ7TTxJnN1kHRTV7mrzUC5Hk4eqAuA",
+        "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/collage-dinner.jpg"
+      },
+      {
+        "key": "home-collage-grass",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-collage-grass.jpg",
+        "bytes": 73338,
+        "sha256": "969e214d70fe40a4933f19c4022b79a19cc0e7f0e889d2975bdf57743ff4ecb2",
+        "mapEqualsExactRuntimePath": true,
+        "runtimeEqualsOriginalResponse": true,
+        "manifestSHA256Equal": true,
+        "sourceURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuCtR42KcvcyyArBRnw2uaXRC4p53dMI4mIBW20vfgDkqCflu2runfH5QHvMM0K09SgIe0jKRxW1Ccao6ahg3IH2uPRVq30PeZx63wgV0CsrMsLjpUZCoh8m1uYlUvG_v6_gq6foFHMyNhN4RNNn1Y_SqtT28xu9oGVnZ77ew3dnf9SyVZrEkyHaLAjiQgP3Yevaumz7GahdRAAxOOwYxvrZlDZmaEZXCzxlWKHuKjWxOxrvBCsPgjBH9g",
+        "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/collage-grass.jpg"
+      },
+      {
+        "key": "discover-park",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/discover-park.jpg",
+        "bytes": 122735,
+        "sha256": "ab6bc2647289d4dfd98ea1229b2ea0caf5ead4390de18624c61af3e7645db05d",
+        "mapEqualsExactRuntimePath": true,
+        "runtimeEqualsOriginalResponse": true,
+        "manifestSHA256Equal": true,
+        "sourceURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuCTHZkOKvd7z7nPhgQdwQJU6NKWayLtCdjDimcMDIEV7A3N6C4zZAMBVpRhbh0FLPOyFowZeYDuvNeQ4aaaOIj4L-yCiIiNuxCnwXyuZeky8EqnbiBNnayu9Dj7at3489StFFUQtGfI5HRpY4c3Ym9yAW9BJONoDIlRQHIJr3MZ-sfrWORsKAg-fcwoNGeqaeF1IDV5PqgGAFzIKjBx4Ifr0p2Y6ZaWTQWt8i4qg4RvF3ZDaFST--p5_A",
+        "sourceResponsePath": "/private/tmp/caper-wave74-discover/photos/original-3.jpg"
+      }
+    ],
+    "componentReviewed": {
+      "virtualHost": true,
+      "styleIsolation": "shared",
+      "externalClasses": [
+        "photo-class"
+      ],
+      "property": "photoKey String default empty",
+      "knownKeyGuard": "Object.prototype.hasOwnProperty.call(sources,key)",
+      "unknownKeyResult": "empty string and conditional image removed; previous src clears",
+      "mode": "aspectFill",
+      "conditionalImage": "wx:if src",
+      "rootIndexJSON": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "耍起 CAPER",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black",
+        "usingComponents": {
+          "reference-image": "/subpackages/profile/components/reference-image/reference-image"
+        },
+        "componentPlaceholder": {
+          "reference-image": "view"
+        }
+      }
+    },
+    "loaderReviewed": {
+      "oldSdkAndLoadApiGuardsByteEqual": true,
+      "sourceAsyncPath": "../subpackages/profile/fonts/reference-font-data.js",
+      "missingRequireAsync": "unavailable state + resolved default ready",
+      "syncRequireAsyncThrow": "source failed, default resolved ready",
+      "promiseImportRejection": "catch returns empty array",
+      "loadFontApiThrowOrFailure": "face failed settled once; Promise resolves",
+      "globalFontOptionsUnchanged": "normal/weight/global true/scopes webview",
+      "appByteEqualImmutable70": true,
+      "appLoginReadyIndependent": "login promise assigned first; loadReferenceFonts returned state is stored separately and never awaited by login/onLaunch",
+      "existingRootTestsNotReexecuted": "component3/font3 GREEN reused as root evidence; RED2/harness scheduling failures retained by root"
+    },
+    "reviewedFiles": [
+      {
+        "path": "miniprogram/subpackages/profile/components/reference-image/reference-image.js",
+        "bytes": 423,
+        "sha256": "29d3932022e981b3653a4bc7ef9f254caa1a40032b614498a160f6fac18c3c54"
+      },
+      {
+        "path": "miniprogram/subpackages/profile/components/reference-image/reference-image.json",
+        "bytes": 19,
+        "sha256": "6bcc2e9e536384851fcfbdd823aee8ae4331243636adc4a656a64a44d9cf9318"
+      },
+      {
+        "path": "miniprogram/subpackages/profile/components/reference-image/reference-image.wxml",
+        "bytes": 94,
+        "sha256": "9d8bda97c58e05c9fb6529579d597110d8b785bef37983eb15d8e3da3f523d6b"
+      },
+      {
+        "path": "miniprogram/subpackages/profile/components/reference-image/reference-image.wxss",
+        "bytes": 37,
+        "sha256": "d95eeeee9e69d48c863905ec90f755b4be1e07101dace48ff0247a949d2000d7"
+      },
+      {
+        "path": "miniprogram/subpackages/profile/components/reference-image/sources.js",
+        "bytes": 1262,
+        "sha256": "fb7cfd1d6d87de5685276f84c79c18af20481f82d5610b8de47111a77c312512"
+      },
+      {
+        "path": "miniprogram/utils/reference-fonts.js",
+        "bytes": 2450,
+        "sha256": "620a72c3fd665990db2fd94b80c8db6158bf42c9e178632ab158564dc88741a2"
+      },
+      {
+        "path": "miniprogram/subpackages/profile/fonts/reference-font-data.js",
+        "bytes": 260198,
+        "sha256": "1702d6644db3e5998132bacfe7d7067e37367148d6b8668327b5f066e7379b32"
+      },
+      {
+        "path": "miniprogram/app.js",
+        "bytes": 556,
+        "sha256": "540105f1b42f5695519da2f36e4bf8e3399cbecdfc2347ffb0838965e04fce69"
+      },
+      {
+        "path": "miniprogram/pages/index/index.json",
+        "bytes": 340,
+        "sha256": "3f3022dfdd20e7a99f602b8f8fc6af5b0082e8d99a56d3e67a6d170300ec198a"
+      }
+    ]
+  },
+  "officialNewFaceResponses": [
+    {
+      "weight": 700,
+      "sourceURL": "https://fonts.gstatic.com/l/font?kit=WnznHAc5bAfYB2QRah7pcpNvOx-pjRV6SIG7QzRovkjk9rNqKKBk0Xtzp41A0yz_HjDFIsqWXr7FxwEyOp466HOc8g&skey=7833cd5b856b60c9&v=v23",
+      "finalURL": "https://fonts.gstatic.com/l/font?kit=WnznHAc5bAfYB2QRah7pcpNvOx-pjRV6SIG7QzRovkjk9rNqKKBk0Xtzp41A0yz_HjDFIsqWXr7FxwEyOp466HOc8g&skey=7833cd5b856b60c9&v=v23",
+      "status": 200,
+      "headers": {
+        "Content-Type": "font/woff",
+        "Access-Control-Allow-Origin": "*",
+        "Timing-Allow-Origin": "*",
+        "Content-Length": "28076",
+        "Expires": "Sat, 03 Oct 2026 03:03:39 GMT",
+        "Date": "Fri, 02 Oct 2026 03:03:39 GMT",
+        "Cache-Control": "public, max-age=86400",
+        "Content-Disposition": "attachment; filename=\"font.woff\"; filename*=UTF-8''font.woff",
+        "Last-Modified": "Fri, 05 Sep 2025 00:08:34 GMT",
+        "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+        "Cross-Origin-Resource-Policy": "cross-origin",
+        "Server": "ESF",
+        "X-XSS-Protection": "0",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-Content-Type-Options": "nosniff",
+        "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+        "Connection": "close"
+      },
+      "bytes": 28076,
+      "sha256": "f2fb6438cd2a04f9bcbb67fea2f9136208a99693156a533d1e2d8f28fb9628cd",
+      "equalsSavedOfficialBytes": true,
+      "path": "/private/tmp/caper-wave73-shared-independent/official-caveat-700.woff",
+      "fetchedAtUTC": "2026-10-02T03:03:39.981646+00:00"
+    },
+    {
+      "weight": 600,
+      "sourceURL": "https://fonts.gstatic.com/l/font?kit=WnznHAc5bAfYB2QRah7pcpNvOx-pjSx6SIG7cDQM0U3q4pdICoFC81tTh61gZ9Un&skey=7833cd5b856b60c9&v=v23",
+      "finalURL": "https://fonts.gstatic.com/l/font?kit=WnznHAc5bAfYB2QRah7pcpNvOx-pjSx6SIG7cDQM0U3q4pdICoFC81tTh61gZ9Un&skey=7833cd5b856b60c9&v=v23",
+      "status": 200,
+      "headers": {
+        "Content-Type": "font/woff",
+        "Access-Control-Allow-Origin": "*",
+        "Timing-Allow-Origin": "*",
+        "Content-Length": "11624",
+        "Expires": "Sat, 03 Oct 2026 03:03:39 GMT",
+        "Date": "Fri, 02 Oct 2026 03:03:39 GMT",
+        "Cache-Control": "public, max-age=86400",
+        "Content-Disposition": "attachment; filename=\"font.woff\"; filename*=UTF-8''font.woff",
+        "Last-Modified": "Fri, 05 Sep 2025 00:08:34 GMT",
+        "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+        "Cross-Origin-Resource-Policy": "cross-origin",
+        "Server": "ESF",
+        "X-XSS-Protection": "0",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-Content-Type-Options": "nosniff",
+        "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+        "Connection": "close"
+      },
+      "bytes": 11624,
+      "sha256": "65a31f27c6f651920868421bc775a63546e843e478f66b137fe52f5069098379",
+      "equalsSavedOfficialBytes": true,
+      "path": "/private/tmp/caper-wave73-shared-independent/official-caveat-600.woff",
+      "fetchedAtUTC": "2026-10-02T03:03:39.625028+00:00"
+    }
+  ],
+  "weightMatchingPrimarySource": {
+    "url": "https://www.w3.org/TR/css-fonts-4/#font-style-matching",
+    "section": "5.2, weight match point3",
+    "inference": "Original source only Caveat600/700; nominal400 has no400/500/lower face, so chooses600. Original CSS400 remains, new official600 provides that actual match; missing symbols use original fallback stack."
+  },
+  "nativeEvidenceBoundary": "Root earlier3+3 VM and12decode/external48x48-r16/8fontcallbacks are read as existing architecture evidence, not rerun or silently claimed for newest700 final glyph painting. Last expanded700 callback/render requires root final SDK. Prior253314/e7f source proof is known home5-glyph phase awaiting root metadata refresh; actual reviewed260198/1702 module is product-correct."
+}

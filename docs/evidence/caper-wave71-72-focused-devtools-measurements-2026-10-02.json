@@ -1,0 +1,1808 @@
+{
+  "scope": "Frozen W71/72 only; no W73/74 live edits; targeted routes and source geometry, not full suite or pixel acceptance",
+  "sdkSuccessAssertions": 58,
+  "sdkFailedAuxiliaryOrWrongExpectations": 2,
+  "segments": [
+    {
+      "script": "caper-wave71-share-background",
+      "result": {
+        "scope": "Only new readonly background layer geometry/real projection/privacy and existing close return; no repeat old copy/poster flows",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Ordinary _3 invitation has no extra dashboard background"
+          },
+          {
+            "pass": true,
+            "label": "Background projects real six confirmed / one waitlisted and four actual stat slots"
+          },
+          {
+            "pass": true,
+            "label": "Readonly source header56 and hero16:9",
+            "actual": {
+              "nav": {
+                "width": 402,
+                "height": 56
+              },
+              "hero": {
+                "width": 370,
+                "height": 208.125
+              }
+            }
+          },
+          {
+            "pass": true,
+            "label": "Opaque background below original foreground; source layer order",
+            "actual": {
+              "background": "40",
+              "foreground": "50",
+              "paint": "rgb(250, 248, 254)"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Readonly background excludes actual invite token and precise venue; no invented roster"
+          },
+          {
+            "pass": true,
+            "label": "Close removes readonly projection and returns to same actual _3; no new action writes"
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [],
+        "screenshots": [
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-share-background-sheet-wave71-2026-10-02.png"
+        ],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave71 compact center, host readonly monitor and share background. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "privateCapture": "/private/tmp/caper-wave71-share-background-redacted.png",
+        "redactions": [
+          {
+            "field": "display.inviteToken",
+            "persisted": false,
+            "restored": true
+          }
+        ],
+        "pass": true,
+        "elapsedMs": 7886,
+        "publicCaptureBoundary": "Actual live invite text redacted only in view and restored. Opaque new background covers old invitation QR; no actual code or QR pixels in viewed screenshot."
+      },
+      "sourceSHA256": "77363f51a5e98a7652a45282634997a26187f811d736f6b7ec776da4f4af8021"
+    },
+    {
+      "script": "caper-wave71-compact-center",
+      "result": {
+        "scope": "Only new N2 layout/more menu, actual retained filters/approvals, affected source geometry and existing settings/detail return routes; no approval/notice/clipboard writes",
+        "checks": [
+          {
+            "pass": true,
+            "label": "New menu preserves actual notice/approval/filter/paging projection"
+          },
+          {
+            "pass": true,
+            "label": "Original N1 more requests both real compact and settings entries",
+            "actual": [
+              [
+                "紧凑通知中心",
+                "通知设置"
+              ]
+            ]
+          },
+          {
+            "pass": true,
+            "label": "N2 source native header56/back44/filter32",
+            "actual": [
+              {
+                "selector": ".compact-header",
+                "value": {
+                  "left": 0,
+                  "right": 402,
+                  "top": 54,
+                  "bottom": 110,
+                  "width": 402,
+                  "height": 56,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "102px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(250, 248, 254, 0.8)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".compact-back",
+                "value": {
+                  "left": 16,
+                  "right": 60,
+                  "top": 60,
+                  "bottom": 104,
+                  "width": 44,
+                  "height": 44,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "18px",
+                  "line-height": "46px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(0, 0, 0)"
+                }
+              },
+              {
+                "selector": ".compact-tab",
+                "value": {
+                  "left": 16,
+                  "right": 66,
+                  "top": 118,
+                  "bottom": 150,
+                  "width": 50,
+                  "height": 32,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "13px",
+                  "line-height": "16px",
+                  "font-weight": "600",
+                  "max-width": "none",
+                  "padding-right": "12px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(29, 100, 242)",
+                  "display": "flex",
+                  "color": "rgb(255, 255, 255)"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "N2 source icon40/title17/summary13",
+            "actual": [
+              {
+                "selector": ".compact-icon",
+                "value": {
+                  "left": 28,
+                  "right": 68,
+                  "top": 180,
+                  "bottom": 220,
+                  "width": 40,
+                  "height": 40,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "20px",
+                  "line-height": "20px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(255, 240, 243)",
+                  "display": "flex",
+                  "color": "rgb(255, 45, 85)"
+                }
+              },
+              {
+                "selector": ".compact-title",
+                "value": {
+                  "left": 76,
+                  "right": 293.03125,
+                  "top": 178,
+                  "bottom": 200,
+                  "width": 217.03125,
+                  "height": 22,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "17px",
+                  "line-height": "22px",
+                  "font-weight": "600",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".compact-summary",
+                "value": {
+                  "left": 76,
+                  "right": 374,
+                  "top": 204,
+                  "bottom": 246.25,
+                  "width": 298,
+                  "height": 42.25,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "13px",
+                  "line-height": "21.125px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(66, 70, 85)"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "Activity badge is a bounded loaded-record count"
+          },
+          {
+            "pass": true,
+            "label": "Actual authorized pending approval projects into compact source card",
+            "actual": {
+              "approvals": 1
+            }
+          },
+          {
+            "pass": true,
+            "label": "Compact SYSTEM filter excludes real approvals"
+          },
+          {
+            "pass": true,
+            "label": "Compact interaction returns actual pending approvals"
+          },
+          {
+            "pass": false,
+            "label": "Compact details opens same real event and existing registration destination"
+          }
+        ],
+        "metrics": [
+          {
+            "compact": [
+              {
+                "selector": ".compact-header",
+                "value": {
+                  "left": 0,
+                  "right": 402,
+                  "top": 54,
+                  "bottom": 110,
+                  "width": 402,
+                  "height": 56,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "102px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(250, 248, 254, 0.8)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".compact-back",
+                "value": {
+                  "left": 16,
+                  "right": 60,
+                  "top": 60,
+                  "bottom": 104,
+                  "width": 44,
+                  "height": 44,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "18px",
+                  "line-height": "46px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(0, 0, 0)"
+                }
+              },
+              {
+                "selector": ".compact-tab",
+                "value": {
+                  "left": 16,
+                  "right": 66,
+                  "top": 118,
+                  "bottom": 150,
+                  "width": 50,
+                  "height": 32,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "13px",
+                  "line-height": "16px",
+                  "font-weight": "600",
+                  "max-width": "none",
+                  "padding-right": "12px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(29, 100, 242)",
+                  "display": "flex",
+                  "color": "rgb(255, 255, 255)"
+                }
+              },
+              {
+                "selector": ".compact-card",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 166,
+                  "bottom": 338.25,
+                  "width": 370,
+                  "height": 172.25,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "24px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "12px",
+                  "padding-bottom": "12px",
+                  "background-color": "rgb(255, 255, 255)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".compact-icon",
+                "value": {
+                  "left": 28,
+                  "right": 68,
+                  "top": 180,
+                  "bottom": 220,
+                  "width": 40,
+                  "height": 40,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "20px",
+                  "line-height": "20px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(255, 240, 243)",
+                  "display": "flex",
+                  "color": "rgb(255, 45, 85)"
+                }
+              },
+              {
+                "selector": ".compact-title",
+                "value": {
+                  "left": 76,
+                  "right": 293.03125,
+                  "top": 178,
+                  "bottom": 200,
+                  "width": 217.03125,
+                  "height": 22,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "17px",
+                  "line-height": "22px",
+                  "font-weight": "600",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".compact-summary",
+                "value": {
+                  "left": 76,
+                  "right": 374,
+                  "top": 204,
+                  "bottom": 246.25,
+                  "width": 298,
+                  "height": 42.25,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "13px",
+                  "line-height": "21.125px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(66, 70, 85)"
+                }
+              }
+            ]
+          },
+          {
+            "loadedActivityUnreadCount": 0,
+            "actualLoaded": 1,
+            "total": 1,
+            "unreadTotal": 0
+          }
+        ],
+        "screenshots": [
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-compact-center-actual-approval-wave71-2026-10-02.png"
+        ],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave71 compact center, host readonly monitor and share background. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "menuBoundary": "Actual UI button taps and actual menu payload; chosen tapIndex callback supplied by SDK, no native action-sheet selection claim",
+        "pass": false,
+        "failure": {
+          "phase": "same-ID-approval-route",
+          "message": "Compact details opens same real event and existing registration destination",
+          "stack": "AssertionError [ERR_ASSERTION]: Compact details opens same real event and existing registration destination\n    at check (/private/tmp/caper-wave71-sdk-helpers.cjs:16:80)\n    at /private/tmp/caper-wave71-compact-center.cjs:11:251\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async run (/private/tmp/caper-wave71-sdk-helpers.cjs:22:3)"
+        },
+        "elapsedMs": 8902
+      },
+      "sourceSHA256": "4043e9a8790f918f72b2183dbc585d1269c6daba9937917bee50b8afe0b5821a"
+    },
+    {
+      "script": "caper-wave71-compact-center-remaining",
+      "result": {
+        "scope": "Only new N2 layout/more menu, actual retained filters/approvals, affected source geometry and existing settings/detail return routes; no approval/notice/clipboard writes",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Compact details opens same real event and existing host approval workspace"
+          },
+          {
+            "pass": true,
+            "label": "Compact more returns to original card center"
+          }
+        ],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave71 compact center, host readonly monitor and share background. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "menuBoundary": "Actual UI button taps and actual menu payload; chosen tapIndex callback supplied by SDK, no native action-sheet selection claim",
+        "pass": false,
+        "failure": {
+          "phase": "layout-return-settings",
+          "message": "Timeout actual settings focus",
+          "stack": "Error: Timeout actual settings focus\n    at until (/private/tmp/caper-wave71-sdk-helpers.cjs:15:127)\n    at async /private/tmp/caper-wave71-compact-center-remaining.cjs:9:266\n    at async run (/private/tmp/caper-wave71-sdk-helpers.cjs:22:3)"
+        },
+        "elapsedMs": 20455
+      },
+      "sourceSHA256": "a192c9152656a6cfe1330fcb05f5be4935087962fd334f40c83a955448b4fed6"
+    },
+    {
+      "script": "caper-wave71-compact-center-settings",
+      "result": {
+        "scope": "Only new N2 layout/more menu, actual retained filters/approvals, affected source geometry and existing settings/detail return routes; no approval/notice/clipboard writes",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Compact settings opens original real core notification section without expanding unrelated advanced form"
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave71 compact center, host readonly monitor and share background. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "menuBoundary": "Actual UI button taps and actual menu payload; chosen tapIndex callback supplied by SDK, no native action-sheet selection claim",
+        "pass": true,
+        "elapsedMs": 7256
+      },
+      "sourceSHA256": "b234dc5c3e0115881bd23223735a4a53ede803f7b305a578e608bc41a7779d0f"
+    },
+    {
+      "script": "caper-wave71-host-monitor",
+      "result": {
+        "scope": "Only new host readonly _5 menu/deep URL/actual counters and roster/source geometry/member exclusion/return; no new fixture or business submission",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Current qualified host sees third readonly monitor destination",
+            "actual": [
+              [
+                "举报与求助",
+                "复制活动信息给可信任的人",
+                "只读实时看板"
+              ]
+            ]
+          },
+          {
+            "pass": true,
+            "label": "Monitor four actual API counters six confirmed / one waitlisted",
+            "actual": {
+              "confirmed": 6,
+              "reserved": 0,
+              "requested": 0,
+              "waitlisted": 1
+            }
+          },
+          {
+            "pass": true,
+            "label": "Monitor actual minimum/gap/capacity projection",
+            "actual": {
+              "occupancy": 100,
+              "missing": 0,
+              "surplus": 2
+            }
+          },
+          {
+            "pass": true,
+            "label": "Monitor uses existing six current confirmed roster entries"
+          },
+          {
+            "pass": true,
+            "label": "Readonly page marks unavailable weather/reminders/payment/map and excludes invite token"
+          },
+          {
+            "pass": true,
+            "label": "Source native header56 plus actual status height and sport48",
+            "actual": [
+              {
+                "selector": ".hm-native-nav",
+                "value": {
+                  "left": 0,
+                  "right": 402,
+                  "top": 0,
+                  "bottom": 110,
+                  "width": 402,
+                  "height": 110,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "102px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(250, 248, 254, 0.8)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".hm-hero",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 178,
+                  "bottom": 457,
+                  "width": 370,
+                  "height": 279,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "12px",
+                  "padding-bottom": "12px",
+                  "background-color": "rgb(255, 255, 255)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".hm-stat-grid",
+                "value": {
+                  "left": 28,
+                  "right": 374,
+                  "top": 275,
+                  "bottom": 357,
+                  "width": 346,
+                  "height": 82,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "grid",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".hm-sport-icon",
+                "value": {
+                  "left": 326,
+                  "right": 374,
+                  "top": 190,
+                  "bottom": 238,
+                  "width": 48,
+                  "height": 48,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(239, 237, 243)",
+                  "display": "flex",
+                  "color": "rgb(0, 76, 200)"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "Source hero12 padding and map128",
+            "actual": [
+              {
+                "selector": ".hm-native-nav",
+                "value": {
+                  "left": 0,
+                  "right": 402,
+                  "top": 0,
+                  "bottom": 110,
+                  "width": 402,
+                  "height": 110,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "102px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(250, 248, 254, 0.8)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".hm-hero",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 178,
+                  "bottom": 457,
+                  "width": 370,
+                  "height": 279,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "12px",
+                  "padding-bottom": "12px",
+                  "background-color": "rgb(255, 255, 255)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".hm-stat-grid",
+                "value": {
+                  "left": 28,
+                  "right": 374,
+                  "top": 275,
+                  "bottom": 357,
+                  "width": 346,
+                  "height": 82,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "grid",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".hm-sport-icon",
+                "value": {
+                  "left": 326,
+                  "right": 374,
+                  "top": 190,
+                  "bottom": 238,
+                  "width": 48,
+                  "height": 48,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(239, 237, 243)",
+                  "display": "flex",
+                  "color": "rgb(0, 76, 200)"
+                }
+              },
+              {
+                "selector": ".hm-map",
+                "value": {
+                  "left": 28,
+                  "right": 374,
+                  "top": 1505.125,
+                  "bottom": 1633.125,
+                  "width": 346,
+                  "height": 128,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".hm-terminal",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 1701.125,
+                  "bottom": 1765.125,
+                  "width": 370,
+                  "height": 64,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "8px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "New monitor back retains same actual host workspace"
+          },
+          {
+            "pass": true,
+            "label": "Current host deep URL passes postload qualification"
+          },
+          {
+            "pass": true,
+            "label": "Confirmed member direct monitor URL falls back to actual details without host projection"
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [
+          {
+            "monitor": [
+              {
+                "selector": ".hm-native-nav",
+                "value": {
+                  "left": 0,
+                  "right": 402,
+                  "top": 0,
+                  "bottom": 110,
+                  "width": 402,
+                  "height": 110,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "102px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(250, 248, 254, 0.8)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".hm-hero",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 178,
+                  "bottom": 457,
+                  "width": 370,
+                  "height": 279,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "12px",
+                  "padding-bottom": "12px",
+                  "background-color": "rgb(255, 255, 255)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".hm-stat-grid",
+                "value": {
+                  "left": 28,
+                  "right": 374,
+                  "top": 275,
+                  "bottom": 357,
+                  "width": 346,
+                  "height": 82,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "grid",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".hm-sport-icon",
+                "value": {
+                  "left": 326,
+                  "right": 374,
+                  "top": 190,
+                  "bottom": 238,
+                  "width": 48,
+                  "height": 48,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgb(239, 237, 243)",
+                  "display": "flex",
+                  "color": "rgb(0, 76, 200)"
+                }
+              },
+              {
+                "selector": ".hm-map",
+                "value": {
+                  "left": 28,
+                  "right": 374,
+                  "top": 1505.125,
+                  "bottom": 1633.125,
+                  "width": 346,
+                  "height": 128,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(26, 27, 31)"
+                }
+              },
+              {
+                "selector": ".hm-terminal",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 1701.125,
+                  "bottom": 1765.125,
+                  "width": 370,
+                  "height": 64,
+                  "font-family": "\"Plus Jakarta Sans\", sans-serif",
+                  "font-size": "15px",
+                  "line-height": "21px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "8px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(26, 27, 31)"
+                }
+              }
+            ]
+          }
+        ],
+        "screenshots": [
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-host-monitor-actual-top-wave71-2026-10-02.png",
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-host-monitor-illustrative-map-wave71-2026-10-02.png"
+        ],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave71 compact center, host readonly monitor and share background. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "menuBoundary": "Actual source button/menu payload, SDK supplies tapIndex2 callback; native action sheet untested",
+        "pass": true,
+        "elapsedMs": 15539
+      },
+      "sourceSHA256": "0444a621696c0f0fee5179a7d93d32aaf0553fcc04efbf7f16aa5e984172381c"
+    },
+    {
+      "script": "caper-wave71-host-monitor-top-diagnostic",
+      "result": {
+        "scope": "Only observed left-top text leakage investigation, no rerun11 actions",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Top-edge observation taken at actual zero scroll",
+            "actual": {
+              "nearCount": 0,
+              "nav": {
+                "left": 0,
+                "right": 402,
+                "top": 0,
+                "bottom": 110,
+                "width": 402,
+                "height": 110,
+                "background-color": "rgba(250, 248, 254, 0.8)",
+                "position": "sticky",
+                "z-index": "50",
+                "padding-top": "54px"
+              },
+              "scroll": {
+                "id": "",
+                "dataset": {},
+                "scrollLeft": 0,
+                "scrollTop": 0,
+                "scrollWidth": 402,
+                "scrollHeight": 1823
+              }
+            }
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [
+          {
+            "nativeAtTop": [
+              [],
+              {
+                "left": 0,
+                "right": 402,
+                "top": 0,
+                "bottom": 110,
+                "width": 402,
+                "height": 110,
+                "background-color": "rgba(250, 248, 254, 0.8)",
+                "position": "sticky",
+                "z-index": "50",
+                "padding-top": "54px"
+              },
+              {
+                "id": "",
+                "dataset": {},
+                "scrollLeft": 0,
+                "scrollTop": 0,
+                "scrollWidth": 402,
+                "scrollHeight": 1823
+              }
+            ]
+          }
+        ],
+        "screenshots": [
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-host-monitor-top-diagnostic-wave71-2026-10-02.png"
+        ],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave71 compact center, host readonly monitor and share background. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "nearTop": [],
+        "nearTopTexts": [],
+        "domBoundary": "wx native selector and SDK text/offset observations; JS document/elementsFromPoint is not available in appservice context",
+        "pass": true,
+        "elapsedMs": 7628
+      },
+      "sourceSHA256": "c676b70052f99f10b9721ab4fe1f741b54af8f9b9e10621ee489ca549dab6b9e"
+    },
+    {
+      "script": "caper-wave71-host-monitor-view-edge-diagnostic",
+      "result": {
+        "scope": "Only concrete screenshot corner fringe and old hidden region observation, no route/action rerun",
+        "checks": [
+          {
+            "pass": false,
+            "label": "Only intended native monitor navigation has nonempty view rect at top edge",
+            "actual": {
+              "count": 0
+            }
+          }
+        ],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave71 compact center, host readonly monitor and share background. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "nativeNearTop": [],
+        "hiddenOld": {
+          "details": {
+            "left": 0,
+            "right": 0,
+            "top": 0,
+            "bottom": 0,
+            "width": 0,
+            "height": 0,
+            "display": "none",
+            "position": "relative"
+          },
+          "poster": {
+            "left": 0,
+            "right": 0,
+            "top": 0,
+            "bottom": 0,
+            "width": 0,
+            "height": 0,
+            "display": "none",
+            "position": "relative"
+          }
+        },
+        "nearTopViews": [],
+        "pass": false,
+        "failure": {
+          "phase": "connect",
+          "message": "Only intended native monitor navigation has nonempty view rect at top edge",
+          "stack": "AssertionError [ERR_ASSERTION]: Only intended native monitor navigation has nonempty view rect at top edge\n    at check (/private/tmp/caper-wave71-sdk-helpers.cjs:16:80)\n    at /private/tmp/caper-wave71-host-monitor-view-edge-diagnostic.cjs:4:834\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async run (/private/tmp/caper-wave71-sdk-helpers.cjs:22:3)",
+          "currentPage": "subpackages/activity/event/event"
+        },
+        "elapsedMs": 6655
+      },
+      "sourceSHA256": "1c9b9d0fb8b98d2ba9631c9e5ae9b3ece27ef15a36c17e1c5647d34ec3ffd5d3"
+    },
+    {
+      "script": "caper-wave72-profile-long-top-routes",
+      "result": {
+        "scope": "Only Wave72 long-page source geometry, existing 19 affected routes and moved existing privacy expansion; no business submit/logout/consent writes",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Long hosted card projects actual authorized hosted item"
+          },
+          {
+            "pass": true,
+            "label": "Source hosted image80/card12 padding",
+            "actual": [
+              {
+                "selector": ".me-long-hosted",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 1264.6484375,
+                  "bottom": 1370.6484375,
+                  "width": 370,
+                  "height": 106,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Text\", \"PingFang SC\", \"Helvetica Neue\", sans-serif",
+                  "font-size": "18px",
+                  "line-height": "16px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "12px",
+                  "padding-bottom": "12px",
+                  "background-color": "rgb(255, 255, 255)",
+                  "display": "flex",
+                  "color": "rgb(15, 23, 42)"
+                }
+              },
+              {
+                "selector": ".me-long-hosted-photo",
+                "value": {
+                  "left": 29,
+                  "right": 109,
+                  "top": 1277.6484375,
+                  "bottom": 1357.6484375,
+                  "width": 80,
+                  "height": 80,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Text\", \"PingFang SC\", \"Helvetica Neue\", sans-serif",
+                  "font-size": "18px",
+                  "line-height": "16px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(15, 23, 42)"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "Source settings14/invitation16/request12 padding",
+            "actual": [
+              {
+                "selector": ".me-long-menu",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 1539.6484375,
+                  "bottom": 1679.6484375,
+                  "width": 370,
+                  "height": 140,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Text\", \"PingFang SC\", \"Helvetica Neue\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "14px",
+                  "padding-bottom": "14px",
+                  "background-color": "rgb(255, 255, 255)",
+                  "display": "block",
+                  "color": "rgb(15, 23, 42)"
+                }
+              },
+              {
+                "selector": ".me-long-invite",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 2254.3125,
+                  "bottom": 2328.0625,
+                  "width": 370,
+                  "height": 73.75,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Text\", \"PingFang SC\", \"Helvetica Neue\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "16px",
+                  "padding-bottom": "16px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(255, 255, 255)"
+                }
+              },
+              {
+                "selector": ".me-long-privacy-request",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 2376.5625,
+                  "bottom": 2437.5625,
+                  "width": 370,
+                  "height": 61,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Text\", \"PingFang SC\", \"Helvetica Neue\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "12px",
+                  "padding-bottom": "12px",
+                  "background-color": "rgba(255, 241, 242, 0.6)",
+                  "display": "block",
+                  "color": "rgb(15, 23, 42)"
+                }
+              }
+            ]
+          },
+          {
+            "pass": true,
+            "label": "Original development logout guard retained and authorized privacy entry exists"
+          },
+          {
+            "pass": true,
+            "label": "Moved source control destination .me-long-wishlist button",
+            "actual": {
+              "path": "pages/discover/discover"
+            }
+          }
+        ],
+        "metrics": [
+          {
+            "profile": [
+              {
+                "selector": ".me-long-hosted",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 1264.6484375,
+                  "bottom": 1370.6484375,
+                  "width": 370,
+                  "height": 106,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Text\", \"PingFang SC\", \"Helvetica Neue\", sans-serif",
+                  "font-size": "18px",
+                  "line-height": "16px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "12px",
+                  "padding-bottom": "12px",
+                  "background-color": "rgb(255, 255, 255)",
+                  "display": "flex",
+                  "color": "rgb(15, 23, 42)"
+                }
+              },
+              {
+                "selector": ".me-long-hosted-photo",
+                "value": {
+                  "left": 29,
+                  "right": 109,
+                  "top": 1277.6484375,
+                  "bottom": 1357.6484375,
+                  "width": 80,
+                  "height": 80,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Text\", \"PingFang SC\", \"Helvetica Neue\", sans-serif",
+                  "font-size": "18px",
+                  "line-height": "16px",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "block",
+                  "color": "rgb(15, 23, 42)"
+                }
+              },
+              {
+                "selector": ".me-long-tools",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 1437.6484375,
+                  "bottom": 1519.6484375,
+                  "width": 370,
+                  "height": 82,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Text\", \"PingFang SC\", \"Helvetica Neue\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "0px",
+                  "padding-bottom": "0px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "grid",
+                  "color": "rgb(15, 23, 42)"
+                }
+              },
+              {
+                "selector": ".me-long-tools button",
+                "value": {
+                  "left": 16,
+                  "top": 1437.6484375,
+                  "width": 86.5,
+                  "height": 82,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Text\", \"PingFang SC\", \"Helvetica Neue\", sans-serif",
+                  "font-weight": "400"
+                },
+                "adapter": "SDK Element read fallback; native wx selector returned null"
+              },
+              {
+                "selector": ".me-long-menu",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 1539.6484375,
+                  "bottom": 1679.6484375,
+                  "width": 370,
+                  "height": 140,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Text\", \"PingFang SC\", \"Helvetica Neue\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "14px",
+                  "padding-bottom": "14px",
+                  "background-color": "rgb(255, 255, 255)",
+                  "display": "block",
+                  "color": "rgb(15, 23, 42)"
+                }
+              },
+              {
+                "selector": ".me-long-invite",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 2254.3125,
+                  "bottom": 2328.0625,
+                  "width": 370,
+                  "height": 73.75,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Text\", \"PingFang SC\", \"Helvetica Neue\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "16px",
+                  "padding-bottom": "16px",
+                  "background-color": "rgba(0, 0, 0, 0)",
+                  "display": "flex",
+                  "color": "rgb(255, 255, 255)"
+                }
+              },
+              {
+                "selector": ".me-long-privacy-request",
+                "value": {
+                  "left": 16,
+                  "right": 386,
+                  "top": 2376.5625,
+                  "bottom": 2437.5625,
+                  "width": 370,
+                  "height": 61,
+                  "font-family": "-apple-system, \"system-ui\", \"SF Pro Text\", \"PingFang SC\", \"Helvetica Neue\", sans-serif",
+                  "font-size": "16px",
+                  "line-height": "normal",
+                  "font-weight": "400",
+                  "max-width": "none",
+                  "padding-right": "12px",
+                  "padding-bottom": "12px",
+                  "background-color": "rgba(255, 241, 242, 0.6)",
+                  "display": "block",
+                  "color": "rgb(15, 23, 42)"
+                }
+              }
+            ]
+          }
+        ],
+        "screenshots": [
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-profile-long-tools-actual-wave72-2026-10-02.png",
+          "/Users/tsb/Documents/小程序/docs/evidence/images/caper-profile-long-public-menus-wave72-2026-10-02.png"
+        ],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only Wave72 source restoration of ordinary profile long-page, unchanged actual handlers and new scoped styles. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "pass": false,
+        "failure": {
+          "phase": "affected-route .me-long-section:nth-child(2) .section-link",
+          "message": "Timeout subpackages/profile/moments/moments",
+          "stack": "Error: Timeout subpackages/profile/moments/moments\n    at until (eval at <anonymous> (/private/tmp/caper-wave72-profile-sdk-helpers.cjs:1:417), <anonymous>:15:127)\n    at async route (eval at <anonymous> (/private/tmp/caper-wave72-profile-sdk-helpers.cjs:1:417), <anonymous>:20:30)\n    at async /private/tmp/caper-wave72-profile-long-top-routes.cjs:6:203\n    at async run (eval at <anonymous> (/private/tmp/caper-wave72-profile-sdk-helpers.cjs:1:417), <anonymous>:22:3)"
+        },
+        "elapsedMs": 34230
+      },
+      "sourceSHA256": "a827edbd482e5d4e83f441a35b5118158f15ac55853207767991f806a2df6535"
+    },
+    {
+      "script": "caper-wave72-profile-long-top-routes-remaining",
+      "result": {
+        "scope": "Only Wave72 long-page source geometry, existing 19 affected routes and moved existing privacy expansion; no business submit/logout/consent writes",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Moved source control destination .me-long-section .section-link",
+            "actual": {
+              "path": "subpackages/profile/moments/moments"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Actual hosted card opens same actual event ID"
+          },
+          {
+            "pass": true,
+            "label": "Host center retains existing organized intent"
+          },
+          {
+            "pass": true,
+            "label": "Moved source control destination .me-long-tools button:nth-child(1)",
+            "actual": {
+              "path": "pages/create/create"
+            }
+          }
+        ],
+        "metrics": [
+          {
+            "action": ".me-long-section .section-link",
+            "text": "查看全部",
+            "offset": {
+              "left": 322,
+              "top": 130.1484375
+            }
+          },
+          {
+            "action": ".me-long-hosted",
+            "text": "周末羽毛球 · 报名链路合成验收招募中📅 1 月 2 日 20:00📍 深圳·隔离测试羽毛球馆场景示意图 · 进入真实活动详情",
+            "offset": {
+              "left": 16,
+              "top": 130.1484375
+            }
+          },
+          {
+            "action": ".me-long-tools-heading .section-link",
+            "text": "进入主理人中心",
+            "offset": {
+              "left": 286,
+              "top": 130.1484375
+            }
+          },
+          {
+            "action": ".me-long-tools button:nth-child(1)",
+            "text": "➕发布活动",
+            "offset": {
+              "left": 16,
+              "top": 130.1484375
+            }
+          }
+        ],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only Wave72 source restoration of ordinary profile long-page, unchanged actual handlers and new scoped styles. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "pass": false,
+        "failure": {
+          "phase": "affected-route .me-long-tools button:nth-child(2)",
+          "message": "timeout waiting for automator response",
+          "stack": "Error: timeout waiting for automator response\n    at Connection.onMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/miniprogram-automator@0.12.1/node_modules/miniprogram-automator/out/Connection.js:1:985)\n    at Transport.emit (node:events:509:28)\n    at WebSocket.<anonymous> (/private/tmp/project-irl-automator/node_modules/.pnpm/miniprogram-automator@0.12.1/node_modules/miniprogram-automator/out/Transport.js:1:220)\n    at WebSocket.onMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/event-target.js:120:16)\n    at WebSocket.emit (node:events:509:28)\n    at Receiver.receiverOnMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/websocket.js:807:20)\n    at Receiver.emit (node:events:509:28)\n    at Receiver.dataMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:448:14)\n    at Receiver.getData (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:377:17)\n    at Receiver.startLoop (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:158:22)",
+          "currentPage": "pages/me/me"
+        },
+        "elapsedMs": 38035
+      },
+      "sourceSHA256": "0b3950a4e4fb73e3c95f56d33c4b3b4f69a28194f12130c32f573b7ada135537"
+    },
+    {
+      "script": "caper-wave72-profile-long-top-final-three",
+      "result": {
+        "scope": "Only Wave72 long-page source geometry, existing 19 affected routes and moved existing privacy expansion; no business submit/logout/consent writes",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Moved source control destination .me-long-tools button:nth-child(2)",
+            "actual": {
+              "path": "subpackages/profile/moments/moments"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Approval tool retains existing actual approval filter"
+          },
+          {
+            "pass": true,
+            "label": "Moved source control destination .me-long-account-menu button:nth-child(1)",
+            "actual": {
+              "path": "subpackages/profile/profile-edit/profile-edit"
+            }
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [
+          {
+            "action": ".me-long-tools button:nth-child(2)",
+            "text": "📅活动管理",
+            "offset": {
+              "left": 110.5,
+              "top": 130.1484375
+            }
+          },
+          {
+            "action": ".me-long-tools button:nth-child(3)",
+            "text": "👥报名管理",
+            "offset": {
+              "left": 205,
+              "top": 130.1484375
+            }
+          },
+          {
+            "action": ".me-long-account-menu button:nth-child(1)",
+            "text": "📱个人资料与城市本机城市偏好与资料状态",
+            "offset": {
+              "left": 31,
+              "top": 130.1484375
+            }
+          }
+        ],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only Wave72 source restoration of ordinary profile long-page, unchanged actual handlers and new scoped styles. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "pass": true,
+        "elapsedMs": 33710
+      },
+      "sourceSHA256": "d64b3cb0b79024fe17fbf4c260422d62998b70eebc901f2bd53c6bd079009c3d"
+    },
+    {
+      "script": "caper-wave72-profile-long-lower-routes",
+      "result": {
+        "scope": "Only Wave72 long-page source geometry, existing 19 affected routes and moved existing privacy expansion; no business submit/logout/consent writes",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Moved source control destination .me-long-account-menu button:nth-child(2)",
+            "actual": {
+              "path": "subpackages/profile/privacy-safety/privacy-safety"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Moved source control destination .me-long-notification-menu button:nth-child(1)",
+            "actual": {
+              "path": "pages/messages/messages"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Moved source control destination .me-long-notification-menu button:nth-child(2)",
+            "actual": {
+              "path": "subpackages/profile/moments/moments"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Moved source control destination .me-long-help-menu button:nth-child(1)",
+            "actual": {
+              "path": "subpackages/profile/support/support"
+            }
+          }
+        ],
+        "metrics": [
+          {
+            "action": ".me-long-account-menu button:nth-child(2)",
+            "text": "💻隐私与屏蔽查看和解除真实屏蔽记录"
+          },
+          {
+            "action": ".me-long-notification-menu button:nth-child(1)",
+            "text": "🔔站内通知1 条真实通知"
+          },
+          {
+            "action": ".me-long-notification-menu button:nth-child(2)",
+            "text": "💬活动记录与相册活动可查；照片服务尚未开放"
+          },
+          {
+            "action": ".me-long-help-menu button:nth-child(1)",
+            "text": "❓常见问题与安全求助安全举报可通过现有工单提交"
+          }
+        ],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only Wave72 source restoration of ordinary profile long-page, unchanged actual handlers and new scoped styles. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "pass": false,
+        "failure": {
+          "phase": "affected-route .me-long-help-menu button:nth-child(2)",
+          "message": "55 second bounded watchdog"
+        },
+        "elapsedMs": 55002
+      },
+      "sourceSHA256": "22bd499b66987287500176bc9d1486a42bc2656095d9559ca9bdbb3a905cbbcb"
+    },
+    {
+      "script": "caper-wave72-profile-long-lower-remaining",
+      "result": {
+        "scope": "Only Wave72 long-page source geometry, existing 19 affected routes and moved existing privacy expansion; no business submit/logout/consent writes",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Moved source control destination .me-long-help-menu button:nth-child(2)",
+            "actual": {
+              "path": "subpackages/profile/cache/cache"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Moved source control destination .me-long-about-menu button:nth-child(1)",
+            "actual": {
+              "path": "pages/about/about"
+            }
+          }
+        ],
+        "metrics": [
+          {
+            "action": ".me-long-help-menu button:nth-child(2)",
+            "text": "📝本地存储说明查看缓存与账号数据边界"
+          },
+          {
+            "action": ".me-long-about-menu button:nth-child(1)",
+            "text": "ℹ️关于耍起 CAPER / Project IRL"
+          }
+        ],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only Wave72 source restoration of ordinary profile long-page, unchanged actual handlers and new scoped styles. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "pass": false,
+        "failure": {
+          "phase": "affected-route .me-long-about-menu button:nth-child(2)",
+          "message": "timeout waiting for automator response",
+          "stack": "Error: timeout waiting for automator response\n    at Connection.onMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/miniprogram-automator@0.12.1/node_modules/miniprogram-automator/out/Connection.js:1:985)\n    at Transport.emit (node:events:509:28)\n    at WebSocket.<anonymous> (/private/tmp/project-irl-automator/node_modules/.pnpm/miniprogram-automator@0.12.1/node_modules/miniprogram-automator/out/Transport.js:1:220)\n    at WebSocket.onMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/event-target.js:120:16)\n    at WebSocket.emit (node:events:509:28)\n    at Receiver.receiverOnMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/websocket.js:807:20)\n    at Receiver.emit (node:events:509:28)\n    at Receiver.dataMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:448:14)\n    at Receiver.getData (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:377:17)\n    at Receiver.startLoop (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:158:22)",
+          "currentPage": "pages/me/me"
+        },
+        "elapsedMs": 30009
+      },
+      "sourceSHA256": "fe8613a048f241bf87fc61aa0bb6ee0878bf88c853cbf88c26320a598f7036f0"
+    },
+    {
+      "script": "caper-wave72-profile-long-final-two-routes",
+      "result": {
+        "scope": "Only Wave72 long-page source geometry, existing 19 affected routes and moved existing privacy expansion; no business submit/logout/consent writes",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Moved source control destination .me-long-about-menu button:nth-child(2)",
+            "actual": {
+              "path": "subpackages/profile/legal/legal"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Moved source control destination .me-long-about-menu button:nth-child(3)",
+            "actual": {
+              "path": "subpackages/profile/guidelines/guidelines"
+            }
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [
+          {
+            "action": ".me-long-about-menu button:nth-child(2)",
+            "text": "📄隐私与使用说明"
+          },
+          {
+            "action": ".me-long-about-menu button:nth-child(3)",
+            "text": "🛡️社区公约"
+          }
+        ],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only Wave72 source restoration of ordinary profile long-page, unchanged actual handlers and new scoped styles. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "pass": true,
+        "elapsedMs": 30367
+      },
+      "sourceSHA256": "5c1968552bd3537739e12d5ac1383f6c2b370079b3566c9083e1eacda5ff39e8"
+    },
+    {
+      "script": "caper-wave72-profile-long-invite-privacy",
+      "result": {
+        "scope": "Only Wave72 long-page source geometry, existing 19 affected routes and moved existing privacy expansion; no business submit/logout/consent writes",
+        "checks": [
+          {
+            "pass": true,
+            "label": "Source invite CTA follows current existing qualification",
+            "actual": {
+              "candidateCount": 1,
+              "path": "subpackages/activity/share/share"
+            }
+          },
+          {
+            "pass": true,
+            "label": "Privacy starts with original safety form collapsed"
+          },
+          {
+            "pass": true,
+            "label": "Moved request entry reveals actual old manual/export controls without submitting request"
+          },
+          {
+            "pass": true,
+            "label": "No SDK runtime exceptions on affected routes",
+            "actual": []
+          }
+        ],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only Wave72 source restoration of ordinary profile long-page, unchanged actual handlers and new scoped styles. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "pass": true,
+        "elapsedMs": 20502
+      },
+      "sourceSHA256": "24563758c2b958d64c91d11e506ccea5c280f58e2dc53c869289371e8e38c9cc"
+    }
+  ],
+  "retainedZeroCheckHarnessFailures": [
+    {
+      "script": "caper-wave71-compact-center-connect-failed",
+      "result": {
+        "scope": "Only new N2 layout/more menu, actual retained filters/approvals, affected source geometry and existing settings/detail return routes; no approval/notice/clipboard writes",
+        "checks": [],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave71 compact center, host readonly monitor and share background. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "menuBoundary": "Actual UI button taps and actual menu payload; chosen tapIndex callback supplied by SDK, no native action-sheet selection claim",
+        "pass": false,
+        "failure": {
+          "phase": "connect",
+          "message": "timeout waiting for automator response",
+          "stack": "Error: timeout waiting for automator response\n    at Connection.onMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/miniprogram-automator@0.12.1/node_modules/miniprogram-automator/out/Connection.js:1:985)\n    at Transport.emit (node:events:509:28)\n    at WebSocket.<anonymous> (/private/tmp/project-irl-automator/node_modules/.pnpm/miniprogram-automator@0.12.1/node_modules/miniprogram-automator/out/Transport.js:1:220)\n    at WebSocket.onMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/event-target.js:120:16)\n    at WebSocket.emit (node:events:509:28)\n    at Receiver.receiverOnMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/websocket.js:807:20)\n    at Receiver.emit (node:events:509:28)\n    at Receiver.dataMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:448:14)\n    at Receiver.getData (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:377:17)\n    at Receiver.startLoop (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:158:22)"
+        },
+        "elapsedMs": 18045
+      },
+      "sourceSHA256": "9af72b64b356044172ae1e426cc6c27cd9302cf53cf303b4d489ec144683b525"
+    },
+    {
+      "script": "caper-wave71-compact-center-menu-adapter-failed",
+      "result": {
+        "scope": "Only new N2 layout/more menu, actual retained filters/approvals, affected source geometry and existing settings/detail return routes; no approval/notice/clipboard writes",
+        "checks": [],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave71 compact center, host readonly monitor and share background. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "menuBoundary": "Actual UI button taps and actual menu payload; chosen tapIndex callback supplied by SDK, no native action-sheet selection claim",
+        "pass": false,
+        "failure": {
+          "phase": "connect",
+          "message": "Timeout new layout",
+          "stack": "Error: Timeout new layout\n    at until (/private/tmp/caper-wave71-sdk-helpers.cjs:15:127)\n    at async /private/tmp/caper-wave71-compact-center.cjs:7:73\n    at async run (/private/tmp/caper-wave71-sdk-helpers.cjs:22:3)"
+        },
+        "elapsedMs": 15663
+      },
+      "sourceSHA256": "17675edffab7abe33f287c31610d2445a0ad06a61c423732c9e0f9ff69daafb2"
+    },
+    {
+      "script": "caper-wave71-host-monitor-stack-context-failed",
+      "result": {
+        "scope": "Only new host readonly _5 menu/deep URL/actual counters and roster/source geometry/member exclusion/return; no new fixture or business submission",
+        "checks": [],
+        "metrics": [],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only changed Wave71 compact center, host readonly monitor and share background. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "menuBoundary": "Actual source button/menu payload, SDK supplies tapIndex2 callback; native action sheet untested",
+        "pass": false,
+        "failure": {
+          "phase": "host-menu",
+          "message": "page is not on top of page stack",
+          "stack": "Error: page is not on top of page stack\n    at Connection.onMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/miniprogram-automator@0.12.1/node_modules/miniprogram-automator/out/Connection.js:1:985)\n    at Transport.emit (node:events:509:28)\n    at WebSocket.<anonymous> (/private/tmp/project-irl-automator/node_modules/.pnpm/miniprogram-automator@0.12.1/node_modules/miniprogram-automator/out/Transport.js:1:220)\n    at WebSocket.onMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/event-target.js:120:16)\n    at WebSocket.emit (node:events:509:28)\n    at Receiver.receiverOnMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/websocket.js:807:20)\n    at Receiver.emit (node:events:509:28)\n    at Receiver.dataMessage (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:448:14)\n    at Receiver.getData (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:377:17)\n    at Receiver.startLoop (/private/tmp/project-irl-automator/node_modules/.pnpm/ws@6.2.6/node_modules/ws/lib/receiver.js:158:22)"
+        },
+        "elapsedMs": 16849
+      },
+      "sourceSHA256": "a873a1f029fdaf8141d2bcaa412540fd63204a78bf7a0d81f40d956b388e16c4"
+    },
+    {
+      "script": "caper-wave72-profile-long-selector-diagnostic-failed",
+      "result": {
+        "scope": "Only Wave72 long-page source geometry, existing 19 affected routes and moved existing privacy expansion; no business submit/logout/consent writes",
+        "checks": [],
+        "metrics": [
+          {
+            "action": ".me-long-section:nth-child(2) .section-link",
+            "text": "我的收藏与想去待开放♡收藏功能尚未开放通过真实邀请参加活动，或先记录自己的组局想法。输入邀请码",
+            "offset": {
+              "left": 16,
+              "top": 130
+            }
+          }
+        ],
+        "screenshots": [],
+        "exceptions": [],
+        "writes": [],
+        "boundary": "Only Wave72 source restoration of ordinary profile long-page, unchanged actual handlers and new scoped styles. Local synthetic API identities. No full tests, CI, production/device or new business submission. Runtime observations apply only to recorded frozen scopes.",
+        "pass": false,
+        "failure": {
+          "phase": "affected-route .me-long-section:nth-child(2) .section-link",
+          "message": "Timeout subpackages/profile/moments/moments",
+          "stack": "Error: Timeout subpackages/profile/moments/moments\n    at until (eval at <anonymous> (/private/tmp/caper-wave72-profile-sdk-helpers.cjs:1:417), <anonymous>:15:127)\n    at async route (eval at <anonymous> (/private/tmp/caper-wave72-profile-sdk-helpers.cjs:1:417), <anonymous>:20:30)\n    at async /private/tmp/caper-wave72-profile-long-top-routes-remaining.cjs:6:294\n    at async run (eval at <anonymous> (/private/tmp/caper-wave72-profile-sdk-helpers.cjs:1:417), <anonymous>:22:3)",
+          "currentPage": "pages/me/me"
+        },
+        "elapsedMs": 15656
+      },
+      "sourceSHA256": "cd27ee28dc263c48d10568f4863bb435fcf502183cb305942adc92955bad9a1d"
+    }
+  ],
+  "duplicateFailureCopiesExcluded": true,
+  "businessWrites": 0,
+  "CLI": {
+    "size": {
+      "total": 4335244,
+      "packages": [
+        {
+          "name": "TOTAL",
+          "size": 4335244
+        },
+        {
+          "name": "main",
+          "size": 2010442
+        },
+        {
+          "name": "/subpackages/activity/",
+          "size": 1369494
+        },
+        {
+          "name": "/subpackages/profile/",
+          "size": 955308
+        }
+      ]
+    }
+  },
+  "mainMarginBytes": 86710,
+  "runtimeExceptions": 0,
+  "nativeForeground": "Mac locked; no new native computer-use clicks",
+  "nativeMenu": "SDK callback selected; native action sheet not accepted",
+  "screenshotsViewed": 7,
+  "deviceProductionOperationalAcceptance": false
+}

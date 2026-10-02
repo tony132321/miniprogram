@@ -1,0 +1,347 @@
+{
+  "scopeGuard": "loadState === 'READY' && !successState && !joinConfirmation && activeSection === 'contentSection'",
+  "fullWXMLInverseSHA": "27614e27494fa920cff810a633ff5f89e4ad7ca1c839c09b7fa902ba4588fd3a",
+  "baselineWXMLSHA": "27614e27494fa920cff810a633ff5f89e4ad7ca1c839c09b7fa902ba4588fd3a",
+  "inverseExceptions": [
+    {
+      "rootAuthorized": "Two PG09 rooftop image references move into same activity package",
+      "old": "/assets/stitch/pg09_expense_rooftop.jpg",
+      "new": "./assets/pg09-expense-rooftop.jpg",
+      "count": 2
+    }
+  ],
+  "oldCSSPrefixBytes": 162268,
+  "oldCSSPrefixSHA": "794cd1b6235a51eb59d080e016b2a6faa08f7b85e44d189e3d379a852e441838",
+  "JSJSONProtected": [
+    {
+      "path": "/Users/tsb/Documents/小程序/miniprogram/subpackages/activity/event/event.js",
+      "bytes": 104047,
+      "sha256": "ccb5b5fede066ba0533b82cb564e816cc3d45ca96778a0d25ac5286d3c11a4bd"
+    },
+    {
+      "path": "/Users/tsb/Documents/小程序/miniprogram/subpackages/activity/event/event.json",
+      "bytes": 69,
+      "sha256": "bf33dc7da099d240642a50fe3cf44cee01a2b282f70a80a313c79317c76ad10b"
+    }
+  ],
+  "oldAssetsProtected": 81,
+  "bindingContracts": 8,
+  "oldBindingContracts": [
+    {
+      "tag": "button",
+      "attributes": {
+        "id": "contentRetryButton",
+        "bindtap": "refresh"
+      },
+      "ancestorConditions": [
+        "{{contentLoadState === 'ERROR'}}"
+      ],
+      "ancestorLoops": []
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{row.status === 'REJECTED' && row.author_id === currentUser}}",
+        "bindtap": "goToContentAppeal"
+      },
+      "ancestorConditions": [],
+      "ancestorLoops": [
+        {
+          "wx:for": "{{contentTimeline}}",
+          "wx:for-item": "row",
+          "wx:key": "id"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{row.kind === 'QUESTION' && row.status === 'APPROVED' && (isHost || canManageAnnouncements) && (!row.fact_event_version || row.fact_event_version === event.version) && (event.status === 'RECRUITING' || event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS')}}",
+        "data-id": "{{row.id}}",
+        "bindtap": "replyToQuestion"
+      },
+      "ancestorConditions": [],
+      "ancestorLoops": [
+        {
+          "wx:for": "{{contentTimeline}}",
+          "wx:for-item": "row",
+          "wx:key": "id"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{reply.status === 'REJECTED' && reply.author_id === currentUser}}",
+        "bindtap": "goToContentAppeal"
+      },
+      "ancestorConditions": [],
+      "ancestorLoops": [
+        {
+          "wx:for": "{{contentTimeline}}",
+          "wx:for-item": "row",
+          "wx:key": "id"
+        },
+        {
+          "wx:for": "{{row.replies}}",
+          "wx:for-item": "reply",
+          "wx:key": "id"
+        }
+      ]
+    },
+    {
+      "tag": "input",
+      "attributes": {
+        "value": "{{factQuestionText}}",
+        "bindinput": "factQuestionInput"
+      },
+      "ancestorConditions": [
+        "{{canUseCollaboration && (event.status === 'RECRUITING' || event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS')}}"
+      ],
+      "ancestorLoops": []
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{event.status === 'RECRUITING' || event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS'}}",
+        "bindtap": "askFact"
+      },
+      "ancestorConditions": [
+        "{{canUseCollaboration && (event.status === 'RECRUITING' || event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS')}}"
+      ],
+      "ancestorLoops": []
+    },
+    {
+      "tag": "input",
+      "attributes": {
+        "value": "{{questionText}}",
+        "bindinput": "questionInput"
+      },
+      "ancestorConditions": [
+        "{{canPostQuestion}}"
+      ],
+      "ancestorLoops": []
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "askQuestion"
+      },
+      "ancestorConditions": [
+        "{{canPostQuestion}}"
+      ],
+      "ancestorLoops": []
+    }
+  ],
+  "finalBindingContracts": [
+    {
+      "tag": "button",
+      "attributes": {
+        "id": "contentRetryButton",
+        "bindtap": "refresh"
+      },
+      "ancestorConditions": [
+        "{{contentLoadState === 'ERROR'}}"
+      ],
+      "ancestorLoops": []
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{row.status === 'REJECTED' && row.author_id === currentUser}}",
+        "bindtap": "goToContentAppeal"
+      },
+      "ancestorConditions": [],
+      "ancestorLoops": [
+        {
+          "wx:for": "{{contentTimeline}}",
+          "wx:for-item": "row",
+          "wx:key": "id"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{row.kind === 'QUESTION' && row.status === 'APPROVED' && (isHost || canManageAnnouncements) && (!row.fact_event_version || row.fact_event_version === event.version) && (event.status === 'RECRUITING' || event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS')}}",
+        "data-id": "{{row.id}}",
+        "bindtap": "replyToQuestion"
+      },
+      "ancestorConditions": [],
+      "ancestorLoops": [
+        {
+          "wx:for": "{{contentTimeline}}",
+          "wx:for-item": "row",
+          "wx:key": "id"
+        }
+      ]
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{reply.status === 'REJECTED' && reply.author_id === currentUser}}",
+        "bindtap": "goToContentAppeal"
+      },
+      "ancestorConditions": [],
+      "ancestorLoops": [
+        {
+          "wx:for": "{{contentTimeline}}",
+          "wx:for-item": "row",
+          "wx:key": "id"
+        },
+        {
+          "wx:for": "{{row.replies}}",
+          "wx:for-item": "reply",
+          "wx:key": "id"
+        }
+      ]
+    },
+    {
+      "tag": "input",
+      "attributes": {
+        "value": "{{factQuestionText}}",
+        "bindinput": "factQuestionInput"
+      },
+      "ancestorConditions": [
+        "{{canUseCollaboration && (event.status === 'RECRUITING' || event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS')}}"
+      ],
+      "ancestorLoops": []
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "wx:if": "{{event.status === 'RECRUITING' || event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS'}}",
+        "bindtap": "askFact"
+      },
+      "ancestorConditions": [
+        "{{canUseCollaboration && (event.status === 'RECRUITING' || event.status === 'CONFIRMED' || event.status === 'IN_PROGRESS')}}"
+      ],
+      "ancestorLoops": []
+    },
+    {
+      "tag": "input",
+      "attributes": {
+        "value": "{{questionText}}",
+        "bindinput": "questionInput"
+      },
+      "ancestorConditions": [
+        "{{canPostQuestion}}"
+      ],
+      "ancestorLoops": []
+    },
+    {
+      "tag": "button",
+      "attributes": {
+        "bindtap": "askQuestion"
+      },
+      "ancestorConditions": [
+        "{{canPostQuestion}}"
+      ],
+      "ancestorLoops": []
+    }
+  ],
+  "WXMLStructure": "parsed",
+  "newAssets": [
+    {
+      "path": "/Users/tsb/Documents/小程序/miniprogram/subpackages/activity/event/assets/pg07-star-w400-f1-181e00.svg",
+      "bytes": 189,
+      "sha256": "8eaead5cd1f6e63865d3cad0ceaf21d2668f373d2a6689a65563fa885f688196"
+    },
+    {
+      "path": "/Users/tsb/Documents/小程序/miniprogram/subpackages/activity/event/assets/pg07-campaign-w400-f1-34c759.svg",
+      "bytes": 433,
+      "sha256": "808d3bd9c993f39a955da5e2502741e89f5a578c67a7a08d1bd0509d5127c888"
+    },
+    {
+      "path": "/Users/tsb/Documents/小程序/miniprogram/subpackages/activity/event/assets/pg07-favorite-w400-f0-737687.svg",
+      "bytes": 1122,
+      "sha256": "98ef77319113f83c937ebcde4aea34fa47fca63f0269a99ba27830302911162a"
+    },
+    {
+      "path": "/Users/tsb/Documents/小程序/miniprogram/subpackages/activity/event/assets/pg07-image-w400-f0-737687.svg",
+      "bytes": 692,
+      "sha256": "8defc04cf085ef24db4f2b53e1d8c4a6e63e38f86b39cf540f5c87acc7bcd85b"
+    },
+    {
+      "path": "/Users/tsb/Documents/小程序/miniprogram/subpackages/activity/event/assets/pg07-arrow_upward-w400-f0-ffffff.svg",
+      "bytes": 173,
+      "sha256": "71d6fc2ac4aad613e672f353a0fce7286ac7fc715d855329b3df1c6915473ba5"
+    },
+    {
+      "path": "/Users/tsb/Documents/小程序/miniprogram/subpackages/activity/event/assets/pg07-smile.svg",
+      "bytes": 350,
+      "sha256": "837c56493cd003e543ad2a179d2c698700dc462f58055c84463470fc8178594d"
+    }
+  ],
+  "sourceAssetReferences": 9,
+  "effectiveFill1": [
+    {
+      "name": "star",
+      "renderedGlyph": "star.fill",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rclt",
+            "lookups": [
+              1
+            ]
+          },
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": [
+          {
+            "feature": "rclt",
+            "lookup": 1,
+            "from": "star",
+            "to": "star.fill"
+          }
+        ]
+      },
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg07-star-w400-f1-181e00.svg"
+    },
+    {
+      "name": "campaign",
+      "renderedGlyph": "campaign.fill",
+      "effectiveGSUB": {
+        "ligatureLookup": 0,
+        "activeLatnFeatures": [
+          {
+            "feature": "rclt",
+            "lookups": [
+              1
+            ]
+          },
+          {
+            "feature": "rlig",
+            "lookups": [
+              0
+            ]
+          }
+        ],
+        "substitutions": [
+          {
+            "feature": "rclt",
+            "lookup": 1,
+            "from": "campaign",
+            "to": "campaign.fill"
+          }
+        ]
+      },
+      "runtimePath": "miniprogram/subpackages/activity/event/assets/pg07-campaign-w400-f1-34c759.svg"
+    }
+  ],
+  "scopeWXMLSHA": "e9ca2b486af998cd51850737b68d495b40e4228855d00e45b1cb98bf70a92213",
+  "scopeCSSSHA": "e9f24ad7eb7d07c55c588a87053dda202c04f1d02e669fcee1dd5826b67decc1",
+  "verificationBoundary": "One necessary PG07 source/resource/binding/protection static check. No app runtime, SDK, CLI, full suite, or old142 rerun.",
+  "nativeHeaderAdaptation": {
+    "source": "fixed top0 / 64px + actual status",
+    "native": "sticky top0 reserves source header height in natural flow, actual statusBarHeight/headerPaddingRight retained",
+    "finalPointChange": "PG07-only relative→sticky;top0, no old declaration changed"
+  }
+}

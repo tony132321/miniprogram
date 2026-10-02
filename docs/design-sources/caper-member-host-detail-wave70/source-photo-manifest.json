@@ -1,0 +1,66 @@
+[
+  {
+    "page": "_2",
+    "role": "hero",
+    "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuAkBRqDYMHJu3byE0x6ZsRrFiCMfhICgNqG4aX29DAsLB6JQceHvz1OgAIhgXGpQ1NUZbN0PindFYR2qL-rQX-V9_giyyQNmITksIt6CWGiHpVEmEJIYVWaIxzNVBmkqD3JkBoFfJzo1BFSCI2KTxDbUb7CCHqu02WhO8jCuoxRLoqstoaYtLammRHbosDORPtacvwFyf3bJZTY4yVhnPpXTMQBeneI6PLZMdMeN4RljHjr7RrSEYlPRw",
+    "filename": "detail2-hero.jpg",
+    "bytes": 61951,
+    "sha256": "c15f89f32e5d3566cfc04e3013af6f30517f84117bbcbaeaf5834fd4103e7754",
+    "responseHeaders": "/private/tmp/caper-wave70-details/detail2-hero.jpg.headers",
+    "semantics": "original source illustrative scene; map never actual event coordinates/navigation",
+    "actualFormat": "JPEG",
+    "runtimeFile": "pgd-member-hero.jpg",
+    "decodedSize": [
+      512,
+      279
+    ]
+  },
+  {
+    "page": "_2",
+    "role": "map",
+    "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuCr6cZG-udy1R9DtFwK3FZCzAvmaxQ4Ygrm8-mKxBqFgnygeBrDVpWJR4_m4QtqHXYus69_sAGNs-aUUExSrew2OaJOv962ktqMrerjDuPgXLMFiiggg-xLbXiExeDdDoXWa_wBUYQEJ0nyz5Ae9UgS2wzgYRwnefblRZ5vzhPQ3A1kW8vbSZgr7uiHGFPGsOX2Nh4ipILvTF7Evhw3dPudz7QIjFe067K864s9mWndA7I19XyMZbpQAg",
+    "filename": "detail2-map.jpg",
+    "bytes": 152383,
+    "sha256": "e1d1bcce15bff6996ff3a7bd9f3bb25061ab760221376a7fe8f1523b6b587e64",
+    "responseHeaders": "/private/tmp/caper-wave70-details/detail2-map.jpg.headers",
+    "semantics": "original source illustrative scene; map never actual event coordinates/navigation",
+    "actualFormat": "PNG",
+    "runtimeFile": "pgd-map-illustrative.png",
+    "decodedSize": [
+      512,
+      512
+    ]
+  },
+  {
+    "page": "_4",
+    "role": "hero",
+    "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuABaoqehUb9vREoj3NtqXORQ6SsPFR9bXD8rowIWKfOA4C-bbk4GLTNTLxCGVRf-SX-ypfMYGRQcyS5PvBXbQiiCUfzU6EYpkVMNNZwVT9KQ7sSZV-e4uvF696fDTHIqpcuUSA7XecRvpBwKUG8R-37NWLkHqM7uHFO5jbX-8zw-4FY8QOv5WyKDQj0YgGogcfcQ0VShrnj2NqwqKDxf66p_JafUzMcL8AE_lyCJoptzVi1W4q2E06M8g",
+    "filename": "detail4-hero.jpg",
+    "bytes": 59343,
+    "sha256": "1783413ef8fb173f0525e5362bb2066aa89ed974a399e6ffa91ae7638d573432",
+    "responseHeaders": "/private/tmp/caper-wave70-details/detail4-hero.jpg.headers",
+    "semantics": "original source illustrative scene; map never actual event coordinates/navigation",
+    "actualFormat": "JPEG",
+    "runtimeFile": "pgd-host-hero.jpg",
+    "decodedSize": [
+      512,
+      279
+    ]
+  },
+  {
+    "page": "_4",
+    "role": "map",
+    "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuBfZr-UVw03kUhoQTe6W5aF15S-Y4A0gTQDoJXZ2l44LGXoELliYI4VI8wVE56ZlltvR9syqViJ9j1_l2w4ZfBmXpyOUGLPzwZ05cAKG001kmy3A_Eq3a1MRDvWPbdZNYaFan6VRMC25EtxNw6MoBiSkgHU-iZUw7hotYLbTvsXpwpENeHofMyI66B0og0Q3d2Sf6YUUaktANl_K-VIlS6XJvLrpNfO0GHsMAz4pwpAXsB_cVxEBZ67Ng",
+    "filename": "detail4-map.jpg",
+    "bytes": 152383,
+    "sha256": "e1d1bcce15bff6996ff3a7bd9f3bb25061ab760221376a7fe8f1523b6b587e64",
+    "responseHeaders": "/private/tmp/caper-wave70-details/detail4-map.jpg.headers",
+    "semantics": "original source illustrative scene; map never actual event coordinates/navigation",
+    "actualFormat": "PNG",
+    "runtimeFile": "pgd-map-illustrative.png",
+    "decodedSize": [
+      512,
+      512
+    ]
+  }
+]

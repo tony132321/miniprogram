@@ -1,0 +1,22 @@
+[
+  {
+    "path": "miniprogram/pages/messages/assets/wave74-inbox-people.svg",
+    "sourceLine": 285,
+    "bytes": 364,
+    "sha256": "73eb0f340370629c4852237533cea9751888524a15b085e42b6f9c94f5f8adc6",
+    "originalChildren": "<path d=\"M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v1h8v-1zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 16v-1a4.98 4.98 0 00-1.5-3.55 3.99 3.99 0 012.5 3.55v1h-1zM4.5 11.45A4.98 4.98 0 003 15v1H2v-1a3.99 3.99 0 012.5-3.55z\"></path>",
+    "childrenSha256": "a0475b4111b9ab2f45b66acee31c943612e0b4a6c95c320205ffa16a37240839",
+    "color": "#059669",
+    "source": "User-supplied caper_3 inline SVG; no separately supplied external license. No invented MIT/Apache claim."
+  },
+  {
+    "path": "miniprogram/pages/messages/assets/wave74-inbox-pin.svg",
+    "sourceLine": 299,
+    "bytes": 254,
+    "sha256": "4fd6d2c2fb7de30ec688d4fec4b27d67c6e9b84a2b2aa77a9154ce88b3c22e50",
+    "originalChildren": "<path clip-rule=\"evenodd\" d=\"M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z\" fill-rule=\"evenodd\"></path>",
+    "childrenSha256": "0a06351c7a9110d2f568382f88e5c1f406646309d25ec164163a9ba5b570bba1",
+    "color": "#f43f5e",
+    "source": "User-supplied caper_3 inline SVG; no separately supplied external license. No invented MIT/Apache claim."
+  }
+]

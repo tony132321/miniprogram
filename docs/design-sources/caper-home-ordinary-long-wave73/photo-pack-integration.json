@@ -1,0 +1,203 @@
+{
+  "authorization": "root actual CLI/SDK prototype passed and exact 11-key API handed off; owner only replaces 11 nodes plus explicit geometry class selectors",
+  "componentTag": "reference-image",
+  "componentOptions": {
+    "virtualHost": true,
+    "styleIsolation": "shared",
+    "externalClasses": [
+      "photo-class"
+    ]
+  },
+  "rootIndexJSONChanges": [
+    {
+      "old": "{\"navigationStyle\":\"custom\",\"navigationBarTitleText\":\"耍起 CAPER\",\"navigationBarBackgroundColor\":\"#ffffff\",\"navigationBarTextStyle\":\"black\"}\n",
+      "new": "{\n  \"navigationStyle\": \"custom\",\n  \"navigationBarTitleText\": \"耍起 CAPER\",\n  \"navigationBarBackgroundColor\": \"#ffffff\",\n  \"navigationBarTextStyle\": \"black\",\n  \"usingComponents\": {\n    \"reference-image\": \"/subpackages/profile/components/reference-image/reference-image\"\n  },\n  \"componentPlaceholder\": {\n    \"reference-image\": \"view\"\n  }\n}\n",
+      "rootOnlyKeys": [
+        "usingComponents.reference-image",
+        "componentPlaceholder.reference-image"
+      ],
+      "meaning": "root-only asynchronous cross-package component registration, all prior parsed keys preserved"
+    }
+  ],
+  "consumers": [
+    {
+      "consumerClass": "w73-photo-brand-party",
+      "photoKey": "home-brand-party",
+      "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-brand-party.jpg",
+      "photoClass": "ribbon-image w73-photo-brand-party",
+      "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/brand-party.jpg",
+      "sourceSHA256": "3365ce00ca5e741f4cbfbd5cf9ed76b8e0f821f83a5235e7182a6b41164e1d6a",
+      "bytes": 67934
+    },
+    {
+      "consumerClass": "w73-photo-hot-tennis",
+      "photoKey": "home-hot-tennis",
+      "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-hot-tennis.jpg",
+      "photoClass": "w73-photo-hot-tennis home-hot-photo",
+      "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/hot-tennis.jpg",
+      "sourceSHA256": "17d3ced8567411d7b67e5643c486c1d1862aa6d154cad5613b8637545c34db30",
+      "bytes": 46931
+    },
+    {
+      "consumerClass": "w73-photo-hot-coffee",
+      "photoKey": "home-hot-coffee",
+      "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-hot-coffee.jpg",
+      "photoClass": "w73-photo-hot-coffee home-hot-photo",
+      "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/hot-coffee.jpg",
+      "sourceSHA256": "789626490bad53fe814fe1194a7ffa3dad1121719744c9a781e587e80fc4ded5",
+      "bytes": 61237
+    },
+    {
+      "consumerClass": "w73-photo-hot-frisbee",
+      "photoKey": "home-hot-frisbee",
+      "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-hot-frisbee.jpg",
+      "photoClass": "w73-photo-hot-frisbee home-hot-photo",
+      "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/hot-frisbee.jpg",
+      "sourceSHA256": "1d496fa254500f6a66310fadfecbd546457bcdc6d9982313dcbcf905903bbc4f",
+      "bytes": 70328
+    },
+    {
+      "consumerClass": "w73-photo-hot-boardgame",
+      "photoKey": "home-hot-boardgame",
+      "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-hot-boardgame.jpg",
+      "photoClass": "w73-photo-hot-boardgame home-hot-photo",
+      "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/hot-boardgame.jpg",
+      "sourceSHA256": "dfe5dc41e9e955bae653a9c1095c00675f17bf96d96bdef42bbfc8223c2d98e2",
+      "bytes": 62758
+    },
+    {
+      "consumerClass": "w73-photo-idea-badminton",
+      "photoKey": "home-idea-badminton",
+      "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-idea-badminton.jpg",
+      "photoClass": "w73-photo-idea-badminton home-idea-photo",
+      "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/idea-badminton.jpg",
+      "sourceSHA256": "85c9aae86f539cab1e6f06254f49165c6e6c1fe5e688c5341bf202c8a4146189",
+      "bytes": 33316
+    },
+    {
+      "consumerClass": "w73-photo-idea-coffee",
+      "photoKey": "home-idea-coffee",
+      "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-idea-coffee.jpg",
+      "photoClass": "w73-photo-idea-coffee home-idea-photo",
+      "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/idea-coffee.jpg",
+      "sourceSHA256": "5c0350df75d28b6a38499477eabd40e6889f8400f9e34708aae54b1419608131",
+      "bytes": 72113
+    },
+    {
+      "consumerClass": "w73-photo-idea-cycling",
+      "photoKey": "home-idea-cycling",
+      "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-idea-cycling.jpg",
+      "photoClass": "w73-photo-idea-cycling home-idea-photo",
+      "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/idea-cycling-illustration.jpg",
+      "sourceSHA256": "d24a483e4f1042c527f414c436edcc895a68c2709f9dbc269cdca2c7ac77e745",
+      "bytes": 51100
+    },
+    {
+      "consumerClass": "w73-photo-collage-main",
+      "photoKey": "home-collage-main",
+      "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-collage-main.jpg",
+      "photoClass": "w73-photo-collage-main home-collage-photo",
+      "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/collage-main.jpg",
+      "sourceSHA256": "e990073eed579ac88dd91be60ff6c1e4888fe803fb53ab1ac9383ab7164d9dca",
+      "bytes": 77396
+    },
+    {
+      "consumerClass": "w73-photo-collage-dinner",
+      "photoKey": "home-collage-dinner",
+      "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-collage-dinner.jpg",
+      "photoClass": "w73-photo-collage-dinner home-collage-photo",
+      "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/collage-dinner.jpg",
+      "sourceSHA256": "e111454a86e9b5ef33a7fe5774092f74f39cfbe574e356baf74f0432bf8829af",
+      "bytes": 67130
+    },
+    {
+      "consumerClass": "w73-photo-collage-grass",
+      "photoKey": "home-collage-grass",
+      "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-collage-grass.jpg",
+      "photoClass": "w73-photo-collage-grass home-collage-photo",
+      "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/collage-grass.jpg",
+      "sourceSHA256": "969e214d70fe40a4933f19c4022b79a19cc0e7f0e889d2975bdf57743ff4ecb2",
+      "bytes": 73338
+    }
+  ],
+  "WXMLChanges": [
+    {
+      "old": "<image class=\"ribbon-image w73-photo-brand-party\" src=\"/assets/stitch/pg08_checkin_rooftop.jpg\" mode=\"aspectFill\" />",
+      "new": "<reference-image photo-key=\"home-brand-party\" photo-class=\"ribbon-image w73-photo-brand-party\" />",
+      "sourceRole": "brand-party"
+    },
+    {
+      "old": "<image class=\"w73-photo-hot-tennis\" src=\"/assets/stitch/caper_discover_basketball.jpg\" mode=\"aspectFill\"/>",
+      "new": "<reference-image photo-key=\"home-hot-tennis\" photo-class=\"w73-photo-hot-tennis home-hot-photo\" />",
+      "sourceRole": "hot-tennis"
+    },
+    {
+      "old": "<image class=\"w73-photo-hot-coffee\" src=\"/assets/stitch/caper_discover_coffee.jpg\" mode=\"aspectFill\"/>",
+      "new": "<reference-image photo-key=\"home-hot-coffee\" photo-class=\"w73-photo-hot-coffee home-hot-photo\" />",
+      "sourceRole": "hot-coffee"
+    },
+    {
+      "old": "<image class=\"w73-photo-hot-frisbee\" src=\"/assets/stitch/caper_home_hiking.jpg\" mode=\"aspectFill\"/>",
+      "new": "<reference-image photo-key=\"home-hot-frisbee\" photo-class=\"w73-photo-hot-frisbee home-hot-photo\" />",
+      "sourceRole": "hot-frisbee"
+    },
+    {
+      "old": "<image class=\"w73-photo-hot-boardgame\" src=\"/assets/stitch/caper_discover_boardgame.jpg\" mode=\"aspectFill\"/>",
+      "new": "<reference-image photo-key=\"home-hot-boardgame\" photo-class=\"w73-photo-hot-boardgame home-hot-photo\" />",
+      "sourceRole": "hot-boardgame"
+    },
+    {
+      "old": "<image class=\"w73-photo-idea-badminton\" src=\"/assets/stitch/caper_home_badminton.jpg\" mode=\"aspectFill\"/>",
+      "new": "<reference-image photo-key=\"home-idea-badminton\" photo-class=\"w73-photo-idea-badminton home-idea-photo\" />",
+      "sourceRole": "idea-badminton"
+    },
+    {
+      "old": "<image class=\"w73-photo-idea-coffee\" src=\"/assets/stitch/caper_discover_coffee.jpg\" mode=\"aspectFill\"/>",
+      "new": "<reference-image photo-key=\"home-idea-coffee\" photo-class=\"w73-photo-idea-coffee home-idea-photo\" />",
+      "sourceRole": "idea-coffee"
+    },
+    {
+      "old": "<image class=\"w73-photo-idea-cycling\" src=\"/assets/stitch/caper_discover_citywalk.jpg\" mode=\"aspectFill\"/>",
+      "new": "<reference-image photo-key=\"home-idea-cycling\" photo-class=\"w73-photo-idea-cycling home-idea-photo\" />",
+      "sourceRole": "idea-cycling"
+    },
+    {
+      "old": "<image class=\"w73-photo-collage-main\" src=\"/assets/stitch/caper_home_dinner.jpg\" mode=\"aspectFill\"/>",
+      "new": "<reference-image photo-key=\"home-collage-main\" photo-class=\"w73-photo-collage-main home-collage-photo\" />",
+      "sourceRole": "collage-main"
+    },
+    {
+      "old": "<image class=\"w73-photo-collage-dinner\" src=\"/assets/stitch/caper_discover_coffee.jpg\" mode=\"aspectFill\"/>",
+      "new": "<reference-image photo-key=\"home-collage-dinner\" photo-class=\"w73-photo-collage-dinner home-collage-photo\" />",
+      "sourceRole": "collage-dinner"
+    },
+    {
+      "old": "<image class=\"w73-photo-collage-grass\" src=\"/assets/stitch/caper_home_hiking.jpg\" mode=\"aspectFill\"/>",
+      "new": "<reference-image photo-key=\"home-collage-grass\" photo-class=\"w73-photo-collage-grass home-collage-photo\" />",
+      "sourceRole": "collage-grass"
+    }
+  ],
+  "CSSSelectorChanges": [
+    {
+      "old": ".home-long-reference .home-hot-grid image{",
+      "new": ".home-long-reference .home-hot-grid image,.home-long-reference .home-hot-grid .home-hot-photo{",
+      "count": 2
+    },
+    {
+      "old": ".home-long-reference .home-idea-list image{",
+      "new": ".home-long-reference .home-idea-list image,.home-long-reference .home-idea-list .home-idea-photo{",
+      "count": 1
+    },
+    {
+      "old": ".home-long-reference .home-photo-collage image{",
+      "new": ".home-long-reference .home-photo-collage image,.home-long-reference .home-photo-collage .home-collage-photo{",
+      "count": 1
+    },
+    {
+      "old": ".home-long-reference .home-hot-grid .home-hot-hover image{",
+      "new": ".home-long-reference .home-hot-grid .home-hot-hover image,.home-long-reference .home-hot-grid .home-hot-hover .home-hot-photo{",
+      "count": 1
+    }
+  ],
+  "rootOwnedNativeProofBoundary": "Root reports 12 source JPEG getImageInfo succeeded, native48x48/r16 external photo geometry, unknown key clears; no owner SDK/CLI run. SDK ordinary virtualHost selector harness failure retained by root."
+}

@@ -1,0 +1,15 @@
+✔ compact and card layouts retain the same collection, filters, approval state and paging without API reload (2.158834ms)
+✔ compact activity badge counts only loaded actual activity unread records instead of server total (0.381333ms)
+✔ both layouts keep the original guarded notification-settings destination (0.408ms)
+✔ account or session rotation makes a pending center menu unable to switch layout or send settings intent (1.486375ms)
+✔ hide, refresh, a mode round trip and a newer menu invalidate old center menu callbacks (1.7295ms)
+✔ center entry and identity reset return to default cards and clear the loaded activity count (0.384417ms)
+✔ invalid selections, noncenter mode, unsupported platform and anonymous identity stay closed safely (1.094291ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 62.843583

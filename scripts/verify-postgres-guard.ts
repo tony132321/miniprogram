@@ -11,7 +11,8 @@ export function validatePostgresTestUrl(raw: string): string {
   return database;
 }
 
-export async function assertEmptyPostgresTestDatabase(probe: Probe, database: string): Promise<void> {
+export async function assertEmptyPostgresTestDatabase(probe: Probe, database: string,
+  options: { allowContainerServiceAddress?: boolean } = {}): Promise<void> {
   const { rows } = await probe.query(`SELECT current_database() AS database, host(inet_server_addr()) AS server_address,
     current_schema() AS active_schema,
     (SELECT count(*)::int FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
@@ -20,7 +21,9 @@ export async function assertEmptyPostgresTestDatabase(probe: Probe, database: st
     (SELECT count(*)::int FROM pg_namespace
       WHERE nspname NOT IN ('public','information_schema') AND nspname !~ '^pg_') AS extra_schemas`);
   const state = rows[0];
-  if (!state || state.database !== database || state.server_address !== '127.0.0.1' ||
+  if (!state || state.database !== database ||
+    (state.server_address !== '127.0.0.1' &&
+      !(options.allowContainerServiceAddress && state.server_address !== null)) ||
     state.active_schema !== 'public' || state.user_relations !== 0 || state.extra_schemas !== 0)
     throw new Error('Verification requires an empty loopback PostgreSQL database with public as the active schema');
 }

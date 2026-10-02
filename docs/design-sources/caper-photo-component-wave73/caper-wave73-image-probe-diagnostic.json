@@ -1,0 +1,30 @@
+{
+  "route": "pages/index/index",
+  "probeKey": "home-brand-party",
+  "component": null,
+  "values": [
+    {
+      "dataset": {},
+      "left": 20,
+      "right": 68,
+      "top": 120,
+      "bottom": 168,
+      "width": "48px",
+      "height": "48px",
+      "border-radius": "0px"
+    },
+    null,
+    {
+      "dataset": {},
+      "left": 20,
+      "right": 68,
+      "top": 120,
+      "bottom": 168,
+      "width": "48px",
+      "height": "48px",
+      "src": "/subpackages/profile/components/reference-image/assets/home-brand-party.jpg",
+      "border-radius": "16px"
+    },
+    null
+  ]
+}

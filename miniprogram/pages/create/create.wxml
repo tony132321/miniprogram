@@ -1,72 +1,263 @@
-<view>
-  <text>活动信息以确认后的字段为准</text>
-  <textarea placeholder="一句话描述活动（可选）" value="{{aiText}}" bindinput="aiInput" />
-  <button bindtap="suggest" disabled="{{suggestionLoading}}">提取草稿字段</button>
-  <view wx:if="{{suggestionLoading}}">正在提取字段；下方表单仍可手动填写。</view>
-  <view wx:if="{{suggestionSlow}}">提取较慢，可以继续等待，也可以转为手动填写。</view>
-  <button id="manualSuggestionButton" wx:if="{{suggestionSlow}}" bindtap="cancelSuggestion">继续手动填写（保留原输入）</button>
-  <view wx:for="{{suggestionNotes}}" wx:key="*this">{{item}}</view>
-  <view wx:if="{{suggestionUnknown}}">仍需确认：{{suggestionUnknown}}</view>
-  <view wx:if="{{message}}" class="muted">{{message}}</view>
-  <view wx:if="{{editorLoadState === 'LOADING'}}">正在读取活动当前版本…</view>
-  <view wx:if="{{editorLoadState === 'ERROR'}}">
-    <button bindtap="retryEditorLoad">重试载入活动</button>
-    <button bindtap="returnToMyActivities">回到我的活动</button>
+<view class="create-page stage-{{stage}} {{stage === 'FORM' && !editingEvent ? 'form-reference' : ''}} {{stage === 'REVIEW' && publishPreview && !changePreview ? 'review-reference' : ''}}">
+  <block wx:if="{{editingEvent || stage === 'IDEA' || (stage === 'REVIEW' && !publishPreview)}}">
+  <view class="page-header" style="padding-top: {{statusBarHeight}}px">
+    <button class="header-back" bindtap="backFromCreate" aria-label="返回"><image wx:if="{{stage === 'IDEA'}}" class="idea-header-back-symbol" src="/pages/create/assets/back.svg" mode="aspectFit"/><text wx:else>‹</text></button>
+    <button wx:if="{{stage !== 'REVIEW'}}" class="header-profile" style="right: {{headerActionInsets.profile}}" bindtap="goProfile" aria-label="进入我的页面"><image wx:if="{{stage === 'IDEA'}}" class="idea-header-person-symbol" src="/pages/create/assets/person.svg" mode="aspectFit"/><view wx:else class="header-profile-glyph"></view></button>
+    <view wx:if="{{stage === 'FORM' && !editingEvent}}" class="header-brand"><text class="brand-mark">耍</text><text>耍起 <text class="brand-en">CAPER</text></text></view>
+    <text wx:else class="header-title" style="--idea-title-right: calc({{headerActionInsets.draft}} + 84px)">{{stage === 'IDEA' ? '活动构思' : stage === 'REVIEW' ? '草稿确认' : '编辑活动'}}</text>
+    <button class="header-side" style="right: {{stage === 'REVIEW' ? headerActionInsets.profile : headerActionInsets.draft}}" bindtap="openHeaderAction" aria-label="{{stage === 'REVIEW' ? '草稿确认更多操作' : '打开草稿箱'}}"><block wx:if="{{stage === 'IDEA'}}"><image class="idea-header-drafts-symbol" src="/pages/create/assets/drafts.svg" mode="aspectFit"/><text>草稿箱</text></block><text wx:else>{{stage === 'REVIEW' ? '•••' : '▣ 草稿箱'}}</text></button>
   </view>
-  <view wx:if="{{conflict}}">
-    <view>重新载入将以服务端当前版本替换本页未保存的修改，请先核对。</view>
-    <button bindtap="reloadConflict">载入服务端当前版本</button>
+  </block>
+  <view wx:if="{{stage === 'FORM' && !editingEvent}}" class="reference-form-header" style="padding-top: {{statusBarHeight}}px"><view class="reference-form-nav" style="--form-draft-right: {{headerActionInsets.draft}}"><button class="reference-form-brand" bindtap="backFromCreate" aria-label="返回活动构思"><text class="reference-form-mark">耍</text><view><text>耍起</text><text class="reference-form-brand-en">CAPER</text></view></button><button class="reference-form-drafts" style="right: {{headerActionInsets.draft}}" bindtap="openHeaderAction" aria-label="打开草稿箱"><image src="/pages/create/assets/form-drafts.svg" mode="aspectFit"/><text>草稿箱</text></button><button class="reference-form-profile" style="right: {{headerActionInsets.profile}}" bindtap="goProfile" aria-label="进入我的页面"><image src="/pages/create/assets/form-person.svg" mode="aspectFit"/></button></view></view>
+  <view wx:if="{{stage === 'REVIEW' && publishPreview && !changePreview}}" class="reference-review-header" style="padding-top: {{statusBarHeight}}px"><view class="reference-review-nav"><button class="reference-review-back" bindtap="backFromCreate" aria-label="返回活动表单"><image src="/pages/create/assets/review-back.svg" mode="aspectFit"/></button><text class="reference-review-title">草稿确认</text><button class="reference-review-more" style="right: {{headerActionInsets.profile}}" bindtap="openHeaderAction" aria-label="草稿确认更多操作"><image src="/pages/create/assets/review-more.svg" mode="aspectFit"/></button></view></view>
+  <view wx:if="{{stage === 'IDEA'}}" class="idea-header-spacer" style="height: {{statusBarHeight + 56}}px"></view>
+
+  <view wx:if="{{message}}" class="notice">{{message}}</view>
+  <view wx:if="{{editorLoadState === 'LOADING'}}" class="notice">正在读取活动当前版本…</view>
+  <view wx:if="{{editorLoadState === 'ERROR'}}" class="notice"><text>活动读取失败。</text><button class="inline-action" bindtap="retryEditorLoad">重试载入</button><button class="inline-action" bindtap="returnToMyActivities">回到我的活动</button></view>
+  <view wx:if="{{conflict}}" class="notice warning"><text>活动版本已变化，重新载入会替换本页未保存的修改。</text><button class="inline-action" bindtap="reloadConflict">载入服务端当前版本</button></view>
+  <view wx:if="{{safetyMessage}}" class="notice warning"><text>{{safetyMessage}}</text><button class="inline-action" bindtap="retrySafety">重试读取状态</button></view>
+
+  <view wx:if="{{stage === 'IDEA'}}" class="idea-page">
+    <view class="hero">
+      <view class="hero-copy">
+        <view class="hero-title"><view>本地构思，</view><view>把想法变成活动草稿</view></view>
+        <view class="idea-hero-substack"><view class="hero-subtitle">一句话说出你的想法</view>
+        <view class="hero-middle">发布前由你逐项确认</view>
+        <view class="hero-caption"><text>从创意到邀请，轻松搞定</text><image class="idea-hero-arrow-symbol" src="/pages/create/assets/hero-arrow.svg" mode="aspectFit"/></view></view>
+        <button class="hero-truth" bindtap="openForm">本地规则提取 · 也可手动填写 ›</button>
+      </view>
+      <view class="orb-wrap"><view class="orb-tag"><text>Your Social Copilot</text><image class="idea-orb-sparkle-symbol" src="/pages/create/assets/auto-awesome.svg" mode="aspectFit"/></view><view class="orb"><view class="idea-orb-reflection"></view><view class="eyes"><view class="idea-orb-eye"></view><view class="idea-orb-eye"></view></view><view class="cheeks"><view class="idea-orb-cheek"></view><view class="idea-orb-cheek"></view></view><view class="idea-orb-particle"></view></view></view>
+    </view>
+    <view class="prompt-card">
+      <textarea class="idea-input" placeholder="描述你心中的活动想法，例如时间、地点、人数或主题氛围..." placeholder-class="idea-input-placeholder" value="{{aiText}}" maxlength="300" bindinput="aiInput"/>
+      <view class="prompt-foot"><view class="count"><view class="idea-count-dot"></view><text>{{aiText.length}}</text><text class="idea-count-limit">/300</text></view><button class="send-button" disabled="{{suggestionLoading || !aiText}}" bindtap="suggest" aria-label="提取活动草稿"><image class="idea-send-symbol" src="/pages/create/assets/send.svg" mode="aspectFit"/></button></view>
+    </view>
+    <view wx:if="{{suggestionLoading}}" class="hint">正在提取可用字段，下方表单仍可手动填写。</view>
+    <view wx:if="{{suggestionSlow}}" class="hint">提取较慢，可以继续等待。<button id="manualSuggestionButton" class="inline-action" bindtap="cancelSuggestion">继续手动填写</button></view>
+    <view class="inspiration-head"><view class="section-head"><text>试试这些灵感</text><text class="popular">POPULAR</text></view><button class="rotate-button" bindtap="rotateInspirations"><text>换一批</text><image class="idea-cached-symbol" src="/pages/create/assets/cached.svg" mode="aspectFit"/></button></view>
+    <view class="idea-inspiration-list"><button wx:for="{{inspirations}}" wx:key="title" class="inspiration" data-index="{{index}}" bindtap="selectInspiration"><view class="inspiration-icon icon-{{index}}">{{item.icon === '☕' ? '☕️' : item.icon}}</view><view class="inspiration-copy"><view class="inspiration-title">{{item.title}}<text wx:if="{{item.available === false}}" class="inspiration-unavailable">暂未开放</text></view><view class="inspiration-subtitle">{{item.subtitle}}</view></view><image class="idea-inspiration-forward-symbol" src="/pages/create/assets/forward.svg" mode="aspectFit"/></button></view>
+    <view class="idea-quote"><text>Good Ideas Create Great People</text><image class="idea-quote-arrow-symbol" src="/pages/create/assets/trending-flat.svg" mode="aspectFit"/></view>
+    <view class="sticky-actions"><button class="primary-button" disabled="{{suggestionLoading || !aiText}}" bindtap="suggest"><image class="idea-generate-symbol" src="/pages/create/assets/generate-arrow.svg" mode="aspectFit"/><text>生成活动草稿</text></button><button class="manual-entry" bindtap="openForm">不用建议，直接手动填写</button></view>
   </view>
-  <view wx:if="{{safetyMessage}}" class="muted">{{safetyMessage}} <button bindtap="retrySafety">重试读取状态</button></view>
-  <view wx:if="{{editingEvent}}">编辑已发布活动 · 当前版本 {{editingEvent.version}}。重大变更会暂停招募并要求原参与者重新确认。</view>
-  <input placeholder="活动标题" data-field="title" value="{{form.title}}" bindinput="input" />
-  <input placeholder="城市" data-field="city" value="{{form.city}}" bindinput="input" />
-  <input id="skillLevelInput" placeholder="本场水平要求（可选，由主办方填写）" data-field="skillLevel" value="{{form.skillLevel}}" bindinput="input" />
-  <input placeholder="公共场馆名称（需主办方自行确认预约）" data-field="venueName" value="{{form.venueName}}" bindinput="input" />
-  <view>我已核实当前场地与活动时间的可用及预约情况 <switch checked="{{venueConfirmed}}" bindchange="setVenueConfirmed" /></view>
-  <view>开始日期 <picker mode="date" bindchange="setStartDate"><view>{{startDate || '选择日期'}}</view></picker></view>
-  <view>开始时间 <picker mode="time" bindchange="setStartTime"><view>{{startTime}}</view></picker></view>
-  <view wx:if="{{templateDurationMinutes}}" class="muted">上场时长 {{templateDurationMinutes}} 分钟；选择新开始时间后预填结束时间，发布前请核对。</view>
-  <view>结束日期 <picker mode="date" bindchange="setEndDate"><view>{{endDate || '选择日期'}}</view></picker></view>
-  <view>结束时间 <picker mode="time" bindchange="setEndTime"><view>{{endTime}}</view></picker></view>
-  <view>报名截止：默认开始前 30 分钟；成局确认截止：默认开始前 90 分钟。</view>
-  <view>自定义两个截止时间 <switch checked="{{customDeadlines}}" bindchange="setCustomDeadlines" /></view>
-  <view wx:if="{{customDeadlines}}">
-    <view>报名截止日期 <picker mode="date" bindchange="setRegistrationDate"><view>{{registrationDate || '选择日期'}}</view></picker></view>
-    <view>报名截止时间 <picker mode="time" bindchange="setRegistrationTime"><view>{{registrationTime}}</view></picker></view>
-    <view>成局确认截止日期 <picker mode="date" bindchange="setConfirmationDate"><view>{{confirmationDate || '选择日期'}}</view></picker></view>
-    <view>成局确认截止时间 <picker mode="time" bindchange="setConfirmationTime"><view>{{confirmationTime}}</view></picker></view>
+
+  <view wx:if="{{stage === 'FORM' && editingEvent}}" class="form-page">
+    <view class="form-intro">
+      <view><view class="form-intro-title"><view>本地构思，</view><view>把想法变成活动草稿</view></view><view class="form-intro-subtitle">一句话说出想法，由本地规则整理草稿</view><view class="form-truth">当前用本地规则提取，发布前请逐项核实。</view></view>
+      <view class="form-orb"><view class="form-orb-eye">●　●</view><view class="form-orb-name">Social Copilot</view></view>
+    </view>
+    <view class="form-prompt">
+      <textarea class="form-prompt-input" placeholder="例如：周六晚上想约 6 个人打羽毛球，新手也可以，打完一起吃宵夜…" value="{{aiText}}" maxlength="300" bindinput="aiInput"/>
+      <view class="form-prompt-bottom"><text class="count">● {{aiText.length}} /300</text><view class="form-prompt-actions"><button class="voice-button" data-name="语音描述" bindtap="showUnavailable" aria-label="语音描述暂未开放">🎙</button><button class="extract-button" disabled="{{suggestionLoading || !aiText}}" bindtap="suggest">{{suggestionLoading ? '提取中…' : '➜ 规则生成草稿'}}</button></view></view>
+    </view>
+    <view class="form-inspiration-head"><text>🔥 试试这些灵感</text><button bindtap="rotateInspirations">换一批 ↻</button></view>
+    <scroll-view class="form-inspirations" scroll-x="true" enhanced="true" show-scrollbar="false"><view class="form-inspiration-inner"><button wx:for="{{inspirations}}" wx:key="title" class="form-inspiration" data-index="{{index}}" bindtap="selectInspiration"><text>{{item.icon}}</text><view><view>{{item.title}}</view><text class="small">{{item.subtitle}}</text></view></button></view></scroll-view>
+    <view wx:if="{{suggestionNotes.length}}" class="suggestion-card"><view class="section-title">已提取的字段 <text class="section-hint">请逐项核实</text></view><view wx:for="{{suggestionNotes}}" wx:key="*this" class="suggestion-line">{{item}}</view><view wx:if="{{suggestionUnknown}}" class="unknown">仍需确认：{{suggestionUnknown}}</view></view>
+    <view wx:if="{{editingEvent}}" class="notice warning">编辑已发布活动 · 版本 {{editingEvent.version}}。重大变更会暂停招募并要求原参与者重新确认。</view>
+
+    <view id="form-activity" class="form-section category-section">
+      <view class="section-heading"><view><text class="blue-mark"></text><text>活动类型</text><text class="small">选择活动类型</text></view><button data-name="其他活动类型" bindtap="showUnavailable">更多 ›</button></view>
+      <view class="activity-grid">
+        <view class="activity-type selected"><view class="activity-icon">🏸<text class="selected-check">✓</text></view><text>羽毛球</text></view>
+        <button class="activity-type" data-name="咖啡聊天" bindtap="showUnavailable"><view class="activity-icon">☕</view><text>咖啡聊天</text></button>
+        <button class="activity-type" data-name="小酒局" bindtap="showUnavailable"><view class="activity-icon">🍸</view><text>小酒局</text></button>
+        <button class="activity-type" data-name="CityWalk" bindtap="showUnavailable"><view class="activity-icon">🚶</view><text>CityWalk</text></button>
+        <button class="activity-type" data-name="桌游" bindtap="showUnavailable"><view class="activity-icon">🎲</view><text>桌游</text></button>
+        <button class="activity-type" data-name="飞盘" bindtap="showUnavailable"><view class="activity-icon">🥏</view><text>飞盘</text></button>
+        <button class="activity-type" data-name="篮球" bindtap="showUnavailable"><view class="activity-icon">🏀</view><text>篮球</text></button>
+        <button class="activity-type" data-name="徒步爬山" bindtap="showUnavailable"><view class="activity-icon">⛰️</view><text>徒步</text></button>
+        <button class="activity-type" data-name="健身" bindtap="showUnavailable"><view class="activity-icon">🏋️</view><text>健身</text></button>
+        <button class="activity-type" data-name="看展" bindtap="showUnavailable"><view class="activity-icon">🎨</view><text>看展</text></button>
+        <button class="activity-type" data-name="美食" bindtap="showUnavailable"><view class="activity-icon">🍜</view><text>美食</text></button>
+        <button class="activity-type" data-name="自定义活动类型" bindtap="showUnavailable"><view class="activity-icon">＋</view><text>自定义</text></button>
+      </view>
+      <view class="activity-details"><view class="activity-detail-row"><text class="field-label">活动标题</text><input class="field-input" placeholder="给这场羽毛球活动起个名字" data-field="title" value="{{form.title}}" bindinput="input"/></view><view class="activity-detail-row"><text class="field-label">水平要求 <text class="optional">可选</text></text><input id="skillLevelInput" class="field-input" placeholder="例如：新手友好" data-field="skillLevel" value="{{form.skillLevel}}" bindinput="input"/></view></view>
+    </view>
+
+    <view id="form-schedule" class="field-card">
+      <view class="card-heading">📅 <text>时间与日期</text><text class="small">预计约两小时</text></view>
+      <view class="quick-label">快速选日期</view>
+      <view class="quick-grid"><button class="quick-chip {{quickDateSelected === 'saturday' ? 'active' : ''}}" data-choice="saturday" bindtap="chooseQuickDate">本周六</button><button class="quick-chip {{quickDateSelected === 'sunday' ? 'active' : ''}}" data-choice="sunday" bindtap="chooseQuickDate">本周日</button><button class="quick-chip {{quickDateSelected === 'nextWeekend' ? 'active' : ''}}" data-choice="nextWeekend" bindtap="chooseQuickDate">下周末</button><picker mode="date" bindchange="setStartDate"><view class="quick-chip quick-picker">选择日期</view></picker></view>
+      <view class="quick-label">快速选时段</view>
+      <view class="quick-grid quick-grid-time"><button class="quick-chip {{quickTimeSelected === 'morning' ? 'active' : ''}}" data-choice="morning" bindtap="chooseQuickTime">上午 9–12</button><button class="quick-chip {{quickTimeSelected === 'afternoon' ? 'active' : ''}}" data-choice="afternoon" bindtap="chooseQuickTime">下午 14–17</button><button class="quick-chip {{quickTimeSelected === 'evening' ? 'active' : ''}}" data-choice="evening" bindtap="chooseQuickTime">晚上 18–21</button></view>
+      <view class="field-grid"><view><text class="field-label">开始日期</text><picker mode="date" bindchange="setStartDate"><view class="picker-value">{{startDate || '选择日期'}} ›</view></picker></view><view><text class="field-label">开始时间</text><picker mode="time" bindchange="setStartTime"><view class="picker-value">{{startTime}} ›</view></picker></view></view>
+      <view class="field-grid"><view><text class="field-label">结束日期</text><picker mode="date" bindchange="setEndDate"><view class="picker-value">{{endDate || '选择日期'}} ›</view></picker></view><view><text class="field-label">结束时间</text><picker mode="time" bindchange="setEndTime"><view class="picker-value">{{endTime}} ›</view></picker></view></view>
+      <view wx:if="{{templateDurationMinutes}}" class="helper">建议时长 {{templateDurationMinutes}} 分钟；已预填结束时间，请核对。</view>
+    </view>
+
+    <view id="form-venue" class="field-card">
+      <view class="card-heading">📍 <text>地点偏好</text><text class="small">选择活动地点或区域</text></view>
+      <view class="city-options"><button class="city-chip {{form.city === '上海' ? 'active' : ''}}" data-city="上海" bindtap="chooseQuickCity">上海</button><button class="city-chip {{form.city === '北京' ? 'active' : ''}}" data-city="北京" bindtap="chooseQuickCity">北京</button><button class="city-chip {{form.city === '深圳' ? 'active' : ''}}" data-city="深圳" bindtap="chooseQuickCity">深圳</button><button class="city-chip {{form.city === '杭州' ? 'active' : ''}}" data-city="杭州" bindtap="chooseQuickCity">杭州</button><button class="city-chip {{form.city === '成都' ? 'active' : ''}}" data-city="成都" bindtap="chooseQuickCity">成都</button></view>
+      <view class="form-field-block"><text class="field-label">活动城市</text><input class="field-input" placeholder="例如：上海" data-field="city" value="{{form.city}}" bindinput="input"/></view>
+      <view class="form-field-block"><text class="field-label">公共场馆名称</text><input class="field-input" placeholder="填写具体场馆；需自行核实预约" data-field="venueName" value="{{form.venueName}}" bindinput="input"/></view>
+      <view class="switch-row"><view><view class="field-label">场地已核实</view><view class="helper">我已自行确认该场地与活动时间可用</view></view><switch color="#1d64f2" checked="{{venueConfirmed}}" bindchange="setVenueConfirmed"/></view>
+    </view>
+
+    <view id="form-participants" class="field-card">
+      <view class="card-heading">👥 <text>人数与对象</text><text class="small">设置参与人数和对象</text></view>
+      <view class="quick-label">预计人数</view>
+      <view class="participant-options"><button class="range-chip {{form.minParticipants === '4' && form.maxParticipants === '6' ? 'active' : ''}}" data-range="4-6" bindtap="chooseParticipantRange">4–6 人</button><button class="range-chip {{form.minParticipants === '5' && form.maxParticipants === '10' ? 'active' : ''}}" data-range="5-10" bindtap="chooseParticipantRange">5–10 人</button><button class="range-chip {{form.minParticipants === '10' && form.maxParticipants === '12' ? 'active' : ''}}" data-range="10-12" bindtap="chooseParticipantRange">10–12 人</button><button class="range-chip disabled" data-name="20 人以上活动" bindtap="showUnavailable">20 人+</button></view>
+      <view class="field-grid"><view><text class="field-label">最少人数</text><input class="field-input" type="number" placeholder="4" data-field="minParticipants" value="{{form.minParticipants}}" bindinput="input"/></view><view><text class="field-label">最多人数</text><input class="field-input" type="number" placeholder="6" data-field="maxParticipants" value="{{form.maxParticipants}}" bindinput="input"/></view></view>
+      <view class="form-field-block"><text class="field-label">主办方本人是否参加？</text><text class="helper">参加会占用一个名额，请明确选择。</text><radio-group id="hostParticipationGroup" class="radio-row" bindchange="setHostParticipates"><label id="hostParticipatesYes" class="radio-option"><radio value="yes" color="#1d64f2" checked="{{hostParticipates === true}}"/>参加，占一席</label><label id="hostParticipatesNo" class="radio-option"><radio value="no" color="#1d64f2" checked="{{hostParticipates === false}}"/>不参加</label></radio-group></view>
+    </view>
+
+    <view id="form-fees" class="field-card">
+      <view class="card-heading">🪙 <text>费用与 AA 设置</text><text class="small">设置费用模式</text></view>
+      <view class="fee-options"><button class="fee-tile {{feeMode === 'FREE' ? 'active' : ''}}" data-mode="FREE" bindtap="chooseFeeMode"><text>免费</text><text class="small">无费用</text></button><button class="fee-tile {{feeMode === 'AA' ? 'active' : ''}}" data-mode="AA" bindtap="chooseFeeMode"><text>AA 制</text><text class="small">人均上限</text></button><button class="fee-tile disabled" data-name="商家买单" bindtap="showUnavailable"><text>商家买单</text><text class="small">暂未开放</text></button><button class="fee-tile disabled" data-name="预定收款" bindtap="showUnavailable"><text>预定收款</text><text class="small">暂未开放</text></button></view>
+      <view wx:if="{{feeMode === 'AA'}}" class="form-field-block"><text class="field-label">每人费用上限（元）</text><input class="field-input" type="digit" placeholder="例如：50" data-field="feeCapYuan" value="{{form.feeCapYuan}}" bindinput="input"/></view>
+      <view class="form-field-block"><text class="field-label">取消规则</text><input class="field-input" placeholder="例如：开始前可退出" data-field="cancellationRule" value="{{form.cancellationRule}}" bindinput="input"/></view>
+      <view class="helper">报名默认开始前 30 分钟截止，成局确认默认开始前 90 分钟。</view>
+      <view class="switch-row"><text class="field-label">自定义截止时间</text><switch color="#1d64f2" checked="{{customDeadlines}}" bindchange="setCustomDeadlines"/></view>
+      <view wx:if="{{customDeadlines}}"><view class="field-grid"><view><text class="field-label">报名截止日期</text><picker mode="date" bindchange="setRegistrationDate"><view class="picker-value">{{registrationDate || '选择日期'}} ›</view></picker></view><view><text class="field-label">时间</text><picker mode="time" bindchange="setRegistrationTime"><view class="picker-value">{{registrationTime}} ›</view></picker></view></view><view class="field-grid"><view><text class="field-label">成局确认日期</text><picker mode="date" bindchange="setConfirmationDate"><view class="picker-value">{{confirmationDate || '选择日期'}} ›</view></picker></view><view><text class="field-label">时间</text><picker mode="time" bindchange="setConfirmationTime"><view class="picker-value">{{confirmationTime}} ›</view></picker></view></view></view>
+    </view>
+
+    <view class="field-card cover-card">
+      <view class="card-heading">🖼️ <text>活动封面／海报风格</text><text class="small">R1 展示素材</text></view>
+      <view class="helper">当前固定展示羽毛球封面；不会作为自定义海报上传或发布。</view>
+      <scroll-view scroll-x="true" show-scrollbar="false"><view class="cover-tiles"><view class="cover-tile selected"><image src="/assets/stitch/caper_home_badminton.jpg" mode="aspectFill"/><text>运动活力</text></view><button class="cover-tile unavailable" data-name="轻松治愈封面" bindtap="showUnavailable"><image src="/assets/stitch/caper_discover_coffee.jpg" mode="aspectFill"/><text>轻松治愈</text><text class="cover-unavailable">待开放</text></button><button class="cover-tile unavailable" data-name="城市探索封面" bindtap="showUnavailable"><image src="/assets/stitch/caper_discover_citywalk.jpg" mode="aspectFill"/><text>城市探索</text><text class="cover-unavailable">待开放</text></button><button class="cover-tile dashed" data-name="自定义海报" bindtap="showUnavailable"><text>＋</text><text class="small">自定义</text></button></view></scroll-view>
+    </view>
+
+    <view id="form-visibility" class="field-card">
+      <view class="card-heading">🔒 <text>公开范围与加入方式</text><text class="small">设置谁可以看到和加入</text></view>
+      <view class="visibility-options"><picker range="{{visibilityLabels}}" value="{{visibilityIndex}}" bindchange="setVisibility"><view class="visibility-tile {{visibility === 'INVITE' ? 'active' : ''}}"><text>◉</text><text class="small">{{visibilityLabels[visibilityIndex]}}</text></view></picker><picker range="{{approvalLabels}}" value="{{approvalIndex}}" bindchange="setApprovalMode"><view class="visibility-tile"><text>♙</text><text class="small">{{approvalLabels[approvalIndex]}}</text></view></picker></view>
+      <view class="helper">受控公开需要运营审核，报名需逐一审批；当前以邀请分享为主。</view>
+    </view>
+
+    <view class="field-card cohost-card"><view class="card-heading">👤 <text>协办人与主理人设置</text><text class="small">添加协办人，一起管理活动</text></view><view class="cohost-row"><view class="cohost-avatar">我</view><view><text>我来做主理人</text><text class="small">发布后可进入主办工作台处理报名</text></view><button bindtap="openCohostSetup">＋ 添加协办人</button></view></view>
+    <view class="toolbox-card"><view class="toolbox-title">✦　本地助手整理　<text>规则建议</text></view><view class="toolbox-grid"><text>✓ 生成活动草稿</text><text>✓ 手动编辑所有字段</text><text>✓ 发布前逐项核对</text><text>✓ 保存草稿继续编辑</text></view><view class="toolbox-note">模型生成与自动邀约尚未开放。</view></view>
+    <view class="draft-preview"><view class="draft-preview-title">◉ 活动预览 <text>生成后在确认页检查</text></view><view class="draft-preview-card"><image src="/assets/stitch/caper_home_badminton.jpg" mode="aspectFill"/><view><text>{{form.title || '周末羽毛球'}}</text><text class="small">🏸 {{startDate || '日期待定'}}　{{startTime}}　·　{{form.city || '城市待定'}}</text><text class="small">{{form.minParticipants}}–{{form.maxParticipants}} 人　{{feeMode === 'FREE' ? '免费' : 'AA 制'}}</text></view></view></view>
+    <view class="form-actions"><button id="saveDraftButton" wx:if="{{!editingEvent}}" class="secondary-button" disabled="{{editorLoadState === 'LOADING' || editorLoadState === 'ERROR' || (!draft && safetyStatus !== 'OPEN')}}" bindtap="saveDraft">保存草稿</button><button id="publishPreviewButton" class="primary-button" disabled="{{editorLoadState === 'LOADING' || editorLoadState === 'ERROR' || (!editingEvent && safetyStatus !== 'OPEN')}}" bindtap="publish">{{editingEvent ? '预览活动变更 →' : '生成活动草稿 →'}}</button></view>
   </view>
-  <input type="number" placeholder="最少人数" data-field="minParticipants" value="{{form.minParticipants}}" bindinput="input" />
-  <input type="number" placeholder="最多人数" data-field="maxParticipants" value="{{form.maxParticipants}}" bindinput="input" />
-  <view>免费 <switch checked="{{feeMode === 'FREE'}}" bindchange="setFeeMode" /></view>
-  <input wx:if="{{feeMode === 'AA'}}" type="digit" placeholder="每人费用上限（元）" data-field="feeCapYuan" value="{{form.feeCapYuan}}" bindinput="input" />
-  <input placeholder="取消规则" data-field="cancellationRule" value="{{form.cancellationRule}}" bindinput="input" />
-  <view>可见范围 <picker range="{{visibilityLabels}}" value="{{visibilityIndex}}" bindchange="setVisibility"><view>{{visibilityLabels[visibilityIndex]}}</view></picker></view>
-  <view>报名方式 <picker range="{{approvalLabels}}" value="{{approvalIndex}}" bindchange="setApprovalMode"><view>{{approvalLabels[approvalIndex]}}</view></picker></view>
-  <view>主办方本人是否参加？参加会占用一个名额，请明确选择。</view>
-  <radio-group id="hostParticipationGroup" bindchange="setHostParticipates">
-    <label id="hostParticipatesYes"><radio value="yes" checked="{{hostParticipates === true}}" />参加，占用一席</label>
-    <label id="hostParticipatesNo"><radio value="no" checked="{{hostParticipates === false}}" />不参加，不占席</label>
-  </radio-group>
-  <button id="saveDraftButton" wx:if="{{!editingEvent}}" disabled="{{editorLoadState === 'LOADING' || editorLoadState === 'ERROR' || (!draft && safetyStatus !== 'OPEN')}}" bindtap="saveDraft">保存草稿</button>
-  <button id="publishPreviewButton" disabled="{{editorLoadState === 'LOADING' || editorLoadState === 'ERROR' || (!editingEvent && safetyStatus !== 'OPEN')}}" bindtap="publish">{{editingEvent ? '生成活动变更预览' : '生成发布前预览'}}</button>
-  <view wx:if="{{changePreview}}" class="item">
-    <view>活动变更预览：受影响 {{changePreview.affectedCount}} 人 · {{changePreview.material ? '需本人重新确认' : '信息更新'}}</view>
-    <view wx:for="{{changePreview.changes}}" wx:key="field">{{item.label}}：{{item.before === null ? '待定' : item.before}} → {{item.after === null ? '待定' : item.after}}</view>
-    <button bindtap="confirmPublish">上述差异已核实，最终确认变更</button>
+
+  <view wx:if="{{stage === 'FORM' && !editingEvent}}" class="form-page reference-form-page">
+    <view class="form-intro"><view class="form-annotation">Turn Plans Into Real Meetups.</view>
+      <view><view class="form-intro-title"><view>本地构思，</view><view>把想法变成活动草稿</view></view><view class="form-intro-subtitle">一句话说出想法，由本地规则整理草稿</view><view class="form-truth">当前用本地规则提取，发布前请逐项核实。</view></view>
+      <view class="form-orb-wrap"><view class="form-orb"><view class="form-orb-glow"></view><view class="form-orb-eyes"><view></view><view></view></view></view><view class="form-orb-name"><view class="form-orb-name-dot"></view><text>Social Copilot</text></view></view>
+    </view>
+    <view class="form-prompt">
+      <textarea class="form-prompt-input" placeholder="例如：周六晚上想约 6 个人打羽毛球，新手也可以，打完一起吃宵夜…" value="{{aiText}}" maxlength="300" bindinput="aiInput"/>
+      <view class="form-prompt-bottom"><view class="count"><view class="form-count-dot"></view><text>{{aiText.length}} / 300</text></view><view class="form-prompt-actions"><button class="voice-button" data-name="语音描述" bindtap="showUnavailable" aria-label="语音描述暂未开放"><image src="/pages/create/assets/form-mic.svg" mode="aspectFit"/></button><button class="extract-button" disabled="{{suggestionLoading || !aiText}}" bindtap="suggest"><image src="/pages/create/assets/form-arrow.svg" mode="aspectFit"/><text>{{suggestionLoading ? '提取中…' : '规则生成'}}</text></button></view></view>
+    </view>
+    <view class="form-inspiration-head"><text>🔥 试试这些灵感</text><button bindtap="rotateInspirations"><text>换一批</text><image src="/pages/create/assets/form-refresh.svg" mode="aspectFit"/></button></view>
+    <scroll-view class="form-inspirations" scroll-x="true" enhanced="true" show-scrollbar="false"><view class="form-inspiration-inner"><button wx:for="{{inspirations}}" wx:key="title" class="form-inspiration" data-index="{{index}}" bindtap="selectInspiration"><text>{{item.icon}}</text><view><view>{{item.title}}</view><text class="small">{{item.subtitle}}</text><text wx:if="{{item.available === false}}" class="form-closed-label">暂未开放</text></view></button></view></scroll-view>
+    <view wx:if="{{suggestionNotes.length}}" class="suggestion-card"><view class="section-title">已提取的字段 <text class="section-hint">请逐项核实</text></view><view wx:for="{{suggestionNotes}}" wx:key="*this" class="suggestion-line">{{item}}</view><view wx:if="{{suggestionUnknown}}" class="unknown">仍需确认：{{suggestionUnknown}}</view></view>
+    <view wx:if="{{editingEvent}}" class="notice warning">编辑已发布活动 · 版本 {{editingEvent.version}}。重大变更会暂停招募并要求原参与者重新确认。</view>
+
+    <view id="form-activity" class="form-section category-section">
+      <view class="section-heading"><view><text class="blue-mark"></text><text>活动类型</text><text class="small">选择活动类型</text></view><button data-name="其他活动类型" bindtap="showUnavailable"><text>更多</text><image src="/pages/create/assets/form-more.svg" mode="aspectFit"/></button></view>
+      <view class="activity-grid">
+        <view class="activity-type selected"><view class="activity-icon">🏸<text class="selected-check">✓</text></view><text>羽毛球</text></view>
+        <button class="activity-type" data-name="咖啡聊天" bindtap="showUnavailable"><view class="activity-icon">☕</view><text>咖啡聊天</text></button>
+        <button class="activity-type" data-name="小酒局" bindtap="showUnavailable"><view class="activity-icon">🍸</view><text>小酒局</text></button>
+        <button class="activity-type" data-name="CityWalk" bindtap="showUnavailable"><view class="activity-icon">🚶</view><text>CityWalk</text></button>
+        <button class="activity-type" data-name="桌游" bindtap="showUnavailable"><view class="activity-icon">🎲</view><text>桌游</text></button>
+        <button class="activity-type" data-name="飞盘" bindtap="showUnavailable"><view class="activity-icon">🥏</view><text>飞盘</text></button>
+        <button class="activity-type" data-name="篮球" bindtap="showUnavailable"><view class="activity-icon">🏀</view><text>篮球</text></button>
+        <button class="activity-type" data-name="徒步爬山" bindtap="showUnavailable"><view class="activity-icon">⛰️</view><text>徒步爬山</text></button>
+        <button class="activity-type" data-name="健身" bindtap="showUnavailable"><view class="activity-icon">🏋️</view><text>健身</text></button>
+        <button class="activity-type" data-name="看展" bindtap="showUnavailable"><view class="activity-icon">🎨</view><text>看展</text></button>
+        <button class="activity-type" data-name="美食" bindtap="showUnavailable"><view class="activity-icon">🍜</view><text>美食</text></button>
+        <button class="activity-type" data-name="自定义活动类型" bindtap="showUnavailable"><view class="activity-icon">＋</view><text>自定义</text></button>
+      </view>
+      <view class="activity-details"><view class="activity-detail-row"><text class="field-label">活动标题</text><input class="field-input" placeholder="给这场羽毛球活动起个名字" data-field="title" value="{{form.title}}" bindinput="input"/></view><view class="activity-detail-row"><text class="field-label">水平要求 <text class="optional">可选</text></text><input id="skillLevelInput" class="field-input" placeholder="例如：新手友好" data-field="skillLevel" value="{{form.skillLevel}}" bindinput="input"/></view></view>
+    </view>
+
+    <view id="form-schedule" class="field-card">
+      <view class="card-heading">📅 <text>时间与日期</text><text class="small">选择活动时间</text></view>
+      <view class="quick-grid"><button class="quick-chip {{quickDateSelected === 'saturday' ? 'active' : ''}}" data-choice="saturday" bindtap="chooseQuickDate"><text>本周六</text><text class="form-quick-date">{{referenceQuickDates.saturday}}</text></button><button class="quick-chip {{quickDateSelected === 'sunday' ? 'active' : ''}}" data-choice="sunday" bindtap="chooseQuickDate"><text>本周日</text><text class="form-quick-date">{{referenceQuickDates.sunday}}</text></button><button class="quick-chip {{quickDateSelected === 'nextWeekend' ? 'active' : ''}}" data-choice="nextWeekend" bindtap="chooseQuickDate"><text>下周末</text><text class="form-quick-date">{{referenceQuickDates.nextWeekend}}</text></button><picker mode="date" bindchange="setStartDate"><view class="quick-chip quick-picker"><image src="/pages/create/assets/form-calendar.svg" mode="aspectFit"/><text>选择日期</text></view></picker></view>
+      <view class="quick-label">快速选时段</view>
+      <view class="quick-grid quick-grid-time"><button class="quick-chip {{quickTimeSelected === 'morning' ? 'active' : ''}}" data-choice="morning" bindtap="chooseQuickTime">上午 9:00–12:00</button><button class="quick-chip {{quickTimeSelected === 'afternoon' ? 'active' : ''}}" data-choice="afternoon" bindtap="chooseQuickTime">下午 14:00–17:00</button><button class="quick-chip {{quickTimeSelected === 'evening' ? 'active' : ''}}" data-choice="evening" bindtap="chooseQuickTime">晚上 18:00–21:00</button><button class="quick-chip form-closed" data-name="待定时段" bindtap="showUnavailable">待定</button></view>
+      <button class="form-poll-row" data-name="时间投票" bindtap="showUnavailable"><view class="form-poll-copy"><text>🗳️</text><view><view>发起时间投票</view><text class="small">暂未开放</text></view></view><view class="form-closed-toggle"><view></view></view></button>
+      <view class="field-grid"><view><text class="field-label">开始日期</text><picker mode="date" bindchange="setStartDate"><view class="picker-value">{{startDate || '选择日期'}} ›</view></picker></view><view><text class="field-label">开始时间</text><picker mode="time" bindchange="setStartTime"><view class="picker-value">{{startTime}} ›</view></picker></view></view>
+      <view class="field-grid"><view><text class="field-label">结束日期</text><picker mode="date" bindchange="setEndDate"><view class="picker-value">{{endDate || '选择日期'}} ›</view></picker></view><view><text class="field-label">结束时间</text><picker mode="time" bindchange="setEndTime"><view class="picker-value">{{endTime}} ›</view></picker></view></view>
+      <view wx:if="{{templateDurationMinutes}}" class="helper">建议时长 {{templateDurationMinutes}} 分钟；已预填结束时间，请核对。</view>
+    </view>
+
+    <view id="form-venue" class="field-card">
+      <view class="card-heading">📍 <text>地点偏好</text><text class="small">选择活动地点或区域</text></view>
+      <view class="form-environment"><button data-name="地点偏好：不限" bindtap="showUnavailable">不限</button><button data-name="地点偏好：室内" bindtap="showUnavailable">室内</button><button data-name="地点偏好：室外" bindtap="showUnavailable">室外</button><button data-name="地点偏好：附近优先" bindtap="showUnavailable">附近优先</button></view><view class="form-districts"><button wx:for="{{['浦东', '徐汇', '静安', '黄浦', '长宁', '闵行', '其他区域']}}" wx:key="*this" data-name="{{item + '区域筛选'}}" bindtap="showUnavailable">{{item}}</button></view><view class="helper">环境和区域筛选暂未开放，请填写真实城市与场馆。</view>
+      <view class="city-options"><button class="city-chip {{form.city === '上海' ? 'active' : ''}}" data-city="上海" bindtap="chooseQuickCity">上海</button><button class="city-chip {{form.city === '北京' ? 'active' : ''}}" data-city="北京" bindtap="chooseQuickCity">北京</button><button class="city-chip {{form.city === '深圳' ? 'active' : ''}}" data-city="深圳" bindtap="chooseQuickCity">深圳</button><button class="city-chip {{form.city === '杭州' ? 'active' : ''}}" data-city="杭州" bindtap="chooseQuickCity">杭州</button><button class="city-chip {{form.city === '成都' ? 'active' : ''}}" data-city="成都" bindtap="chooseQuickCity">成都</button></view>
+      <view class="form-field-block"><text class="field-label">活动城市</text><input class="field-input" placeholder="例如：上海" data-field="city" value="{{form.city}}" bindinput="input"/></view>
+      <view class="form-field-block"><text class="field-label">公共场馆名称</text><image class="form-venue-pin" src="/pages/create/assets/form-pin.svg" mode="aspectFit"/><input class="field-input form-venue-input" placeholder="填写具体场馆；需自行核实预约" data-field="venueName" value="{{form.venueName}}" bindinput="input"/></view>
+      <view class="switch-row"><view><view class="field-label">场地已核实</view><view class="helper">我已自行确认该场地与活动时间可用</view></view><switch color="#1d64f2" checked="{{venueConfirmed}}" bindchange="setVenueConfirmed"/></view>
+    </view>
+
+    <view id="form-participants" class="field-card">
+      <view class="card-heading">👥 <text>人数与对象</text><text class="small">设置参与人数和对象</text></view>
+      <view class="quick-label">预计人数</view>
+      <view class="participant-options"><button class="range-chip {{form.minParticipants === '4' && form.maxParticipants === '6' ? 'active' : ''}}" data-range="4-6" bindtap="chooseParticipantRange">4–6 人</button><button class="range-chip {{form.minParticipants === '5' && form.maxParticipants === '10' ? 'active' : ''}}" data-range="5-10" bindtap="chooseParticipantRange">5–10 人</button><button class="range-chip {{form.minParticipants === '10' && form.maxParticipants === '12' ? 'active' : ''}}" data-range="10-12" bindtap="chooseParticipantRange">10–12 人</button><button class="range-chip disabled" data-name="20 人以上活动" bindtap="showUnavailable">20 人+</button></view>
+      <view class="quick-label">参与对象</view><view class="form-targets"><button wx:for="{{['不限', '新手友好', '仅女生', '认识新朋友', '可带朋友']}}" wx:key="*this" data-name="{{item + '参与对象筛选'}}" bindtap="showUnavailable">{{item}}</button></view><view class="helper">参与对象筛选暂未开放；水平要求可在上方手动填写。</view>
+      <view class="field-grid"><view><text class="field-label">最少人数</text><input class="field-input" type="number" placeholder="4" data-field="minParticipants" value="{{form.minParticipants}}" bindinput="input"/></view><view><text class="field-label">最多人数</text><input class="field-input" type="number" placeholder="6" data-field="maxParticipants" value="{{form.maxParticipants}}" bindinput="input"/></view></view>
+      <view class="form-field-block"><text class="field-label">主办方本人是否参加？</text><text class="helper">参加会占用一个名额，请明确选择。</text><radio-group id="hostParticipationGroup" class="radio-row" bindchange="setHostParticipates"><label id="hostParticipatesYes" class="radio-option"><radio value="yes" color="#1d64f2" checked="{{hostParticipates === true}}"/>参加，占一席</label><label id="hostParticipatesNo" class="radio-option"><radio value="no" color="#1d64f2" checked="{{hostParticipates === false}}"/>不参加</label></radio-group></view>
+    </view>
+
+    <view id="form-fees" class="field-card">
+      <view class="card-heading">🪙 <text>费用与 AA 设置</text><text class="small">设置费用模式</text></view>
+      <view class="fee-options"><button class="fee-tile {{feeMode === 'FREE' ? 'active' : ''}}" data-mode="FREE" bindtap="chooseFeeMode"><text>免费</text><text class="small">无费用</text></button><button class="fee-tile {{feeMode === 'AA' ? 'active' : ''}}" data-mode="AA" bindtap="chooseFeeMode"><text>AA 制</text><text class="small">人均上限</text></button><button class="fee-tile disabled" data-name="商家买单" bindtap="showUnavailable"><text>商家买单</text><text class="small">暂未开放</text></button><button class="fee-tile disabled" data-name="预定收款" bindtap="showUnavailable"><text>预定收款</text><text class="small">暂未开放</text></button></view>
+      <view wx:if="{{feeMode === 'AA'}}" class="form-field-block"><text class="field-label">每人费用上限（元）</text><input class="field-input" type="digit" placeholder="例如：50" data-field="feeCapYuan" value="{{form.feeCapYuan}}" bindinput="input"/></view>
+      <view class="form-field-block"><text class="field-label">取消规则</text><input class="field-input" placeholder="例如：开始前可退出" data-field="cancellationRule" value="{{form.cancellationRule}}" bindinput="input"/></view>
+      <view class="helper">报名默认开始前 30 分钟截止，成局确认默认开始前 90 分钟。</view>
+      <view class="switch-row"><text class="field-label">自定义截止时间</text><switch color="#1d64f2" checked="{{customDeadlines}}" bindchange="setCustomDeadlines"/></view>
+      <view wx:if="{{customDeadlines}}"><view class="field-grid"><view><text class="field-label">报名截止日期</text><picker mode="date" bindchange="setRegistrationDate"><view class="picker-value">{{registrationDate || '选择日期'}} ›</view></picker></view><view><text class="field-label">时间</text><picker mode="time" bindchange="setRegistrationTime"><view class="picker-value">{{registrationTime}} ›</view></picker></view></view><view class="field-grid"><view><text class="field-label">成局确认日期</text><picker mode="date" bindchange="setConfirmationDate"><view class="picker-value">{{confirmationDate || '选择日期'}} ›</view></picker></view><view><text class="field-label">时间</text><picker mode="time" bindchange="setConfirmationTime"><view class="picker-value">{{confirmationTime}} ›</view></picker></view></view></view>
+    </view>
+
+    <view class="field-card cover-card">
+      <view class="card-heading">🖼️ <text>活动封面／海报风格</text><text class="small">R1 展示素材</text></view>
+      <view class="helper">以下为原稿风格示意；封面生成与上传暂未开放。</view>
+      <view class="cover-tiles"><view class="form-poster-item selected"><view class="form-poster form-poster-sport"><text class="form-poster-top">GOOD SPORTS</text><text class="form-poster-emoji">🏸</text><text class="form-poster-bottom">GOOD PEOPLE</text><text class="form-poster-check">✓</text></view><text>活动活力</text></view><button class="form-poster-item" data-name="轻松治愈封面" bindtap="showUnavailable"><view class="form-poster form-poster-coffee"><text class="form-poster-top">GOOD COFFEE</text><text class="form-poster-emoji">☕</text><text class="form-poster-bottom">BETTER PEOPLE</text></view><text>轻松治愈</text></button><button class="form-poster-item" data-name="城市探索封面" bindtap="showUnavailable"><view class="form-poster form-poster-city"><text class="form-poster-top">CITY WALK</text><text class="form-poster-emoji">🏙️</text><text class="form-poster-bottom">TOGETHER</text></view><text>城市探索</text></button><button class="form-poster-item" data-name="自定义海报" bindtap="showUnavailable"><view class="form-poster form-poster-custom"><text>+</text><text>自定义</text></view><text>更多风格</text></button></view>
+    </view>
+
+    <view id="form-visibility" class="field-card">
+      <view class="card-heading">🔒 <text>公开范围与加入方式</text><text class="small">设置谁可以看到和加入</text></view>
+      <view class="visibility-options"><picker range="{{visibilityLabels}}" value="{{visibilityIndex}}" bindchange="setVisibility"><view class="visibility-tile {{visibility === 'PUBLIC' ? 'active' : ''}}"><text>🌐</text><text class="small">{{visibilityLabels[visibilityIndex]}}</text><text class="form-tile-note">{{visibility === 'PUBLIC' ? '运营审核后开放' : '仅受邀成员'}}</text></view></picker><button class="visibility-tile" data-name="同城可见" bindtap="showUnavailable"><text>📍</text><text class="small">同城可见</text><text class="form-tile-note">暂未开放</text></button><picker range="{{approvalLabels}}" value="{{approvalIndex}}" bindchange="setApprovalMode"><view class="visibility-tile"><text>🛡️</text><text class="small">{{approvalLabels[approvalIndex]}}</text><text class="form-tile-note">真实报名规则</text></view></picker><view class="visibility-tile {{visibility === 'INVITE' ? 'active' : ''}}"><text>👥</text><text class="small">仅邀请</text><text class="form-tile-note">{{visibility === 'INVITE' ? '当前已选择' : '左侧切换范围'}}</text></view></view>
+      <view class="helper">受控公开需要运营审核，报名需逐一审批；当前以邀请分享为主。</view>
+    </view>
+
+    <view class="field-card cohost-card"><view class="card-heading">👤 <text>协办人与主理人设置</text><text class="small">添加协办人，一起管理活动</text></view><view class="cohost-row"><view class="cohost-avatar">我</view><view><view><text>我来做主理人</text><text class="form-host-badge">HOST</text></view><text class="small">发布后可进入主办工作台处理报名</text></view><button bindtap="openCohostSetup">＋ 添加协办人</button></view></view>
+    <view class="toolbox-card"><view class="form-toolbox-glow"></view><text class="form-toolbox-sparkle">✨</text><view class="toolbox-title">✨　本地助手整理　<text>规则建议</text></view><view class="toolbox-grid"><text>✓ 生成活动草稿</text><text>✓ 手动编辑所有字段</text><text>✓ 发布前逐项核对</text><text>✓ 保存草稿继续编辑</text></view><view class="toolbox-note">模型生成与自动邀约尚未开放。</view></view>
+    <view class="draft-preview"><view class="draft-preview-title">◉ 活动预览 <text>生成后在确认页检查</text></view><view class="draft-preview-card"><view class="form-preview-poster"><text>🏸</text><text class="form-preview-badge">预览</text></view><view><text>{{form.title || '周末羽毛球'}}</text><text class="small">🕒 {{startDate || '日期待定'}}　{{startTime}}　·　{{form.city || '城市待定'}}</text><text class="small">{{form.minParticipants}}–{{form.maxParticipants}} 人　{{feeMode === 'FREE' ? '免费' : 'AA 制'}}</text></view></view></view>
+    <view class="form-actions reference-form-actions"><button id="saveDraftButton" wx:if="{{!editingEvent}}" class="secondary-button" disabled="{{editorLoadState === 'LOADING' || editorLoadState === 'ERROR' || (!draft && safetyStatus !== 'OPEN')}}" bindtap="saveDraft"><image src="/pages/create/assets/form-save.svg" mode="aspectFit"/><text>保存草稿</text></button><button id="publishPreviewButton" class="primary-button" disabled="{{editorLoadState === 'LOADING' || editorLoadState === 'ERROR' || (!editingEvent && safetyStatus !== 'OPEN')}}" bindtap="publish"><text>✨ 生成活动草稿</text><image src="/pages/create/assets/form-arrow.svg" mode="aspectFit"/></button></view>
   </view>
-  <view wx:if="{{publishPreview}}" class="item">
-    <view>发布前逐项核对（版本 {{publishPreview.version}}）</view>
-    <view>类型：羽毛球 · 标题：{{publishPreview.payload.title}}</view>
-    <view wx:if="{{publishPreview.payload.skillLevel}}">水平要求：{{publishPreview.payload.skillLevel}}</view>
-    <view>时间：{{publishPreview.payload.startAt}} 至 {{publishPreview.payload.endAt}} · 时区 {{publishPreview.payload.timeZone}}</view>
-    <view>城市与公共场馆：{{publishPreview.payload.city}} · {{publishPreview.payload.venueName}} · 场地状态 {{publishPreview.payload.venueStatus}}</view>
-    <view>人数：至少 {{publishPreview.payload.minParticipants}}、最多 {{publishPreview.payload.maxParticipants}}；主办本人参加 {{publishPreview.payload.hostParticipates}}</view>
-    <view>报名截止：{{publishPreview.payload.registrationDeadline}} · 成局确认截止：{{publishPreview.payload.confirmationDeadline}}</view>
-    <view>费用：{{publishPreview.payload.feeMode}} · 每人上限 {{publishPreview.payload.feeCapFen}} 分</view>
-    <view>取消规则：{{publishPreview.payload.cancellationRule}}</view>
-    <view>可见范围：{{publishPreview.payload.visibility}} · 报名方式：{{publishPreview.payload.approvalMode}}</view>
-    <button disabled="{{safetyStatus !== 'OPEN'}}" bindtap="confirmPublish">以上均已核实，最终发布</button>
+
+  <view wx:if="{{stage === 'REVIEW' && (!publishPreview || changePreview)}}" class="review-page">
+    <button class="review-banner" bindtap="backToForm"><view class="mini-orb"><text>●　●</text><text class="small">▰</text></view><view><view class="banner-title">发布前帮你检查活动信息 ✨</view><view class="banner-subtitle">本地规则建议仅供参考，所有细节由你最终确认。</view></view><text class="chevron">›</text></button>
+    <view wx:if="{{changePreview}}" class="review-card change-card"><view class="review-card-head"><text>活动变更预览</text><text class="preview-version">版本 {{editingEvent.version}}</text></view><view class="review-note">受影响 {{changePreview.affectedCount}} 人 · {{changePreview.material ? '需本人重新确认' : '信息更新'}}</view><view wx:for="{{changePreview.changes}}" wx:key="field" class="review-row"><text>{{item.label}}</text><text>{{item.before === null ? '待定' : item.before}} → {{item.after === null ? '待定' : item.after}}</text></view><button class="primary-button" bindtap="confirmPublish">上述差异已核实，最终确认变更</button></view>
+    <view wx:if="{{publishPreview}}" class="review-card preview-card">
+      <view class="review-card-head"><text>活动详情确认</text><text class="preview-version">版本 {{publishPreview.version}}</text></view>
+      <button class="review-row" data-section="activity" bindtap="editReviewSection"><text class="review-label"><text class="review-icon">◷</text> 活动类型</text><text class="review-value">羽毛球　<text class="review-pill green">运动</text> ›</text></button>
+      <button class="review-row" data-section="activity" bindtap="editReviewSection"><text class="review-label"><text class="review-icon">✎</text> 活动标题</text><text class="review-value">{{publishPreview.payload.title}} ›</text></button>
+      <button wx:if="{{publishPreview.payload.skillLevel}}" class="review-row" data-section="activity" bindtap="editReviewSection"><text class="review-label"><text class="review-icon">✦</text> 水平要求</text><text class="review-value">{{publishPreview.payload.skillLevel}} ›</text></button>
+      <button class="review-row tall" data-section="schedule" bindtap="editReviewSection"><text class="review-label"><text class="review-icon">▣</text> 活动时间</text><view class="review-value multi"><view>{{reviewSummary.start}}</view><view>{{reviewSummary.end}} ›</view></view></button>
+      <button class="review-row" data-section="venue" bindtap="editReviewSection"><text class="review-label"><text class="review-icon">⌖</text> 活动城市</text><text class="review-value">{{publishPreview.payload.city}} ›</text></button>
+      <button class="review-row" data-section="venue" bindtap="editReviewSection"><text class="review-label"><text class="review-icon">⌖</text> 具体场地</text><text class="review-value">{{publishPreview.payload.venueName}} ›</text></button>
+      <button class="review-row" data-section="venue" bindtap="editReviewSection"><text class="review-label"><text class="review-icon">◷</text> 场地状态</text><text class="review-value"><text class="review-pill {{publishPreview.payload.venueStatus === 'HOST_CONFIRMED' ? 'green' : 'neutral'}}">{{publishPreview.payload.venueStatus === 'HOST_CONFIRMED' ? '主办方已核实' : '未确认'}}</text></text></button>
+      <button class="review-row" data-section="participants" bindtap="editReviewSection"><text class="review-label"><text class="review-icon">♧</text> 人数范围</text><text class="review-value">{{publishPreview.payload.minParticipants}}–{{publishPreview.payload.maxParticipants}} 人 ›</text></button>
+      <button class="review-row" data-section="participants" bindtap="editReviewSection"><text class="review-label"><text class="review-icon crown">★</text> 主办人参与</text><text class="review-value">{{publishPreview.payload.hostParticipates ? '我也参加' : '不参加'}} ›</text></button>
+      <button class="review-row" data-section="fees" bindtap="editReviewSection"><text class="review-label"><text class="review-icon">◷</text> 报名截止</text><text class="review-value">{{reviewSummary.registration}} ›</text></button>
+      <button class="review-row" data-section="fees" bindtap="editReviewSection"><text class="review-label"><text class="review-icon">▤</text> 费用模式</text><text class="review-value">{{reviewSummary.fee}} ›</text></button>
+      <button class="review-row" data-section="visibility" bindtap="editReviewSection"><text class="review-label"><text class="review-icon">◉</text> 活动可见性</text><text class="review-value">{{publishPreview.payload.visibility === 'PUBLIC' ? '受控公开 · 待审核' : '仅邀请'}} ›</text></button>
+      <view class="review-extra"><text>成局确认截止：{{reviewSummary.confirmation}}</text><text>报名方式：{{publishPreview.payload.approvalMode === 'MANUAL' ? '逐一审批' : '自动接受'}}</text><text>取消规则：{{publishPreview.payload.cancellationRule}}</text></view>
+      <view class="review-actions"><button class="secondary-button" bindtap="saveDraft">保存草稿</button><button class="primary-button" disabled="{{safetyStatus !== 'OPEN'}}" bindtap="confirmPublish">确认发布</button></view>
+    </view>
+  </view>
+  <view wx:if="{{stage === 'REVIEW' && publishPreview && !changePreview}}" class="review-page reference-review-page">
+    <button class="review-banner" bindtap="backToForm"><view class="mini-orb"><view class="review-orb-eye review-orb-eye-left"></view><view class="review-orb-eye review-orb-eye-right"></view><view class="review-orb-mouth"></view><view class="review-orb-shine"></view></view><view><view class="banner-title">发布前帮你检查活动信息 ✨</view><view class="banner-subtitle">本地规则建议仅供参考，所有细节由你最终确认。</view></view><image class="review-banner-chevron" src="/pages/create/assets/review-banner-chevron.svg" mode="aspectFit"/></button>
+    <view wx:if="{{publishPreview}}" class="review-card preview-card">
+      <view class="review-card-head"><text>活动详情确认</text><text class="preview-version">版本 {{publishPreview.version}}</text></view>
+      <button class="review-row" data-section="activity" bindtap="editReviewSection"><view class="review-label"><image class="review-icon" src="/pages/create/assets/review-type.svg" mode="aspectFit"/><text> 活动类型</text></view><text class="review-value">羽毛球<text class="review-pill green">运动</text></text><image class="review-row-chevron" src="/pages/create/assets/review-chevron.svg" mode="aspectFit"/></button>
+      <button class="review-row" data-section="activity" bindtap="editReviewSection"><view class="review-label"><text>活动标题</text></view><text class="review-value">{{publishPreview.payload.title}}</text><image class="review-row-chevron" src="/pages/create/assets/review-chevron.svg" mode="aspectFit"/></button>
+      <button wx:if="{{publishPreview.payload.skillLevel}}" class="review-row" data-section="activity" bindtap="editReviewSection"><view class="review-label"><text>水平要求</text></view><text class="review-value">{{publishPreview.payload.skillLevel}}</text><image class="review-row-chevron" src="/pages/create/assets/review-chevron.svg" mode="aspectFit"/></button>
+      <button class="review-row tall" data-section="schedule" bindtap="editReviewSection"><view class="review-label"><image class="review-icon" src="/pages/create/assets/review-calendar.svg" mode="aspectFit"/><text> 活动时间</text></view><view class="review-value multi"><view>{{reviewSummary.referenceDate}}</view><view>{{reviewSummary.referenceTime}}</view></view><image class="review-row-chevron" src="/pages/create/assets/review-chevron.svg" mode="aspectFit"/></button>
+      <button class="review-row" data-section="venue" bindtap="editReviewSection"><view class="review-label"><image class="review-icon" src="/pages/create/assets/review-pin.svg" mode="aspectFit"/><text> 活动城市</text></view><text class="review-value">{{publishPreview.payload.city}}</text><image class="review-row-chevron" src="/pages/create/assets/review-chevron.svg" mode="aspectFit"/></button>
+      <button class="review-row" data-section="venue" bindtap="editReviewSection"><view class="review-label"><image class="review-icon" src="/pages/create/assets/review-court.svg" mode="aspectFit"/><text> 具体场地</text></view><text class="review-value review-value-compact">{{publishPreview.payload.venueName}}</text><image class="review-row-chevron" src="/pages/create/assets/review-chevron.svg" mode="aspectFit"/></button>
+      <button class="review-row" data-section="venue" bindtap="editReviewSection"><view class="review-label"><image class="review-icon" src="/pages/create/assets/review-status.svg" mode="aspectFit"/><text> 场地状态</text></view><text class="review-value"><text class="review-pill {{publishPreview.payload.venueStatus === 'HOST_CONFIRMED' ? 'green' : 'neutral'}}">{{publishPreview.payload.venueStatus === 'HOST_CONFIRMED' ? '主办方已核实' : '未确认'}}</text></text></button>
+      <button class="review-row" data-section="participants" bindtap="editReviewSection"><view class="review-label"><image class="review-icon" src="/pages/create/assets/review-users.svg" mode="aspectFit"/><text> 人数范围</text></view><text class="review-value">{{publishPreview.payload.minParticipants}}–{{publishPreview.payload.maxParticipants}} 人</text><image class="review-row-chevron" src="/pages/create/assets/review-chevron.svg" mode="aspectFit"/></button>
+      <button class="review-row" data-section="participants" bindtap="editReviewSection"><view class="review-label"><image class="review-icon" src="/pages/create/assets/review-crown.svg" mode="aspectFit"/><text> 主办人参与</text></view><text class="review-value">{{publishPreview.payload.hostParticipates ? '我也参加' : '不参加'}}<text wx:if="{{publishPreview.payload.hostParticipates}}" class="review-pill blue">作为成员</text></text><image class="review-row-chevron" src="/pages/create/assets/review-chevron.svg" mode="aspectFit"/></button>
+      <button class="review-row" data-section="fees" bindtap="editReviewSection"><view class="review-label"><image class="review-icon" src="/pages/create/assets/review-deadline.svg" mode="aspectFit"/><text> 报名截止</text></view><text class="review-value review-value-compact">{{reviewSummary.registration}}</text><image class="review-row-chevron" src="/pages/create/assets/review-chevron.svg" mode="aspectFit"/></button>
+      <button class="review-row" data-section="fees" bindtap="editReviewSection"><view class="review-label"><image class="review-icon" src="/pages/create/assets/review-payment.svg" mode="aspectFit"/><text> 费用模式</text></view><view class="review-value multi review-fee-value"><view>{{reviewSummary.referenceFeeTitle}}</view><view>{{reviewSummary.referenceFeeNote}}</view></view></button>
+      <button class="review-row" data-section="visibility" bindtap="editReviewSection"><view class="review-label"><image class="review-icon" src="/pages/create/assets/review-eye.svg" mode="aspectFit"/><text> 活动可见性</text></view><view class="review-value multi review-visibility-value"><view>{{publishPreview.payload.visibility === 'PUBLIC' ? '受控公开' : '仅邀请'}}</view><view>{{publishPreview.payload.visibility === 'PUBLIC' ? '待运营审核' : '仅受邀成员可访问'}}</view></view><image class="review-row-chevron" src="/pages/create/assets/review-chevron.svg" mode="aspectFit"/></button>
+      <view class="review-extra"><text>成局确认截止：{{reviewSummary.confirmation}}</text><text>报名方式：{{publishPreview.payload.approvalMode === 'MANUAL' ? '逐一审批' : '自动接受'}}</text><text>取消规则：{{publishPreview.payload.cancellationRule}}</text></view>
+      <view class="review-actions reference-review-actions"><button class="secondary-button" bindtap="saveDraft">保存草稿</button><button class="primary-button" disabled="{{safetyStatus !== 'OPEN'}}" bindtap="confirmPublish">确认发布</button></view>
+    </view>
   </view>
 </view>

@@ -1,0 +1,251 @@
+{
+  "scope": "two FILL1 glyph correction only; no rerun of142 checks",
+  "activeGSUB": {
+    "DFLT": [
+      {
+        "index": 0,
+        "tag": "rclt",
+        "lookups": [
+          1
+        ]
+      },
+      {
+        "index": 1,
+        "tag": "rlig",
+        "lookups": [
+          0
+        ]
+      }
+    ],
+    "latn": [
+      {
+        "index": 0,
+        "tag": "rclt",
+        "lookups": [
+          1
+        ]
+      },
+      {
+        "index": 1,
+        "tag": "rlig",
+        "lookups": [
+          0
+        ]
+      }
+    ]
+  },
+  "correctedGlyphs": [
+    {
+      "glyph": "lightbulb",
+      "ligatureGlyph": "lightbulb",
+      "renderedGlyph": "lightbulb.fill",
+      "axes": {
+        "FILL": 1,
+        "wght": 400,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "fill": "#ffffff",
+      "runtime": "miniprogram/subpackages/activity/event/assets/w69-lightbulb-w400-f1-ffffff.svg",
+      "sourceFeature": "rclt",
+      "sourceLookup": 1,
+      "sourceLookupType": 1,
+      "priorPathSHA256": "b09f1bda44ae8be8310130e6e017b4b0abd87f849aafe9631e07a0d41df3177b",
+      "correctedPath": "M400 -160H560Q560 -127 536.5 -103.5Q513 -80 480.0 -80.0Q447 -80 423.5 -103.5Q400 -127 400 -160ZM320 -200V-280H640V-200ZM330 -320Q261 -361 220.5 -430.0Q180 -499 180 -580Q180 -705 267.5 -792.5Q355 -880 480.0 -880.0Q605 -880 692.5 -792.5Q780 -705 780 -580Q780 -499 739.5 -430.0Q699 -361 630 -320Z",
+      "correctedPathSHA256": "67a9cfd4c007b5820ca5d1ed341019c12c56511ab734efd20e099c1c8e662f65",
+      "bytes": 392,
+      "sha256": "1c4735c5cbbe480656046b8dccea841c8fd0bde367e2a23dc227194beb4ac5a9",
+      "shapeChanged": true
+    },
+    {
+      "glyph": "check_circle",
+      "ligatureGlyph": "check_circle",
+      "renderedGlyph": "check_circle.fill",
+      "axes": {
+        "FILL": 1,
+        "wght": 400,
+        "opsz": 24,
+        "GRAD": 0
+      },
+      "fill": "#34c759",
+      "runtime": "miniprogram/subpackages/activity/event/assets/w69-check_circle-w400-f1-34c759.svg",
+      "sourceFeature": "rclt",
+      "sourceLookup": 1,
+      "sourceLookupType": 1,
+      "priorPathSHA256": "42928cd4d85e0b7487da09c22bac210b10cffaa1899d51f348292b69c66a5252",
+      "correctedPath": "M424 -296 706 -578 650 -634 424 -408 310 -522 254 -466ZM480 -80Q397 -80 324.0 -111.5Q251 -143 197.0 -197.0Q143 -251 111.5 -324.0Q80 -397 80 -480Q80 -563 111.5 -636.0Q143 -709 197.0 -763.0Q251 -817 324.0 -848.5Q397 -880 480 -880Q563 -880 636.0 -848.5Q709 -817 763.0 -763.0Q817 -709 848.5 -636.0Q880 -563 880 -480Q880 -397 848.5 -324.0Q817 -251 763.0 -197.0Q709 -143 636.0 -111.5Q563 -80 480 -80Z",
+      "correctedPathSHA256": "b649c98973e36982136c22717483ce86feeff688df221858cbc6219d894fd715",
+      "bytes": 493,
+      "sha256": "6c1cf4026c3c5a55cfd3961b6b6f64904e2a956a815db494b926bd7001ed500e",
+      "shapeChanged": true
+    }
+  ],
+  "WXML": {
+    "changedSrcOccurrences": 2,
+    "beforeBytes": 137904,
+    "beforeSHA256": "e20243e5744251afb50fd880e0b91b86864cb6f4fe89015500e9de0f6c15b557",
+    "afterBytes": 137918,
+    "afterSHA256": "27614e27494fa920cff810a633ff5f89e4ad7ca1c839c09b7fa902ba4588fd3a",
+    "inverseToPriorFreeze": true,
+    "fullInverseToBaselineSHA256": "06741c8056566a32f33f356ce65f9aabfcb2164d950a6c288c28e2ec48f0fdf3"
+  },
+  "unchangedProductAndJSJSON": [
+    {
+      "path": "miniprogram/subpackages/activity/event/event.wxss",
+      "sha256": "caef3ec15ddd1a1db874946efe97cbb91e5236dcf6e425b942d814798608368f",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-arrow_back_ios_new-w400-f0-1a1b1f.svg",
+      "sha256": "ca7bb7d407e7dc334ff380d8b3b4d1623f916d8d6152d0a72dc40ab2840d532b",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-calendar_today-w400-f0-ffffff-a80.svg",
+      "sha256": "c33b06b87daece1946f27d87a421a54082f99c7399f2c459ff1948f5cf70d7f1",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-celebration-w400-f0-ff2d55.svg",
+      "sha256": "28bc5c2f7de9a0916e30e4db4a697e7be8b50650bf01264ad01d5a5e024cd7d5",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-check-w400-f0-34c759.svg",
+      "sha256": "0f89192a79f9f361e2756fefce4f3cfbbf42fb8c25647411ebdc106cbcb55298",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-check_circle-w400-f0-737687.svg",
+      "sha256": "f67c219e4ec571f0189fe7026b5991709765e9634c3b14c46fa7c8bde050d151",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-check_circle-w700-f0-34c759.svg",
+      "sha256": "7b931ca55b641886fc22545b1a22c25f0dd4e40e1e61630dd678484e6db5bd5d",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-chevron_right-w400-f0-424655.svg",
+      "sha256": "b8fee48b3e833334e79aaa98e9303d3ce1086079b61d15f574891616fc19bc76",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-chevron_right-w400-f0-ffffff-a90.svg",
+      "sha256": "80f86acc8fe60c0f88accfa10fd9180ed8a12689c7e89d8c45e005e8ce9d806e",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-group-w400-f0-ffffff-a80.svg",
+      "sha256": "c02447192554e216b7ea0146c34675e94d968727fed3ad832dcffc0467ce1ea6",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-info-w400-f0-004cc8.svg",
+      "sha256": "aa16342b69d0c8c8bfeb3f8e889a0b6a41f36a1243a5d98aa51d34c99902584b",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-ios_share-w400-f0-1d64f2.svg",
+      "sha256": "ca9210e96e1dccff489afe2877c5222d2330db645c601c06b23661d05fa0b498",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-ios_share-w400-f0-424655.svg",
+      "sha256": "4b8a0fd1e2dd664eb2d6c51563f555eed1bb2f67321c99627263482079f32e03",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-keyboard_arrow_down-w400-f0-424655.svg",
+      "sha256": "17c172fcf47f1f8662d8d681496b360f3d263661bd49da0f037ed9cb33e1280b",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-keyboard_arrow_down-w400-f0-4c4aca.svg",
+      "sha256": "1a130f0ebbb7580c9e6cf0c4a243b2a4b9a937b0747cc4932f0740b7304e50a0",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-keyboard_arrow_up-w400-f0-4c4aca.svg",
+      "sha256": "2092964894a73227ebd56026d31b6359b9adcc2251150882f3d445e8e9d1c647",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-location_on-w400-f0-ffffff-a80.svg",
+      "sha256": "1ef469f97ae4351407bb7bc4e5643e3617a770122c9ccacdb1f4085d4d62beab",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-more_horiz-w400-f0-1a1b1f.svg",
+      "sha256": "295cd56b72e4a070b341c35331c4f965a6021ea2755371577007ff16a0e3d117",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-receipt_long-w400-f0-ffffff-a80.svg",
+      "sha256": "84fdafead1f7a12aec2921803bfbe35a01758344a5d399fa0db612e550f53d27",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-send-w400-f0-004cc8.svg",
+      "sha256": "9a8644e5b42f0394571c0c1660d93d96c84a1af53606c7d6b537fa3f25063ccf",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-sentiment_dissatisfied-w400-f0-737687.svg",
+      "sha256": "2f0f85e04d8412a0f7b05424bde3f5e34906189cbdcbe36fe17e8d43d5332cdd",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-sentiment_dissatisfied-w700-f0-34c759.svg",
+      "sha256": "24d19580debeafd1dc39453217134f310065c34e3feb81e8f79d71f12528c507",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-sentiment_neutral-w400-f0-737687.svg",
+      "sha256": "8d7692f0326caddd5cca379d6821013df4bfbfa337dc0433e6e0dc40c4b5b424",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-sentiment_neutral-w700-f0-5856d6.svg",
+      "sha256": "5b0cf5cf68d23e658904ffcb94af2800267768728f2a05af3ac325fff389b367",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-star-w700-f0-181e00.svg",
+      "sha256": "be489b40b207ee8bfe0070ae42ce6c62562db9b042a79cb9314ce444cd875260",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-stop_circle-w400-f0-ff2d55.svg",
+      "sha256": "186caea6b6a3508815a4d9171e77b67c2f0b54682a31de8e8eaf052fac87c743",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-sync-w400-f0-1d64f2.svg",
+      "sha256": "bc4354d9f3c2837999d7954b4e85b856e32c6dab18e00998f1eab502dc799609",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-task_alt-w400-f0-737687.svg",
+      "sha256": "46d93ee34ec602e2ff1d5d93c89ccd154f2322fbfba9d7ddeef6c50e2bc8ca86",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/assets/w69-task_alt-w700-f0-5856d6.svg",
+      "sha256": "caad54b17c9488629bacc180f6b0a198cbdf6418e5a38589e7dd7d1efc2e98c5",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/event.js",
+      "sha256": "ccb5b5fede066ba0533b82cb564e816cc3d45ca96778a0d25ac5286d3c11a4bd",
+      "same": true
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/event.json",
+      "sha256": "bf33dc7da099d240642a50fe3cf44cee01a2b282f70a80a313c79317c76ad10b",
+      "same": true
+    }
+  ],
+  "oldHistoricalFill1AssetUnchanged": true,
+  "fullSourceWOFF2SHA256": "77f9711f3f896a1d7a34ab95cffc45cfb17d84c223f197c1b90faa0d043006e9"
+}

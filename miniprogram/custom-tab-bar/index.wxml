@@ -1,0 +1,9 @@
+<view wx:if="{{!hidden}}" class="bar variant-{{selected}}">
+  <view class="bar-items">
+    <button wx:for="{{tabs}}" wx:key="pagePath" class="bar-item {{index === 2 ? 'bar-item-create' : ''}} {{selected === index ? 'is-selected' : ''}}" data-index="{{index}}" bindtap="selectTab" aria-label="{{item.text}}">
+      <view wx:if="{{index === 2}}" class="create-circle"><image class="create-icon" src="{{icons[selected][index]}}" mode="aspectFit" aria-hidden="true" /></view>
+      <image wx:else class="bar-icon" src="{{icons[selected][index]}}" mode="aspectFit" aria-hidden="true" />
+      <text wx:if="{{index !== 2 || selected === 2}}" class="bar-label">{{item.text}}</text>
+    </button>
+  </view>
+</view>

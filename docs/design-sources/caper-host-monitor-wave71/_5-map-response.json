@@ -1,0 +1,27 @@
+{
+  "requestedURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuC6kifKTg3eUgmXDJ7ijfJ9L--LL9ullH6eIpvoVK_7Xo1WRnf0ul8czzU-bqzrumSzi7SDg7T73fTXOaxRNUcS19W8j_CsmpaV8VjcIMOaB-htVz7qMEYue9ox1jFpoUdpReEY5p1cUhaNEkQSXQI7R1KJceYgVDGqg4Ux6WlVGmUBrp8bALDa4142a3TKwsBh9fxWwpH9Co9FHFqYKbjfFo9rZtItoZchYI6MY6I8IlAc6KvJbdGXAg",
+  "finalURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuC6kifKTg3eUgmXDJ7ijfJ9L--LL9ullH6eIpvoVK_7Xo1WRnf0ul8czzU-bqzrumSzi7SDg7T73fTXOaxRNUcS19W8j_CsmpaV8VjcIMOaB-htVz7qMEYue9ox1jFpoUdpReEY5p1cUhaNEkQSXQI7R1KJceYgVDGqg4Ux6WlVGmUBrp8bALDa4142a3TKwsBh9fxWwpH9Co9FHFqYKbjfFo9rZtItoZchYI6MY6I8IlAc6KvJbdGXAg",
+  "status": 200,
+  "headers": {
+    "Content-Type": "image/png",
+    "Vary": "Origin",
+    "Access-Control-Allow-Origin": "*",
+    "Timing-Allow-Origin": "*",
+    "Access-Control-Expose-Headers": "Content-Length",
+    "ETag": "\"v0\"",
+    "Expires": "Sat, 03 Oct 2026 00:53:38 GMT",
+    "Cache-Control": "public, max-age=86400, no-transform",
+    "Content-Disposition": "inline;filename=\"unnamed.png\"",
+    "X-Content-Type-Options": "nosniff",
+    "Date": "Fri, 02 Oct 2026 00:53:38 GMT",
+    "Server": "fife",
+    "Content-Length": "152683",
+    "X-XSS-Protection": "0",
+    "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "Connection": "close"
+  },
+  "bytes": 152683,
+  "sha256": "8c4881b9d74ec892c8549613ab1426b0a11c54793cdb073ffd6540c2805d02f4",
+  "identicalRuntimePaths": [],
+  "note": "source illustration only; no coordinates, navigation or venue booking claim"
+}

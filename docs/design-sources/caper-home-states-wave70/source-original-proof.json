@@ -1,0 +1,44 @@
+[
+  {
+    "page": "pg02_b",
+    "file": "code.html",
+    "zipEntry": "stitch_design_system_generator/pg02_b/code.html",
+    "bytes": 27642,
+    "sha256": "c4bc70b16e1d4a6f3762f699efdc5c8414cf54fcc01158c2d01bfa3b739ad6a7"
+  },
+  {
+    "page": "pg02_b",
+    "file": "screen.png",
+    "zipEntry": "stitch_design_system_generator/pg02_b/screen.png",
+    "bytes": 546434,
+    "sha256": "e2580e22077bc9c3842eedbb871ade551bfd4bb557e3a1e01d9bca67e3a59ac1"
+  },
+  {
+    "page": "pg02_c",
+    "file": "code.html",
+    "zipEntry": "stitch_design_system_generator/pg02_c/code.html",
+    "bytes": 23196,
+    "sha256": "513bdc25f790648b29bbbd61813eb919f725f35ec46f1c124b01b15397346f64"
+  },
+  {
+    "page": "pg02_c",
+    "file": "screen.png",
+    "zipEntry": "stitch_design_system_generator/pg02_c/screen.png",
+    "bytes": 532266,
+    "sha256": "d14f895318eed0a0ef55e1c71144e257f9598a3a3aeac242fda97b3bebd5e6ac"
+  },
+  {
+    "page": "pg02_d",
+    "file": "code.html",
+    "zipEntry": "stitch_design_system_generator/pg02_d/code.html",
+    "bytes": 22993,
+    "sha256": "b084f0285633b0d8b6796006419204385a7c5752953d73ef15bb6280b5579698"
+  },
+  {
+    "page": "pg02_d",
+    "file": "screen.png",
+    "zipEntry": "stitch_design_system_generator/pg02_d/screen.png",
+    "bytes": 625803,
+    "sha256": "6426787ddd76ed42b7c69f11c22569f7fa952a9a8bfc31e63666b21f8e6bbd47"
+  }
+]

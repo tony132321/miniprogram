@@ -1,0 +1,220 @@
+{
+  "glyphs": [
+    {
+      "line": 10,
+      "glyph": "auto_awesome",
+      "class": "material-symbols-outlined text-[18px]",
+      "style": null
+    },
+    {
+      "line": 10,
+      "glyph": "notifications",
+      "class": "material-symbols-outlined text-[22px]",
+      "style": null
+    },
+    {
+      "line": 10,
+      "glyph": "person",
+      "class": "material-symbols-outlined text-on-primary text-[18px]",
+      "style": null
+    },
+    {
+      "line": 18,
+      "glyph": "arrow_back_ios_new",
+      "class": "material-symbols-outlined text-surface-card text-[20px]",
+      "style": null
+    },
+    {
+      "line": 31,
+      "glyph": "arrow_forward",
+      "class": "material-symbols-outlined text-[20px]",
+      "style": null
+    },
+    {
+      "line": 59,
+      "glyph": "verified",
+      "class": "material-symbols-outlined text-[13px]",
+      "style": null
+    },
+    {
+      "line": 82,
+      "glyph": "calendar_today",
+      "class": "material-symbols-outlined text-[16px] text-electric-blue",
+      "style": null
+    },
+    {
+      "line": 85,
+      "glyph": "location_on",
+      "class": "material-symbols-outlined text-[16px] text-party-violet",
+      "style": null
+    },
+    {
+      "line": 99,
+      "glyph": "chevron_right",
+      "class": "material-symbols-outlined text-[16px]",
+      "style": null
+    },
+    {
+      "line": 106,
+      "glyph": "star",
+      "class": "material-symbols-outlined text-[18px]",
+      "style": "font-variation-settings: 'FILL' 1;"
+    },
+    {
+      "line": 107,
+      "glyph": "star",
+      "class": "material-symbols-outlined text-[18px]",
+      "style": "font-variation-settings: 'FILL' 1;"
+    },
+    {
+      "line": 108,
+      "glyph": "star",
+      "class": "material-symbols-outlined text-[18px]",
+      "style": "font-variation-settings: 'FILL' 1;"
+    },
+    {
+      "line": 109,
+      "glyph": "star",
+      "class": "material-symbols-outlined text-[18px]",
+      "style": "font-variation-settings: 'FILL' 1;"
+    },
+    {
+      "line": 110,
+      "glyph": "star",
+      "class": "material-symbols-outlined text-[18px]",
+      "style": "font-variation-settings: 'FILL' 1;"
+    },
+    {
+      "line": 117,
+      "glyph": "auto_awesome",
+      "class": "material-symbols-outlined text-[18px]",
+      "style": null
+    },
+    {
+      "line": 121,
+      "glyph": "photo_library",
+      "class": "material-symbols-outlined text-[18px] text-party-violet",
+      "style": null
+    },
+    {
+      "line": 136,
+      "glyph": "rate_review",
+      "class": "material-symbols-outlined text-[14px]",
+      "style": null
+    },
+    {
+      "line": 159,
+      "glyph": "schedule",
+      "class": "material-symbols-outlined text-[16px] text-electric-blue",
+      "style": null
+    },
+    {
+      "line": 162,
+      "glyph": "pin_drop",
+      "class": "material-symbols-outlined text-[16px] text-party-violet",
+      "style": null
+    },
+    {
+      "line": 169,
+      "glyph": "military_tech",
+      "class": "material-symbols-outlined text-[15px]",
+      "style": null
+    },
+    {
+      "line": 173,
+      "glyph": "chevron_right",
+      "class": "material-symbols-outlined text-on-surface-variant text-[16px]",
+      "style": null
+    },
+    {
+      "line": 178,
+      "glyph": "edit_note",
+      "class": "material-symbols-outlined text-[18px]",
+      "style": null
+    },
+    {
+      "line": 182,
+      "glyph": "receipt_long",
+      "class": "material-symbols-outlined text-[18px] text-electric-blue",
+      "style": null
+    },
+    {
+      "line": 192,
+      "glyph": "favorite",
+      "class": "material-symbols-outlined text-party-pink text-[18px]",
+      "style": "font-variation-settings: 'FILL' 1;"
+    },
+    {
+      "line": 213,
+      "glyph": "home",
+      "class": "material-symbols-outlined text-[24px]",
+      "style": null
+    },
+    {
+      "line": 213,
+      "glyph": "explore",
+      "class": "material-symbols-outlined text-[24px]",
+      "style": null
+    },
+    {
+      "line": 213,
+      "glyph": "add",
+      "class": "material-symbols-outlined text-[28px]",
+      "style": null
+    },
+    {
+      "line": 213,
+      "glyph": "chat_bubble",
+      "class": "material-symbols-outlined text-[24px]",
+      "style": null
+    },
+    {
+      "line": 213,
+      "glyph": "person",
+      "class": "material-symbols-outlined text-[24px]",
+      "style": null
+    }
+  ],
+  "photos": [
+    {
+      "line": 54,
+      "tag": "div",
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuB-olyeAicsEosXyotX6OPSIekP9He_EGgqYJNulaqNJjy0wDs-9jJrlLkumqkFiuDRTmFH-_0LheEUw_bp7cH7KkZ6sMEpXbkKqJ4tzNnUFIWWhWFaCGdtOflLYfb7buEgYTPQLwc7T7c_3WCm3QIl7Q0EdxqTh4sAHQecxwInJ_pVPVeW61ACYH-sdxJ75AY-pmsb2F74Ps4K0u1Kc8JuTPcJmS8nKvBWIjvfaApx9DGSSVu2cTC9IQ",
+      "class": "w-full h-full bg-cover bg-center filter saturate-[0.85] contrast-[1.05]",
+      "alt": "A vintage-toned nostalgic outdoor badminton rally with friends playing in warm afternoon sunlight, subtle film grain aesthetic, motion blur shuttlecock, joyful athletic expressions in electric blue and vibrant sportswear.",
+      "original_style": "background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB-olyeAicsEosXyotX6OPSIekP9He_EGgqYJNulaqNJjy0wDs-9jJrlLkumqkFiuDRTmFH-_0LheEUw_bp7cH7KkZ6sMEpXbkKqJ4tzNnUFIWWhWFaCGdtOflLYfb7buEgYTPQLwc7T7c_3WCm3QIl7Q0EdxqTh4sAHQecxwInJ_pVPVeW61ACYH-sdxJ75AY-pmsb2F74Ps4K0u1Kc8JuTPcJmS8nKvBWIjvfaApx9DGSSVu2cTC9IQ')"
+    },
+    {
+      "line": 92,
+      "tag": "div",
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuAsyxKNNgunanyXd5ZpqGgenXLT88-evHVyxakZN6X8wLRNhOLm8JUxwDg5ji_JxeKcWH5EvtbrdwNWAJWLZ4jsvSIA8ZnF_LoCR5zkrWym0KVGLUCnddkQwy04mkrwAthR4VhmJBlNGCZ56j6NfzU357PG_6dr70FU3OvGxH5K9uxNlOxlT71oLloZ7w1zNp-M5fSQtrWHpYP7J06UTlSZU9Z05vOX51AyhRnFOZPtxB_jaSt4TND_7g",
+      "class": "w-7 h-7 rounded-full bg-cover bg-center border-2 border-surface-card",
+      "alt": "Portrait of Alex smiling in casual sportswear outdoors against natural sunlight, warm energetic smile.",
+      "original_style": "background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAsyxKNNgunanyXd5ZpqGgenXLT88-evHVyxakZN6X8wLRNhOLm8JUxwDg5ji_JxeKcWH5EvtbrdwNWAJWLZ4jsvSIA8ZnF_LoCR5zkrWym0KVGLUCnddkQwy04mkrwAthR4VhmJBlNGCZ56j6NfzU357PG_6dr70FU3OvGxH5K9uxNlOxlT71oLloZ7w1zNp-M5fSQtrWHpYP7J06UTlSZU9Z05vOX51AyhRnFOZPtxB_jaSt4TND_7g')"
+    },
+    {
+      "line": 93,
+      "tag": "div",
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuAw_riBsdD9iAXIHrYgFg7nzChYNSExqgLd6Sn8nTl5MHn2CmmVHcMLNO5Tux2BIsuVo_bZtuwdHyVkbMqp7BCIhpv0VvbKLLJzyCf-Gf9oOG9MCvRuMl2O2gnwl46JjzQJoxlRFHc8wlbxqSMvZdAp7XWXfKrBZswf4TNeWBJY83Ed2GRaB4ZPiQ75E67habQGmSc4OhTq44o2attzf0DLuhHPHcshh7OjqpJ2N7yZTmvO1_9DXx82Qg",
+      "class": "w-7 h-7 rounded-full bg-cover bg-center border-2 border-surface-card",
+      "alt": "Portrait of Luna with a bright athletic headband laughing after an exciting badminton match.",
+      "original_style": "background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAw_riBsdD9iAXIHrYgFg7nzChYNSExqgLd6Sn8nTl5MHn2CmmVHcMLNO5Tux2BIsuVo_bZtuwdHyVkbMqp7BCIhpv0VvbKLLJzyCf-Gf9oOG9MCvRuMl2O2gnwl46JjzQJoxlRFHc8wlbxqSMvZdAp7XWXfKrBZswf4TNeWBJY83Ed2GRaB4ZPiQ75E67habQGmSc4OhTq44o2attzf0DLuhHPHcshh7OjqpJ2N7yZTmvO1_9DXx82Qg')"
+    },
+    {
+      "line": 94,
+      "tag": "div",
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuCJdpxnmMSWccVFUMTrRfUsWdBTmEv1NDnmTjPMJrikZxAqXVeMUstLn-IYBWD01_DbpKIOxEKaoB7hBlQzODtKo7PjTE4_ljW_mSFhumRQy9P90NpbDyp5ts3JWHAC3LwLbIrGrTBWyvxND-JSx8ISfFNKyNtAUYN0suKCpfI1JJestd64O8M7rpt5GLbni2NfZUrDKnNT6cjYabE7hYO-TyrVOwUsVMQAbEB0Ob1r8LJzYsae3bllyQ",
+      "class": "w-7 h-7 rounded-full bg-cover bg-center border-2 border-surface-card",
+      "alt": "Portrait of sporty friend smiling warmly in vibrant blue outfit in gym court.",
+      "original_style": "background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCJdpxnmMSWccVFUMTrRfUsWdBTmEv1NDnmTjPMJrikZxAqXVeMUstLn-IYBWD01_DbpKIOxEKaoB7hBlQzODtKo7PjTE4_ljW_mSFhumRQy9P90NpbDyp5ts3JWHAC3LwLbIrGrTBWyvxND-JSx8ISfFNKyNtAUYN0suKCpfI1JJestd64O8M7rpt5GLbni2NfZUrDKnNT6cjYabE7hYO-TyrVOwUsVMQAbEB0Ob1r8LJzYsae3bllyQ')"
+    },
+    {
+      "line": 131,
+      "tag": "div",
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuBBr5_zrfPQCzJdDW0G3muP1uhlg0UokhWAGIvbLYu_pfnut2EYnwO3jqmkaWUliz7pUtHXo8iuIcrc9qXRVfNGBpm8SSOI82CHZ6nhekog0JwmrUXiWVTV2SuicqiKFiqE8NHIzd8cEGmjOZT4iA_6J1heOOQxV6gLItQ-J0yLv-lm2vYP4f3CVO9xuCseehVbTiMHv2LzN28XBmjuPV1iR1dXRzyJWHpnilLM8wQZbiLQ6udTIAbb2w",
+      "class": "w-full h-full bg-cover bg-center",
+      "alt": "A sun-drenched aesthetic outdoor picnic spread by the riverside during golden hour sunset, checkered blanket with fruits, iced drinks, gourmet baked treats, laughing urban friends sitting together in soft warm glow.",
+      "original_style": "background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBBr5_zrfPQCzJdDW0G3muP1uhlg0UokhWAGIvbLYu_pfnut2EYnwO3jqmkaWUliz7pUtHXo8iuIcrc9qXRVfNGBpm8SSOI82CHZ6nhekog0JwmrUXiWVTV2SuicqiKFiqE8NHIzd8cEGmjOZT4iA_6J1heOOQxV6gLItQ-J0yLv-lm2vYP4f3CVO9xuCseehVbTiMHv2LzN28XBmjuPV1iR1dXRzyJWHpnilLM8wQZbiLQ6udTIAbb2w')"
+    }
+  ]
+}

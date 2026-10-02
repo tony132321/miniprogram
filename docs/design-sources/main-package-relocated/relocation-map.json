@@ -1,0 +1,77 @@
+{
+  "date": "2026-10-02",
+  "sourceMainBytesRemoved": 40291,
+  "reason": "Move only unused provenance JSON out of miniprogram; preserve source bytes and UI/assets/runtime imports. Compiled budget measured by root.",
+  "entries": [
+    {
+      "oldPath": "miniprogram/pages/discover/assets/phosphor-sources.json",
+      "newPath": "docs/design-sources/main-package-relocated/pages/discover/assets/phosphor-sources.json",
+      "bytes": 8205,
+      "sha256": "f4f229a006e06bd1388752ac0921d07ddb3415251ec64bfebd3fb7d1588382d2",
+      "oldPathAbsent": true,
+      "newBytesEqualToOriginal": true,
+      "historicalEvidence": [
+        "docs/evidence/caper-discover-reference-ui-wave64-2026-10-01.md"
+      ]
+    },
+    {
+      "oldPath": "miniprogram/pages/city/assets/material-symbols-sources.json",
+      "newPath": "docs/design-sources/main-package-relocated/pages/city/assets/material-symbols-sources.json",
+      "bytes": 8605,
+      "sha256": "44814d81d20c1006a38a94b36f2b30f8b61171359c8ca67366e4d41214f703f4",
+      "oldPathAbsent": true,
+      "newBytesEqualToOriginal": true,
+      "historicalEvidence": [
+        "docs/evidence/caper-next-reference-gap-audit-wave65-2026-10-02.md",
+        "docs/evidence/caper-city-reference-ui-wave63-2026-10-01.md"
+      ]
+    },
+    {
+      "oldPath": "miniprogram/pages/about/assets/reference-logo-sources.json",
+      "newPath": "docs/design-sources/main-package-relocated/pages/about/assets/reference-logo-sources.json",
+      "bytes": 626,
+      "sha256": "e69657e858780910ed22ab7318ad7fc6a62ae7572af1daf6a1a0ea58f76ffdad",
+      "oldPathAbsent": true,
+      "newBytesEqualToOriginal": true,
+      "historicalEvidence": [
+        "docs/evidence/caper-pg10h-h3-reference-ui-wave62-2026-10-01.md",
+        "docs/evidence/caper-wave62-independent-source-review-2026-10-01.md"
+      ]
+    },
+    {
+      "oldPath": "miniprogram/pages/about/assets/material-symbols-sources.json",
+      "newPath": "docs/design-sources/main-package-relocated/pages/about/assets/material-symbols-sources.json",
+      "bytes": 9352,
+      "sha256": "53398a62e0e27af0f2e7396775d538dc88f07d40395ac20f3865d55b20757293",
+      "oldPathAbsent": true,
+      "newBytesEqualToOriginal": true,
+      "historicalEvidence": [
+        "docs/evidence/caper-next-reference-gap-audit-wave65-2026-10-02.md",
+        "docs/evidence/caper-pg10h-h3-reference-ui-wave62-2026-10-01.md",
+        "docs/evidence/caper-wave62-independent-source-review-2026-10-01.md"
+      ]
+    },
+    {
+      "oldPath": "miniprogram/pages/me/assets/source-manifest.json",
+      "newPath": "docs/design-sources/main-package-relocated/pages/me/assets/source-manifest.json",
+      "bytes": 8090,
+      "sha256": "1fef1e21fc1599a1b4f83119dd05becc06a6c2a7a86e82fdd8e1fdd37c88b4ba",
+      "oldPathAbsent": true,
+      "newBytesEqualToOriginal": true,
+      "historicalEvidence": [
+        "docs/evidence/caper-me-reference-ui-wave64-2026-10-01.md"
+      ]
+    },
+    {
+      "oldPath": "miniprogram/pages/index/assets/manifest.json",
+      "newPath": "docs/design-sources/main-package-relocated/pages/index/assets/manifest.json",
+      "bytes": 5413,
+      "sha256": "0d1c73ad8483d1e016e828260ecbbdbaf3999a422d365446fae1d1d8893aca99",
+      "oldPathAbsent": true,
+      "newBytesEqualToOriginal": true,
+      "historicalEvidence": [
+        "docs/evidence/caper-home-reference-ui-wave64-2026-10-01.md"
+      ]
+    }
+  ]
+}

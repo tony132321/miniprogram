@@ -1,0 +1,17 @@
+
+    /* Hide scrollbar for clean mobile experience */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* Dynamic Island Safe Area */
+    .safe-top {
+      padding-top: env(safe-area-inset-top, 44px);
+    }
+    .safe-bottom {
+      padding-bottom: env(safe-area-inset-bottom, 34px);
+    }
+  

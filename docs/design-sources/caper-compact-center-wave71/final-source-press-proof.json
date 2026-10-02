@@ -1,0 +1,11 @@
+{
+  "scope": "Only presentation final source self-refinement, no business/protected full check rerun",
+  "WXML": "two source DIV-to-real-button action wrappers suppress native default extra hover so original article scale remains",
+  "CSS": "Original secondary controls hover:bg-surface-container-highest #e3e2e7; exact source rule scoped to compact secondary only",
+  "inverseWXMLSHA256": "edeb6e3873cf3418fadabb408a71b394c1327bd8b80041c66438492addb41dda",
+  "inverseCSSSHA256": "aac6c6d9a291a113fbe2c1363e54052c746ace0df3f9bdf6263638ee9c4c8666",
+  "finalWXMLSHA256": "69208a8ae7b49fef663ac51ef723f45248959b29aa0c3ad649507d174c0c1e13",
+  "finalCSSSHA256": "2b8787c83c01314c1a23b5d2549984c251e842180cd8206ee4553304f3907c7a",
+  "bindingAttrsUnchanged": true,
+  "oldPrefixUnchanged": true
+}

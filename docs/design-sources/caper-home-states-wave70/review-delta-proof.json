@@ -1,0 +1,93 @@
+{
+  "kind": "Local independent-review correction only; no repeat of 93 initial assertions, business, CLI or SDK",
+  "source": "Original source HTML + reviewer CSS-only proof + Tailwind3.4.17 cached official config.full.js",
+  "tailwindConfigSHA256": "8f3394e8a4990a7b678d3462b6e1440b84c11a6c06e55d7b26108b90a1fcc538",
+  "groups": [
+    "source tab colors",
+    "wide/wider .025/.05 em",
+    "source headline tracking / recruiting700",
+    "B waitlist / reconfirm source paint",
+    "D feedback no filter / black40 white badge no dot",
+    "C actual outer drop-shadow-md/no confirmed drop shadow",
+    "source ping/pulse/bounce exact keyframes/easing",
+    "native source pressed projection; undefined C scale-98 stays unset"
+  ],
+  "priorWXML": "791f7bb0e7062973d7e38dbb00d188afd43d903a19b6294a0b66a6ca1407b4d4",
+  "priorCSS": "2d0e3411470396a63250e50301a20201fd7b3a7a48eca2322c83ee7dadbed751",
+  "newWXML": "b972b559a2c523f2b1c7ca794023595fe6fee94a90add1527a3ef1cce7204c81",
+  "newCSS": "27b11080f2eb16d8a2280567b697a3edd0d7af3e4158bc341d7a44146dcd0cea",
+  "WXMLDeltaEdits": [
+    {
+      "old": "<view class=\"reference-ai-status\"></view>",
+      "new": "<view class=\"reference-ai-status\"><view wx:if=\"{{activeTab === 'pending' || activeTab === 'organized'}}\" class=\"reference-ai-ping\"></view><view class=\"reference-ai-solid\"></view></view>"
+    },
+    {
+      "old": "bindtap=\"goCreate\" aria-label=\"打开活动构思\"",
+      "new": "bindtap=\"goCreate\" aria-label=\"打开活动构思\" hover-class=\"{{activeTab === 'pending' || activeTab === 'organized' || activeTab === 'history' ? 'home-reference-banner-pressed' : 'button-hover'}}\""
+    },
+    {
+      "old": "data-key=\"attending\" bindtap=\"selectTab\"",
+      "new": "data-key=\"attending\" bindtap=\"selectTab\" hover-class=\"{{activeTab === 'pending' || activeTab === 'organized' || activeTab === 'history' ? 'home-reference-tab-pressed' : 'button-hover'}}\""
+    },
+    {
+      "old": "data-key=\"pending\" bindtap=\"selectTab\"",
+      "new": "data-key=\"pending\" bindtap=\"selectTab\" hover-class=\"{{activeTab === 'pending' || activeTab === 'organized' || activeTab === 'history' ? 'home-reference-tab-pressed' : 'button-hover'}}\""
+    },
+    {
+      "old": "data-key=\"organized\" bindtap=\"selectTab\"",
+      "new": "data-key=\"organized\" bindtap=\"selectTab\" hover-class=\"{{activeTab === 'pending' || activeTab === 'organized' || activeTab === 'history' ? 'home-reference-tab-pressed' : 'button-hover'}}\""
+    },
+    {
+      "old": "data-key=\"cohosting\" bindtap=\"selectTab\"",
+      "new": "data-key=\"cohosting\" bindtap=\"selectTab\" hover-class=\"{{activeTab === 'pending' || activeTab === 'organized' || activeTab === 'history' ? 'home-reference-tab-pressed' : 'button-hover'}}\""
+    },
+    {
+      "old": "data-key=\"history\" bindtap=\"selectTab\"",
+      "new": "data-key=\"history\" bindtap=\"selectTab\" hover-class=\"{{activeTab === 'pending' || activeTab === 'organized' || activeTab === 'history' ? 'home-reference-tab-pressed' : 'button-hover'}}\""
+    },
+    {
+      "old": "data-action=\"{{item.primaryAction}}\" bindtap=\"openCardAction\"",
+      "new": "data-action=\"{{item.primaryAction}}\" bindtap=\"openCardAction\" hover-class=\"{{stateView && ((item.cardKind === 'pending' && (item.myRegistrationStatus === 'REQUESTED' || item.myRegistrationStatus === 'RECONFIRM_REQUIRED' || item.myRegistrationStatus === 'WAITLISTED')) || (item.cardKind === 'organized' && (item.shareReady || item.status === 'CONFIRMED' || item.status === 'IN_PROGRESS')) || (item.cardKind === 'history' && item.status === 'COMPLETED')) ? 'home-reference-card-pressed' : 'button-hover'}}\""
+    },
+    {
+      "old": "data-action=\"{{item.secondaryAction}}\" bindtap=\"openCardAction\"",
+      "new": "data-action=\"{{item.secondaryAction}}\" bindtap=\"openCardAction\" hover-class=\"{{stateView && ((item.cardKind === 'pending' && (item.myRegistrationStatus === 'REQUESTED' || item.myRegistrationStatus === 'RECONFIRM_REQUIRED' || item.myRegistrationStatus === 'WAITLISTED')) || (item.cardKind === 'organized' && (item.shareReady || item.status === 'CONFIRMED' || item.status === 'IN_PROGRESS')) || (item.cardKind === 'history' && item.status === 'COMPLETED')) ? 'home-reference-card-pressed' : 'button-hover'}}\""
+    },
+    {
+      "old": "bindtap=\"openHostShare\" aria-label=\"分享{{item.title}}的邀请\"",
+      "new": "bindtap=\"openHostShare\" aria-label=\"分享{{item.title}}的邀请\" hover-class=\"{{stateView && item.cardKind === 'organized' ? 'home-reference-card-pressed' : 'button-hover'}}\""
+    },
+    {
+      "old": "<button wx:if=\"{{item.shortcutAction && item.cardKind !== 'history'}}\" class=\"card-shortcut\"",
+      "new": "<button wx:if=\"{{item.shortcutAction && item.cardKind !== 'history'}}\" class=\"card-shortcut\" hover-class=\"{{stateView && item.cardKind === 'pending' && item.myRegistrationStatus === 'WAITLISTED' ? 'home-reference-card-pressed' : 'button-hover'}}\""
+    }
+  ],
+  "CSSAppendBytes": 8131,
+  "CSSAppendSHA256": "53934d979c43c8cdf240f9372bc3a697235eb5305199dcc8c651f41dee15ec65",
+  "inverseWXMLSame": true,
+  "inverseCSSSame": true,
+  "immutableOtherProductPaths": 42,
+  "JSJSONExact": true,
+  "actionContractReason": "Every changed button chunk adds only hover-class after unchanged action/data/aria attributes; no new action or guard ancestor. Only new child views are pure animation layers. Initial 62-binding proof remains prior-stage evidence.",
+  "unmodifiedInitialStaticProof": "28577ecd9b51cfa85e9e1fcdb32ab5d9312a602f5d7e0d999fc710443e48dbce",
+  "previousIntermediateCSS": "03c6eb126ac3846155064639e0aa3fdccc199eac75bb51fd38e45707e344fdf4",
+  "feedbackBlurCorrection": {
+    "source": "pg02_d/code.html second badge explicitly backdrop-blur-md",
+    "from": "none",
+    "to": "blur(12px)",
+    "sameOtherValues": true,
+    "inverseBeforeInitialCorrectedHash": "2d0e3411470396a63250e50301a20201fd7b3a7a48eca2322c83ee7dadbed751"
+  },
+  "previousFinalCSS": "dd1a1dce6b4e154d03ab5454b0fa2a78b2052b24214f40a2db888973a53e540b",
+  "finalThreeConstantsCorrection": {
+    "source": [
+      "pg02_c second cover text-surface",
+      "pg02_d:134 feedback sticker shadow-sm",
+      "pg02_d:75 first cover neutral fee geometry"
+    ],
+    "inverseBeforeFollowupExact": true,
+    "inverseBeforeInitialExact": true,
+    "newCSSBytes": 86165,
+    "feeScope": "history-repeat-card only; feedback extra AA neutral label retains prior geometry without source per-person amount claim"
+  }
+}

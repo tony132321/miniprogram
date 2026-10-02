@@ -1,0 +1,57 @@
+<view class="pg10-page support-page" style="padding-top: {{statusBarHeight}}px">
+  <view class="support-status-cover" style="height: {{statusBarHeight}}px" aria-hidden="true"></view>
+  <view class="pg10-header support-header" style="padding-right: {{headerPaddingRight}}; top: {{statusBarHeight}}px">
+    <button class="pg10-back support-back" bindtap="back" aria-label="返回"><image class="support-back-icon" src="assets/arrow-back.svg" mode="aspectFit" aria-hidden="true" /></button>
+    <view class="pg10-header-title">帮助与反馈</view>
+    <view class="pg10-header-actions"><button class="pg10-header-more" bindtap="toggleMore" aria-label="更多页面入口" aria-expanded="{{moreOpen}}"><image class="support-more-icon" src="assets/more.svg" mode="aspectFit" aria-hidden="true" /></button><button class="pg10-header-avatar" bindtap="goProfile" aria-label="返回我的页面"><image class="support-person-icon" src="assets/person.svg" mode="aspectFit" aria-hidden="true" /></button></view>
+    <view wx:if="{{moreOpen}}" class="pg10-header-menu" style="right: {{headerPaddingRight}}"><button bindtap="goAbout">关于 Project IRL　›</button><button bindtap="goProfile">我的页面　›</button></view>
+  </view>
+
+  <view class="pg10-card support-hero">
+    <view class="support-hero-top">
+      <view class="assistant-mark" aria-hidden="true"><image class="support-assistant-icon" src="assets/smart-toy.svg" mode="aspectFit" aria-hidden="true" /></view>
+      <view class="support-hero-copy">
+        <view class="support-hero-heading"><text>智能客服搭子</text><text class="support-unavailable">暂未开放</text></view>
+        <view class="support-hero-note">遇到突发状况或组局疑问？先查看常见解答，安全问题可提交真实举报工单。</view>
+      </view>
+    </view>
+    <view class="support-hero-actions">
+      <button class="support-ai-action" disabled="{{true}}"><image class="support-action-icon" src="assets/chat.svg" mode="aspectFit" aria-hidden="true" /><text>AI 提问暂未开放</text></button>
+      <button class="support-human-action" disabled="{{true}}"><image class="support-action-icon" src="assets/agent.svg" mode="aspectFit" aria-hidden="true" /><text>人工客服暂未开放</text></button>
+    </view>
+  </view>
+
+  <view class="pg10-card support-faq-card">
+    <view class="support-section-head"><view class="support-section-title"><image class="support-section-icon" src="assets/help.svg" mode="aspectFit" aria-hidden="true" /><text>常见互助解答</text></view><text class="support-section-hint">自助查看</text></view>
+    <view class="support-faq-list">
+      <view wx:for="{{questions}}" wx:key="title" class="support-faq-item">
+        <button class="support-faq-trigger" data-index="{{index}}" bindtap="toggleFaq" aria-label="{{item.title}}，{{openIndex === index ? '收起' : '展开'}}"><text>{{item.title}}</text><image class="support-faq-chevron {{openIndex === index ? 'is-open' : ''}}" src="assets/expand-more.svg" mode="aspectFit" aria-hidden="true" /></button>
+        <view wx:if="{{openIndex === index}}" class="support-faq-answer"><view>{{item.answer}}</view><button wx:if="{{item.action === 'create'}}" class="support-tag support-report-tag" style="margin-top: 14rpx;" bindtap="goCreate">发起受控活动　›</button></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="pg10-card support-feedback-card">
+    <view class="support-section-head"><view class="support-section-title"><image class="support-edit-icon" src="assets/edit.svg" mode="aspectFit" aria-hidden="true" /><text>意见与反馈</text></view><text class="support-unavailable feedback-state">暂未开放</text></view>
+    <view class="support-feedback-intro">普通建议反馈尚未接入。下方展示计划中的表单；当前不会收集或发送填写内容。</view>
+
+    <view class="support-field-label">反馈类型</view>
+    <view class="support-tags">
+      <view class="support-tag">功能建议</view><view class="support-tag">遇到 Bug</view><button class="support-tag support-report-tag" bindtap="goReport">违规举报 ›</button><view class="support-tag">场地合作</view><view class="support-tag">其他</view>
+    </view>
+
+    <view class="support-field-row"><text class="support-field-label">详细描述您的想法或遇到的问题</text><text class="support-field-count">0/300</text></view>
+    <textarea class="support-textarea" disabled="{{true}}" maxlength="300" placeholder="反馈提交功能尚未开放" aria-label="反馈描述暂未开放" />
+
+    <view class="support-field-row"><text class="support-field-label">上传截图凭证（选填）</text><text class="support-field-count">未开放</text></view>
+    <view class="support-upload-placeholder"><image class="support-upload-icon" src="assets/photo.svg" mode="aspectFit" aria-hidden="true" /><text>图片未开放</text></view>
+
+    <view class="support-field-label">联系方式（选填）</view>
+    <view class="support-contact"><image class="support-contact-icon" src="assets/contact.svg" mode="aspectFit" aria-hidden="true" /><input disabled="{{true}}" placeholder="客服渠道开放后可填写联系方式" aria-label="联系方式暂未开放" /></view>
+
+    <button class="support-submit" disabled="{{true}}"><image class="support-send-icon" src="assets/send.svg" mode="aspectFit" aria-hidden="true" /><text>反馈提交暂未开放</text></button>
+  </view>
+
+  <view class="pg10-card support-safety-card"><view class="support-safety-row"><view class="support-safety-icon">!</view><view><view class="support-safety-title">违规举报与安全求助</view><view class="support-safety-note">现有工单支持提交情况与查看进度；紧急人身危险请先联系当地应急服务。</view></view></view><button class="support-report-action" bindtap="goReport">前往我的页面提交举报　›</button></view>
+  <view class="support-footer">人工客服联系方式与服务时间尚未公布</view>
+</view>

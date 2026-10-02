@@ -1,0 +1,57 @@
+[
+  {
+    "slot": "title/type/location/time",
+    "actual": "display.title / display.isBadminton / display.location / display.date / display.end",
+    "rule": "use actual activity; no recurring circle, fixed Saturday, field/court count unless actual field exists"
+  },
+  {
+    "slot": "four metric tiles",
+    "actual": "event.stats.confirmed / event.stats.reserved / event.stats.requested / max(0,payload.minParticipants-stats.confirmed)",
+    "rule": "confirmed only, reserve not waitlist, unknown stats shown as unavailable; label confirmed replaces false signup count"
+  },
+  {
+    "slot": "capacity/progress",
+    "actual": "payload.maxParticipants / payload.minParticipants / stats.confirmed",
+    "rule": "if positive safe bounds derive occupancy; clamp visual width0..100; exact visible counts remain server values; no inference actual event formed"
+  },
+  {
+    "slot": "condition1",
+    "actual": "stats.confirmed >= payload.minParticipants",
+    "rule": "green only when valid positive minimum and real count; status still requires actual manual formation"
+  },
+  {
+    "slot": "condition2",
+    "actual": "payload.venueStatus === 'HOST_CONFIRMED' / event.venueEvidence",
+    "rule": "host statement only; never official venue lock, order ID, receipt, prepayment"
+  },
+  {
+    "slot": "condition3",
+    "actual": "display.status / event.reviewStatus / event.riskPaused / safetyStatus",
+    "rule": "replace nonexistent48h safety threshold with true latest state/review/risk; unknown not ready"
+  },
+  {
+    "slot": "AI/auto report",
+    "actual": "existing R1 closed capability + factTodosLoadState/factTodos if appropriate",
+    "rule": "label尚未开放; no automatic weather/twohour reminder/cloud delivery claim; source orb decoration has no execution implication"
+  },
+  {
+    "slot": "confirmed roster",
+    "actual": "registrationsLoadState / confirmedRoster[] user_id id displayName avatarGlyph",
+    "rule": "only actualCONFIRMED registrations; consented alias projection already enforced; no source portraits/skills/Lv/attendance/payment; EMPTY/ERROR distinct"
+  },
+  {
+    "slot": "roster right status",
+    "actual": "item.statusLabel / item.user_id === event.hostId / current-user projection",
+    "rule": "registration status or host role; not AA paid. Do not combine/parse expense ledgers to invent payment"
+  },
+  {
+    "slot": "venue media",
+    "actual": "original illustrative map PNG + display.location + payload.venueStatus",
+    "rule": "clearly source illustration, not event coordinate. Map actual bytes different from currentpgd map; activityasset if chosen"
+  },
+  {
+    "slot": "readonly footer",
+    "actual": "event.version / actual refreshed event snapshot",
+    "rule": "show current snapshot/version and no write controls; no15secondtimer, terminaldeviceID, cloudsync success"
+  }
+]

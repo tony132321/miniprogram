@@ -4,7 +4,8 @@ import { test } from 'node:test';
 import { createDatabase } from '../src/db.ts';
 import { consumeRateLimit, listRateLimitViolations, pruneRateLimits } from '../src/rate-limits.ts';
 import { createApp } from '../src/server.ts';
-import { createDraft, publishEvent } from '../src/events.ts';
+import { createDraft } from '../src/events.ts';
+import { publishApprovedInvite } from './helpers.ts';
 
 test('database rate limit is atomic across concurrent callers and resets at the window boundary', async () => {
   const db = await createDatabase();
@@ -83,7 +84,7 @@ test('join throttling returns 429 while member exit and safety reports stay avai
     feeMode: 'FREE', feeCapFen: 0, cancellationRule: '开始前可退出', visibility: 'INVITE', approvalMode: 'AUTO', hostParticipates: true };
   try {
     const draft = await createDraft(db, 'host', input, 'draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'publish');
     const first = await post(`/events/${event.id}/registrations`, 'member', { expectedVersion: event.version, inviteToken: event.inviteToken, acceptedRules: true }, 'join-0');
     assert.equal(first.status, 201);
     for (let i = 1; i < 20; i++) assert.equal((await post(`/events/${event.id}/registrations`, 'member', { expectedVersion: event.version, inviteToken: event.inviteToken, acceptedRules: true }, `join-${i}`)).status, 201);

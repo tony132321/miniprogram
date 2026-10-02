@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { createDatabase } from '../src/db.ts';
-import { createDraft, publishEvent } from '../src/events.ts';
-import { changeEvent } from '../src/lifecycle.ts';
+import { createDraft } from '../src/events.ts';
+import { changeApprovedInvite, publishApprovedInvite } from './helpers.ts';
 import { register } from './helpers.ts';
 import { askCurrentFact, createContent, listContent, listFactTodos, moderateContent } from '../src/collaboration.ts';
 import { createAppeal, listAppeals, listMyAppeals, changeAppealStatus } from '../src/operations.ts';
@@ -16,7 +16,7 @@ test('rejected content has an owner-only appeal and independent reversal restore
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'content-appeal-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'content-appeal-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'content-appeal-publish');
     await register(db, 'author', event.id, event.version, 'content-appeal-author');
     await register(db, 'member', event.id, event.version, 'content-appeal-member');
     const fact = await askCurrentFact(db, 'author', event.id, '需要自带球拍吗？', 'content-appeal-question');
@@ -57,7 +57,7 @@ test('rejected content has an owner-only appeal and independent reversal restore
     const staleContentId = staleQuestions[0]!.question_content_id;
     await moderateContent(db, 'moderator', staleContentId, 'REJECTED', 'old-version-reject', '需要更新活动场地说明');
     const staleAppeal = await createAppeal(db, 'author', { contentId: staleContentId, description: '请核查旧版问题' }, 'old-version-appeal');
-    const updatedEvent = await changeEvent(db, 'host', event.id, event.version, { title: '内容复核测试（新版）' }, 'new-title-version');
+    const updatedEvent = await changeApprovedInvite(db, 'host', event.id, event.version, { title: '内容复核测试（新版）' }, 'new-title-version');
     await changeAppealStatus(db, 'reviewer', staleAppeal.id, 'RESOLVED', '内容可公开，但原事实待办不可复活',
       'old-version-overturn', 'OVERTURN');
     assert.equal((await listFactTodos(db, 'host', event.id)).some(item => item.id === staleFact.todoId), false);
@@ -72,7 +72,7 @@ test('rejected content has an owner-only appeal and independent reversal restore
     await moderateContent(db, 'moderator', currentQuestions[0]!.question_content_id, 'APPROVED', 'approve-current-question');
     const pendingAnswer = await createContent(db, 'host', event.id, 'ANSWER', '本场自备饮水', currentQuestions[0]!.question_content_id,
       'pending-before-version-change');
-    await changeEvent(db, 'host', event.id, updatedEvent.version, { title: '内容复核测试（第三版）' }, 'third-title-version');
+    await changeApprovedInvite(db, 'host', event.id, updatedEvent.version, { title: '内容复核测试（第三版）' }, 'third-title-version');
     await assert.rejects(() => moderateContent(db, 'reviewer', pendingAnswer.id, 'APPROVED', 'stale-answer-approve'), { code: 'INVALID_STATE' });
     await moderateContent(db, 'moderator', pendingAnswer.id, 'REJECTED', 'stale-answer-reject', '活动信息已变更，请提交新版回答');
     const staleAnswerAppeal = await createAppeal(db, 'host', { contentId: pendingAnswer.id, description: '请复核旧版回答' }, 'stale-answer-appeal');
@@ -86,7 +86,7 @@ test('overturning a rejected FAQ announcement resolves only its current-version 
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'faq-appeal-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'faq-appeal-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'faq-appeal-publish');
     await register(db, 'author', event.id, event.version, 'faq-appeal-join');
     const fact = await askCurrentFact(db, 'author', event.id, '需要自带球拍吗？', 'faq-appeal-fact');
     const announcement = await createContent(db, 'host', event.id, 'ANNOUNCEMENT',

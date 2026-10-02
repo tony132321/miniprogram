@@ -1,0 +1,91 @@
+{
+  "boundary": "One post-review delta check only, not rerunning original80 source/contracts/glyph/resources checks",
+  "checks": [
+    {
+      "name": "Unique hot frame inverse 0",
+      "passed": true
+    },
+    {
+      "name": "Unique hot frame inverse 1",
+      "passed": true
+    },
+    {
+      "name": "Unique hot frame inverse 2",
+      "passed": true
+    },
+    {
+      "name": "Unique hot frame inverse 3",
+      "passed": true
+    },
+    {
+      "name": "Full WXML inverse to retained80-check input",
+      "passed": true
+    },
+    {
+      "name": "Unique contextual CSS inverse 0",
+      "passed": true
+    },
+    {
+      "name": "Unique contextual CSS inverse 1",
+      "passed": true
+    },
+    {
+      "name": "Unique contextual CSS inverse 2",
+      "passed": true
+    },
+    {
+      "name": "Unique contextual CSS inverse 3",
+      "passed": true
+    },
+    {
+      "name": "Unique contextual CSS inverse 4",
+      "passed": true
+    },
+    {
+      "name": "Unique contextual CSS inverse 5",
+      "passed": true
+    },
+    {
+      "name": "Unique contextual CSS inverse 6",
+      "passed": true
+    },
+    {
+      "name": "Unique contextual CSS inverse 7",
+      "passed": true
+    },
+    {
+      "name": "Full CSS inverse to retained80-check input",
+      "passed": true
+    },
+    {
+      "name": "Exactly4 fixed hot wrappers",
+      "passed": true
+    },
+    {
+      "name": "Source80/r16/fixed shadow/overflow frame",
+      "passed": true
+    },
+    {
+      "name": "Contained image only scales, no inherited shadow/radius/margin",
+      "passed": true
+    },
+    {
+      "name": "Five exact source transition role rules",
+      "passed": false
+    },
+    {
+      "name": "Original collage filter, old text-shadow cancelled",
+      "passed": true
+    }
+  ],
+  "passed": 18,
+  "failed": 1,
+  "WXMLInverseBytes": 43603,
+  "WXMLInverseSHA256": "d05adf6b78bde38217902e2e6dae847043dd842a51d0bd1048f6c3774c87a83a",
+  "CSSInverseBytes": 107076,
+  "CSSInverseSHA256": "0fad19bb89114f0584837df52b02b20d499ee86db4bf6563e661914da1c76822",
+  "finalWXMLBytes": 43747,
+  "finalWXMLSHA256": "9c35f217aefeaebfb33a003b996f127de9850e486ee431704d6480f816249f4e",
+  "finalCSSBytes": 110058,
+  "finalCSSSHA256": "9c370a6b694c57ee508e8c6c8a698094a1892c91d45e8b7f73a2b4244e8c9d87"
+}

@@ -81,8 +81,9 @@ test('an attendance dispute needs an audited human verdict before trusted comple
     assert.equal((await decide('ops', 'human-decision', 'HELD_CONFIRMED')).status, 200,
       'idempotent retry replays the same verdict');
     const { rows: reviewEvents } = await db.query<{ event_name: string; source: string; user_id_pseudonymous: string; version: number }>(
-      "SELECT event_name,source,user_id_pseudonymous,version FROM business_events WHERE activity_id='review-event' AND event_name='OUTCOME_REVIEW'");
-    assert.equal(reviewEvents.length, 1);
+      "SELECT event_name,source,user_id_pseudonymous,version FROM business_events WHERE activity_id='review-event' AND event_name IN ('OUTCOME_REVIEW','REPORT_RESOLVED')");
+    assert.deepEqual(reviewEvents.map(row => row.event_name), ['OUTCOME_REVIEW'],
+      'an attendance verdict already has one event and must not be counted again as a report resolution');
     assert.equal(reviewEvents[0]?.source, 'OPS');
     assert.equal(reviewEvents[0]?.version, 2);
     assert.match(reviewEvents[0]!.user_id_pseudonymous, /^[a-f0-9]{64}$/);

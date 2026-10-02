@@ -1,0 +1,419 @@
+{
+  "sourceHTMLSHA256": "514d9e5fbfbbc66e9c5c19cf33767b58b54f77a144720c4b89f3b5248356aed2",
+  "sourceURLCount": 8,
+  "candidateFiles": [
+    {
+      "path": "miniprogram/assets/stitch/caper_discover_coffee.jpg",
+      "bytes": 75091,
+      "sha256": "8c0b55f856d8fbf2fc565b240aff905bcd4a8a0fdc5db4e2047591bebb71d07e"
+    },
+    {
+      "path": "miniprogram/assets/stitch/caper_discover_camping.jpg",
+      "bytes": 84585,
+      "sha256": "583817d363bf087b5581ec58df7427c6ff1e079082bd4550ca4d2b1b6c00b621"
+    },
+    {
+      "path": "miniprogram/assets/stitch/caper_discover_art.jpg",
+      "bytes": 70164,
+      "sha256": "84a0a5c6ce78fe0918d7edbaf75f010a2b255f239219344a8e65e10850745bbd"
+    },
+    {
+      "path": "miniprogram/assets/stitch/caper_discover_surf.jpg",
+      "bytes": 61363,
+      "sha256": "7e8d064a4d9b4f4ecd2ae282cee3089322dbe036f8bfda9f71c32ddacd768956"
+    },
+    {
+      "path": "miniprogram/assets/stitch/caper_discover_citywalk.jpg",
+      "bytes": 63210,
+      "sha256": "29ec54d0a3ad4928008e957d8229c72d0a357167098d458d749c4d391d09faa2"
+    },
+    {
+      "path": "miniprogram/assets/stitch/caper_discover_basketball.jpg",
+      "bytes": 80784,
+      "sha256": "e38ebfbe65bad920fcfd9861f82b4d3c558bf8584dffbd237b1cd5a8ee1a35a2"
+    },
+    {
+      "path": "miniprogram/assets/stitch/caper_discover_boardgame.jpg",
+      "bytes": 93870,
+      "sha256": "0496a27ec5e007deba173ce6a54c882fadba2d882babf0010a3b7ade1116a070"
+    }
+  ],
+  "responses": [
+    {
+      "index": 1,
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuANtNRVw3GWDRn91vtIk1sf6GErtWLcbhpWsUZ02JA0x5IW839ZhWqEaygsgF1WZz9aOVXIDw8X-IhXdY5MF1TgYvdcCcaBSTEa65zVQjSFdfnI_SlNmoaQGgYw2FWhzIBh05ubYHgKRzBWJAVCG7jjSNXaGvFhHKFkSVlj_-6IiK4XL55T-RRo7IkqcjDzFV3P2PAMhYw-_8GWPWmPMDqkl_cLNkq3DeSuGVpO5c5W8xkCqewVta0c0Q",
+      "finalURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuANtNRVw3GWDRn91vtIk1sf6GErtWLcbhpWsUZ02JA0x5IW839ZhWqEaygsgF1WZz9aOVXIDw8X-IhXdY5MF1TgYvdcCcaBSTEa65zVQjSFdfnI_SlNmoaQGgYw2FWhzIBh05ubYHgKRzBWJAVCG7jjSNXaGvFhHKFkSVlj_-6IiK4XL55T-RRo7IkqcjDzFV3P2PAMhYw-_8GWPWmPMDqkl_cLNkq3DeSuGVpO5c5W8xkCqewVta0c0Q",
+      "sourceNodes": [
+        {
+          "line": 307,
+          "alt": "春日露营"
+        },
+        {
+          "line": 603,
+          "alt": "露营夜话"
+        }
+      ],
+      "responseHeaders": {
+        "Content-Type": "image/jpeg",
+        "Vary": "Origin",
+        "Access-Control-Allow-Origin": "*",
+        "Timing-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Content-Length",
+        "ETag": "\"v0\"",
+        "Expires": "Sat, 03 Oct 2026 02:22:25 GMT",
+        "Cache-Control": "public, max-age=86400, no-transform",
+        "Content-Disposition": "inline;filename=\"unnamed.jpg\"",
+        "X-Content-Type-Options": "nosniff",
+        "Date": "Fri, 02 Oct 2026 02:22:25 GMT",
+        "Server": "fife",
+        "Content-Length": "84585",
+        "X-XSS-Protection": "0",
+        "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+        "Connection": "close"
+      },
+      "bytes": 84585,
+      "sha256": "583817d363bf087b5581ec58df7427c6ff1e079082bd4550ca4d2b1b6c00b621",
+      "localTemp": "/private/tmp/caper-wave74-discover/photos/original-1.jpg",
+      "magic": "ffd8ffe000104a464946000101000001",
+      "matches": [
+        {
+          "path": "miniprogram/assets/stitch/caper_discover_camping.jpg",
+          "bytes": 84585,
+          "sha256": "583817d363bf087b5581ec58df7427c6ff1e079082bd4550ca4d2b1b6c00b621"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuBWV-xFWBngI3teUS564gOZO5zDU8rjsDGS9Ku038zTLt1JME9mysOOZbZYsI4P83QSJpbMPt0Sj6l5H2xHHyjgh7edCxeaZ79eIDIHmBBV_n9G7kKIntoZwq5MXN-S_ysylkG6LD4kO_wozFW--HcJN62GWwuYq-_VHB8kcj1xE08-6G58JM-bLxhN5eRnm-tnOiB24lqFCYPx90L46sSxNPtylGr0cJFhhUbaCH9TJfal9r_L5Argew",
+      "finalURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuBWV-xFWBngI3teUS564gOZO5zDU8rjsDGS9Ku038zTLt1JME9mysOOZbZYsI4P83QSJpbMPt0Sj6l5H2xHHyjgh7edCxeaZ79eIDIHmBBV_n9G7kKIntoZwq5MXN-S_ysylkG6LD4kO_wozFW--HcJN62GWwuYq-_VHB8kcj1xE08-6G58JM-bLxhN5eRnm-tnOiB24lqFCYPx90L46sSxNPtylGr0cJFhhUbaCH9TJfal9r_L5Argew",
+      "sourceNodes": [
+        {
+          "line": 240,
+          "alt": "周五桌游局"
+        },
+        {
+          "line": 391,
+          "alt": "小酒馆音乐夜"
+        },
+        {
+          "line": 603,
+          "alt": "周五桌游"
+        },
+        {
+          "line": 766,
+          "alt": "The COMMUNE"
+        }
+      ],
+      "responseHeaders": {
+        "Content-Type": "image/jpeg",
+        "Vary": "Origin",
+        "Access-Control-Allow-Origin": "*",
+        "Timing-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Content-Length",
+        "ETag": "\"v0\"",
+        "Expires": "Sat, 03 Oct 2026 02:22:25 GMT",
+        "Cache-Control": "public, max-age=86400, no-transform",
+        "Content-Disposition": "inline;filename=\"unnamed.jpg\"",
+        "X-Content-Type-Options": "nosniff",
+        "Date": "Fri, 02 Oct 2026 02:22:25 GMT",
+        "Server": "fife",
+        "Content-Length": "93870",
+        "X-XSS-Protection": "0",
+        "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+        "Connection": "close"
+      },
+      "bytes": 93870,
+      "sha256": "0496a27ec5e007deba173ce6a54c882fadba2d882babf0010a3b7ade1116a070",
+      "localTemp": "/private/tmp/caper-wave74-discover/photos/original-2.jpg",
+      "magic": "ffd8ffe000104a464946000101000001",
+      "matches": [
+        {
+          "path": "miniprogram/assets/stitch/caper_discover_boardgame.jpg",
+          "bytes": 93870,
+          "sha256": "0496a27ec5e007deba173ce6a54c882fadba2d882babf0010a3b7ade1116a070"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuCTHZkOKvd7z7nPhgQdwQJU6NKWayLtCdjDimcMDIEV7A3N6C4zZAMBVpRhbh0FLPOyFowZeYDuvNeQ4aaaOIj4L-yCiIiNuxCnwXyuZeky8EqnbiBNnayu9Dj7at3489StFFUQtGfI5HRpY4c3Ym9yAW9BJONoDIlRQHIJr3MZ-sfrWORsKAg-fcwoNGeqaeF1IDV5PqgGAFzIKjBx4Ifr0p2Y6ZaWTQWt8i4qg4RvF3ZDaFST--p5_A",
+      "finalURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuCTHZkOKvd7z7nPhgQdwQJU6NKWayLtCdjDimcMDIEV7A3N6C4zZAMBVpRhbh0FLPOyFowZeYDuvNeQ4aaaOIj4L-yCiIiNuxCnwXyuZeky8EqnbiBNnayu9Dj7at3489StFFUQtGfI5HRpY4c3Ym9yAW9BJONoDIlRQHIJr3MZ-sfrWORsKAg-fcwoNGeqaeF1IDV5PqgGAFzIKjBx4Ifr0p2Y6ZaWTQWt8i4qg4RvF3ZDaFST--p5_A",
+      "sourceNodes": [
+        {
+          "line": 391,
+          "alt": "晚间飞盘局"
+        },
+        {
+          "line": 603,
+          "alt": "Good People"
+        },
+        {
+          "line": 766,
+          "alt": "世纪公园"
+        }
+      ],
+      "responseHeaders": {
+        "Content-Type": "image/jpeg",
+        "Vary": "Origin",
+        "Access-Control-Allow-Origin": "*",
+        "Timing-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Content-Length",
+        "ETag": "\"v0\"",
+        "Expires": "Sat, 03 Oct 2026 02:22:25 GMT",
+        "Cache-Control": "public, max-age=86400, no-transform",
+        "Content-Disposition": "inline;filename=\"unnamed.jpg\"",
+        "X-Content-Type-Options": "nosniff",
+        "Date": "Fri, 02 Oct 2026 02:22:25 GMT",
+        "Server": "fife",
+        "Content-Length": "122735",
+        "X-XSS-Protection": "0",
+        "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+        "Connection": "close"
+      },
+      "bytes": 122735,
+      "sha256": "ab6bc2647289d4dfd98ea1229b2ea0caf5ead4390de18624c61af3e7645db05d",
+      "localTemp": "/private/tmp/caper-wave74-discover/photos/original-3.jpg",
+      "magic": "ffd8ffe000104a464946000101000001",
+      "matches": []
+    },
+    {
+      "index": 4,
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuDCdNd7wutVmdSLy2WMhr9oiZvJxEWYNxsSi1l8uVDKLmrbOtgGXxETy0d4M6g2SgC0bqGVoqfYIk65kCP_MShhuwqzLRa8sNUSlZmDgik0_3fZ3WPd-dVicH5mzgou_8JLgy_NsxT2IcjBWDKxKZugGZrXs65sXBXTpE3bCiiRr9KiodQbsR40X3iLVX_72Eho28X7myJdLZFMn9EE9TOiMffTd1_PBScyPGPY4ktEkZ0yqxzoUl051w",
+      "finalURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuDCdNd7wutVmdSLy2WMhr9oiZvJxEWYNxsSi1l8uVDKLmrbOtgGXxETy0d4M6g2SgC0bqGVoqfYIk65kCP_MShhuwqzLRa8sNUSlZmDgik0_3fZ3WPd-dVicH5mzgou_8JLgy_NsxT2IcjBWDKxKZugGZrXs65sXBXTpE3bCiiRr9KiodQbsR40X3iLVX_72Eho28X7myJdLZFMn9EE9TOiMffTd1_PBScyPGPY4ktEkZ0yqxzoUl051w",
+      "sourceNodes": [
+        {
+          "line": 326,
+          "alt": "看展搭子"
+        },
+        {
+          "line": 603,
+          "alt": "Same Vibes"
+        },
+        {
+          "line": 748,
+          "alt": "法租界梧桐树下"
+        },
+        {
+          "line": 766,
+          "alt": "上海当代艺术博物馆"
+        }
+      ],
+      "responseHeaders": {
+        "Content-Type": "image/jpeg",
+        "Vary": "Origin",
+        "Access-Control-Allow-Origin": "*",
+        "Timing-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Content-Length",
+        "ETag": "\"v0\"",
+        "Expires": "Sat, 03 Oct 2026 02:22:25 GMT",
+        "Cache-Control": "public, max-age=86400, no-transform",
+        "Content-Disposition": "inline;filename=\"unnamed.jpg\"",
+        "X-Content-Type-Options": "nosniff",
+        "Date": "Fri, 02 Oct 2026 02:22:25 GMT",
+        "Server": "fife",
+        "Content-Length": "70164",
+        "X-XSS-Protection": "0",
+        "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+        "Connection": "close"
+      },
+      "bytes": 70164,
+      "sha256": "84a0a5c6ce78fe0918d7edbaf75f010a2b255f239219344a8e65e10850745bbd",
+      "localTemp": "/private/tmp/caper-wave74-discover/photos/original-4.jpg",
+      "magic": "ffd8ffe000104a464946000101000001",
+      "matches": [
+        {
+          "path": "miniprogram/assets/stitch/caper_discover_art.jpg",
+          "bytes": 70164,
+          "sha256": "84a0a5c6ce78fe0918d7edbaf75f010a2b255f239219344a8e65e10850745bbd"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuDp11yN0Opd8Y8IlKPhXcsBzarwmrn8awtfJPTQjdtomMHAKB2kL05ixCEWxGz5W6UPzCjRP2En79Vr59xCsTW_tB0-WFmH2gPz_i9Mlp0e86ZiWIUYDUtnCcpuqmB_8hqw9lphD5KWwVbMlj2KOLDwQVmzVHqjB3uVB3R9mt65cN7cT_JJ6orZX4QoTUHFR_2tf9QnB8Bcrb7ZfwGLRj5Q_w81Rd9TO0queC_aBMbYFQ4VDuqcJEkKQg",
+      "finalURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuDp11yN0Opd8Y8IlKPhXcsBzarwmrn8awtfJPTQjdtomMHAKB2kL05ixCEWxGz5W6UPzCjRP2En79Vr59xCsTW_tB0-WFmH2gPz_i9Mlp0e86ZiWIUYDUtnCcpuqmB_8hqw9lphD5KWwVbMlj2KOLDwQVmzVHqjB3uVB3R9mt65cN7cT_JJ6orZX4QoTUHFR_2tf9QnB8Bcrb7ZfwGLRj5Q_w81Rd9TO0queC_aBMbYFQ4VDuqcJEkKQg",
+      "sourceNodes": [
+        {
+          "line": 210,
+          "alt": "咖啡聊天会"
+        },
+        {
+          "line": 603,
+          "alt": "Life is Better"
+        },
+        {
+          "line": 766,
+          "alt": "Manner Coffee"
+        }
+      ],
+      "responseHeaders": {
+        "Content-Type": "image/jpeg",
+        "Vary": "Origin",
+        "Access-Control-Allow-Origin": "*",
+        "Timing-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Content-Length",
+        "ETag": "\"v0\"",
+        "Expires": "Sat, 03 Oct 2026 02:22:25 GMT",
+        "Cache-Control": "public, max-age=86400, no-transform",
+        "Content-Disposition": "inline;filename=\"unnamed.jpg\"",
+        "X-Content-Type-Options": "nosniff",
+        "Date": "Fri, 02 Oct 2026 02:22:25 GMT",
+        "Server": "fife",
+        "Content-Length": "75091",
+        "X-XSS-Protection": "0",
+        "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+        "Connection": "close"
+      },
+      "bytes": 75091,
+      "sha256": "8c0b55f856d8fbf2fc565b240aff905bcd4a8a0fdc5db4e2047591bebb71d07e",
+      "localTemp": "/private/tmp/caper-wave74-discover/photos/original-5.jpg",
+      "magic": "ffd8ffe000104a464946000101000001",
+      "matches": [
+        {
+          "path": "miniprogram/assets/stitch/caper_discover_coffee.jpg",
+          "bytes": 75091,
+          "sha256": "8c0b55f856d8fbf2fc565b240aff905bcd4a8a0fdc5db4e2047591bebb71d07e"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuDp8g8grDP3AdvhNIVbo17l7VcnJ8PP1gmneaoM0msmHfkuU4QJwKmKj_HBVVKmDHHCElrdR7V0u10fmlvTgrpPbR0igABT_eGtiZ1fpZbYKJ7MG4XtUoy0Br5TaaDdyidJHzC9sb3Sg5J9oHxWDomPhAiznp_-OhuA4uZ8fbQi_d6rR_UWzK7J_lvVRw0i3oPpGB65j3_ze0bmQnseavAOLdZ3Fj2tAO1gyb2DC0C9NyfvK10-zseOIg",
+      "finalURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuDp8g8grDP3AdvhNIVbo17l7VcnJ8PP1gmneaoM0msmHfkuU4QJwKmKj_HBVVKmDHHCElrdR7V0u10fmlvTgrpPbR0igABT_eGtiZ1fpZbYKJ7MG4XtUoy0Br5TaaDdyidJHzC9sb3Sg5J9oHxWDomPhAiznp_-OhuA4uZ8fbQi_d6rR_UWzK7J_lvVRw0i3oPpGB65j3_ze0bmQnseavAOLdZ3Fj2tAO1gyb2DC0C9NyfvK10-zseOIg",
+      "sourceNodes": [
+        {
+          "line": 180,
+          "alt": "周末篮球局"
+        }
+      ],
+      "responseHeaders": {
+        "Content-Type": "image/jpeg",
+        "Vary": "Origin",
+        "Access-Control-Allow-Origin": "*",
+        "Timing-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Content-Length",
+        "ETag": "\"v0\"",
+        "Expires": "Sat, 03 Oct 2026 02:22:25 GMT",
+        "Cache-Control": "public, max-age=86400, no-transform",
+        "Content-Disposition": "inline;filename=\"unnamed.jpg\"",
+        "X-Content-Type-Options": "nosniff",
+        "Date": "Fri, 02 Oct 2026 02:22:25 GMT",
+        "Server": "fife",
+        "Content-Length": "80784",
+        "X-XSS-Protection": "0",
+        "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+        "Connection": "close"
+      },
+      "bytes": 80784,
+      "sha256": "e38ebfbe65bad920fcfd9861f82b4d3c558bf8584dffbd237b1cd5a8ee1a35a2",
+      "localTemp": "/private/tmp/caper-wave74-discover/photos/original-6.jpg",
+      "magic": "ffd8ffe000104a464946000101000001",
+      "matches": [
+        {
+          "path": "miniprogram/assets/stitch/caper_discover_basketball.jpg",
+          "bytes": 80784,
+          "sha256": "e38ebfbe65bad920fcfd9861f82b4d3c558bf8584dffbd237b1cd5a8ee1a35a2"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuDtXZVHsjntEnWAhZG6lIUUKaf1TeBN4evJ61l1x0o8jNRiFHoQVao649xF9AQP-cXRaorPS8vvt9wtUcKIGut_jmxge9PQSl62gdtmVO8ozlhf8vR-n9fPHrH9_2peNuWV65byKbnB2IdJ-DaeNPKDH6lmvBU_yMmJqXYO7LcUe62md6JEFHU7eO-V2EgpPIstarm_TnPHpY03_ak8DmajZMR7jB4DL-KySwKCYpDRB1vvNrSpDUmG7w",
+      "finalURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuDtXZVHsjntEnWAhZG6lIUUKaf1TeBN4evJ61l1x0o8jNRiFHoQVao649xF9AQP-cXRaorPS8vvt9wtUcKIGut_jmxge9PQSl62gdtmVO8ozlhf8vR-n9fPHrH9_2peNuWV65byKbnB2IdJ-DaeNPKDH6lmvBU_yMmJqXYO7LcUe62md6JEFHU7eO-V2EgpPIstarm_TnPHpY03_ak8DmajZMR7jB4DL-KySwKCYpDRB1vvNrSpDUmG7w",
+      "sourceNodes": [
+        {
+          "line": 288,
+          "alt": "冲浪体验课"
+        },
+        {
+          "line": 748,
+          "alt": "滨江海岸线"
+        }
+      ],
+      "responseHeaders": {
+        "Content-Type": "image/jpeg",
+        "Vary": "Origin",
+        "Access-Control-Allow-Origin": "*",
+        "Timing-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Content-Length",
+        "ETag": "\"v0\"",
+        "Expires": "Sat, 03 Oct 2026 02:22:25 GMT",
+        "Cache-Control": "public, max-age=86400, no-transform",
+        "Content-Disposition": "inline;filename=\"unnamed.jpg\"",
+        "X-Content-Type-Options": "nosniff",
+        "Date": "Fri, 02 Oct 2026 02:22:25 GMT",
+        "Server": "fife",
+        "Content-Length": "61363",
+        "X-XSS-Protection": "0",
+        "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+        "Connection": "close"
+      },
+      "bytes": 61363,
+      "sha256": "7e8d064a4d9b4f4ecd2ae282cee3089322dbe036f8bfda9f71c32ddacd768956",
+      "localTemp": "/private/tmp/caper-wave74-discover/photos/original-7.jpg",
+      "magic": "ffd8ffe000104a464946000101000001",
+      "matches": [
+        {
+          "path": "miniprogram/assets/stitch/caper_discover_surf.jpg",
+          "bytes": 61363,
+          "sha256": "7e8d064a4d9b4f4ecd2ae282cee3089322dbe036f8bfda9f71c32ddacd768956"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "url": "https://lh3.googleusercontent.com/aida-public/AB6AXuDwc8fA8bd8tUDPk0gT1QfrMa8MnFfR5EUW_SR-Mieh7D1PVG27XCd10oMKIHBg9kSXd6iHFUdztXjn32O44nv08tOrRvy6c_3a3Ng8L2QuKUCSvAVVtzxIZfj9mC6Aae9dIdWYL7sQypzvdp6q0_4u05gU8TwicccEWX7vPFFFlKLaSrPqisMM55NsWJdCaa6Ka5YIdfqmn7-bO2z6jzTFPfpXCKBEDLEUvlnSytPRG8SHXC3dEDDbgw",
+      "finalURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuDwc8fA8bd8tUDPk0gT1QfrMa8MnFfR5EUW_SR-Mieh7D1PVG27XCd10oMKIHBg9kSXd6iHFUdztXjn32O44nv08tOrRvy6c_3a3Ng8L2QuKUCSvAVVtzxIZfj9mC6Aae9dIdWYL7sQypzvdp6q0_4u05gU8TwicccEWX7vPFFFlKLaSrPqisMM55NsWJdCaa6Ka5YIdfqmn7-bO2z6jzTFPfpXCKBEDLEUvlnSytPRG8SHXC3dEDDbgw",
+      "sourceNodes": [
+        {
+          "line": 148,
+          "alt": "城市漫步·滨江日落"
+        },
+        {
+          "line": 391,
+          "alt": "City walk · 武康路"
+        },
+        {
+          "line": 603,
+          "alt": "日落合影"
+        },
+        {
+          "line": 748,
+          "alt": "外滩历史漫游线"
+        }
+      ],
+      "responseHeaders": {
+        "Content-Type": "image/jpeg",
+        "Vary": "Origin",
+        "Access-Control-Allow-Origin": "*",
+        "Timing-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Content-Length",
+        "ETag": "\"v0\"",
+        "Expires": "Sat, 03 Oct 2026 02:22:25 GMT",
+        "Cache-Control": "public, max-age=86400, no-transform",
+        "Content-Disposition": "inline;filename=\"unnamed.jpg\"",
+        "X-Content-Type-Options": "nosniff",
+        "Date": "Fri, 02 Oct 2026 02:22:25 GMT",
+        "Server": "fife",
+        "Content-Length": "63210",
+        "X-XSS-Protection": "0",
+        "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+        "Connection": "close"
+      },
+      "bytes": 63210,
+      "sha256": "29ec54d0a3ad4928008e957d8229c72d0a357167098d458d749c4d391d09faa2",
+      "localTemp": "/private/tmp/caper-wave74-discover/photos/original-8.jpg",
+      "magic": "ffd8ffe000104a464946000101000001",
+      "matches": [
+        {
+          "path": "miniprogram/assets/stitch/caper_discover_citywalk.jpg",
+          "bytes": 63210,
+          "sha256": "29ec54d0a3ad4928008e957d8229c72d0a357167098d458d749c4d391d09faa2"
+        }
+      ]
+    }
+  ],
+  "newRuntimeWrites": 0,
+  "compressionOrReencode": false
+}

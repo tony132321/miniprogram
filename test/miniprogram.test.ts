@@ -10,10 +10,98 @@ import { createApp } from '../src/server.ts';
 const require = createRequire(import.meta.url);
 const { createApi } = require('../miniprogram/utils/api.js');
 const { sha256 } = require('../miniprogram/utils/sha256.js');
+const cityModule = require('../miniprogram/utils/city.js');
 
 test('mini-program fingerprint hashing matches SHA-256 for plain and Unicode text', () => {
   for (const value of ['', 'abc', '举报：现场有人受伤', '球拍🏸与换行\n继续说明', 'abc'.repeat(100), '🏸'.repeat(100)])
     assert.equal(sha256(value), createHash('sha256').update(value).digest('hex'));
+});
+
+test('R1 discovery has no active public-search controls while invitation and creation remain usable', () => {
+  const markup = readFileSync(new URL('../miniprogram/pages/discover/discover.wxml', import.meta.url), 'utf8');
+  assert.match(markup, /公开找局暂未开放/);
+  assert.match(markup, /暂不可搜索/);
+  assert.doesNotMatch(markup, /bindinput="keywordChanged"|bindtap="chooseCategory"/);
+  let page: Record<string, any> | undefined;
+  const navigations: string[] = [];
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/discover/discover.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
+      if (path === '../../utils/city.js') return cityModule;
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: {
+      getStorageSync() { return ''; },
+      navigateTo(options: Record<string, any>) { navigations.push(options.url); },
+      switchTab(options: Record<string, any>) { navigations.push(options.url); }
+    }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  assert.equal(page.keywordChanged, undefined);
+  assert.equal(page.chooseCategory, undefined);
+  page.tokenChanged({ detail: { value: ' abc123 ' } });
+  page.openInvite();
+  assert.deepEqual(navigations, [], 'an invalid short token stays on discovery');
+  assert.match(page.data.message, /32 位口令/);
+  const inviteToken = '0123456789abcdefghijklmnopqrstuv';
+  page.tokenChanged({ detail: { value: ` ${inviteToken} ` } });
+  page.openInvite();
+  page.goCreate();
+  assert.deepEqual(navigations, [`/pages/event/event?token=${inviteToken}`, '/pages/create/create']);
+});
+
+test('event success state appears only after the server confirms the published event or registration', async () => {
+  let page: Record<string, any> | undefined;
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    getApp() { return { globalData: { ready: Promise.resolve() } }; },
+    wx: { getStorageSync() { return ''; }, showModal(options: Record<string, any>) { options.success({ confirm: true }); } },
+    setTimeout, clearTimeout
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.refresh = async function () {
+    this.setData({ loadState: 'READY', event: { id: 'e1', status: 'RECRUITING', version: 2,
+      reviewStatus: 'PENDING', payload: { title: '羽毛球', startAt: '2026-10-01T10:00:00Z', feeMode: 'FREE' } }, isHost: true });
+    return true;
+  };
+  await page.onLoad({ id: 'e1', success: 'published' });
+  assert.equal(page.data.successState, 'PUBLISHED');
+  page.setData({ successState: '' });
+  page.refresh = async function () {
+    this.setData({ loadState: 'READY', event: { id: 'e1', status: 'RECRUITING', version: 2,
+      reviewStatus: 'REJECTED', payload: { title: '羽毛球', startAt: '2026-10-01T10:00:00Z', feeMode: 'FREE' } }, isHost: true });
+    return true;
+  };
+  await page.onLoad({ id: 'e1', success: 'published' });
+  assert.equal(page.data.successState, '');
+  page.setData({ successState: '' });
+  page.refresh = async function () {
+    this.setData({ loadState: 'READY', event: { id: 'e1', status: 'RECRUITING', version: 2,
+      payload: { title: '羽毛球', startAt: '2026-10-01T10:00:00Z', feeMode: 'FREE' } }, isHost: false });
+    return true;
+  };
+  await page.onLoad({ id: 'e1', success: 'published' });
+  assert.equal(page.data.successState, '');
+  page.setData({ canJoin: true, myRegistration: null, successState: '' });
+  page.action = async function () { this.setData({ myRegistration: { status: 'CONFIRMED' } }); return { id: 'r1' }; };
+  await page.join();
+  assert.equal(page.data.successState, 'JOINED');
+  page.setData({ myRegistration: { status: 'CANCELLED' } });
+  page.reconcileSuccessState();
+  assert.equal(page.data.successState, '');
+  page.setData({ successState: 'PUBLISHED', isHost: true, event: { id: 'e1', status: 'CANCELLED' } });
+  page.reconcileSuccessState();
+  assert.equal(page.data.successState, '');
 });
 
 test('mini-program API sends the current login token and preserves server errors', async () => {
@@ -26,6 +114,23 @@ test('mini-program API sends the current login token and preserves server errors
   assert.equal(captured?.url, 'https://example.test/events/one/confirm');
   assert.equal(captured?.header.Authorization, 'Bearer session-token');
   assert.ok(captured?.header['Idempotency-Key']);
+});
+
+test('a delayed GET response from an earlier session is rejected', async () => {
+  const storage = new Map<string, string>([['userId', 'same-user'], ['sessionToken', 'old-token']]);
+  let finish: ((response: Record<string, unknown>) => void) | undefined;
+  const api = createApi({
+    request(options: Record<string, any>) {
+      assert.equal(options.header.Authorization, 'Bearer old-token');
+      finish = options.success;
+    },
+    getStorageSync(key: string) { return storage.get(key) ?? ''; }
+  }, { apiBase: 'https://example.test', developmentUser: '' });
+  const pending = api.get('/me/profile');
+  assert.ok(finish);
+  storage.set('sessionToken', 'new-token');
+  finish({ statusCode: 200, data: { nickname: 'old-private-profile' } });
+  await assert.rejects(pending, { code: 'IDENTITY_CHANGED' });
 });
 
 test('mini-program suggestion request forwards its 30-second network timeout', async () => {
@@ -170,8 +275,8 @@ test('profile logout clears private content before entering the activity list', 
   const navigations: string[] = [];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { logout: async () => ({ ok: true }) } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { logout: async () => ({ ok: true }) } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -194,8 +299,8 @@ test('profile logout failure keeps private data visible and offers retry', async
   const navigations: string[] = [];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { logout: async () => { throw new Error('网络中断'); } } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { logout: async () => { throw new Error('网络中断'); } } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -220,12 +325,12 @@ test('profile export finishing after logout cannot copy former member data', asy
   const clipboard: string[] = [];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {
         post: async () => ({ path: '/privacy/exports/ticket' }),
         get: async () => { signalSnapshotRequested(); return snapshot; },
         logout: async () => ({ ok: true })
       } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -248,8 +353,8 @@ test('profile re-entry without a session removes private data before any fetch',
   let requests = 0;
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async () => { requests++; return { items: [] }; } } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async () => { requests++; return { items: [] }; } } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -266,13 +371,109 @@ test('profile re-entry without a session removes private data before any fetch',
   assert.equal(requests, 0);
 });
 
+test('event safety entry carries its event into the signed-in report form only for the same account', async () => {
+  const globalData: Record<string, any> = { ready: Promise.resolve() };
+  const tabs: string[] = [];
+  const storage = new Map<string, string>([['sessionToken', 'token-a'], ['userId', 'member-a']]);
+  const wx = {
+    getStorageSync(key: string) { return storage.get(key) || ''; },
+    switchTab({ url }: { url: string }) { tabs.push(url); }
+  };
+  let submittedReport: Record<string, any> | undefined;
+  let eventPage: Record<string, any> | undefined;
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { eventPage = definition; }, getApp() { return { globalData }; }, wx
+  });
+  assert.ok(eventPage);
+  eventPage.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  eventPage.setData({ id: 'event-123' });
+  eventPage.goToReport();
+  assert.deepEqual(tabs, ['/pages/me/me']);
+  assert.equal(globalData.reportContext.owner, 'session:member-a:token-a');
+  let profile: Record<string, any> | undefined;
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post: async (_path: string, body: Record<string, any>) => { submittedReport = body; } } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { profile = definition; }, getApp() { return { globalData }; }, wx
+  });
+  assert.ok(profile);
+  profile.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  profile.refresh = async () => true;
+  await profile.onShow();
+  assert.equal(profile.data.reportEventId, 'event-123');
+  assert.equal(globalData.reportContext, undefined);
+  profile.setData({ reportDescription: '现场存在安全风险' });
+  await profile.report();
+  assert.equal(submittedReport?.eventId, 'event-123');
+  assert.equal(submittedReport?.kind, 'SAFETY');
+  profile.setData({ reportEventId: '' });
+  await profile.onShow();
+  assert.equal(profile.data.reportEventId, '');
+
+  eventPage.goToReport();
+  storage.set('sessionToken', 'token-rotated');
+  await profile.onShow();
+  assert.equal(profile.data.reportEventId, '', 'a report intent must not cross a same-user session change');
+  assert.equal(globalData.reportContext, undefined);
+
+  globalData.reportContext = { actor: 'member-a', eventId: 'legacy-context' };
+  await profile.onShow();
+  assert.equal(profile.data.reportEventId, '', 'an unowned legacy context must not select an event');
+
+  eventPage.goToReport();
+  storage.set('userId', 'member-b');
+  await profile.onShow();
+  assert.equal(profile.data.reportEventId, '');
+  assert.equal(globalData.reportContext, undefined);
+});
+
+test('member can copy current activity facts for a trusted contact without exposing invite credentials', () => {
+  let copied = '';
+  let page: Record<string, any> | undefined;
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: {
+      getStorageSync(key: string) { return key === 'devUser' ? 'member' : ''; },
+      setClipboardData({ data, success }: { data: string; success(): void }) { copied = data; success(); }
+    }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.setData({ id: 'event-123', loadState: 'READY', currentUser: 'member', hostAlias: '本场主办方',
+    event: { id: 'event-123', inviteToken: 'private-invite-token',
+    payload: { title: '周末球局', startAt: '2026-10-03T12:00:00Z', endAt: '2026-10-03T14:00:00Z',
+      city: '上海', venueName: '公共球馆' } } });
+  page.copySafetyDetails();
+  assert.match(copied, /周末球局/);
+  assert.match(copied, /公共球馆/);
+  assert.match(copied, /本场主办方/);
+  assert.match(copied, /2026-10-03T12:00:00Z/);
+  assert.doesNotMatch(copied, /private-invite-token/);
+  assert.match(page.data.message, /已复制/);
+});
+
 test('profile load failure offers a retry that restores live private data', async () => {
   let page: Record<string, any> | undefined;
   let online = false;
   let requests = 0;
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async (route: string) => {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async (route: string) => {
         requests++;
         if (!online) throw Object.assign(new Error('网络中断'), { code: 'NETWORK_ERROR' });
         if (route.startsWith('/me/notifications')) return { items: [], total: 0, nextOffset: null };
@@ -280,7 +481,7 @@ test('profile load failure offers a retry that restores live private data', asyn
         if (route === '/me/similar-invites') return { granted: false };
         return { items: [] };
       } } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -298,13 +499,56 @@ test('profile load failure offers a retry that restores live private data', asyn
   await page.retryRefresh();
   assert.equal(page.data.loadState, 'READY');
   assert.equal(page.data.message, '');
-  assert.equal(requests, 18);
+  assert.equal(requests, 20);
+});
+
+test('profile shows honest external reminder states on initial and later notification pages', async () => {
+  let page: Record<string, any> | undefined;
+  const notices = [
+    { id: 'off', external_status: 'UNAVAILABLE' },
+    { id: 'accepted', external_status: 'PROVIDER_ACCEPTED' },
+    { id: 'no-consent', external_status: 'CONSENT_WITHDRAWN' },
+    { id: 'uncertain', external_status: 'UNKNOWN_REQUIRES_RECONCILIATION' },
+    { id: 'stale', external_status: 'STALE_VERSION' },
+    { id: 'pending', external_status: 'NOT_REQUESTED' },
+    { id: 'unconfigured', external_status: 'PURPOSE_NOT_CONFIGURED' },
+    { id: 'unknown', external_status: 'UNRECOGNIZED_PROVIDER_STATE' }
+  ];
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async (route: string) => {
+        if (route === '/me/notifications?offset=0') return { items: notices.slice(0, 4), total: notices.length,
+          nextOffset: 4, snapshot: 'a'.repeat(32) };
+        if (route.startsWith('/me/notifications?offset=4&snapshot=')) return { items: notices.slice(4),
+          total: notices.length, nextOffset: null, snapshot: 'a'.repeat(32) };
+        if (route === '/me/consents') return { eventReminder: false };
+        if (route === '/me/similar-invites') return { granted: false };
+        return { items: [] };
+      } } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  await page.refresh();
+  assert.deepEqual(Array.from(page.data.notifications, (item: any) => item.externalStatusLabel), [
+    '外部提醒不可用，请查看站内通知', '提供方已受理，未确认送达',
+    '未开通外部提醒', '外部提醒结果待核对，请查看站内通知'
+  ]);
+  await page.loadMoreNotifications();
+  assert.deepEqual(Array.from(page.data.notifications.slice(4), (item: any) => item.externalStatusLabel), [
+    '旧版本提醒已取消', '外部提醒待处理', '未开通外部提醒，请查看站内通知', '外部提醒状态待核对'
+  ]);
+  assert.match(readFileSync(new URL('../miniprogram/pages/me/me.wxml', import.meta.url), 'utf8'),
+    /{{item\.externalStatusLabel}}/);
 });
 
 test('production-style mini-program config ignores a stale development identity', async () => {
   let captured: Record<string, any> | undefined;
   const api = createApi({
-    request(options: Record<string, any>) { captured = options; options.success({ statusCode: 200, data: {} }); },
+    request(options: Record<string, any>) { captured = options; options.success({ statusCode: 200, data: { items: [] } }); },
     getStorageSync(key: string) { return key === 'devUser' ? 'old-local-user' : ''; }
   }, { apiBase: 'https://api.example.test', developmentUser: '' });
   await api.get('/me/events');
@@ -318,8 +562,8 @@ test('production-style profile page cannot switch to a development identity', ()
   const source = readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8');
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -355,11 +599,13 @@ test('profile refreshes changed consent text after a stale-version denial', asyn
   };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
-    Page(definition: Record<string, any>) { page = definition; }
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: { getStorageSync(key: string) { return key === 'sessionToken' ? 'member-token'
+      : key === 'userId' ? 'member' : ''; }, setStorageSync() {} }
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
@@ -374,17 +620,37 @@ test('profile refreshes changed consent text after a stale-version denial', asyn
 
 test('profile clears reconfirmation prompts after a successful fresh consent', async () => {
   let page: Record<string, any> | undefined;
-  const api = { async post() { return { granted: true }; } };
+  let reminder = false;
+  let similar = false;
+  const api = {
+    async get(path: string) {
+      if (path === '/me/consents') return { eventReminder: reminder,
+        eventReminderNotice: { text: '提醒说明', version: 'current-1' } };
+      if (path === '/me/similar-invites') return { granted: similar,
+        notice: { text: '候选说明', version: 'current-2' } };
+      if (path === '/me/notifications?offset=0') return { items: [], total: 0,
+        nextOffset: null, snapshot: 'a'.repeat(32) };
+      return { items: [] };
+    },
+    async post(path: string, body: Record<string, any>) {
+      if (path === '/me/consents') reminder = body.eventReminder;
+      if (path === '/me/similar-invites') similar = body.granted;
+      return { granted: true };
+    }
+  };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
-    Page(definition: Record<string, any>) { page = definition; }
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: { getStorageSync(key: string) { return key === 'sessionToken' ? 'member-token'
+      : key === 'userId' ? 'member' : ''; }, setStorageSync() {} }
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  await page.refresh();
   page.setData({ eventReminderNeedsReconfirmation: true, similarInvitesNeedsReconfirmation: true,
     eventReminderNoticeVersion: 'current-1', similarInvitesNoticeVersion: 'current-2' });
   await page.toggleReminder({ detail: { value: true } });
@@ -409,8 +675,8 @@ test('profile page can load older notifications while retaining the full unread 
   const source = readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8');
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; }
@@ -444,8 +710,8 @@ test('profile page restarts notification paging after a notice changes', async (
   } };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; }
@@ -477,8 +743,8 @@ test('profile page does not claim notification reload succeeded after a follow-u
   } };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; }
@@ -496,8 +762,8 @@ test('switching local test identity clears the previous member’s notices befor
   const pending = new Promise(() => {});
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: () => pending } };
-      if (path === '../../config.js') return { developmentUser: 'old-member' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: () => pending } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'old-member' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -518,10 +784,13 @@ test('switching local test identity clears the previous member’s notices befor
 test('opening an account-wide notice does not navigate to a missing activity', async () => {
   let page: Record<string, any> | undefined;
   const navigations: string[] = [];
+  const openedRoutes: string[] = [];
+  const notice = { id: 'public-pause', kind: 'PUBLIC_RECRUITMENT_CLOSED', event_id: null,
+    status: 'IN_APP', external_status: 'NOT_REQUESTED', detail: {} };
   const api = {
-    async post() { return { status: 'OPENED' }; },
+    async post(path: string) { openedRoutes.push(path); notice.status = 'OPENED'; return { status: notice.status }; },
     async get(path: string) {
-      if (path === '/me/notifications?offset=0') return { items: [], total: 0, nextOffset: null, snapshot: 'a'.repeat(32) };
+      if (path === '/me/notifications?offset=0') return { items: [notice], total: 1, nextOffset: null, snapshot: 'a'.repeat(32) };
       if (path === '/me/consents') return { eventReminder: false };
       if (path === '/me/similar-invites') return { granted: false };
       return { items: [] };
@@ -529,18 +798,80 @@ test('opening an account-wide notice does not navigate to a missing activity', a
   };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
-    wx: { navigateTo({ url }: { url: string }) { navigations.push(url); } }
+    wx: {
+      getStorageSync(key: string) { return key === 'sessionToken' ? 'notice-session' : key === 'userId' ? 'member' : ''; },
+      navigateTo({ url }: { url: string }) { navigations.push(url); }
+    }
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  assert.equal(await page.refresh(), true);
+  assert.equal(page.data.notificationLoadState, 'READY');
+  assert.equal(page.data.notifications[0].id, 'public-pause');
   await page.openNotice({ currentTarget: { dataset: { id: 'public-pause', kind: 'PUBLIC_RECRUITMENT_CLOSED' } } });
   assert.deepEqual(navigations, []);
+  assert.deepEqual(openedRoutes, ['/me/notifications/public-pause/open']);
+  assert.equal(page.data.notifications[0].status, 'OPENED');
   assert.match(page.data.message, /通知已打开/);
+});
+
+test('failed detail navigation leaves a cancellation unread until the detail opens on retry', async () => {
+  let page: Record<string, any> | undefined;
+  let navigation: Record<string, any> | undefined;
+  const openedRoutes: string[] = [];
+  let status = 'QUEUED';
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post: async (route: string) => {
+        openedRoutes.push(route);
+        status = 'OPENED';
+        return { status };
+      }, get: async (route: string) => {
+        if (route === '/me/notifications?offset=0') return { items: [{
+          id: 'cancel-notice', event_id: 'cancelled/event', kind: 'EVENT_CANCELLED', status,
+          external_status: 'NOT_REQUESTED', detail: {}
+        }], total: 1, nextOffset: null, snapshot: 'a'.repeat(32) };
+        if (route === '/me/consents') return { eventReminder: false };
+        if (route === '/me/similar-invites') return { granted: false };
+        return { items: [] };
+      } } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: {
+      getStorageSync(key: string) { return key === 'sessionToken' ? 'notice-session' : key === 'userId' ? 'member' : ''; },
+      navigateTo(options: Record<string, any>) { navigation = options; }
+    }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  assert.equal(await page.refresh(), true);
+  assert.equal(page.data.notificationLoadState, 'READY');
+  assert.equal(page.data.notifications[0].id, 'cancel-notice');
+  const notice = { currentTarget: { dataset: { id: 'cancel-notice', event: 'cancelled/event', kind: 'EVENT_CANCELLED' } } };
+
+  const failedOpen = page.openNotice(notice);
+  assert.equal(status, 'QUEUED');
+  assert.deepEqual(openedRoutes, []);
+  assert.equal(navigation?.url, '/pages/event/event?id=cancelled%2Fevent');
+  navigation.fail({ errMsg: 'navigateTo:fail page stack overflow' });
+  await failedOpen;
+  assert.equal(status, 'QUEUED');
+  assert.deepEqual(openedRoutes, []);
+  assert.match(page.data.message, /page stack overflow/);
+
+  const successfulOpen = page.openNotice(notice);
+  assert.equal(status, 'QUEUED');
+  navigation.success({});
+  await successfulOpen;
+  assert.equal(status, 'OPENED');
+  assert.deepEqual(openedRoutes, ['/me/notifications/cancel-notice/open']);
 });
 
 test('activity list clears the previous identity and ignores a late old response', async () => {
@@ -552,8 +883,9 @@ test('activity list clears the previous identity and ignores a late old response
     ? oldResponse : Promise.resolve({ items: [{ id: 'new-event' }] }) };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/index/index.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: 'old-member' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'old-member' };
+      if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -575,6 +907,49 @@ test('activity list clears the previous identity and ignores a late old response
   assert.equal(page.data.items[0].id, 'new-event');
 });
 
+test('profile re-entry clears another identity’s private data before loading and ignores its late response', async () => {
+  let page: Record<string, any> | undefined;
+  let currentUser = 'old-member';
+  let resolveOld!: (value: unknown) => void;
+  let resolveNew!: (value: unknown) => void;
+  let oldStarted!: () => void;
+  let newStarted!: () => void;
+  const oldResponse = new Promise(resolve => { resolveOld = resolve; });
+  const newResponse = new Promise(resolve => { resolveNew = resolve; });
+  const oldRequestStarted = new Promise<void>(resolve => { oldStarted = resolve; });
+  const newRequestStarted = new Promise<void>(resolve => { newStarted = resolve; });
+  const api = { get: () => {
+    if (currentUser === 'old-member') { oldStarted(); return oldResponse; }
+    newStarted(); return newResponse;
+  } };
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'old-member' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    getApp() { return { globalData: { ready: Promise.resolve() } }; },
+    wx: { getStorageSync(key: string) { return key === 'devUser' ? currentUser : ''; } }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.setData({ notifications: [{ id: 'old-private' }], reports: [{ id: 'old-report' }] });
+  const oldLoad = page.onShow();
+  await oldRequestStarted;
+  currentUser = 'new-member';
+  const newLoad = page.onShow();
+  await newRequestStarted;
+  assert.equal(page.data.notifications.length, 0);
+  assert.equal(page.data.reports.length, 0);
+  resolveNew({ items: [{ id: 'new-private' }], total: 1, nextOffset: null, snapshot: 'a'.repeat(32), eventReminder: false, granted: false });
+  await newLoad;
+  resolveOld({ items: [{ id: 'old-private' }], total: 1, nextOffset: null, snapshot: 'b'.repeat(32) });
+  await oldLoad;
+  assert.equal(page.data.notifications[0].id, 'new-private');
+  assert.equal(page.data.reports[0].id, 'new-private');
+});
+
 test('creation page clears another identity’s draft and ignores its late edit load', async () => {
   let page: Record<string, any> | undefined;
   let currentUser = 'old-host';
@@ -584,8 +959,8 @@ test('creation page clears another identity’s draft and ignores its late edit 
   const api = { get: (path: string) => path === '/system/safety' ? Promise.resolve({ status: 'OPEN' }) : oldResponse };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: 'old-host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'old-host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -611,13 +986,16 @@ test('creation page clears another identity’s draft and ignores its late edit 
 
 test('relative-date draft suggestion shows the full city-local date and weekday before saving', async () => {
   let page: Record<string, any> | undefined;
-  const suggestion = { fields: { city: '深圳', timeZone: 'Asia/Shanghai', startAt: '2026-09-26T12:00:00.000Z' },
-    fieldSources: { city: 'USER_EXPLICIT', timeZone: 'TEMPLATE_DEFAULT', startAt: 'USER_EXPLICIT' },
-    unknown: ['结束时间'] };
+  const requests: Array<Record<string, unknown>> = [];
+  const suggestion = { fields: { city: '深圳', timeZone: 'Asia/Shanghai', startAt: '2026-09-26T12:00:00.000Z',
+    endAt: '2026-09-26T14:00:00.000Z', templateDurationMinutes: 120 },
+    fieldSources: { city: 'USER_EXPLICIT', timeZone: 'TEMPLATE_DEFAULT', startAt: 'USER_EXPLICIT',
+      endAt: 'USER_EXPLICIT', templateDurationMinutes: 'USER_EXPLICIT' }, unknown: [], draft: { id: 'model-draft', version: 1 } };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async post() { return suggestion; } } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async post(_path: string, body: Record<string, unknown>) {
+        requests.push(body); return suggestion; } } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -629,19 +1007,29 @@ test('relative-date draft suggestion shows the full city-local date and weekday 
   page.setData({ aiText: '本周六晚上八点在深圳打羽毛球' });
   await page.suggest();
   assert.ok(page.data.suggestionNotes.includes('开始时间：2026-09-26 周六 20:00（来自原话）'));
+  assert.ok(page.data.suggestionNotes.includes('结束时间：2026-09-26 周六 22:00（来自原话）'));
   assert.equal(page.data.startDate, '2026-09-26');
   assert.equal(page.data.startTime, '20:00');
+  assert.equal(page.data.endDate, '2026-09-26');
+  assert.equal(page.data.endTime, '22:00');
+  assert.equal(page.data.templateDurationMinutes, 120);
+  page.setStartTime({ detail: { value: '21:00' } });
+  assert.equal(page.data.endTime, '23:00');
+  assert.equal(page.data.draft.id, 'model-draft');
+  await page.suggest();
+  assert.equal(requests[0]?.eventId, undefined);
+  assert.equal(requests[1]?.eventId, 'model-draft');
 });
 
-test('a generated draft is labeled as unverified and still asks the host to confirm fields', async () => {
+test('explicit duration survives a missing city until the host chooses a date', async () => {
   let page: Record<string, any> | undefined;
-  const suggestion = { aiStatus: 'GENERATED', aiContentLabel: 'AI_GENERATED_UNVERIFIED',
-    fields: { title: '周末球局', venueName: '公共球馆' },
-    fieldSources: { title: 'NEEDS_CONFIRMATION', venueName: 'NEEDS_CONFIRMATION' }, unknown: [] };
+  const suggestion = { fields: { type: 'badminton', templateDurationMinutes: 180 },
+    fieldSources: { type: 'USER_EXPLICIT', templateDurationMinutes: 'USER_EXPLICIT' },
+    unknown: ['具体日期时间', '城市'] };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async post() { return suggestion; } } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async post() { return suggestion; } } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -649,7 +1037,39 @@ test('a generated draft is labeled as unverified and still asks the host to conf
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.setData({ aiText: '周六晚上八点打三小时羽毛球' });
   await page.suggest();
+  assert.equal(page.data.startDate, '');
+  assert.equal(page.data.endDate, '');
+  assert.equal(page.data.templateDurationMinutes, 180);
+  assert.ok(page.data.suggestionNotes.includes('活动时长：180 分钟（来自原话）'));
+  page.setStartDate({ detail: { value: '2026-09-26' } });
+  assert.equal(page.data.endDate, '2026-09-26');
+  assert.equal(page.data.endTime, '23:00');
+  assert.equal(page.buildInput().templateDurationMinutes, 180);
+});
+
+test('a generated draft is labeled as unverified and still asks the host to confirm fields', async () => {
+  let page: Record<string, any> | undefined;
+  let requestBody: Record<string, unknown> | undefined;
+  const suggestion = { aiStatus: 'GENERATED', aiContentLabel: 'AI_GENERATED_UNVERIFIED',
+    fields: { title: '周末球局', venueName: '公共球馆' },
+    fieldSources: { title: 'NEEDS_CONFIRMATION', venueName: 'NEEDS_CONFIRMATION' }, unknown: [] };
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async post(_path: string, body: Record<string, unknown>) {
+        requestBody = body; return suggestion; } } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: { getStorageSync() { return ''; } }, setTimeout() { return 1; }, clearTimeout() {}
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.setData({ editingEvent: { id: 'published-event' } });
+  await page.suggest();
+  assert.equal(requestBody?.eventId, 'published-event');
   assert.match(page.data.message, /AI.*未经核验.*逐项确认/);
   assert.ok(page.data.suggestionNotes.includes('场地：公共球馆（待确认）'));
   assert.equal(page.data['form.title'], '周末球局');
@@ -665,8 +1085,8 @@ test('slow suggestion offers manual editing and ignores its late answer after th
   let nextTimer = 1;
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { post: () => response } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post: () => response } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -702,11 +1122,11 @@ test('a draft suggestion that never responds stops after 30 seconds and keeps th
   let requestTimeout: number | undefined;
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { post(_path: string, _body: unknown, _key: unknown, options: { timeoutMs?: number }) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post(_path: string, _body: unknown, _key: unknown, options: { timeoutMs?: number }) {
         requestTimeout = options?.timeoutMs;
         return response;
       } } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -752,8 +1172,8 @@ test('a suggestion retried after a local timeout reuses its request key until th
   const api = createApi(platform, { apiBase: 'https://example.test', developmentUser: 'host' });
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -784,8 +1204,9 @@ test('activity list loads after startup login establishes the real identity', as
   const ready = new Promise<void>(resolve => { finishLogin = resolve; });
   runInNewContext(readFileSync(new URL('../miniprogram/pages/index/index.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async () => ({ items: [{ id: 'member-event' }] }) } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async () => ({ items: [{ id: 'member-event' }] }) } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
+      if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -807,16 +1228,22 @@ test('activity list distinguishes load failure from empty results and retries in
     { id: 'host', status: 'RECRUITING', title: '我组织', isHost: true },
     { id: 'pending', status: 'RECRUITING', title: '待确认', isHost: false, myRegistrationStatus: 'OFFERED' },
     { id: 'joined', status: 'CONFIRMED', title: '即将参加', isHost: false, myRegistrationStatus: 'CONFIRMED' },
+    { id: 'cohost-only', status: 'RECRUITING', title: '仅协办', isHost: false, isCohost: true, myRegistrationStatus: null },
+    { id: 'cohost-joined', status: 'CONFIRMED', title: '协办且参加', isHost: false, isCohost: true, myRegistrationStatus: 'CONFIRMED' },
+    { id: 'cohost-pending', status: 'RECRUITING', title: '协办待确认', isHost: false, isCohost: true, myRegistrationStatus: 'OFFERED' },
     { id: 'past', status: 'COMPLETED', title: '历史', isHost: false, myRegistrationStatus: 'CONFIRMED' }
   ];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/index/index.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async get() {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async get(route: string) {
+        if (route === '/me/notifications?offset=0') return { items: [], unreadTotal: 0 };
+        assert.equal(route, '/me/events');
         reads++;
         if (reads === 1) throw new Error('网络不可用');
         return { items };
       } } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
+      if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -831,11 +1258,18 @@ test('activity list distinguishes load failure from empty results and retries in
   await page.retry();
   assert.equal(page.data.loadState, 'READY');
   assert.equal(page.data.organized.map((item: { id: string }) => item.id).join(','), 'host');
-  assert.equal(page.data.pending.map((item: { id: string }) => item.id).join(','), 'pending');
+  assert.equal(page.data.pending.map((item: { id: string }) => item.id).join(','), 'pending,cohost-pending');
   assert.equal(page.data.pending[0].registrationLabel, '待接受补位');
-  assert.equal(page.data.attending.map((item: { id: string }) => item.id).join(','), 'joined');
+  assert.equal(page.data.attending.map((item: { id: string }) => item.id).join(','), 'joined,cohost-joined');
+  assert.equal(page.data.cohosting.map((item: { id: string }) => item.id).join(','), 'cohost-only');
+  assert.equal(page.data.cohosting[0].cardLabel, '协办中');
+  assert.equal(page.data.attending[1].cardLabel, '已报名');
+  page.selectTab({ currentTarget: { dataset: { key: 'cohosting' } } });
+  assert.equal(page.data.visibleItems[0]?.id, 'cohost-only');
   assert.equal(page.data.history.map((item: { id: string }) => item.id).join(','), 'past');
   const wxml = readFileSync(new URL('../miniprogram/pages/index/index.wxml', import.meta.url), 'utf8');
+  assert.match(wxml, /data-key="cohosting"[^>]*>协办/);
+  assert.match(wxml, /item\.isCohost\s*\?\s*'你是协办方/);
   assert.match(wxml, /loadState === 'ERROR'.*重试/s);
   assert.match(wxml, /loadState === 'READY' && items.length === 0/);
 });
@@ -846,14 +1280,15 @@ test('activity list retry renews an expired real login before loading', async ()
   let logins = 0;
   runInNewContext(readFileSync(new URL('../miniprogram/pages/index/index.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {
         async get() {
           if (!token) throw Object.assign(new Error('登录已失效'), { code: 'UNAUTHENTICATED' });
           return { items: [] };
         },
         async login() { logins++; token = 'renewed'; }
       } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
+      if (path === '../../utils/city.js') return cityModule;
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -878,9 +1313,9 @@ test('creation page keeps the requested edit after startup login completes', asy
   const storage = new Map([['editDraftId', 'member-draft']]);
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async (url: string) => url === '/system/safety'
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async (url: string) => url === '/system/safety'
         ? { status: 'OPEN' } : { id: 'member-draft', status: 'DRAFT', payload: { title: '我的草稿' } } } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -906,13 +1341,13 @@ test('draft edit remains retryable after a failed read and clears handoff only a
   const storage = new Map([['editDraftId', 'draft-1']]);
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async get(url: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async get(url: string) {
         if (url === '/system/safety') return { status: 'OPEN' };
         reads++;
         if (reads === 1) throw new Error('网络不可用');
         return { id: 'draft-1', status: 'DRAFT', version: 2, payload: { title: '服务端草稿', city: '深圳' } };
       } } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -938,13 +1373,13 @@ test('event editor round-trips Shanghai wall time through UTC regardless of devi
   const startAt = '2027-01-02T12:00:00.000Z';
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async get(url: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async get(url: string) {
         if (url === '/system/safety') return { status: 'OPEN' };
         if (url === '/events/shanghai-draft') return { id: 'shanghai-draft', status: 'DRAFT', version: 2,
           payload: { title: '上海晚场', city: '上海', skillLevel: '中等水平', startAt, endAt: '2027-01-02T14:00:00.000Z' } };
         throw new Error(`unexpected request ${url}`);
       } } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -966,13 +1401,13 @@ test('repeat draft carries its prior duration to a newly chosen date without ove
   const storage = new Map([['editDraftId', 'repeat-draft']]);
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async get(url: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async get(url: string) {
         if (url === '/system/safety') return { status: 'OPEN' };
         if (url === '/events/repeat-draft') return { id: 'repeat-draft', status: 'DRAFT', version: 1,
           payload: { title: '下一场羽毛球', templateDurationMinutes: 150 } };
         throw new Error(`unexpected request ${url}`);
       } } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -999,12 +1434,38 @@ test('repeat draft carries its prior duration to a newly chosen date without ove
   assert.equal(page.data.endTime, '02:00');
 });
 
+test('a saved spoken-duration draft keeps its stated fee on reload', async () => {
+  let page: Record<string, any> | undefined;
+  const storage = new Map([['editDraftId', 'spoken-draft']]);
+  runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async get(url: string) {
+        if (url === '/events/spoken-draft') return { id: 'spoken-draft', status: 'DRAFT', version: 1,
+          payload: { title: '球局', templateDurationMinutes: 180, feeMode: 'AA', feeCapFen: 5000 } };
+        throw new Error(`unexpected request ${url}`);
+      } } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    getApp() { return { globalData: { ready: Promise.resolve() } }; },
+    wx: { getStorageSync(key: string) { return storage.get(key) || ''; }, removeStorageSync(key: string) { storage.delete(key); } }
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  await page.onShow();
+  assert.equal(page.data.templateDurationMinutes, 180);
+  assert.equal(page.data.form.feeCapYuan, '50');
+  page.setStartDate({ detail: { value: '2027-01-02' } });
+  assert.equal(page.data.endTime, '23:00');
+});
+
 test('host seat is undecided until the creator explicitly chooses yes or no', async () => {
   let page: Record<string, any> | undefined;
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1031,11 +1492,11 @@ test('editing a confirmed venue clears the old statement and resends explicit co
   const requests: Array<{ path: string; body: Record<string, any> }> = [];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async post(requestPath: string, body: Record<string, any>) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async post(requestPath: string, body: Record<string, any>) {
         requests.push({ path: requestPath, body });
         return { material: true, affectedCount: 1, changes: [{ field: 'venueName', before: '旧场馆', after: '新场馆' }] };
       } } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1064,13 +1525,13 @@ test('reopening a saved draft preserves an explicit choice that the host does no
   const storage = new Map([['editDraftId', 'no-seat-draft']]);
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async get(url: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async get(url: string) {
         if (url === '/system/safety') return { status: 'OPEN' };
         if (url === '/events/no-seat-draft') return { id: 'no-seat-draft', status: 'DRAFT', version: 1,
           payload: { title: '六人场', hostParticipates: false } };
         throw new Error(`unexpected request ${url}`);
       } } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1090,11 +1551,11 @@ test('editor accepts a new account handoff when the target is bound to that acco
   const storage = new Map([['editDraftId', 'new-draft'], ['editTargetOwner', 'dev:new-host']]);
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async get(url: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async get(url: string) {
         return url === '/system/safety' ? { status: 'OPEN' }
           : { id: 'new-draft', status: 'DRAFT', version: 1, payload: { title: '新账号草稿' } };
       } } };
-      if (path === '../../config.js') return { developmentUser: 'old-host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'old-host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1117,7 +1578,7 @@ test('draft version conflict offers explicit reload without silently overwriting
   const storage = new Map<string, string>();
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {
         async post() { throw Object.assign(new Error('活动规则已更新'), { code: 'VERSION_CONFLICT' }); },
         async get(url: string) {
           if (url === '/system/safety') return { status: 'OPEN' };
@@ -1125,7 +1586,7 @@ test('draft version conflict offers explicit reload without silently overwriting
           return { id: 'draft-1', status: 'DRAFT', version: 3, payload: { title: '服务端新版', city: '深圳' } };
         }
       } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1156,11 +1617,11 @@ test('creation page shows the server stop and refuses a new draft before a write
   const writes: string[] = [];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/create/create.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {
         get: async (url: string) => url === '/system/safety' ? { status: 'CLOSED' } : {},
         post: async (url: string) => { writes.push(url); return {}; }
       } };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1182,17 +1643,17 @@ test('creation page shows the server stop and refuses a new draft before a write
 
 test('activity page hides new seat actions but keeps the exit path during a global stop', async () => {
   let page: Record<string, any> | undefined;
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async (url: string) => {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async (url: string) => {
         if (url === '/system/safety') return { status: 'CLOSED' };
         if (url === '/events/e1') return { id: 'e1', hostId: 'host', status: 'RECRUITING', recruiting: true,
           version: 2, payload: { startAt: '2027-01-02T12:00:00Z', endAt: '2027-01-02T14:00:00Z' } };
-        if (url === '/me/registrations') return { items: [{ id: 'r1', event_id: 'e1', status: 'CONFIRMED' }] };
+        if (url === '/me/registrations?eventId=e1') return { items: [{ id: 'r1', event_id: 'e1', status: 'CONFIRMED' }] };
         return { items: [] };
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1203,8 +1664,8 @@ test('activity page hides new seat actions but keeps the exit path during a glob
   page.setData({ id: 'e1' });
   assert.equal(await page.refresh(), true);
   assert.equal(page.data.safetyStatus, 'CLOSED');
-  const wxml = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
-  assert.match(wxml, /safetyStatus === 'OPEN'[^\n]*bindtap="join"/);
+  const wxml = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
+  assert.match(wxml, /safetyStatus === 'OPEN'[^\n]*bindtap="openJoinConfirmation"/);
   assert.match(wxml, /bindtap="leave"/);
 });
 
@@ -1217,14 +1678,14 @@ test('invitation landing preserves a minimal summary and token across real login
     title: '周六羽毛球', payload: { title: '周六羽毛球', startAt: '2027-01-02T12:00:00Z',
       endAt: '2027-01-02T14:00:00Z', city: '深圳', venueName: '公共场馆', feeMode: 'AA',
       feeCapFen: 5000, cancellationRule: '开始前可退出', approvalMode: 'AUTO', skillLevel: '中等水平' } };
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {
         async get(url: string) {
           if (url === '/i/invite-1') return summary;
           if (url === '/events/e1') throw Object.assign(new Error('仅成员可看详情'), { code: 'FORBIDDEN' });
           if (url === '/system/safety') return { status: 'OPEN' };
-          if (url === '/me/registrations') {
+          if (url === '/me/registrations?eventId=e1') {
             if (!session) throw Object.assign(new Error('请先登录'), { code: 'UNAUTHENTICATED' });
             return { items: [] };
           }
@@ -1232,8 +1693,8 @@ test('invitation landing preserves a minimal summary and token across real login
         },
         async login() { logins++; session = 'session'; }
       } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1278,7 +1739,7 @@ test('invitation landing preserves a minimal summary and token across real login
   await confirmed;
   assert.equal(joinPayloads[0]?.inviteToken, 'invite-1');
   assert.equal(joinPayloads[0]?.acceptedRules, true);
-  const wxml = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const wxml = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
   assert.match(wxml, /loadState === 'LOGIN_REQUIRED'.*retryLogin/s);
   assert.match(wxml, /bindtap="goToMyActivities"/);
   assert.match(wxml, /canJoin/);
@@ -1314,16 +1775,16 @@ test('event page does not render an unknown registration as not registered', asy
   const api = {
     async get(path: string) {
       if (path === '/events/e1') return { id: 'e1', hostId: 'host', status: 'RECRUITING', version: 1, payload: {} };
-      if (path === '/me/registrations') throw new Error('报名状态加载失败，请重试');
+      if (path === '/me/registrations?eventId=e1') throw new Error('报名状态加载失败，请重试');
       throw new Error(`unexpected request ${path}`);
     }
   };
-  const source = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
+  const source = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8');
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'person-one' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'person-one' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1342,12 +1803,12 @@ test('event page does not render an unknown registration as not registered', asy
 
 test('event completion sends the host’s actual held choice and zero people when not held', async () => {
   let page: Record<string, any> | undefined;
-  const source = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
+  const source = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8');
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1355,7 +1816,9 @@ test('event completion sends the host’s actual held choice and zero people whe
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
-  page.setData({ id: 'e1' });
+  page.setData({ id: 'e1', isHost: true, event: { id: 'e1', status: 'CONFIRMED',
+    payload: { startAt: new Date(Date.now() - 3 * 60 * 60_000).toISOString(),
+      endAt: new Date(Date.now() - 60 * 60_000).toISOString() } } });
   const sent: Record<string, any>[] = [];
   page.action = (_path: string, payload: Record<string, any>) => sent.push(payload);
   page.complete();
@@ -1378,7 +1841,7 @@ test('event completion sends the host’s actual held choice and zero people whe
   assert.equal(sent[1]?.held, true);
   assert.equal(sent[1]?.actualCount, 5);
   assert.equal(sent[1]?.issues.join('|'), '异常：签到网络中断|场地问题：入口临时关闭');
-  const wxml = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const wxml = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
   assert.match(wxml, /id="completionAnomalyInput"[^>]*bindinput="completionAnomalyInput"/);
   assert.match(wxml, /id="completionVenueIssueInput"[^>]*bindinput="completionVenueIssueInput"/);
 });
@@ -1386,20 +1849,22 @@ test('event completion sends the host’s actual held choice and zero people whe
 test('independent feedback requires both answers before recording willingness to repeat', async () => {
   let page: Record<string, any> | undefined;
   const sent: Record<string, any>[] = [];
-  const source = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
+  const source = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8');
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async post(_path: string, payload: Record<string, any>) { sent.push(payload); } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'p1' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async post(_path: string, payload: Record<string, any>) { sent.push(payload); } } };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'p1' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
-    wx: {}, setTimeout, clearTimeout
+    wx: { getStorageSync() { return ''; } }, setTimeout, clearTimeout
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
-  page.setData({ id: 'e1', event: { version: 2 } });
+  page.setData({ id: 'e1', event: { id: 'e1', version: 2, status: 'COMPLETED' },
+    outcome: { myFeedbackSubmitted: false }, outcomeLoadState: 'READY', myRegistration: { status: 'CONFIRMED' },
+    isHost: false, currentUser: 'p1', loadState: 'READY' });
   page.refresh = async () => true;
   await page.submitFeedback();
   assert.equal(sent.length, 0);
@@ -1409,20 +1874,40 @@ test('independent feedback requires both answers before recording willingness to
   assert.equal(sent.length, 0);
   assert.match(page.data.message, /再参加/);
   page.setFeedbackWouldRepeat({ detail: { value: 'no' } });
+  page.setFeedbackHeld({ detail: { value: 'no' } });
+  await page.submitFeedback();
+  assert.equal(sent.length, 0, 'a not-held report needs an explanation before it reaches the server');
+  assert.match(page.data.message, /未举办.*原因/);
+  page.feedbackReasonInput({ detail: { value: '到场后活动没有举办' } });
   await page.submitFeedback();
   assert.equal(sent.length, 1);
-  assert.equal(sent[0]?.held, true);
+  assert.equal(sent[0]?.held, false);
   assert.equal(sent[0]?.wouldRepeat, false);
+  page.setFeedbackHeld({ detail: { value: 'yes' } });
+  assert.equal(page.data.feedbackReason, '到场后活动没有举办',
+    'switching the answer must preserve an explanation the member may edit into a dispute note');
+  page.feedbackReasonInput({ detail: { value: '活动举办了，但场地与公告不符' } });
+  await page.submitFeedback();
+  assert.equal(sent.length, 2);
+  assert.equal(sent[1]?.held, true);
+  assert.equal(sent[1]?.reason, '活动举办了，但场地与公告不符');
+  page.setData({ event: { id: 'e1', version: 2, status: 'IN_PROGRESS' } });
+  await page.submitFeedback();
+  assert.equal(sent.length, 2, 'feedback must stay closed until the event is completed');
+  page.setData({ event: { id: 'e1', version: 2, status: 'COMPLETED' },
+    outcome: { myFeedbackSubmitted: true } });
+  await page.submitFeedback();
+  assert.equal(sent.length, 2, 'already submitted feedback must not be sent again');
 });
 
 test('AA page refuses an empty or malformed amount instead of recording zero', () => {
   let page: Record<string, any> | undefined;
-  const source = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
+  const source = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8');
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: {} };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {} };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1449,24 +1934,25 @@ test('share card only uses a source after its intent has been committed', async 
   let page: Record<string, any> | undefined;
   let finishIntent: ((value: unknown) => void) | undefined;
   const requests: Record<string, any>[] = [];
-  const source = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
+  const source = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8');
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { post(path: string, body: unknown) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post(path: string, body: unknown) {
         requests.push({ path, body });
         return new Promise(resolve => { finishIntent = resolve; });
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
-    wx: {}, setTimeout, clearTimeout
+    wx: { getStorageSync() { return ''; } }, setTimeout, clearTimeout
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
-  page.setData({ id: 'e1', isHost: true, event: { id: 'e1', version: 2, inviteToken: 'invite-1', recruiting: true,
-    payload: { title: '羽毛球' } } });
+  page.setData({ id: 'e1', loadState: 'READY', isHost: true, currentUser: 'host', safetyStatus: 'OPEN', event: { id: 'e1', hostId: 'host', version: 2, inviteToken: 'invite-1', inviteRemainingMs: 60_000, recruiting: true, reviewStatus: 'APPROVED',
+    payload: { title: '羽毛球', registrationDeadline: '2027-03-22T05:30:00.000Z' } } });
+  page._inviteValidUntil = Date.now() + 60_000;
   const pending = page.prepareShare();
   assert.equal(requests.length, 1);
   assert.equal(page.data.shareSourceToken, '');
@@ -1474,6 +1960,9 @@ test('share card only uses a source after its intent has been committed', async 
   finishIntent?.({});
   await pending;
   assert.match(page.onShareAppMessage().path, /source=/);
+  assert.equal(page.onShareAppMessage().title, '羽毛球');
+  page.setData({ event: { ...page.data.event, aiSuggestionGenerated: true } });
+  assert.equal(page.onShareAppMessage().title, '【曾生成 AI 建议】羽毛球');
   assert.equal(requests.length, 1);
   page.setData({ event: { ...page.data.event, riskPaused: true } });
   assert.equal(page.onShareAppMessage().path, '/pages/index/index');
@@ -1482,21 +1971,21 @@ test('share card only uses a source after its intent has been committed', async 
 test('returning to the event page refreshes its version and drops a stale share source', async () => {
   let page: Record<string, any> | undefined;
   let detailReads = 0;
-  const source = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
+  const source = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8');
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async get(path: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async get(path: string) {
         if (path === '/events/e1') {
           detailReads++;
-          return { id: 'e1', hostId: 'host', status: 'RECRUITING', version: 3, inviteToken: 'invite-2',
+          return { id: 'e1', hostId: 'host', status: 'RECRUITING', version: 3, inviteToken: 'invite-2', inviteRemainingMs: 60_000,
             recruiting: true, payload: {} };
         }
-        if (path === '/me/registrations') return { items: [] };
+        if (path === '/me/registrations?eventId=e1') return { items: [] };
         if (path === '/events/e1/share-metrics') return { shareIntents: 1, attributedOpens: 0 };
         return { items: [] };
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1512,23 +2001,25 @@ test('returning to the event page refreshes its version and drops a stale share 
   assert.equal(detailReads, 1);
   assert.equal(page.data.event.version, 3);
   assert.equal(page.data.shareSourceToken, '');
+  assert.ok(page._inviteValidUntil > Date.now());
 });
 
 test('event page follows current cohost grant while preserving own participation after revocation', async () => {
   let page: Record<string, any> | undefined;
   let granted = true;
-  const source = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
+  const source = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8');
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async get(path: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async get(path: string) {
         if (path === '/events/e1') return { id: 'e1', hostId: 'host', status: 'CONFIRMED', version: 2,
-          cohostCapabilities: granted ? ['CHECKIN_MANAGE'] : [], payload: { startAt: '2027-01-02T12:00:00.000Z',
-            endAt: '2027-01-02T14:00:00.000Z' } };
-        if (path === '/me/registrations') return { items: [{ id: 'own-seat', event_id: 'e1', status: 'CONFIRMED' }] };
+          cohostCapabilities: granted ? ['CHECKIN_MANAGE'] : [], payload: {
+            startAt: new Date(Date.now() + 15 * 60_000).toISOString(),
+            endAt: new Date(Date.now() + 2 * 60 * 60_000).toISOString() } };
+        if (path === '/me/registrations?eventId=e1') return { items: [{ id: 'own-seat', event_id: 'e1', status: 'CONFIRMED' }] };
         return { items: [] };
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'helper' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'helper' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1548,26 +2039,164 @@ test('event page follows current cohost grant while preserving own participation
   assert.equal(page.data.canCheckIn, true);
 });
 
-test('host page grants selected capabilities for this event and can revoke the returned grant', async () => {
+test('event page carries the current nickname display notice into a grant and prompts legacy reconfirmation', async () => {
   let page: Record<string, any> | undefined;
-  const posts: Array<{ path: string; body: Record<string, any> }> = [];
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  const posts: Array<{ path: string; body: Record<string, unknown> }> = [];
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async post(path: string, body: Record<string, any>) {
-        posts.push({ path, body }); return { id: 'grant-1', status: path.includes('revoke') ? 'REVOKED' : 'ACTIVE' };
-      } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: {
+        async get(route: string) {
+          if (route === '/events/e1') return { id: 'e1', hostId: 'host', status: 'RECRUITING', version: 2,
+            recruiting: true, payload: {} };
+          if (route === '/events/e1/aliases') return { items: [], reconfirmationRequired: true,
+            notice: { purpose: 'EVENT_MEMBER_DISPLAY', text: '仅在本活动内展示的昵称（可选）', version: 'current-notice' } };
+          return { items: [] };
+        },
+        async post(path: string, body: Record<string, unknown>) { posts.push({ path, body }); return {}; }
+      } };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
-    wx: { showModal(options: Record<string, any>) { options.success({ confirm: true }); } },
+    wx: { getStorageSync() { return ''; } }, setTimeout, clearTimeout
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.data.id = 'e1';
+  assert.equal(await page.refresh(), true);
+  assert.equal(page.data.aliasReconfirmationRequired, true);
+  assert.equal(page.data.aliasNoticeText, '仅在本活动内展示的昵称（可选）');
+  page.data.aliasInput = '新昵称';
+  await page.saveAlias();
+  assert.equal(posts[0]?.path, '/events/e1/aliases');
+  assert.equal(posts[0]?.body.noticeVersion, 'current-notice');
+});
+
+test('a check-in token arriving after the event page hides is not displayed or refreshed', async () => {
+  let page: Record<string, any> | undefined;
+  let finishToken!: (value: unknown) => void;
+  const tokenResponse = new Promise(resolve => { finishToken = resolve; });
+  let qrDraws = 0;
+  let refreshTimers = 0;
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post: () => tokenResponse } };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() { qrDraws++; } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: { getStorageSync(key: string) { return key === 'devUser' ? 'host' : ''; }, createCanvasContext() { return {}; } },
+    setTimeout(_callback: () => void, delay: number) { if (delay <= 60_000) refreshTimers++; return 1; }, clearTimeout() {}
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>, callback?: () => void) {
+    Object.assign(this.data, patch);
+    callback?.();
+  };
+  page.setData({ id: 'e1', currentUser: 'host', loadState: 'READY', event: { id: 'e1', version: 2, status: 'CONFIRMED', payload: {
+    startAt: new Date(Date.now() + 15 * 60_000).toISOString(),
+    endAt: new Date(Date.now() + 2 * 60 * 60_000).toISOString() } }, isHost: true });
+  const pending = page.showCheckInToken();
+  page.onHide();
+  finishToken({ token: 'signed-token', expiresInSeconds: 30 });
+  await pending;
+  assert.equal(page.data.displayedCheckInToken, '');
+  assert.equal(qrDraws, 0);
+  assert.equal(refreshTimers, 0);
+});
+
+test('an expired check-in token is hidden while its replacement is still loading', async () => {
+  let page: Record<string, any> | undefined;
+  let finishToken!: (value: unknown) => void;
+  const replacement = new Promise(resolve => { finishToken = resolve; });
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post: () => replacement } };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: { getStorageSync(key: string) { return key === 'devUser' ? 'host' : ''; }, createCanvasContext() { return {}; } },
+    setTimeout() { return 1; }, clearTimeout() {}
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>, callback?: () => void) {
+    Object.assign(this.data, patch);
+    callback?.();
+  };
+  page.setData({ id: 'e1', currentUser: 'host', loadState: 'READY', event: { id: 'e1', version: 2, status: 'CONFIRMED', payload: {
+    startAt: new Date(Date.now() + 15 * 60_000).toISOString(),
+    endAt: new Date(Date.now() + 2 * 60 * 60_000).toISOString() } }, isHost: true,
+    displayedCheckInToken: 'expired-token', checkInExpiresIn: 0 });
+  const pending = page.showCheckInToken();
+  const visibleDuringReplacement = page.data.displayedCheckInToken;
+  finishToken({ token: 'fresh-token', expiresInSeconds: 30 });
+  await pending;
+  assert.equal(visibleDuringReplacement, '');
+  assert.equal(page.data.displayedCheckInToken, 'fresh-token');
+});
+
+test('a check-in token received after its remaining lifetime is never shown', async () => {
+  let page: Record<string, any> | undefined;
+  let finishToken!: (value: unknown) => void;
+  const tokenResponse = new Promise(resolve => { finishToken = resolve; });
+  let now = 1_000;
+  let qrDraws = 0;
+  const timers: number[] = [];
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post: () => tokenResponse } };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() { qrDraws++; } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: { getStorageSync(key: string) { return key === 'devUser' ? 'host' : ''; }, createCanvasContext() { return {}; } },
+    Date: class extends Date { static now() { return now; } },
+    setTimeout(_callback: () => void, delay: number) { timers.push(delay); return 1; }, clearTimeout() {}
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>, callback?: () => void) {
+    Object.assign(this.data, patch);
+    callback?.();
+  };
+  page.setData({ id: 'e1', currentUser: 'host', loadState: 'READY', event: { id: 'e1', version: 2, status: 'CONFIRMED', payload: {
+    startAt: new Date(now + 15 * 60_000).toISOString(),
+    endAt: new Date(now + 2 * 60 * 60_000).toISOString() } }, isHost: true });
+  const pending = page.showCheckInToken();
+  now += 2_500;
+  finishToken({ token: 'already-expired', expiresInSeconds: 2 });
+  await pending;
+  assert.equal(page.data.displayedCheckInToken, '');
+  assert.equal(qrDraws, 0);
+  assert.ok(timers.length > 0, 'expired response should schedule a fresh request');
+});
+
+test('host page grants selected capabilities for this event and can revoke the returned grant', async () => {
+  let page: Record<string, any> | undefined;
+  const posts: Array<{ path: string; body: Record<string, any> }> = [];
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async post(path: string, body: Record<string, any>) {
+        posts.push({ path, body }); return { id: 'grant-1', status: path.includes('revoke') ? 'REVOKED' : 'ACTIVE' };
+      } } };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: { getStorageSync(key: string) { return key === 'devUser' ? 'host' : ''; },
+      showModal(options: Record<string, any>) { options.success({ confirm: true }); } },
     setTimeout, clearTimeout
   });
   assert.ok(page);
   page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
   page.refresh = async () => true;
-  page.setData({ id: 'e1', event: { version: 3, payload: { endAt: '2027-01-02T14:00:00.000Z' } },
+  page.setData({ id: 'e1', currentUser: 'host', loadState: 'READY',
+    event: { id: 'e1', version: 3, payload: { endAt: '2027-01-02T14:00:00.000Z' } },
     isHost: true, cohostUserId: 'member-1', selectedCohostCapabilities: ['CHECKIN_MANAGE'] });
   await page.grantCohost();
   assert.equal(posts[0]?.path, '/events/e1/cohosts');
@@ -1583,22 +2212,22 @@ test('a slow older event refresh cannot overwrite a newer response', async () =>
   let page: Record<string, any> | undefined;
   let finishOld: ((value: unknown) => void) | undefined;
   let detailReads = 0;
-  const source = readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8');
+  const source = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8');
   runInNewContext(source, {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get(path: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get(path: string) {
         if (path === '/events/e1') {
           detailReads++;
           if (detailReads === 1) return new Promise(resolve => { finishOld = resolve; });
           return Promise.resolve({ id: 'e1', hostId: 'host', status: 'RECRUITING', version: 3,
             inviteToken: 'invite-3', recruiting: true, payload: {} });
         }
-        if (path === '/me/registrations') return Promise.resolve({ items: [] });
+        if (path === '/me/registrations?eventId=e1') return Promise.resolve({ items: [] });
         if (path === '/events/e1/share-metrics') return Promise.resolve({ shareIntents: 0, attributedOpens: 0 });
         return Promise.resolve({ items: [] });
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1622,11 +2251,11 @@ test('event page clears prior host controls before loading under another identit
   let currentUser = 'old-host';
   let finishDetail!: (value: unknown) => void;
   const detail = new Promise(resolve => { finishDetail = resolve; });
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: () => detail } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'old-host' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: () => detail } };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'old-host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1657,19 +2286,21 @@ test('event and profile block controls call the existing member routes', async (
   let profilePage: Record<string, any> | undefined;
   const posts: Array<{ path: string; body: Record<string, unknown> }> = [];
   const api = { async post(path: string, body: Record<string, unknown>) { posts.push({ path, body }); return {}; } };
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
-    Page(definition: Record<string, any>) { eventPage = definition; }, wx: {}, setTimeout, clearTimeout
+    Page(definition: Record<string, any>) { eventPage = definition; },
+    wx: { getStorageSync(key: string) { return key === 'sessionToken' ? 'token' : key === 'userId' ? 'host' : ''; } },
+    setTimeout, clearTimeout
   });
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { profilePage = definition; }, wx: {}
@@ -1679,7 +2310,8 @@ test('event and profile block controls call the existing member routes', async (
     page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
     page.refresh = async () => true;
   }
-  eventPage.data.id = 'event-1';
+  eventPage.setData({ id: 'event-1', currentUser: 'session:host:token', loadState: 'READY',
+    event: { id: 'event-1', version: 1 } });
   await eventPage.blockMember({ currentTarget: { dataset: { member: 'a'.repeat(16) } } });
   await profilePage.revokeBlock({ currentTarget: { dataset: { id: 'block-1' } } });
   assert.equal(posts[0]?.path, '/events/event-1/blocks');
@@ -1698,8 +2330,8 @@ test('profile export obtains an owner-bound short-lived ticket before copying da
   };
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1717,8 +2349,8 @@ test('a deletion request receipt remains visible after the profile refresh and n
   const notice = '已收到注销或删除申请；尚未停用账号、删除资料或去标识。';
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { post: async () => ({ id: 'request-1', status: 'OPEN', notice }) } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post: async () => ({ id: 'request-1', status: 'OPEN', notice }) } };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; }, wx: {}
@@ -1732,26 +2364,94 @@ test('a deletion request receipt remains visible after the profile refresh and n
   assert.match(wxml, /item\.notice/);
 });
 
+test('event only reads protected sections for an eligible member or host', async () => {
+  let page: Record<string, any> | undefined;
+  let actor = 'visitor';
+  let cohostActive = true;
+  let summaryVisibility: 'PUBLIC' | undefined;
+  const requests: string[] = [];
+  const protectedRoutes = ['/events/e1/content', '/events/e1/expenses', '/events/e1/manual-checkins', '/events/e1/checkins'];
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
+    require(path: string) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async (route: string) => {
+        requests.push(route);
+        if (route === '/i/t') return { id: 'e1', status: 'RECRUITING', version: 2,
+          payload: { title: '合成活动', ...(summaryVisibility ? { visibility: summaryVisibility } : {}),
+            startAt: '2027-01-02T12:00:00Z', endAt: '2027-01-02T14:00:00Z', feeMode: 'FREE' } };
+        if (route === '/events/e1') return { id: 'e1', hostId: 'host', status: 'RECRUITING', version: 2,
+          cohostCapabilities: actor === 'cohost' && cohostActive ? ['CHECKIN_MANAGE', 'MANAGE_ANNOUNCEMENTS'] : [],
+          payload: { title: '合成活动', visibility: summaryVisibility || 'INVITE',
+            startAt: '2027-01-02T12:00:00Z', endAt: '2027-01-02T14:00:00Z', feeMode: 'FREE' } };
+        if (route === '/system/safety') return { status: 'OPEN' };
+        if (route === '/me/registrations?eventId=e1') return { items: actor === 'member' ? [{ event_id: 'e1', status: 'CONFIRMED' }] : [] };
+        if (route === '/me/events') return { items: actor === 'host' ? [{ id: 'e1', isHost: true }] :
+          actor === 'cohost' && cohostActive ? [{ id: 'e1', isHost: false, isCohost: true }] : [] };
+        if (route === '/events/e1/aliases') return { items: [], notice: { version: 'v1', text: '测试说明' } };
+        return { items: [] };
+      } } };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'visitor' };
+      throw new Error(`unexpected require ${path}`);
+    },
+    Page(definition: Record<string, any>) { page = definition; },
+    wx: { getStorageSync(key: string) { return key === 'devUser' ? actor : ''; } }, setTimeout, clearTimeout
+  });
+  assert.ok(page);
+  page.setData = function (patch: Record<string, any>) { Object.assign(this.data, patch); };
+  page.setData({ id: 'e1', token: 't' });
+  assert.equal(await page.refresh(), true);
+  assert.deepEqual(requests.filter(route => protectedRoutes.includes(route)), []);
+  assert.ok(!requests.includes('/events/e1'));
+  assert.ok(!requests.includes('/events/e1/aliases'));
+  assert.equal(page.data.expenseLoadState, 'FORBIDDEN');
+  assert.equal(page.data.attendanceLoadState, 'FORBIDDEN');
+  actor = 'member'; requests.length = 0;
+  assert.equal(await page.refresh(), true);
+  assert.deepEqual(requests.filter(route => protectedRoutes.includes(route)).sort(), [...protectedRoutes].sort());
+  assert.ok(requests.includes('/events/e1'));
+  actor = 'host'; requests.length = 0;
+  assert.equal(await page.refresh(), true);
+  assert.deepEqual(requests.filter(route => protectedRoutes.includes(route)).sort(), [...protectedRoutes].sort());
+  assert.ok(requests.includes('/events/e1'));
+  assert.equal(page.data.isHost, true);
+  actor = 'cohost'; requests.length = 0;
+  assert.equal(await page.refresh(), true);
+  assert.ok(requests.includes('/events/e1'));
+  assert.equal(page.data.canManageCheckins, true);
+  assert.equal(page.data.canManageAnnouncements, true);
+  assert.deepEqual(requests.filter(route => protectedRoutes.includes(route)).sort(),
+    ['/events/e1/checkins', '/events/e1/content', '/events/e1/manual-checkins']);
+  cohostActive = false; requests.length = 0;
+  assert.equal(await page.refresh(), true);
+  assert.ok(!requests.includes('/events/e1'));
+  assert.deepEqual(requests.filter(route => protectedRoutes.includes(route)), []);
+  assert.equal(page.data.canManageCheckins, false);
+  assert.equal(page.data.canManageAnnouncements, false);
+  summaryVisibility = 'PUBLIC'; actor = 'visitor'; requests.length = 0;
+  assert.equal(await page.refresh(), true);
+  assert.ok(requests.includes('/events/e1'));
+});
+
 test('event expense area distinguishes network failure, empty ledger, and forbidden access', async () => {
   let page: Record<string, any> | undefined;
   let mode: 'offline' | 'empty' | 'forbidden' = 'offline';
   let posts = 0;
   const ledgerPath = '/events/e1/expenses';
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { post: async () => { posts++; return {}; }, get: async (route: string) => {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { post: async () => { posts++; return {}; }, get: async (route: string) => {
         if (route === '/events/e1') return { id: 'e1', hostId: 'host', version: 2, status: 'CONFIRMED',
           payload: { startAt: '2027-01-02T12:00:00Z', endAt: '2027-01-02T14:00:00Z', feeMode: 'AA' } };
         if (route === '/system/safety') return { status: 'OPEN' };
-        if (route === '/me/registrations') return { items: [{ event_id: 'e1', status: 'CONFIRMED' }] };
+        if (route === '/me/registrations?eventId=e1') return { items: [{ event_id: 'e1', status: 'CONFIRMED' }] };
         if (route === ledgerPath) {
           if (mode === 'offline') throw Object.assign(new Error('网络中断'), { code: 'NETWORK_ERROR' });
           if (mode === 'forbidden') throw Object.assign(new Error('无权查看费用记录'), { code: 'FORBIDDEN' });
         }
         return { items: [] };
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'p1' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'p1' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1775,7 +2475,7 @@ test('event expense area distinguishes network failure, empty ledger, and forbid
   mode = 'forbidden';
   assert.equal(await page.refresh(), true);
   assert.equal(page.data.expenseLoadState, 'FORBIDDEN');
-  const wxml = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const wxml = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
   assert.match(wxml, /expenseLoadState === 'ERROR'[^\n]*bindtap="refresh"/);
   assert.match(wxml, /expenseLoadState === 'EMPTY'/);
   assert.match(wxml, /expenseLoadState === 'FORBIDDEN'/);
@@ -1786,13 +2486,13 @@ test('event expense area distinguishes network failure, empty ledger, and forbid
 test('event attendance area does not hide failed reads as no check-ins', async () => {
   let page: Record<string, any> | undefined;
   let mode: 'offline' | 'manual-offline' | 'empty' | 'forbidden' = 'offline';
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async (route: string) => {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async (route: string) => {
         if (route === '/events/e1') return { id: 'e1', hostId: 'host', version: 2, status: 'CONFIRMED',
           payload: { startAt: '2027-01-02T12:00:00Z', endAt: '2027-01-02T14:00:00Z', feeMode: 'FREE' } };
         if (route === '/system/safety') return { status: 'OPEN' };
-        if (route === '/me/registrations') return { items: [{ event_id: 'e1', status: 'CONFIRMED' }] };
+        if (route === '/me/registrations?eventId=e1') return { items: [{ event_id: 'e1', status: 'CONFIRMED' }] };
         if (route === '/events/e1/manual-checkins' && mode === 'manual-offline')
           throw Object.assign(new Error('人工补记网络中断'), { code: 'NETWORK_ERROR' });
         if (route === '/events/e1/checkins') {
@@ -1801,8 +2501,8 @@ test('event attendance area does not hide failed reads as no check-ins', async (
         }
         return { items: [] };
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1827,7 +2527,7 @@ test('event attendance area does not hide failed reads as no check-ins', async (
   mode = 'forbidden';
   assert.equal(await page.refresh(), true);
   assert.equal(page.data.attendanceLoadState, 'FORBIDDEN');
-  const wxml = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const wxml = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
   assert.match(wxml, /attendanceLoadState === 'ERROR'[^\n]*bindtap="refresh"/);
   assert.match(wxml, /attendanceLoadState === 'EMPTY'/);
   assert.match(wxml, /attendanceLoadState === 'FORBIDDEN'/);
@@ -1836,13 +2536,13 @@ test('event attendance area does not hide failed reads as no check-ins', async (
 test('event discussion area distinguishes failed reads from a genuinely empty discussion', async () => {
   let page: Record<string, any> | undefined;
   let mode: 'offline' | 'empty' | 'ready' | 'forbidden' = 'offline';
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async (route: string) => {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async (route: string) => {
         if (route === '/events/e1') return { id: 'e1', hostId: 'host', version: 2, status: 'CONFIRMED',
           payload: { startAt: '2027-01-02T12:00:00Z', endAt: '2027-01-02T14:00:00Z', feeMode: 'FREE' } };
         if (route === '/system/safety') return { status: 'OPEN' };
-        if (route === '/me/registrations') return { items: [{ event_id: 'e1', status: 'CONFIRMED' }] };
+        if (route === '/me/registrations?eventId=e1') return { items: [{ event_id: 'e1', status: 'CONFIRMED' }] };
         if (route === '/events/e1/content') {
           if (mode === 'offline') throw Object.assign(new Error('公告问答网络中断'), { code: 'NETWORK_ERROR' });
           if (mode === 'forbidden') throw Object.assign(new Error('无权查看公告问答'), { code: 'FORBIDDEN' });
@@ -1850,8 +2550,8 @@ test('event discussion area distinguishes failed reads from a genuinely empty di
         }
         return { items: [] };
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'host' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'host' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1875,7 +2575,7 @@ test('event discussion area distinguishes failed reads from a genuinely empty di
   assert.equal(await page.refresh(), true);
   assert.equal(page.data.contentLoadState, 'FORBIDDEN');
   assert.equal(page.data.content.length, 0);
-  const wxml = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const wxml = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
   assert.match(wxml, /contentLoadState === 'ERROR'[^\n]*bindtap="refresh"/);
   assert.match(wxml, /contentLoadState === 'EMPTY'/);
   assert.match(wxml, /contentLoadState === 'FORBIDDEN'/);
@@ -1884,13 +2584,13 @@ test('event discussion area distinguishes failed reads from a genuinely empty di
 test('completed event keeps outcome read failure visible so feedback can be retried', async () => {
   let page: Record<string, any> | undefined;
   let mode: 'offline' | 'ready' | 'forbidden' = 'offline';
-  runInNewContext(readFileSync(new URL('../miniprogram/pages/event/event.js', import.meta.url), 'utf8'), {
+  runInNewContext(readFileSync(new URL('../miniprogram/subpackages/activity/event/event.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { get: async (route: string) => {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { get: async (route: string) => {
         if (route === '/events/e1') return { id: 'e1', hostId: 'host', version: 2, status: 'COMPLETED',
           payload: { startAt: '2026-01-02T12:00:00Z', endAt: '2026-01-02T14:00:00Z', feeMode: 'FREE' } };
         if (route === '/system/safety') return { status: 'OPEN' };
-        if (route === '/me/registrations') return { items: [{ event_id: 'e1', status: 'CONFIRMED' }] };
+        if (route === '/me/registrations?eventId=e1') return { items: [{ event_id: 'e1', status: 'CONFIRMED' }] };
         if (route === '/events/e1/outcome') {
           if (mode === 'offline') throw Object.assign(new Error('结项证据网络中断'), { code: 'NETWORK_ERROR' });
           if (mode === 'forbidden') throw Object.assign(new Error('无权查看结项证据'), { code: 'FORBIDDEN' });
@@ -1899,8 +2599,8 @@ test('completed event keeps outcome read failure visible so feedback can be retr
         }
         return { items: [] };
       } } };
-      if (path === '../../utils/checkin-qr.js') return { drawCheckInQr() {} };
-      if (path === '../../config.js') return { developmentUser: 'p1' };
+      if ((path === '../../utils/checkin-qr.js' || path === '../utils/checkin-qr.js')) return { drawCheckInQr() {} };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: 'p1' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; },
@@ -1921,7 +2621,7 @@ test('completed event keeps outcome read failure visible so feedback can be retr
   assert.equal(await page.refresh(), true);
   assert.equal(page.data.outcomeLoadState, 'FORBIDDEN');
   assert.equal(page.data.outcome, null);
-  const wxml = readFileSync(new URL('../miniprogram/pages/event/event.wxml', import.meta.url), 'utf8');
+  const wxml = readFileSync(new URL('../miniprogram/subpackages/activity/event/event.wxml', import.meta.url), 'utf8');
   assert.match(wxml, /outcomeLoadState === 'ERROR'[^\n]*bindtap="refresh"/);
   assert.match(wxml, /outcomeLoadState === 'FORBIDDEN'/);
 });
@@ -1931,10 +2631,10 @@ test('profile offer decline sends the event version and refreshes the offer stat
   const calls: Array<{ path: string; body: Record<string, unknown> }> = [];
   runInNewContext(readFileSync(new URL('../miniprogram/pages/me/me.js', import.meta.url), 'utf8'), {
     require(path: string) {
-      if (path === '../../utils/api.js') return { api: { async post(route: string, body: Record<string, unknown>) {
+      if ((path === '../../utils/api.js' || path === '../../../utils/api.js')) return { api: { async post(route: string, body: Record<string, unknown>) {
         calls.push({ path: route, body }); return { status: 'DECLINED' };
       } } };
-      if (path === '../../config.js') return { developmentUser: '' };
+      if ((path === '../../config.js' || path === '../../../config.js')) return { developmentUser: '' };
       throw new Error(`unexpected require ${path}`);
     },
     Page(definition: Record<string, any>) { page = definition; }, wx: {}
@@ -1994,7 +2694,29 @@ test('relogin of the same user keeps an uncertain mutation key across client res
   await assert.rejects(() => createApi(platform, config).post('/reports', { description: '同一事件' }), { code: 'NETWORK_ERROR' });
   storage.set('sessionToken', 'new-token');
   await assert.rejects(() => createApi(platform, config).post('/reports', { description: '同一事件' }), { code: 'NETWORK_ERROR' });
+  await assert.rejects(() => createApi(platform, config).post('/reports', { description: '同一事件' }), { code: 'NETWORK_ERROR' });
+  assert.equal(requests[0]?.header.Authorization, 'Bearer old-token');
+  assert.equal(requests[1]?.header.Authorization, 'Bearer new-token');
   assert.equal(requests[1]?.header['Idempotency-Key'], requests[0]?.header['Idempotency-Key']);
+  assert.equal(requests[2]?.header['Idempotency-Key'], requests[1]?.header['Idempotency-Key']);
+});
+
+test('a different logged-in user does not inherit an uncertain mutation key', async () => {
+  const storage = new Map<string, string>([['userId', 'first-user'], ['sessionToken', 'first-token']]);
+  const requests: Record<string, any>[] = [];
+  const api = createApi({
+    request(options: Record<string, any>) {
+      requests.push(options);
+      options.fail({ errMsg: 'request:fail timeout' });
+    },
+    getStorageSync(key: string) { return storage.get(key) ?? ''; }
+  }, { apiBase: 'https://example.test', developmentUser: '' });
+  const payload = { description: '同样文字的新事件' };
+  await assert.rejects(() => api.post('/reports', payload), { code: 'NETWORK_ERROR' });
+  storage.set('sessionToken', 'second-token');
+  storage.set('userId', 'second-user');
+  await assert.rejects(() => api.post('/reports', payload), { code: 'NETWORK_ERROR' });
+  assert.notEqual(requests[1]?.header['Idempotency-Key'], requests[0]?.header['Idempotency-Key']);
 });
 
 test('a failed durable key write prevents a mutation from being sent', async () => {

@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { createCheckInMatrix, drawCheckInQr } = require('../miniprogram/utils/checkin-qr.js');
+const { createCheckInMatrix, drawCheckInQr } = require('../miniprogram/subpackages/activity/utils/checkin-qr.js');
 
 test('check-in token becomes a square scannable matrix with a quiet zone', () => {
   const token = '12345678.' + 'a'.repeat(43);

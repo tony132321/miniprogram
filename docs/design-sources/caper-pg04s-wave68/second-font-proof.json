@@ -1,0 +1,22 @@
+{
+  "cssUrl": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap&icon_names=arrow_forward,auto_awesome,calendar_today,celebration,chat,check_circle,close,diversity_3,group_add,link,location_on,person,person_add,photo_camera_back,visibility",
+  "cssSha256": "83e313043a784735904773f4d2b7048613831c7bf0d926675c666c63e9414b9f",
+  "fontUrl": "https://fonts.gstatic.com/l/font?kit=kJEPBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzBwG-RpA6RzaxHMPdY40KH8nGzv3fzfVJO1USv9luNuBbgt12Loe1Fsdk28Plhwl8XLbTSMqwM1Uoy-B1XfDM8HSzLQAR5IBu5NIe_tN-_40uaheVyx5mA&skey=b8dc2088854b122f&v=v374",
+  "fontSha256": "b4c6589ba651b7f40f2214f1cc2fc7c659f33ce290dd9e633ab3a017a4dfe9d6",
+  "axes": [
+    [
+      "FILL",
+      0.0,
+      0.0,
+      1.0
+    ],
+    [
+      "wght",
+      100.0,
+      400.0,
+      700.0
+    ]
+  ],
+  "resolved": "last equivalent @font-face family/style/range overrides first face; no opsz axis, fixed default24; Material normal400 and source FILL1 only check_circle",
+  "decodedWith": "FontTools4.60.2 and Node builtin zlib.brotliDecompressSync; no dependency installation"
+}

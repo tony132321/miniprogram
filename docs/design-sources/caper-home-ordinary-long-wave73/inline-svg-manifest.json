@@ -1,0 +1,134 @@
+{
+  "originalHTMLSHA256": "e4e4ba417711e27838f10cef098c4da8c428d3b9d7c4217fe36d9def5761c4ca",
+  "exports": [
+    {
+      "sourceLine": 266,
+      "sourceRawSVG": "<svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" viewbox=\"0 0 24 24\"><path d=\"M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg>",
+      "sourceRawSHA256": "a4b1700214395c2d84c83973584713c0a78bb65c55c31446a6cb4b65de0d5cbf",
+      "path": "miniprogram/pages/index/assets/w73-refresh-blue.svg",
+      "bytes": 280,
+      "sha256": "5c3156e0797781eeb3895931da1308423de0adf27f872f17ea9cf4d866d153e8",
+      "resolvedStroke": "#1d64f2",
+      "rootNormalizationOnly": [
+        "class removed; dimensions from source CSS",
+        "viewbox corrected to SVG viewBox spelling",
+        "xmlns added",
+        "currentColor resolved to inherited source paint"
+      ],
+      "children": [
+        {
+          "tag": "path",
+          "attributes": {
+            "d": "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round"
+          }
+        }
+      ]
+    },
+    {
+      "sourceLine": 363,
+      "sourceRawSVG": "<svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewbox=\"0 0 24 24\"><path d=\"M9 5l7 7-7 7\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"></path></svg>",
+      "sourceRawSHA256": "7e8c1c017a3b54ae6b55761e123f8c3c162a08b56cd84cfba70a4c4f560279f0",
+      "path": "miniprogram/pages/index/assets/w73-chevron-gray.svg",
+      "bytes": 185,
+      "sha256": "17dce00d9bce7f9ab6d95af53a15a823b8d52dc9207a11f21b672449c73ed7d8",
+      "resolvedStroke": "#9ca3af",
+      "rootNormalizationOnly": [
+        "class removed; dimensions from source CSS",
+        "viewbox corrected to SVG viewBox spelling",
+        "xmlns added",
+        "currentColor resolved to inherited source paint"
+      ],
+      "children": [
+        {
+          "tag": "path",
+          "attributes": {
+            "d": "M9 5l7 7-7 7",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            "stroke-width": "2"
+          }
+        }
+      ]
+    },
+    {
+      "sourceLine": 521,
+      "sourceRawSVG": "<svg class=\"w-4 h-4 text-purple-700\" fill=\"none\" stroke=\"currentColor\" viewbox=\"0 0 24 24\"><path d=\"M9 5l7 7-7 7\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2.5\"></path></svg>",
+      "sourceRawSHA256": "12984b41f5e04b1fbfa60a6873a771373835ae966d5d9d5aa6b04a6ce7cbff59",
+      "path": "miniprogram/pages/index/assets/w73-chevron-purple.svg",
+      "bytes": 187,
+      "sha256": "3c7658a5751fda953ea81b6c37b26cd326a792fafaf94c40de92b0808586b5f8",
+      "resolvedStroke": "#7e22ce",
+      "rootNormalizationOnly": [
+        "class removed; dimensions from source CSS",
+        "viewbox corrected to SVG viewBox spelling",
+        "xmlns added",
+        "currentColor resolved to inherited source paint"
+      ],
+      "children": [
+        {
+          "tag": "path",
+          "attributes": {
+            "d": "M9 5l7 7-7 7",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            "stroke-width": "2.5"
+          }
+        }
+      ]
+    },
+    {
+      "sourceLine": 696,
+      "sourceRawSVG": "<svg class=\"w-5 h-5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" viewbox=\"0 0 24 24\"><path d=\"M12 4v16m8-8H4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg>",
+      "sourceRawSHA256": "9b25196a7ab560c31d30e0767738b9efcbd358711f22358a2cb3d6c7634d0307",
+      "path": "miniprogram/pages/index/assets/w73-plus-white.svg",
+      "bytes": 189,
+      "sha256": "b32b35e119356e82d38ab2e542aa06668cb9b5e5fcd67ef26cb5d585a2057c21",
+      "resolvedStroke": "#ffffff",
+      "rootNormalizationOnly": [
+        "class removed; dimensions from source CSS",
+        "viewbox corrected to SVG viewBox spelling",
+        "xmlns added",
+        "currentColor resolved to inherited source paint"
+      ],
+      "children": [
+        {
+          "tag": "path",
+          "attributes": {
+            "d": "M12 4v16m8-8H4",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round"
+          }
+        }
+      ]
+    },
+    {
+      "sourceLine": 363,
+      "sourceRawSVG": "<svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewbox=\"0 0 24 24\"><path d=\"M9 5l7 7-7 7\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"></path></svg>",
+      "sourceRawSHA256": "7e8c1c017a3b54ae6b55761e123f8c3c162a08b56cd84cfba70a4c4f560279f0",
+      "path": "miniprogram/pages/index/assets/w73-chevron-gray-hover.svg",
+      "bytes": 185,
+      "sha256": "b67239d32edd6382c1070e026501b0c4e28c10c17c0bce82aea0826985075634",
+      "resolvedStroke": "#4b5563",
+      "rootNormalizationOnly": [
+        "class removed; dimensions from source CSS",
+        "viewbox corrected to SVG viewBox spelling",
+        "xmlns added",
+        "currentColor resolved to inherited source paint"
+      ],
+      "children": [
+        {
+          "tag": "path",
+          "attributes": {
+            "d": "M9 5l7 7-7 7",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            "stroke-width": "2"
+          }
+        }
+      ],
+      "sourceState": "parent hover:text-gray-600; original normal and hover currentColor inheritance are preserved with native hover class"
+    }
+  ]
+}

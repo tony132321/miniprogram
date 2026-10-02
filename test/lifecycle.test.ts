@@ -2,10 +2,11 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { createDatabase } from '../src/db.ts';
 import type { Database } from '../src/db.ts';
-import { createDraft, publishEvent, updateDraft, getEvent } from '../src/events.ts';
+import { createDraft, updateDraft, getEvent } from '../src/events.ts';
+import { changeApprovedInvite, publishApprovedInvite } from './helpers.ts';
 import { cancelRegistration, removeRegistration } from '../src/registrations.ts';
 import { register } from './helpers.ts';
-import { previewEventChange, getPendingReconfirmation, changeEvent, reconfirm, confirmEvent, cancelEvent, createCheckInToken, checkIn, requestManualCheckIn, respondManualCheckIn, listManualCheckIns, completeEvent, repeatEvent, recordExpense, listExpenses, markExpenseShare, recordOutcomeFeedback, getOutcomeEvidence } from '../src/lifecycle.ts';
+import { previewEventChange, getPendingReconfirmation, reconfirm, confirmEvent, cancelEvent, createCheckInToken, checkIn, requestManualCheckIn, respondManualCheckIn, listManualCheckIns, completeEvent, repeatEvent, recordExpense, listExpenses, markExpenseShare, recordOutcomeFeedback, getOutcomeEvidence } from '../src/lifecycle.ts';
 import { runDueJobs } from '../src/jobs.ts';
 import { setConsent } from '../src/notifications.ts';
 import { listRepeatCandidates } from '../src/lifecycle.ts';
@@ -23,7 +24,7 @@ const input = {
 
 async function published(db: Awaited<ReturnType<typeof createDatabase>>, overrides = {}) {
   const draft = await createDraft(db, 'host', { ...input, ...overrides }, `draft-${Math.random()}`);
-  return publishEvent(db, 'host', draft.id, draft.version, `publish-${Math.random()}`);
+  return publishApprovedInvite(db, 'host', draft.id, draft.version, `publish-${Math.random()}`);
 }
 
 test('formation records a versioned host venue statement only after successful confirmation', async () => {
@@ -65,9 +66,9 @@ test('changing venue or scheduled time requires an explicit new host venue state
     const newVenue = { venueName: '另一家公共球馆' };
     await assert.rejects(() => previewEventChange(db, 'host', event.id, event.version, newVenue),
       { code: 'VENUE_REASSERT_REQUIRED' });
-    await assert.rejects(() => changeEvent(db, 'host', event.id, event.version, newVenue, 'venue-without-statement'),
+    await assert.rejects(() => changeApprovedInvite(db, 'host', event.id, event.version, newVenue, 'venue-without-statement'),
       { code: 'VENUE_REASSERT_REQUIRED' });
-    const changed = await changeEvent(db, 'host', event.id, event.version,
+    const changed = await changeApprovedInvite(db, 'host', event.id, event.version,
       { ...newVenue, venueStatus: 'HOST_CONFIRMED' }, 'venue-with-statement');
     const { rows } = await db.query<{ phase: string; event_version: number; venue_name: string }>(
       'SELECT phase,event_version,venue_name FROM venue_evidence WHERE event_id=$1 ORDER BY event_version,phase', [event.id]);
@@ -115,7 +116,7 @@ test('a fast application clock does not reject an editable event change', async 
     try {
       const preview = await previewEventChange(clockDb, 'host', event.id, event.version, { title: '羽毛球新标题' });
       assert.equal(preview.material, false);
-      const changed = await changeEvent(clockDb, 'host', event.id, event.version,
+      const changed = await changeApprovedInvite(clockDb, 'host', event.id, event.version,
         { title: '羽毛球新标题' }, 'fast-clock-title');
       assert.equal(changed.payload.title, '羽毛球新标题');
     } finally { Date.now = actualNow; }
@@ -158,7 +159,7 @@ test('a fast application clock does not reject reconfirmation before the databas
   try {
     const event = await published(db);
     const registration = await register(db, 'p1', event.id, event.version, 'fast-reconfirm-seat');
-    const changed = await changeEvent(db, 'host', event.id, event.version,
+    const changed = await changeApprovedInvite(db, 'host', event.id, event.version,
       { venueName: '新的公共球馆', venueStatus: 'HOST_CONFIRMED' }, 'fast-reconfirm-change');
     const actualNow = Date.now;
     const fastNow = () => actualNow() + 2 * 365 * 24 * 60 * 60_000;
@@ -289,7 +290,7 @@ test('a slow application clock cannot move an event start into the database past
     Date.now = slowNow;
     try {
       await assert.rejects(() => previewEventChange(clockDb, 'host', event.id, event.version, patch), { code: 'INVALID_EVENT' });
-      await assert.rejects(() => changeEvent(clockDb, 'host', event.id, event.version, patch, 'slow-clock-start'),
+      await assert.rejects(() => changeApprovedInvite(clockDb, 'host', event.id, event.version, patch, 'slow-clock-start'),
         { code: 'INVALID_EVENT' });
     } finally { Date.now = actualNow; }
     const { rows } = await db.query<{ version: number; payload: { startAt: string } }>(
@@ -325,7 +326,7 @@ test('material edit rolls back if its new confirmation deadline passes before th
         }
       }))
     };
-    await assert.rejects(() => changeEvent(racingDb, 'host', event.id, event.version, patch, 'late-confirmation'),
+    await assert.rejects(() => changeApprovedInvite(racingDb, 'host', event.id, event.version, patch, 'late-confirmation'),
       { code: 'INVALID_STATE' });
     assert.equal(reachedFinalWrite, true);
     const { rows } = await db.query<{ version: number; payload: { startAt: string } }>(
@@ -337,19 +338,23 @@ test('material edit rolls back if its new confirmation deadline passes before th
   } finally { await db.close(); }
 });
 
-test('changing registration deadline keeps the invitation expiry aligned with the current activity', async () => {
+test('changing registration deadline aligns stored invite expiry and hides the paused invitation', async () => {
   const db = await createDatabase();
   try {
     const event = await published(db);
     const deadlines = ['2027-01-02T11:45:00.000Z', '2027-01-02T11:15:00.000Z'];
     let version = event.version;
     for (const [index, deadline] of deadlines.entries()) {
-      const changed = await changeEvent(db, 'host', event.id, version,
+      const changed = await changeApprovedInvite(db, 'host', event.id, version,
         { registrationDeadline: deadline }, `invite-deadline-change-${index}`);
       version = changed.version;
-      assert.equal(changed.inviteToken, event.inviteToken);
-      const { rows } = await db.query<{ invite_expires_at: Date }>(
-        'SELECT invite_expires_at FROM events WHERE id=$1', [event.id]);
+      assert.equal(changed.reviewStatus, 'APPROVED');
+      assert.equal(changed.recruiting, false);
+      assert.equal(changed.inviteToken, undefined, 'a material change keeps invitations hidden while recruitment is paused');
+      assert.equal(changed.inviteRemainingMs, 0);
+      const { rows } = await db.query<{ invite_token: string; invite_expires_at: Date }>(
+        'SELECT invite_token,invite_expires_at FROM events WHERE id=$1', [event.id]);
+      assert.equal(rows[0]!.invite_token, event.inviteToken);
       assert.equal(new Date(rows[0]!.invite_expires_at).toISOString(), deadline);
     }
   } finally { await db.close(); }
@@ -389,7 +394,7 @@ test('host edit cannot commit when the event starts between validation and updat
         }
       }))
     };
-    await assert.rejects(() => changeEvent(racingDb, 'host', event.id, event.version,
+    await assert.rejects(() => changeApprovedInvite(racingDb, 'host', event.id, event.version,
       { title: '写入时已开始' }, 'crossed-start'), { code: 'INVALID_STATE' });
     assert.equal(crossed, true);
     const { rows } = await db.query<{ version: number; payload: { title: string } }>(
@@ -442,7 +447,7 @@ test('participant cannot reconfirm with a stale request time after the current d
   try {
     const event = await published(db);
     const registration = await register(db, 'p1', event.id, event.version, 'deadline-join');
-    const changed = await changeEvent(db, 'host', event.id, event.version,
+    const changed = await changeApprovedInvite(db, 'host', event.id, event.version,
       { venueName: '新公共场馆', venueStatus: 'HOST_CONFIRMED' }, 'deadline-change');
     await db.query("UPDATE events SET payload=jsonb_set(payload,'{confirmationDeadline}',to_jsonb($2::text),true) WHERE id=$1",
       [event.id, new Date(Date.now() - 1000).toISOString()]);
@@ -466,7 +471,7 @@ test('material change preserves old version and requires personal reconfirmation
     assert.equal(preview.affectedCount, 2);
     assert.deepEqual(preview.changes, [{ field: 'venueName', before: '公共羽毛球馆', after: '另一家公共球馆' }]);
     await assert.rejects(() => previewEventChange(db, 'p1', e.id, e.version, { venueName: '他人场馆' }), { code: 'FORBIDDEN' });
-    const changed = await changeEvent(db, 'host', e.id, e.version,
+    const changed = await changeApprovedInvite(db, 'host', e.id, e.version,
       { venueName: '另一家公共球馆', venueStatus: 'HOST_CONFIRMED' }, 'change');
     assert.equal(changed.version, e.version + 1);
     assert.equal(changed.recruiting, false);
@@ -487,6 +492,49 @@ test('material change preserves old version and requires personal reconfirmation
   } finally { await db.close(); }
 });
 
+test('reconfirmation does not mix event versions across a same-version privacy scrub', async () => {
+  const db = await createDatabase();
+  try {
+    const event = await published(db, { venueName: 'private original venue' });
+    await register(db, 'p1', event.id, event.version, 'reconfirmation-privacy-member');
+    await changeApprovedInvite(db, 'host', event.id, event.version,
+      { venueName: 'private updated venue', venueStatus: 'HOST_CONFIRMED' }, 'reconfirmation-privacy-change');
+    let scrubbed = false;
+    const scrub = async () => {
+      await db.transaction(async tx => {
+        await tx.query("UPDATE events SET payload=jsonb_set(payload,'{venueName}',to_jsonb($2::text),true) WHERE id=$1",
+          [event.id, '已隐藏集合地点']);
+        await tx.query("UPDATE event_versions SET payload=jsonb_set(payload,'{venueName}',to_jsonb($2::text),true) WHERE event_id=$1",
+          [event.id, '已隐藏集合地点']);
+      });
+      scrubbed = true;
+    };
+    const racingDb: Database = {
+      ...db,
+      query: async <T extends Record<string, unknown> = Record<string, unknown>>(
+        sql: string, params: unknown[] = []): Promise<{ rows: T[] }> => {
+        // The old implementation returned from getEvent before this next read.
+        // The fixed implementation reads registrations inside the locked tx.
+        if (!scrubbed && sql.startsWith('SELECT accepted_version,status FROM registrations')) await scrub();
+        return db.query<T>(sql, params);
+      }
+    };
+    const pending = await getPendingReconfirmation(racingDb, 'p1', event.id);
+    if (scrubbed) {
+      assert.doesNotMatch(JSON.stringify(pending), /private original venue|private updated venue/);
+    } else {
+      // This response was read before cleanup; now commit the cleanup and
+      // check a subsequent read. Do not treat old text after commit as safe.
+      assert.deepEqual(pending?.changes, [
+        { field: 'venueName', before: 'private original venue', after: 'private updated venue' }
+      ]);
+      await scrub();
+    }
+    const after = await getPendingReconfirmation(db, 'p1', event.id);
+    assert.doesNotMatch(JSON.stringify(after), /private original venue|private updated venue/);
+  } finally { await db.close(); }
+});
+
 test('changing a stated activity level requires participants to accept the new version', async () => {
   const db = await createDatabase();
   try {
@@ -495,7 +543,7 @@ test('changing a stated activity level requires participants to accept the new v
     const preview = await previewEventChange(db, 'host', event.id, event.version, { skillLevel: '进阶水平' });
     assert.equal(preview.material, true);
     assert.deepEqual(preview.changes, [{ field: 'skillLevel', before: '中等水平', after: '进阶水平' }]);
-    const changed = await changeEvent(db, 'host', event.id, event.version, { skillLevel: '进阶水平' }, 'level-change');
+    const changed = await changeApprovedInvite(db, 'host', event.id, event.version, { skillLevel: '进阶水平' }, 'level-change');
     assert.equal((await db.query<{ status: string }>('SELECT status FROM registrations WHERE id=$1', [member.id])).rows[0]?.status,
       'RECONFIRM_REQUIRED');
     assert.equal(changed.payload.skillLevel, '进阶水平');
@@ -512,7 +560,7 @@ test('cancelled events reject reconfirmation and attendance cannot be erased by 
     await assert.rejects(() => cancelRegistration(db, 'p1', p1.id, e.version, 'late'), { code: 'INVALID_STATE' });
     await db.query("UPDATE events SET payload=jsonb_set(payload,'{startAt}',to_jsonb($2::text)) WHERE id=$1",
       [e.id, e.payload.startAt]);
-    const changed = await changeEvent(db, 'host', e.id, e.version,
+    const changed = await changeApprovedInvite(db, 'host', e.id, e.version,
       { venueName: '新公共场馆', venueStatus: 'HOST_CONFIRMED' }, 'change');
     await cancelEvent(db, 'host', e.id, changed.version, 'cancel');
     await assert.rejects(() => reconfirm(db, 'p1', p1.id, changed.version, 'after-cancel'), { code: 'INVALID_STATE' });
@@ -527,7 +575,7 @@ test('minor title edit preserves confirmed consent and deadline jobs for the new
     await register(db, 'p2', e.id, e.version, 'p2');
     await register(db, 'p3', e.id, e.version, 'p3');
     assert.equal((await previewEventChange(db, 'host', e.id, e.version, { title: '周六羽毛球（1号场）' })).material, false);
-    const edited = await changeEvent(db, 'host', e.id, e.version, { title: '周六羽毛球（1号场）' }, 'title-edit');
+    const edited = await changeApprovedInvite(db, 'host', e.id, e.version, { title: '周六羽毛球（1号场）' }, 'title-edit');
     assert.equal(edited.version, e.version + 1);
     assert.equal(edited.recruiting, true);
     const { rows: members } = await db.query<{ accepted_version: number }>('SELECT accepted_version FROM registrations WHERE id=$1', [p1.id]);
@@ -535,7 +583,8 @@ test('minor title edit preserves confirmed consent and deadline jobs for the new
     const { rows: deadlines } = await db.query<{ kind: string }>("SELECT kind FROM jobs WHERE event_id=$1 AND payload->>'version'=$2 AND kind IN ('FORMATION_DEADLINE','REGISTRATION_DEADLINE')", [e.id, String(edited.version)]);
     assert.equal(deadlines.length, 2);
     const { rows: announcements } = await db.query<{ body: string }>("SELECT body FROM activity_content WHERE event_id=$1 AND author_id='system' AND status='APPROVED'", [e.id]);
-    assert.match(announcements[0]?.body ?? '', /当前详情/);
+    assert.match(announcements[0]?.body ?? '', /审核前.*已审核信息/);
+    assert.equal((announcements[0]?.body ?? '').includes('周六羽毛球（1号场）'), false);
     assert.equal((await confirmEvent(db, 'host', e.id, edited.version, 'confirm-after-edit')).status, 'CONFIRMED');
   } finally { await db.close(); }
 });
@@ -545,7 +594,7 @@ test('switching from free to AA is a material change requiring new consent', asy
   try {
     const e = await published(db, { feeMode: 'FREE', feeCapFen: 0 });
     const p1 = await register(db, 'p1', e.id, e.version, 'p1');
-    const changed = await changeEvent(db, 'host', e.id, e.version, { feeMode: 'AA', feeCapFen: 0 }, 'fee-change');
+    const changed = await changeApprovedInvite(db, 'host', e.id, e.version, { feeMode: 'AA', feeCapFen: 0 }, 'fee-change');
     const { rows } = await db.query<{ status: string }>('SELECT status FROM registrations WHERE id=$1', [p1.id]);
     assert.equal(changed.recruiting, false);
     assert.equal(rows[0]?.status, 'RECONFIRM_REQUIRED');
@@ -558,7 +607,7 @@ test('a participating host must reconfirm their own seat after a material change
     const e = await published(db, { maxParticipants: 6 });
     const people = [];
     for (const actor of ['p1', 'p2', 'p3', 'p4']) people.push(await register(db, actor, e.id, e.version, `join-${actor}`));
-    const changed = await changeEvent(db, 'host', e.id, e.version,
+    const changed = await changeApprovedInvite(db, 'host', e.id, e.version,
       { venueName: '新公共球馆', venueStatus: 'HOST_CONFIRMED' }, 'host-change');
     for (let i = 0; i < people.length; i++) await reconfirm(db, `p${i + 1}`, people[i]!.id, changed.version, `reconfirm-${i}`);
     await assert.rejects(() => confirmEvent(db, 'host', e.id, changed.version, 'host-before-reconfirm'), { code: 'HOST_NOT_RECONFIRMED' });
@@ -685,7 +734,7 @@ test('edited and cancelled activities do not start from stale scheduled jobs', a
     const e = await published(db);
     for (const actor of ['p1', 'p2', 'p3']) await register(db, actor, e.id, e.version, `stale-start-${actor}`);
     await confirmEvent(db, 'host', e.id, e.version, 'stale-start-confirm');
-    const edited = await changeEvent(db, 'host', e.id, e.version, { title: '新标题' }, 'stale-start-edit');
+    const edited = await changeApprovedInvite(db, 'host', e.id, e.version, { title: '新标题' }, 'stale-start-edit');
     const { rows: jobs } = await db.query<{ id: string; payload: { version: number } }>(
       "SELECT id,payload FROM jobs WHERE event_id=$1 AND kind='EVENT_START' ORDER BY created_at,id", [e.id]);
     assert.deepEqual(jobs.map(job => job.payload.version).sort(), [e.version, edited.version]);
@@ -759,7 +808,7 @@ test('check-in is short-lived evidence; completion and repeat create independent
       startAt: nextStart.toISOString(), endAt: new Date(nextStart.getTime() + 60 * 60_000).toISOString(),
       registrationDeadline: new Date(nextStart.getTime() - 30 * 60_000).toISOString(),
       confirmationDeadline: new Date(nextStart.getTime() - 90 * 60_000).toISOString() }, 'repeat-new-facts');
-    const republished = await publishEvent(db, 'host', next.id, saved.version, 'repeat-new-publish');
+    const republished = await publishApprovedInvite(db, 'host', next.id, saved.version, 'repeat-new-publish');
     assert.equal(republished.payload.templateDurationMinutes, undefined);
   } finally { await db.close(); }
 });
@@ -1066,6 +1115,7 @@ test('repeat candidates include only participants who separately opted in', asyn
     await register(db, 'p1', e.id, e.version, 'repeat-p1');
     await register(db, 'p2', e.id, e.version, 'repeat-p2');
     await register(db, 'p3', e.id, e.version, 'repeat-p3');
+    await db.query("INSERT INTO users(id,wechat_openid) VALUES('p1','repeat-p1-openid')");
     await setConsent(db, 'p1', 'SIMILAR_ACTIVITY_INVITES', true, 'repeat-optin');
     await setConsent(db, 'p2', 'SIMILAR_ACTIVITY_INVITES', false, 'repeat-optout');
     await confirmEvent(db, 'host', e.id, e.version, 'repeat-confirm');
@@ -1077,6 +1127,14 @@ test('repeat candidates include only participants who separately opted in', asyn
     assert.deepEqual(await listRepeatCandidates(db, 'host', e.id), []);
     await setConsent(db, 'p1', 'SIMILAR_ACTIVITY_INVITES', true, 'repeat-reconfirm');
     assert.deepEqual(await listRepeatCandidates(db, 'host', e.id), ['p1']);
+    await db.query("UPDATE users SET status='DISABLED' WHERE id='p1'");
+    assert.deepEqual(await listRepeatCandidates(db, 'host', e.id), [],
+      'disabled account must not remain visible from a previous opt-in');
+    await db.query("UPDATE users SET status='ACTIVE' WHERE id='p1'");
+    assert.deepEqual(await listRepeatCandidates(db, 'host', e.id), ['p1']);
+    await db.query("INSERT INTO privacy_requests(id,user_id,kind) VALUES('repeat-delete-p1','p1','DELETE')");
+    assert.deepEqual(await listRepeatCandidates(db, 'host', e.id), [],
+      'an active account with old invite consent is hidden after requesting deletion');
     await setConsent(db, 'p1', 'SIMILAR_ACTIVITY_INVITES', false, 'repeat-withdraw');
     assert.deepEqual(await listRepeatCandidates(db, 'host', e.id), []);
   } finally { await db.close(); }

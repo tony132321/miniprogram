@@ -1,0 +1,14 @@
+{
+  "source": "_2 code.html header active:bg-surface-container transition-colors; _4 header active:scale-95 transition-all, top status dot animate-pulse; retained original official Tailwind keyframes/easing, no Live Mode operating claim",
+  "WXMLChange": {
+    "old": "class=\"pgd-native-back\" bindtap=",
+    "new": "class=\"pgd-native-back\" hover-class=\"{{isHost ? 'pgd-host-pressed' : 'pgd-member-pressed'}}\" hover-start-time=\"0\" bindtap="
+  },
+  "CSSAdded": "/* Original _2 active background; _4 active scale and decorative source status pulse. */\n.pgd-member-nav .pgd-member-pressed{background:#efedf3}.pgd-host-nav .pgd-host-pressed{transform:scale(.95)}.pgd-member-nav .pgd-native-back{transition:background-color .15s cubic-bezier(.4,0,.2,1),color .15s cubic-bezier(.4,0,.2,1)}.pgd-host-nav .pgd-native-back{transition:all .15s cubic-bezier(.4,0,.2,1)}.pgd-host-state .pgd-state-dot{animation:pgd-pulse 2s cubic-bezier(.4,0,.6,1) infinite}@keyframes pgd-pulse{50%{opacity:.5}}\n",
+  "inverseWXMLSHA": "cb61f218d1cfe2c2913e11d58e1ed403ec66ba1b991a867752e30244c60bf4c1",
+  "inverseCSSSHA": "7718775a8edb072fa96f70cfcfde1c6085c1d4bc78c644598c929258252fa46b",
+  "finalWXMLSHA": "5b4ce8e9767d8194a5ae7fb8535a7922b90c39c39c9c1bcc8da8923789f94a29",
+  "finalCSSSHA": "add3e314074fbe92132a581b76ed1c72055bd888add9636a19e7581b5c94f707",
+  "bindingProtection": "Only hover presentation attr + CSS; no handler/data/value/qualification methods; old successful role proof not repeated",
+  "deltaBytes": 612
+}

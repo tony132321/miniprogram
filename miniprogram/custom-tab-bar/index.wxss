@@ -1,0 +1,31 @@
+.bar { position:fixed; z-index:50; left:50%; right:auto; bottom:0; width:100%; max-width:390px; transform:translateX(-50%); box-sizing:border-box; padding-bottom:env(safe-area-inset-bottom); background:rgba(255,255,255,.95); border-top:1px solid #e2e8f0; color:#94a3b8; font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
+.bar-items { display:flex; align-items:center; justify-content:space-between; box-sizing:border-box; padding:8px 24px; }
+.bar-item { position:relative; flex:none; display:flex; flex-direction:column; align-items:center; justify-content:center; box-sizing:border-box; width:auto; min-width:0; height:auto; min-height:0; margin:0; padding:0; border:0; border-radius:0; overflow:visible; background:transparent; color:inherit; font-family:inherit; font-size:10px; line-height:1; }
+.bar-item::after { border:0; }
+.bar-item.is-selected { color:#1d64f2; }
+.bar-icon { display:block; width:20px; height:20px; }
+.bar-label { display:block; margin-top:2px; font-size:10px; font-weight:500; line-height:15px; }
+.bar-item.is-selected .bar-label { font-weight:700; }
+.bar-item-create { margin-top:-16px; }
+.create-circle { display:flex; align-items:center; justify-content:center; box-sizing:border-box; width:48px; height:48px; border:0; border-radius:50%; background:#1d64f2; color:#fff; }
+.create-icon { display:block; flex:none; width:24px; height:24px; }
+.variant-0 { max-width:440px; border-color:#f3f4f6; color:#9ca3af; font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","PingFang SC","Hiragino Sans GB",sans-serif; backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); box-shadow:0 -4px 20px rgba(0,0,0,.04); }
+.variant-0 .bar-label { margin-top:4px; font-weight:700; }
+.variant-0 .bar-item-create { margin-top:-20px; }
+.variant-0 .create-circle { box-shadow:0 12px 32px -6px rgba(29,100,242,.35); }
+.variant-1 { font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC",sans-serif; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); }
+.variant-1 .bar-item-create { margin-top:-24px; }
+.variant-1 .create-circle { width:52px; height:52px; padding:14px; box-shadow:0 10px 15px -3px rgba(59,130,246,.4),0 4px 6px -4px rgba(59,130,246,.4); }
+.variant-2 { max-width:420px; background:#fff; backdrop-filter:none; -webkit-backdrop-filter:none; }
+.variant-2 .bar-items { height:63px; padding:0 8px; justify-content:space-around; }
+.variant-2 .bar-item { width:48px; }
+.variant-2 .bar-item-create { width:auto; margin-top:0; top:-12px; }
+.variant-2 .create-circle { width:60px; height:60px; padding:14px; border:4px solid #fff; box-shadow:0 8px 24px -4px rgba(29,100,242,.35); }
+.variant-2 .bar-item-create .bar-label { font-weight:900; color:#1d64f2; }
+.variant-3 { border-color:rgba(226,232,240,.8); box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1); }
+.variant-3 .bar-items { padding:8px 16px; }
+.variant-3 .bar-item { flex:1; }
+.variant-3 .create-circle { box-shadow:0 10px 15px -3px rgba(59,130,246,.4),0 4px 6px -4px rgba(59,130,246,.4); }
+.variant-4 { border-color:#f1f5f9; font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Helvetica Neue",sans-serif; }
+.variant-4 .bar-items { padding:6px 24px; }
+.variant-4 .create-circle { box-shadow:0 10px 15px -3px rgba(59,130,246,.3),0 4px 6px -4px rgba(59,130,246,.3); }

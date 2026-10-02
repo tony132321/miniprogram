@@ -1,0 +1,942 @@
+{
+  "scope": "Wave73 ordinary caper_2 long feed only; owner frozen products7; root owns shared async component/photos, JSON registration, fonts, native/package gates",
+  "frozenAtUTC": "2026-10-02T02:54:54.633441+00:00",
+  "products": [
+    {
+      "path": "miniprogram/pages/index/index.wxml",
+      "bytes": 43747,
+      "sha256": "9c35f217aefeaebfb33a003b996f127de9850e486ee431704d6480f816249f4e"
+    },
+    {
+      "path": "miniprogram/pages/index/index.wxss",
+      "bytes": 110058,
+      "sha256": "9c370a6b694c57ee508e8c6c8a698094a1892c91d45e8b7f73a2b4244e8c9d87"
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w73-chevron-gray-hover.svg",
+      "bytes": 185,
+      "sha256": "b67239d32edd6382c1070e026501b0c4e28c10c17c0bce82aea0826985075634"
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w73-chevron-gray.svg",
+      "bytes": 185,
+      "sha256": "17dce00d9bce7f9ab6d95af53a15a823b8d52dc9207a11f21b672449c73ed7d8"
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w73-chevron-purple.svg",
+      "bytes": 187,
+      "sha256": "3c7658a5751fda953ea81b6c37b26cd326a792fafaf94c40de92b0808586b5f8"
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w73-plus-white.svg",
+      "bytes": 189,
+      "sha256": "b32b35e119356e82d38ab2e542aa06668cb9b5e5fcd67ef26cb5d585a2057c21"
+    },
+    {
+      "path": "miniprogram/pages/index/assets/w73-refresh-blue.svg",
+      "bytes": 280,
+      "sha256": "5c3156e0797781eeb3895931da1308423de0adf27f872f17ea9cf4d866d153e8"
+    }
+  ],
+  "rawOwnerProductNetBytes": 30013,
+  "newSVGBytes": 1026,
+  "sourceCheck": {
+    "scope": "Wave73 ordinary caper_2 long feed only, one source/asset/contract/inverse static pass; no business tests or SDK/CLI/full suites",
+    "checks": [
+      {
+        "name": "WXML complete chunk inverse unique 0",
+        "passed": true
+      },
+      {
+        "name": "WXML complete chunk inverse unique 1",
+        "passed": true
+      },
+      {
+        "name": "Full WXML inverse is baseline",
+        "passed": true,
+        "detail": {
+          "path": "/private/tmp/caper-wave73-home-long/baseline/index.wxml",
+          "bytes": 38653,
+          "sha256": "b972b559a2c523f2b1c7ca794023595fe6fee94a90add1527a3ef1cce7204c81"
+        }
+      },
+      {
+        "name": "Old 86165-byte CSS prefix exact",
+        "passed": true
+      },
+      {
+        "name": "Only declared ordinary CSS appended",
+        "passed": true
+      },
+      {
+        "name": "index.js exact protected baseline",
+        "passed": true
+      },
+      {
+        "name": "Root-only index JSON delta unique",
+        "passed": true
+      },
+      {
+        "name": "index.json reverse root registration equals protected baseline",
+        "passed": true
+      },
+      {
+        "name": "New CSS has no global/old scope selectors",
+        "passed": true
+      },
+      {
+        "name": "Ordinary long body stays inside existing !stateView condition",
+        "passed": true
+      },
+      {
+        "name": "All existing data/events/conditions/dynamic source attributes exactly preserved",
+        "passed": true,
+        "detail": {
+          "oldContracts": 163,
+          "newContracts": 163,
+          "removed": [],
+          "added": []
+        }
+      },
+      {
+        "name": "WXML normalized XML structure",
+        "passed": true
+      },
+      {
+        "name": "Source complete HTML exact SHA",
+        "passed": true
+      },
+      {
+        "name": "Source complete PNG exact SHA",
+        "passed": true
+      },
+      {
+        "name": "Single original CSS observation has no page errors",
+        "passed": true
+      },
+      {
+        "name": "Only undefined source token stays outside new scope",
+        "passed": true
+      },
+      {
+        "name": "Runtime exact source SVG hash w73-refresh-blue.svg",
+        "passed": true
+      },
+      {
+        "name": "Original SVG child geometry/attributes exact w73-refresh-blue.svg",
+        "passed": true
+      },
+      {
+        "name": "Original resolved SVG paint w73-refresh-blue.svg",
+        "passed": true
+      },
+      {
+        "name": "Declared normalized original viewBox w73-refresh-blue.svg",
+        "passed": true
+      },
+      {
+        "name": "Runtime exact source SVG hash w73-chevron-gray.svg",
+        "passed": true
+      },
+      {
+        "name": "Original SVG child geometry/attributes exact w73-chevron-gray.svg",
+        "passed": true
+      },
+      {
+        "name": "Original resolved SVG paint w73-chevron-gray.svg",
+        "passed": true
+      },
+      {
+        "name": "Declared normalized original viewBox w73-chevron-gray.svg",
+        "passed": true
+      },
+      {
+        "name": "Runtime exact source SVG hash w73-chevron-purple.svg",
+        "passed": true
+      },
+      {
+        "name": "Original SVG child geometry/attributes exact w73-chevron-purple.svg",
+        "passed": true
+      },
+      {
+        "name": "Original resolved SVG paint w73-chevron-purple.svg",
+        "passed": true
+      },
+      {
+        "name": "Declared normalized original viewBox w73-chevron-purple.svg",
+        "passed": true
+      },
+      {
+        "name": "Runtime exact source SVG hash w73-plus-white.svg",
+        "passed": true
+      },
+      {
+        "name": "Original SVG child geometry/attributes exact w73-plus-white.svg",
+        "passed": true
+      },
+      {
+        "name": "Original resolved SVG paint w73-plus-white.svg",
+        "passed": true
+      },
+      {
+        "name": "Declared normalized original viewBox w73-plus-white.svg",
+        "passed": true
+      },
+      {
+        "name": "Runtime exact source SVG hash w73-chevron-gray-hover.svg",
+        "passed": true
+      },
+      {
+        "name": "Original SVG child geometry/attributes exact w73-chevron-gray-hover.svg",
+        "passed": true
+      },
+      {
+        "name": "Original resolved SVG paint w73-chevron-gray-hover.svg",
+        "passed": true
+      },
+      {
+        "name": "Declared normalized original viewBox w73-chevron-gray-hover.svg",
+        "passed": true
+      },
+      {
+        "name": "Original URL response bytes recommended-food",
+        "passed": true
+      },
+      {
+        "name": "Reused exact same-byte original JPEG recommended-food",
+        "passed": true
+      },
+      {
+        "name": "Original URL response bytes recommended-hike",
+        "passed": true
+      },
+      {
+        "name": "Reused exact same-byte original JPEG recommended-hike",
+        "passed": true
+      },
+      {
+        "name": "Original URL response bytes brand-party",
+        "passed": true
+      },
+      {
+        "name": "Root profile-pack exact JPEG brand-party",
+        "passed": true
+      },
+      {
+        "name": "Single stable async photo consumer brand-party",
+        "passed": true
+      },
+      {
+        "name": "Original URL response bytes hot-tennis",
+        "passed": true
+      },
+      {
+        "name": "Root profile-pack exact JPEG hot-tennis",
+        "passed": true
+      },
+      {
+        "name": "Single stable async photo consumer hot-tennis",
+        "passed": true
+      },
+      {
+        "name": "Original URL response bytes hot-coffee",
+        "passed": true
+      },
+      {
+        "name": "Root profile-pack exact JPEG hot-coffee",
+        "passed": true
+      },
+      {
+        "name": "Single stable async photo consumer hot-coffee",
+        "passed": true
+      },
+      {
+        "name": "Original URL response bytes hot-frisbee",
+        "passed": true
+      },
+      {
+        "name": "Root profile-pack exact JPEG hot-frisbee",
+        "passed": true
+      },
+      {
+        "name": "Single stable async photo consumer hot-frisbee",
+        "passed": true
+      },
+      {
+        "name": "Original URL response bytes hot-boardgame",
+        "passed": true
+      },
+      {
+        "name": "Root profile-pack exact JPEG hot-boardgame",
+        "passed": true
+      },
+      {
+        "name": "Single stable async photo consumer hot-boardgame",
+        "passed": true
+      },
+      {
+        "name": "Original URL response bytes idea-badminton",
+        "passed": true
+      },
+      {
+        "name": "Root profile-pack exact JPEG idea-badminton",
+        "passed": true
+      },
+      {
+        "name": "Single stable async photo consumer idea-badminton",
+        "passed": true
+      },
+      {
+        "name": "Original URL response bytes idea-coffee",
+        "passed": true
+      },
+      {
+        "name": "Root profile-pack exact JPEG idea-coffee",
+        "passed": true
+      },
+      {
+        "name": "Single stable async photo consumer idea-coffee",
+        "passed": true
+      },
+      {
+        "name": "Original URL response bytes idea-cycling",
+        "passed": true
+      },
+      {
+        "name": "Root profile-pack exact JPEG idea-cycling",
+        "passed": true
+      },
+      {
+        "name": "Single stable async photo consumer idea-cycling",
+        "passed": true
+      },
+      {
+        "name": "Original URL response bytes collage-main",
+        "passed": true
+      },
+      {
+        "name": "Root profile-pack exact JPEG collage-main",
+        "passed": true
+      },
+      {
+        "name": "Single stable async photo consumer collage-main",
+        "passed": true
+      },
+      {
+        "name": "Original URL response bytes collage-dinner",
+        "passed": true
+      },
+      {
+        "name": "Root profile-pack exact JPEG collage-dinner",
+        "passed": true
+      },
+      {
+        "name": "Single stable async photo consumer collage-dinner",
+        "passed": true
+      },
+      {
+        "name": "Original URL response bytes collage-grass",
+        "passed": true
+      },
+      {
+        "name": "Root profile-pack exact JPEG collage-grass",
+        "passed": true
+      },
+      {
+        "name": "Single stable async photo consumer collage-grass",
+        "passed": true
+      },
+      {
+        "name": "Original URL response bytes city-shanghai",
+        "passed": true
+      },
+      {
+        "name": "Reused exact same-byte original JPEG city-shanghai",
+        "passed": true
+      },
+      {
+        "name": "No Material replacement introduced into ordinary long source",
+        "passed": true
+      },
+      {
+        "name": "Four long handwriting roles retain actual source family/weight",
+        "passed": true
+      },
+      {
+        "name": "No fake source nearby/testimonial/avatar fields introduced",
+        "passed": true
+      },
+      {
+        "name": "Truthful real account activity loop intact",
+        "passed": true
+      },
+      {
+        "name": "All direct static image refs resolve",
+        "passed": true,
+        "detail": {
+          "directRefs": 51,
+          "missing": []
+        }
+      }
+    ],
+    "passed": 80,
+    "failed": 0,
+    "WXMLInverse": {
+      "bytes": 38653,
+      "sha256": "b972b559a2c523f2b1c7ca794023595fe6fee94a90add1527a3ef1cce7204c81"
+    },
+    "CSSProtected": {
+      "path": "/private/tmp/caper-wave73-home-long/baseline/index.wxss",
+      "bytes": 86165,
+      "sha256": "27b11080f2eb16d8a2280567b697a3edd0d7af3e4158bc341d7a44146dcd0cea"
+    },
+    "JS": {
+      "path": "miniprogram/pages/index/index.js",
+      "bytes": 32598,
+      "sha256": "d85b9db816163c4853bd2a7a9abec66dc62e8047d9e79c19457f4cb57dc8ac11"
+    },
+    "JSON": {
+      "path": "miniprogram/pages/index/index.json",
+      "bytes": 340,
+      "sha256": "3f3022dfdd20e7a99f602b8f8fc6af5b0082e8d99a56d3e67a6d170300ec198a"
+    },
+    "rootPhotoIntegration": {
+      "authorization": "root actual CLI/SDK prototype passed and exact 11-key API handed off; owner only replaces 11 nodes plus explicit geometry class selectors",
+      "componentTag": "reference-image",
+      "componentOptions": {
+        "virtualHost": true,
+        "styleIsolation": "shared",
+        "externalClasses": [
+          "photo-class"
+        ]
+      },
+      "rootIndexJSONChanges": [
+        {
+          "old": "{\"navigationStyle\":\"custom\",\"navigationBarTitleText\":\"耍起 CAPER\",\"navigationBarBackgroundColor\":\"#ffffff\",\"navigationBarTextStyle\":\"black\"}\n",
+          "new": "{\n  \"navigationStyle\": \"custom\",\n  \"navigationBarTitleText\": \"耍起 CAPER\",\n  \"navigationBarBackgroundColor\": \"#ffffff\",\n  \"navigationBarTextStyle\": \"black\",\n  \"usingComponents\": {\n    \"reference-image\": \"/subpackages/profile/components/reference-image/reference-image\"\n  },\n  \"componentPlaceholder\": {\n    \"reference-image\": \"view\"\n  }\n}\n",
+          "rootOnlyKeys": [
+            "usingComponents.reference-image",
+            "componentPlaceholder.reference-image"
+          ],
+          "meaning": "root-only asynchronous cross-package component registration, all prior parsed keys preserved"
+        }
+      ],
+      "consumers": [
+        {
+          "consumerClass": "w73-photo-brand-party",
+          "photoKey": "home-brand-party",
+          "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-brand-party.jpg",
+          "photoClass": "ribbon-image w73-photo-brand-party",
+          "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/brand-party.jpg",
+          "sourceSHA256": "3365ce00ca5e741f4cbfbd5cf9ed76b8e0f821f83a5235e7182a6b41164e1d6a",
+          "bytes": 67934
+        },
+        {
+          "consumerClass": "w73-photo-hot-tennis",
+          "photoKey": "home-hot-tennis",
+          "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-hot-tennis.jpg",
+          "photoClass": "w73-photo-hot-tennis home-hot-photo",
+          "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/hot-tennis.jpg",
+          "sourceSHA256": "17d3ced8567411d7b67e5643c486c1d1862aa6d154cad5613b8637545c34db30",
+          "bytes": 46931
+        },
+        {
+          "consumerClass": "w73-photo-hot-coffee",
+          "photoKey": "home-hot-coffee",
+          "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-hot-coffee.jpg",
+          "photoClass": "w73-photo-hot-coffee home-hot-photo",
+          "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/hot-coffee.jpg",
+          "sourceSHA256": "789626490bad53fe814fe1194a7ffa3dad1121719744c9a781e587e80fc4ded5",
+          "bytes": 61237
+        },
+        {
+          "consumerClass": "w73-photo-hot-frisbee",
+          "photoKey": "home-hot-frisbee",
+          "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-hot-frisbee.jpg",
+          "photoClass": "w73-photo-hot-frisbee home-hot-photo",
+          "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/hot-frisbee.jpg",
+          "sourceSHA256": "1d496fa254500f6a66310fadfecbd546457bcdc6d9982313dcbcf905903bbc4f",
+          "bytes": 70328
+        },
+        {
+          "consumerClass": "w73-photo-hot-boardgame",
+          "photoKey": "home-hot-boardgame",
+          "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-hot-boardgame.jpg",
+          "photoClass": "w73-photo-hot-boardgame home-hot-photo",
+          "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/hot-boardgame.jpg",
+          "sourceSHA256": "dfe5dc41e9e955bae653a9c1095c00675f17bf96d96bdef42bbfc8223c2d98e2",
+          "bytes": 62758
+        },
+        {
+          "consumerClass": "w73-photo-idea-badminton",
+          "photoKey": "home-idea-badminton",
+          "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-idea-badminton.jpg",
+          "photoClass": "w73-photo-idea-badminton home-idea-photo",
+          "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/idea-badminton.jpg",
+          "sourceSHA256": "85c9aae86f539cab1e6f06254f49165c6e6c1fe5e688c5341bf202c8a4146189",
+          "bytes": 33316
+        },
+        {
+          "consumerClass": "w73-photo-idea-coffee",
+          "photoKey": "home-idea-coffee",
+          "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-idea-coffee.jpg",
+          "photoClass": "w73-photo-idea-coffee home-idea-photo",
+          "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/idea-coffee.jpg",
+          "sourceSHA256": "5c0350df75d28b6a38499477eabd40e6889f8400f9e34708aae54b1419608131",
+          "bytes": 72113
+        },
+        {
+          "consumerClass": "w73-photo-idea-cycling",
+          "photoKey": "home-idea-cycling",
+          "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-idea-cycling.jpg",
+          "photoClass": "w73-photo-idea-cycling home-idea-photo",
+          "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/idea-cycling-illustration.jpg",
+          "sourceSHA256": "d24a483e4f1042c527f414c436edcc895a68c2709f9dbc269cdca2c7ac77e745",
+          "bytes": 51100
+        },
+        {
+          "consumerClass": "w73-photo-collage-main",
+          "photoKey": "home-collage-main",
+          "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-collage-main.jpg",
+          "photoClass": "w73-photo-collage-main home-collage-photo",
+          "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/collage-main.jpg",
+          "sourceSHA256": "e990073eed579ac88dd91be60ff6c1e4888fe803fb53ab1ac9383ab7164d9dca",
+          "bytes": 77396
+        },
+        {
+          "consumerClass": "w73-photo-collage-dinner",
+          "photoKey": "home-collage-dinner",
+          "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-collage-dinner.jpg",
+          "photoClass": "w73-photo-collage-dinner home-collage-photo",
+          "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/collage-dinner.jpg",
+          "sourceSHA256": "e111454a86e9b5ef33a7fe5774092f74f39cfbe574e356baf74f0432bf8829af",
+          "bytes": 67130
+        },
+        {
+          "consumerClass": "w73-photo-collage-grass",
+          "photoKey": "home-collage-grass",
+          "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-collage-grass.jpg",
+          "photoClass": "w73-photo-collage-grass home-collage-photo",
+          "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/collage-grass.jpg",
+          "sourceSHA256": "969e214d70fe40a4933f19c4022b79a19cc0e7f0e889d2975bdf57743ff4ecb2",
+          "bytes": 73338
+        }
+      ],
+      "WXMLChanges": [
+        {
+          "old": "<image class=\"ribbon-image w73-photo-brand-party\" src=\"/assets/stitch/pg08_checkin_rooftop.jpg\" mode=\"aspectFill\" />",
+          "new": "<reference-image photo-key=\"home-brand-party\" photo-class=\"ribbon-image w73-photo-brand-party\" />",
+          "sourceRole": "brand-party"
+        },
+        {
+          "old": "<image class=\"w73-photo-hot-tennis\" src=\"/assets/stitch/caper_discover_basketball.jpg\" mode=\"aspectFill\"/>",
+          "new": "<reference-image photo-key=\"home-hot-tennis\" photo-class=\"w73-photo-hot-tennis home-hot-photo\" />",
+          "sourceRole": "hot-tennis"
+        },
+        {
+          "old": "<image class=\"w73-photo-hot-coffee\" src=\"/assets/stitch/caper_discover_coffee.jpg\" mode=\"aspectFill\"/>",
+          "new": "<reference-image photo-key=\"home-hot-coffee\" photo-class=\"w73-photo-hot-coffee home-hot-photo\" />",
+          "sourceRole": "hot-coffee"
+        },
+        {
+          "old": "<image class=\"w73-photo-hot-frisbee\" src=\"/assets/stitch/caper_home_hiking.jpg\" mode=\"aspectFill\"/>",
+          "new": "<reference-image photo-key=\"home-hot-frisbee\" photo-class=\"w73-photo-hot-frisbee home-hot-photo\" />",
+          "sourceRole": "hot-frisbee"
+        },
+        {
+          "old": "<image class=\"w73-photo-hot-boardgame\" src=\"/assets/stitch/caper_discover_boardgame.jpg\" mode=\"aspectFill\"/>",
+          "new": "<reference-image photo-key=\"home-hot-boardgame\" photo-class=\"w73-photo-hot-boardgame home-hot-photo\" />",
+          "sourceRole": "hot-boardgame"
+        },
+        {
+          "old": "<image class=\"w73-photo-idea-badminton\" src=\"/assets/stitch/caper_home_badminton.jpg\" mode=\"aspectFill\"/>",
+          "new": "<reference-image photo-key=\"home-idea-badminton\" photo-class=\"w73-photo-idea-badminton home-idea-photo\" />",
+          "sourceRole": "idea-badminton"
+        },
+        {
+          "old": "<image class=\"w73-photo-idea-coffee\" src=\"/assets/stitch/caper_discover_coffee.jpg\" mode=\"aspectFill\"/>",
+          "new": "<reference-image photo-key=\"home-idea-coffee\" photo-class=\"w73-photo-idea-coffee home-idea-photo\" />",
+          "sourceRole": "idea-coffee"
+        },
+        {
+          "old": "<image class=\"w73-photo-idea-cycling\" src=\"/assets/stitch/caper_discover_citywalk.jpg\" mode=\"aspectFill\"/>",
+          "new": "<reference-image photo-key=\"home-idea-cycling\" photo-class=\"w73-photo-idea-cycling home-idea-photo\" />",
+          "sourceRole": "idea-cycling"
+        },
+        {
+          "old": "<image class=\"w73-photo-collage-main\" src=\"/assets/stitch/caper_home_dinner.jpg\" mode=\"aspectFill\"/>",
+          "new": "<reference-image photo-key=\"home-collage-main\" photo-class=\"w73-photo-collage-main home-collage-photo\" />",
+          "sourceRole": "collage-main"
+        },
+        {
+          "old": "<image class=\"w73-photo-collage-dinner\" src=\"/assets/stitch/caper_discover_coffee.jpg\" mode=\"aspectFill\"/>",
+          "new": "<reference-image photo-key=\"home-collage-dinner\" photo-class=\"w73-photo-collage-dinner home-collage-photo\" />",
+          "sourceRole": "collage-dinner"
+        },
+        {
+          "old": "<image class=\"w73-photo-collage-grass\" src=\"/assets/stitch/caper_home_hiking.jpg\" mode=\"aspectFill\"/>",
+          "new": "<reference-image photo-key=\"home-collage-grass\" photo-class=\"w73-photo-collage-grass home-collage-photo\" />",
+          "sourceRole": "collage-grass"
+        }
+      ],
+      "CSSSelectorChanges": [
+        {
+          "old": ".home-long-reference .home-hot-grid image{",
+          "new": ".home-long-reference .home-hot-grid image,.home-long-reference .home-hot-grid .home-hot-photo{",
+          "count": 2
+        },
+        {
+          "old": ".home-long-reference .home-idea-list image{",
+          "new": ".home-long-reference .home-idea-list image,.home-long-reference .home-idea-list .home-idea-photo{",
+          "count": 1
+        },
+        {
+          "old": ".home-long-reference .home-photo-collage image{",
+          "new": ".home-long-reference .home-photo-collage image,.home-long-reference .home-photo-collage .home-collage-photo{",
+          "count": 1
+        },
+        {
+          "old": ".home-long-reference .home-hot-grid .home-hot-hover image{",
+          "new": ".home-long-reference .home-hot-grid .home-hot-hover image,.home-long-reference .home-hot-grid .home-hot-hover .home-hot-photo{",
+          "count": 1
+        }
+      ],
+      "rootOwnedNativeProofBoundary": "Root reports 12 source JPEG getImageInfo succeeded, native48x48/r16 external photo geometry, unknown key clears; no owner SDK/CLI run. SDK ordinary virtualHost selector harness failure retained by root."
+    },
+    "contracts": {
+      "count": 163,
+      "sha256": "16a50d40e3ff63af080955d9d5bbcd53ca559a0c749356c3b0b11a942d7e9e43"
+    },
+    "product": [
+      {
+        "path": "miniprogram/pages/index/index.wxml",
+        "bytes": 43603,
+        "sha256": "d05adf6b78bde38217902e2e6dae847043dd842a51d0bd1048f6c3774c87a83a"
+      },
+      {
+        "path": "miniprogram/pages/index/index.wxss",
+        "bytes": 107076,
+        "sha256": "0fad19bb89114f0584837df52b02b20d499ee86db4bf6563e661914da1c76822"
+      },
+      {
+        "path": "miniprogram/pages/index/index.js",
+        "bytes": 32598,
+        "sha256": "d85b9db816163c4853bd2a7a9abec66dc62e8047d9e79c19457f4cb57dc8ac11"
+      },
+      {
+        "path": "miniprogram/pages/index/index.json",
+        "bytes": 340,
+        "sha256": "3f3022dfdd20e7a99f602b8f8fc6af5b0082e8d99a56d3e67a6d170300ec198a"
+      }
+    ]
+  },
+  "sourceReviewDelta": {
+    "boundary": "One post-review delta check only, not rerunning original80 source/contracts/glyph/resources checks",
+    "checks": [
+      {
+        "name": "Unique hot frame inverse 0",
+        "passed": true
+      },
+      {
+        "name": "Unique hot frame inverse 1",
+        "passed": true
+      },
+      {
+        "name": "Unique hot frame inverse 2",
+        "passed": true
+      },
+      {
+        "name": "Unique hot frame inverse 3",
+        "passed": true
+      },
+      {
+        "name": "Full WXML inverse to retained80-check input",
+        "passed": true
+      },
+      {
+        "name": "Unique contextual CSS inverse 0",
+        "passed": true
+      },
+      {
+        "name": "Unique contextual CSS inverse 1",
+        "passed": true
+      },
+      {
+        "name": "Unique contextual CSS inverse 2",
+        "passed": true
+      },
+      {
+        "name": "Unique contextual CSS inverse 3",
+        "passed": true
+      },
+      {
+        "name": "Unique contextual CSS inverse 4",
+        "passed": true
+      },
+      {
+        "name": "Unique contextual CSS inverse 5",
+        "passed": true
+      },
+      {
+        "name": "Unique contextual CSS inverse 6",
+        "passed": true
+      },
+      {
+        "name": "Unique contextual CSS inverse 7",
+        "passed": true
+      },
+      {
+        "name": "Full CSS inverse to retained80-check input",
+        "passed": true
+      },
+      {
+        "name": "Exactly4 fixed hot wrappers",
+        "passed": true
+      },
+      {
+        "name": "Source80/r16/fixed shadow/overflow frame",
+        "passed": true
+      },
+      {
+        "name": "Contained image only scales, no inherited shadow/radius/margin",
+        "passed": true
+      },
+      {
+        "name": "Five exact source transition role rules",
+        "passed": true,
+        "detail": "Only this previously failed assertion retried: original0.4/0.2 and product.4/.2 are CSS-equivalent; normalize decimal spelling. Initial failed harness result preserved; product unchanged."
+      },
+      {
+        "name": "Original collage filter, old text-shadow cancelled",
+        "passed": true
+      }
+    ],
+    "passed": 19,
+    "failed": 0,
+    "WXMLInverseBytes": 43603,
+    "WXMLInverseSHA256": "d05adf6b78bde38217902e2e6dae847043dd842a51d0bd1048f6c3774c87a83a",
+    "CSSInverseBytes": 107076,
+    "CSSInverseSHA256": "0fad19bb89114f0584837df52b02b20d499ee86db4bf6563e661914da1c76822",
+    "finalWXMLBytes": 43747,
+    "finalWXMLSHA256": "9c35f217aefeaebfb33a003b996f127de9850e486ee431704d6480f816249f4e",
+    "finalCSSBytes": 110058,
+    "finalCSSSHA256": "9c370a6b694c57ee508e8c6c8a698094a1892c91d45e8b7f73a2b4244e8c9d87",
+    "incrementalHarnessCorrection": "Initial1/19 failure was numeric decimal spelling(.4 versus0.4), not product CSS. Only the failed transition assertion was rechecked after semantic normalization; the other18 and original80 were not rerun."
+  },
+  "originalSourceResponseBytes": 896066,
+  "newRootOwnedProfilePhotoBytes": 683581,
+  "rootPhotoIntegration": {
+    "authorization": "root actual CLI/SDK prototype passed and exact 11-key API handed off; owner only replaces 11 nodes plus explicit geometry class selectors",
+    "componentTag": "reference-image",
+    "componentOptions": {
+      "virtualHost": true,
+      "styleIsolation": "shared",
+      "externalClasses": [
+        "photo-class"
+      ]
+    },
+    "rootIndexJSONChanges": [
+      {
+        "old": "{\"navigationStyle\":\"custom\",\"navigationBarTitleText\":\"耍起 CAPER\",\"navigationBarBackgroundColor\":\"#ffffff\",\"navigationBarTextStyle\":\"black\"}\n",
+        "new": "{\n  \"navigationStyle\": \"custom\",\n  \"navigationBarTitleText\": \"耍起 CAPER\",\n  \"navigationBarBackgroundColor\": \"#ffffff\",\n  \"navigationBarTextStyle\": \"black\",\n  \"usingComponents\": {\n    \"reference-image\": \"/subpackages/profile/components/reference-image/reference-image\"\n  },\n  \"componentPlaceholder\": {\n    \"reference-image\": \"view\"\n  }\n}\n",
+        "rootOnlyKeys": [
+          "usingComponents.reference-image",
+          "componentPlaceholder.reference-image"
+        ],
+        "meaning": "root-only asynchronous cross-package component registration, all prior parsed keys preserved"
+      }
+    ],
+    "consumers": [
+      {
+        "consumerClass": "w73-photo-brand-party",
+        "photoKey": "home-brand-party",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-brand-party.jpg",
+        "photoClass": "ribbon-image w73-photo-brand-party",
+        "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/brand-party.jpg",
+        "sourceSHA256": "3365ce00ca5e741f4cbfbd5cf9ed76b8e0f821f83a5235e7182a6b41164e1d6a",
+        "bytes": 67934
+      },
+      {
+        "consumerClass": "w73-photo-hot-tennis",
+        "photoKey": "home-hot-tennis",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-hot-tennis.jpg",
+        "photoClass": "w73-photo-hot-tennis home-hot-photo",
+        "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/hot-tennis.jpg",
+        "sourceSHA256": "17d3ced8567411d7b67e5643c486c1d1862aa6d154cad5613b8637545c34db30",
+        "bytes": 46931
+      },
+      {
+        "consumerClass": "w73-photo-hot-coffee",
+        "photoKey": "home-hot-coffee",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-hot-coffee.jpg",
+        "photoClass": "w73-photo-hot-coffee home-hot-photo",
+        "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/hot-coffee.jpg",
+        "sourceSHA256": "789626490bad53fe814fe1194a7ffa3dad1121719744c9a781e587e80fc4ded5",
+        "bytes": 61237
+      },
+      {
+        "consumerClass": "w73-photo-hot-frisbee",
+        "photoKey": "home-hot-frisbee",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-hot-frisbee.jpg",
+        "photoClass": "w73-photo-hot-frisbee home-hot-photo",
+        "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/hot-frisbee.jpg",
+        "sourceSHA256": "1d496fa254500f6a66310fadfecbd546457bcdc6d9982313dcbcf905903bbc4f",
+        "bytes": 70328
+      },
+      {
+        "consumerClass": "w73-photo-hot-boardgame",
+        "photoKey": "home-hot-boardgame",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-hot-boardgame.jpg",
+        "photoClass": "w73-photo-hot-boardgame home-hot-photo",
+        "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/hot-boardgame.jpg",
+        "sourceSHA256": "dfe5dc41e9e955bae653a9c1095c00675f17bf96d96bdef42bbfc8223c2d98e2",
+        "bytes": 62758
+      },
+      {
+        "consumerClass": "w73-photo-idea-badminton",
+        "photoKey": "home-idea-badminton",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-idea-badminton.jpg",
+        "photoClass": "w73-photo-idea-badminton home-idea-photo",
+        "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/idea-badminton.jpg",
+        "sourceSHA256": "85c9aae86f539cab1e6f06254f49165c6e6c1fe5e688c5341bf202c8a4146189",
+        "bytes": 33316
+      },
+      {
+        "consumerClass": "w73-photo-idea-coffee",
+        "photoKey": "home-idea-coffee",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-idea-coffee.jpg",
+        "photoClass": "w73-photo-idea-coffee home-idea-photo",
+        "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/idea-coffee.jpg",
+        "sourceSHA256": "5c0350df75d28b6a38499477eabd40e6889f8400f9e34708aae54b1419608131",
+        "bytes": 72113
+      },
+      {
+        "consumerClass": "w73-photo-idea-cycling",
+        "photoKey": "home-idea-cycling",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-idea-cycling.jpg",
+        "photoClass": "w73-photo-idea-cycling home-idea-photo",
+        "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/idea-cycling-illustration.jpg",
+        "sourceSHA256": "d24a483e4f1042c527f414c436edcc895a68c2709f9dbc269cdca2c7ac77e745",
+        "bytes": 51100
+      },
+      {
+        "consumerClass": "w73-photo-collage-main",
+        "photoKey": "home-collage-main",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-collage-main.jpg",
+        "photoClass": "w73-photo-collage-main home-collage-photo",
+        "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/collage-main.jpg",
+        "sourceSHA256": "e990073eed579ac88dd91be60ff6c1e4888fe803fb53ab1ac9383ab7164d9dca",
+        "bytes": 77396
+      },
+      {
+        "consumerClass": "w73-photo-collage-dinner",
+        "photoKey": "home-collage-dinner",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-collage-dinner.jpg",
+        "photoClass": "w73-photo-collage-dinner home-collage-photo",
+        "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/collage-dinner.jpg",
+        "sourceSHA256": "e111454a86e9b5ef33a7fe5774092f74f39cfbe574e356baf74f0432bf8829af",
+        "bytes": 67130
+      },
+      {
+        "consumerClass": "w73-photo-collage-grass",
+        "photoKey": "home-collage-grass",
+        "runtimePath": "miniprogram/subpackages/profile/components/reference-image/assets/home-collage-grass.jpg",
+        "photoClass": "w73-photo-collage-grass home-collage-photo",
+        "sourceResponsePath": "/private/tmp/caper-wave73-home-long/photos/collage-grass.jpg",
+        "sourceSHA256": "969e214d70fe40a4933f19c4022b79a19cc0e7f0e889d2975bdf57743ff4ecb2",
+        "bytes": 73338
+      }
+    ],
+    "WXMLChanges": [
+      {
+        "old": "<image class=\"ribbon-image w73-photo-brand-party\" src=\"/assets/stitch/pg08_checkin_rooftop.jpg\" mode=\"aspectFill\" />",
+        "new": "<reference-image photo-key=\"home-brand-party\" photo-class=\"ribbon-image w73-photo-brand-party\" />",
+        "sourceRole": "brand-party"
+      },
+      {
+        "old": "<image class=\"w73-photo-hot-tennis\" src=\"/assets/stitch/caper_discover_basketball.jpg\" mode=\"aspectFill\"/>",
+        "new": "<reference-image photo-key=\"home-hot-tennis\" photo-class=\"w73-photo-hot-tennis home-hot-photo\" />",
+        "sourceRole": "hot-tennis"
+      },
+      {
+        "old": "<image class=\"w73-photo-hot-coffee\" src=\"/assets/stitch/caper_discover_coffee.jpg\" mode=\"aspectFill\"/>",
+        "new": "<reference-image photo-key=\"home-hot-coffee\" photo-class=\"w73-photo-hot-coffee home-hot-photo\" />",
+        "sourceRole": "hot-coffee"
+      },
+      {
+        "old": "<image class=\"w73-photo-hot-frisbee\" src=\"/assets/stitch/caper_home_hiking.jpg\" mode=\"aspectFill\"/>",
+        "new": "<reference-image photo-key=\"home-hot-frisbee\" photo-class=\"w73-photo-hot-frisbee home-hot-photo\" />",
+        "sourceRole": "hot-frisbee"
+      },
+      {
+        "old": "<image class=\"w73-photo-hot-boardgame\" src=\"/assets/stitch/caper_discover_boardgame.jpg\" mode=\"aspectFill\"/>",
+        "new": "<reference-image photo-key=\"home-hot-boardgame\" photo-class=\"w73-photo-hot-boardgame home-hot-photo\" />",
+        "sourceRole": "hot-boardgame"
+      },
+      {
+        "old": "<image class=\"w73-photo-idea-badminton\" src=\"/assets/stitch/caper_home_badminton.jpg\" mode=\"aspectFill\"/>",
+        "new": "<reference-image photo-key=\"home-idea-badminton\" photo-class=\"w73-photo-idea-badminton home-idea-photo\" />",
+        "sourceRole": "idea-badminton"
+      },
+      {
+        "old": "<image class=\"w73-photo-idea-coffee\" src=\"/assets/stitch/caper_discover_coffee.jpg\" mode=\"aspectFill\"/>",
+        "new": "<reference-image photo-key=\"home-idea-coffee\" photo-class=\"w73-photo-idea-coffee home-idea-photo\" />",
+        "sourceRole": "idea-coffee"
+      },
+      {
+        "old": "<image class=\"w73-photo-idea-cycling\" src=\"/assets/stitch/caper_discover_citywalk.jpg\" mode=\"aspectFill\"/>",
+        "new": "<reference-image photo-key=\"home-idea-cycling\" photo-class=\"w73-photo-idea-cycling home-idea-photo\" />",
+        "sourceRole": "idea-cycling"
+      },
+      {
+        "old": "<image class=\"w73-photo-collage-main\" src=\"/assets/stitch/caper_home_dinner.jpg\" mode=\"aspectFill\"/>",
+        "new": "<reference-image photo-key=\"home-collage-main\" photo-class=\"w73-photo-collage-main home-collage-photo\" />",
+        "sourceRole": "collage-main"
+      },
+      {
+        "old": "<image class=\"w73-photo-collage-dinner\" src=\"/assets/stitch/caper_discover_coffee.jpg\" mode=\"aspectFill\"/>",
+        "new": "<reference-image photo-key=\"home-collage-dinner\" photo-class=\"w73-photo-collage-dinner home-collage-photo\" />",
+        "sourceRole": "collage-dinner"
+      },
+      {
+        "old": "<image class=\"w73-photo-collage-grass\" src=\"/assets/stitch/caper_home_hiking.jpg\" mode=\"aspectFill\"/>",
+        "new": "<reference-image photo-key=\"home-collage-grass\" photo-class=\"w73-photo-collage-grass home-collage-photo\" />",
+        "sourceRole": "collage-grass"
+      }
+    ],
+    "CSSSelectorChanges": [
+      {
+        "old": ".home-long-reference .home-hot-grid image{",
+        "new": ".home-long-reference .home-hot-grid image,.home-long-reference .home-hot-grid .home-hot-photo{",
+        "count": 2
+      },
+      {
+        "old": ".home-long-reference .home-idea-list image{",
+        "new": ".home-long-reference .home-idea-list image,.home-long-reference .home-idea-list .home-idea-photo{",
+        "count": 1
+      },
+      {
+        "old": ".home-long-reference .home-photo-collage image{",
+        "new": ".home-long-reference .home-photo-collage image,.home-long-reference .home-photo-collage .home-collage-photo{",
+        "count": 1
+      },
+      {
+        "old": ".home-long-reference .home-hot-grid .home-hot-hover image{",
+        "new": ".home-long-reference .home-hot-grid .home-hot-hover image,.home-long-reference .home-hot-grid .home-hot-hover .home-hot-photo{",
+        "count": 1
+      }
+    ],
+    "rootOwnedNativeProofBoundary": "Root reports 12 source JPEG getImageInfo succeeded, native48x48/r16 external photo geometry, unknown key clears; no owner SDK/CLI run. SDK ordinary virtualHost selector harness failure retained by root."
+  },
+  "protectedJS": {
+    "path": "miniprogram/pages/index/index.js",
+    "bytes": 32598,
+    "sha256": "d85b9db816163c4853bd2a7a9abec66dc62e8047d9e79c19457f4cb57dc8ac11"
+  },
+  "rootOwnedJSON": {
+    "path": "miniprogram/pages/index/index.json",
+    "bytes": 340,
+    "sha256": "3f3022dfdd20e7a99f602b8f8fc6af5b0082e8d99a56d3e67a6d170300ec198a"
+  },
+  "boundary": "one80/80 source/resources/contracts/inverse pass; one19/19 post-review source delta proof. One failed transition decimal-spelling assertion preserved and only itself corrected. No old/full/business mirror test or SDK/CLI by owner."
+}

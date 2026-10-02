@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import { createDatabase, type Database } from '../src/db.ts';
 import { createDraft, getEvent, publishEvent, rotateInvite, updateDraft, type EventInput } from '../src/events.ts';
 import { cancelRegistration } from '../src/registrations.ts';
-import { register } from './helpers.ts';
+import { publishApprovedInvite, register } from './helpers.ts';
 
 const valid = {
   title: '周六羽毛球', type: 'badminton', startAt: '2027-01-02T12:00:00.000Z',
@@ -70,7 +70,7 @@ test('a person who leaves an invite-only event loses access to member details', 
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host-1', valid, 'exit-draft');
-    const event = await publishEvent(db, 'host-1', draft.id, draft.version, 'exit-publish');
+    const event = await publishApprovedInvite(db, 'host-1', draft.id, draft.version, 'exit-publish');
     const registration = await register(db, 'p1', event.id, event.version, 'exit-join');
     assert.equal((await getEvent(db, 'p1', event.id)).id, event.id);
     await cancelRegistration(db, 'p1', registration.id, event.version, 'exit');
@@ -168,7 +168,7 @@ test('invite rotation uses database time and rejects a closed registration windo
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host-1', valid, 'rotate-db-clock-draft');
-    const event = await publishEvent(db, 'host-1', draft.id, draft.version, 'rotate-db-clock-publish');
+    const event = await publishApprovedInvite(db, 'host-1', draft.id, draft.version, 'rotate-db-clock-publish');
     const lateDatabaseClock = new Date(Date.parse(valid.registrationDeadline) + 1000);
     const clockDb: Database = {
       ...db,
@@ -189,7 +189,7 @@ test('invite rotation cannot commit if registration closes before token replacem
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host-1', valid, 'rotate-write-clock-draft');
-    const event = await publishEvent(db, 'host-1', draft.id, draft.version, 'rotate-write-clock-publish');
+    const event = await publishApprovedInvite(db, 'host-1', draft.id, draft.version, 'rotate-write-clock-publish');
     let crossed = false;
     const racingDb: Database = {
       ...db,
@@ -210,6 +210,51 @@ test('invite rotation cannot commit if registration closes before token replacem
     assert.equal((await getEvent(db, 'host-1', event.id)).inviteToken, event.inviteToken);
     assert.equal((await db.query<{ n: number }>("SELECT count(*)::int AS n FROM audit WHERE event_id=$1 AND action='ROTATE_INVITE'",
       [event.id])).rows[0]?.n, 0);
+  } finally { await db.close(); }
+});
+
+test('host event detail omits an invite once either server-side expiry or registration closure has passed', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host-1', valid, 'invite-detail-draft');
+    const event = await publishApprovedInvite(db, 'host-1', draft.id, draft.version, 'invite-detail-publish');
+    const open = await getEvent(db, 'host-1', event.id);
+    assert.equal(open.inviteToken, event.inviteToken);
+    assert.ok(typeof open.inviteRemainingMs === 'number' && open.inviteRemainingMs > 0);
+
+    await db.query('UPDATE events SET invite_expires_at=clock_timestamp()-interval \'1 second\' WHERE id=$1', [event.id]);
+    const expiredInvite = await getEvent(db, 'host-1', event.id);
+    assert.equal(expiredInvite.inviteToken, undefined);
+    assert.equal(expiredInvite.inviteRemainingMs, 0);
+
+    await db.query(`UPDATE events SET invite_expires_at=clock_timestamp()+interval '1 day',
+      payload=jsonb_set(payload,'{registrationDeadline}',to_jsonb($2::text),true) WHERE id=$1`,
+      [event.id, new Date(Date.now() - 1000).toISOString()]);
+    const closedRegistration = await getEvent(db, 'host-1', event.id);
+    assert.equal(closedRegistration.inviteToken, undefined);
+    assert.equal(closedRegistration.inviteRemainingMs, 0);
+  } finally { await db.close(); }
+});
+
+test('event detail never pairs an old invite token with a newer server validity read', async () => {
+  const db = await createDatabase();
+  try {
+    const draft = await createDraft(db, 'host-1', valid, 'invite-race-draft');
+    const event = await publishApprovedInvite(db, 'host-1', draft.id, draft.version, 'invite-race-publish');
+    let rotated = false;
+    const racingReader = {
+      query: async <T extends Record<string, unknown> = Record<string, unknown>>(sql: string, params: unknown[] = []) => {
+        if (!rotated && sql.includes('AS remaining_ms')) {
+          rotated = true;
+          await db.query('UPDATE events SET invite_token=$2 WHERE id=$1', [event.id, 'replacement-invite-token']);
+        }
+        return db.query<T>(sql, params);
+      }
+    };
+    const viewed = await getEvent(racingReader, 'host-1', event.id);
+    assert.equal(rotated, true);
+    assert.equal(viewed.inviteToken, undefined);
+    assert.equal(viewed.inviteRemainingMs, 0);
   } finally { await db.close(); }
 });
 

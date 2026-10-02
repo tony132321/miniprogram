@@ -1,0 +1,38 @@
+[
+  {
+    "line": 130,
+    "tag": "span",
+    "class": "font-hand text-lg text-emerald-950 font-bold block sticker-rotate-left opacity-90 tracking-wide",
+    "text": "More People, Brighter Days ☺"
+  },
+  {
+    "line": 218,
+    "tag": "span",
+    "class": "font-hand text-sm text-brand-lime font-bold tracking-wider mt-0.5 drop-shadow",
+    "text": "Same Game & New Friends"
+  },
+  {
+    "line": 348,
+    "tag": "span",
+    "class": "font-hand text-white text-base font-bold sticker-rotate-left",
+    "text": "Good People Better Days"
+  },
+  {
+    "line": 527,
+    "tag": "span",
+    "class": "font-hand text-brand-blue font-bold text-base leading-none block",
+    "text": "Good\nMatches\nBetter\nFriends"
+  },
+  {
+    "line": 592,
+    "tag": "span",
+    "class": "font-hand text-lg text-white font-bold leading-tight block drop-shadow",
+    "text": "Same People Real Vibes"
+  },
+  {
+    "line": 679,
+    "tag": "span",
+    "class": "font-hand text-white text-xs block sticker-rotate-left",
+    "text": "Good People Make Better Cities ☺"
+  }
+]

@@ -2,10 +2,12 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { once } from 'node:events';
 import { createDatabase } from '../src/db.ts';
-import { createDraft, publishEvent } from '../src/events.ts';
+import { createDraft } from '../src/events.ts';
+import { changeEvent } from '../src/lifecycle.ts';
+import { publishApprovedInvite } from './helpers.ts';
 import { register } from './helpers.ts';
 import { setConsent } from '../src/notifications.ts';
-import { listEventAliases, setEventAlias } from '../src/event-aliases.ts';
+import { eventAliasNotice, listEventAliases, setEventAlias } from '../src/event-aliases.ts';
 import { listRepeatCandidates } from '../src/lifecycle.ts';
 import { blockEventMember, listMyBlocks, revokeBlock } from '../src/blocks.ts';
 import { exportPersonalData } from '../src/privacy.ts';
@@ -20,11 +22,12 @@ test('blocking an identified event member hides aliases both ways and excludes l
   const db = await createDatabase();
   try {
     const draft = await createDraft(db, 'host', input, 'block-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'block-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'block-publish');
     await register(db, 'p1', event.id, event.version, 'block-p1');
     await register(db, 'p2', event.id, event.version, 'block-p2');
-    await setEventAlias(db, 'p1', event.id, '小明', true, 'block-alias-p1');
-    await setEventAlias(db, 'p2', event.id, '小红', true, 'block-alias-p2');
+    await setEventAlias(db, 'p1', event.id, '小明', true, 'block-alias-p1', eventAliasNotice(event.id).version);
+    await setEventAlias(db, 'p2', event.id, '小红', true, 'block-alias-p2', eventAliasNotice(event.id).version);
+    await db.query("INSERT INTO users(id,wechat_openid) VALUES('p2','block-p2-openid')");
     const target = (await listEventAliases(db, 'p1', event.id)).find(item => item.displayName === '小红');
     assert.ok(target);
     await setConsent(db, 'p2', 'SIMILAR_ACTIVITY_INVITES', true, 'block-consent');
@@ -57,10 +60,10 @@ test('blocking routes keep another member from reading or revoking a block', asy
   const server = createApp(db, { environment: 'development', devAuth: true, checkInSecret: 'test-secret' });
   try {
     const draft = await createDraft(db, 'host', input, 'block-api-draft');
-    const event = await publishEvent(db, 'host', draft.id, draft.version, 'block-api-publish');
+    const event = await publishApprovedInvite(db, 'host', draft.id, draft.version, 'block-api-publish');
     await register(db, 'p1', event.id, event.version, 'block-api-p1');
     await register(db, 'p2', event.id, event.version, 'block-api-p2');
-    await setEventAlias(db, 'p2', event.id, '可屏蔽成员', true, 'block-api-alias');
+    await setEventAlias(db, 'p2', event.id, '可屏蔽成员', true, 'block-api-alias', eventAliasNotice(event.id).version);
     const memberId = (await listEventAliases(db, 'p1', event.id))[0]!.id;
     server.listen(0, '127.0.0.1'); await once(server, 'listening');
     const port = (server.address() as { port: number }).port;
@@ -73,8 +76,13 @@ test('blocking routes keep another member from reading or revoking a block', asy
     };
     const blocked = await request(`/events/${event.id}/blocks`, 'p1', 'POST', { memberId }, 'block-api');
     assert.equal(blocked.status, 201);
-    assert.equal((await request('/me/blocks', 'p1')).body.items.length, 1);
+    assert.equal((await request('/me/blocks', 'p1')).body.items[0]?.eventTitle, input.title);
     assert.equal((await request('/me/blocks', 'p2')).body.items.length, 0);
+    await changeEvent(db, 'host', event.id, event.version, { title: '尚未审核的新标题' }, 'block-pending-edit');
+    const pendingBlocks = await request('/me/blocks', 'p1');
+    assert.equal(pendingBlocks.status, 200);
+    assert.equal(pendingBlocks.body.items[0]?.eventTitle, '活动审核中');
+    assert.equal(JSON.stringify(pendingBlocks.body).includes('尚未审核的新标题'), false);
     assert.equal((await request(`/me/blocks/${blocked.body.id}/revoke`, 'p2', 'POST', {}, 'revoke-forged')).status, 404);
     assert.equal((await request(`/me/blocks/${blocked.body.id}/revoke`, 'p1', 'POST', {}, 'revoke-owner')).status, 200);
     assert.equal((await request('/me/blocks', 'p1')).body.items.length, 0);

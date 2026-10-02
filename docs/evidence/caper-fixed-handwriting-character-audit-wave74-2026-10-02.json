@@ -1,0 +1,926 @@
+{
+  "capturedAt": "2026-10-02T03:14:43.271796+00:00",
+  "scope": "Read-only fixed Caveat character coverage; no outline/metrics/UI/VM/business tests",
+  "fontTools": "4.60.2",
+  "fontRead": "TTFont.getBestCmap only",
+  "fontInputs": [
+    {
+      "path": "docs/design-sources/home-long-reference-fonts/caveat-600-city.woff",
+      "bytes": 11624,
+      "sha256": "65a31f27c6f651920868421bc775a63546e843e478f66b137fe52f5069098379",
+      "weight": 600,
+      "cmap": [
+        32,
+        66,
+        67,
+        71,
+        77,
+        80,
+        97,
+        100,
+        101,
+        105,
+        107,
+        108,
+        111,
+        112,
+        114,
+        115,
+        116
+      ],
+      "unicode": [
+        "U+0020",
+        "U+0042",
+        "U+0043",
+        "U+0047",
+        "U+004D",
+        "U+0050",
+        "U+0061",
+        "U+0064",
+        "U+0065",
+        "U+0069",
+        "U+006B",
+        "U+006C",
+        "U+006F",
+        "U+0070",
+        "U+0072",
+        "U+0073",
+        "U+0074"
+      ]
+    },
+    {
+      "path": "docs/design-sources/home-long-reference-fonts/caveat-700-home-discover-pg05-union.woff",
+      "bytes": 28076,
+      "sha256": "f2fb6438cd2a04f9bcbb67fea2f9136208a99693156a533d1e2d8f28fb9628cd",
+      "weight": 700,
+      "cmap": [
+        32,
+        38,
+        44,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        77,
+        78,
+        79,
+        80,
+        82,
+        83,
+        84,
+        86,
+        97,
+        98,
+        99,
+        100,
+        101,
+        103,
+        104,
+        105,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        121
+      ],
+      "unicode": [
+        "U+0020",
+        "U+0026",
+        "U+002C",
+        "U+0042",
+        "U+0043",
+        "U+0044",
+        "U+0045",
+        "U+0046",
+        "U+0047",
+        "U+0048",
+        "U+004D",
+        "U+004E",
+        "U+004F",
+        "U+0050",
+        "U+0052",
+        "U+0053",
+        "U+0054",
+        "U+0056",
+        "U+0061",
+        "U+0062",
+        "U+0063",
+        "U+0064",
+        "U+0065",
+        "U+0067",
+        "U+0068",
+        "U+0069",
+        "U+006B",
+        "U+006C",
+        "U+006D",
+        "U+006E",
+        "U+006F",
+        "U+0070",
+        "U+0072",
+        "U+0073",
+        "U+0074",
+        "U+0075",
+        "U+0076",
+        "U+0077",
+        "U+0079"
+      ]
+    }
+  ],
+  "roles": [
+    {
+      "cssFile": "miniprogram/pages/index/index.wxss",
+      "cssLine": 307,
+      "selector": ".caper-top .home-reference-core .hero-kicker",
+      "declaration": "display: block; color: #022c22; font-family: \"Caveat\", \"Permanent Marker\", cursive, sans-serif; font-size: 18px; line-height: 28px; font-weight: 700; letter-spacing: .45px; opacity: .9; transform: rotate(-3deg);",
+      "declaredWeight": 700,
+      "nominalWeight": 700,
+      "matchedAvailableCaveatWeight": 700,
+      "availableWeights": [
+        600,
+        700
+      ],
+      "sourceOriginal": "caper_2/code.html",
+      "staticConsumerInstances": 1,
+      "texts": [
+        {
+          "fixedText": "More People, Brighter Days ☺",
+          "consumerFile": "miniprogram/pages/index/index.wxml",
+          "firstTextLine": 19,
+          "latinCodepoints": [
+            "U+0042",
+            "U+0044",
+            "U+004D",
+            "U+0050",
+            "U+0061",
+            "U+0065",
+            "U+0067",
+            "U+0068",
+            "U+0069",
+            "U+006C",
+            "U+006F",
+            "U+0070",
+            "U+0072",
+            "U+0073",
+            "U+0074",
+            "U+0079"
+          ],
+          "missingLatin": [],
+          "nonLatinFallback": [
+            "U+263A"
+          ]
+        }
+      ]
+    },
+    {
+      "cssFile": "miniprogram/pages/index/index.wxss",
+      "cssLine": 337,
+      "selector": ".caper-top .home-reference-core .feature-tagline",
+      "declaration": "margin-top: 2px; color: #c8f233; font-family: \"Caveat\", \"Permanent Marker\", cursive, sans-serif; font-size: 14px; line-height: 20px; font-weight: 700; font-style: normal; letter-spacing: .7px; text-shadow: 0 1px 2px rgba(0,0,0,.1),0 1px 1px rgba(0,0,0,.06);",
+      "declaredWeight": 700,
+      "nominalWeight": 700,
+      "matchedAvailableCaveatWeight": 700,
+      "availableWeights": [
+        600,
+        700
+      ],
+      "sourceOriginal": "caper_2/code.html",
+      "staticConsumerInstances": 2,
+      "texts": [
+        {
+          "fixedText": "Same Game & New Friends",
+          "consumerFile": "miniprogram/pages/index/index.wxml",
+          "firstTextLine": 30,
+          "latinCodepoints": [
+            "U+0046",
+            "U+0047",
+            "U+004E",
+            "U+0053",
+            "U+0061",
+            "U+0064",
+            "U+0065",
+            "U+0069",
+            "U+006D",
+            "U+006E",
+            "U+0072",
+            "U+0073",
+            "U+0077"
+          ],
+          "missingLatin": [],
+          "nonLatinFallback": []
+        }
+      ]
+    },
+    {
+      "cssFile": "miniprogram/pages/index/index.wxss",
+      "cssLine": 606,
+      "selector": ".home-long-reference .ribbon-hand",
+      "declaration": "display:block;color:#fff;font-family:\"Caveat\",\"Permanent Marker\",cursive,sans-serif;font-size:16px;line-height:24px;font-weight:700;font-style:normal;transform:rotate(-3deg)",
+      "declaredWeight": 700,
+      "nominalWeight": 700,
+      "matchedAvailableCaveatWeight": 700,
+      "availableWeights": [
+        600,
+        700
+      ],
+      "sourceOriginal": "caper_2/code.html",
+      "staticConsumerInstances": 1,
+      "texts": [
+        {
+          "fixedText": "Good People Better Days",
+          "consumerFile": "miniprogram/pages/index/index.wxml",
+          "firstTextLine": 48,
+          "latinCodepoints": [
+            "U+0042",
+            "U+0044",
+            "U+0047",
+            "U+0050",
+            "U+0061",
+            "U+0064",
+            "U+0065",
+            "U+006C",
+            "U+006F",
+            "U+0070",
+            "U+0072",
+            "U+0073",
+            "U+0074",
+            "U+0079"
+          ],
+          "missingLatin": [],
+          "nonLatinFallback": []
+        }
+      ]
+    },
+    {
+      "cssFile": "miniprogram/pages/index/index.wxss",
+      "cssLine": 610,
+      "selector": ".home-long-reference .home-idea-doodle",
+      "declaration": "position:absolute;top:40px;right:-8px;z-index:1;pointer-events:none;transform:rotate(4deg);color:#1d64f2;font-family:\"Caveat\",\"Permanent Marker\",cursive,sans-serif;font-size:16px;line-height:16px;font-weight:700;font-style:normal",
+      "declaredWeight": 700,
+      "nominalWeight": 700,
+      "matchedAvailableCaveatWeight": 700,
+      "availableWeights": [
+        600,
+        700
+      ],
+      "sourceOriginal": "caper_2/code.html",
+      "staticConsumerInstances": 1,
+      "texts": [
+        {
+          "fixedText": "Good",
+          "consumerFile": "miniprogram/pages/index/index.wxml",
+          "firstTextLine": 17,
+          "latinCodepoints": [
+            "U+0047",
+            "U+0064",
+            "U+006F"
+          ],
+          "missingLatin": [],
+          "nonLatinFallback": []
+        },
+        {
+          "fixedText": "Matches",
+          "consumerFile": "miniprogram/pages/index/index.wxml",
+          "firstTextLine": 66,
+          "latinCodepoints": [
+            "U+004D",
+            "U+0061",
+            "U+0063",
+            "U+0065",
+            "U+0068",
+            "U+0073",
+            "U+0074"
+          ],
+          "missingLatin": [],
+          "nonLatinFallback": []
+        },
+        {
+          "fixedText": "Better",
+          "consumerFile": "miniprogram/pages/index/index.wxml",
+          "firstTextLine": 48,
+          "latinCodepoints": [
+            "U+0042",
+            "U+0065",
+            "U+0072",
+            "U+0074"
+          ],
+          "missingLatin": [],
+          "nonLatinFallback": []
+        },
+        {
+          "fixedText": "Friends",
+          "consumerFile": "miniprogram/pages/index/index.wxml",
+          "firstTextLine": 30,
+          "latinCodepoints": [
+            "U+0046",
+            "U+0064",
+            "U+0065",
+            "U+0069",
+            "U+006E",
+            "U+0072",
+            "U+0073"
+          ],
+          "missingLatin": [],
+          "nonLatinFallback": []
+        }
+      ]
+    },
+    {
+      "cssFile": "miniprogram/pages/index/index.wxss",
+      "cssLine": 611,
+      "selector": ".home-long-reference .home-photo-main>text",
+      "declaration": "position:absolute;left:10px;right:8px;bottom:10px;color:#fff;font-family:\"Caveat\",\"Permanent Marker\",cursive,sans-serif;font-size:18px;line-height:22.5px;font-weight:700;font-style:normal;text-shadow:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,.1)) drop-shadow(0 1px 1px rgba(0,0,0,.06));text-align:left",
+      "declaredWeight": 700,
+      "nominalWeight": 700,
+      "matchedAvailableCaveatWeight": 700,
+      "availableWeights": [
+        600,
+        700
+      ],
+      "sourceOriginal": "caper_2/code.html",
+      "staticConsumerInstances": 1,
+      "texts": [
+        {
+          "fixedText": "Same People Real Vibes",
+          "consumerFile": "miniprogram/pages/index/index.wxml",
+          "firstTextLine": 72,
+          "latinCodepoints": [
+            "U+0050",
+            "U+0052",
+            "U+0053",
+            "U+0056",
+            "U+0061",
+            "U+0062",
+            "U+0065",
+            "U+0069",
+            "U+006C",
+            "U+006D",
+            "U+006F",
+            "U+0070",
+            "U+0073"
+          ],
+          "missingLatin": [],
+          "nonLatinFallback": []
+        }
+      ]
+    },
+    {
+      "cssFile": "miniprogram/pages/index/index.wxss",
+      "cssLine": 613,
+      "selector": ".home-long-reference .home-city-hand",
+      "declaration": "display:block;text-align:right;color:#fff;font-family:\"Caveat\",\"Permanent Marker\",cursive,sans-serif;font-size:12px;line-height:16px;font-weight:400;font-style:normal;transform:rotate(-3deg)",
+      "declaredWeight": 400,
+      "nominalWeight": 400,
+      "matchedAvailableCaveatWeight": 600,
+      "availableWeights": [
+        600,
+        700
+      ],
+      "sourceOriginal": "caper_2/code.html",
+      "staticConsumerInstances": 1,
+      "texts": [
+        {
+          "fixedText": "Good People Make Better Cities ☺",
+          "consumerFile": "miniprogram/pages/index/index.wxml",
+          "firstTextLine": 76,
+          "latinCodepoints": [
+            "U+0042",
+            "U+0043",
+            "U+0047",
+            "U+004D",
+            "U+0050",
+            "U+0061",
+            "U+0064",
+            "U+0065",
+            "U+0069",
+            "U+006B",
+            "U+006C",
+            "U+006F",
+            "U+0070",
+            "U+0072",
+            "U+0073",
+            "U+0074"
+          ],
+          "missingLatin": [],
+          "nonLatinFallback": [
+            "U+263A"
+          ]
+        }
+      ]
+    },
+    {
+      "cssFile": "miniprogram/pages/discover/discover.wxss",
+      "cssLine": 43,
+      "selector": ".featured-grid .featured-sticker-city .sticker-note text",
+      "declaration": "color: #c6ff00; font-family: 'Caveat', 'Segoe Print', cursive, sans-serif; font-size: 12px; line-height: 1.05; font-weight: 700; letter-spacing: -.02em;",
+      "declaredWeight": 700,
+      "nominalWeight": 700,
+      "matchedAvailableCaveatWeight": 700,
+      "availableWeights": [
+        600,
+        700
+      ],
+      "sourceOriginal": "caper_4/code.html",
+      "staticConsumerInstances": 1,
+      "texts": [
+        {
+          "fixedText": "TOGETHER ☺",
+          "consumerFile": "miniprogram/pages/discover/discover.js",
+          "firstTextLine": 6,
+          "latinCodepoints": [
+            "U+0045",
+            "U+0047",
+            "U+0048",
+            "U+004F",
+            "U+0052",
+            "U+0054"
+          ],
+          "missingLatin": [],
+          "nonLatinFallback": [
+            "U+263A"
+          ]
+        }
+      ]
+    },
+    {
+      "cssFile": "miniprogram/pages/discover/discover.wxss",
+      "cssLine": 239,
+      "selector": ".d74-long .d74-moment-hand",
+      "declaration": "position: relative; z-index: 10; color: #fff; font-family: 'Caveat', 'Segoe Print', cursive; font-size: 16px; line-height: 20px; font-weight: 700; letter-spacing: -.32px; text-align: center;",
+      "declaredWeight": 700,
+      "nominalWeight": 700,
+      "matchedAvailableCaveatWeight": 700,
+      "availableWeights": [
+        600,
+        700
+      ],
+      "sourceOriginal": "caper_4/code.html",
+      "staticConsumerInstances": 2,
+      "texts": [
+        {
+          "fixedText": "Good People",
+          "consumerFile": "miniprogram/pages/discover/discover.wxml",
+          "firstTextLine": 52,
+          "latinCodepoints": [
+            "U+0047",
+            "U+0050",
+            "U+0064",
+            "U+0065",
+            "U+006C",
+            "U+006F",
+            "U+0070"
+          ],
+          "missingLatin": [],
+          "nonLatinFallback": []
+        },
+        {
+          "fixedText": "Brighter Days ☺",
+          "consumerFile": "miniprogram/pages/discover/discover.wxml",
+          "firstTextLine": 52,
+          "latinCodepoints": [
+            "U+0042",
+            "U+0044",
+            "U+0061",
+            "U+0065",
+            "U+0067",
+            "U+0068",
+            "U+0069",
+            "U+0072",
+            "U+0073",
+            "U+0074",
+            "U+0079"
+          ],
+          "missingLatin": [],
+          "nonLatinFallback": [
+            "U+263A"
+          ]
+        },
+        {
+          "fixedText": "Same Vibes",
+          "consumerFile": "miniprogram/pages/discover/discover.wxml",
+          "firstTextLine": 52,
+          "latinCodepoints": [
+            "U+0053",
+            "U+0056",
+            "U+0061",
+            "U+0062",
+            "U+0065",
+            "U+0069",
+            "U+006D",
+            "U+0073"
+          ],
+          "missingLatin": [],
+          "nonLatinFallback": []
+        },
+        {
+          "fixedText": "More Friends ⚡",
+          "consumerFile": "miniprogram/pages/discover/discover.wxml",
+          "firstTextLine": 52,
+          "latinCodepoints": [
+            "U+0046",
+            "U+004D",
+            "U+0064",
+            "U+0065",
+            "U+0069",
+            "U+006E",
+            "U+006F",
+            "U+0072",
+            "U+0073"
+          ],
+          "missingLatin": [],
+          "nonLatinFallback": [
+            "U+26A1"
+          ]
+        }
+      ]
+    },
+    {
+      "cssFile": "miniprogram/pages/discover/discover.wxss",
+      "cssLine": 249,
+      "selector": ".d74-long .d74-moment-better-copy text:last-child",
+      "declaration": "color: #fff; font-family: 'Caveat', 'Segoe Print', cursive; font-size: 12px; line-height: 16px; font-weight: 700;",
+      "declaredWeight": 700,
+      "nominalWeight": 700,
+      "matchedAvailableCaveatWeight": 700,
+      "availableWeights": [
+        600,
+        700
+      ],
+      "sourceOriginal": "caper_4/code.html",
+      "staticConsumerInstances": 1,
+      "texts": [
+        {
+          "fixedText": "together ♡",
+          "consumerFile": "miniprogram/pages/discover/discover.wxml",
+          "firstTextLine": 52,
+          "latinCodepoints": [
+            "U+0065",
+            "U+0067",
+            "U+0068",
+            "U+006F",
+            "U+0072",
+            "U+0074"
+          ],
+          "missingLatin": [],
+          "nonLatinFallback": [
+            "U+2661"
+          ]
+        }
+      ]
+    },
+    {
+      "cssFile": "miniprogram/pages/discover/discover.wxss",
+      "cssLine": 278,
+      "selector": ".d74-long .d74-route-hand",
+      "declaration": "display: block; color: #fcd34d; font-family: 'Caveat', 'Segoe Print', cursive; font-size: 14px; line-height: 20px; font-weight: 700; letter-spacing: -.28px;",
+      "declaredWeight": 700,
+      "nominalWeight": 700,
+      "matchedAvailableCaveatWeight": 700,
+      "availableWeights": [
+        600,
+        700
+      ],
+      "sourceOriginal": "caper_4/code.html",
+      "staticConsumerInstances": 3,
+      "texts": [
+        {
+          "fixedText": "Classic Shanghai",
+          "consumerFile": "miniprogram/pages/discover/discover.wxml",
+          "firstTextLine": 55,
+          "latinCodepoints": [
+            "U+0043",
+            "U+0053",
+            "U+0061",
+            "U+0063",
+            "U+0067",
+            "U+0068",
+            "U+0069",
+            "U+006C",
+            "U+006E",
+            "U+0073"
+          ],
+          "missingLatin": [],
+          "nonLatinFallback": []
+        },
+        {
+          "fixedText": "Wukang Road",
+          "consumerFile": "miniprogram/pages/discover/discover.wxml",
+          "firstTextLine": 55,
+          "latinCodepoints": [
+            "U+0052",
+            "U+0057",
+            "U+0061",
+            "U+0064",
+            "U+0067",
+            "U+006B",
+            "U+006E",
+            "U+006F",
+            "U+0075"
+          ],
+          "missingLatin": [
+            "U+0057"
+          ],
+          "nonLatinFallback": []
+        },
+        {
+          "fixedText": "Coastal Sunset",
+          "consumerFile": "miniprogram/pages/discover/discover.wxml",
+          "firstTextLine": 55,
+          "latinCodepoints": [
+            "U+0043",
+            "U+0053",
+            "U+0061",
+            "U+0065",
+            "U+006C",
+            "U+006E",
+            "U+006F",
+            "U+0073",
+            "U+0074",
+            "U+0075"
+          ],
+          "missingLatin": [],
+          "nonLatinFallback": []
+        }
+      ]
+    },
+    {
+      "cssFile": "miniprogram/subpackages/activity/event/event.wxss",
+      "cssLine": 732,
+      "selector": ".pg01-visitor .pg01-poster-tagline text:last-child",
+      "declaration": "color:#fff; font-family:\"Caveat\",\"Permanent Marker\",cursive; font-size:18px; font-weight:800; line-height:28px; letter-spacing:.025em;",
+      "declaredWeight": 800,
+      "nominalWeight": 800,
+      "matchedAvailableCaveatWeight": 700,
+      "availableWeights": [
+        600,
+        700
+      ],
+      "sourceOriginal": "pg01/code.html",
+      "staticConsumerInstances": 1,
+      "texts": [
+        {
+          "fixedText": "好球友 总会相遇！",
+          "consumerFile": "miniprogram/subpackages/activity/event/event.wxml",
+          "firstTextLine": 105,
+          "latinCodepoints": [],
+          "missingLatin": [],
+          "nonLatinFallback": [
+            "U+4F1A",
+            "U+53CB",
+            "U+597D",
+            "U+603B",
+            "U+7403",
+            "U+76F8",
+            "U+9047",
+            "U+FF01"
+          ]
+        }
+      ]
+    },
+    {
+      "cssFile": "miniprogram/subpackages/activity/event/event.wxss",
+      "cssLine": 735,
+      "selector": ".pg01-visitor .pg01-poster-bottom text:first-child",
+      "declaration": "color:rgba(255,255,255,.95); font-family:\"Caveat\",cursive; font-size:20px; line-height:1;",
+      "declaredWeight": null,
+      "nominalWeight": 400,
+      "matchedAvailableCaveatWeight": 600,
+      "availableWeights": [
+        600,
+        700
+      ],
+      "sourceOriginal": "pg01/code.html",
+      "staticConsumerInstances": 1,
+      "texts": [
+        {
+          "fixedText": "Play More",
+          "consumerFile": "miniprogram/subpackages/activity/event/event.wxml",
+          "firstTextLine": 106,
+          "latinCodepoints": [
+            "U+004D",
+            "U+0050",
+            "U+0061",
+            "U+0065",
+            "U+006C",
+            "U+006F",
+            "U+0072",
+            "U+0079"
+          ],
+          "missingLatin": [
+            "U+0079"
+          ],
+          "nonLatinFallback": []
+        }
+      ]
+    },
+    {
+      "cssFile": "miniprogram/subpackages/activity/event/event.wxss",
+      "cssLine": 804,
+      "selector": ".pg05-reference .pg05-poster-note",
+      "declaration": "font-family:\"Caveat\",cursive;font-size:11px;line-height:16.5px;font-weight:700;letter-spacing:.05em;color:#fef08a;text-align:right;transform:rotate(3deg)",
+      "declaredWeight": 700,
+      "nominalWeight": 700,
+      "matchedAvailableCaveatWeight": 700,
+      "availableWeights": [
+        600,
+        700
+      ],
+      "sourceOriginal": "pg05/code.html",
+      "staticConsumerInstances": 1,
+      "texts": [
+        {
+          "fixedText": "Good People",
+          "consumerFile": "miniprogram/subpackages/activity/event/event.wxml",
+          "firstTextLine": 36,
+          "latinCodepoints": [
+            "U+0047",
+            "U+0050",
+            "U+0064",
+            "U+0065",
+            "U+006C",
+            "U+006F",
+            "U+0070"
+          ],
+          "missingLatin": [],
+          "nonLatinFallback": []
+        },
+        {
+          "fixedText": "Great Rallies",
+          "consumerFile": "miniprogram/subpackages/activity/event/event.wxml",
+          "firstTextLine": 36,
+          "latinCodepoints": [
+            "U+0047",
+            "U+0052",
+            "U+0061",
+            "U+0065",
+            "U+0069",
+            "U+006C",
+            "U+0072",
+            "U+0073",
+            "U+0074"
+          ],
+          "missingLatin": [],
+          "nonLatinFallback": []
+        }
+      ]
+    }
+  ],
+  "missingLatin": [
+    {
+      "selector": ".d74-long .d74-route-hand",
+      "weight": 700,
+      "text": "Wukang Road",
+      "codepoints": [
+        "U+0057"
+      ]
+    },
+    {
+      "selector": ".pg01-visitor .pg01-poster-bottom text:first-child",
+      "weight": 600,
+      "text": "Play More",
+      "codepoints": [
+        "U+0079"
+      ]
+    }
+  ],
+  "exclusions": [
+    {
+      "text": "☺ / ♡ / ⚡ and Chinese",
+      "reason": "not in these Caveat subsets; intended source fallback, no drawing/replacement"
+    },
+    {
+      "texts": [
+        "NEVER ALONE !",
+        "BETTER PEOPLE",
+        "GOOD TIMES ☺"
+      ],
+      "reason": "discover JS other featured stickers are not matched by city-only Caveat selector"
+    },
+    {
+      "text": "Meet Cool People ☺",
+      "reason": "PG01 bottom last child has system/inherited family + weight800, not Caveat"
+    },
+    {
+      "texts": [
+        "BADMINTON",
+        "TOGETHER",
+        "LIFE IS BETTER",
+        "Nice!",
+        "More People Brighter Days ☺"
+      ],
+      "reason": "Separate non-Caveat source/product roles, excluded from handwriting scan"
+    }
+  ],
+  "pg01Nominal400Source": {
+    "source": {
+      "path": "/private/tmp/irl-stitch-original/stitch_design_system_generator/pg01/code.html",
+      "bytes": 27174,
+      "sha256": "ae12d6f11a51ffaccae03ae8b27f02144ee6f4c00a072e75edb933ff1aea88c4"
+    },
+    "fontRequestLine": 10,
+    "familyOnlyRuleLine": 95,
+    "fixedParagraphLine": 174,
+    "ancestor": "Source body/poster/footer and product event/pg01-poster-art/footer/bottom set no inherited weight; page/app default normal400.",
+    "appStyles": {
+      "path": "miniprogram/app.wxss",
+      "bytes": 262,
+      "sha256": "020e37d59cb47e4c8f4e233dc33cefbee24d06f6e25c1ed4b5783b3b8d0534d4"
+    },
+    "selection": "Request400 with only600/700 faces matches600; request800 with600/700 matches700. This is static CSS face matching, not new native runtime evidence.",
+    "observedProductAncestorRules": [
+      {
+        "selector": ".event-page",
+        "rule": "padding-bottom:150rpx",
+        "explicitFontWeight": false
+      },
+      {
+        "selector": ".event-page",
+        "rule": "padding-bottom: 360rpx;",
+        "explicitFontWeight": false
+      },
+      {
+        "selector": ".pg01-visitor .pg01-reference-poster",
+        "rule": "position:relative; width:100%; aspect-ratio:4 / 4.8; overflow:hidden; background:linear-gradient(to bottom,#0A52DF,#026BFB,#00CEFE); color:#fff;",
+        "explicitFontWeight": false
+      },
+      {
+        "selector": ".pg01-visitor .pg01-poster-art",
+        "rule": "position:absolute; inset:0; z-index:3; display:flex; flex-direction:column; justify-content:space-between; box-sizing:border-box; padding:64px 24px 24px; pointer-events:none;",
+        "explicitFontWeight": false
+      },
+      {
+        "selector": ".pg01-visitor .pg01-poster-footer",
+        "rule": "display:flex; justify-content:space-between; align-items:flex-end; padding-bottom:20px;",
+        "explicitFontWeight": false
+      }
+    ]
+  },
+  "inputFiles": [
+    {
+      "path": "miniprogram/pages/index/index.wxml",
+      "bytes": 43747,
+      "sha256": "9c35f217aefeaebfb33a003b996f127de9850e486ee431704d6480f816249f4e"
+    },
+    {
+      "path": "miniprogram/pages/index/index.wxss",
+      "bytes": 110058,
+      "sha256": "9c370a6b694c57ee508e8c6c8a698094a1892c91d45e8b7f73a2b4244e8c9d87"
+    },
+    {
+      "path": "miniprogram/pages/index/index.js",
+      "bytes": 32598,
+      "sha256": "d85b9db816163c4853bd2a7a9abec66dc62e8047d9e79c19457f4cb57dc8ac11"
+    },
+    {
+      "path": "miniprogram/pages/discover/discover.wxml",
+      "bytes": 28263,
+      "sha256": "9a5ef290ad126f61e7539efa8353c26f781d65f198da4e6a3c0afd678c9ae810"
+    },
+    {
+      "path": "miniprogram/pages/discover/discover.wxss",
+      "bytes": 45436,
+      "sha256": "6d8d44cf1ff77d77d5158ada0857f7f4f74c2a4f6d816460cb343cc29e89d350"
+    },
+    {
+      "path": "miniprogram/pages/discover/discover.js",
+      "bytes": 17758,
+      "sha256": "928b72be56fca9c7cd4d2a8fd8f76d14632ef9c315dbfb2ea62c97a9c81712b5"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/event.wxml",
+      "bytes": 172013,
+      "sha256": "c23f5ee9f7b9d3238d6597fcf92ef18ff69bd9615e601d65261afeba3dc18680"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/event.wxss",
+      "bytes": 206812,
+      "sha256": "a62ec5123dcf1a4866023d83571a06968fae3377c8e374b19044ca874e2b26b8"
+    },
+    {
+      "path": "miniprogram/subpackages/activity/event/event.js",
+      "bytes": 106348,
+      "sha256": "85db2c73f3b832944782f8913a1ee9cf3a2d4468b54b4ea709e108c76ab26634"
+    },
+    {
+      "path": "docs/design-sources/home-long-reference-fonts/source.json",
+      "bytes": 5150,
+      "sha256": "8564361cb8ed3f648c675ec8736c512fdd3433a0d9ad6585adfd22dd017e5dca"
+    }
+  ],
+  "roleCount": 13,
+  "latinTextFragmentCount": 21,
+  "missingLatinCount": 2,
+  "auditHarnessHistory": {
+    "initialOneFindingExpectation": "failed because the complete role table found an additional uncovered uppercase W; no product change or full test failure"
+  }
+}

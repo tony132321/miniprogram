@@ -1,71 +1,128 @@
-<view>
-  <view wx:if="{{message}}" class="muted">{{message}}</view>
-  <button id="profileRetryButton" wx:if="{{loadState === 'ERROR'}}" bindtap="retryRefresh">重新加载</button>
-  <view>账号与隐私</view>
-  <button wx:if="{{!hasSession}}" bindtap="login">微信登录</button>
-  <button id="logoutButton" wx:if="{{hasSession && !developmentMode}}" bindtap="logout">退出登录</button>
-  <view wx:if="{{developmentMode}}">
-    <view class="muted">本地多账号测试入口：</view>
-    <input placeholder="本地测试账号" value="{{devUser}}" bindinput="devInput" />
-    <button id="switchDevUserButton" bindtap="setDevUser">切换本地测试账号</button>
+<view class="profile-page" style="padding-top: {{statusBarHeight}}px">
+  <view class="profile-status-shield" style="height: {{statusBarHeight}}px"></view>
+  <view class="brand-row me-core-header" style="top: {{statusBarHeight}}px; padding-right: {{headerPaddingRight}}"><view class="brand-lockup"><view class="brand-dot"><image class="brand-play" src="./assets/brand-play.svg" mode="aspectFit" /></view><view class="brand-copy"><text class="brand-name">耍起</text><text class="brand-en">CAPER</text></view></view><view class="brand-actions"><button class="brand-icon" bindtap="goPrivacySafety" aria-label="隐私与设置"><image src="./assets/settings.svg" mode="aspectFit" /></button><button class="brand-icon" bindtap="openScanEntry" aria-label="现场签到与核验入口"><image src="./assets/scan.svg" mode="aspectFit" /></button></view></view>
+  <view class="hero card me-core-card me-core-profile"><view class="hero-sticker">Good<text>People</text><text>More Plans ☺</text></view><view class="hero-top"><view class="avatar">我</view><view class="hero-copy"><view class="hero-name">我的空间 <text>✨</text></view><view class="hero-handle">{{hasSession ? '微信身份已登录' : developmentMode ? '本地测试身份' : '登录后管理你的活动'}}</view><view class="hero-caption">让有趣的人，在真实世界相聚</view></view></view><view class="hero-stats"><view><text>{{activityStats.total === null ? '—' : activityStats.total}}</text><text>我的活动</text></view><view><text>{{activityStats.hosted === null ? '—' : activityStats.hosted}}</text><text>发起组局</text></view><view><text>{{activityStats.confirmed === null ? '—' : activityStats.confirmed}}</text><text>确认报名</text></view><view><text>{{notificationLoadState === 'READY' ? notificationsTotal : '—'}}</text><text>站内通知</text></view></view></view>
+  <view class="section-head me-core-section-head"><text class="section-mark"></text><text>我的社交印记</text><button class="section-link" bindtap="goBadges">成就勋章馆<image class="section-chevron" src="./assets/chevron-blue.svg" mode="aspectFit" /></button></view>
+  <view class="badge-grid me-core-badges"><button class="badge-tile card me-core-card" bindtap="goBadges"><view>🏸</view><text>羽球常胜</text><text>待开放</text></button><button class="badge-tile card me-core-card" bindtap="goBadges"><view>👑</view><text>靠谱局长</text><text>待开放</text></button><button class="badge-tile card me-core-card" bindtap="goBadges"><view>⚡</view><text>秒速成局</text><text>待开放</text></button><button class="badge-tile card me-core-card" bindtap="goBadges"><view>🤝</view><text>神仙搭子</text><text>待开放</text></button></view>
+  <view class="section-head me-core-section-head"><text class="section-mark"></text><text>兴趣偏好</text><button class="section-link" bindtap="goInterestInfo">了解兴趣标签<image class="section-chevron" src="./assets/chevron-blue.svg" mode="aspectFit" /></button></view>
+  <view class="interest-chips me-core-interests"><view class="interest-chip">羽毛球</view><view class="interest-chip">咖啡</view><view class="interest-chip">运动</view><view class="interest-chip">城市漫步</view><view class="interest-chip">桌游</view><view class="interest-chip">摄影</view><button class="interest-chip interest-chip-add" bindtap="goInterestInfo">查看说明</button></view><view class="interest-note">标签仅为设计示意；当前不能添加或保存个人兴趣。</view>
+  <view wx:if="{{message}}" class="notice-banner">{{message}}</view>
+  <button id="profileRetryButton" wx:if="{{loadState === 'ERROR' || loadState === 'PARTIAL' || loadState === 'ACCESS_DENIED'}}" bindtap="retryRefresh">重新加载</button>
+  <view wx:if="{{!hasSession && !developmentMode}}" class="section-card card">
+    <button bindtap="login">微信登录</button>
+    <button bindtap="goDiscover">前往发现</button>
+    <view class="hint">登录后可管理活动提醒、隐私请求与举报记录。</view>
   </view>
-  <view>活动提醒同意</view>
-  <switch id="reminderConsentSwitch" checked="{{eventReminder}}" bindchange="toggleReminder" />
-  <view class="muted">{{eventReminderNotice}}</view>
-  <view wx:if="{{eventReminderNeedsReconfirmation}}" class="muted">授权说明已更新，请阅读后重新开启活动提醒。</view>
-  <view>允许类似活动邀请候选名单收录</view>
-  <switch id="similarInvitesConsentSwitch" checked="{{similarInvites}}" bindchange="toggleSimilarInvites" />
-  <view class="muted">{{similarInvitesNotice}}</view>
-  <view wx:if="{{similarInvitesNeedsReconfirmation}}" class="muted">授权说明已更新，请阅读后重新允许类似活动候选名单收录。</view>
-  <view>已屏蔽成员</view>
-  <view wx:if="{{blocks.length === 0}}" class="muted">暂无屏蔽记录</view>
-  <view wx:for="{{blocks}}" wx:key="id" class="item">
+  <block wx:if="{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}">
+  <view class="section-head me-core-section-head" id="notificationSettingsSection"><text class="section-mark"></text><text>隐私与社交可见性</text></view>
+  <view class="privacy-card card me-core-card me-core-privacy"><view class="privacy-line"><view class="privacy-icon"><image src="./assets/privacy-reminder.svg" mode="aspectFit" /></view><view class="privacy-copy"><view>活动提醒</view><text>{{eventReminderNotice}}</text></view><switch id="reminderConsentSwitch" checked="{{eventReminder}}" disabled="{{consentLoadState !== 'READY' || reminderConsentPending || reminderConsentUncertain}}" bindchange="toggleReminder" /></view><view wx:if="{{eventReminderNeedsReconfirmation}}" class="hint">授权说明已更新，请阅读后重新开启活动提醒。</view><view wx:if="{{reminderConsentPending}}" class="hint">活动提醒授权正在提交，请稍候。</view><view wx:if="{{reminderConsentUncertain}}" class="hint">活动提醒授权结果尚未确认，开关暂不可操作。</view><button class="privacy-link" wx:if="{{reminderConsentUncertain}}" bindtap="retryReminderConsent">核对上次活动提醒授权</button><view class="privacy-line"><view class="privacy-icon green"><image src="./assets/privacy-invites.svg" mode="aspectFit" /></view><view class="privacy-copy"><view>类似活动邀请候选</view><text>{{similarInvitesNotice}}</text></view><switch id="similarInvitesConsentSwitch" checked="{{similarInvites}}" disabled="{{similarInviteLoadState !== 'READY' || similarInvitesConsentPending || similarInvitesConsentUncertain}}" bindchange="toggleSimilarInvites" /></view><view wx:if="{{similarInvitesNeedsReconfirmation}}" class="hint">授权说明已更新，请阅读后重新允许类似活动候选名单收录。</view><view wx:if="{{similarInvitesConsentPending}}" class="hint">类似活动候选授权正在提交，请稍候。</view><view wx:if="{{similarInvitesConsentUncertain}}" class="hint">类似活动候选授权结果尚未确认，开关暂不可操作。</view><button class="privacy-link" wx:if="{{similarInvitesConsentUncertain}}" bindtap="retrySimilarInvitesConsent">核对上次类似活动授权</button><view wx:if="{{sectionLoadErrors.consents || sectionLoadErrors.similar}}" class="hint">授权状态暂不可用，请重新加载后再操作。</view><button class="privacy-link privacy-blocks-link" bindtap="goPrivacySafety"><view class="privacy-icon slate"><image src="./assets/privacy-blocks.svg" mode="aspectFit" /></view><view class="privacy-blocks-label">屏蔽管理</view><text>{{sectionLoadErrors.blocks ? '—' : blocks.length}} 人</text><image class="privacy-chevron" src="./assets/chevron-muted.svg" mode="aspectFit" /></button></view>
+  <view class="section-head me-core-section-head"><text class="section-mark"></text><text>我的活动记录</text><button class="section-link" bindtap="goAllActivities">查看全部<image class="section-chevron" src="./assets/chevron-blue.svg" mode="aspectFit" /></button></view>
+  <view class="activity-filters me-core-activity-filters"><button class="activity-filter {{activityFilter === 'all' ? 'selected' : ''}}" data-filter="all" bindtap="selectActivityFilter">全部</button><button class="activity-filter {{activityFilter === 'attended' ? 'selected' : ''}}" data-filter="attended" bindtap="selectActivityFilter">已参加</button><button class="activity-filter {{activityFilter === 'hosted' ? 'selected' : ''}}" data-filter="hosted" bindtap="selectActivityFilter">我发起的</button><view class="activity-filter disabled">已收藏 · 待开放</view></view>
+  <view wx:if="{{activityLoadState === 'ERROR'}}" class="empty card">活动记录暂不可用，可点击“查看全部”重试。</view><view wx:if="{{activityLoadState === 'READY' && activityPreview.length === 0}}" class="empty card">{{activityEmptyLabel}}</view>
+  <view class="activity-grid me-core-activities"><button wx:for="{{activityPreview}}" wx:key="id" class="activity-tile card me-core-card" data-id="{{item.id}}" bindtap="openActivity" aria-label="查看{{item.title || '活动'}}详情"><view class="activity-cover"><image class="activity-photo" src="{{item.cover}}" mode="aspectFill" /><view class="activity-cover-shade"></view><text class="activity-photo-label">示意配图</text><text class="activity-cover-status">{{item.statusLabel}}</text></view><view class="activity-copy"><view>{{item.title || '活动'}}</view><text>📅　{{item.dateLabel}}</text></view></button></view>
+  <view class="me-long-reference">
+    <view class="me-long-section">
+      <view class="section-head me-long-heading"><text class="section-mark"></text><text>我的收藏与想去</text><text class="section-meta me-long-closed">待开放</text></view>
+      <view class="wishlist-state card me-long-wishlist"><view class="wishlist-symbol">♡</view><view class="me-long-wishlist-copy"><view>收藏功能尚未开放</view><text>通过真实邀请参加活动，或先记录自己的组局想法。</text></view><button class="me-long-link" bindtap="goInviteEntry"><text>输入邀请码</text><image src="./assets/chevron-blue.svg"/></button></view>
+    </view>
+    <view class="me-long-section">
+      <view class="section-head me-long-heading"><text class="section-mark"></text><text>我的发起活动</text><button class="section-link me-long-link" bindtap="goHostedActivities"><text>查看全部</text><image src="./assets/chevron-blue.svg"/></button></view>
+      <button wx:if="{{hostedPreview}}" class="hosted-preview card me-long-hosted" data-id="{{hostedPreview.id}}" bindtap="openActivity"><image class="me-long-hosted-photo" src="{{hostedPreview.cover}}" mode="aspectFill"/><view class="hosted-copy"><view class="me-long-hosted-title-line"><view class="hosted-title">{{hostedPreview.title}}</view><text class="me-long-hosted-status {{hostedPreview.status === 'IN_PROGRESS' ? 'me-long-hosted-status-active' : ''}}">{{hostedPreview.statusLabel}}</text></view><view class="hosted-date">📅 {{hostedPreview.dateLabel}}</view><view wx:if="{{hostedPreview.city || hostedPreview.venueName}}" class="me-long-hosted-place">📍 {{hostedPreview.city}}{{hostedPreview.city && hostedPreview.venueName ? '·' : ''}}{{hostedPreview.venueName}}</view><view class="hosted-note">场景示意图 · 进入真实活动详情</view></view></button>
+      <view wx:if="{{activityLoadState === 'READY' && !hostedPreview}}" class="empty card hosted-empty me-long-empty">还没有你发起的活动。</view>
+    </view>
+    <view class="me-long-section">
+      <view class="me-long-tools-heading"><view><view class="section-head me-long-heading"><text class="section-mark"></text><text>主理人工具</text></view><view class="tool-subtitle me-long-tool-subtitle">发起真实活动，邀请朋友在现实世界相聚</view></view><button class="section-link me-long-link" bindtap="goHostCenter"><text>进入主理人中心</text><image src="./assets/chevron-blue.svg"/></button></view>
+      <view class="tool-grid me-long-tools"><button bindtap="goCreate" hover-class="me-long-tool-hover"><view>➕</view><text>发布活动</text></button><button bindtap="goHostedActivities" hover-class="me-long-tool-hover"><view>📅</view><text>活动管理</text></button><button bindtap="goApprovalManagement" hover-class="me-long-tool-hover"><view>👥</view><text>报名管理</text></button><view><view>📊</view><text>数据看板待开放</text></view></view>
+    </view>
+    <view class="me-long-settings-group">
+      <view class="settings-menu card me-long-menu me-long-account-menu"><view class="me-long-menu-heading"><view><text class="me-long-menu-marker"></text><text>账号与安全</text></view><image class="me-long-heading-chevron" src="./assets/chevron-muted.svg"/></view><view class="me-long-menu-rows"><button bindtap="goEditProfile"><text class="settings-icon">📱</text><view><view>个人资料与城市</view><text>本机城市偏好与资料状态</text></view><image class="me-long-row-chevron" src="./assets/chevron-muted.svg"/></button><button bindtap="goPrivacySafety"><text class="settings-icon">💻</text><view><view>隐私与屏蔽</view><text>查看和解除真实屏蔽记录</text></view><image class="me-long-row-chevron" src="./assets/chevron-muted.svg"/></button></view></view>
+      <view class="settings-menu card me-long-menu me-long-notification-menu"><view class="me-long-menu-heading"><view><text class="me-long-menu-marker"></text><text>通知与提醒</text></view><image class="me-long-heading-chevron" src="./assets/chevron-muted.svg"/></view><view class="me-long-menu-rows"><button bindtap="goMessages"><text class="settings-icon">🔔</text><view><view>站内通知</view><text>{{notificationLoadState === 'READY' ? notificationsTotal + ' 条真实通知' : '查看本人通知与审批'}}</text></view><image class="me-long-row-chevron" src="./assets/chevron-muted.svg"/></button><button bindtap="goMoments"><text class="settings-icon">💬</text><view><view>活动记录与相册</view><text>活动可查；照片服务尚未开放</text></view><image class="me-long-row-chevron" src="./assets/chevron-muted.svg"/></button></view></view>
+    </view>
+  </view>
+  <button class="advanced-toggle card" bindtap="toggleAdvanced" aria-label="{{advancedOpen ? '收起' : '展开'}}账号与安全操作"><view><view class="advanced-title">账号与安全操作</view><text class="advanced-subtitle">屏蔽、通知记录、申诉、数据请求与举报</text></view><text class="advanced-chevron">{{advancedOpen ? '收起 ⌃' : '展开 ›'}}</text></button>
+  <block wx:if="{{advancedOpen}}">
+  <view wx:if="{{developmentMode}}" class="dev-box card"><view class="hint">本地多账号测试入口：</view><input placeholder="本地测试账号" value="{{devUser}}" bindinput="devInput" /><button id="switchDevUserButton" bindtap="setDevUser">切换本地测试账号</button><button wx:if="{{!hasSession}}" bindtap="login">微信登录</button></view>
+  <view class="section-head"><text class="section-mark"></text><text>已屏蔽成员</text></view>
+  <view class="section-card card">
+  <view wx:if="{{sectionLoadErrors.blocks}}" class="hint">屏蔽记录暂不可用，请重新加载。</view>
+  <view wx:if="{{!sectionLoadErrors.blocks && blocks.length === 0}}" class="hint">暂无屏蔽记录</view>
+  <view wx:for="{{blocks}}" wx:key="id" class="list-row">
     <view>来自活动：{{item.eventTitle}}</view>
     <button data-id="{{item.id}}" bindtap="revokeBlock">撤销此屏蔽</button>
   </view>
-  <view>站内通知</view>
-  <view wx:if="{{notifications.length === 0}}" class="muted">暂无通知</view>
-  <view wx:if="{{notificationsTotal > 0}}" class="muted">已显示 {{notifications.length}} / {{notificationsTotal}} 条；未打开的通知优先显示。</view>
-  <view wx:for="{{notifications}}" wx:key="id" class="item">
-    <view>{{item.kind === 'EVENT_OUTCOME_DUE' ? '活动已结束，请主办方记录是否举办' : item.kind === 'EVENT_OUTCOME_REVIEW' ? '主办方已结项，请独立反馈' : item.kind === 'PUBLIC_RECRUITMENT_CLOSED' ? '公开活动招募已暂停' : item.kind === 'PUBLIC_RECRUITMENT_OPEN' ? '公开活动招募已恢复' : item.kind === 'WAITLIST_WINDOW_CLOSED' ? '补位时间不足五分钟，请主办方处理空位' : item.kind === 'REPORT_IN_REVIEW' ? '举报正在处理' : item.kind === 'REPORT_RESOLVED' ? '举报已有处理结论' : item.kind === 'APPEAL_IN_REVIEW' ? '申诉正在复核' : item.kind === 'APPEAL_RESOLVED' ? '申诉已有复核结论' : item.kind === 'CONTENT_REJECTED' ? '活动内容未通过审核' : item.kind}} · {{item.status}}</view>
-    <view wx:if="{{item.event_id}}">活动 {{item.event_id}} · 版本 {{item.event_version}}</view>
-    <button data-id="{{item.id}}" data-event="{{item.event_id}}" data-kind="{{item.kind}}" bindtap="openNotice">查看通知并标记已打开</button>
-    <view wx:if="{{item.kind === 'WAITLIST_OFFER' && item.declinable}}" class="muted">补位确认截止：{{item.detail.expiresAt}}</view>
-    <button wx:if="{{item.kind === 'WAITLIST_OFFER' && item.actionable}}" data-id="{{item.detail.offerId}}" data-version="{{item.event_version}}" bindtap="acceptOffer">主动确认补位</button>
-    <button wx:if="{{item.kind === 'WAITLIST_OFFER' && item.declinable}}" id="declineOfferButton" data-id="{{item.detail.offerId}}" data-version="{{item.event_version}}" bindtap="declineOffer">拒绝补位</button>
+  </view>
+  <view class="section-head" id="noticeSection"><text class="section-mark"></text><text>站内通知</text><button class="section-link" bindtap="goMessages">查看全部 ›</button></view>
+  <view class="section-card card">
+  <view wx:if="{{sectionLoadErrors.notifications}}" class="empty">站内通知暂不可用，请重新加载。</view>
+  <view wx:if="{{offerFocusMessage && !focusedOfferId}}" class="hint offer-focus-message">{{offerFocusMessage}}</view>
+  <view wx:if="{{!sectionLoadErrors.notifications && notifications.length === 0}}" class="empty">暂无站内通知</view>
+  <view wx:if="{{notificationsTotal > 0}}" class="hint">已显示 {{notifications.length}} / {{notificationsTotal}} 条；未打开的通知优先显示。</view>
+  <view wx:for="{{notifications}}" wx:key="id" id="notice-{{item.id}}" class="list-row notice-item {{item.id === focusedOfferId ? 'notice-offer-focused' : ''}}">
+    <view class="notice-head"><text class="notice-title">{{item.kindLabel}}</text><text class="notice-read {{item.isOpened ? 'is-opened' : ''}}">{{item.statusLabel}}</text></view>
+    <view wx:if="{{item.eventLabel}}" class="notice-context">关联活动 · {{item.eventLabel}}</view>
+    <view class="notice-external">{{item.externalStatusLabel}}</view>
+    <view wx:if="{{item.id === focusedOfferId && offerFocusMessage}}" class="hint offer-focus-message">{{offerFocusMessage}}</view>
+    <button class="notice-action" data-id="{{item.id}}" data-event="{{item.event_id}}" data-kind="{{item.kind}}" bindtap="openNotice">查看通知并标记已打开 ›</button>
+    <block wx:if="{{item.kind === 'WAITLIST_OFFER'}}">
+      <view wx:if="{{item.declinable}}" class="hint">补位确认截止：{{item.detail.expiresAt}}</view>
+      <button wx:if="{{item.actionable}}" data-id="{{item.detail.offerId}}" data-version="{{item.event_version}}" bindtap="acceptOffer">主动确认补位</button>
+      <button wx:if="{{item.declinable}}" id="declineOfferButton" data-id="{{item.detail.offerId}}" data-version="{{item.event_version}}" bindtap="declineOffer">拒绝补位</button>
+    </block>
   </view>
   <button wx:if="{{nextNotificationOffset !== null}}" bindtap="loadMoreNotifications">加载更多通知</button>
-  <view>报名移除与申诉</view>
+  </view>
+  <view class="section-head" id="appealSection"><text class="section-mark"></text><text>报名移除与申诉</text></view>
+  <view class="section-card card">
   <textarea placeholder="如需申诉，请先填写复核说明" value="{{appealDescription}}" bindinput="appealInput" />
-  <view wx:for="{{removals}}" wx:key="id" class="item">
-    <view>活动 {{item.event_id}} · 移除原因：{{item.reason}}</view>
+  <view wx:if="{{sectionLoadErrors.removals || sectionLoadErrors.appeals}}" class="hint">部分申诉记录暂不可用，请重新加载。</view>
+  <view wx:for="{{removals}}" wx:key="id" class="list-row">
+    <view>{{item.eventLabel}} · 移除原因：{{item.reason}}</view>
     <button data-id="{{item.id}}" bindtap="appealRemoval">就此移除申请复核</button>
   </view>
-  <view wx:for="{{appeals}}" wx:key="id" class="item">申诉 {{item.status}} · {{item.description}} · {{item.resolution || '待复核'}}{{item.outcome ? ' · ' + item.outcome : ''}}</view>
-  <view>内容审核与复核</view>
-  <textarea wx:if="{{rejectedContent.length > 0}}" placeholder="如需复核，请先填写说明" value="{{contentAppealDescription}}" bindinput="contentAppealInput" />
-  <view wx:if="{{rejectedContent.length === 0}}" class="muted">暂无被驳回的本人内容</view>
-  <view wx:for="{{rejectedContent}}" wx:key="id" class="item">
-    <view>活动 {{item.event_id}} · {{item.kind}} · {{item.body}}</view>
-    <view>未通过原因：{{item.moderation_reason || '原审核未记录原因'}}</view>
-    <view wx:if="{{item.appeal_id}}">复核申请：{{item.appeal_status}}</view>
-    <button wx:else data-id="{{item.id}}" bindtap="appealContent">就此内容申请复核</button>
+  <view wx:for="{{appeals}}" wx:key="id" class="list-row">申诉 {{item.statusLabel}} · {{item.description}} · {{item.resolution || '待复核'}}{{item.outcomeLabel ? ' · ' + item.outcomeLabel : ''}}</view>
   </view>
-  <view>个人信息请求</view>
+  <view class="section-head" id="contentSection"><text class="section-mark"></text><text>内容审核与复核</text></view>
+  <view class="section-card card">
+  <textarea wx:if="{{rejectedContent.length > 0}}" placeholder="如需复核，请先填写说明" value="{{contentAppealDescription}}" bindinput="contentAppealInput" />
+  <view wx:if="{{sectionLoadErrors.content}}" class="hint">内容审核记录暂不可用，请重新加载。</view>
+  <view wx:if="{{!sectionLoadErrors.content && rejectedContent.length === 0}}" class="hint">暂无被驳回的本人内容</view>
+  <view wx:for="{{rejectedContent}}" wx:key="id" class="list-row">
+    <view>{{item.eventLabel}} · {{item.kindLabel}} · {{item.body}}</view>
+    <view>未通过原因：{{item.moderation_reason || '原审核未记录原因'}}</view>
+    <view wx:if="{{item.appeal_id}}">复核申请：{{item.appealStatusLabel}}</view>
+    <button wx:else="" data-id="{{item.id}}" bindtap="appealContent">就此内容申请复核</button>
+  </view>
+  </view>
+  <view class="section-head" id="privacySection"><text class="section-mark"></text><text>个人信息请求</text></view>
+  <view class="section-card card">
   <button id="exportDataButton" bindtap="exportData">复制本人数据 JSON</button>
   <button data-kind="EXPORT" bindtap="privacyRequest">申请导出</button>
-  <view class="muted">申请注销或删除会先进入人工核查；提交申请不会立即停用账号或删除共享、争议记录。</view>
+  <view class="hint">申请注销或删除会先进入人工核查；提交申请不会立即停用账号或删除共享、争议记录。</view>
   <button data-kind="DELETE" bindtap="privacyRequest">申请注销或删除</button>
-  <view wx:for="{{privacy}}" wx:key="id" class="item">{{item.kind}} · {{item.status}}<view wx:if="{{item.notice}}" class="muted">{{item.notice}}</view></view>
-  <view>举报与求助</view>
+  <view wx:if="{{sectionLoadErrors.privacy}}" class="hint">个人信息请求记录暂不可用，请重新加载。</view>
+  <view wx:for="{{privacy}}" wx:key="id" class="list-row">{{item.kindLabel}} · {{item.statusLabel}}<view wx:if="{{item.notice}}" class="hint">{{item.notice}}</view></view>
+  </view>
+  <view class="section-head" id="reportSection"><text class="section-mark"></text><text>举报与求助</text></view>
+  <view class="section-card card">
   <input placeholder="活动 ID（可选）" value="{{reportEventId}}" bindinput="reportEventInput" />
   <textarea placeholder="描述真实情况；紧急人身危险请先联系当地应急服务" value="{{reportDescription}}" bindinput="reportInput" />
   <button bindtap="report">提交举报工单</button>
   <textarea wx:if="{{reports.length > 0}}" placeholder="如需复核举报结论，请先填写说明" value="{{reportAppealDescription}}" bindinput="reportAppealInput" />
-  <view wx:if="{{reports.length === 0}}" class="muted">暂无本人举报</view>
-  <view wx:for="{{reports}}" wx:key="id" class="item">
-    <view>{{item.kind}} · {{item.status}} · {{item.description}}</view>
+  <view wx:if="{{sectionLoadErrors.reports}}" class="hint">举报记录暂不可用，请重新加载。</view>
+  <view wx:if="{{!sectionLoadErrors.reports && reports.length === 0}}" class="hint">暂无本人举报</view>
+  <view wx:for="{{reports}}" wx:key="id" class="list-row">
+    <view>{{item.kindLabel}} · {{item.statusLabel}} · {{item.description}}</view>
     <view wx:if="{{item.resolution}}">处理结论：{{item.resolution}}</view>
     <button wx:if="{{item.status === 'RESOLVED'}}" data-id="{{item.id}}" bindtap="appealReport">就此结论申请复核</button>
+  </view>
+  </view>
+  </block>
+  </block>
+  <view class="me-long-reference me-long-public-menus">
+    <view class="quick-menu card me-long-menu me-long-help-menu"><view class="me-long-menu-heading"><view><text class="me-long-menu-marker"></text><text>帮助与反馈</text></view><image class="me-long-heading-chevron" src="./assets/chevron-muted.svg"/></view><view class="me-long-menu-rows"><button bindtap="goSupport"><text class="menu-icon">❓</text><view><view class="menu-title">常见问题与安全求助</view><view class="menu-note">安全举报可通过现有工单提交</view></view><image class="me-long-row-chevron" src="./assets/chevron-muted.svg"/></button><button bindtap="goCache"><text class="menu-icon">📝</text><view><view class="menu-title">本地存储说明</view><view class="menu-note">查看缓存与账号数据边界</view></view><image class="me-long-row-chevron" src="./assets/chevron-muted.svg"/></button></view></view>
+    <view class="about-menu card me-long-menu me-long-about-menu"><view class="me-long-menu-heading"><view><text class="me-long-menu-marker"></text><text>关于耍起 CAPER</text></view><image class="me-long-heading-chevron" src="./assets/chevron-muted.svg"/></view><view class="me-long-menu-rows"><button id="aboutButton" bindtap="goAbout"><text class="me-long-row-emoji">ℹ️</text><text class="me-long-row-title">关于耍起 CAPER / Project IRL</text><image class="me-long-row-chevron" src="./assets/chevron-muted.svg"/></button><button bindtap="goLegal"><text class="me-long-row-emoji">📄</text><text class="me-long-row-title">隐私与使用说明</text><image class="me-long-row-chevron" src="./assets/chevron-muted.svg"/></button><button bindtap="goGuidelines"><text class="me-long-row-emoji">🛡️</text><text class="me-long-row-title">社区公约</text><image class="me-long-row-chevron" src="./assets/chevron-muted.svg"/></button></view></view>
+    <view class="invite-banner me-long-invite"><view class="me-long-invite-orb"></view><view class="me-long-invite-copy"><view class="me-long-invite-title"><text>🎁</text><text>邀请好友一起耍起</text></view><text class="me-long-invite-description">{{inviteCandidateCount > 1 ? '从我组织的活动中选择，再核对分享资格' : inviteReady ? '核对当前活动的邀请资格后再发送' : '发起活动后即可邀请朋友加入'}}</text></view><button class="me-long-invite-button" bindtap="inviteFriends" hover-class="me-long-invite-hover">{{inviteCandidateCount > 1 ? '选择活动' : inviteReady ? '查看邀请' : '去发起'}}</button></view>
+    <view class="me-long-danger"><view wx:if="{{hasSession || developmentMode}}" class="me-long-danger-heading">危险区</view><block wx:if="{{hasSession}}"><button id="logoutButton" wx:if="{{!developmentMode}}" bindtap="logout" class="logout-button me-long-logout" hover-class="me-long-logout-hover">退出登录</button></block><block wx:if="{{(hasSession || developmentMode) && loadState !== 'ACCESS_DENIED' && loadState !== 'UNAUTHENTICATED'}}"><view class="me-long-privacy-request"><button bindtap="showPrivacyRequests" hover-class="me-long-privacy-hover">本人数据与注销申请</button><text>进入人工核查请求表单；提交申请不会立即删除账号或共享记录。</text></view></block></view>
+    <view class="page-foot me-long-foot">REAL PEOPLE · REAL MEETUPS</view>
   </view>
 </view>

@@ -4,9 +4,11 @@ import { audit, databaseNow, promote, type EventRow } from './registrations.ts';
 import { expireOffers, expireReservations } from './registrations.ts';
 import { dispatchNotification, enqueueInAppOutcomePrompt, enqueueNotification, enqueueStartReminder, type NotificationAdapter } from './notifications.ts';
 import { pruneRateLimits } from './rate-limits.ts';
+import { pruneExpiredPersonalExportTickets } from './privacy.ts';
 import { AppError } from './errors.ts';
+import { expirePublicCoverage } from './public-gate.ts';
 
-type JobPayload = { version?: number; notificationId?: string;
+type JobPayload = { version?: number; notificationId?: string; coverageId?: string;
   eventId?: string; eventVersion?: number; userId?: string; status?: string };
 type Job = { id: string; kind: string; event_id: string | null; created_at: Date; payload: JobPayload;
   status: string; claim_token: string };
@@ -117,22 +119,23 @@ async function promptEventOutcome(db: Database, job: Job): Promise<void> {
 
 export async function runDueJobs(db: Database, at?: number, notificationAdapter?: NotificationAdapter): Promise<{ processed: number; failed: number }> {
   await pruneRateLimits(db);
+  await pruneExpiredPersonalExportTickets(db);
   const now = at ?? await databaseNow(db);
   const { rows } = await db.query<Job>(`SELECT id,kind,event_id,payload,status,created_at FROM jobs
-    WHERE ((kind IN ('EVENT_START','EVENT_END') AND due_at<=clock_timestamp()) OR
-      (kind NOT IN ('EVENT_START','EVENT_END') AND due_at<=$1))
+    WHERE ((kind IN ('EVENT_START','EVENT_END','PUBLIC_COVERAGE_EXPIRE') AND due_at<=clock_timestamp()) OR
+      (kind NOT IN ('EVENT_START','EVENT_END','PUBLIC_COVERAGE_EXPIRE') AND due_at<=$1))
       AND (status='PENDING' OR (status='PROCESSING' AND
-        ((kind IN ('EVENT_START','EVENT_END') AND locked_at<clock_timestamp()-interval '5 minutes') OR
-         (kind NOT IN ('EVENT_START','EVENT_END') AND locked_at<$2))))
+        ((kind IN ('EVENT_START','EVENT_END','PUBLIC_COVERAGE_EXPIRE') AND locked_at<clock_timestamp()-interval '5 minutes') OR
+         (kind NOT IN ('EVENT_START','EVENT_END','PUBLIC_COVERAGE_EXPIRE') AND locked_at<$2))))
     ORDER BY due_at,id LIMIT 100`, [new Date(now).toISOString(), new Date(now - 5 * 60_000).toISOString()]);
   let processed = 0; let failed = 0;
   for (const job of rows) {
     const { rows: claimed } = await db.query<Job>(`UPDATE jobs SET status='PROCESSING',locked_at=now(),attempts=attempts+1,claim_token=$3
-      WHERE id=$1 AND ((kind IN ('EVENT_START','EVENT_END') AND due_at<=clock_timestamp()) OR
-        (kind NOT IN ('EVENT_START','EVENT_END') AND due_at<=$4::timestamptz))
+      WHERE id=$1 AND ((kind IN ('EVENT_START','EVENT_END','PUBLIC_COVERAGE_EXPIRE') AND due_at<=clock_timestamp()) OR
+        (kind NOT IN ('EVENT_START','EVENT_END','PUBLIC_COVERAGE_EXPIRE') AND due_at<=$4::timestamptz))
         AND (status='PENDING' OR (status='PROCESSING' AND
-          ((kind IN ('EVENT_START','EVENT_END') AND locked_at<clock_timestamp()-interval '5 minutes') OR
-           (kind NOT IN ('EVENT_START','EVENT_END') AND locked_at<$2))))
+          ((kind IN ('EVENT_START','EVENT_END','PUBLIC_COVERAGE_EXPIRE') AND locked_at<clock_timestamp()-interval '5 minutes') OR
+           (kind NOT IN ('EVENT_START','EVENT_END','PUBLIC_COVERAGE_EXPIRE') AND locked_at<$2))))
       RETURNING id,kind,event_id,payload,status,created_at,claim_token`,
       [job.id, new Date(now - 5 * 60_000).toISOString(), randomUUID(), new Date(now).toISOString()]);
     const current = claimed[0];
@@ -147,6 +150,7 @@ export async function runDueJobs(db: Database, at?: number, notificationAdapter?
       else if (current.kind === 'EVENT_REMINDER') await sendStartReminder(db, current);
       else if (current.kind === 'EVENT_START') await startEvent(db, current);
       else if (current.kind === 'EVENT_END') await promptEventOutcome(db, current);
+      else if (current.kind === 'PUBLIC_COVERAGE_EXPIRE') await expirePublicCoverage(db, current.payload.coverageId!);
       else if (current.kind === 'PUBLIC_GATE_NOTICE') await createPublicGateNotice(db, current);
       else if (current.kind === 'RESUME_WAITLIST') await resumeWaitlist(db, current);
       else if (current.kind === 'SEND_EXTERNAL') {

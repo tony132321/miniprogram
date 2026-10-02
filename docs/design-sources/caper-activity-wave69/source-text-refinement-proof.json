@@ -1,0 +1,28 @@
+{
+  "reason": "precise source text / paint refinement after bounded static check; no new controls, guards, datasets, assets or JS changes",
+  "preRevisionSHA": {
+    "event.wxml": "19cffb8100cb2962ab50a1200e21e20a5fd60965fa569a562d6ac55b9ef89b1d",
+    "event.wxss": "1f2541cdb85b7cddb9a024056dc9555baf948349e1ad5d9abed094a7171798ee"
+  },
+  "checks": {
+    "PG08 exact source heading/subtitle": true,
+    "PG08 exact sun unicode": true,
+    "PG08 GOOD PEOPLE source lime": true,
+    "PG09 original social stickers and caption": true,
+    "PG09 source lime-tint sticker": true,
+    "PG06 original shortcut labels/danger paints": true,
+    "fullWXMLInverse": true,
+    "oldCSSPrefix": true,
+    "sourceHorizontalOnlyTopPadding": true
+  },
+  "postRevision": {
+    "event.wxml": {
+      "bytes": 137904,
+      "sha256": "e20243e5744251afb50fd880e0b91b86864cb6f4fe89015500e9de0f6c15b557"
+    },
+    "event.wxss": {
+      "bytes": 162260,
+      "sha256": "caef3ec15ddd1a1db874946efe97cbb91e5236dcf6e425b942d814798608368f"
+    }
+  }
+}

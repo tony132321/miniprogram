@@ -11,6 +11,7 @@
     button { padding: 8px 12px; }
     section { border-top: 1px solid #ccc; margin-top: 20px; }
     li { margin: 10px 0; }
+    fieldset#operatorWorkbench { border: 0; margin: 0; padding: 0; min-width: 0; }
     .muted { color: #555; }
   </style>
 </head>
@@ -25,6 +26,7 @@
   <input id="token" type="hidden">
   <button id="refresh">刷新</button>
   <p id="status" role="status"></p>
+  <fieldset id="operatorWorkbench">
   <section><h2>试点指标</h2><p class="muted">按当前复核状态和活动结束时间截止统计；测试活动不计入。证据完成率是保守参考口径，不单独决定发布闸门。</p><p id="metrics">读取中…</p>
     <p class="muted">记录某场活动的直接人工工作分钟。0 表示本人明确记录零分钟；未填写不等于零。记录后保留原始条目及操作人。</p>
     <label>活动 ID <input id="supportEventId" autocomplete="off"></label>
@@ -34,7 +36,30 @@
     <p class="muted">最近 100 条人工时间记录（仅记录权限可见）</p><ul id="supportMinutesHistory"></ul>
   </section>
   <section><h2>举报</h2><ul id="reports"></ul><button id="moreReports" disabled>加载更多举报</button></section>
-  <section><h2>待审核公开活动</h2><ul id="eventReviews"></ul><button id="moreEventReviews" disabled>加载更多待审活动</button></section>
+  <section><h2>首次响应关注</h2>
+    <p class="muted">仅向安全运营显示逾期或尚未配置目标的工单元数据，不显示举报正文。目标时限仅用于内部提醒；实际人工响应与服务目标是否达成须另行核验。</p>
+    <button id="loadReportResponseAlerts">刷新首次响应关注</button><ul id="reportResponseAlerts"></ul>
+    <button id="moreReportResponseAlerts" disabled>加载更多关注工单</button>
+  </section>
+  <section><h2>举报工单分派</h2>
+    <p class="muted">安全运营先查看待分配工单的最小信息。逐单查看正文须填写原因并留下审计；处理人员只能看到分配给自己的工单。改级前须从列表选取或逐单核查当前严重度；逾期高危工单不可降级。</p>
+    <button id="loadReportTriage">加载待分配工单</button><ul id="reportTriage"></ul>
+    <button id="moreReportTriage" disabled>加载更多待分配工单</button><br>
+    <label>工单 ID <input id="reportCaseId" autocomplete="off"></label>
+    <label>处理账号 <input id="reportAssignee" autocomplete="off" placeholder="具 REPORTS 权限的账号名"></label>
+    <label>严重度 <select id="reportSeverity"><option value="HIGH">高</option><option value="NORMAL">普通</option></select></label>
+    <label>逐单核查或分配原因 <input id="reportScopeReason" autocomplete="off" placeholder="至少 10 字"></label><br>
+    <button id="inspectReport">逐单核查并留痕</button><button id="assignReport">分配给处理账号</button><button id="classifyReportSeverity">逐单改级并留痕</button>
+    <p id="reportInspection" role="status"></p>
+  </section>
+  <section><h2>待审核活动</h2><ul id="eventReviews"></ul><button id="moreEventReviews" disabled>加载更多待审活动</button></section>
+  <section><h2>主办方等级复核</h2>
+    <p class="muted">新主办方默认受发布频率和单场人数限制。仅具 SAFETY 权限的运营人员可依据人工核验结果调整；此操作会保留原因和审计记录，不自动核实经历。</p>
+    <label>主办方用户 ID <input id="hostReviewUserId" autocomplete="off"></label>
+    <label>复核结果 <select id="hostReviewStatus"><option value="ESTABLISHED">晋级为已复核</option><option value="NEW">恢复新主办方限制</option></select></label>
+    <label>核验依据 <input id="hostReviewReason" autocomplete="off" placeholder="至少 5 字"></label>
+    <button id="submitHostReview">记录复核结果</button><p id="hostReviewResult" role="status"></p>
+  </section>
   <section><h2>活动风险暂停</h2>
     <p class="muted">暂停新报名、预留、补位和成局；活动仍可查看或退出。仅运营人员可记录核查原因和解除。</p>
     <label>活动 ID <input id="holdEventId" autocomplete="off"></label>
@@ -44,6 +69,16 @@
   <section><h2>公开活动招募总开关</h2>
     <p class="muted">关闭后暂停公开活动发布、审核通过、新报名与占位；已参与者仍可查看和退出，邀请制活动不受影响。</p>
     <p id="publicGate">读取中…</p>
+    <p class="muted">先记录具名值守和已完成的应急演练，再由另一名安全运营复核。每场公开活动还须有覆盖完整活动时段的已复核记录。以下记录 ID 可复制到另一名运营的工作台；当前值守记录须已开始且尚未结束，才可恢复总开关。</p>
+    <label>值守开始 <input id="coverageStartsAt" type="datetime-local"></label>
+    <label>值守结束 <input id="coverageEndsAt" type="datetime-local"></label>
+    <label>演练完成时间 <input id="coverageDrillCompletedAt" type="datetime-local"></label>
+    <label>演练记录引用 <input id="coverageDrillReference" autocomplete="off" placeholder="至少 8 字"></label>
+    <button id="createPublicCoverage">记录值守时段</button><br>
+    <label>值守记录 ID <input id="coverageId" autocomplete="off" placeholder="创建后自动填入，也可粘贴现有 ID"></label>
+    <label>复核或撤销原因 <input id="coverageReason" autocomplete="off" placeholder="至少 5 字"></label>
+    <button id="confirmPublicCoverage">由另一名安全运营复核</button><button id="revokePublicCoverage">撤销值守记录</button>
+    <p id="coverageResult" role="status"></p>
     <label>操作原因 <input id="publicGateReason" autocomplete="off" placeholder="至少 5 字"></label>
     <button id="closePublicGate">关闭公开招募</button><button id="openPublicGate">恢复公开招募</button>
   </section>
@@ -55,25 +90,62 @@
   </section>
   <section><h2>近期异常请求</h2><ul id="rateLimits"></ul></section>
   <section><h2>异常报名待复核</h2><p class="muted">同一用户在同一活动 24 小时内至少三次报名、两次退出。复核后只统计新行为；线索不自动限制用户。</p><ul id="registrationAnomalies"></ul><button id="moreRegistrationAnomalies" disabled>加载更多异常报名</button></section>
-  <section><h2>通知待跟进</h2><p class="muted">外部发送失败或结果不确定。人工跟进记录不代表用户已收到消息。</p><ul id="notificationFollowups"></ul><button id="moreNotificationFollowups" disabled>加载更多待跟进通知</button></section>
+  <section><h2>通知待跟进</h2><p class="muted">未配置用途、外部发送不可用、明确失败或结果不确定。人工跟进记录不代表用户已收到消息。</p><ul id="notificationFollowups"></ul><button id="moreNotificationFollowups" disabled>加载更多待跟进通知</button></section>
   <section><h2>最近已跟进</h2><p class="muted">展示最近 100 条处理说明，供有通知权限的运营人员复核；原外部发送状态保留。</p><ul id="notificationHistory"></ul></section>
   <section><h2>失败任务</h2><p class="muted">重新排队仅表示等待后台处理；外部通知状态不确定时须先人工核对。</p><ul id="failedJobs"></ul><button id="moreFailedJobs" disabled>加载更多失败任务</button></section>
-  <section><h2>AI 草稿异常</h2><p class="muted">费用与请求状态须对照供应商账单核查；异常请求不会自动重试。此处不展示草稿原文。</p><ul id="aiDraftAlerts"></ul><button id="moreAiDraftAlerts" disabled>加载更多 AI 草稿异常</button></section>
+  <section><h2>AI 草稿异常</h2><p class="muted">人工复核只记录内部处理，未知费用与预算预留仍保留；须另行核对供应商账单。异常请求不会自动重试。此处不展示草稿原文。</p><ul id="aiDraftAlerts"></ul><button id="moreAiDraftAlerts" disabled>加载更多 AI 草稿异常</button><h3>人工复核历史</h3><ul id="aiDraftAlertReviews"></ul><button id="moreAiDraftAlertReviews" disabled>加载更多 AI 草稿复核历史</button></section>
+  <section><h2>每场 AI 草稿成本</h2><p class="muted">已知费用与不确定占额分别列示；供应商账单未核对前，不作为最终结算。此处不展示草稿原文。</p><ul id="aiEventCosts"></ul><button id="moreAiEventCosts">加载活动成本</button></section>
   <section><h2>申诉</h2><ul id="appeals"></ul><button id="moreAppeals" disabled>加载更多申诉</button></section>
   <section><h2>个人信息请求</h2><ul id="privacy"></ul><button id="morePrivacy" disabled>加载更多请求</button></section>
   <section><h2>待审核活动内容</h2><ul id="content"></ul><button id="moreContent" disabled>加载更多待审内容</button></section>
+  </fieldset>
   <script>
     const $ = id => document.getElementById(id);
     $('token').value = sessionStorage.getItem('operatorToken') || '';
     let requestGeneration = 0;
+    const reportSeverityById = new Map();
     function headers() {
       const result = {};
       if ($('devUser').value.trim()) result['X-Dev-User'] = $('devUser').value.trim();
       if ($('token').value.trim()) result.Authorization = 'Bearer ' + $('token').value.trim();
       return result;
     }
+    function operatorIdentity() {
+      return JSON.stringify([$('token').value.trim(), $('devUser').value.trim()]);
+    }
+    function staleOperatorResponse() {
+      return Object.assign(new Error('运营账号已切换，请刷新'), { code: 'STALE_SESSION' });
+    }
+    async function operatorFetch(path, options) {
+      const identity = operatorIdentity();
+      let response;
+      try { response = await fetch(path, options); }
+      catch (error) {
+        if (identity !== operatorIdentity()) throw staleOperatorResponse();
+        throw error;
+      }
+      if (identity !== operatorIdentity()) throw staleOperatorResponse();
+      if (response.status === 401) {
+        clearPrivateWorkbench();
+        $('token').value = '';
+        sessionStorage.removeItem('operatorToken');
+        $('status').textContent = '运营登录已失效，请重新登录';
+        $('metrics').textContent = '请重新登录';
+        throw Object.assign(new Error('运营登录已失效，请重新登录'), { code: 'UNAUTHENTICATED' });
+      }
+      return { status: response.status, ok: response.ok, async json() {
+        let body;
+        try { body = await response.json(); }
+        catch (error) {
+          if (identity !== operatorIdentity()) throw staleOperatorResponse();
+          throw error;
+        }
+        if (identity !== operatorIdentity()) throw staleOperatorResponse();
+        return body;
+      } };
+    }
     async function load(path, denied) {
-      const response = await fetch(path, { headers: headers() });
+      const response = await operatorFetch(path, { headers: headers() });
       const data = await response.json();
       if (response.status === 403) { denied.push(path); return []; }
       if (!response.ok) throw new Error(data.message || data.code || '请求失败');
@@ -81,7 +153,7 @@
     }
     async function loadReports(denied, offset = 0, snapshot = null) {
       const path = '/ops/reports';
-      const response = await fetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+      const response = await operatorFetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
         { headers: headers() });
       const data = await response.json();
       if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
@@ -90,9 +162,20 @@
       if (!response.ok) throw new Error(data.message || data.code || '读取举报失败');
       return data;
     }
+    async function loadReportResponseAlerts(denied, offset = 0, snapshot = null) {
+      const path = '/ops/reports/response-alerts';
+      const response = await operatorFetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+        { headers: headers() });
+      const data = await response.json();
+      if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
+      if (response.status === 409 && data.code === 'QUEUE_CHANGED')
+        throw Object.assign(new Error(data.message), { code: data.code });
+      if (!response.ok) throw new Error(data.message || data.code || '读取首次响应关注失败');
+      return data;
+    }
     async function loadRegistrationAnomalies(denied, offset = 0, snapshot = null) {
       const path = '/ops/registration-anomalies';
-      const response = await fetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+      const response = await operatorFetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
         { headers: headers() });
       const data = await response.json();
       if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
@@ -103,7 +186,7 @@
     }
     async function loadNotificationFollowups(denied, offset = 0, snapshot = null) {
       const path = '/ops/notifications/followups';
-      const response = await fetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+      const response = await operatorFetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
         { headers: headers() });
       const data = await response.json();
       if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
@@ -114,18 +197,18 @@
     }
     async function loadEventReviews(denied, offset = 0, snapshot = null) {
       const path = '/ops/events/reviews';
-      const response = await fetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+      const response = await operatorFetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
         { headers: headers() });
       const data = await response.json();
       if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
       if (response.status === 409 && data.code === 'QUEUE_CHANGED')
         throw Object.assign(new Error(data.message), { code: data.code });
-      if (!response.ok) throw new Error(data.message || data.code || '读取公开活动审核失败');
+      if (!response.ok) throw new Error(data.message || data.code || '读取活动审核失败');
       return data;
     }
     async function loadContent(denied, offset = 0, snapshot = null) {
       const path = '/ops/content';
-      const response = await fetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+      const response = await operatorFetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
         { headers: headers() });
       const data = await response.json();
       if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
@@ -136,7 +219,7 @@
     }
     async function loadFailedJobs(denied, offset = 0, snapshot = null) {
       const path = '/ops/jobs/failed';
-      const response = await fetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+      const response = await operatorFetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
         { headers: headers() });
       const data = await response.json();
       if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
@@ -147,7 +230,7 @@
     }
     async function loadAiDraftAlerts(denied, offset = 0, snapshot = null) {
       const path = '/ops/ai-draft-alerts';
-      const response = await fetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+      const response = await operatorFetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
         { headers: headers() });
       const data = await response.json();
       if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
@@ -156,9 +239,20 @@
       if (!response.ok) throw new Error(data.message || data.code || '读取 AI 草稿异常失败');
       return data;
     }
+    async function loadAiDraftAlertReviews(denied, offset = 0, snapshot = null) {
+      const path = '/ops/ai-draft-alerts/reviews';
+      const response = await operatorFetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+        { headers: headers() });
+      const data = await response.json();
+      if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
+      if (response.status === 409 && data.code === 'QUEUE_CHANGED')
+        throw Object.assign(new Error(data.message), { code: data.code });
+      if (!response.ok) throw new Error(data.message || data.code || '读取 AI 草稿复核历史失败');
+      return data;
+    }
     async function loadPrivacy(denied, offset = 0, snapshot = null) {
       const path = '/ops/privacy';
-      const response = await fetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+      const response = await operatorFetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
         { headers: headers() });
       const data = await response.json();
       if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
@@ -169,7 +263,7 @@
     }
     async function loadAppeals(denied, offset = 0, snapshot = null) {
       const path = '/ops/appeals';
-      const response = await fetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+      const response = await operatorFetch(`${path}?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
         { headers: headers() });
       const data = await response.json();
       if (response.status === 403) { denied.push(path); return { items: [], total: 0, nextOffset: null }; }
@@ -179,21 +273,21 @@
       return data;
     }
     async function loadPublicGate(denied) {
-      const response = await fetch('/ops/public-recruitment', { headers: headers() });
+      const response = await operatorFetch('/ops/public-recruitment', { headers: headers() });
       if (response.status === 403) { denied.push('/ops/public-recruitment'); return null; }
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || data.code || '读取公开招募状态失败');
       return data;
     }
     async function loadEmergencyGate(denied) {
-      const response = await fetch('/ops/emergency', { headers: headers() });
+      const response = await operatorFetch('/ops/emergency', { headers: headers() });
       if (response.status === 403) { denied.push('/ops/emergency'); return null; }
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || data.code || '读取全局止损状态失败');
       return data;
     }
     async function loadMetrics(denied) {
-      const response = await fetch('/ops/metrics', { headers: headers() });
+      const response = await operatorFetch('/ops/metrics', { headers: headers() });
       if (response.status === 403) { denied.push('/ops/metrics'); return null; }
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || data.code || '读取试点指标失败');
@@ -207,6 +301,8 @@
     }
     let nextReportOffset = null;
     let reportSnapshot = null;
+    let nextResponseAlertOffset = null;
+    let responseAlertSnapshot = null;
     let nextAnomalyOffset = null;
     let anomalySnapshot = null;
     let nextPrivacyOffset = null;
@@ -223,6 +319,9 @@
     let failedJobSnapshot = null;
     let nextAiDraftAlertOffset = null;
     let aiDraftAlertSnapshot = null;
+    let nextAiDraftAlertReviewOffset = null;
+    let aiDraftAlertReviewSnapshot = null;
+    let aiEventCostCursor = null;
     function renderPrivacy(items) {
       for (const item of items) {
         const row = line($('privacy'), `${item.kind} · ${item.status} · ${item.id}`);
@@ -232,19 +331,22 @@
         button.onclick = async () => {
           const token = sessionStorage.getItem('operatorToken');
           try {
-            const response = await fetch(`/ops/privacy/${encodeURIComponent(item.id)}/impact`, { headers: headers() });
+            const response = await operatorFetch(`/ops/privacy/${encodeURIComponent(item.id)}/impact`, { headers: headers() });
             const data = await response.json();
             if (sessionStorage.getItem('operatorToken') !== token) return;
             if (!response.ok) return void (details.textContent = data.message || '影响清单读取失败');
             const counts = data.counts;
             const fields = [
               ['profile', '资料'], ['sessions', '会话'], ['hostedEvents', '活动'],
+              ['hostPublicationStatus', '主办方等级复核'],
               ['registrations', '报名'], ['authoredContent', '本人内容'],
               ['reportedDisputes', '争议'], ['appeals', '申诉'], ['notifications', '通知'],
               ['notificationConsents', '通知授权'], ['notificationConsentHistory', '授权变更'], ['eventAliases', '活动昵称'],
+              ['eventAliasConsentHistory', '活动昵称授权历史'],
               ['shareIntents', '分享发起'], ['personalExportTickets', '导出凭证'],
               ['blocksCreated', '屏蔽发起'], ['blocksReceived', '被屏蔽'],
               ['hostedEventVersions', '活动版本'], ['hostedOutcomes', '活动结果'],
+              ['hostedOutcomeReviews', '主办活动复核'], ['reportedOutcomeReviews', '本人举报裁决'],
               ['hostedVenueEvidence', '场地证据'], ['createdExpenseLedgers', '费用账本'],
               ['shareOpens', '分享打开'], ['unknownSourceInviteOpens', '未知来源邀请打开'],
               ['claimedReservations', '占位'], ['waitlistOffers', '候补邀请'],
@@ -254,10 +356,13 @@
               ['registrationRemovals', '报名移除'], ['cohostGrants', '协办授权'],
               ['cohostGrantsIssued', '发出的协办授权'], ['privacyRequests', '隐私请求'],
               ['auditActions', '审计记录'], ['businessEvents', '业务事件'],
-              ['idempotencyRecords', '幂等记录'], ['aiDraftRequests', 'AI 草稿请求']
+              ['idempotencyRecords', '幂等记录'], ['aiDraftRequests', 'AI 草稿请求'],
+              ['aiDraftAlertReviews', 'AI 草稿异常复核'],
+              ['aiActionProposals', 'AI 动作提议']
             ];
             details.textContent = `待政策复核；已识别部分类别：${fields.map(([key, label]) => `${label} ${Number.isInteger(counts[key]) ? counts[key] : '—'}`).join('、')}。此清单未执行删除。`;
-          } catch {
+          } catch (error) {
+            if (error?.code === 'STALE_SESSION') return;
             if (sessionStorage.getItem('operatorToken') === token) details.textContent = '影响清单读取失败，请重试';
           }
         };
@@ -266,7 +371,9 @@
     }
     function renderReports(reports) {
       for (const item of reports) {
-        const li = line($('reports'), `${item.kind} · ${item.status} · 活动 ${item.event_id || '未关联'} · ${item.description}`);
+        const li = line($('reports'), `${item.kind} · ${item.status} · ${item.severity || 'UNCLASSIFIED'} · ` +
+          `${item.first_response_due_at ? '目标时间 ' + item.first_response_due_at : '未配置目标'} · ` +
+          `活动 ${item.event_id || '未关联'} · ${item.description}`);
         if (item.event_id && item.kind === 'SAFETY') {
           const select = document.createElement('button'); select.textContent = '填入活动 ID';
           select.onclick = () => { $('holdEventId').value = item.event_id; $('holdReason').focus(); };
@@ -275,12 +382,8 @@
         if (item.status === 'OPEN') {
           const button = document.createElement('button'); button.textContent = '标记处理中';
           button.onclick = async () => {
-            const response = await fetch(`/ops/reports/${encodeURIComponent(item.id)}/status`, {
-              method: 'POST', headers: { ...headers(), 'Content-Type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
-              body: JSON.stringify({ status: 'IN_REVIEW' })
-            });
-            if (!response.ok) $('status').textContent = (await response.json()).message || '更新失败';
-            else refresh();
+            try { await post(`/ops/reports/${encodeURIComponent(item.id)}/status`, { status: 'IN_REVIEW' }); refresh(); }
+            catch (error) { if (error?.code === 'STALE_SESSION') return; $('status').textContent = error.message; }
           };
           li.appendChild(button);
         }
@@ -303,12 +406,140 @@
             try { await post(`/ops/reports/${encodeURIComponent(item.id)}/status`,
               { status: 'RESOLVED', resolution: explanation.value,
                 ...(outcomeDecision ? { outcomeDecision: outcomeDecision.value } : {}) }); refresh(); }
-            catch (error) { $('status').textContent = error.message; }
+            catch (error) { if (error?.code === 'STALE_SESSION') return; $('status').textContent = error.message; }
           };
           li.appendChild(close);
         }
       }
     }
+    function renderReportResponseAlerts(items) {
+      for (const item of items) {
+        line($('reportResponseAlerts'),
+          `${item.attention === 'OVERDUE' ? '逾期' : '未配置目标'} · ${item.kind} · ${item.severity} · 工单 ${item.id} · ` +
+          `处理人 ${item.assignee_id || '未分配'} · ${item.first_response_due_at ? '目标时间 ' + item.first_response_due_at : '目标时间待配置'}`);
+      }
+    }
+    $('loadReportResponseAlerts').onclick = async () => {
+      const generation = requestGeneration;
+      $('reportResponseAlerts').replaceChildren(); nextResponseAlertOffset = null; responseAlertSnapshot = null;
+      $('moreReportResponseAlerts').disabled = true;
+      try {
+        const denied = [];
+        const page = await loadReportResponseAlerts(denied);
+        if (generation !== requestGeneration) return;
+        if (denied.length) { $('status').textContent = '无权限查看首次响应关注'; return; }
+        renderReportResponseAlerts(page.items);
+        nextResponseAlertOffset = page.nextOffset ?? null;
+        responseAlertSnapshot = page.snapshot ?? null;
+        $('moreReportResponseAlerts').disabled = nextResponseAlertOffset === null;
+      } catch (error) { if (error?.code === 'STALE_SESSION') return; if (generation === requestGeneration)
+        $('status').textContent = error.message || '读取首次响应关注失败'; }
+    };
+    $('moreReportResponseAlerts').onclick = async () => {
+      if (nextResponseAlertOffset === null) return;
+      const generation = requestGeneration;
+      const offset = nextResponseAlertOffset;
+      nextResponseAlertOffset = null; $('moreReportResponseAlerts').disabled = true;
+      try {
+        const denied = [];
+        const page = await loadReportResponseAlerts(denied, offset, responseAlertSnapshot);
+        if (generation !== requestGeneration) return;
+        if (denied.length) { $('status').textContent = '无权限查看首次响应关注'; return; }
+        renderReportResponseAlerts(page.items);
+        nextResponseAlertOffset = page.nextOffset ?? null;
+        responseAlertSnapshot = page.snapshot ?? null;
+        $('moreReportResponseAlerts').disabled = nextResponseAlertOffset === null;
+      } catch (error) { if (error?.code === 'STALE_SESSION') return;
+        if (generation !== requestGeneration) return;
+        if (error.code === 'QUEUE_CHANGED') {
+          $('reportResponseAlerts').replaceChildren(); responseAlertSnapshot = null;
+          $('status').textContent = '首次响应关注已变化，请重新加载'; return;
+        }
+        nextResponseAlertOffset = offset; $('moreReportResponseAlerts').disabled = false;
+        $('status').textContent = error.message || '读取首次响应关注失败';
+      }
+    };
+    let nextTriageOffset = null;
+    let triageSnapshot = null;
+    async function loadReportTriagePage(offset, snapshot) {
+      const generation = requestGeneration;
+      const response = await operatorFetch(`/ops/reports/triage?offset=${offset}${snapshot ? '&snapshot=' + encodeURIComponent(snapshot) : ''}`,
+        { headers: headers() });
+      const data = await response.json();
+      if (generation !== requestGeneration) return;
+      if (response.status === 403) { $('status').textContent = '无权限查看待分配工单'; return; }
+      if (response.status === 409 && data.code === 'QUEUE_CHANGED') {
+        $('reportTriage').replaceChildren(); nextTriageOffset = null; triageSnapshot = null;
+        $('status').textContent = '待分配工单已变化，请重新加载'; return;
+      }
+      if (!response.ok) throw new Error(data.message || data.code || '读取待分配工单失败');
+      for (const item of data.items || []) {
+        reportSeverityById.set(item.id, item.severity);
+        const row = line($('reportTriage'), `${item.kind} · ${item.status} · ${item.severity || 'UNCLASSIFIED'} · ` +
+          `${item.first_response_due_at ? '目标时间 ' + item.first_response_due_at : '未配置目标'} · 工单 ${item.id}`);
+        const pick = document.createElement('button'); pick.textContent = '填入工单 ID';
+        pick.onclick = () => { $('reportCaseId').value = item.id; $('reportScopeReason').focus(); };
+        row.appendChild(pick);
+      }
+      nextTriageOffset = data.nextOffset ?? null;
+      triageSnapshot = data.snapshot ?? null;
+      $('moreReportTriage').disabled = nextTriageOffset === null;
+    }
+    $('loadReportTriage').onclick = async () => {
+      reportSeverityById.clear();
+      $('reportTriage').replaceChildren(); nextTriageOffset = null; triageSnapshot = null;
+      $('moreReportTriage').disabled = true;
+      try { await loadReportTriagePage(0, null); }
+      catch (error) { if (error?.code === 'STALE_SESSION') return; $('status').textContent = error.message || '读取待分配工单失败'; }
+    };
+    $('moreReportTriage').onclick = async () => {
+      if (nextTriageOffset === null) return;
+      const offset = nextTriageOffset;
+      nextTriageOffset = null; $('moreReportTriage').disabled = true;
+      try { await loadReportTriagePage(offset, triageSnapshot); }
+      catch (error) { if (error?.code === 'STALE_SESSION') return; nextTriageOffset = offset; $('moreReportTriage').disabled = false;
+        $('status').textContent = error.message || '读取待分配工单失败'; }
+    };
+    $('inspectReport').onclick = async () => {
+      const id = $('reportCaseId').value.trim();
+      if (!id) { $('reportInspection').textContent = '请先填写工单 ID'; return; }
+      const generation = requestGeneration;
+      $('reportInspection').textContent = '逐单核查中…';
+      try {
+        const item = await post(`/ops/reports/${encodeURIComponent(id)}/inspect`, { reason: $('reportScopeReason').value.trim() });
+        if (generation !== requestGeneration) return;
+        reportSeverityById.set(id, item.severity);
+        $('reportInspection').textContent = `${item.kind} · ${item.status} · ${item.severity || 'UNCLASSIFIED'} · 活动 ${item.event_id || '未关联'} · ${item.description}`;
+      } catch (error) { if (error?.code === 'STALE_SESSION') return; if (generation === requestGeneration)
+        $('reportInspection').textContent = error.message || '逐单核查失败'; }
+    };
+    $('assignReport').onclick = async () => {
+      const id = $('reportCaseId').value.trim();
+      const assignee = $('reportAssignee').value.trim();
+      if (!id || !assignee) { $('status').textContent = '请填写工单 ID 和处理账号'; return; }
+      try {
+        await post(`/ops/reports/${encodeURIComponent(id)}/assign`,
+          { assignee, reason: $('reportScopeReason').value.trim() });
+        if (await refresh()) $('status').textContent += ` · 工单已分配给 ${assignee}`;
+      } catch (error) { if (error?.code === 'STALE_SESSION') return; $('status').textContent = error.message || '分配失败'; }
+    };
+    $('classifyReportSeverity').onclick = async () => {
+      const id = $('reportCaseId').value.trim();
+      if (!id) { $('status').textContent = '请填写工单 ID'; return; }
+      const expectedSeverity = reportSeverityById.get(id);
+      if (!['HIGH', 'NORMAL', 'UNCLASSIFIED'].includes(expectedSeverity)) {
+        $('status').textContent = '请先从待分配列表选取工单或逐单核查当前严重度'; return;
+      }
+      try {
+        await post(`/ops/reports/${encodeURIComponent(id)}/severity`,
+          { severity: $('reportSeverity').value, expectedSeverity,
+            reason: $('reportScopeReason').value.trim() });
+        if (await refresh()) $('status').textContent += ' · 工单严重度已更新并留痕';
+      } catch (error) { if (error?.code === 'STALE_SESSION') return;
+        reportSeverityById.delete(id);
+        $('status').textContent = error.message || '工单改级失败';
+      }
+    };
     function renderAppeals(appeals) {
       for (const item of appeals) {
         const li = line($('appeals'), `${item.status} · ${item.description} · ${item.content_id ? '内容审核申诉' : item.removal_reason || '举报申诉'} · ${item.resolution || '待复核'}${item.outcome ? ' · ' + item.outcome : ''}`);
@@ -326,11 +557,8 @@
           if (item.status === 'OPEN') {
             const review = document.createElement('button'); review.textContent = '标记处理中';
             review.onclick = async () => {
-              const response = await fetch(`/ops/appeals/${encodeURIComponent(item.id)}/status`, {
-                method: 'POST', headers: { ...headers(), 'Content-Type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
-                body: JSON.stringify({ status: 'IN_REVIEW' })
-              });
-              if (!response.ok) $('status').textContent = (await response.json()).message || '更新失败'; else refresh();
+              try { await post(`/ops/appeals/${encodeURIComponent(item.id)}/status`, { status: 'IN_REVIEW' }); refresh(); }
+              catch (error) { if (error?.code === 'STALE_SESSION') return; $('status').textContent = error.message; }
             };
             li.appendChild(review);
           }
@@ -341,7 +569,7 @@
             resolve.onclick = async () => {
               try { await post(`/ops/appeals/${encodeURIComponent(item.id)}/status`,
                 { status: 'RESOLVED', resolution: resolution.value, ...(outcome ? { outcome } : {}) }); refresh(); }
-              catch (error) { $('status').textContent = error.message; }
+              catch (error) { if (error?.code === 'STALE_SESSION') return; $('status').textContent = error.message; }
             };
             li.appendChild(resolve);
           }
@@ -350,15 +578,30 @@
     }
     function renderNotificationFollowups(items) {
       for (const item of items) {
-        const li = line($('notificationFollowups'), `${item.externalStatus} · ${item.kind} · 活动 ${item.eventId} · 用户 ${item.userId} · 创建 ${item.createdAt} · 已读 ${item.readAt || '否'}`);
+        const li = line($('notificationFollowups'), `${item.externalStatus} · 原因 ${item.failureCode || '未记录'} · ${item.kind} · 用途 ${item.externalPurpose || '无'} · 模板槽 ${item.templateSlot || '无'} · 活动 ${item.eventId} · 用户 ${item.userId} · 排程 ${item.scheduledAt || '未排程'} · 已读 ${item.readAt || '否'}`);
         const note = document.createElement('input'); note.placeholder = '人工跟进说明（5 至 500 字）'; li.appendChild(note);
         const button = document.createElement('button'); button.textContent = '记录人工跟进';
         button.onclick = async () => {
           try { await post(`/ops/notifications/${encodeURIComponent(item.notificationId)}/followup`, { note: note.value }); refresh(); }
-          catch (error) { $('status').textContent = error.message; }
+          catch (error) { if (error?.code === 'STALE_SESSION') return; $('status').textContent = error.message; }
         };
         li.appendChild(button);
       }
+    }
+    function renderAiDraftAlerts(items) {
+      for (const item of items) {
+        const li = line($('aiDraftAlerts'), `${item.created_at} · 用户 ${item.actor_id} · 活动 ${item.event_id || '历史未关联'} · 请求 ${item.request_key} · ${item.status} · 原因 ${item.fallback_reason || '待核查'} · 预留 ${item.reserved_fen ?? item.budget_fen} 分 · 已知费用 ${item.known_cost_fen == null ? '未知' : item.known_cost_fen + ' 分'} · 费用状态 ${item.cost_status || '未知'}`);
+        const note = document.createElement('input'); note.placeholder = '内部复核说明（5 至 500 字）'; li.appendChild(note);
+        const button = document.createElement('button'); button.textContent = '记录人工复核';
+        button.onclick = async () => {
+          try { await post('/ops/ai-draft-alerts/review', { userId: item.actor_id, requestKey: item.request_key, note: note.value }); await refresh(); }
+          catch (error) { if (error?.code === 'STALE_SESSION') return; $('status').textContent = error.message; }
+        };
+        li.appendChild(button);
+      }
+    }
+    function renderAiDraftAlertReviews(items) {
+      for (const item of items) line($('aiDraftAlertReviews'), `${item.reviewed_at} · ${item.reviewed_by} · 用户 ${item.actor_id} · 活动 ${item.event_id || '历史未关联'} · 请求 ${item.request_key} · ${item.status} · 预留 ${item.reserved_fen} 分 · 费用状态 ${item.cost_status || '未知'} · ${item.note}`);
     }
     function renderEventReviews(items) {
       for (const item of items) {
@@ -369,7 +612,7 @@
           const button = document.createElement('button'); button.textContent = label;
           button.onclick = async () => {
             try { await post(`/ops/events/${encodeURIComponent(item.id)}/review`, { expectedVersion: item.version, decision, reason: reason.value }); refresh(); }
-            catch (error) { $('status').textContent = error.message; }
+            catch (error) { if (error?.code === 'STALE_SESSION') return; $('status').textContent = error.message; }
           };
           li.appendChild(button);
         }
@@ -382,12 +625,9 @@
         for (const [label, decision] of [['通过', 'APPROVED'], ['驳回', 'REJECTED']]) {
           const button = document.createElement('button'); button.textContent = label;
           button.onclick = async () => {
-            const response = await fetch(`/ops/content/${encodeURIComponent(item.id)}/moderate`, {
-              method: 'POST', headers: { ...headers(), 'Content-Type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
-              body: JSON.stringify({ status: decision, ...(decision === 'REJECTED' ? { reason: reason.value } : {}) })
-            });
-            if (!response.ok) $('status').textContent = (await response.json()).message || '审核失败';
-            else refresh();
+            try { await post(`/ops/content/${encodeURIComponent(item.id)}/moderate`,
+              { status: decision, ...(decision === 'REJECTED' ? { reason: reason.value } : {}) }); refresh(); }
+            catch (error) { if (error?.code === 'STALE_SESSION') return; $('status').textContent = error.message; }
           };
           li.appendChild(button);
         }
@@ -400,7 +640,7 @@
         const retryKey = crypto.randomUUID();
         retry.onclick = async () => {
           try { await post(`/ops/jobs/${encodeURIComponent(item.id)}/retry`, {}, retryKey); await refresh(); }
-          catch (error) { $('status').textContent = error.message; }
+          catch (error) { if (error?.code === 'STALE_SESSION') return; $('status').textContent = error.message; }
         };
         li.appendChild(retry);
       }
@@ -419,27 +659,39 @@
         inspect.onclick = async () => {
           try {
             const path = `/ops/registration-anomalies/evidence?userId=${encodeURIComponent(item.userId)}&eventId=${encodeURIComponent(item.eventId)}`;
-            const response = await fetch(path, { headers: headers() });
+            const response = await operatorFetch(path, { headers: headers() });
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || data.code || '读取行为记录失败');
             if (data.lastSignalAt !== item.lastSignalAt) throw new Error('线索已变化，请刷新后复核');
             evidence.textContent = `当前报名状态 ${data.registrationStatus || '无'}；${data.actions.slice().reverse().map(action => `${action.at} ${action.action}`).join('；')}${data.truncated ? '；仅显示最近 100 条，请查原始审计记录' : ''}`;
             review.disabled = false;
-          } catch (error) { review.disabled = true; $('status').textContent = error.message; }
+          } catch (error) { if (error?.code === 'STALE_SESSION') return; review.disabled = true; $('status').textContent = error.message; }
         };
         review.onclick = async () => {
           try { await post('/ops/registration-anomalies/review', { userId: item.userId, eventId: item.eventId,
             lastSignalAt: item.lastSignalAt, disposition: disposition.value, note: note.value }); refresh(); }
-          catch (error) { $('status').textContent = error.message; }
+          catch (error) { if (error?.code === 'STALE_SESSION') return; $('status').textContent = error.message; }
         };
       }
     }
     async function refresh() {
       const generation = ++requestGeneration;
       const denied = [];
+      nextTriageOffset = null;
+      triageSnapshot = null;
+      $('moreReportTriage').disabled = true;
+      $('reportTriage').replaceChildren();
+      $('reportInspection').textContent = '';
+      reportSeverityById.clear();
+      $('reportCaseId').value = '';
+      $('reportAssignee').value = '';
+      $('reportScopeReason').value = '';
       nextReportOffset = null;
       reportSnapshot = null;
       $('moreReports').disabled = true;
+      nextResponseAlertOffset = null;
+      responseAlertSnapshot = null;
+      $('moreReportResponseAlerts').disabled = true;
       nextAnomalyOffset = null;
       anomalySnapshot = null;
       $('moreRegistrationAnomalies').disabled = true;
@@ -464,11 +716,18 @@
       nextAiDraftAlertOffset = null;
       aiDraftAlertSnapshot = null;
       $('moreAiDraftAlerts').disabled = true;
+      nextAiDraftAlertReviewOffset = null;
+      aiDraftAlertReviewSnapshot = null;
+      $('moreAiDraftAlertReviews').disabled = true;
+      aiEventCostCursor = null;
+      $('moreAiEventCosts').disabled = false;
+      $('moreAiEventCosts').textContent = '加载活动成本';
+      $('aiEventCosts').replaceChildren();
       $('status').textContent = '读取中…';
       $('metrics').textContent = '读取中…';
-      for (const id of ['reports', 'eventReviews', 'holds', 'rateLimits', 'registrationAnomalies', 'notificationFollowups', 'notificationHistory', 'failedJobs', 'aiDraftAlerts', 'supportMinutesHistory', 'appeals', 'privacy', 'content']) $(id).replaceChildren();
+      for (const id of ['reports', 'reportResponseAlerts', 'eventReviews', 'holds', 'rateLimits', 'registrationAnomalies', 'notificationFollowups', 'notificationHistory', 'failedJobs', 'aiDraftAlerts', 'aiDraftAlertReviews', 'supportMinutesHistory', 'appeals', 'privacy', 'content']) $(id).replaceChildren();
       try {
-        const [reportPage, eventReviewPage, holds, rateLimits, anomalyPage, notificationFollowupPage, notificationHistory, failedJobPage, aiDraftAlertPage, supportMinutesHistory, appealPage, privacyPage, contentPage, publicGate, emergencyGate, metrics] = await Promise.all([loadReports(denied), loadEventReviews(denied), load('/ops/holds', denied), load('/ops/rate-limits', denied), loadRegistrationAnomalies(denied), loadNotificationFollowups(denied), load('/ops/notifications/followups/history', denied), loadFailedJobs(denied), loadAiDraftAlerts(denied), load('/ops/support-minutes', denied), loadAppeals(denied), loadPrivacy(denied), loadContent(denied), loadPublicGate(denied), loadEmergencyGate(denied), loadMetrics(denied)]);
+        const [reportPage, responseAlertPage, eventReviewPage, holds, rateLimits, anomalyPage, notificationFollowupPage, notificationHistory, failedJobPage, aiDraftAlertPage, aiDraftAlertReviews, supportMinutesHistory, appealPage, privacyPage, contentPage, publicGate, emergencyGate, metrics] = await Promise.all([loadReports(denied), loadReportResponseAlerts(denied), loadEventReviews(denied), load('/ops/holds', denied), load('/ops/rate-limits', denied), loadRegistrationAnomalies(denied), loadNotificationFollowups(denied), load('/ops/notifications/followups/history', denied), loadFailedJobs(denied), loadAiDraftAlerts(denied), loadAiDraftAlertReviews(denied), load('/ops/support-minutes', denied), loadAppeals(denied), loadPrivacy(denied), loadContent(denied), loadPublicGate(denied), loadEmergencyGate(denied), loadMetrics(denied)]);
         if (generation !== requestGeneration) return false;
         const reports = reportPage.items;
         const registrationAnomalies = anomalyPage.items;
@@ -482,6 +741,9 @@
         nextReportOffset = reportPage.nextOffset ?? null;
         reportSnapshot = reportPage.snapshot ?? null;
         $('moreReports').disabled = nextReportOffset === null;
+        nextResponseAlertOffset = responseAlertPage.nextOffset ?? null;
+        responseAlertSnapshot = responseAlertPage.snapshot ?? null;
+        $('moreReportResponseAlerts').disabled = nextResponseAlertOffset === null;
         nextAnomalyOffset = anomalyPage.nextOffset ?? null;
         anomalySnapshot = anomalyPage.snapshot ?? null;
         $('moreRegistrationAnomalies').disabled = nextAnomalyOffset === null;
@@ -506,6 +768,9 @@
         nextAiDraftAlertOffset = aiDraftAlertPage.nextOffset ?? null;
         aiDraftAlertSnapshot = aiDraftAlertPage.snapshot ?? null;
         $('moreAiDraftAlerts').disabled = nextAiDraftAlertOffset === null;
+        nextAiDraftAlertReviewOffset = aiDraftAlertReviews.nextOffset ?? null;
+        aiDraftAlertReviewSnapshot = aiDraftAlertReviews.snapshot ?? null;
+        $('moreAiDraftAlertReviews').disabled = nextAiDraftAlertReviewOffset === null;
         $('recordSupportMinutes').disabled = denied.includes('/ops/support-minutes');
         if (!metrics) $('metrics').textContent = '无权限查看';
         else {
@@ -537,13 +802,15 @@
             : '报名到场诊断未返回';
           $('metrics').textContent = `${weeks}；到期活动 ${due.dueEvents || 0}、证据合格 ${due.evidenceQualified || 0}、待复核 ${due.pendingReview || 0}、保守完成率 ${dueRate}（${dueGate}）；成熟主办方 ${reuse.maturedHosts || 0}、28 天复用 ${reuse.reusedHosts || 0}、复用率 ${reuse.rate == null ? '样本未成熟' : (reuse.rate * 100).toFixed(1) + '%'}；二次活动已到期 ${reuse.secondEventDue || 0}、合格 ${reuse.secondEventQualified || 0}；有参与证据的用户 ${return30.observedParticipants || 0}、成熟 30 天 ${return30.maturedParticipants || 0}、首场待复核 ${return30.pendingFirstParticipants || 0}、再次参与 ${return30.returnedParticipants || 0}、再参与待补证据 ${return30.pendingReturnParticipants || 0}、D30 再参与率 ${return30.rate == null ? '样本未成熟' : (return30.rate * 100).toFixed(1) + '%'}（${returnGate}）；${attendanceText}；${waitlistText}；${formationText}；已记录人工 ${support.recordedMinutes || 0} 分钟，${support.eventsWithEntries || 0}/${support.dueEvents || 0} 场有条目（记录不完整）；贡献利润：不可计算（缺实际收入与成本来源）。`;
         }
-        $('publicGate').textContent = publicGate ? `${publicGate.status === 'OPEN' ? '开放' : '关闭'} · 原因：${publicGate.reason} · 操作人：${publicGate.changedBy}` : '无权限查看';
+        $('publicGate').textContent = publicGate ? `${publicGate.status === 'OPEN' ? '开放' : '关闭'} · 原因：${publicGate.reason} · 操作人：${publicGate.changedBy}${publicGate.coverageId ? ' · 当前值守记录 ID：' + publicGate.coverageId : ''}` : '无权限查看';
         $('closePublicGate').disabled = !publicGate || publicGate.status === 'CLOSED';
         $('openPublicGate').disabled = !publicGate || publicGate.status === 'OPEN';
+        for (const id of ['createPublicCoverage', 'confirmPublicCoverage', 'revokePublicCoverage']) $(id).disabled = !publicGate;
         $('emergencyGate').textContent = emergencyGate?.status ? `${emergencyGate.status === 'OPEN' ? '开放' : '关闭'} · 原因：${emergencyGate.reason} · 操作人：${emergencyGate.changedBy}` : '无权限查看';
         $('closeEmergencyGate').disabled = !emergencyGate?.status || emergencyGate.status === 'CLOSED';
         $('openEmergencyGate').disabled = !emergencyGate?.status || emergencyGate.status === 'OPEN';
         renderReports(reports);
+        renderReportResponseAlerts(responseAlertPage.items);
         renderEventReviews(eventReviews);
         for (const item of holds) {
           const li = line($('holds'), `${item.status} · 活动 ${item.eventId} · 暂停原因：${item.reason} · 创建人 ${item.createdBy}${item.releaseReason ? ' · 解除原因：' + item.releaseReason : ''}`);
@@ -552,7 +819,7 @@
             const release = document.createElement('button'); release.textContent = '人工解除';
             release.onclick = async () => {
               try { await post(`/ops/holds/${encodeURIComponent(item.id)}/release`, { reason: reason.value }); refresh(); }
-              catch (error) { $('status').textContent = error.message; }
+              catch (error) { if (error?.code === 'STALE_SESSION') return; $('status').textContent = error.message; }
             };
             li.appendChild(release);
           }
@@ -560,18 +827,20 @@
         for (const item of rateLimits) line($('rateLimits'), `${item.windowStart} · ${item.scope} · 请求 ${item.attempts} · 已拒绝 ${item.rejectedCount}`);
         renderRegistrationAnomalies(registrationAnomalies);
         renderNotificationFollowups(notificationFollowups);
-        for (const item of notificationHistory) line($('notificationHistory'), `${item.recordedAt} · ${item.recordedBy} · 活动 ${item.eventId} · 用户 ${item.userId} · ${item.kind} · 外部状态 ${item.externalStatus} · ${item.note}`);
+        for (const item of notificationHistory) line($('notificationHistory'), `${item.recordedAt} · ${item.recordedBy} · 活动 ${item.eventId} · 用户 ${item.userId} · ${item.kind} · 外部状态 ${item.externalStatus} · 原因 ${item.failureCode || '未记录'} · ${item.note}`);
         renderFailedJobs(failedJobs);
-        for (const item of aiDraftAlerts) line($('aiDraftAlerts'), `${item.created_at} · 用户 ${item.actor_id} · 请求 ${item.request_key} · ${item.status} · 原因 ${item.fallback_reason || '待核查'} · 预算 ${item.budget_fen} 分 · 已知费用 ${item.known_cost_fen == null ? '未知' : item.known_cost_fen + ' 分'} · 费用状态 ${item.cost_status || '未知'}`);
+        renderAiDraftAlerts(aiDraftAlerts);
+        renderAiDraftAlertReviews(aiDraftAlertReviews.items);
         renderAppeals(appeals);
         renderPrivacy(privacy);
         for (const item of supportMinutesHistory)
           line($('supportMinutesHistory'), `${item.recordedAt} · 活动 ${item.eventId} · ${item.category} · ${item.minutes} 分钟 · ${item.recordedBy}`);
         renderContent(content);
         const count = (path, amount) => denied.includes(path) ? '无权限' : amount;
-        $('status').textContent = `举报 ${count('/ops/reports', reportPage.total ?? reports.length)}、公开活动待审 ${count('/ops/events/reviews', eventReviewPage.total ?? eventReviews.length)}、活动暂停 ${count('/ops/holds', holds.filter(item => item.status === 'ACTIVE').length)}、异常请求 ${count('/ops/rate-limits', rateLimits.length)}、异常报名 ${count('/ops/registration-anomalies', anomalyPage.total ?? registrationAnomalies.length)}、通知待跟进 ${count('/ops/notifications/followups', notificationFollowupPage.total ?? notificationFollowups.length)}、最近已跟进 ${count('/ops/notifications/followups/history', notificationHistory.length)}、失败任务 ${count('/ops/jobs/failed', failedJobPage.total ?? failedJobs.length)}、AI 草稿异常 ${count('/ops/ai-draft-alerts', aiDraftAlertPage.total ?? aiDraftAlerts.length)}、申诉 ${count('/ops/appeals', appealPage.total ?? appeals.length)}、个人信息请求 ${count('/ops/privacy', privacyPage.total ?? privacy.length)}、待审核内容 ${count('/ops/content', contentPage.total ?? content.length)}${denied.length ? ' · 无权限：' + denied.join('、') : ''}`;
+        $('status').textContent = `举报 ${count('/ops/reports', reportPage.total ?? reports.length)}、首次响应关注 ${count('/ops/reports/response-alerts', responseAlertPage.total ?? responseAlertPage.items.length)}、活动待审 ${count('/ops/events/reviews', eventReviewPage.total ?? eventReviews.length)}、活动暂停 ${count('/ops/holds', holds.filter(item => item.status === 'ACTIVE').length)}、异常请求 ${count('/ops/rate-limits', rateLimits.length)}、异常报名 ${count('/ops/registration-anomalies', anomalyPage.total ?? registrationAnomalies.length)}、通知待跟进 ${count('/ops/notifications/followups', notificationFollowupPage.total ?? notificationFollowups.length)}、最近已跟进 ${count('/ops/notifications/followups/history', notificationHistory.length)}、失败任务 ${count('/ops/jobs/failed', failedJobPage.total ?? failedJobs.length)}、AI 草稿异常 ${count('/ops/ai-draft-alerts', aiDraftAlertPage.total ?? aiDraftAlerts.length)}、申诉 ${count('/ops/appeals', appealPage.total ?? appeals.length)}、个人信息请求 ${count('/ops/privacy', privacyPage.total ?? privacy.length)}、待审核内容 ${count('/ops/content', contentPage.total ?? content.length)}${denied.length ? ' · 无权限：' + denied.join('、') : ''}`;
+        $('operatorWorkbench').disabled = false;
         return true;
-      } catch (error) {
+      } catch (error) { if (error?.code === 'STALE_SESSION') return;
         if (generation === requestGeneration) {
           const message = String(error?.message || '读取失败');
           $('status').textContent = /Failed to fetch|NetworkError|network unavailable/i.test(message)
@@ -597,7 +866,7 @@
         nextReportOffset = page.nextOffset ?? null;
         reportSnapshot = page.snapshot ?? null;
         $('moreReports').disabled = nextReportOffset === null;
-      } catch (error) {
+      } catch (error) { if (error?.code === 'STALE_SESSION') return;
         if (generation !== requestGeneration) return;
         if (error.code === 'QUEUE_CHANGED') {
           if (await refresh()) $('status').textContent += ' · 举报列表变化，已从第一页刷新';
@@ -624,7 +893,7 @@
         nextAnomalyOffset = page.nextOffset ?? null;
         anomalySnapshot = page.snapshot ?? null;
         $('moreRegistrationAnomalies').disabled = nextAnomalyOffset === null;
-      } catch (error) {
+      } catch (error) { if (error?.code === 'STALE_SESSION') return;
         if (generation !== requestGeneration) return;
         if (error.code === 'QUEUE_CHANGED') {
           if (await refresh()) $('status').textContent += ' · 异常报名队列变化，已从第一页刷新';
@@ -651,7 +920,7 @@
         nextPrivacyOffset = page.nextOffset ?? null;
         privacySnapshot = page.snapshot ?? null;
         $('morePrivacy').disabled = nextPrivacyOffset === null;
-      } catch (error) {
+      } catch (error) { if (error?.code === 'STALE_SESSION') return;
         if (generation !== requestGeneration) return;
         if (error.code === 'QUEUE_CHANGED') {
           if (await refresh()) $('status').textContent += ' · 个人信息请求列表变化，已从第一页刷新';
@@ -678,7 +947,7 @@
         nextAppealOffset = page.nextOffset ?? null;
         appealSnapshot = page.snapshot ?? null;
         $('moreAppeals').disabled = nextAppealOffset === null;
-      } catch (error) {
+      } catch (error) { if (error?.code === 'STALE_SESSION') return;
         if (generation !== requestGeneration) return;
         if (error.code === 'QUEUE_CHANGED') {
           if (await refresh()) $('status').textContent += ' · 申诉列表变化，已从第一页刷新';
@@ -705,7 +974,7 @@
         nextNotificationFollowupOffset = page.nextOffset ?? null;
         notificationFollowupSnapshot = page.snapshot ?? null;
         $('moreNotificationFollowups').disabled = nextNotificationFollowupOffset === null;
-      } catch (error) {
+      } catch (error) { if (error?.code === 'STALE_SESSION') return;
         if (generation !== requestGeneration) return;
         if (error.code === 'QUEUE_CHANGED') {
           if (await refresh()) $('status').textContent += ' · 通知待跟进列表变化，已从第一页刷新';
@@ -727,15 +996,15 @@
         const denied = [];
         const page = await loadEventReviews(denied, offset, snapshot);
         if (generation !== requestGeneration) return;
-        if (denied.length) { $('status').textContent = '无权限查看公开活动审核'; return; }
+        if (denied.length) { $('status').textContent = '无权限查看活动审核'; return; }
         renderEventReviews(page.items);
         nextEventReviewOffset = page.nextOffset ?? null;
         eventReviewSnapshot = page.snapshot ?? null;
         $('moreEventReviews').disabled = nextEventReviewOffset === null;
-      } catch (error) {
+      } catch (error) { if (error?.code === 'STALE_SESSION') return;
         if (generation !== requestGeneration) return;
         if (error.code === 'QUEUE_CHANGED') {
-          if (await refresh()) $('status').textContent += ' · 公开活动审核列表变化，已从第一页刷新';
+          if (await refresh()) $('status').textContent += ' · 活动审核列表变化，已从第一页刷新';
           return;
         }
         nextEventReviewOffset = offset;
@@ -759,7 +1028,7 @@
         nextContentOffset = page.nextOffset ?? null;
         contentSnapshot = page.snapshot ?? null;
         $('moreContent').disabled = nextContentOffset === null;
-      } catch (error) {
+      } catch (error) { if (error?.code === 'STALE_SESSION') return;
         if (generation !== requestGeneration) return;
         if (error.code === 'QUEUE_CHANGED') {
           if (await refresh()) $('status').textContent += ' · 内容审核列表变化，已从第一页刷新';
@@ -786,7 +1055,7 @@
         nextFailedJobOffset = page.nextOffset ?? null;
         failedJobSnapshot = page.snapshot ?? null;
         $('moreFailedJobs').disabled = nextFailedJobOffset === null;
-      } catch (error) {
+      } catch (error) { if (error?.code === 'STALE_SESSION') return;
         if (generation !== requestGeneration) return;
         if (error.code === 'QUEUE_CHANGED') {
           if (await refresh()) $('status').textContent += ' · 失败任务列表变化，已从第一页刷新';
@@ -809,11 +1078,11 @@
         const page = await loadAiDraftAlerts(denied, offset, snapshot);
         if (generation !== requestGeneration) return;
         if (denied.length) { $('status').textContent = '无权限查看 AI 草稿异常'; return; }
-        for (const item of page.items) line($('aiDraftAlerts'), `${item.created_at} · 用户 ${item.actor_id} · 请求 ${item.request_key} · ${item.status} · 原因 ${item.fallback_reason || '待核查'} · 预算 ${item.budget_fen} 分 · 已知费用 ${item.known_cost_fen == null ? '未知' : item.known_cost_fen + ' 分'} · 费用状态 ${item.cost_status || '未知'}`);
+        renderAiDraftAlerts(page.items);
         nextAiDraftAlertOffset = page.nextOffset ?? null;
         aiDraftAlertSnapshot = page.snapshot ?? null;
         $('moreAiDraftAlerts').disabled = nextAiDraftAlertOffset === null;
-      } catch (error) {
+      } catch (error) { if (error?.code === 'STALE_SESSION') return;
         if (generation !== requestGeneration) return;
         if (error.code === 'QUEUE_CHANGED') {
           if (await refresh()) $('status').textContent += ' · AI 草稿异常列表变化，已从第一页刷新';
@@ -824,12 +1093,80 @@
         $('status').textContent = error.message;
       }
     };
+    $('moreAiDraftAlertReviews').onclick = async () => {
+      if (nextAiDraftAlertReviewOffset === null) return;
+      const generation = requestGeneration;
+      const offset = nextAiDraftAlertReviewOffset;
+      const snapshot = aiDraftAlertReviewSnapshot;
+      nextAiDraftAlertReviewOffset = null;
+      $('moreAiDraftAlertReviews').disabled = true;
+      try {
+        const denied = [];
+        const page = await loadAiDraftAlertReviews(denied, offset, snapshot);
+        if (generation !== requestGeneration) return;
+        if (denied.length) { $('status').textContent = '无权限查看 AI 草稿复核历史'; return; }
+        renderAiDraftAlertReviews(page.items);
+        nextAiDraftAlertReviewOffset = page.nextOffset ?? null;
+        aiDraftAlertReviewSnapshot = page.snapshot ?? null;
+        $('moreAiDraftAlertReviews').disabled = nextAiDraftAlertReviewOffset === null;
+      } catch (error) { if (error?.code === 'STALE_SESSION') return;
+        if (generation !== requestGeneration) return;
+        if (error.code === 'QUEUE_CHANGED') {
+          if (await refresh()) $('status').textContent += ' · AI 草稿复核历史变化，已从第一页刷新';
+          return;
+        }
+        nextAiDraftAlertReviewOffset = offset;
+        $('moreAiDraftAlertReviews').disabled = false;
+        $('status').textContent = error.message;
+      }
+    };
+    $('moreAiEventCosts').onclick = async () => {
+      const generation = requestGeneration;
+      const cursor = aiEventCostCursor;
+      $('moreAiEventCosts').disabled = true;
+      try {
+        const response = await operatorFetch('/ops/ai-event-costs' + (cursor ? '?after=' + encodeURIComponent(cursor) : ''),
+          { headers: headers() });
+        const data = await response.json();
+        if (generation !== requestGeneration) return;
+        if (response.status === 403) { $('status').textContent = '无权限查看 AI 活动成本'; return; }
+        if (!response.ok) throw new Error(data.message || data.code || '读取 AI 活动成本失败');
+        for (const item of data.items) line($('aiEventCosts'), `活动 ${item.event_id} · 请求 ${item.request_count} 次 · 已知费用 ${item.known_cost_fen} 分 · 费用不确定占额 ${item.uncertain_reserved_fen} 分（${item.uncertain_count} 条待核查）`);
+        if (!data.items.length && !cursor) line($('aiEventCosts'), '暂无 AI 草稿费用记录');
+        aiEventCostCursor = data.nextCursor ?? null;
+        $('moreAiEventCosts').disabled = aiEventCostCursor === null;
+        $('moreAiEventCosts').textContent = aiEventCostCursor ? '加载更多活动成本' : '已显示全部活动成本';
+      } catch (error) { if (error?.code === 'STALE_SESSION') return;
+        if (generation !== requestGeneration) return;
+        $('moreAiEventCosts').disabled = false;
+        $('status').textContent = error.message;
+      }
+    };
     async function post(path, body, idempotencyKey = crypto.randomUUID()) {
-      const response = await fetch(path, { method: 'POST', headers: { ...headers(), 'Content-Type': 'application/json', 'Idempotency-Key': idempotencyKey }, body: JSON.stringify(body) });
+      const response = await operatorFetch(path, { method: 'POST', headers: { ...headers(), 'Content-Type': 'application/json', 'Idempotency-Key': idempotencyKey }, body: JSON.stringify(body) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || data.code || '操作失败');
       return data;
     }
+    let pendingHostReview = null;
+    $('submitHostReview').onclick = async () => {
+      const hostId = $('hostReviewUserId').value.trim();
+      const status = $('hostReviewStatus').value;
+      const reason = $('hostReviewReason').value.trim();
+      if (!hostId || reason.length < 5) {
+        $('hostReviewResult').textContent = '请填写主办方用户 ID 和至少 5 字的核验依据'; return;
+      }
+      const fingerprint = JSON.stringify([hostId, status, reason, $('token').value]);
+      if (!pendingHostReview || pendingHostReview.fingerprint !== fingerprint)
+        pendingHostReview = { fingerprint, key: crypto.randomUUID() };
+      try {
+        const result = await post(`/ops/hosts/${encodeURIComponent(hostId)}/status`,
+          { status, reason }, pendingHostReview.key);
+        pendingHostReview = null;
+        $('hostReviewResult').textContent = `已记录 ${result.hostId}：${result.status}，复核人 ${result.reviewedBy}。`;
+        $('hostReviewReason').value = '';
+      } catch (error) { if (error?.code === 'STALE_SESSION') return; $('hostReviewResult').textContent = error.message; }
+    };
     let pendingSupportWrite = null;
     $('recordSupportMinutes').onclick = async () => {
       const eventId = $('supportEventId').value.trim();
@@ -848,62 +1185,121 @@
         pendingSupportWrite = null;
         $('supportMinutes').value = '';
         await refresh();
-      } catch (error) { $('status').textContent = error.message; }
+      } catch (error) { if (error?.code === 'STALE_SESSION') return; $('status').textContent = error.message; }
     };
     $('placeHold').onclick = async () => {
       try { await post(`/ops/events/${encodeURIComponent($('holdEventId').value.trim())}/hold`, { reason: $('holdReason').value }); refresh(); }
-      catch (error) { $('status').textContent = error.message; }
+      catch (error) { if (error?.code === 'STALE_SESSION') return; $('status').textContent = error.message; }
+    };
+    function coverageTimestamp(id) {
+      const raw = $(id).value;
+      if (!raw || !Number.isFinite(Date.parse(raw))) throw new Error('请填写有效的值守开始、结束和演练时间');
+      return new Date(raw).toISOString();
+    }
+    function selectedCoverageId() {
+      const id = $('coverageId').value.trim();
+      if (!/^[a-f0-9-]{36}$/i.test(id)) throw new Error('请填写有效的值守记录 ID');
+      return id;
+    }
+    $('createPublicCoverage').onclick = async () => {
+      try {
+        const created = await post('/ops/public-coverage', {
+          startsAt: coverageTimestamp('coverageStartsAt'), endsAt: coverageTimestamp('coverageEndsAt'),
+          drillCompletedAt: coverageTimestamp('coverageDrillCompletedAt'),
+          drillReference: $('coverageDrillReference').value.trim() });
+        $('coverageId').value = created.id;
+        $('coverageResult').textContent = `已记录值守时段 ${created.id}，责任人 ${created.responsibleActor}；等待另一名安全运营复核。`;
+      } catch (error) { if (error?.code === 'STALE_SESSION') return; $('coverageResult').textContent = error.message; }
+    };
+    $('confirmPublicCoverage').onclick = async () => {
+      try {
+        const id = selectedCoverageId();
+        const confirmed = await post(`/ops/public-coverage/${id}/confirm`, { reason: $('coverageReason').value.trim() });
+        $('coverageResult').textContent = `值守记录 ${id} 已由 ${confirmed.confirmedBy} 复核；请按活动时段配置其他覆盖记录。`;
+      } catch (error) { if (error?.code === 'STALE_SESSION') return; $('coverageResult').textContent = error.message; }
+    };
+    $('revokePublicCoverage').onclick = async () => {
+      try {
+        const id = selectedCoverageId();
+        await post(`/ops/public-coverage/${id}/revoke`, { reason: $('coverageReason').value.trim() });
+        $('coverageResult').textContent = `值守记录 ${id} 已撤销。`;
+        await refresh();
+      } catch (error) { if (error?.code === 'STALE_SESSION') return; $('coverageResult').textContent = error.message; }
     };
     for (const [id, status] of [['closePublicGate', 'CLOSED'], ['openPublicGate', 'OPEN']]) {
       $(id).onclick = async () => {
-        try { await post('/ops/public-recruitment', { status, reason: $('publicGateReason').value }); $('publicGateReason').value = ''; refresh(); }
-        catch (error) { $('status').textContent = error.message; }
+        try { await post('/ops/public-recruitment', { status, reason: $('publicGateReason').value,
+          ...(status === 'OPEN' ? { coverageId: selectedCoverageId() } : {}) }); $('publicGateReason').value = ''; await refresh(); }
+        catch (error) { if (error?.code === 'STALE_SESSION') return; $('status').textContent = error.message; }
       };
     }
     for (const [id, status] of [['closeEmergencyGate', 'CLOSED'], ['openEmergencyGate', 'OPEN']]) {
       $(id).onclick = async () => {
         try { await post('/ops/emergency', { status, reason: $('emergencyReason').value }); $('emergencyReason').value = ''; refresh(); }
-        catch (error) { $('status').textContent = error.message; }
+        catch (error) { if (error?.code === 'STALE_SESSION') return; $('status').textContent = error.message; }
       };
     }
+    function clearPrivateWorkbench() {
+      requestGeneration++;
+      $('operatorWorkbench').disabled = true;
+      nextReportOffset = nextResponseAlertOffset = nextTriageOffset = nextEventReviewOffset = null;
+      nextAnomalyOffset = nextNotificationFollowupOffset = nextFailedJobOffset = null;
+      nextAiDraftAlertOffset = nextAiDraftAlertReviewOffset = null;
+      nextPrivacyOffset = nextAppealOffset = nextContentOffset = null;
+      reportSnapshot = responseAlertSnapshot = triageSnapshot = eventReviewSnapshot = null;
+      anomalySnapshot = notificationFollowupSnapshot = failedJobSnapshot = null;
+      aiDraftAlertSnapshot = aiDraftAlertReviewSnapshot = null;
+      privacySnapshot = appealSnapshot = contentSnapshot = aiEventCostCursor = null;
+      reportSeverityById.clear();
+      pendingHostReview = null;
+      for (const id of ['reports', 'reportResponseAlerts', 'reportTriage', 'eventReviews', 'holds',
+        'rateLimits', 'registrationAnomalies', 'notificationFollowups', 'notificationHistory',
+        'failedJobs', 'aiDraftAlerts', 'aiDraftAlertReviews', 'aiEventCosts', 'supportMinutesHistory',
+        'appeals', 'privacy', 'content']) $(id).replaceChildren();
+      for (const id of ['moreReports', 'moreReportResponseAlerts', 'moreReportTriage', 'moreEventReviews',
+        'moreRegistrationAnomalies', 'moreNotificationFollowups', 'moreFailedJobs', 'moreAiDraftAlerts',
+        'moreAiDraftAlertReviews', 'moreAiEventCosts', 'moreAppeals', 'morePrivacy', 'moreContent'])
+        $(id).disabled = true;
+      $('moreAiEventCosts').textContent = '加载活动成本';
+      for (const id of ['devUser', 'operatorUser', 'operatorPassword', 'operatorCode', 'reportCaseId',
+        'reportAssignee', 'reportScopeReason', 'holdEventId', 'holdReason', 'supportEventId',
+        'supportMinutes', 'coverageStartsAt', 'coverageEndsAt', 'coverageDrillCompletedAt',
+        'coverageDrillReference', 'coverageId', 'coverageReason', 'hostReviewUserId',
+        'hostReviewReason', 'publicGateReason', 'emergencyReason']) $(id).value = '';
+      for (const id of ['publicGate', 'emergencyGate', 'coverageResult', 'reportInspection',
+        'hostReviewResult']) $(id).textContent = '';
+    }
+    let authIntentGeneration = 0;
     $('operatorLogin').onclick = async () => {
+      const generation = ++authIntentGeneration;
       try {
         const response = await fetch('/ops/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username: $('operatorUser').value.trim(), password: $('operatorPassword').value, code: $('operatorCode').value.trim() }) });
         const data = await response.json();
+        if (generation !== authIntentGeneration) return;
         $('operatorPassword').value = ''; $('operatorCode').value = '';
         if (!response.ok) throw new Error(data.message || '登录失败');
+        clearPrivateWorkbench();
         $('token').value = data.token; sessionStorage.setItem('operatorToken', data.token);
         await refresh();
-      } catch (error) { $('status').textContent = error.message; }
+      } catch (error) { if (generation === authIntentGeneration) $('status').textContent = error.message; }
     };
     $('operatorLogout').onclick = async () => {
+      const generation = ++authIntentGeneration;
       try {
         if ($('token').value) {
-          const response = await fetch('/ops/auth/logout', { method: 'POST', headers: headers() });
+          const response = await operatorFetch('/ops/auth/logout', { method: 'POST', headers: headers() });
+          if (generation !== authIntentGeneration) return;
           if (!response.ok) throw new Error('服务器未确认退出');
         }
-        requestGeneration++;
-        nextNotificationFollowupOffset = null;
-        notificationFollowupSnapshot = null;
-        $('moreNotificationFollowups').disabled = true;
-        nextEventReviewOffset = null;
-        eventReviewSnapshot = null;
-        $('moreEventReviews').disabled = true;
-        nextAnomalyOffset = null;
-        anomalySnapshot = null;
-        $('moreRegistrationAnomalies').disabled = true;
-        nextContentOffset = null;
-        contentSnapshot = null;
-        $('moreContent').disabled = true;
-        nextFailedJobOffset = null;
-        failedJobSnapshot = null;
-        $('moreFailedJobs').disabled = true;
+        clearPrivateWorkbench();
         $('token').value = ''; sessionStorage.removeItem('operatorToken');
         $('status').textContent = '已退出登录';
         $('metrics').textContent = '已退出登录';
-        for (const id of ['reports', 'eventReviews', 'holds', 'rateLimits', 'registrationAnomalies', 'notificationFollowups', 'notificationHistory', 'failedJobs', 'appeals', 'privacy', 'content']) $(id).replaceChildren();
-      } catch (error) { $('status').textContent = '退出失败：' + error.message; }
+      } catch (error) {
+        if (generation !== authIntentGeneration || error?.code === 'STALE_SESSION') return;
+        $('status').textContent = '退出失败：' + error.message;
+      }
     };
     $('refresh').onclick = refresh;
   </script>

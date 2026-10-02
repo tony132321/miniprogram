@@ -1,0 +1,32 @@
+{
+  "sourceLine": 333,
+  "sourceAlt": "Party Vibes",
+  "URL": "https://lh3.googleusercontent.com/aida-public/AB6AXuAxmupsg-D3r3vb25ROo-WuDM_-KOjPd46lFZwoIzRUcQiarFiqw2V0ev9s4LiP6Notyk8ufvsYdlvdn6PV71xErpHw-HrFdeR60oayn75qdAxBXXTp0baW7uXf9Cy9VG-CKBEGWf5Mp9hoI3PugY6inSdHuRi_fNXwBL2rYgsxtHIafGILgLG9GlNyF9bsnbdKMZEWjk7LPZR_2X0ZU33FX4uekcl9Xm4TWRdo9ozZpYJ_-IJ3r7IZ8Q",
+  "finalURL": "https://lh3.googleusercontent.com/aida-public/AB6AXuAxmupsg-D3r3vb25ROo-WuDM_-KOjPd46lFZwoIzRUcQiarFiqw2V0ev9s4LiP6Notyk8ufvsYdlvdn6PV71xErpHw-HrFdeR60oayn75qdAxBXXTp0baW7uXf9Cy9VG-CKBEGWf5Mp9hoI3PugY6inSdHuRi_fNXwBL2rYgsxtHIafGILgLG9GlNyF9bsnbdKMZEWjk7LPZR_2X0ZU33FX4uekcl9Xm4TWRdo9ozZpYJ_-IJ3r7IZ8Q",
+  "status": 200,
+  "headers": {
+    "Content-Type": "image/jpeg",
+    "Vary": "Origin",
+    "Access-Control-Allow-Origin": "*",
+    "Timing-Allow-Origin": "*",
+    "Access-Control-Expose-Headers": "Content-Length",
+    "ETag": "\"v0\"",
+    "Expires": "Sat, 03 Oct 2026 02:03:45 GMT",
+    "Cache-Control": "public, max-age=86400, no-transform",
+    "Content-Disposition": "inline;filename=\"unnamed.jpg\"",
+    "X-Content-Type-Options": "nosniff",
+    "Date": "Fri, 02 Oct 2026 02:03:45 GMT",
+    "Server": "fife",
+    "Content-Length": "67934",
+    "X-XSS-Protection": "0",
+    "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "Connection": "close"
+  },
+  "contentType": "image/jpeg",
+  "bytes": 67934,
+  "sha256": "3365ce00ca5e741f4cbfbd5cf9ed76b8e0f821f83a5235e7182a6b41164e1d6a",
+  "savedPath": "/private/tmp/caper-wave73-home-long/photos/brand-party.jpg",
+  "noReencoding": true,
+  "fetchedAtUTC": "2026-10-02T02:03:46.300830+00:00",
+  "existingByteEqualCandidates": []
+}

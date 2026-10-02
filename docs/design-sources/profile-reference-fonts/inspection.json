@@ -1,0 +1,54 @@
+[
+  {
+    "file": "plusjakarta-500-0.woff",
+    "weightClass": 500,
+    "unitsPerEm": 1000,
+    "axes": [],
+    "unicodeCount": 721,
+    "names": [
+      "Plus Jakarta Sans Medium",
+      "Regular",
+      "Version 2.071;gftools[0.9.30]"
+    ]
+  },
+  {
+    "file": "material-profile-back-variable-0.woff2",
+    "weightClass": 400,
+    "unitsPerEm": 960,
+    "axes": [
+      {
+        "tag": "FILL",
+        "min": 0.0,
+        "default": 0.0,
+        "max": 1.0
+      },
+      {
+        "tag": "wght",
+        "min": 100.0,
+        "default": 400.0,
+        "max": 700.0
+      }
+    ],
+    "unicodeCount": 14,
+    "names": [
+      "Material Symbols Outlined 24pt",
+      "Regular",
+      "Version 2.972"
+    ],
+    "instancedAxes": {
+      "wght": 600,
+      "FILL": 0
+    },
+    "implicitFixedAxes": {
+      "opsz": 24,
+      "GRAD": 0
+    },
+    "glyph": "uniE2EA",
+    "unicode": "U+E2EA",
+    "svgBytes": 266,
+    "svgSHA256": "efeb362fc20c3e3a66fb6dc7be585f6ea7db8e9983609c44e148ef76807c3b24",
+    "path": "M641.1304931640625 -61.912109375 222.47735595703125 -480.0 641.1304931640625 -898.087890625 730.2183837890625 -809.0 401.2183837890625 -480.0 730.2183837890625 -151.0Z",
+    "fill": "#1a1b1f",
+    "colorSource": "parent text-on-surface in all four original headers"
+  }
+]

@@ -1,0 +1,58 @@
+[
+  {
+    "role": "host",
+    "stats": true,
+    "alias": "READY",
+    "contracts": 16,
+    "sha256": "6966bc72f07b1d31e146194b1dd2772465bcb3fbe468ac27f1d15d0c63b9a405"
+  },
+  {
+    "role": "host",
+    "stats": true,
+    "alias": "ERROR",
+    "contracts": 15,
+    "sha256": "5f30829647b365f13f08c2994f3b44faa48d07c5020c02d134a4d1d1d0705a2a"
+  },
+  {
+    "role": "host",
+    "stats": false,
+    "alias": "READY",
+    "contracts": 13,
+    "sha256": "bdd49147b32e04e17d9fca7f6c036277d18ad0ce9c1c91cb8814d70cb2616e9d"
+  },
+  {
+    "role": "host",
+    "stats": false,
+    "alias": "ERROR",
+    "contracts": 13,
+    "sha256": "bdd49147b32e04e17d9fca7f6c036277d18ad0ce9c1c91cb8814d70cb2616e9d"
+  },
+  {
+    "role": "confirmed-member",
+    "stats": true,
+    "alias": "READY",
+    "contracts": 15,
+    "sha256": "d5773768a908234e11ba7c70394b617a950c9d7615fb30a9eaaddc680e27819b"
+  },
+  {
+    "role": "confirmed-member",
+    "stats": true,
+    "alias": "ERROR",
+    "contracts": 14,
+    "sha256": "6478f27658a6b0266ed8d99e12568a3e9a90795dfa73418e37b6fb6705bb4f5c"
+  },
+  {
+    "role": "confirmed-member",
+    "stats": false,
+    "alias": "READY",
+    "contracts": 12,
+    "sha256": "6b4c5e87f515f18f52b32bde06e72060b28ec82ec08e9aabcaccffd6dbc6fd1c"
+  },
+  {
+    "role": "confirmed-member",
+    "stats": false,
+    "alias": "ERROR",
+    "contracts": 12,
+    "sha256": "6b4c5e87f515f18f52b32bde06e72060b28ec82ec08e9aabcaccffd6dbc6fd1c"
+  }
+]

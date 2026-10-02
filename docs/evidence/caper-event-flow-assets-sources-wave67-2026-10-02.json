@@ -1,0 +1,1497 @@
+{
+  "status": "FROZEN Wave67 event products; source and static protection evidence only",
+  "date": "2026-10-02",
+  "baselineCommit": "a8486175a3bfb3a70f475725b4901d1cf9de603b",
+  "sourcePreparation": {
+    "status": "PREPARATION ONLY; no product changes",
+    "originals": {
+      "pg05": {
+        "code.html": {
+          "bytes": 17811,
+          "sha256": "a016c7725aebb5eeb0ceaad0664651f723a78459738b049fc4c51fa652ac0075"
+        },
+        "screen.png": {
+          "bytes": 386681,
+          "sha256": "96167d34204721512ade34dedf01313894b09b68147865b5a104015a3679d63b"
+        }
+      },
+      "pg05_s": {
+        "code.html": {
+          "bytes": 26407,
+          "sha256": "cc462e2d55b767cac1abae42cae61ff796dafbdb265941538d908f9d39dafd27"
+        },
+        "screen.png": {
+          "bytes": 295313,
+          "sha256": "01517b01a2b6438d4851f70ce262c54a05ecba9da04cf051ae643cbb50667136"
+        }
+      }
+    },
+    "inline": {
+      "pg05-back.svg": {
+        "sourceLine": 96,
+        "originalSvgSha256": "ea6594aa64ea82a4dd3660a643b6a78fe1b014817aebfc0df6f9269343ed5163",
+        "originalOpening": "<svg class=\"w-6 h-6 stroke-[2.5]\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">",
+        "childrenSha256": "5476917040127ce5b80edfcfebbc5f8b176843112b174dbc3ae79575760e656c",
+        "color": "#18181B",
+        "px": 24,
+        "viewBox": "0 0 24 24",
+        "rootComputed": {
+          "fill": "none",
+          "stroke": "#18181B",
+          "viewBox": "0 0 24 24",
+          "stroke-width": "2.5",
+          "xmlns": "http://www.w3.org/2000/svg",
+          "width": "24",
+          "height": "24"
+        },
+        "bytes": 220,
+        "sha256": "fcf8e9658cab1dac7d3657febcd4ccf24a4a290efeeb004726f3b89def48d500",
+        "onlyChildrenUnchanged": true
+      },
+      "pg05-more.svg": {
+        "sourceLine": 104,
+        "originalSvgSha256": "d4eb2b27c25281980367f82979e21b3de3fe4df50f27c22bb9b8dc29fc2b954e",
+        "originalOpening": "<svg class=\"w-6 h-6\" fill=\"currentColor\" viewBox=\"0 0 24 24\">",
+        "childrenSha256": "91220b013fb0b48e4825716904f0668cb82d8d9cfcbfc49340867c4d06b7f372",
+        "color": "#18181B",
+        "px": 24,
+        "viewBox": "0 0 24 24",
+        "rootComputed": {
+          "fill": "#18181B",
+          "viewBox": "0 0 24 24",
+          "xmlns": "http://www.w3.org/2000/svg",
+          "width": "24",
+          "height": "24"
+        },
+        "bytes": 225,
+        "sha256": "ded6ef6e4079cbd7274213090123ddaa306e3ce5ac1dcc59192b3257d388c9bd",
+        "onlyChildrenUnchanged": true
+      },
+      "pg05-shuttle.svg": {
+        "sourceLine": 139,
+        "originalSvgSha256": "b90fb59d1651483723593c2b93141b72ed7cc3021ea24e2622ea0021582ccd7a",
+        "originalOpening": "<svg class=\"w-11 h-11 filter drop-shadow-md\" fill=\"currentColor\" viewBox=\"0 0 64 64\">",
+        "childrenSha256": "bdc551b2b7c417b38300c74d6e9b7db0bf1144eecc53a2662ca97a340398ae3f",
+        "color": "#FDE047",
+        "px": 44,
+        "viewBox": "0 0 64 64",
+        "rootComputed": {
+          "fill": "#FDE047",
+          "viewBox": "0 0 64 64",
+          "xmlns": "http://www.w3.org/2000/svg",
+          "width": "44",
+          "height": "44"
+        },
+        "bytes": 289,
+        "sha256": "232a17d687332ed81598b838830e832b1a728135a4b3c7f3fbb5ae52959479c7",
+        "onlyChildrenUnchanged": true
+      },
+      "pg05-calendar.svg": {
+        "sourceLine": 178,
+        "originalSvgSha256": "cc7ec99b140205b1108ebd65d507c79a0926c790fa1e68f94033b01bbbb8d2dd",
+        "originalOpening": "<svg class=\"w-4 h-4 text-zinc-400 shrink-0\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">",
+        "childrenSha256": "adb20955169e519205d5172e83891581088324a09d06b507421725221827dd4e",
+        "color": "#A1A1AA",
+        "px": 16,
+        "viewBox": "0 0 24 24",
+        "rootComputed": {
+          "fill": "none",
+          "stroke": "#A1A1AA",
+          "viewBox": "0 0 24 24",
+          "xmlns": "http://www.w3.org/2000/svg",
+          "width": "16",
+          "height": "16"
+        },
+        "bytes": 428,
+        "sha256": "e68bfb3ca725914459622892b17cdc972e7fc7de0ef861287dc76862982be16c",
+        "onlyChildrenUnchanged": true
+      },
+      "pg05-pin.svg": {
+        "sourceLine": 188,
+        "originalSvgSha256": "9a3698b6b2ec77094f0c3e10a12f973473a2609c19bc61cbbe87ec661887b922",
+        "originalOpening": "<svg class=\"w-4 h-4 text-zinc-400 shrink-0\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">",
+        "childrenSha256": "389594d69f19bd718b44af9b31e4c4d306674c8c0bdbb382b03af62d1c3930c4",
+        "color": "#A1A1AA",
+        "px": 16,
+        "viewBox": "0 0 24 24",
+        "rootComputed": {
+          "fill": "none",
+          "stroke": "#A1A1AA",
+          "viewBox": "0 0 24 24",
+          "xmlns": "http://www.w3.org/2000/svg",
+          "width": "16",
+          "height": "16"
+        },
+        "bytes": 400,
+        "sha256": "b478e0e270310d7a33f39cf3619037e02e7b70271b0e5d8c75056a479211e818",
+        "onlyChildrenUnchanged": true
+      },
+      "pg05-groups.svg": {
+        "sourceLine": 197,
+        "originalSvgSha256": "d5ee2a03b91245bf9173cd16f0e339940fbb5e543cede40a8e76d2dd02a27f91",
+        "originalOpening": "<svg class=\"w-4 h-4 text-zinc-400 shrink-0\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">",
+        "childrenSha256": "b0256c13a8c4230d954177a2efde8a8c785150d65ae3858803163fc939d8ee52",
+        "color": "#A1A1AA",
+        "px": 16,
+        "viewBox": "0 0 24 24",
+        "rootComputed": {
+          "fill": "none",
+          "stroke": "#A1A1AA",
+          "viewBox": "0 0 24 24",
+          "xmlns": "http://www.w3.org/2000/svg",
+          "width": "16",
+          "height": "16"
+        },
+        "bytes": 465,
+        "sha256": "4d7144e0988be8fe478016e6d4ad0fe9f8db37a72cec66e2f766a7e2109d6f98",
+        "onlyChildrenUnchanged": true
+      },
+      "pg05-money.svg": {
+        "sourceLine": 213,
+        "originalSvgSha256": "ffc611512dba54e6e3b06dda1ffd084aac2bbd9eb8c5ab810d19a6e306274d5b",
+        "originalOpening": "<svg class=\"w-4 h-4 text-zinc-400 shrink-0\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">",
+        "childrenSha256": "3f433356b2b06a7f9f436a1e29c6f041ae92dc547a303700c3c9ca58a1f5b52e",
+        "color": "#A1A1AA",
+        "px": 16,
+        "viewBox": "0 0 24 24",
+        "rootComputed": {
+          "fill": "none",
+          "stroke": "#A1A1AA",
+          "viewBox": "0 0 24 24",
+          "xmlns": "http://www.w3.org/2000/svg",
+          "width": "16",
+          "height": "16"
+        },
+        "bytes": 288,
+        "sha256": "ac02d8c16cd928eb40ff133cdfeb116e0997b054fa8450c4e40a79e98229c2d7",
+        "onlyChildrenUnchanged": true
+      },
+      "pg05-check.svg": {
+        "sourceLine": 224,
+        "originalSvgSha256": "5fbfa55189840fa9b11fe4cdb20361d89725f5e9e23446a35805b19ebeeecd4d",
+        "originalOpening": "<svg class=\"w-2.5 h-2.5 stroke-[3]\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">",
+        "childrenSha256": "41b27709206165b24be9439422e9670c7ca01a924cd923d1b034838cf3dbbbdb",
+        "color": "#FFFFFF",
+        "px": 10,
+        "viewBox": "0 0 24 24",
+        "rootComputed": {
+          "fill": "none",
+          "stroke": "#FFFFFF",
+          "viewBox": "0 0 24 24",
+          "stroke-width": "3",
+          "xmlns": "http://www.w3.org/2000/svg",
+          "width": "10",
+          "height": "10"
+        },
+        "bytes": 217,
+        "sha256": "1356bf136e677aa7a9c4ec8dd75fbeb94651f263550a52722a6f49127f154bd5",
+        "onlyChildrenUnchanged": true
+      }
+    },
+    "material": {
+      "pg05s-arrow_back_ios_new.svg": {
+        "symbol": "arrow_back_ios_new",
+        "sourceURL": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/arrow_back_ios_new/materialsymbolsoutlined/arrow_back_ios_new_24px.svg",
+        "sourceSha256": "24883e73bfab266fa35e91ae4f014c72ad858c4d7ab0ee51a9a171616dacd43f",
+        "assetSha256": "f7a2ca84303616bc9bea83e4b8a2f388aa63cfd71fcb2c70adbcfae058f19c7c",
+        "bytes": 173,
+        "fill": 0,
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "color": "#1A1B1F",
+        "sourceLine": 9,
+        "displayPx": 24,
+        "scope": "candidate for real R1 binding after authorization",
+        "rootFillAndStandardXmlnsOnly": true
+      },
+      "pg05s-person.svg": {
+        "symbol": "person",
+        "sourceURL": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/person/materialsymbolsoutlined/person_24px.svg",
+        "sourceSha256": "42f1c6f70aaea6be1bce078d1bd3bdc027a343943827443fe3ea46320b9dac96",
+        "assetSha256": "768dd858a8f2e7e002953132404c4c5c4bcc16a65f287af49ced050665b33e0f",
+        "bytes": 544,
+        "fill": 0,
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "color": "#FFFFFF",
+        "sourceLine": 9,
+        "displayPx": 18,
+        "scope": "candidate for real R1 binding after authorization",
+        "rootFillAndStandardXmlnsOnly": true
+      },
+      "pg05s-check_fill1.svg": {
+        "symbol": "check",
+        "sourceURL": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/check/materialsymbolsoutlined/check_fill1_24px.svg",
+        "sourceSha256": "01edd53418816632be08e9565b8ca40d9028c230a8a67baaf4b8a1de20db00e6",
+        "assetSha256": "6e9a6f4799b124417e754b5210e0d03420f65323bf3c84ce0ece2d5a8376dc51",
+        "bytes": 174,
+        "fill": 1,
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 1,
+          "GRAD": 0
+        },
+        "color": "#FFFFFF",
+        "sourceLine": 21,
+        "displayPx": 42,
+        "scope": "candidate for real R1 binding after authorization",
+        "rootFillAndStandardXmlnsOnly": true
+      },
+      "pg05s-sports_tennis.svg": {
+        "symbol": "sports_tennis",
+        "sourceURL": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/sports_tennis/materialsymbolsoutlined/sports_tennis_24px.svg",
+        "sourceSha256": "9c1bda7a51f6f7bbc608d646a054ca6ee81472daac6d277d96ce5333d3d5b449",
+        "assetSha256": "7cb15d9ec3d6f39ca080b843318ae1237fe4fd3fc8d871ddaf9da9dc051d6289",
+        "bytes": 574,
+        "fill": 0,
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "color": "#FFFFFF",
+        "sourceLine": 46,
+        "displayPx": 130,
+        "scope": "candidate for real R1 binding after authorization",
+        "rootFillAndStandardXmlnsOnly": true
+      },
+      "pg05s-calendar_today.svg": {
+        "symbol": "calendar_today",
+        "sourceURL": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/calendar_today/materialsymbolsoutlined/calendar_today_24px.svg",
+        "sourceSha256": "ed114259f3b2bd3023f6bc73e8ed288d3825a0ebc22ca930e201dbc1fc85337e",
+        "assetSha256": "41509ee59a21aadc07999f4548b268cbb4677a625e4587b8669a7d6aea6b70a0",
+        "bytes": 321,
+        "fill": 0,
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "color": "#004CC8",
+        "sourceLine": 79,
+        "displayPx": 20,
+        "scope": "candidate for real R1 binding after authorization",
+        "rootFillAndStandardXmlnsOnly": true
+      },
+      "pg05s-edit_calendar.svg": {
+        "symbol": "edit_calendar",
+        "sourceURL": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/edit_calendar/materialsymbolsoutlined/edit_calendar_24px.svg",
+        "sourceSha256": "7e55b58b959532f43d009580a85e1da8cbcc5ba130322c94354e1ba99456370e",
+        "assetSha256": "29d45c6a7980034413a081f2f0960bc39defc0b398eb5248c4e572e6daf6ffcc",
+        "bytes": 502,
+        "fill": 0,
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "color": "#004CC8",
+        "sourceLine": 87,
+        "displayPx": 16,
+        "scope": "candidate for real R1 binding after authorization",
+        "rootFillAndStandardXmlnsOnly": true
+      },
+      "pg05s-location_on.svg": {
+        "symbol": "location_on",
+        "sourceURL": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/location_on/materialsymbolsoutlined/location_on_24px.svg",
+        "sourceSha256": "d5b06c1bf2c7901c208bcfd22b31175478afe78d2a789c2f1fe102c238fd5b4e",
+        "assetSha256": "bb176877e344f00816c6e4fb28d981471f6c8d0a5d4e61eb46871bf7452ce1ae",
+        "bytes": 441,
+        "fill": 0,
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "color": "#FF2D55",
+        "sourceLine": 95,
+        "displayPx": 20,
+        "scope": "candidate for real R1 binding after authorization",
+        "rootFillAndStandardXmlnsOnly": true
+      },
+      "pg05s-navigation.svg": {
+        "symbol": "navigation",
+        "sourceURL": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/navigation/materialsymbolsoutlined/navigation_24px.svg",
+        "sourceSha256": "5a3e8027b9765ebdc3bf4fefbe03a051b7c306d90d8f596e03311174ce8a8665",
+        "assetSha256": "4d540ef6634e8db4a3697301aeba7160dbe18fc6dba3f51445d3a4525cec9ace",
+        "bytes": 220,
+        "fill": 0,
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "color": "#1A1B1F",
+        "sourceLine": 104,
+        "displayPx": 16,
+        "scope": "reference proof only; not proposed product capability",
+        "rootFillAndStandardXmlnsOnly": true
+      },
+      "pg05s-payments.svg": {
+        "symbol": "payments",
+        "sourceURL": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/payments/materialsymbolsoutlined/payments_24px.svg",
+        "sourceSha256": "12a6063fdb110a2899caea4c3857ad37e18788e57a5e0a0c7dd7f43f0d0df5b6",
+        "assetSha256": "4d1f7a5000813bc38f546c28687b54776ce968df5a0c5fdf519d24731ef4518a",
+        "bytes": 510,
+        "fill": 0,
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "color": "#647700",
+        "sourceLine": 111,
+        "displayPx": 20,
+        "scope": "candidate for real R1 binding after authorization",
+        "rootFillAndStandardXmlnsOnly": true
+      },
+      "pg05s-qr_code_2.svg": {
+        "symbol": "qr_code_2",
+        "sourceURL": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/qr_code_2/materialsymbolsoutlined/qr_code_2_24px.svg",
+        "sourceSha256": "6beca0bda8c86f1ded326a4f87fdf1c34aa3bc4908a3f18bf90533c81598204e",
+        "assetSha256": "f37db82bc269ad259f039092eca78e4ef213c2ee2e7cf410134d10343440e3f6",
+        "bytes": 633,
+        "fill": 0,
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "color": "#004CC8",
+        "sourceLine": 124,
+        "displayPx": 36,
+        "scope": "reference proof only; not proposed product capability",
+        "rootFillAndStandardXmlnsOnly": true
+      },
+      "pg05s-forum.svg": {
+        "symbol": "forum",
+        "sourceURL": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/forum/materialsymbolsoutlined/forum_24px.svg",
+        "sourceSha256": "08c85b119250ffc7c094b6f31ea43eb362f2e83bca432f6a928bc34499f66938",
+        "assetSha256": "de66c37c5898a450ba8f0f48ee09e139d724de902b03969b4941a79a448baf6c",
+        "bytes": 353,
+        "fill": 0,
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "color": "#34C759",
+        "sourceLine": 147,
+        "displayPx": 18,
+        "scope": "candidate for real R1 binding after authorization",
+        "rootFillAndStandardXmlnsOnly": true
+      },
+      "pg05s-groups.svg": {
+        "symbol": "groups",
+        "sourceURL": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/groups/materialsymbolsoutlined/groups_24px.svg",
+        "sourceSha256": "6b4d11047122bc3fb3ba8224281c6a7c9a751d9b8607e84542f9163a14dbfe67",
+        "assetSha256": "6747ec7806d5ecf376fa615d698d58fd33870416a141bf7f701ba2317b7109fa",
+        "bytes": 827,
+        "fill": 0,
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "color": "#FFFFFF",
+        "sourceLine": 161,
+        "displayPx": 20,
+        "scope": "reference proof only; not proposed product capability",
+        "rootFillAndStandardXmlnsOnly": true
+      },
+      "pg05s-content_copy.svg": {
+        "symbol": "content_copy",
+        "sourceURL": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/content_copy/materialsymbolsoutlined/content_copy_24px.svg",
+        "sourceSha256": "3575c3fdb035a66097bed9a7597620e313ed1efa051eb586a7335348c3fdff35",
+        "assetSha256": "8c2da01af9f8748e954cec4c202d5ad2f313ca07c91ae1856ca2ccef89626044",
+        "bytes": 336,
+        "fill": 0,
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "color": "#424655",
+        "sourceLine": 166,
+        "displayPx": 16,
+        "scope": "reference proof only; not proposed product capability",
+        "rootFillAndStandardXmlnsOnly": true
+      },
+      "pg05s-group.svg": {
+        "symbol": "group",
+        "sourceURL": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/group/materialsymbolsoutlined/group_24px.svg",
+        "sourceSha256": "031fc5c789411892258f9018d71785d5144b18e25aadc147388ecb9ceccc3412",
+        "assetSha256": "2b233ae657912ae0ae2787dd08c4e24eb11fcaa1d9d296bcfd7bc2efee152146",
+        "bytes": 762,
+        "fill": 0,
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "color": "#004CC8",
+        "sourceLine": 177,
+        "displayPx": 20,
+        "scope": "candidate for real R1 binding after authorization",
+        "rootFillAndStandardXmlnsOnly": true
+      },
+      "pg05s-chevron_right.svg": {
+        "symbol": "chevron_right",
+        "sourceURL": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/chevron_right/materialsymbolsoutlined/chevron_right_24px.svg",
+        "sourceSha256": "f6b777ee0ce9059b5f8eea987d813ab12c4f309ba431063153841c742e668ac0",
+        "assetSha256": "f320fa0e4c76cd9e99353bb2632b578c5718fc73a5a3cdec3771f41df958ca1b",
+        "bytes": 174,
+        "fill": 0,
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "color": "#004CC8",
+        "sourceLine": 182,
+        "displayPx": 16,
+        "scope": "candidate for real R1 binding after authorization",
+        "rootFillAndStandardXmlnsOnly": true
+      },
+      "pg05s-person_add.svg": {
+        "symbol": "person_add",
+        "sourceURL": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/person_add/materialsymbolsoutlined/person_add_24px.svg",
+        "sourceSha256": "d78f38d029ffdce1301912eddc54753ac5d8d34bba2e452b6a0c03d51ad73901",
+        "assetSha256": "7cf964456a9ef19ccebc4874270d302b1a67a33c22f7acf7b14bb8bdbe8b93bc",
+        "bytes": 599,
+        "fill": 0,
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "color": "#FF2D55",
+        "sourceLine": 224,
+        "displayPx": 16,
+        "scope": "reference proof only; not proposed product capability",
+        "rootFillAndStandardXmlnsOnly": true
+      },
+      "pg05s-verified_user.svg": {
+        "symbol": "verified_user",
+        "sourceURL": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/verified_user/materialsymbolsoutlined/verified_user_24px.svg",
+        "sourceSha256": "abd70cab16bbd9d08b455421d32d7fbb6aa5b24c87403ce0dd333109db313752",
+        "assetSha256": "f6e627ed9325c0065390f22bb00ba6354eed4a9dd106351d7ff858cfe37eceef",
+        "bytes": 337,
+        "fill": 0,
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "color": "#004CC8",
+        "sourceLine": 235,
+        "displayPx": 18,
+        "scope": "candidate for real R1 binding after authorization",
+        "rootFillAndStandardXmlnsOnly": true
+      },
+      "pg05s-arrow_forward.svg": {
+        "symbol": "arrow_forward",
+        "sourceURL": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/arrow_forward/materialsymbolsoutlined/arrow_forward_24px.svg",
+        "sourceSha256": "717c65e2e704a07b7b73e194b202858f52befbaa6dd363565a1d75d117c3a2aa",
+        "assetSha256": "947f6c7303589519540cabb6ef8ba09e3ffa3e841f541348fda045d6854c7031",
+        "bytes": 186,
+        "fill": 0,
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "color": "#FFFFFF",
+        "sourceLine": 255,
+        "displayPx": 18,
+        "scope": "candidate for real R1 binding after authorization",
+        "rootFillAndStandardXmlnsOnly": true
+      },
+      "pg05s-ios_share.svg": {
+        "symbol": "ios_share",
+        "sourceURL": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/ios_share/materialsymbolsoutlined/ios_share_24px.svg",
+        "sourceSha256": "a3709b2a5ee59f4d7614828ce631baece0c4314639bcbc4bf8e56066b89ee070",
+        "assetSha256": "e16c63d3d15b8195c5cddf22c5face6c0f62865b8308783c81b92331337bed22",
+        "bytes": 333,
+        "fill": 0,
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "color": "#181E00",
+        "sourceLine": 259,
+        "displayPx": 22,
+        "scope": "candidate for real R1 binding after authorization",
+        "rootFillAndStandardXmlnsOnly": true
+      },
+      "pg05s-check_circle.svg": {
+        "symbol": "check_circle",
+        "sourceURL": "https://raw.githubusercontent.com/google/material-design-icons/bd8cb85bd4bad964fe6918f79665bb40c3a8efef/symbols/web/check_circle/materialsymbolsoutlined/check_circle_24px.svg",
+        "sourceSha256": "42bf0950bc12ecf7952a8c3be86e0131f225095a7dc6c824a659a13df442e373",
+        "assetSha256": "706c3f586b7bef33dd5b30fab552335278f8bf573bd51ded229667416c5e14d5",
+        "bytes": 459,
+        "fill": 0,
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "color": "#D2F803",
+        "sourceLine": 265,
+        "displayPx": 18,
+        "scope": "reference proof only; not proposed product capability",
+        "rootFillAndStandardXmlnsOnly": true
+      }
+    },
+    "fonts": {
+      "rubik-mono-one-400-pg05": {
+        "cssURL": "https://fonts.googleapis.com/css2?family=Rubik+Mono+One%3Awght%40400&display=swap&text=BADMINTON+TOGETHER",
+        "cssSHA256": "63cdfc626d068751214a8b0a1af1c0e8fa60ca2b65fa3b925913ed55135d636b",
+        "userAgent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11",
+        "fontURL": "https://fonts.gstatic.com/l/font?kit=UqyJK8kPP3hjw6ANTdfRk9YSN-8zXq0DM6K4inLcKJdnXiqw&skey=ae6db2ecce22196d&v=v20",
+        "contentType": "font/woff",
+        "cors": "*",
+        "fontBytes": 4040,
+        "base64Bytes": 5388,
+        "sha256": "36faf220f9935cff89be4b5611a337202dc2a95be07df3565594ce6208c4285a",
+        "requestedText": "BADMINTON TOGETHER",
+        "requestedWeight": 400,
+        "metadata": {
+          "family": "Rubik Mono One",
+          "weightClass": 400,
+          "axes": [],
+          "glyphCount": 14,
+          "unicodeCount": 13,
+          "version": "Version 1.001",
+          "unicode": [
+            "U+0020",
+            "U+0041",
+            "U+0042",
+            "U+0044",
+            "U+0045",
+            "U+0047",
+            "U+0048",
+            "U+0049",
+            "U+004D",
+            "U+004E",
+            "U+004F",
+            "U+0052",
+            "U+0054"
+          ]
+        },
+        "missingText": []
+      },
+      "caveat-700-pg05": {
+        "cssURL": "https://fonts.googleapis.com/css2?family=Caveat%3Awght%40700&display=swap&text=Good+People+Great+Rallies",
+        "cssSHA256": "2eaec29ce6f8d822481f2a4605642ca81477ab3c45f98cd80258e6bd7eb3454d",
+        "userAgent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11",
+        "fontURL": "https://fonts.gstatic.com/l/font?kit=WnznHAc5bAfYB2QRah7pcpNvOx-pjRV6SIG7ajQJwljG1pNFA4dZ7UdX&skey=7833cd5b856b60c9&v=v23",
+        "contentType": "font/woff",
+        "cors": "*",
+        "fontBytes": 9204,
+        "base64Bytes": 12272,
+        "sha256": "a3a6819094fd153fe56a566d4b2ee8016a18b84df01b44686ae72ee59208d55c",
+        "requestedText": "Good People Great Rallies",
+        "requestedWeight": 700,
+        "metadata": {
+          "family": "Caveat",
+          "weightClass": 700,
+          "axes": [],
+          "glyphCount": 41,
+          "unicodeCount": 14,
+          "version": "Version 2.000",
+          "unicode": [
+            "U+0020",
+            "U+0047",
+            "U+0050",
+            "U+0052",
+            "U+0061",
+            "U+0064",
+            "U+0065",
+            "U+0069",
+            "U+006C",
+            "U+006F",
+            "U+0070",
+            "U+0072",
+            "U+0073",
+            "U+0074"
+          ]
+        },
+        "missingText": []
+      },
+      "caveat-700-home-pg05-union": {
+        "cssURL": "https://fonts.googleapis.com/css2?family=Caveat%3Awght%40700&display=swap&text=More+People%2C+Brighter+Days+Same+Game+%26+New+Friends+Good+People+Great+Rallies",
+        "cssSHA256": "eeb8969d9e73ff591b8f927f174fda6b6fc407bb11186c60738d5edbe9a8f31e",
+        "userAgent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11",
+        "fontURL": "https://fonts.gstatic.com/l/font?kit=WnznHAc5bAfYB2QRah7pcpNvOx-pjRV6SIG7eDRovkjj9LFhIbh7zFVHkLl87CHwEzvQN9GLQqs&skey=7833cd5b856b60c9&v=v23",
+        "contentType": "font/woff",
+        "cors": "*",
+        "fontBytes": 19336,
+        "base64Bytes": 25784,
+        "sha256": "e587efbee29f5e2239cf3b1e9fc63eaf71e200607b9b84c70226913bddc6cb03",
+        "requestedText": "More People, Brighter Days Same Game & New Friends Good People Great Rallies",
+        "requestedWeight": 700,
+        "metadata": {
+          "family": "Caveat",
+          "weightClass": 700,
+          "axes": [],
+          "glyphCount": 79,
+          "unicodeCount": 28,
+          "version": "Version 2.000",
+          "unicode": [
+            "U+0020",
+            "U+0026",
+            "U+002C",
+            "U+0042",
+            "U+0044",
+            "U+0046",
+            "U+0047",
+            "U+004D",
+            "U+004E",
+            "U+0050",
+            "U+0052",
+            "U+0053",
+            "U+0061",
+            "U+0064",
+            "U+0065",
+            "U+0067",
+            "U+0068",
+            "U+0069",
+            "U+006C",
+            "U+006D",
+            "U+006E",
+            "U+006F",
+            "U+0070",
+            "U+0072",
+            "U+0073",
+            "U+0074",
+            "U+0077",
+            "U+0079"
+          ]
+        },
+        "missingText": []
+      }
+    },
+    "omissions": [
+      "simulated status icons/home indicator",
+      "fictional member pictures/names",
+      "fixed pass code",
+      "group/contact strings",
+      "fake action scripts"
+    ],
+    "inlineViewBoxAudit": {
+      "pg05All12HaveViewBox": true,
+      "pg05sNoInlineSvg": true,
+      "pg04ExcludedMissingViewBoxAt": [
+        91,
+        132,
+        153,
+        175,
+        192,
+        210,
+        244,
+        261,
+        278,
+        316
+      ]
+    },
+    "existingCaveat": {
+      "bytes": 18280,
+      "base64Bytes": 24376,
+      "sha256": "736ba5632b23a1aa7381201b8328be3ea3e286b8ede8545667f7fd6e2fbab19e",
+      "missingNewChars": [
+        "R"
+      ],
+      "metadata": {
+        "family": "Caveat",
+        "weightClass": 700,
+        "axes": [],
+        "glyphCount": 76,
+        "unicodeCount": 27,
+        "version": "Version 2.000",
+        "unicode": [
+          "U+0020",
+          "U+0026",
+          "U+002C",
+          "U+0042",
+          "U+0044",
+          "U+0046",
+          "U+0047",
+          "U+004D",
+          "U+004E",
+          "U+0050",
+          "U+0053",
+          "U+0061",
+          "U+0064",
+          "U+0065",
+          "U+0067",
+          "U+0068",
+          "U+0069",
+          "U+006C",
+          "U+006D",
+          "U+006E",
+          "U+006F",
+          "U+0070",
+          "U+0072",
+          "U+0073",
+          "U+0074",
+          "U+0077",
+          "U+0079"
+        ]
+      }
+    },
+    "licensesAndMetadata": {
+      "rubikmonoone-METADATA.pb": {
+        "url": "https://raw.githubusercontent.com/google/fonts/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/rubikmonoone/METADATA.pb",
+        "bytes": 676,
+        "sha256": "98cc92553cd68a5beda29f10e8fe26436dce18e8ca6ad0549d1168049db55a5f"
+      },
+      "rubikmonoone-OFL.txt": {
+        "url": "https://raw.githubusercontent.com/google/fonts/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/rubikmonoone/OFL.txt",
+        "bytes": 4462,
+        "sha256": "43d530580461a574f6dfed9e15af6a74e95f7c04d9bfa1174a63ff036e8eee07"
+      },
+      "caveat-METADATA.pb": {
+        "url": "https://raw.githubusercontent.com/google/fonts/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/caveat/METADATA.pb",
+        "bytes": 1029,
+        "sha256": "038342ea08d3f09e11b7f08cfd1e1d556b4f56a48269b0909395aa6fecd4c4f7"
+      },
+      "caveat-OFL.txt": {
+        "url": "https://raw.githubusercontent.com/google/fonts/9710da1eacb3be272583c3224dcb70f9da6eadbb/ofl/caveat/OFL.txt",
+        "bytes": 4385,
+        "sha256": "1f9d81d094273d82f3898a1ee8b598a717d050ecbf5ff7bede105b704880157b"
+      },
+      "material-symbols-Apache-2.0.txt": {
+        "copiedReadonlyFrom": "/Users/tsb/Documents/小程序/docs/licenses/material-symbols-Apache-2.0.txt",
+        "bytes": 11357,
+        "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd"
+      }
+    },
+    "totals": {
+      "inline8Bytes": 2532,
+      "material20Bytes": 8458,
+      "candidateMaterial14Bytes": 5384,
+      "all28SvgBytes": 10990
+    },
+    "productFrozen": {
+      "miniprogram/pages/event/event.wxml": {
+        "bytes": 87816,
+        "sha256": "265efb383b028a8368166578b04f78f03493020180fdf2363b7aefbd33aaa744"
+      },
+      "miniprogram/pages/event/event.wxss": {
+        "bytes": 98830,
+        "sha256": "72bd3f539753dc0c2bbb2da5dcce33fd1ee6514d0dcbe71f7ded3268e7b5f4f9"
+      },
+      "miniprogram/pages/event/event.js": {
+        "bytes": 104032,
+        "sha256": "7aba63388c13daae75f2485cf31bea5ab0bd7db1a1568e293a03b31240fd7605"
+      },
+      "miniprogram/utils/reference-fonts.js": {
+        "bytes": 1853,
+        "sha256": "ad556963f34c48a49d7cdf6b04c8d2f4fe02f6e38ae655d5e2dfd3416a45c33a"
+      },
+      "miniprogram/utils/reference-font-data.js": {
+        "bytes": 186228,
+        "sha256": "6ffecd68c01d0586544263e1b97426f71f425bdc71c98635b5c4c71209c3ce08"
+      }
+    },
+    "existingHomeOutlinePreservation": {
+      "allOldUnicodeOutlinesEqual": true,
+      "count": 27,
+      "unicode": [
+        "U+0020",
+        "U+0026",
+        "U+002C",
+        "U+0042",
+        "U+0044",
+        "U+0046",
+        "U+0047",
+        "U+004D",
+        "U+004E",
+        "U+0050",
+        "U+0053",
+        "U+0061",
+        "U+0064",
+        "U+0065",
+        "U+0067",
+        "U+0068",
+        "U+0069",
+        "U+006C",
+        "U+006D",
+        "U+006E",
+        "U+006F",
+        "U+0070",
+        "U+0072",
+        "U+0073",
+        "U+0074",
+        "U+0077",
+        "U+0079"
+      ],
+      "unitsPerEmEqual": true,
+      "sameVersion": "Version 2.000"
+    }
+  },
+  "implementationChecks": {
+    "scope": "Wave67 event source/static checks only; no runtime, business tests, CLI, SDK, CUA, Git or acceptance matrix",
+    "baselineCommit": "a8486175a3bfb3a70f475725b4901d1cf9de603b",
+    "checks": {
+      "originalFourZipBytesEqual": true,
+      "wxmlXmlParses": true,
+      "allStaticImageRefsExist": true,
+      "originalWxmlInverseFullByteEqual": true,
+      "originalCssPrefixFullByteEqual": true,
+      "eventJsFullByteEqual": true,
+      "allOldBindingsRemain": true,
+      "newHandlersExistInUnchangedJs": true,
+      "newSvgOfficialOrOriginalChildTreesEqual": true,
+      "allNewCssSelectorsScoped": true,
+      "noFictionalPassGroupOrMembersInNewBranches": true
+    },
+    "inverseLog": "/private/tmp/caper-wave67-event-prep/wxml-inverse-log.json",
+    "inverseOperations": 4,
+    "sourceOriginals": {
+      "pg05/code.html": {
+        "bytes": 17811,
+        "sha256": "a016c7725aebb5eeb0ceaad0664651f723a78459738b049fc4c51fa652ac0075",
+        "zipBytesEqual": true
+      },
+      "pg05/screen.png": {
+        "bytes": 386681,
+        "sha256": "96167d34204721512ade34dedf01313894b09b68147865b5a104015a3679d63b",
+        "zipBytesEqual": true
+      },
+      "pg05_s/code.html": {
+        "bytes": 26407,
+        "sha256": "cc462e2d55b767cac1abae42cae61ff796dafbdb265941538d908f9d39dafd27",
+        "zipBytesEqual": true
+      },
+      "pg05_s/screen.png": {
+        "bytes": 295313,
+        "sha256": "01517b01a2b6438d4851f70ce262c54a05ecba9da04cf051ae643cbb50667136",
+        "zipBytesEqual": true
+      }
+    },
+    "bindingCount": {
+      "baseline": 160,
+      "final": 177,
+      "added": 17
+    },
+    "addedBindings": [
+      {
+        "attribute": "bindtap",
+        "handler": "addJoinedCalendar",
+        "count": 1
+      },
+      {
+        "attribute": "bindtap",
+        "handler": "cancelJoin",
+        "count": 2
+      },
+      {
+        "attribute": "bindtap",
+        "handler": "confirmJoin",
+        "count": 1
+      },
+      {
+        "attribute": "bindtap",
+        "handler": "copyJoinedVenue",
+        "count": 1
+      },
+      {
+        "attribute": "bindtap",
+        "handler": "goBack",
+        "count": 1
+      },
+      {
+        "attribute": "bindtap",
+        "handler": "goToItinerary",
+        "count": 1
+      },
+      {
+        "attribute": "bindtap",
+        "handler": "jumpToSection",
+        "count": 5
+      },
+      {
+        "attribute": "bindtap",
+        "handler": "openEventActions",
+        "count": 1
+      },
+      {
+        "attribute": "bindtap",
+        "handler": "selectJoinChoice",
+        "count": 2
+      },
+      {
+        "attribute": "bindtap",
+        "handler": "shareCurrentEvent",
+        "count": 1
+      },
+      {
+        "attribute": "bindtap",
+        "handler": "viewSuccessDetails",
+        "count": 1
+      }
+    ],
+    "staticReferenceCount": 43,
+    "uniqueStaticReferenceCount": 39,
+    "newCssSelectorCount": 165,
+    "newCssSelectors": [
+      ".pg05-reference",
+      ".pg05-reference .pg05-header",
+      ".pg05-reference .pg05-header button",
+      ".pg05-reference button::after",
+      ".pg05-reference button[disabled]",
+      ".pg05-reference .pg05-back",
+      ".pg05-reference .pg05-more",
+      ".pg05-reference .pg05-header image",
+      ".pg05-reference .pg05-heading",
+      ".pg05-reference .pg05-scroll",
+      ".pg05-reference .pg05-poster",
+      ".pg05-reference .pg05-glows",
+      ".pg05-reference .pg05-glows>view",
+      ".pg05-reference .pg05-glows>view:first-child",
+      ".pg05-reference .pg05-glows>view:last-child",
+      ".pg05-reference .pg05-poster-top",
+      ".pg05-reference .pg05-poster-bottom",
+      ".pg05-reference .pg05-poster-kicker",
+      ".pg05-reference .pg05-poster-kicker text",
+      ".pg05-reference .pg05-poster-note text",
+      ".pg05-reference .pg05-poster-headline text",
+      ".pg05-reference .pg05-poster-note",
+      ".pg05-reference .pg05-poster-center",
+      ".pg05-reference .pg05-poster-graphic",
+      ".pg05-reference .pg05-shuttle",
+      ".pg05-reference .pg05-poster-disc",
+      ".pg05-reference .pg05-poster-disc text",
+      ".pg05-reference .pg05-poster-headline",
+      ".pg05-reference .pg05-poster-bottom",
+      ".pg05-reference .pg05-poster-ribbon",
+      ".pg05-reference .pg05-poster-signature",
+      ".pg05-reference .pg05-info",
+      ".pg05-reference .pg05-info-heading",
+      ".pg05-reference .pg05-info-title",
+      ".pg05-reference .pg05-sport-tag",
+      ".pg05-reference .pg05-version",
+      ".pg05-reference .pg05-facts",
+      ".pg05-reference .pg05-fact",
+      ".pg05-reference .pg05-fact+.pg05-fact",
+      ".pg05-reference .pg05-fact>image",
+      ".pg05-reference .pg05-fact-skill",
+      ".pg05-reference .pg05-fact>view",
+      ".pg05-reference .pg05-time",
+      ".pg05-reference .pg05-time-caption",
+      ".pg05-reference .pg05-enrollment",
+      ".pg05-reference .pg05-rules",
+      ".pg05-reference .pg05-rules-check",
+      ".pg05-reference .pg05-rules-check image",
+      ".pg05-reference .pg05-rules-title",
+      ".pg05-reference .pg05-choice",
+      ".pg05-reference .pg05-choice-label",
+      ".pg05-reference .pg05-choice-grid",
+      ".pg05-reference .pg05-choice-option",
+      ".pg05-reference .pg05-choice-option:only-child",
+      ".pg05-reference .pg05-choice-option.selected",
+      ".pg05-reference .pg05-choice-line",
+      ".pg05-reference .pg05-choice-check",
+      ".pg05-reference .selected .pg05-choice-check",
+      ".pg05-reference .pg05-choice-check image",
+      ".pg05-reference .pg05-choice-title",
+      ".pg05-reference .selected .pg05-choice-title",
+      ".pg05-reference .pg05-choice-hint",
+      ".pg05-reference .selected .pg05-choice-hint",
+      ".pg05-reference .pg05-message-unavailable",
+      ".pg05-reference .pg05-caution",
+      ".pg05-reference .pg05-footer",
+      ".pg05-reference .pg05-footer button",
+      ".pg05-reference .pg05-cancel",
+      ".pg05-reference .pg05-confirm",
+      ".pg05s-native-nav",
+      ".pg05s-native-nav button",
+      ".pg05s-native-nav button::after",
+      ".pg05s-native-nav .pg05s-native-back",
+      ".pg05s-native-back image",
+      ".pg05s-native-title",
+      ".pg05s-native-nav .pg05s-native-person",
+      ".pg05s-native-person>view",
+      ".pg05s-native-person image",
+      ".event-page.pg05s-reference",
+      ".pg05s-reference .pg05s-content",
+      ".pg05s-reference .pg05s-orbs",
+      ".pg05s-reference .pg05s-orbs>view",
+      ".pg05s-reference .pg05s-orbs>view:first-child",
+      ".pg05s-reference .pg05s-orbs>view:nth-child(2)",
+      ".pg05s-reference .pg05s-orbs>view:last-child",
+      ".pg05s-reference .pg05s-hero",
+      ".pg05s-reference .pg05s-mark-wrap",
+      ".pg05s-reference .pg05s-mark",
+      ".pg05s-reference .pg05s-mark image",
+      ".pg05s-reference .pg05s-mark-lime",
+      ".pg05s-reference .pg05s-mark-play",
+      ".pg05s-reference .pg05s-mark-lime",
+      ".pg05s-reference .pg05s-mark-play",
+      ".pg05s-reference .pg05s-success-title",
+      ".pg05s-reference .pg05s-success-copy",
+      ".pg05s-reference .pg05s-ticket",
+      ".pg05s-reference .pg05s-ticket-head",
+      ".pg05s-reference .pg05s-ticket-pattern",
+      ".pg05s-reference .pg05s-ticket-label",
+      ".pg05s-reference .pg05s-ticket-label>text:first-child",
+      ".pg05s-reference .pg05s-status-dot",
+      ".pg05s-reference .pg05s-ticket-label>text:last-child",
+      ".pg05s-reference .pg05s-ticket-title-group",
+      ".pg05s-reference .pg05s-ticket-title",
+      ".pg05s-reference .pg05s-ticket-tagline",
+      ".pg05s-reference .pg05s-ticket-divider",
+      ".pg05s-reference .pg05s-ticket-divider>view:first-child",
+      ".pg05s-reference .pg05s-ticket-divider>view:last-child",
+      ".pg05s-reference .pg05s-ticket-divider>view:first-child",
+      ".pg05s-reference .pg05s-ticket-divider>view:last-child",
+      ".pg05s-reference .pg05s-ticket-divider>view:nth-child(2)",
+      ".pg05s-reference .pg05s-ticket-body",
+      ".pg05s-reference .pg05s-ticket-row",
+      ".pg05s-reference .pg05s-ticket-row+.pg05s-ticket-row",
+      ".pg05s-reference .pg05s-fact-icon",
+      ".pg05s-reference .pg05s-fact-icon image",
+      ".pg05s-reference .pg05s-time-icon",
+      ".pg05s-reference .pg05s-venue-icon",
+      ".pg05s-reference .pg05s-fee-icon",
+      ".pg05s-reference .pg05s-fact-main",
+      ".pg05s-reference .pg05s-fact-label",
+      ".pg05s-reference .pg05s-fact-value",
+      ".pg05s-reference .pg05s-fee-row",
+      ".pg05s-reference .pg05s-fee-value",
+      ".pg05s-reference .pg05s-calendar",
+      ".pg05s-reference .pg05s-venue-copy",
+      ".pg05s-reference .pg05s-venue-copy",
+      ".pg05s-reference .pg05s-calendar image",
+      ".pg05s-reference .pg05s-venue-copy image",
+      ".pg05s-reference button::after",
+      ".pg05s-reference .pg05s-checkin",
+      ".pg05s-reference .pg05s-checkin-inner",
+      ".pg05s-reference .pg05s-checkin-inner>button",
+      ".pg05s-reference .pg05s-checkin-inner>view",
+      ".pg05s-reference .pg05s-checkin-title",
+      ".pg05s-reference .pg05s-announcement",
+      ".pg05s-reference .pg05s-roster",
+      ".pg05s-reference .pg05s-announcement",
+      ".pg05s-reference .pg05s-card-heading",
+      ".pg05s-reference .pg05s-forum-icon",
+      ".pg05s-reference .pg05s-forum-icon image",
+      ".pg05s-reference .pg05s-announcement-copy",
+      ".pg05s-reference .pg05s-announcement>button",
+      ".pg05s-reference .pg05s-group-icon",
+      ".pg05s-reference .pg05s-roster .pg05s-card-heading",
+      ".pg05s-reference .pg05s-roster-link",
+      ".pg05s-reference .pg05s-roster-link image",
+      ".pg05s-reference .pg05s-roster-preview",
+      ".pg05s-reference .pg05s-roster-person",
+      ".pg05s-reference .pg05s-roster-person>text",
+      ".pg05s-reference .pg05s-roster-person>text:first-child",
+      ".pg05s-reference .pg05s-roster-count",
+      ".pg05s-reference .pg05s-roster-empty",
+      ".pg05s-reference .pg05s-roster-all",
+      ".pg05s-reference .pg05s-rule-card",
+      ".pg05s-reference .pg05s-rule-icon",
+      ".pg05s-reference .pg05s-rule-icon image",
+      ".pg05s-reference .pg05s-rule-heading",
+      ".pg05s-reference .pg05s-footer",
+      ".pg05s-reference .pg05s-footer>view",
+      ".pg05s-reference .pg05s-footer button",
+      ".pg05s-reference .pg05s-footer button:nth-child(2)",
+      ".pg05s-reference .pg05s-footer button:nth-child(2) image",
+      ".pg05s-reference .pg05s-footer button:last-child",
+      ".pg05s-reference .pg05s-footer button:last-child image"
+    ],
+    "protectedMarkup": {
+      "PG01_nav": {
+        "bytes": 904,
+        "sha256": "c164de5bdba7de34a7f59815b50427e0864bbe55fe70b12b5f162e92bdc563a8",
+        "equal": true
+      },
+      "PG01_poster": {
+        "bytes": 1478,
+        "sha256": "250b7f054fe6b4bf58200fb008ba4eed0e682590ec0b150679997d34e5a8addc",
+        "equal": true
+      },
+      "PG01_sheet": {
+        "bytes": 7913,
+        "sha256": "d48f3a93a7edc97d69d020db0e7ff3dc260490fa4dcacecb3df0e85377881403",
+        "equal": true
+      },
+      "PUBLISHED": {
+        "bytes": 4620,
+        "sha256": "40fda07f0cf97662b49443acc54228f8fe946340d2d3bc7746c8782c53977a30",
+        "equal": true
+      }
+    },
+    "originalCss": {
+      "bytes": 98830,
+      "sha256": "72bd3f539753dc0c2bbb2da5dcce33fd1ee6514d0dcbe71f7ded3268e7b5f4f9"
+    },
+    "unmodifiedJs": {
+      "bytes": 104032,
+      "sha256": "7aba63388c13daae75f2485cf31bea5ab0bd7db1a1568e293a03b31240fd7605"
+    },
+    "assets": {
+      "miniprogram/pages/event/assets/pg05-back.svg": {
+        "bytes": 220,
+        "sha256": "fcf8e9658cab1dac7d3657febcd4ccf24a4a290efeeb004726f3b89def48d500",
+        "sourceKind": "inline",
+        "sourceLine": 96,
+        "color": "#18181B",
+        "axes": null,
+        "viewBox": "0 0 24 24"
+      },
+      "miniprogram/pages/event/assets/pg05-calendar.svg": {
+        "bytes": 428,
+        "sha256": "e68bfb3ca725914459622892b17cdc972e7fc7de0ef861287dc76862982be16c",
+        "sourceKind": "inline",
+        "sourceLine": 178,
+        "color": "#A1A1AA",
+        "axes": null,
+        "viewBox": "0 0 24 24"
+      },
+      "miniprogram/pages/event/assets/pg05-check.svg": {
+        "bytes": 217,
+        "sha256": "1356bf136e677aa7a9c4ec8dd75fbeb94651f263550a52722a6f49127f154bd5",
+        "sourceKind": "inline",
+        "sourceLine": 224,
+        "color": "#FFFFFF",
+        "axes": null,
+        "viewBox": "0 0 24 24"
+      },
+      "miniprogram/pages/event/assets/pg05-groups.svg": {
+        "bytes": 465,
+        "sha256": "4d7144e0988be8fe478016e6d4ad0fe9f8db37a72cec66e2f766a7e2109d6f98",
+        "sourceKind": "inline",
+        "sourceLine": 197,
+        "color": "#A1A1AA",
+        "axes": null,
+        "viewBox": "0 0 24 24"
+      },
+      "miniprogram/pages/event/assets/pg05-money.svg": {
+        "bytes": 288,
+        "sha256": "ac02d8c16cd928eb40ff133cdfeb116e0997b054fa8450c4e40a79e98229c2d7",
+        "sourceKind": "inline",
+        "sourceLine": 213,
+        "color": "#A1A1AA",
+        "axes": null,
+        "viewBox": "0 0 24 24"
+      },
+      "miniprogram/pages/event/assets/pg05-more.svg": {
+        "bytes": 225,
+        "sha256": "ded6ef6e4079cbd7274213090123ddaa306e3ce5ac1dcc59192b3257d388c9bd",
+        "sourceKind": "inline",
+        "sourceLine": 104,
+        "color": "#18181B",
+        "axes": null,
+        "viewBox": "0 0 24 24"
+      },
+      "miniprogram/pages/event/assets/pg05-pin.svg": {
+        "bytes": 400,
+        "sha256": "b478e0e270310d7a33f39cf3619037e02e7b70271b0e5d8c75056a479211e818",
+        "sourceKind": "inline",
+        "sourceLine": 188,
+        "color": "#A1A1AA",
+        "axes": null,
+        "viewBox": "0 0 24 24"
+      },
+      "miniprogram/pages/event/assets/pg05-shuttle.svg": {
+        "bytes": 289,
+        "sha256": "232a17d687332ed81598b838830e832b1a728135a4b3c7f3fbb5ae52959479c7",
+        "sourceKind": "inline",
+        "sourceLine": 139,
+        "color": "#FDE047",
+        "axes": null,
+        "viewBox": "0 0 64 64"
+      },
+      "miniprogram/pages/event/assets/pg05s-check_fill1.svg": {
+        "bytes": 174,
+        "sha256": "6e9a6f4799b124417e754b5210e0d03420f65323bf3c84ce0ece2d5a8376dc51",
+        "sourceKind": "material",
+        "sourceLine": 21,
+        "color": "#FFFFFF",
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 1,
+          "GRAD": 0
+        },
+        "viewBox": "0 -960 960 960"
+      },
+      "miniprogram/pages/event/assets/pg05s-sports_tennis.svg": {
+        "bytes": 574,
+        "sha256": "7cb15d9ec3d6f39ca080b843318ae1237fe4fd3fc8d871ddaf9da9dc051d6289",
+        "sourceKind": "material",
+        "sourceLine": 46,
+        "color": "#FFFFFF",
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "viewBox": "0 -960 960 960"
+      },
+      "miniprogram/pages/event/assets/pg05s-calendar_today.svg": {
+        "bytes": 321,
+        "sha256": "41509ee59a21aadc07999f4548b268cbb4677a625e4587b8669a7d6aea6b70a0",
+        "sourceKind": "material",
+        "sourceLine": 79,
+        "color": "#004CC8",
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "viewBox": "0 -960 960 960"
+      },
+      "miniprogram/pages/event/assets/pg05s-edit_calendar.svg": {
+        "bytes": 502,
+        "sha256": "29d45c6a7980034413a081f2f0960bc39defc0b398eb5248c4e572e6daf6ffcc",
+        "sourceKind": "material",
+        "sourceLine": 87,
+        "color": "#004CC8",
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "viewBox": "0 -960 960 960"
+      },
+      "miniprogram/pages/event/assets/pg05s-location_on.svg": {
+        "bytes": 441,
+        "sha256": "bb176877e344f00816c6e4fb28d981471f6c8d0a5d4e61eb46871bf7452ce1ae",
+        "sourceKind": "material",
+        "sourceLine": 95,
+        "color": "#FF2D55",
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "viewBox": "0 -960 960 960"
+      },
+      "miniprogram/pages/event/assets/pg05s-navigation.svg": {
+        "bytes": 220,
+        "sha256": "4d540ef6634e8db4a3697301aeba7160dbe18fc6dba3f51445d3a4525cec9ace",
+        "sourceKind": "material",
+        "sourceLine": 104,
+        "color": "#1A1B1F",
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "viewBox": "0 -960 960 960"
+      },
+      "miniprogram/pages/event/assets/pg05s-payments.svg": {
+        "bytes": 510,
+        "sha256": "4d1f7a5000813bc38f546c28687b54776ce968df5a0c5fdf519d24731ef4518a",
+        "sourceKind": "material",
+        "sourceLine": 111,
+        "color": "#647700",
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "viewBox": "0 -960 960 960"
+      },
+      "miniprogram/pages/event/assets/pg05s-forum.svg": {
+        "bytes": 353,
+        "sha256": "de66c37c5898a450ba8f0f48ee09e139d724de902b03969b4941a79a448baf6c",
+        "sourceKind": "material",
+        "sourceLine": 147,
+        "color": "#34C759",
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "viewBox": "0 -960 960 960"
+      },
+      "miniprogram/pages/event/assets/pg05s-group.svg": {
+        "bytes": 762,
+        "sha256": "2b233ae657912ae0ae2787dd08c4e24eb11fcaa1d9d296bcfd7bc2efee152146",
+        "sourceKind": "material",
+        "sourceLine": 177,
+        "color": "#004CC8",
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "viewBox": "0 -960 960 960"
+      },
+      "miniprogram/pages/event/assets/pg05s-chevron_right.svg": {
+        "bytes": 174,
+        "sha256": "f320fa0e4c76cd9e99353bb2632b578c5718fc73a5a3cdec3771f41df958ca1b",
+        "sourceKind": "material",
+        "sourceLine": 182,
+        "color": "#004CC8",
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "viewBox": "0 -960 960 960"
+      },
+      "miniprogram/pages/event/assets/pg05s-verified_user.svg": {
+        "bytes": 337,
+        "sha256": "f6e627ed9325c0065390f22bb00ba6354eed4a9dd106351d7ff858cfe37eceef",
+        "sourceKind": "material",
+        "sourceLine": 235,
+        "color": "#004CC8",
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "viewBox": "0 -960 960 960"
+      },
+      "miniprogram/pages/event/assets/pg05s-arrow_forward.svg": {
+        "bytes": 186,
+        "sha256": "947f6c7303589519540cabb6ef8ba09e3ffa3e841f541348fda045d6854c7031",
+        "sourceKind": "material",
+        "sourceLine": 255,
+        "color": "#FFFFFF",
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "viewBox": "0 -960 960 960"
+      },
+      "miniprogram/pages/event/assets/pg05s-ios_share.svg": {
+        "bytes": 333,
+        "sha256": "e16c63d3d15b8195c5cddf22c5face6c0f62865b8308783c81b92331337bed22",
+        "sourceKind": "material",
+        "sourceLine": 259,
+        "color": "#181E00",
+        "axes": {
+          "opsz": 24,
+          "wght": 400,
+          "FILL": 0,
+          "GRAD": 0
+        },
+        "viewBox": "0 -960 960 960"
+      }
+    },
+    "reused": {
+      "miniprogram/pages/create/assets/back.svg": {
+        "bytes": 173,
+        "sha256": "b4d72b3ef91399480f63d49489df5b8ff1b26436974b423b3c60d11b103ff854",
+        "sourceSymbol": "arrow_back_ios_new",
+        "sourceOfficialSha256": "24883e73bfab266fa35e91ae4f014c72ad858c4d7ab0ee51a9a171616dacd43f",
+        "pathAndColorEqual": true
+      },
+      "miniprogram/pages/create/assets/person.svg": {
+        "bytes": 544,
+        "sha256": "d66a89fc9036f18a31f3804ee7b19f52a7954e31cc1cbfbd9b98f206a8299d6f",
+        "sourceSymbol": "person",
+        "sourceOfficialSha256": "42f1c6f70aaea6be1bce078d1bd3bdc027a343943827443fe3ea46320b9dac96",
+        "pathAndColorEqual": true
+      }
+    },
+    "productFiles": {
+      "miniprogram/pages/event/event.wxml": {
+        "bytes": 100072,
+        "sha256": "c2dd55c68a3123d9969c204df0d1e91ccca69e53dda4ae5c921a12041eeb9720"
+      },
+      "miniprogram/pages/event/event.wxss": {
+        "bytes": 120006,
+        "sha256": "94049293bebaf3889760403fb43de4b0a3710f82de40d3d0655e54ef5074e6af"
+      },
+      "miniprogram/pages/event/event.js": {
+        "bytes": 104032,
+        "sha256": "7aba63388c13daae75f2485cf31bea5ab0bd7db1a1568e293a03b31240fd7605"
+      }
+    },
+    "netRawBytes": 40851,
+    "newSvgBytes": 7419,
+    "sourceProofManifest": {
+      "path": "/private/tmp/caper-wave67-event-prep/manifest.json",
+      "bytes": 30986,
+      "sha256": "ca036c357b0b69533607d86ddcce39a9bcd8f2b6a7cb57b84781ef1c484a6efd"
+    }
+  },
+  "reversibleWxmlOperations": [
+    {
+      "old": "<view wx:if=\"{{!(loadState === 'READY' && activeSection === 'detailsSection' && !successState && display.isBadminton && !isHost && myRegistration.status !== 'CONFIRMED' && !joinConfirmation)}}\" class=\"event-topbar ",
+      "new": "<!-- Wave67 JOINED native nav BEGIN -->\n<view wx:if=\"{{loadState === 'READY' && successState === 'JOINED' && display.isBadminton && myRegistration.status === 'CONFIRMED'}}\" class=\"pg05s-native-nav\" style=\"padding-top: {{statusBarHeight}}px; padding-right: {{headerPaddingRight}}; height:calc({{statusBarHeight}}px + 56px)\">\n  <button class=\"pg05s-native-back\" bindtap=\"goBack\" aria-label=\"返回上一页\"><image src=\"/pages/create/assets/back.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/></button><view class=\"pg05s-native-title\">报名成功</view><button class=\"pg05s-native-person\" data-section=\"registrationSection\" bindtap=\"jumpToSection\" aria-label=\"查看报名与成员\"><view><image src=\"/pages/create/assets/person.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/></view></button>\n</view>\n<!-- Wave67 JOINED native nav END -->\n<view wx:if=\"{{!(loadState === 'READY' && activeSection === 'detailsSection' && !successState && display.isBadminton && !isHost && myRegistration.status !== 'CONFIRMED' && !joinConfirmation) && !(loadState === 'READY' && successState === 'JOINED' && display.isBadminton && myRegistration.status === 'CONFIRMED')}}\" class=\"event-topbar "
+    },
+    {
+      "old": "<view wx:if=\"{{joinConfirmation}}\" class=\"join-review\" aria-label=\"报名确认\">",
+      "new": "<!-- Wave67 badminton confirmation BEGIN -->\n<view wx:if=\"{{loadState === 'READY' && joinConfirmation && joinConfirmation.isBadminton}}\" class=\"pg05-reference\" aria-label=\"报名确认\">\n  <view class=\"pg05-header\" style=\"padding-top: {{statusBarHeight}}px; padding-right: {{headerPaddingRight}}\"><button class=\"pg05-back\" bindtap=\"cancelJoin\" disabled=\"{{joinSubmitting}}\" aria-label=\"返回活动详情\"><image src=\"./assets/pg05-back.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/></button><view class=\"pg05-heading\">报名确认</view><button class=\"pg05-more\" bindtap=\"openEventActions\" disabled=\"{{joinSubmitting}}\" aria-label=\"更多活动操作\"><image src=\"./assets/pg05-more.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/></button></view>\n  <scroll-view scroll-y=\"true\" show-scrollbar=\"false\" class=\"pg05-scroll\">\n    <view class=\"pg05-poster\" aria-label=\"羽毛球活动示意海报\"><view class=\"pg05-glows\"><view></view><view></view></view><view class=\"pg05-poster-top\"><view class=\"pg05-poster-kicker\"><text>SAME</text><text>SPORT</text><text>BRIGHTER</text><text>PEOPLE</text></view><view class=\"pg05-poster-note\"><text>Good People</text><text>Great Rallies</text></view></view><view class=\"pg05-poster-center\"><view class=\"pg05-poster-graphic\"><image class=\"pg05-shuttle\" src=\"./assets/pg05-shuttle.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><view class=\"pg05-poster-disc\"><text>🏸</text></view></view><view class=\"pg05-poster-headline\"><text>BADMINTON</text><text>TOGETHER</text></view></view><view class=\"pg05-poster-bottom\"><view class=\"pg05-poster-ribbon\">运动让生活更好一点！</view><view class=\"pg05-poster-signature\">CAPER STYLE ✦</view></view></view>\n    <view class=\"pg05-info\"><view class=\"pg05-info-heading\"><view class=\"pg05-info-title\">{{joinConfirmation.title}}</view><text class=\"pg05-sport-tag\">运动社交</text></view><view class=\"pg05-version\">请核对活动版本 {{joinConfirmation.version}}</view><view class=\"pg05-facts\"><view class=\"pg05-fact\"><image src=\"./assets/pg05-calendar.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><view class=\"pg05-time\"><view>{{joinConfirmation.date}} – {{joinConfirmation.end}}</view><view class=\"pg05-time-caption\">活动时间以当前版本为准</view></view></view><view class=\"pg05-fact\"><image src=\"./assets/pg05-pin.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><view>{{joinConfirmation.location}}</view></view><view wx:if=\"{{joinConfirmation.confirmed !== null && joinConfirmation.capacity !== null}}\" class=\"pg05-fact pg05-enrollment\"><image src=\"./assets/pg05-groups.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><view>已确认 {{joinConfirmation.confirmed}} / {{joinConfirmation.capacity}} 人</view></view><view class=\"pg05-fact\"><image src=\"./assets/pg05-money.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><view>{{joinConfirmation.fee}}</view></view><view wx:if=\"{{joinConfirmation.skillLevel}}\" class=\"pg05-fact\"><text class=\"pg05-fact-skill\" aria-hidden=\"true\">✦</text><view>水平要求：{{joinConfirmation.skillLevel}}</view></view></view><view class=\"pg05-rules\"><view class=\"pg05-rules-check\"><image src=\"./assets/pg05-check.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/></view><view><view class=\"pg05-rules-title\">报名与取消规则</view><view>{{joinConfirmation.approval}}</view><view>取消规则：{{joinConfirmation.cancellationRule}}</view></view></view></view>\n    <view class=\"pg05-choice\"><view class=\"pg05-choice-label\">选择你的参与方式</view><view class=\"pg05-choice-grid\"><button class=\"pg05-choice-option {{joinChoice === 'JOIN' ? 'selected' : ''}}\" data-choice=\"JOIN\" bindtap=\"selectJoinChoice\"><view class=\"pg05-choice-line\"><view class=\"pg05-choice-check\"><image wx:if=\"{{joinChoice === 'JOIN'}}\" src=\"./assets/pg05-check.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/></view><view class=\"pg05-choice-title\">参加这次活动</view></view><view class=\"pg05-choice-hint\">报名结果以当前审核和名额为准。</view></button><button wx:if=\"{{canExpressInterest}}\" class=\"pg05-choice-option {{joinChoice === 'INTERESTED' ? 'selected' : ''}}\" data-choice=\"INTERESTED\" bindtap=\"selectJoinChoice\"><view class=\"pg05-choice-line\"><view class=\"pg05-choice-check\"><image wx:if=\"{{joinChoice === 'INTERESTED'}}\" src=\"./assets/pg05-check.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/></view><view class=\"pg05-choice-title\">先标记待定</view></view><view class=\"pg05-choice-hint\">不占名额，也不进入候补队列。</view></button></view></view>\n    <view class=\"pg05-message-unavailable\">给主办人留言 · 当前报名接口尚未开放此功能</view><view class=\"pg05-caution\">报名后可能是待审批或候补。只有活动页回读为“已确认报名”才表示已获得席位；本页面不承诺场地或费用已由平台核实。</view>\n  </scroll-view>\n  <view class=\"pg05-footer\"><button class=\"pg05-cancel\" bindtap=\"cancelJoin\" disabled=\"{{joinSubmitting}}\">取消</button><button id=\"confirmJoinButton\" class=\"pg05-confirm\" bindtap=\"confirmJoin\" disabled=\"{{joinSubmitting}}\">{{joinSubmitting ? '正在核对最新规则…' : joinChoice === 'INTERESTED' ? '记录待定意向' : '确认报名'}}</button></view>\n</view>\n<!-- Wave67 badminton confirmation END -->\n<view wx:if=\"{{joinConfirmation && !(loadState === 'READY' && joinConfirmation && joinConfirmation.isBadminton)}}\" class=\"join-review\" aria-label=\"报名确认\">"
+    },
+    {
+      "old": "{{successState ? 'event-success' : ''}} {{display.isBadminton && (isHost || myRegistration.status === 'CONFIRMED') ? 'event-live-detail' : ''}}",
+      "new": "{{loadState === 'READY' && successState === 'JOINED' && display.isBadminton && myRegistration.status === 'CONFIRMED' ? 'pg05s-reference' : ''}} {{successState ? 'event-success' : ''}} {{display.isBadminton && (isHost || myRegistration.status === 'CONFIRMED') ? 'event-live-detail' : ''}}"
+    },
+    {
+      "old": "  <view wx:if=\"{{successState === 'JOINED'}}\" class=\"success-panel joined-success\">",
+      "new": "<!-- Wave67 badminton true JOINED BEGIN -->\n  <view wx:if=\"{{loadState === 'READY' && successState === 'JOINED' && display.isBadminton && myRegistration.status === 'CONFIRMED'}}\" class=\"pg05s-content\" style=\"padding-top:calc({{statusBarHeight}}px + 56px)\">\n    <view class=\"pg05s-orbs\" style=\"top:calc({{statusBarHeight}}px + 56px)\"><view></view><view></view><view></view></view>\n    <view class=\"pg05s-hero\"><view class=\"pg05s-mark-wrap\"><view class=\"pg05s-mark\"><image src=\"./assets/pg05s-check_fill1.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/></view><text class=\"pg05s-mark-lime\">🏸 YOU'RE IN!</text><text class=\"pg05s-mark-play\">⚡ READY TO PLAY</text></view><view class=\"pg05s-success-title\">🎉 报名成功，已确认席位！</view><view class=\"pg05s-success-copy\">你已加入 {{display.title}}。好活动总会让人相遇！</view></view>\n    <view class=\"pg05s-ticket\"><view class=\"pg05s-ticket-head\"><image class=\"pg05s-ticket-pattern\" src=\"./assets/pg05s-sports_tennis.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><view class=\"pg05s-ticket-label\"><text><text class=\"pg05s-status-dot\" aria-hidden=\"true\">●</text>{{display.status}} · {{event.stats.confirmed}} / {{event.payload.maxParticipants}} 已确认</text><text>活动卡</text></view><view class=\"pg05s-ticket-title-group\"><view class=\"pg05s-ticket-title\">{{display.title}}</view><view class=\"pg05s-ticket-tagline\">{{event.payload.skillLevel || '和有趣的人一起出发'}}</view></view></view><view class=\"pg05s-ticket-divider\"><view></view><view></view><view></view></view><view class=\"pg05s-ticket-body\"><view class=\"pg05s-ticket-row\"><view class=\"pg05s-fact-icon pg05s-time-icon\"><image src=\"./assets/pg05s-calendar_today.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/></view><view class=\"pg05s-fact-main\"><view class=\"pg05s-fact-label\">活动时间</view><view class=\"pg05s-fact-value\">{{display.date}} – {{display.end}}</view></view><button class=\"pg05s-calendar\" bindtap=\"addJoinedCalendar\" aria-label=\"将当前活动加入系统日历\"><image src=\"./assets/pg05s-edit_calendar.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><text>加日历</text></button></view><view class=\"pg05s-ticket-row\"><view class=\"pg05s-fact-icon pg05s-venue-icon\"><image src=\"./assets/pg05s-location_on.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/></view><view class=\"pg05s-fact-main\"><view class=\"pg05s-fact-label\">场地地址</view><view class=\"pg05s-fact-value\">{{display.location}}</view></view><button wx:if=\"{{event.payload.venueName}}\" class=\"pg05s-venue-copy\" bindtap=\"copyJoinedVenue\" aria-label=\"复制当前活动集合地点\"><image src=\"./assets/pg05s-navigation.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><text>复制地点</text></button></view><view class=\"pg05s-ticket-row pg05s-fee-row\"><view class=\"pg05s-fact-icon pg05s-fee-icon\"><image src=\"./assets/pg05s-payments.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/></view><view class=\"pg05s-fact-main\"><view class=\"pg05s-fact-label\">费用模式</view><view class=\"pg05s-fee-value\">{{display.fee}}</view></view></view><view class=\"pg05s-checkin\"><view class=\"pg05s-checkin-inner\"><button data-section=\"checkinSection\" bindtap=\"jumpToSection\">查看签到 ›</button><view><view class=\"pg05s-checkin-title\">现场签到</view><view>报名确认已由当前服务端回读；现场使用有时效的动态签到码。</view></view></view></view></view></view>\n    <view class=\"pg05s-announcement\"><view class=\"pg05s-card-heading\"><view class=\"pg05s-forum-icon\"><image src=\"./assets/pg05s-forum.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/></view><text>活动公告与问答</text></view><view class=\"pg05s-announcement-copy\">查看主办方更新，或在活动内按当前事实提问。</view><button data-section=\"contentSection\" bindtap=\"jumpToSection\">查看公告 ›</button></view>\n    <view class=\"pg05s-roster\"><view class=\"pg05s-card-heading\"><image class=\"pg05s-group-icon\" src=\"./assets/pg05s-group.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/><text>本场公开昵称</text><button class=\"pg05s-roster-link\" data-section=\"registrationSection\" bindtap=\"jumpToSection\" aria-label=\"查看全部报名与成员\"><text>查看全部</text><image src=\"./assets/pg05s-chevron_right.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/></button></view><view class=\"pg05s-roster-count\">已确认 {{event.stats.confirmed}} / {{event.payload.maxParticipants}} 人；下方昵称可能包含候补，席位以服务端统计为准。</view><view wx:if=\"{{memberCards.length}}\" class=\"pg05s-roster-preview\"><block wx:for=\"{{memberCards}}\" wx:key=\"id\"><view wx:if=\"{{index < 4}}\" class=\"pg05s-roster-person\"><text>{{item.avatarGlyph}}</text><text>{{item.displayName}}</text></view></block></view><view wx:else class=\"pg05s-roster-empty\">暂无本人同意公开的本场昵称。</view><button class=\"pg05s-roster-all\" data-section=\"registrationSection\" bindtap=\"jumpToSection\">查看报名与成员 ›</button></view>\n    <view class=\"pg05s-rule-card\"><view class=\"pg05s-rule-icon\"><image src=\"./assets/pg05s-verified_user.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/></view><view><view class=\"pg05s-rule-heading\">取消规则</view><view>取消规则：{{event.payload.cancellationRule || '以活动当前规则为准'}}。时间、场地及人数请在活动详情中核对。</view></view></view>\n    <view class=\"pg05s-footer\"><view><button bindtap=\"goToItinerary\">我的行程</button><button bindtap=\"viewSuccessDetails\"><text>查看活动详情</text><image src=\"./assets/pg05s-arrow_forward.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/></button><button bindtap=\"shareCurrentEvent\" aria-label=\"复制活动信息\"><image src=\"./assets/pg05s-ios_share.svg\" mode=\"aspectFit\" aria-hidden=\"true\"/></button></view></view>\n  </view>\n<!-- Wave67 badminton true JOINED END -->\n  <view wx:if=\"{{successState === 'JOINED' && !(loadState === 'READY' && successState === 'JOINED' && display.isBadminton && myRegistration.status === 'CONFIRMED')}}\" class=\"success-panel joined-success\">"
+    }
+  ],
+  "xmlNormalization": [
+    "Replace WXML moustache expressions with placeholder only for XML syntax parsing",
+    "Normalize legal bare wx:else to wx:else=\"\"; original bytes preserved by inverse proof"
+  ],
+  "harnessFailureRecord": "/private/tmp/caper-wave67-event-prep/failed-check-1.txt",
+  "nativeAdaptations": [
+    "Real statusBarHeight and existing headerPaddingRight reused; event.js unchanged",
+    "pg05 source44px header/36px hits/24px glyph; pg05_s56px header/back44/profile hit44/inner32/person18",
+    "Original simulated status and home bar omitted; footer max(12px,actual safe inset)",
+    "Real long title/statistics/rules naturally expand source min-height112 ticket rather than clip R1 facts",
+    "Caveat explicit CSS700 to select original sole700 official face as root requested; source CSS400 originally matched that face"
+  ],
+  "excludedFiction": [
+    "Mock QR/PASS code",
+    "Group/contact links and fixed host WeChat",
+    "Original example people/photos and fabricated role/skill tags",
+    "Fixed remaining seats and public invitation",
+    "Unimplemented optional host message input",
+    "INTERESTED as fake waitlist",
+    "Fake prototype action scripts and transient confetti/toast"
+  ],
+  "globalFontOwner": "root; event only declares family; native face verification is independent"
+}

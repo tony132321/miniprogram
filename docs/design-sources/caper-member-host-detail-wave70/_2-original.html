@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;background-color:#faf8fe;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "vibrant-lime-tint": "#F3FEE7", "primary-fixed-dim": "#b3c5ff", "on-tertiary-fixed-variant": "#3f4c00", "tertiary-container": "#647700", "surface-container-low": "#f4f3f8", "surface-tint": "#0053d9", "electric-blue": "#1D64F2", "surface-variant": "#e3e2e7", "surface-container": "#efedf3", "on-primary-fixed": "#00174a", "on-error-container": "#93000a", "error": "#ba1a1a", "on-secondary-fixed-variant": "#3631b4", "primary-fixed": "#dbe1ff", "divider-subtle": "rgba(60, 60, 67, 0.08)", "status-active-green-soft": "#EBF9F0", "surface-container-high": "#e9e7ed", "on-tertiary": "#ffffff", "party-violet": "#5856D6", "on-primary": "#ffffff", "inverse-primary": "#b3c5ff", "primary-container": "#1d64f2", "secondary-fixed-dim": "#c2c1ff", "tertiary-fixed": "#cdf200", "surface-translucent": "rgba(255, 255, 255, 0.82)", "party-pink": "#FF2D55", "secondary-fixed": "#e2dfff", "on-primary-fixed-variant": "#003ea6", "on-secondary-fixed": "#0c006a", "border-glass": "rgba(255, 255, 255, 0.6)", "on-secondary-container": "#fffbff", "on-surface-variant": "#424655", "on-tertiary-fixed": "#181e00", "tertiary-fixed-dim": "#b3d400", "inverse-on-surface": "#f1f0f6", "outline-variant": "#c3c6d8", "inverse-surface": "#2f3034", "on-primary-container": "#f1f2ff", "surface-dim": "#dbd9df", "status-active-green": "#34C759", "secondary": "#4c4aca", "tertiary": "#4d5d00", "error-container": "#ffdad6", "on-surface": "#1a1b1f", "party-pink-soft": "#FFF0F3", "on-tertiary-container": "#e6ff7e", "surface-container-lowest": "#ffffff", "surface": "#faf8fe", "surface-container-highest": "#e3e2e7", "surface-canvas": "#F5F6F8", "surface-card": "#FFFFFF", "on-error": "#ffffff", "vibrant-lime": "#D2F803", "primary": "#004cc8", "background": "#faf8fe", "on-background": "#1a1b1f", "electric-blue-soft": "#EBF2FE", "party-violet-soft": "#F2F1FD", "on-secondary": "#ffffff", "outline": "#737687", "secondary-container": "#6664e4", "surface-bright": "#faf8fe" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-md": "0.75rem", "space-lg": "1rem", "space-sm": "0.5rem", "space-xl": "1.5rem", "gutter": "0.75rem", "space-xs": "0.25rem", "margin": "1rem" }, fontFamily: { "body-md": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "display-mobile": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"], "display": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "label-lg": ["Plus Jakarta Sans"] }, fontSize: { "body-md": ["15px", { lineHeight: "21px", fontWeight: "400" }], "body-sm": ["13px", { lineHeight: "18px", fontWeight: "400" }], "display-mobile": ["28px", { lineHeight: "36px", letterSpacing: "-0.025em", fontWeight: "800" }], "headline-md": ["20px", { lineHeight: "26px", letterSpacing: "-0.015em", fontWeight: "700" }], "label-sm": ["11px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "700" }], "headline-lg": ["26px", { lineHeight: "34px", letterSpacing: "-0.02em", fontWeight: "700" }], "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }], "headline-lg-mobile": ["22px", { lineHeight: "28px", letterSpacing: "-0.02em", fontWeight: "700" }], "display": ["34px", { lineHeight: "42px", letterSpacing: "-0.03em", fontWeight: "800" }], "headline-sm": ["17px", { lineHeight: "22px", letterSpacing: "-0.01em", fontWeight: "600" }], "label-md": ["13px", { lineHeight: "16px", fontWeight: "600" }], "label-lg": ["15px", { lineHeight: "20px", fontWeight: "600" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen"><header class="fixed top-0 inset-x-0 z-50 bg-surface/80 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-14 px-margin flex items-center justify-between"><div class="flex items-center gap-space-xs"><button aria-label="返回" class="w-11 h-11 flex items-center justify-center text-on-surface rounded-full active:bg-surface-container transition-colors" onclick="history.back()"><span class="material-symbols-outlined text-[22px]">arrow_back_ios_new</span></button><h1 class="font-headline-sm text-headline-sm text-on-surface truncate max-w-[200px]">活动详情</h1></div><div class="flex items-center justify-center"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-14 pb-safe bg-surface min-h-screen"><div class="flex flex-col w-full px-margin pb-space-xl space-y-space-lg">
+<!-- Visual Hero Container (Partiful Vibrant Energy + iOS Precision) -->
+<div class="relative w-full rounded-xl overflow-hidden shadow-md bg-surface-container-high">
+<div class="w-full h-56 bg-cover bg-center" data-alt="Dynamic indoor badminton sports scene in a clean modern gymnasium, dramatic warm and electric blue rim lighting, high shuttlecock in motion blur, energetic urban youths in stylish athletic wear playing doubles match, photorealistic high resolution 8k aesthetic" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAkBRqDYMHJu3byE0x6ZsRrFiCMfhICgNqG4aX29DAsLB6JQceHvz1OgAIhgXGpQ1NUZbN0PindFYR2qL-rQX-V9_giyyQNmITksIt6CWGiHpVEmEJIYVWaIxzNVBmkqD3JkBoFfJzo1BFSCI2KTxDbUb7CCHqu02WhO8jCuoxRLoqstoaYtLammRHbosDORPtacvwFyf3bJZTY4yVhnPpXTMQBeneI6PLZMdMeN4RljHjr7RrSEYlPRw')">
+<!-- Gradient Scrim for contrast -->
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface/90 via-on-surface/40 to-transparent"></div>
+</div>
+<!-- Partiful-inspired Tactile Kinetic Stickers -->
+<div class="absolute top-space-md left-space-md flex flex-wrap gap-space-xs pointer-events-none">
+<span class="px-space-sm py-1 rounded-full bg-vibrant-lime text-on-tertiary-fixed font-label-sm text-label-sm uppercase tracking-wider shadow-sm transform -rotate-2">
+        READY TO PLAY
+      </span>
+<span class="px-space-sm py-1 rounded-full bg-party-violet text-on-secondary font-label-sm text-label-sm uppercase tracking-wider shadow-sm transform rotate-1">
+        BADMINTON TOGETHER
+      </span>
+</div>
+<div class="absolute top-space-md right-space-md pointer-events-none">
+<span class="inline-flex items-center gap-1 px-space-sm py-1 rounded-full bg-status-active-green text-surface font-label-sm text-label-sm shadow-sm">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+        已报名成功
+      </span>
+</div>
+<!-- Hero Title Overlay -->
+<div class="absolute bottom-0 inset-x-0 p-space-lg text-surface">
+<div class="flex items-center gap-space-xs mb-1">
+<span class="px-2 py-0.5 rounded-full bg-surface-translucent text-on-surface font-label-sm text-label-sm backdrop-blur-md">
+          周六晚场运动
+        </span>
+<span class="px-2 py-0.5 rounded-full bg-electric-blue text-on-primary font-label-sm text-label-sm">
+          羽毛球双打
+        </span>
+</div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile font-bold tracking-tight text-surface">
+        周六一起打羽毛球 🏸
+      </h2>
+</div>
+</div>
+<!-- Attendance Electronic IRL-Pass (Read-Only Highlight Card) -->
+<div class="w-full rounded-xl bg-surface-container-lowest p-space-lg shadow-sm space-y-space-md">
+<div class="flex items-center justify-between pb-space-sm border-none">
+<div class="flex items-center gap-space-xs">
+<div class="w-8 h-8 rounded-full bg-status-active-green-soft flex items-center justify-center">
+<span class="material-symbols-outlined text-status-active-green text-[20px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">入场状态凭证</p>
+<p class="font-headline-sm text-headline-sm text-on-surface">已锁定席位 (席位 #5)</p>
+</div>
+</div>
+<span class="px-space-sm py-1 rounded-full bg-vibrant-lime-tint text-on-tertiary-fixed font-label-sm text-label-sm font-bold">
+        准时成局
+      </span>
+</div>
+<div class="w-full bg-surface-container rounded-lg p-space-md flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">电子签到凭证号</span>
+<span class="font-headline-sm text-headline-sm text-primary tracking-widest font-mono">IRL-PASS-88219</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">qr_code_2</span>
+<span class="font-label-sm text-label-sm">入馆出示</span>
+</div>
+</div>
+</div>
+<!-- Event Core Metadata Card -->
+<div class="w-full rounded-xl bg-surface-container-lowest p-space-lg shadow-sm space-y-space-md">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">活动信息</h3>
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded-full bg-electric-blue-soft text-electric-blue font-label-sm text-label-sm">运动社交</span>
+<span class="px-2 py-0.5 rounded-full bg-party-violet-soft text-party-violet font-label-sm text-label-sm">双打进阶</span>
+<span class="px-2 py-0.5 rounded-full bg-status-active-green-soft text-status-active-green font-label-sm text-label-sm">已成局 6/8人</span>
+</div>
+</div>
+<div class="space-y-space-sm">
+<!-- Time Row -->
+<div class="flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low">
+<div class="w-9 h-9 rounded-full bg-surface-card flex items-center justify-center shrink-0 text-electric-blue shadow-sm">
+<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+</div>
+<div class="min-w-0">
+<p class="font-label-sm text-label-sm text-on-surface-variant">活动时间</p>
+<p class="font-body-md text-body-md font-semibold text-on-surface">2024年12月14日 (周六) 14:00 - 16:00</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">请提前15分钟到达进行热身准备</p>
+</div>
+</div>
+<!-- Venue Row -->
+<div class="flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low">
+<div class="w-9 h-9 rounded-full bg-surface-card flex items-center justify-center shrink-0 text-party-violet shadow-sm">
+<span class="material-symbols-outlined text-[20px]">location_on</span>
+</div>
+<div class="min-w-0">
+<p class="font-label-sm text-label-sm text-on-surface-variant">场地地点</p>
+<p class="font-body-md text-body-md font-semibold text-on-surface">上海·静安体育中心 3号羽毛球馆</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">静安区汶水路116号 (近地铁1号线汶水路站2号口步行300米)</p>
+</div>
+</div>
+<!-- Fee Row -->
+<div class="flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low">
+<div class="w-9 h-9 rounded-full bg-surface-card flex items-center justify-center shrink-0 text-tertiary shadow-sm">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+</div>
+<div class="min-w-0">
+<p class="font-label-sm text-label-sm text-on-surface-variant">费用说明</p>
+<p class="font-body-md text-body-md font-semibold text-on-surface">AA制 预计 ¥30 - ¥50 / 人</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">包含2小时双场地费与比赛级鸭毛用球分摊，赛后自动结算</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Venue Map Preview -->
+<div class="w-full rounded-xl overflow-hidden bg-surface-container-lowest shadow-sm p-space-md space-y-space-xs">
+<div class="flex items-center justify-between mb-1">
+<span class="font-headline-sm text-headline-sm text-on-surface">场馆指引</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">静安体育中心内</span>
+</div>
+<div class="w-full h-36 bg-cover bg-center rounded-lg" data-location="上海静安体育中心" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCr6cZG-udy1R9DtFwK3FZCzAvmaxQ4Ygrm8-mKxBqFgnygeBrDVpWJR4_m4QtqHXYus69_sAGNs-aUUExSrew2OaJOv962ktqMrerjDuPgXLMFiiggg-xLbXiExeDdDoXWa_wBUYQEJ0nyz5Ae9UgS2wzgYRwnefblRZ5vzhPQ3A1kW8vbSZgr7uiHGFPGsOX2Nh4ipILvTF7Evhw3dPudz7QIjFe067K864s9mWndA7I19XyMZbpQAg')"></div>
+<div class="flex items-center gap-space-xs pt-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">info</span>
+<span class="font-body-sm text-body-sm">从东门地下车库直接乘B梯直达3层综合馆羽毛球区</span>
+</div>
+</div>
+<!-- Host Profile & Event Intro -->
+<div class="w-full rounded-xl bg-surface-container-lowest p-space-lg shadow-sm space-y-space-md">
+<div class="flex items-center gap-space-md">
+<div class="relative">
+<img class="w-12 h-12 rounded-full object-cover shadow-sm" data-alt="Close up modern portrait avatar of an energetic Asian young woman wearing sporty cap and active smile, pastel studio light, clean aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuByZ9_iav55rqsfWekLOWngXEKSofkQrJ2n9WJ7H9qDAQTwCSwHRQzBayWDYUXS7DMpzu8V4IK1ILbHwE-w3fIhJD5uMNhy1mY9W-hEMd9xHzAsPj19B3jmBRGSvk5cfJ2Gh-UUBl_99sy9O31cTKKu0xQRnqr5mXbpVln1BKPD1egxDsS2hVGsFJSw2HFyBlInm3mhwrtFSEiXcmCqptvOLqVU6PtsgAa_Nr4C2abNAw9SKfVItDEZNQ"/>
+<div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-status-active-green flex items-center justify-center text-surface">
+<span class="material-symbols-outlined text-[12px]">verified</span>
+</div>
+</div>
+<div class="min-w-0 flex-1">
+<div class="flex items-center gap-space-xs">
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Luna</h4>
+<span class="px-2 py-0.5 rounded-full bg-party-violet-soft text-party-violet font-label-sm text-label-sm">发起人</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">社区活跃局长 · 履约率 100% · 累计发局 34 场</p>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-lg p-space-md">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">活动寄语</p>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+        “初冬挥拍流汗局！3号馆双场地包场2小时，以球会友，赛后附近惬意喝杯咖啡。欢迎中阶与爱好者，现场备有优质鸭毛球。”
+      </p>
+</div>
+</div>
+<!-- Confirmed Roster (Static Display Only) -->
+<div class="w-full rounded-xl bg-surface-container-lowest p-space-lg shadow-sm space-y-space-md">
+<div class="flex items-center justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">已锁定选手 (6/8)</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">席位已由系统登记确认</p>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-electric-blue-soft text-electric-blue font-label-sm text-label-sm font-semibold">
+        席位已确认
+      </span>
+</div>
+<!-- Static Avatar Grid (6 Members) -->
+<div class="grid grid-cols-3 gap-space-sm">
+<!-- Luna -->
+<div class="flex flex-col items-center p-space-sm bg-surface-container-low rounded-lg">
+<img class="w-12 h-12 rounded-full object-cover mb-1.5 shadow-sm" data-alt="Luna avatar athletic girl portrait with badminton racket, bright smile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB541QFy9y8IGTPz06fU3InUTjJQsUFHc0weHp9uapsAexxhnClvt0TTTFIXIZwp9dbCMLWbALXEfja_uC1q09DNS-5zyhjr-gzd2mEy460-gmyOEv6LF69w6UQL6JpyEphfLmZxL1inkP3sUSg9FtFwmoo-PBZcFmHfDbFDtDjyRmMlsOL1ocZVjWwqY7lGjLPyj47xfmNpy--RAS7a7qt86HEx6NI97bXRJi2VEKw2IgeExs--7AU_g"/>
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate max-w-[80px]">Luna</span>
+<span class="font-label-sm text-label-sm text-primary font-medium">发起人</span>
+</div>
+<!-- Alex -->
+<div class="flex flex-col items-center p-space-sm bg-surface-container-low rounded-lg">
+<img class="w-12 h-12 rounded-full object-cover mb-1.5 shadow-sm" data-alt="Portrait of Alex a young sports guy wearing athletic headband, natural sunlit aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_92zD6d61xJMMkPriF-9o1lK6_VCuuX2a4CkjatXz05GGDJOj1lHawprMtUJ2P5sm6t5mnYMeS96NE7V1QSS5_CTvWVPJWQqRaailzUWQT7LUFcHN_lr-T-yk0QmGgQBAjoE-FmEWrNx2WrY00gRKz6QtH-gJAMUag2acvGXCRvtpL7C6u1ObBmxGZA3E2G1OHcW5FqXUNAV8xQx9m36QDy3ZoyWG8XmAD9DHBM8At4obTNZlDzirqw"/>
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate max-w-[80px]">Alex</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">双打选手</span>
+</div>
+<!-- Momo -->
+<div class="flex flex-col items-center p-space-sm bg-surface-container-low rounded-lg">
+<img class="w-12 h-12 rounded-full object-cover mb-1.5 shadow-sm" data-alt="Portrait of Momo energetic sporty girl in minimalist sportswear and ponytail, bright aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgyA1AcVFjteg6tiHYr7bi8D8Suz60PKg3OEF0GpwSrzdYetgxt_wVsnkCiDhRQBQpVhJBjMLYsGsZQUDbpasSi1JBiwLUkUhcnRiOhKDheAQ9H9r_MB-fGdLVqAMbRVwpvt0Jakdt5qn0PNHr2diaTpHzE8j4PzU4JiCxWSSrvTkUtvKzSbNwguunoTRk9CMU4V7PtdNmxLKEydoqLamsX3uUN2tme46qnf8IQVMpsRA8y8Q5s74Log"/>
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate max-w-[80px]">Momo</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">双打选手</span>
+</div>
+<!-- Leo -->
+<div class="flex flex-col items-center p-space-sm bg-surface-container-low rounded-lg">
+<img class="w-12 h-12 rounded-full object-cover mb-1.5 shadow-sm" data-alt="Portrait of Leo, cool guy in gym athletic hoodie, friendly expression, high resolution studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRmBbwp7W33qXmKKTvSEaIrdOMWCELRTS0DSGMxNp9Q9HUvvCpG0SKMos6k7DEi6WWvuKQt33mI5l33TuScPmIrPVEZDrh2ioii6Ylafat6bTBs1zqfVtMbY-s3mom6kwt13Xp_Owf43YaE8a9CN5Howj0BIMSlxdlm1vXoQko8afz7bVbP8PVumf3Jzq_cziZDFDcqedgKiOJjnH9mUcYi5dIqPrD_fAj_eCE5P4KL2YMZkIIYkgRLQ"/>
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate max-w-[80px]">Leo</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">双打选手</span>
+</div>
+<!-- David (Current User) -->
+<div class="flex flex-col items-center p-space-sm bg-electric-blue-soft rounded-lg">
+<div class="relative mb-1.5">
+<img class="w-12 h-12 rounded-full object-cover shadow-sm" data-alt="Portrait of David sporty young man wearing blue t-shirt, friendly warm gaze" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtYgU3QuXMdjM-cbSWPSAF1SnwZotJUONTj9j_Y9TAY3MB1Y3B0H2Td-lMERq4G_J_DGkQHFjEF8inDxCIZEGZzIM16TRRTeFWMdp4yj75vmLnV4aHHRTEBOt7EYtMrDpP1RyuaoyHRqmuH6fPeOsMIGs6cJUezOyf3TKIJ_obJzHrgDgjKdxOIHRUkY7U845dEpC0-cLwbH_ZkWIaxd8A9fJRoI9Ya9FNqCVkcyoVLj7lGC4wKPTMnA"/>
+<span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-electric-blue text-surface flex items-center justify-center font-label-sm text-[10px]">
+            5
+          </span>
+</div>
+<span class="font-label-md text-label-md text-electric-blue font-bold truncate max-w-[80px]">David (您)</span>
+<span class="font-label-sm text-label-sm text-electric-blue font-semibold">已锁定</span>
+</div>
+<!-- Taylor -->
+<div class="flex flex-col items-center p-space-sm bg-surface-container-low rounded-lg">
+<img class="w-12 h-12 rounded-full object-cover mb-1.5 shadow-sm" data-alt="Portrait of Taylor young woman tennis badminton enthusiast with warm smile and sportswear" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtHZJwSgk6YIma79lVDd-e0qZnsAAV5kBnkoMq7VLND4HSNvDfYAFswDXxk8tlc4Wb8JCJov81VoTyjSdVa4Kkg8mr36qlcZQCd_WfvTKErYsQTn4ufT7d7rmWu4rGxlv8HKnkk7B-YtQ38z0FpX8pKCf56dRQEnCMLciHGEK3IUc1EAb7Rs33lkyjG7laeGPIoEnQKOrIri5w6d1acik-fDgL9GX3gEJ26rG4SG5J3-hA3v9ozvSBMQ"/>
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate max-w-[80px]">Taylor</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">双打选手</span>
+</div>
+</div>
+</div>
+<!-- Safety & Rules Info Card -->
+<div class="w-full rounded-xl bg-surface-container-lowest p-space-lg shadow-sm space-y-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">rule</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">行前须知与守则</h3>
+</div>
+<div class="space-y-space-sm">
+<div class="flex items-start gap-space-sm">
+<span class="w-5 h-5 rounded-full bg-surface-container text-on-surface font-label-sm text-label-sm flex items-center justify-center shrink-0 mt-0.5">1</span>
+<div>
+<p class="font-body-md text-body-md font-semibold text-on-surface">守时原则</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">请提前15分钟到场完成签到与拉伸热身，保障运动安全与准时开赛。</p>
+</div>
+</div>
+<div class="flex items-start gap-space-sm">
+<span class="w-5 h-5 rounded-full bg-surface-container text-on-surface font-label-sm text-label-sm flex items-center justify-center shrink-0 mt-0.5">2</span>
+<div>
+<p class="font-body-md text-body-md font-semibold text-on-surface">装备规范</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">场馆要求需穿着室内生胶底或浅色防滑羽毛球鞋，严禁穿着黑胶跑鞋进场。</p>
+</div>
+</div>
+<div class="flex items-start gap-space-sm">
+<span class="w-5 h-5 rounded-full bg-surface-container text-on-surface font-label-sm text-label-sm flex items-center justify-center shrink-0 mt-0.5">3</span>
+<div>
+<p class="font-body-md text-body-md font-semibold text-on-surface">爽约与席位转让</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">活动开局前24小时内系统席位已自动锁定并生成场地成本。如遇紧急情况请遵守社区契约规则。</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Pure Static Bottom Indicator (Terminal Information Only - NO Button, NO Clickable Pill) -->
+<div class="w-full rounded-xl bg-status-active-green-soft p-space-md text-center flex items-center justify-center gap-space-xs text-status-active-green shadow-sm">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-body-sm text-body-sm font-semibold tracking-wide">
+      您已成功加入本场活动 · 活动进行中无需二次操作
+    </span>
+</div>
+</div></main></body></html>

@@ -1,0 +1,11 @@
+✔ fonts wait for one asynchronous package and retain global registration with independent callback results (2.694ms)
+✔ package download rejection resolves readiness and records failure without stopping the app (0.334292ms)
+✔ unsupported SDK never downloads fonts or attempts registration (0.217333ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 107.571333
